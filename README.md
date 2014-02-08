@@ -2,6 +2,8 @@ AcDisplay
 ==========
 AcDisplay gives life to your device. Your device will let you know when a notification is received by showing you a beautiful, minimalist screen. You can then choose to ignore it, open the notifying app, or show the notification's preview without leaving AcDisplay. Designed to be light on resources, battery and frustration, AcDisplay is the perfect companion for you.
 
+<a href="https://plus.google.com/u/0/communities/102085470313050914854">Join app's community on Google Play</a>
+
 Where's the sources?
 --------------------
 I'll push them on days. Stay tuned ;)
@@ -10,7 +12,10 @@ I'll push them on days. Stay tuned ;)
 
 Download
 --------------------
-![My image][3]
+<a href="https://play.google.com/store/apps/details?id=com.achep.activedisplay">
+  <img alt="Download from Google Play"
+       src="https://github.com/AChep/AcDisplay/raw/master/art/google_play.png" />
+</a>
 
 Developed By
 --------------------
@@ -46,4 +51,3 @@ License
 
  [1]: https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot1.png
  [2]: https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png
- [3]: https://github.com/AChep/AcDisplay/raw/master/art/google_play.png
