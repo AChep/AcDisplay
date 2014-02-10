@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<resources>
+
+    <string name="close">Close</string>
+
+    <!-- Donate -->
+    <string name="donate_action">Donate</string>
+    <string name="donate_how_to">How to</string>
+    <string name="donate_title">Donate to me</string>
+    <string name="donate_message"><![CDATA[
+        <b>%1$s</b> is a free and <a href="https://www.github.com/AChep/AcDisplay">open source</a> app.
+        If you want to support development, donating using <a href="%2$s">my %4$s wallet</a> is the best way to do that.<br/>
+        <br/>
+        Why <a href="%3$s">%4$s</a>?
+        %4$s is decentralized digital currency that enables instant payments to anyone, anywhere in the world without any restrictions.
+    ]]></string>
+
+    <!-- About -->
+    <string name="about_action">About</string>
+    <string name="about_title" translatable="false"><![CDATA[
+        <b>%1$s</b>&nbsp;<font color="#888888">v%2$s</font>
+    ]]></string>
+    <string name="about_message"><![CDATA[
+        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+        <br/>
+        Many thanks to those open source tools:
+        <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
+        <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>.
+    ]]></string>
+
+</resources>

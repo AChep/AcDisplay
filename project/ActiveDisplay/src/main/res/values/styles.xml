@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<resources>
+
+    <!--  ************************
+          ||||||||||||||||||||||||
+                  THEMES
+          ||||||||||||||||||||||||
+          ************************  -->
+    <style name="AppTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
+        <item name="waveViewStyle">@style/WaveViewStyle</item>
+        <item name="circularProgressBarStyle">@style/CircularProgressBarStyle</item>
+    </style>
+
+    <style name="ActiveDisplayTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:inAnimation">@null</item>
+        <item name="android:outAnimation">@null</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="waveViewStyle">@style/WaveViewStyle</item>
+        <item name="circularProgressBarStyle">@style/CircularProgressBarStyle</item>
+    </style>
+
+    <style name="WaveViewStyle">
+        <item name="point_radius">2dp</item>
+        <item name="point_number">10</item>
+    </style>
+
+    <style name="CircularProgressBarStyle">
+        <item name="stroke_width">3dp</item>
+        <item name="marker_visible">false</item>
+        <item name="thumb_visible">false</item>
+        <item name="progress_background_color">#4fff</item>
+        <item name="progress_color">@android:color/white</item>
+        <item name="progress">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--  ************************
+          ||||||||||||||||||||||||
+                   DIALOG
+          ||||||||||||||||||||||||
+          ************************  -->
+    <style name="Dialog"/>
+
+    <style name="Dialog.Title" parent="Dialog">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Dialog.Title.MultiPanel" parent="Dialog.Title">
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="Dialog.Message" parent="Dialog">
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Dialog.Message.MultiPanel" parent="Dialog.Message">
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+    </style>
+
+    <!--  ************************
+          ||||||||||||||||||||||||
+                  AD MAIN
+          ||||||||||||||||||||||||
+          ************************  -->
+    <style name="ADMain"/>
+
+    <style name="ADMain.Text" parent="ADMain">
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ADMain.Text.Clock" parent="ADMain.Text">
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:format12Hour">hh:mm</item>
+        <item name="android:format24Hour">HH:mm</item>
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textSize">80sp</item>
+    </style>
+
+    <style name="ADMain.Text.Date" parent="ADMain.Text">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:format12Hour">dd MMM yy</item>
+        <item name="android:format24Hour">dd MMM yy</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!--  ************************
+          ||||||||||||||||||||||||
+               AD PREVIEW LIST
+          ||||||||||||||||||||||||
+          ************************  -->
+    <style name="ADPreviewList"/>
+
+    <style name="ADPreviewList.Icon" parent="ADPreviewList">
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="ADPreviewList.Text" parent="ADPreviewList">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ADPreviewList.Text.Title" parent="ADPreviewList.Text">
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:maxWidth">128dp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="ADPreviewList.Text.Message" parent="ADPreviewList.Text">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

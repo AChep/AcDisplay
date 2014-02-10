@@ -213,3 +213,10 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#Idea
+*.iml
+.idea/
+
+#gradle
+.gradle/

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextClock
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        style="@style/ADMain.Text.Clock"/>
+
+    <Space
+        android:id="@+id/right"
+        android:layout_width="52dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@id/time"/>
+
+    <Space
+        android:id="@+id/zero"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@id/right"/>
+
+    <TextClock
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10sp"
+        android:layout_marginEnd="8sp"
+        android:layout_toStartOf="@id/zero"
+        android:paddingStart="40dp"
+        android:layout_below="@id/time"
+        style="@style/ADMain.Text.Date"/>
+
+    <FrameLayout
+        android:id="@+id/handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_centerHorizontal="true">
+
+        <de.passsy.holocircularprogressbar.HoloCircularProgressBar
+            android:id="@+id/timeout"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
+            android:layout_gravity="center"
+            app:progress="1" />
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/stat_icon_size"
+            android:layout_height="@dimen/stat_icon_size"
+            android:layout_gravity="center"
+            android:src="@drawable/stat_unlock" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/overflow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/right"
+        android:layout_below="@id/right"
+        android:layout_above="@id/handle"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:src="@drawable/ic_overflow"
+        android:background="?android:selectableItemBackground"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/radios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/handle"
+        android:layout_centerHorizontal="true"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal"
+        android:paddingTop="4dp" />
+
+    <TextView
+        android:id="@+id/blacklisted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radios"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="4dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#4fff"
+        android:textAllCaps="true"
+        android:text="@string/blacklisted"/>
+
+</RelativeLayout>

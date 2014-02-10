@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/access"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_red_dark"
+    android:divider="?android:dividerHorizontal"
+    android:showDividers="middle"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    tools:ignore="Overdraw">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/android_spaces_large"
+        android:paddingRight="@dimen/android_spaces_large"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/access_warning_title"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:divider="?android:dividerVertical"
+        android:measureWithLargestChild="true"
+        android:showDividers="middle"
+        android:baselineAligned="false">
+
+        <FrameLayout
+            android:id="@+id/access_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@android:style/Widget.Holo.Button.Borderless.Small">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/stat_notify_chat"
+                android:drawablePadding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:clickable="false"
+                android:background="@drawable/transparent"
+                android:text="@string/access_to_notifications_btn"
+                style="@android:style/Widget.Holo.Button.Borderless.Small" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/access_device_admin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@android:style/Widget.Holo.Button.Borderless.Small">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/stat_lock"
+                android:drawablePadding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:clickable="false"
+                android:background="@drawable/transparent"
+                android:text="@string/access_to_admin_btn"
+                style="@android:style/Widget.Holo.Button.Borderless.Small" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

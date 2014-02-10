@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.7.+'
+    }
+}
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
+
+    defaultConfig {
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    final Console console = System.console();
+    if (console != null) {
+        signingConfigs {
+            release {
+                storeFile file(console.readLine("Enter keystore path: ")
+                storePassword console.readLine("Enter keystore password: ")
+                keyAlias console.readLine("Enter alias key: ")
+                keyPassword console.readLine("Enter key password: ")
+            }
+        }
+    } else {
+        signingConfigs {
+            release {
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            zipAlign true
+            buildConfigField "boolean", "MY_DEBUG", "true"
+            packageNameSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
+        release {
+            zipAlign true
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "MY_DEBUG", "false"
+        }
+    }
+    productFlavors {
+        defaultFlavor {
+            proguardFile 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+}

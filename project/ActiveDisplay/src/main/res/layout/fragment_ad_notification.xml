@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_alignParentEnd="true"
+        android:scaleType="center"
+        android:background="#1fff" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/icon"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:fontFamily="sans-serif-condensed"
+        android:ellipsize="end"
+        android:textColor="#fff"
+        android:textSize="24sp"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_toStartOf="@id/icon"
+        android:ellipsize="end"
+        android:maxLines="8"
+        android:paddingTop="4dp" />
+
+    <Space
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/message" />
+
+    <ImageView
+        android:id="@+id/icon_small"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_below="@id/divider"
+        android:layout_toStartOf="@id/icon"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:alpha="0.6"/>
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:layout_toStartOf="@id/icon_small"
+        android:layout_marginTop="6dp"
+        android:textColor="#bccc"
+        android:fontFamily="sans-serif-condensed"/>
+
+    <TextView
+        android:id="@+id/when"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:layout_toStartOf="@id/count"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#bccc"
+        android:fontFamily="sans-serif-condensed"/>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:layout_toStartOf="@id/when"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#bccc"
+        android:fontFamily="sans-serif-condensed"/>
+</RelativeLayout>

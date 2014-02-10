@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<resources>
+
+    <string name="close">Закрыть</string>
+
+    <!-- Donate -->
+    <string name="donate_action">Пожертвовать</string>
+    <string name="donate_how_to">Попробовать</string>
+    <string name="donate_title">@string/donate_action</string>
+    <string name="donate_message"><![CDATA[
+        <b>%1$s</b> – это бесплатное приложение с <a href="https://www.github.com/AChep/AcDisplay">открытым исходным кодом</a>.
+        Если вы хотите поддержать разработку, то <a href="%2$s">мой %4$s кошелёк</a> – лучшее место для этого.<br/>
+        <br/>
+        Почему <a href="%3$s">%4$s</a>?
+        %4$s – это децентрализованная цифровая валюта, которая позволяет мгновенно производить денежные переводы в любом месте мира без каких-либо ограничений.
+    ]]></string>
+
+    <!-- About -->
+    <string name="about_action">О программе</string>
+    <string name="about_message"><![CDATA[
+        Авторское право 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Артём Чепурной</a>. Все права защищены.<br/>
+        <br/>
+        Большое спасибо этим открытым библиотекам:
+        <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
+        <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>.
+    ]]></string>
+
+</resources>
