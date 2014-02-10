@@ -40,7 +40,8 @@
         <br/>
         Большое спасибо этим открытым библиотекам:
         <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
-        <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>.
+        <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
+        <a href="http://commons.apache.org/">Apache Commons</a>.
     ]]></string>
 
 </resources>
