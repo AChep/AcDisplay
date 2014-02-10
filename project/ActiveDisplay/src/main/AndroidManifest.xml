@@ -19,8 +19,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.achep.activedisplay"
-    android:versionCode="4"
-    android:versionName="1.1">
+    android:versionCode="5"
+    android:versionName="1.1.1">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />

@@ -30,6 +30,8 @@
 
     <!-- Settings -->
     <string name="settings">Настройки</string>
+    <string name="settings_placeholder_title">Заглушка</string>
+    <string name="settings_placeholder_summary">В скором времени здесь будут настройки.</string>
 
     <string name="device_admin_description">Это необходимо для того, что бы управлять собственным таймаутом выключения экрана.</string>
     <string name="app_auto_disabled">AcDisplay был отключен из-за удаления прав администратора.</string>
@@ -37,6 +39,5 @@
     <string name="access_to_notifications_btn">Уведомления</string>
     <string name="access_to_admin_btn">Выключить экран</string>
     <string name="ad_description">Знание - это сила, и AcDisplay дает вам именно это, с первого взгляда. Он всегда отображает то, что вы хотите узнать, тогда, когда вам это нужно. Информация просто появляется на экране, так что вам не нужно разблокировать его, чтобы посмотреть на время, или увидеть ваши сообщения.</string>
-
 
 </resources>

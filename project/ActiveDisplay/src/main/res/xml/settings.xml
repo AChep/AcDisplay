@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Placeholder -->
+    <Preference
+        android:title="@string/settings_placeholder_title"
+        android:summary="@string/settings_placeholder_summary"
+        android:enabled="false"/>
+
+</PreferenceScreen>
