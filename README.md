@@ -4,10 +4,6 @@ AcDisplay gives life to your device. Your device will let you know when a notifi
 
 <a href="https://plus.google.com/u/0/communities/102085470313050914854">Join app's community on Google Play</a>
 
-Where's the sources?
---------------------
-I'll push them on days. Stay tuned ;)
-
 ![My image][1] ![My image][2]
 
 Download
