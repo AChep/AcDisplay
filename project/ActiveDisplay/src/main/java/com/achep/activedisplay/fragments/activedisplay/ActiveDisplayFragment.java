@@ -147,7 +147,6 @@ public class ActiveDisplayFragment extends MyFragment implements
                             // for all the time of this touch gesture.
                             mPresenter.lockSelectedNotification();
                         }
-                    case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
                         synchronized (mPresenter.monitor) {
                             mPresenter.unlockSelectedNotification();
