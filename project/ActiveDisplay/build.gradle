@@ -28,7 +28,7 @@ android {
     if (console != null) {
         signingConfigs {
             release {
-                storeFile file(console.readLine("Enter keystore path: ")
+                storeFile file(console.readLine("Enter keystore path: "))
                 storePassword console.readLine("Enter keystore password: ")
                 keyAlias console.readLine("Enter alias key: ")
                 keyPassword console.readLine("Enter key password: ")
