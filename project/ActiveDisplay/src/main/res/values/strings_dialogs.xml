@@ -22,7 +22,7 @@
     <string name="close">Close</string>
 
     <!-- Donate -->
-    <string name="donate_action">Donate</string>
+    <string name="donate">Donate</string>
     <string name="donate_how_to">How to</string>
     <string name="donate_title">Donate to me</string>
     <string name="donate_message"><![CDATA[
@@ -44,7 +44,7 @@
         Many thanks to those open source tools:
         <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
-        <a href="http://commons.apache.org/">Apache Commons</a>.
+        <a href="http://commons.apache.org/">Apache Commons</a> and to all who <a href="https://crowdin.net/project/acdisplay">helped with translations</a>.
     ]]></string>
 
 </resources>

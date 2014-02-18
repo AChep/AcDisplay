@@ -18,8 +18,15 @@
  */
 package com.achep.activedisplay.utils;
 
+import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.achep.activedisplay.Config;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by Artem on 21.01.14.
@@ -40,7 +47,7 @@ public class ViewUtils {
         view.getLocationInWindow(coordinates);
         int top = coordinates[1];
         decorView.getLocationInWindow(coordinates);
-        return top - coordinates[1];
+        return top;
     }
 
     public static int getBottom(View view, View decorView) {
@@ -49,6 +56,10 @@ public class ViewUtils {
         decorView.getLocationInWindow(coordinates);
         return bottom - coordinates[1];
     }
+
+    // //////////////////////////////////////////
+    // //////////// -- VISIBILITY -- ////////////
+    // //////////////////////////////////////////
 
     public static void setVisible(View view, boolean visible) {
         setVisible(view, visible, View.GONE);
@@ -62,6 +73,29 @@ public class ViewUtils {
         final boolean visible = text != null;
         if (visible) textView.setText(text);
         ViewUtils.setVisible(textView, visible);
+    }
+
+    // //////////////////////////////////////////
+    // /////////// -- TOUCH EVENTS -- ///////////
+    // //////////////////////////////////////////
+
+    public static boolean toGlobalMotionEvent(View view, MotionEvent ev) {
+        return toMotionEvent(view, ev, "toGlobalMotionEvent");
+    }
+
+    public static boolean toLocalMotionEvent(View view, MotionEvent ev) {
+        return toMotionEvent(view, ev, "toLocalMotionEvent");
+    }
+
+    private static boolean toMotionEvent(View view, MotionEvent ev, String methodName) {
+        try {
+            Method method = View.class.getDeclaredMethod(methodName, MotionEvent.class);
+            method.setAccessible(true);
+            return (boolean) method.invoke(view, ev);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

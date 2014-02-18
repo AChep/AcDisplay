@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="feedback_action">Feedback</string>
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_type_label">Choose the subject of your message:</string>
+    <string name="feedback_msg_hint">Your message. Device specs will be included automatically.</string>
+    <string name="feedback_send">Send</string>
+    <string name="feedback_send_via">Send email via…</string>
+    <string name="feedback_error_no_app">There are no email apps available.</string>
+    <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
+
+</resources>

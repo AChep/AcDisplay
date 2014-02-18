@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Feedback -->
+    <string-array name="feedback_types">
+        <item>Ошибка</item>
+        <item>Пожелание</item>
+        <item>Другое</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<resources>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+
+    <string name="settings_general_category">Общее</string>
+    <string name="settings_only_while_charging_title">Только во время зарядки</string>
+    <string name="settings_only_while_charging_on">Приложение активно только во врямя зарядки.</string>
+    <string name="settings_only_while_charging_off">Приложение активно всегда.</string>
+    <string name="settings_low_priority_notifications_title">Не важные уведомления</string>
+    <string name="settings_low_priority_notifications_on">Все уведомления отображаются.</string>
+    <string name="settings_low_priority_notifications_off">Уведомления, имеющие низкий приоритет, не отображаются.\nПример: погода от Google Now.</string>
+
+    <!-- Configure timeout -->
+    <string name="settings_label_normal_timeout">При запуске или смене выбраного уведомления</string>
+    <string name="settings_label_short_timeout">После касания экрана в неактивном месте</string>
+    <string name="settings_label_instant_timeout">При запуске в кармане</string>
+    <string name="settings_timeout_title">Спящий режим</string>
+    <string name="settings_timeout_summary">После %1$s / %2$s / %3$s секунд бездействия.</string>
+    <string name="settings_timeout_sec">%1$s сек.</string>
+
+    <string name="settings_interface_category">Интерфейс</string>
+    <string name="settings_date_title">Настроить показ даты</string>
+    <string name="settings_date_summary">Скрыть дату, настроить её формат.</string>
+    <string name="settings_date_category">Дата</string>
+    <string name="settings_show_date_title">Отображать дату</string>
+</resources>

@@ -18,7 +18,6 @@
  */
 package com.achep.activedisplay.fragments.activedisplay;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,7 @@ public class PreviewFragment extends MyFragment {
 
     private static final String TAG = "PreviewFragment";
 
-    private static final int REFRESH_UI_NOTIFICATION_LIST = 1;
+    private static final int UPDATE_NOTIFICATION_LIST = 1;
 
     private LinearLayout mContainer;
 
@@ -48,9 +47,9 @@ public class PreviewFragment extends MyFragment {
     private NotificationListener mListener = new NotificationListener();
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mPresenter = NotificationPresenter.getInstance();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mPresenter = NotificationPresenter.getInstance(getActivity());
         synchronized (mPresenter.monitor) {
             mPresenter.addOnNotificationListChangedListener(mListener);
             updateNotificationList();
@@ -58,19 +57,18 @@ public class PreviewFragment extends MyFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
         synchronized (mPresenter.monitor) {
             mPresenter.removeOnNotificationListChangedListener(mListener);
             mPresenter = null;
         }
+        super.onDestroyView();
     }
 
     @Override
     protected void handleTodoList(int v) {
-        if (Operator.bitandCompare(v, REFRESH_UI_NOTIFICATION_LIST)) {
+        if (Operator.bitandCompare(v, UPDATE_NOTIFICATION_LIST))
             updateNotificationList();
-        }
     }
 
     @Override
@@ -82,21 +80,17 @@ public class PreviewFragment extends MyFragment {
     }
 
     private void updateNotificationList() {
-        updateNotificationList(true);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void updateNotificationList(boolean updateAll) {
-        if (tryPutTodo(REFRESH_UI_NOTIFICATION_LIST)) return;
+        if (tryPutTodo(UPDATE_NOTIFICATION_LIST)) return;
 
         synchronized (mPresenter.monitor) {
-            if (updateAll) {
-                boolean visible = Helper.updateNotificationList(mPresenter, mContainer,
-                        R.layout.item_ad_preview, getActivity().getLayoutInflater());
-                if (!visible) return;
+            //noinspection ConstantConditions
+            boolean visible = Helper.updateNotificationList(mPresenter, mContainer,
+                    R.layout.item_ad_preview, getActivity().getLayoutInflater());
+
+            if (!visible) {
+                return;
             }
 
-            // Check current notification
             final int size = mPresenter.getList().size();
             final OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
             for (int i = 0; i < size; i++) {
@@ -111,6 +105,7 @@ public class PreviewFragment extends MyFragment {
     // ///////////// -- CLASSES -- //////////////
     // //////////////////////////////////////////
 
+    @SuppressWarnings("ConstantConditions")
     private class NotificationListener extends NotificationPresenter.SimpleOnNotificationListChangedListener {
 
         @Override
@@ -119,10 +114,13 @@ public class PreviewFragment extends MyFragment {
                                            final OpenStatusBarNotification notification,
                                            boolean isChanged) {
             super.onNotificationSelected(nm, notification, isChanged);
-
-            // We will update list on onChanged() event some millis later.
             if (!isChanged) {
-                updateNotificationListInternal(false);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateNotificationList();
+                    }
+                });
             }
         }
 
@@ -133,18 +131,13 @@ public class PreviewFragment extends MyFragment {
                                         int event) {
             super.onNotificationEvent(nm, notification, event);
             if (event != SELECTED) {
-                updateNotificationListInternal(true);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateNotificationList();
+                    }
+                });
             }
-        }
-
-        @SuppressWarnings("ConstantConditions")
-        private void updateNotificationListInternal(final boolean updateAll) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateNotificationList(updateAll);
-                }
-            });
         }
     }
 

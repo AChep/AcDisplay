@@ -34,7 +34,12 @@
     <item
         android:id="@+id/action_donate"
         android:showAsAction="never"
-        android:title="@string/donate_action" />
+        android:title="@string/donate" />
+
+    <item
+        android:id="@+id/action_feedback"
+        android:showAsAction="never"
+        android:title="@string/feedback_action" />
 
     <item
         android:id="@+id/action_about"

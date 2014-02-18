@@ -19,8 +19,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.achep.activedisplay"
-    android:versionCode="5"
-    android:versionName="1.1.1">
+    android:versionCode="12"
+    android:versionName="1.2.4">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -61,7 +61,8 @@
             android:screenOrientation="nosensor"
             android:configChanges="keyboardHidden"
             android:excludeFromRecents="true"
-            android:theme="@style/ActiveDisplayTheme"/>
+            android:theme="@style/ActiveDisplayTheme"
+            android:exported="false"/>
 
         <!-- Notification listener service -->
         <service
@@ -73,11 +74,8 @@
             </intent-filter>
         </service>
 
-        <!-- Sensor listener service -->
-        <service
-            android:name=".sensor.SensorMonitorService"
-            android:label="@string/app_name">
-        </service>
+        <service android:name=".services.BreathingService" />
+        <service android:name=".services.SendNotificationService" />
 
         <!-- Device admin rights -->
         <receiver

@@ -20,7 +20,9 @@ package com.achep.activedisplay.fragments.activedisplay;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RadioGroup;
+import android.widget.TextClock;
 
+import com.achep.activedisplay.Keys;
 import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
@@ -51,7 +55,7 @@ import de.passsy.holocircularprogressbar.HoloCircularProgressBar;
  */
 public class ActiveDisplayFragment extends MyFragment implements
         CompoundButton.OnCheckedChangeListener,
-        Timeout.OnTimeoutEventListener {
+        Timeout.OnTimeoutEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "ActiveDisplayFragment";
 
@@ -60,10 +64,10 @@ public class ActiveDisplayFragment extends MyFragment implements
     private static final int REFRESH_UI_NOTIFICATION_STATE_INDICATOR = 4;
     private static final int REFRESH_UI_TIMEOUT = 8;
 
+    private TextClock mDateView;
     private HoloCircularProgressBar mHandleTimeoutProgressBar;
     private ImageView mHandleIconImageView;
     private RadioGroup mRadioGroup;
-    private View mBlacklistedIndicator;
 
     private View mOverflowView;
     private PopupMenu mPopupMenu;
@@ -89,33 +93,52 @@ public class ActiveDisplayFragment extends MyFragment implements
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mBlacklist = Blacklist.getInstance(getActivity());
-        mPresenter = NotificationPresenter.getInstance();
-    }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Activity activity = getActivity();
+        assert activity != null;
 
-    @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        mBlacklist.addOnSharedListChangedListener(mBlacklistListener);
+        mBlacklist = Blacklist.getInstance(activity);
+        mPresenter = NotificationPresenter.getInstance(getActivity());
         synchronized (mPresenter.monitor) {
             mPresenter.addOnNotificationListChangedListener(mNotificationListener);
             updateNotification();
             updateNotificationList();
         }
+
+        setTimeoutPresenter(mTimeout); // may be null
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        updateDateVisibility(prefs);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
         mBlacklist.removeOnSharedListChangedListener(mBlacklistListener);
 
         synchronized (mPresenter.monitor) {
             mPresenter.removeOnNotificationListChangedListener(mNotificationListener);
             mPresenter = null;
         }
-        if (mTimeout != null) mTimeout.removeListener(this);
+        if (mTimeout != null) {
+            mTimeout.removeListener(this);
+            mTimeout = null;
+        }
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        switch (key) {
+            case Keys.Settings.SHOW_DATE:
+                updateDateVisibility(prefs);
+                break;
+        }
+    }
+
+    private void updateDateVisibility(SharedPreferences prefs) {
+        ViewUtils.setVisible(mDateView, prefs.getBoolean(Keys.Settings.SHOW_DATE, true));
     }
 
     @Override
@@ -139,6 +162,7 @@ public class ActiveDisplayFragment extends MyFragment implements
         handle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+                boolean handled = true;
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         synchronized (mPresenter.monitor) {
@@ -154,8 +178,11 @@ public class ActiveDisplayFragment extends MyFragment implements
                             mPresenter.unlockSelectedNotification();
                         }
                         break;
+                    default:
+                        handled = false;
+                        break;
                 }
-                return mOnEventListener != null && mOnEventListener.onTouchHandleEvent(view, event);
+                return mOnEventListener != null && mOnEventListener.onTouchHandleEvent(view, event) || handled;
             }
         });
 
@@ -167,7 +194,6 @@ public class ActiveDisplayFragment extends MyFragment implements
         mRadioGroup = (RadioGroup) root.findViewById(R.id.radios);
 
         // blacklist
-        mBlacklistedIndicator = root.findViewById(R.id.blacklisted);
         mOverflowView = root.findViewById(R.id.overflow);
         mOverflowView.setOnClickListener(new View.OnClickListener() {
 
@@ -205,6 +231,9 @@ public class ActiveDisplayFragment extends MyFragment implements
                 }
             }
         });
+
+        mDateView = (TextClock) root.findViewById(R.id.date);
+
         return root;
     }
 
@@ -225,6 +254,7 @@ public class ActiveDisplayFragment extends MyFragment implements
     }
 
     private void updateNotificationStateIndicator() {
+    /*
         if (tryPutTodo(REFRESH_UI_NOTIFICATION_STATE_INDICATOR)) return;
 
         synchronized (mPresenter.monitor) {
@@ -233,8 +263,8 @@ public class ActiveDisplayFragment extends MyFragment implements
                     notification != null && mBlacklist.contains(notification) && Project.DEBUG,
                     View.GONE);
         }
+    */
     }
-
     private void updateNotificationList() {
         if (tryPutTodo(REFRESH_UI_NOTIFICATION_LIST)) return;
 
@@ -282,7 +312,9 @@ public class ActiveDisplayFragment extends MyFragment implements
         }
 
         mTimeout = tp;
-        mTimeout.addListener(this);
+        if (mTimeout != null) {
+            mTimeout.addListener(this);
+        }
 
         refreshTimeout();
     }
@@ -296,7 +328,9 @@ public class ActiveDisplayFragment extends MyFragment implements
         if (tryPutTodo(REFRESH_UI_TIMEOUT)) return;
 
         mHandleTimeoutProgressBar.cancelAnimateProgress();
-        if (mTimeout.getRemainingTime() > 0) {
+        if (mTimeout == null) {
+            mHandleTimeoutProgressBar.setProgress(1);
+        } else if (mTimeout.getRemainingTime() > 0) {
             mHandleTimeoutProgressBar.animateProgressFromOne(mTimeout.getRemainingTime());
         } else {
             mHandleTimeoutProgressBar.setProgress(0);

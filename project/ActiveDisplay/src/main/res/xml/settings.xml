@@ -1,10 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
 
-    <!-- Placeholder -->
-    <Preference
-        android:title="@string/settings_placeholder_title"
-        android:summary="@string/settings_placeholder_summary"
-        android:enabled="false"/>
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_general_category" />
+
+    <CheckBoxPreference
+        android:key="only_while_charging"
+        android:title="@string/settings_only_while_charging_title"
+        android:summaryOn="@string/settings_only_while_charging_on"
+        android:summaryOff="@string/settings_only_while_charging_off" />
+
+    <CheckBoxPreference
+        android:key="low_priority_notifications"
+        android:title="@string/settings_low_priority_notifications_title"
+        android:summaryOn="@string/settings_low_priority_notifications_on"
+        android:summaryOff="@string/settings_low_priority_notifications_off" />
+
+    <com.achep.activedisplay.preferences.TimeoutPreference
+        android:key="configure_timeout"
+        android:dialogIcon="@drawable/ic_clock"
+        android:dialogTitle="@string/settings_timeout_title"
+        android:title="@string/settings_timeout_title" />
+
+    <PreferenceCategory android:title="@string/settings_interface_category" />
+
+    <PreferenceScreen
+        android:title="@string/settings_date_title"
+        android:summary="@string/settings_date_summary">
+
+        <CheckBoxPreference
+            android:key="show_date"
+            android:title="@string/settings_show_date_title"
+            android:defaultValue="true"/>
+
+    </PreferenceScreen>
 
 </PreferenceScreen>

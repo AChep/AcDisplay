@@ -22,9 +22,9 @@
     <string name="close">Закрыть</string>
 
     <!-- Donate -->
-    <string name="donate_action">Пожертвовать</string>
+    <string name="donate">Пожертвовать</string>
     <string name="donate_how_to">Попробовать</string>
-    <string name="donate_title">@string/donate_action</string>
+    <string name="donate_title">@string/donate</string>
     <string name="donate_message"><![CDATA[
         <b>%1$s</b> – это бесплатное приложение с <a href="https://www.github.com/AChep/AcDisplay">открытым исходным кодом</a>.
         Если вы хотите поддержать разработку, то <a href="%2$s">мой %4$s кошелёк</a> – лучшее место для этого.<br/>
@@ -41,7 +41,7 @@
         Большое спасибо этим открытым библиотекам:
         <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
-        <a href="http://commons.apache.org/">Apache Commons</a>.
+        <a href="http://commons.apache.org/">Apache Commons</a>, а также всем, кто <a href="https://crowdin.net/project/acdisplay">помог с переводом приложения</a>.
     ]]></string>
 
 </resources>

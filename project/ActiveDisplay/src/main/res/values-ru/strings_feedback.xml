@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="feedback_action">Обратная связь</string>
+    <string name="feedback_title">Обратная связь</string>
+    <string name="feedback_type_label">Выберите тему сообщения:</string>
+    <string name="feedback_msg_hint">Ваше сообщение. Параметры устройства будут добавлены автоматически.</string>
+    <string name="feedback_send">Отправить</string>
+    <string name="feedback_send_via">Отправить e-mail через…</string>
+    <string name="feedback_error_no_app">Установите любое приложение для отправки email.</string>
+    <string name="feedback_error_msg_too_short">Сообщение должно включать по крайней мере %1$d символов.</string>
+
+</resources>

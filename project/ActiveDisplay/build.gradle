@@ -28,7 +28,7 @@ android {
     if (console != null) {
         signingConfigs {
             release {
-                storeFile file(console.readLine("Enter keystore path: "))
+                storeFile file("F:\\Android\\keys\\achep_sign_key"))
                 storePassword console.readLine("Enter keystore password: ")
                 keyAlias console.readLine("Enter alias key: ")
                 keyPassword console.readLine("Enter key password: ")
@@ -51,15 +51,14 @@ android {
         release {
             zipAlign true
             runProguard true
-            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile 'proguard-rules.txt'
             signingConfig signingConfigs.release
             buildConfigField "boolean", "MY_DEBUG", "false"
         }
     }
     productFlavors {
-        defaultFlavor {
-            proguardFile 'proguard-rules.txt'
-        }
+        defaultFlavor { }
+        localized { }
     }
 }
 

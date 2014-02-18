@@ -38,5 +38,13 @@
     <declare-styleable name="Theme">
         <attr name="circularProgressBarStyle" format="reference"/>
         <attr name="waveViewStyle" format="reference"/>
+
+        <!-- Dialog styles -->
+        <attr name="dialogStyle" format="reference"/>
+        <attr name="dialogTitleStyle" format="reference"/>
+        <attr name="dialogContentStyle" format="reference"/>
+        <attr name="textAppearanceDialogTitle" format="reference"/>
+        <attr name="textAppearanceDialogMessage" format="reference"/>
+        <attr name="textAppearanceDialogInfo" format="reference"/>
     </declare-styleable>
 </resources>

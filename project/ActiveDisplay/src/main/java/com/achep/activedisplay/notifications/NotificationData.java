@@ -25,9 +25,14 @@ public class NotificationData {
 
     public CharSequence titleText;
     public CharSequence messageText;
+    public CharSequence messageTextLarge;
     public CharSequence infoText;
     public CharSequence subText;
     public CharSequence summaryText;
     public int number;
+
+    public CharSequence getLargeMessage() {
+        return messageTextLarge == null ? messageText : messageTextLarge;
+    }
 
 }

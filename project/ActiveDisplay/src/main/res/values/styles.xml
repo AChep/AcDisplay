@@ -19,25 +19,6 @@
 -->
 <resources>
 
-    <!--  ************************
-          ||||||||||||||||||||||||
-                  THEMES
-          ||||||||||||||||||||||||
-          ************************  -->
-    <style name="AppTheme" parent="android:Theme.Holo">
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
-        <item name="waveViewStyle">@style/WaveViewStyle</item>
-        <item name="circularProgressBarStyle">@style/CircularProgressBarStyle</item>
-    </style>
-
-    <style name="ActiveDisplayTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
-        <item name="android:inAnimation">@null</item>
-        <item name="android:outAnimation">@null</item>
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="waveViewStyle">@style/WaveViewStyle</item>
-        <item name="circularProgressBarStyle">@style/CircularProgressBarStyle</item>
-    </style>
-
     <style name="WaveViewStyle">
         <item name="point_radius">2dp</item>
         <item name="point_number">10</item>
@@ -51,6 +32,64 @@
         <item name="progress_color">@android:color/white</item>
         <item name="progress">1</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!--  ************************
+          ||||||||||||||||||||||||
+               TEXT APPEARANCE
+          ||||||||||||||||||||||||
+          ************************  -->
+
+    <!--  ************************
+          ||||||||||||||||||||||||
+                   DIALOG
+          ||||||||||||||||||||||||
+          ************************  -->
+
+    <style name="DialogTextAppearance" />
+
+    <style name="TextAppearance.Dialog.Title" parent="android:TextAppearance.Holo.Large">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.Dialog.Message" parent="android:TextAppearance.Holo.Small">
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.Dialog.Info" parent="android:TextAppearance.Holo.Small">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="Widget.Dialog" parent="android:Widget.Holo">
+        <item name="android:divider">?android:dividerHorizontal</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- For tablets -->
+    <style name="Widget.Dialog.Large" parent="Widget.Dialog">
+        <item name="android:divider">?android:dividerVertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="Widget.Dialog.Title" parent="android:Widget.Holo">
+        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAppearance">?textAppearanceDialogTitle</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.Dialog.Content" parent="android:Widget.Holo">
+        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
     </style>
 
     <!--  ************************
@@ -134,8 +173,10 @@
     </style>
 
     <style name="ADPreviewList.Text" parent="ADPreviewList">
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
     </style>
 
     <style name="ADPreviewList.Text.Title" parent="ADPreviewList.Text">

@@ -25,4 +25,5 @@ public class NotificationIds {
 
     public static final int INIT_NOTIFICATION = Integer.MAX_VALUE;
     public static final int TEST_NOTIFICATION = 11;
+    public static final int BREATHING_NOTIFICATION = 1;
 }

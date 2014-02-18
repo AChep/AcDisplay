@@ -23,16 +23,26 @@ package com.achep.activedisplay;
  */
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.achep.activedisplay.fragments.AboutDialog;
 import com.achep.activedisplay.fragments.DonateDialog;
+import com.achep.activedisplay.fragments.FeedbackDialog;
+import com.achep.activedisplay.utils.ViewUtils;
 
 /**
- * Helper class for showing about dialogs and what not.
+ * Helper class for showing fragment dialogs.
  */
 public class DialogHelper {
 
@@ -42,6 +52,10 @@ public class DialogHelper {
 
     public static void showDonateDialog(Activity activity) {
         showDialog(activity, DonateDialog.class, "dialog_donate");
+    }
+
+    public static void showFeedbackDialog(Activity activity) {
+        showDialog(activity, FeedbackDialog.class, "dialog_feedback");
     }
 
     private static void showDialog(Activity activity, Class clazz, String tag) {
@@ -58,6 +72,68 @@ public class DialogHelper {
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Helper class to implement custom dialog's design.
+     */
+    public static class Builder {
+
+        private final Context mContext;
+
+        private Drawable mIcon;
+        private CharSequence mTitleText;
+        private View mView;
+
+        public Builder(Context context) {
+            mContext = context;
+        }
+
+        public Builder setIcon(Drawable icon) {
+            mIcon = icon;
+            return this;
+        }
+
+        public Builder setTitle(CharSequence title) {
+            mTitleText = title;
+            return this;
+        }
+
+        public Builder setView(View view) {
+            mView = view;
+            return this;
+        }
+
+        /**
+         * Builds dialog's view
+         */
+        public View create() {
+            final LayoutInflater inflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View root = inflater.inflate(R.layout.dialog_base, null);
+            assert root != null;
+
+            Drawable left = (mContext.getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) !=
+                    Configuration.SCREENLAYOUT_SIZE_LARGE ? mIcon : null;
+            Drawable top = left == null ? mIcon : null;
+
+            // Setting up title
+            TextView title = (TextView) root.findViewById(R.id.title);
+            ViewUtils.safelySetText(title, mTitleText);
+            title.setCompoundDrawablesWithIntrinsicBounds(left, top, null, null);
+
+            // Setting up content
+            FrameLayout content = (FrameLayout) root.findViewById(R.id.content);
+            content.addView(mView);
+
+            return root;
+        }
+
+        public AlertDialog.Builder createAlertDialogBuilder() {
+            return new AlertDialog.Builder(mContext).setView(create());
+        }
+
     }
 
 }

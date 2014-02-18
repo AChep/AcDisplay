@@ -20,13 +20,13 @@ package com.achep.activedisplay.activities;
 
 import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +41,7 @@ import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.admin.AdminReceiver;
+import com.achep.activedisplay.services.SendNotificationService;
 import com.achep.activedisplay.utils.AccessUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 
@@ -54,7 +55,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS =
             "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
 
-    private static final int SLEEP_SEND_NOTIFICATION_DELAY = 2000;
+    private static final int SLEEP_SEND_NOTIFICATION_DELAY = 3000;
 
     private Switch mSwitch;
     private Config mConfig;
@@ -77,7 +78,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(R.layout.layout_ab_switch);
         mSwitch = (Switch) getActionBar().getCustomView().findViewById(R.id.swatch);
-        mSwitch.setChecked(mConfig.getActiveDisplayEnabled());
+        mSwitch.setChecked(mConfig.isActiveDisplayEnabled());
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -159,7 +160,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
     @Override
     public void onConfigChanged(Config config, String key, Object value) {
-        if (key.equals(Config.KEY_AD_ENABLED)) {
+        if (key.equals(Config.KEY_ENABLED)) {
             if (!mBroadcasting) {
                 mBroadcasting = true;
                 mSwitch.setChecked((Boolean) value);
@@ -184,30 +185,31 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_test:
+                Intent notificationIntent = new Intent(this, SendNotificationService.class)
+                        .putExtra(SendNotificationService.EXTRA_TITLE, getString(R.string.app_name))
+                        .putExtra(SendNotificationService.EXTRA_TEXT, getString(R.string.test_notification_message))
+                        .putExtra(SendNotificationService.EXTRA_ID, NotificationIds.TEST_NOTIFICATION)
+                        .putExtra(SendNotificationService.EXTRA_ICON_RESOURCE, R.drawable.stat_test)
+                        .putExtra(SendNotificationService.EXTRA_PRIORITY, Notification.PRIORITY_DEFAULT)
+                        .putExtra(SendNotificationService.EXTRA_SOUND_URI, RingtoneManager.getDefaultUri(
+                                RingtoneManager.TYPE_NOTIFICATION));
+                PendingIntent pi = SendNotificationService.sendDelayed(this,
+                        notificationIntent, SLEEP_SEND_NOTIFICATION_DELAY);
+
                 try {
                     // Go sleep
                     DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
                     dpm.lockNow();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Notification n = new Notification.Builder(MainActivity.this)
-                                    .setContentTitle(getString(R.string.test_notification_title))
-                                    .setContentText(getString(R.string.test_notification_message))
-                                    .setSmallIcon(R.drawable.stat_test)
-                                    .build();
-
-                            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            nm.notify(NotificationIds.TEST_NOTIFICATION, n);
-                        }
-                    }, SLEEP_SEND_NOTIFICATION_DELAY);
                 } catch (SecurityException e) {
+                    SendNotificationService.cancel(this, pi);
                     Log.e(TAG, "Failed to turn screen off");
                 }
                 break;
             case R.id.action_donate:
                 DialogHelper.showDonateDialog(this);
+                break;
+            case R.id.action_feedback:
+                DialogHelper.showFeedbackDialog(this);
                 break;
             case R.id.action_about:
                 DialogHelper.showAboutDialog(this);

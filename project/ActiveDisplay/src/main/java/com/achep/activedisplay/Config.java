@@ -22,9 +22,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.achep.activedisplay.utils.AccessUtils;
-import com.achep.activedisplay.utils.LogUtils;
 
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 
 /**
@@ -35,13 +33,23 @@ public class Config {
     private static final String TAG = "Config";
 
     private static final String PREFERENCES_FILE_NAME = "config";
-    public static final String KEY_AD_ENABLED = "a";
-    public static final String KEY_AD_ENABLED_ONLY_WHEN_CHARGING = "b";
+    public static final String KEY_ENABLED = "a";
+    public static final String KEY_ONLY_WHILE_CHARGING = "b";
+    public static final String KEY_LOW_PRIORITY_NOTIFICATIONS = "c";
 
-    private static SoftReference<Config> mConfigSoft;
+    // timeouts
+    public static final String KEY_TIMEOUT_NORMAL = "timeout_normal";
+    public static final String KEY_TIMEOUT_SHORT = "timeout_short";
+    public static final String KEY_TIMEOUT_INSTANT = "timeout_instant";
+
+    private static Config sConfigSoft;
 
     private boolean mActiveDisplayEnabled;
-    private boolean mActiveDisplayEnabledOnlyWhenCharging;
+    private boolean mEnabledOnlyWhileCharging;
+    private boolean mLowPriorityNotificationsAllowed;
+    private int mTimeoutNormal;
+    private int mTimeoutShort;
+    private int mTimeoutInstant;
     private ArrayList<OnConfigChangedListener> mListeners;
 
     // //////////////////////////////////////////
@@ -65,15 +73,9 @@ public class Config {
     // //////////////////////////////////////////
 
     public static synchronized Config getInstance(Context context) {
-        Config instance;
-        if (mConfigSoft == null || (instance = mConfigSoft.get()) == null) {
-            if (Project.DEBUG) LogUtils.track();
-
-            instance = new Config(context);
-            mConfigSoft = new SoftReference<>(instance);
-            return instance;
-        }
-        return instance;
+        if (sConfigSoft == null)
+            sConfigSoft = new Config(context);
+        return sConfigSoft;
     }
 
     private Config(Context context) {
@@ -81,9 +83,14 @@ public class Config {
 
         SharedPreferences prefs = getSharedPreferences(context);
         mActiveDisplayEnabled =
-                prefs.getBoolean(KEY_AD_ENABLED, false);
-        mActiveDisplayEnabledOnlyWhenCharging =
-                prefs.getBoolean(KEY_AD_ENABLED_ONLY_WHEN_CHARGING, false);
+                prefs.getBoolean(KEY_ENABLED, false);
+        mEnabledOnlyWhileCharging =
+                prefs.getBoolean(KEY_ONLY_WHILE_CHARGING, false);
+        mLowPriorityNotificationsAllowed =
+                prefs.getBoolean(KEY_LOW_PRIORITY_NOTIFICATIONS, false);
+        mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL, 15000);
+        mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT, 6000);
+        mTimeoutInstant = prefs.getInt(KEY_TIMEOUT_INSTANT, 3500);
     }
 
     private SharedPreferences getSharedPreferences(Context context) {
@@ -95,6 +102,18 @@ public class Config {
             if (l == listener) continue;
             l.onConfigChanged(this, key, value);
         }
+    }
+
+    private void putBooleanAndNotify(Context context, String key,
+                                     boolean enabled, OnConfigChangedListener listener) {
+        getSharedPreferences(context).edit().putBoolean(key, enabled).apply();
+        notifyConfigChanged(key, enabled, listener);
+    }
+
+    private void putIntAndNotify(Context context, String key,
+                                     int value, OnConfigChangedListener listener) {
+        getSharedPreferences(context).edit().putInt(key, value).apply();
+        notifyConfigChanged(key, value, listener);
     }
 
     // //////////////////////////////////////////
@@ -109,27 +128,65 @@ public class Config {
         }
 
         mActiveDisplayEnabled = enabled;
-        final String key = KEY_AD_ENABLED;
+        final String key = KEY_ENABLED;
 
         getSharedPreferences(context).edit().putBoolean(key, enabled).apply();
         notifyConfigChanged(key, enabled, listener);
         return true;
     }
 
-    public boolean getActiveDisplayEnabled() {
+    public void setActiveDisplayEnabledOnlyWhenCharging(Context context, boolean enabled,
+                                                        OnConfigChangedListener listener) {
+        mEnabledOnlyWhileCharging = enabled;
+        putBooleanAndNotify(context, KEY_ONLY_WHILE_CHARGING, enabled, listener);
+    }
+
+    public void setLowPriorityNotificationsAllowed(Context context, boolean enabled,
+                                                   OnConfigChangedListener listener) {
+        mLowPriorityNotificationsAllowed = enabled;
+        putBooleanAndNotify(context, KEY_LOW_PRIORITY_NOTIFICATIONS, enabled, listener);
+    }
+
+    public boolean isActiveDisplayEnabled() {
         return mActiveDisplayEnabled;
     }
 
-    public void setActiveDisplayEnabledOnlyWhenCharging(Context context, boolean enabled,
-                                                        OnConfigChangedListener listener) {
-        mActiveDisplayEnabledOnlyWhenCharging = enabled;
-        final String key = KEY_AD_ENABLED_ONLY_WHEN_CHARGING;
-
-        getSharedPreferences(context).edit().putBoolean(key, enabled).apply();
-        notifyConfigChanged(key, enabled, listener);
+    public boolean isEnabledOnlyWhileCharging() {
+        return mEnabledOnlyWhileCharging;
     }
 
-    public boolean getActiveDisplayEnabledOnlyWhenCharging() {
-        return mActiveDisplayEnabledOnlyWhenCharging;
+    public boolean isLowPriorityNotificationsAllowed() {
+        return mLowPriorityNotificationsAllowed;
+    }
+
+    // //////////////////////////////////////////
+    // //////////// -- TIMEOUT -- ///////////////
+    // //////////////////////////////////////////
+
+    public void setTimeoutNormal(Context context, int delayMillis, OnConfigChangedListener listener) {
+        mTimeoutNormal = delayMillis;
+        putIntAndNotify(context, KEY_TIMEOUT_NORMAL, delayMillis, listener);
+    }
+
+    public void setTimeoutShort(Context context, int delayMillis, OnConfigChangedListener listener) {
+        mTimeoutShort = delayMillis;
+        putIntAndNotify(context, KEY_TIMEOUT_SHORT, delayMillis, listener);
+    }
+
+    public void setTimeoutInstant(Context context, int delayMillis, OnConfigChangedListener listener) {
+        mTimeoutInstant = delayMillis;
+        putIntAndNotify(context, KEY_TIMEOUT_INSTANT, delayMillis, listener);
+    }
+
+    public int getTimeoutNormal() {
+        return mTimeoutNormal;
+    }
+
+    public int getTimeoutShort() {
+        return mTimeoutShort;
+    }
+
+    public int getTimeoutInstant() {
+        return mTimeoutInstant;
     }
 }

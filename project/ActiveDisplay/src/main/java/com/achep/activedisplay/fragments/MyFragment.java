@@ -31,7 +31,6 @@ import com.achep.activedisplay.utils.LogUtils;
 public abstract class MyFragment extends Fragment {
     private static final String TAG = "MyFragment";
 
-    private int mTodoOnCreateView;
     private int mTodoOnResumeFragment;
 
     @Override
@@ -42,25 +41,15 @@ public abstract class MyFragment extends Fragment {
         mTodoOnResumeFragment = 0;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        handleTodoList(mTodoOnCreateView);
-        mTodoOnCreateView = 0;
-    }
-
     protected abstract void handleTodoList(int v);
 
     protected boolean tryPutTodo(int todo) {
-        if (getView() == null) {
-            mTodoOnCreateView |= todo;
-        } else if (!isResumed()) {
+        if (!isResumed()) {
             mTodoOnResumeFragment |= todo;
         } else
             return false;
         if (Project.DEBUG)
-            LogUtils.d(TAG, "Todo list infos: view_is_null=" + (getView() == null) + " is_paused=" + isResumed());
+            LogUtils.e(TAG, "Todo list infos: view_is_null=" + (getView() == null) + " is_paused=" + isResumed());
         return true;
     }
 

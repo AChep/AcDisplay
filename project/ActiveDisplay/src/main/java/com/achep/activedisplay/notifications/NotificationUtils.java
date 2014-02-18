@@ -52,7 +52,7 @@ public class NotificationUtils {
     }
 
     public static boolean equals(OpenStatusBarNotification n, OpenStatusBarNotification n2) {
-        return n != null && n2 != null && equals(
+        return n == n2 || n != null && n2 != null && equals(
                 n.getStatusBarNotification(),
                 n2.getStatusBarNotification());
     }

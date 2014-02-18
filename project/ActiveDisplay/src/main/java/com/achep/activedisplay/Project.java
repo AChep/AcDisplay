@@ -28,6 +28,8 @@ public class Project {
     @SuppressWarnings("PointlessBooleanExpression")
     public static final boolean DEBUG = BuildConfig.MY_DEBUG && true;
 
+    public static final String EMAIL = "artemchep@gmail.com";
+
     public static String getPackageName(Context context) {
         return context.getApplicationInfo().packageName;
     }

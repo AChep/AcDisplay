@@ -51,6 +51,7 @@ public class NotificationPreviewLayout extends LinearLayout implements Notificat
         mIcon = (ImageView) findViewById(R.id.icon);
         mTitleTextView = (TextView) findViewById(R.id.title);
         mMessageTextView = (TextView) findViewById(R.id.message);
+        mMessageTextView.setSelected(true);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class NotificationPreviewLayout extends LinearLayout implements Notificat
         NotificationData data = mNotification.getNotificationData();
         mIcon.setImageDrawable(mNotification.getSmallIcon(getContext()));
         ViewUtils.safelySetText(mTitleTextView, data.titleText);
-        ViewUtils.safelySetText(mMessageTextView, data.messageText);
+        ViewUtils.safelySetText(mMessageTextView, data.getLargeMessage());
     }
 
     @Override

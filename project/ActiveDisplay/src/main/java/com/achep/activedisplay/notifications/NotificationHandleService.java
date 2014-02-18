@@ -44,7 +44,7 @@ public class NotificationHandleService extends NotificationListenerService {
         IBinder binder = super.onBind(intent);
 
         if (Project.DEBUG) LogUtils.track();
-        NotificationPresenter.getInstance().tryStartInitProcess(this);
+        NotificationPresenter.getInstance(this).tryStartInitProcess(this);
 
         isNotificationAccessEnabled = true;
         notificationHandleService = this;
@@ -75,7 +75,7 @@ public class NotificationHandleService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification statusBarNotification) {
         try {
-            NotificationPresenter.getInstance().postNotification(this, statusBarNotification);
+            NotificationPresenter.getInstance(this).postNotification(this, statusBarNotification);
         } catch (Exception e) { // don't die
             Log.wtf(TAG, "The world crashed. The details below:");
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class NotificationHandleService extends NotificationListenerService {
     @Override
     public void onNotificationRemoved(StatusBarNotification statusBarNotification) {
         try {
-            NotificationPresenter.getInstance().removeNotification(this, statusBarNotification);
+            NotificationPresenter.getInstance(this).removeNotification(this, statusBarNotification);
         } catch (Exception e) { // don't die
             Log.wtf(TAG, "The world crashed. The details below:");
             e.printStackTrace();

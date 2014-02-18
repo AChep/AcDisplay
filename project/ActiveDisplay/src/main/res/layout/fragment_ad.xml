@@ -99,16 +99,4 @@
         android:orientation="horizontal"
         android:paddingTop="4dp" />
 
-    <TextView
-        android:id="@+id/blacklisted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/radios"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="4dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="#4fff"
-        android:textAllCaps="true"
-        android:text="@string/blacklisted"/>
-
 </RelativeLayout>

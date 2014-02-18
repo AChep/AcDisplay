@@ -18,7 +18,6 @@
  */
 package com.achep.activedisplay.fragments.activedisplay;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,13 +30,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.achep.activedisplay.Operator;
-import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.fragments.MyFragment;
 import com.achep.activedisplay.notifications.NotificationData;
 import com.achep.activedisplay.notifications.NotificationPresenter;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
-import com.achep.activedisplay.utils.LogUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 
 /**
@@ -63,9 +60,9 @@ public class NotificationFragment extends MyFragment {
     private OpenStatusBarNotification mNotification;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mPresenter = NotificationPresenter.getInstance();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mPresenter = NotificationPresenter.getInstance(getActivity());
         synchronized (mPresenter.monitor) {
             mPresenter.addOnNotificationListChangedListener(mListener);
             updateNotification();
@@ -73,12 +70,12 @@ public class NotificationFragment extends MyFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
         synchronized (mPresenter.monitor) {
             mPresenter.removeOnNotificationListChangedListener(mListener);
             mPresenter = null;
         }
+        super.onDestroyView();
     }
 
     @Override
@@ -91,7 +88,6 @@ public class NotificationFragment extends MyFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ad_notification, container, false);
-
         assert view != null;
 
         mIcon = (ImageView) view.findViewById(R.id.icon);
@@ -111,13 +107,9 @@ public class NotificationFragment extends MyFragment {
     }
 
     @SuppressWarnings("ConstantConditions")
-    /* must be synchronized before */
     private void updateNotification() {
-        if (Project.DEBUG) LogUtils.track();
-
-        // Is it good time to update ui, isn't it?
         if (tryPutTodo(UPDATE_UI_NOTIFICATION)) {
-            return; // no.
+            return; // not a good time...
         }
 
         synchronized (mPresenter.monitor) {
@@ -125,7 +117,7 @@ public class NotificationFragment extends MyFragment {
 
             // Hide everything if notification is null.
             boolean visible = mNotification != null;
-            for (View view : mHidingViews) // getView().setVisibility() is wrong!
+            for (View view : mHidingViews) // getView().setVisibility(GONE) is incorrect way!
                 ViewUtils.setVisible(view, visible);
             if (!visible) return;
 
@@ -133,7 +125,7 @@ public class NotificationFragment extends MyFragment {
             NotificationData data = mNotification.getNotificationData();
 
             ViewUtils.safelySetText(mTitleTextView, data.titleText);
-            ViewUtils.safelySetText(mMessageTextView, data.messageText);
+            ViewUtils.safelySetText(mMessageTextView, data.getLargeMessage());
             ViewUtils.safelySetText(mInfoTextView, data.infoText == null ? data.subText : data.infoText);
             ViewUtils.safelySetText(mCountTextView, data.number > 0 ? Integer.toString(data.number) : null);
 

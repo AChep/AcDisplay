@@ -42,6 +42,7 @@ class Parser {
             nd.summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT);
             nd.number = notification.getNotification().number;
 
+            // Large message text
             CharSequence[] textLines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
             if (textLines != null) {
                 StringBuilder sb = new StringBuilder();
@@ -49,20 +50,26 @@ class Parser {
                     sb.append(line);
                     sb.append('\n');
                 }
-                nd.messageText = sb.toString();
-            } else {
-                nd.messageText = extras.getCharSequence(Notification.EXTRA_TEXT);
+                nd.messageTextLarge = removeSpaces(sb.toString());
             }
+
+            // Small message text
+            nd.messageText = extras.getCharSequence(Notification.EXTRA_TEXT);
             if (nd.messageText != null) {
-                nd.messageText = nd.messageText.toString()
-                        .replaceAll("(\\s+$|^\\s+)", "")
-                        .replaceAll("\n+", "\n");
+                nd.messageText = removeSpaces(nd.messageText.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
             Log.wtf(TAG, "Notification parsing failed.");
         }
         return nd;
+    }
+
+    private static String removeSpaces(String string) {
+        if (string == null) return null;
+        return string
+                .replaceAll("(\\s+$|^\\s+)", "")
+                .replaceAll("\n+", "\n");
     }
 
 }

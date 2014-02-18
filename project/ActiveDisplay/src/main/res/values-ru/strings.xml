@@ -24,14 +24,9 @@
     <string name="test_notification_message">Пример того, как выглядит уведомление.</string>
 
     <!-- Actions of notification -->
-    <string name="add_to_blacklist">Добавить в чёрный список</string>
-    <string name="remove_from_blacklist">Удалить из чёрного списока</string>
+    <string name="blacklist_add">Добавить в чёрный список</string>
+    <string name="blacklist_from">Удалить из чёрного списока</string>
     <string name="blacklisted">В чёрном списке</string>
-
-    <!-- Settings -->
-    <string name="settings">Настройки</string>
-    <string name="settings_placeholder_title">Заглушка</string>
-    <string name="settings_placeholder_summary">В скором времени здесь будут настройки.</string>
 
     <string name="device_admin_description">Это необходимо для того, что бы управлять собственным таймаутом выключения экрана.</string>
     <string name="app_auto_disabled">AcDisplay был отключен из-за удаления прав администратора.</string>

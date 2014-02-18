@@ -40,7 +40,7 @@ public class AdminReceiver extends android.app.admin.DeviceAdminReceiver {
         LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ACTION_DISABLED));
 
         Config config = Config.getInstance(context);
-        if (config.getActiveDisplayEnabled()) {
+        if (config.isActiveDisplayEnabled()) {
 
             Toast.makeText(context, R.string.app_auto_disabled, Toast.LENGTH_LONG).show();
             config.setActiveDisplayEnabled(context, false, null); // auto disabling :/
