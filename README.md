@@ -12,7 +12,7 @@ Using this app, you will see notifications light up your screen as they arrive a
 
 **[Join app's community on Google Play](https://plus.google.com/u/0/communities/102085470313050914854)**
 
-<a href="https://play.google.com/store/apps/details?id=com.achep.activedisplay">
+<a href="http://get.acdisplay.artemchep.com">
   <img alt="Get AcDisplay on Google Play" vspace="20"
        src="https://github.com/AChep/AcDisplay/raw/master/art/google_play.png" />
 </a>
