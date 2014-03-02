@@ -1,3 +1,21 @@
+<!--
+ Copyright 2014 AChep@xda <artemchep@gmail.com>
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+ <!--
+ This is based on http://muzei.co by Romain Nurik 
+ -->
 <!DOCTYPE html>
 <html>
 
@@ -5,58 +23,191 @@
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="AcDisplay : AcDisplay brings a piece of Motorola&#39;s Active Display to your device." />
+    <link rel="shortcut icon" href="favicon.ico">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>AcDisplay</title>
+    <title>AcDisplay - Android app</title>
   </head>
 
-  <body>
+  <body>    
+    <style type="text/css" media="screen"> 
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/AChep/AcDisplay">View on GitHub</a>
-
-          <h1 id="project_title">AcDisplay</h1>
-          <h2 id="project_tagline">AcDisplay brings a piece of Motorola&#39;s Active Display to your device.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/AChep/AcDisplay/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/AChep/AcDisplay/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="acdisplay" class="anchor" href="#acdisplay"><span class="octicon octicon-link"></span></a>AcDisplay</h1>
-
-<p>
-  <img alt="Download from Google Play" align="right" height="300" src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png"><img alt="Download from Google Play" align="right" height="300" src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot1.png"></p>
-
-<p><em>AcDisplay brings a piece of Motorola's Active Display to your device.</em></p>
-
-<p>Using this app, you will see notifications light up your screen as they arrive and show as a circular icon with a timer ring, which is your chance to act on that notification before your screen times back out. If you’d like to act on the most recent notification, you can swipe up and into it. If you’d like to simply unlock your phone, you can do that by swiping down. Designed to be light on resources, battery and frustration, AcDisplay is the perfect companion for you.</p>
-
-<p><strong><a href="https://plus.google.com/u/0/communities/102085470313050914854">Join app's community on Google Play</a></strong></p>
-
-<p><a href="http://get.acdisplay.artemchep.com">
-  <img alt="Get AcDisplay on Google Play" vspace="20" src="https://github.com/AChep/AcDisplay/raw/master/art/google_play.png"></a></p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">AcDisplay maintained by <a href="https://github.com/AChep">AChep</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+    html, body {
+      margin: 0;
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
     
+    body {
+      background-color: #202020;
+      min-width: 690px;
+      min-height: 640px;
+    
+      display: -webkit-flex;
+      -webkit-justify-content: center;
+      -webkit-align-items: center;
+    
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #container {
+      position: relative;
+      margin: 70px;
+      width: 550px;
+      height: 500px;
+    }
+
+    #text {
+      position: absolute;
+      left: 0;
+      top: 200px;
+      width: 240px;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 26px;
+      color: #aaa;
+      z-index: 100;
+      font-family: 'Roboto Light';
+    }
+
+    #playlink {
+      position: absolute;
+      left: 0;
+      bottom: 100px;
+      width: 113px;
+      height: 33px;
+      padding: 15px 20px;
+      background-origin: content-box;
+      background-image: url(images/onplay.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50% 0%;
+      text-decoration: none;
+      box-shadow: 0 1px 0px rgba(0,0,0,0.25);
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      z-index: 100;
+    }
+
+    #playlink:hover {
+      background-color: #444;
+      background-position: 50% 100%;
+    }
+  
+    #playlink:active {
+      bottom: 99px;
+      box-shadow: 0 0 0;
+    }
+
+    #device-frame { 
+      position: absolute;
+      background-image: url(images/tilted.png); 
+      background-repeat: no-repeat; 
+      background-size: cover;
+      right: -70px;
+      top: 0;
+      width: 420px;
+      height: 500px;
+    } 
+    
+    #device-frame:after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      width: 420px;
+      height: 500px;
+      background: url(images/tilted_fore.png);
+      background-size: cover;
+      opacity: 0.8;
+    }
+    
+    #device-screen {
+      position: absolute;
+      left: 146px;
+      top: 49px;
+      width: 360px;
+      height: 640px;
+      color: white;
+      -webkit-transform-origin: 0% 0%;
+      -webkit-transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
+      -moz-transform-origin: 0% 0%;
+      -moz-transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
+      -ms-transform-origin: 0% 0%;
+      -ms-transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
+      transform-origin: 0% 0%;
+      transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
+    } 
+
+      .fullscreenlayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 360px;
+        height: 640px;
+      }
+
+    #layer-wallpaper {
+      background: url(images/wallpaper.png);
+    }
+
+    #layer-content {
+      background: url(images/content.png);
+    }
+
+    #layer-clock {
+      left: 16px;
+      top: 195px;
+      width: 340px;
+      font-size: 530%;
+      font-family: 'Roboto Thin';
+      text-align: center;
+    }
+
+    @font-face {
+      font-family: 'Roboto Thin';
+      font-style: normal;
+      font-weight: 100;
+      src: url('https://themes.googleusercontent.com/font?kit=DPu3R_w4R5pjnst7X4FGRhsxEYwM7FgeyaSgU71cLG0') format('woff');
+    }
+
+    @font-face {
+      font-family: 'Roboto Light';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Roboto Light'), local('Roboto-Light'), url('http://themes.googleusercontent.com/font?kit=33_del8_OqHYp5o7lJ03zEbnXQ06sCSpaytluCdpFnY') format('woff');
+    }
+
+    </style>
+
+    <div id="container">
+
+      <div id="text">
+        <p>
+        <b>AcDisplay</b> brings a piece of Motorola's Active Display to your device.
+        </p>
+      </div>
+  
+      <a id="playlink" href="http://get.acdisplay.artemchep.com">&nbsp;</a>
+  
+      <div id="device-frame">
+        <div id="device-screen">
+          <div id="layer-wallpaper" class="fullscreenlayer"></div>
+          <div id="layer-content" class="fullscreenlayer"></div>
+          <div id="layer-clock" class="fullscreenlayer">11:324</div>
+        </div>
+      </div>
+    </div>
 
   </body>
+
+  <script>   
+    function displayTime() {
+        var elt = document.getElementById("layer-clock"); 
+        var now = new Date();     
+        elt.innerHTML = "" + now.getHours() + ":" + now.getMinutes();
+        setTimeout(displayTime, 1000);             
+    }
+    window.onload = displayTime;
+  </script>
 </html>
