@@ -78,6 +78,7 @@
       width: 113px;
       height: 33px;
       padding: 15px 20px;
+      border-radius: 2px;
       background-origin: content-box;
       background-image: url(images/onplay.png);
       background-repeat: no-repeat;
@@ -194,7 +195,7 @@
         <div id="device-screen">
           <div id="layer-wallpaper" class="fullscreenlayer"></div>
           <div id="layer-content" class="fullscreenlayer"></div>
-          <div id="layer-clock" class="fullscreenlayer">11:324</div>
+          <div id="layer-clock" class="fullscreenlayer">0:00</div>
         </div>
       </div>
     </div>
@@ -204,8 +205,9 @@
   <script>   
     function displayTime() {
         var elt = document.getElementById("layer-clock"); 
-        var now = new Date();     
-        elt.innerHTML = "" + now.getHours() + ":" + now.getMinutes();
+        var now = new Date();
+        var minutes = now.getMinutes();
+        elt.innerHTML = "" + now.getHours() + ":" + (minutes < 10 ? "0" + minutes : "" + minutes);
         setTimeout(displayTime, 1000);             
     }
     window.onload = displayTime;
