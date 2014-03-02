@@ -1,12 +1,10 @@
 AcDisplay
 ==========
 
-<a href="https://play.google.com/store/apps/details?id=com.achep.activedisplay">
-  <img alt="Download from Google Play" align="right" height="300"
-       src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png" />
-  <img alt="Download from Google Play" align="right" height="300"
-       src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot1.png" />
-</a>
+<img alt="Download from Google Play" align="right" height="300"
+   src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png" />
+<img alt="Download from Google Play" align="right" height="300"
+   src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot1.png" />
 
 *AcDisplay brings a piece of Motorola's Active Display to your device.*
 
