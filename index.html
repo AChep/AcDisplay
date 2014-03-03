@@ -22,8 +22,14 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="AcDisplay : AcDisplay brings a piece of Motorola&#39;s Active Display to your device." />
-    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="description" content="With AcDisplay - Android app, your notifications are living." />
+    <meta name="viewport" content="width=690" />
+
+    <script src="scripts/jquery.min.js"></script>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="canonical" href="http://acdisplay.artemchep.com" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
 
     <title>AcDisplay - Android app</title>
   </head>
@@ -35,10 +41,12 @@
       margin: 0;
       height: 100%;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     
     body {
       background-color: #202020;
+      background-image: radial-gradient(circle at 50% 50%, #202020 60%, #101010);
       min-width: 690px;
       min-height: 640px;
     
@@ -51,6 +59,13 @@
       align-items: center;
     }
 
+    @font-face {
+      font-family: 'Alegreya Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Alegreya Sans Light'), local('AlegreyaSans-Light'), url(http://themes.googleusercontent.com/static/fonts/alegreyasans/v1/11EDm-lum6tskJMBbdy9aaWGgEO1vGR9ucXjKCo8vxU.woff) format('woff');
+    }
+
     #container {
       position: relative;
       margin: 70px;
@@ -60,21 +75,57 @@
 
     #text {
       position: absolute;
-      left: 0;
       top: 200px;
       width: 240px;
-      font-weight: 300;
-      font-size: 20px;
-      line-height: 26px;
-      color: #aaa;
-      z-index: 100;
-      font-family: 'Roboto Light';
+      color: #bbb;
+      font-size: 18px;
+      font-family: 'Alegreya Sans';
+    }
+
+      .icon {
+        position: absolute;
+        bottom: 55px;
+        width: 32px;
+        height: 32px;
+        background-origin: content-box;
+        background-repeat: no-repeat;
+        background-size: cover;
+        text-decoration: none;
+        opacity: 0.1;
+      }
+
+    #github {
+      margin-left: 35px;
+      background-image: url(images/github.png);
+      opacity: 0.1;
+    }
+
+    #github:hover {
+      opacity: 0.3;
+    }
+  
+    #github:active {
+      bottom: 54px;
+    }
+
+    #bitcoin {
+      margin-left: 85px;
+      background-image: url(images/bitcoin.png);
+      opacity: 0.1;
+    }
+
+    #bitcoin:hover {
+      opacity: 0.3;
+    }
+  
+    #bitcoin:active {
+      bottom: 54px;
     }
 
     #playlink {
       position: absolute;
       left: 0;
-      bottom: 100px;
+      bottom: 110px;
       width: 113px;
       height: 33px;
       padding: 15px 20px;
@@ -97,7 +148,7 @@
     }
   
     #playlink:active {
-      bottom: 99px;
+      bottom: 109px;
       box-shadow: 0 0 0;
     }
 
@@ -129,7 +180,7 @@
       top: 49px;
       width: 360px;
       height: 640px;
-      color: white;
+      color: white; 
       -webkit-transform-origin: 0% 0%;
       -webkit-transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
       -moz-transform-origin: 0% 0%;
@@ -137,7 +188,8 @@
       -ms-transform-origin: 0% 0%;
       -ms-transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
       transform-origin: 0% 0%;
-      transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);
+      transform: perspective(2100px) rotateZ(-5.2deg) rotateY(-42.6deg) rotateX(31deg) scale(0.6);    
+      overflow: hidden;  
     } 
 
       .fullscreenlayer {
@@ -149,7 +201,9 @@
       }
 
     #layer-wallpaper {
-      background: url(images/wallpaper.png);
+      -webkit-filter: blur(20px);
+      filter: url(#blur-filter);
+      opacity: 0.6;
     }
 
     #layer-content {
@@ -157,26 +211,10 @@
     }
 
     #layer-clock {
-      left: 16px;
-      top: 195px;
-      width: 340px;
-      font-size: 530%;
-      font-family: 'Roboto Thin';
+      top: 200px;
+      font-size: 80px;
+      font-family: 'Roboto', sans-serif;
       text-align: center;
-    }
-
-    @font-face {
-      font-family: 'Roboto Thin';
-      font-style: normal;
-      font-weight: 100;
-      src: url('https://themes.googleusercontent.com/font?kit=DPu3R_w4R5pjnst7X4FGRhsxEYwM7FgeyaSgU71cLG0') format('woff');
-    }
-
-    @font-face {
-      font-family: 'Roboto Light';
-      font-style: normal;
-      font-weight: 300;
-      src: local('Roboto Light'), local('Roboto-Light'), url('http://themes.googleusercontent.com/font?kit=33_del8_OqHYp5o7lJ03zEbnXQ06sCSpaytluCdpFnY') format('woff');
     }
 
     </style>
@@ -185,11 +223,13 @@
 
       <div id="text">
         <p>
-        <b>AcDisplay</b> brings a piece of Motorola's Active Display to your device.
+        With <b>AcDisplay</b>, your notifications are available to you right on your screen without any other clutter or distractions.
         </p>
       </div>
   
       <a id="playlink" href="http://get.acdisplay.artemchep.com">&nbsp;</a>
+      <a id="github" class="icon" href="https://github.com/AChep/AcDisplay">&nbsp;</a>
+      <a id="bitcoin" class="icon" href="bitcoin:1GYj49ZnMByKj2f6p7r4f92GQi5pR6BSMz?amount=0.005">&nbsp;</a>
   
       <div id="device-frame">
         <div id="device-screen">
@@ -208,8 +248,21 @@
         var now = new Date();
         var minutes = now.getMinutes();
         elt.innerHTML = "" + now.getHours() + ":" + (minutes < 10 ? "0" + minutes : "" + minutes);
-        setTimeout(displayTime, 1000);             
+        setTimeout(displayTime, 5000);             
     }
+
     window.onload = displayTime;
+
+    // Use background from Muzei's featured art.
+    $.ajax({
+      dataType: 'jsonp',
+      url: 'http://www.muzei.co/featured',
+      jsonpCallback: 'withfeatured',
+      cache: true,
+      success: function(data) {
+        var image = data.thumbUri || data.imageUri;
+        $('#layer-wallpaper').css('background-image', 'url("' + image + '")');
+      }
+    });
   </script>
 </html>
