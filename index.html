@@ -201,9 +201,16 @@
       }
 
     #layer-wallpaper {
-      -webkit-filter: blur(20px);
-      filter: url(#blur-filter);
+      background-size: cover;
+      background-position: 50% 50%;
       opacity: 0.6;
+
+      /* blur */
+      filter: blur(20px); 
+      -webkit-filter: blur(20px); 
+      -moz-filter: blur(20px);
+      -o-filter: blur(20px); 
+      -ms-filter: blur(20px);
     }
 
     #layer-content {
