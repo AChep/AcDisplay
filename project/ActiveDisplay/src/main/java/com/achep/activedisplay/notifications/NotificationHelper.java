@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,11 @@
  */
 package com.achep.activedisplay.notifications;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.service.notification.StatusBarNotification;
 
+import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.utils.PendingIntentUtils;
 
 /**
@@ -35,13 +37,19 @@ public class NotificationHelper {
     public static boolean startContentIntent(StatusBarNotification notification) {
         if (notification != null) {
             PendingIntent pi = notification.getNotification().contentIntent;
-            return PendingIntentUtils.sendPendingIntent(pi);
+            boolean successful = PendingIntentUtils.sendPendingIntent(pi);
+            if (successful && Operator.bitandCompare(
+                    notification.getNotification().flags,
+                    Notification.FLAG_AUTO_CANCEL)) {
+                dismissNotification(notification);
+            }
+            return successful;
         }
         return false;
     }
 
     public static void dismissNotification(StatusBarNotification notification) {
-        NotificationHandleService nhs = NotificationHandleService.notificationHandleService;
+        NotificationHandleService nhs = NotificationHandleService.sService;
         if (nhs != null) {
             nhs.cancelNotification(
                     notification.getPackageName(),

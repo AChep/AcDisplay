@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,9 @@ import android.graphics.drawable.Drawable;
 import android.service.notification.StatusBarNotification;
 
 import com.achep.activedisplay.R;
+import com.achep.activedisplay.blacklist.AppConfig;
+import com.achep.activedisplay.blacklist.Blacklist;
+import com.achep.activedisplay.notifications.parser.Parser;
 
 /**
  * Created by Artem on 23.01.14.
@@ -30,11 +33,18 @@ import com.achep.activedisplay.R;
 public class OpenStatusBarNotification {
 
     private final StatusBarNotification mStatusBarNotification;
-    private final NotificationData mNotificationData;
+    private NotificationData mNotificationData;
 
-    public OpenStatusBarNotification(StatusBarNotification notification) {
+    private OpenStatusBarNotification(StatusBarNotification notification) {
         mStatusBarNotification = notification;
-        mNotificationData = Parser.parse(notification);
+    }
+
+    public void parse(Context context) {
+        mNotificationData = Parser.parse(context, mStatusBarNotification);
+    }
+
+    public static OpenStatusBarNotification wrap(StatusBarNotification notification) {
+        return new OpenStatusBarNotification(notification);
     }
 
     @Override
@@ -68,8 +78,15 @@ public class OpenStatusBarNotification {
         return icon != null ? icon : context.getResources().getDrawable(R.drawable.stat_test);
     }
 
-    public boolean isBlacklisted(Context context) {
-        return Blacklist.getInstance(context)
-                .contains(mStatusBarNotification.getPackageName());
+    public AppConfig getAppConfig(Blacklist blacklist) {
+        return blacklist.fill(AppConfig.wrap(mStatusBarNotification.getPackageName()));
+    }
+
+    public boolean isHidden(Blacklist blacklist) {
+        return getAppConfig(blacklist).isHiddenReal();
+    }
+
+    public boolean isRestricted(Blacklist blacklist) {
+        return getAppConfig(blacklist).isRestrictedReal();
     }
 }

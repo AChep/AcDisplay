@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.fragments.MyFragment;
 import com.achep.activedisplay.notifications.NotificationData;
 import com.achep.activedisplay.notifications.NotificationPresenter;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
@@ -57,24 +56,18 @@ public class NotificationFragment extends MyFragment {
 
     private NotificationPresenter mPresenter;
     private NotificationListener mListener = new NotificationListener();
-    private OpenStatusBarNotification mNotification;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter = NotificationPresenter.getInstance(getActivity());
-        synchronized (mPresenter.monitor) {
-            mPresenter.addOnNotificationListChangedListener(mListener);
-            updateNotification();
-        }
+        mPresenter.addOnNotificationListChangedListener(mListener);
+        updateNotification();
     }
 
     @Override
     public void onDestroyView() {
-        synchronized (mPresenter.monitor) {
-            mPresenter.removeOnNotificationListChangedListener(mListener);
-            mPresenter = null;
-        }
+        mPresenter.removeOnNotificationListChangedListener(mListener);
         super.onDestroyView();
     }
 
@@ -112,69 +105,51 @@ public class NotificationFragment extends MyFragment {
             return; // not a good time...
         }
 
-        synchronized (mPresenter.monitor) {
-            mNotification = mPresenter.getSelectedNotification();
+        OpenStatusBarNotification openNotification = mPresenter.getSelectedNotification();
 
-            // Hide everything if notification is null.
-            boolean visible = mNotification != null;
-            for (View view : mHidingViews) // getView().setVisibility(GONE) is incorrect way!
-                ViewUtils.setVisible(view, visible);
-            if (!visible) return;
+        // Hide everything if notification is null.
+        boolean visible = openNotification != null;
+        for (View view : mHidingViews) // Warning: getView().setVisibility(GONE) is a wrong way!
+            ViewUtils.setVisible(view, visible);
 
-            StatusBarNotification notification = mNotification.getStatusBarNotification();
-            NotificationData data = mNotification.getNotificationData();
-
-            ViewUtils.safelySetText(mTitleTextView, data.titleText);
-            ViewUtils.safelySetText(mMessageTextView, data.getLargeMessage());
-            ViewUtils.safelySetText(mInfoTextView, data.infoText == null ? data.subText : data.infoText);
-            ViewUtils.safelySetText(mCountTextView, data.number > 0 ? Integer.toString(data.number) : null);
-
-            mWhenTextView.setText(DateUtils.formatDateTime(getActivity(),
-                    notification.getPostTime(), DateUtils.FORMAT_SHOW_TIME));
-
-            boolean showSmallIcon = mCountTextView.getVisibility() == View.VISIBLE;
-
-            Drawable drawable = mNotification.getSmallIcon(getActivity());
-            Bitmap bitmap = notification.getNotification().largeIcon;
-            if (bitmap != null) {
-                mIcon.setImageBitmap(bitmap);
-                showSmallIcon = true;
-            } else {
-                mIcon.setImageDrawable(drawable);
-            }
-
-            if (showSmallIcon) mSmallIcon.setImageDrawable(drawable);
-            ViewUtils.setVisible(mSmallIcon, showSmallIcon);
+        if (!visible) {
+            return;
         }
-    }
 
-    /**
-     * Returns the displaying notification.
-     * The return value may differ from {@link NotificationPresenter#getSelectedNotification()}!
-     */
-    public OpenStatusBarNotification getNotification() {
-        return mNotification;
-    }
+        StatusBarNotification n = openNotification.getStatusBarNotification();
+        NotificationData data = openNotification.getNotificationData();
 
-    // //////////////////////////////////////////
-    // ///////////// -- CLASSES -- //////////////
-    // //////////////////////////////////////////
+        ViewUtils.safelySetText(mTitleTextView, data.titleText);
+        ViewUtils.safelySetText(mMessageTextView, data.getLargeMessage());
+        ViewUtils.safelySetText(mInfoTextView, data.infoText == null ? data.subText : data.infoText);
+        ViewUtils.safelySetText(mCountTextView, data.number > 0 ? Integer.toString(data.number) : null);
+
+        mWhenTextView.setText(DateUtils.formatDateTime(getActivity(),
+                n.getPostTime(), DateUtils.FORMAT_SHOW_TIME));
+
+        boolean showSmallIcon = mCountTextView.getVisibility() == View.VISIBLE;
+
+        Drawable drawable = openNotification.getSmallIcon(getActivity());
+        Bitmap bitmap = n.getNotification().largeIcon;
+        if (bitmap != null) {
+            mIcon.setImageBitmap(bitmap);
+            showSmallIcon = true;
+        } else {
+            mIcon.setImageDrawable(drawable);
+        }
+
+        if (showSmallIcon) mSmallIcon.setImageDrawable(drawable);
+        ViewUtils.setVisible(mSmallIcon, showSmallIcon);
+    }
 
     private class NotificationListener extends NotificationPresenter.SimpleOnNotificationListChangedListener {
 
-        @SuppressWarnings("ConstantConditions")
         @Override
-        // running on wrong thread
         public void onNotificationSelected(final NotificationPresenter nm,
                                            final OpenStatusBarNotification notification,
                                            boolean isChanged) {
             super.onNotificationSelected(nm, notification, isChanged);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateNotification();
-                }
-            });
+            updateNotification();
         }
     }
 

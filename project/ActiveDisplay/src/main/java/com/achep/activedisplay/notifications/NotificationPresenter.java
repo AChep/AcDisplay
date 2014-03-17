@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,20 +22,21 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.achep.activedisplay.ActiveDisplayPresenter;
 import com.achep.activedisplay.Config;
+import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.activities.ActiveDisplayActivity;
+import com.achep.activedisplay.activemode.ProximitySensor;
+import com.achep.activedisplay.blacklist.AppConfig;
+import com.achep.activedisplay.blacklist.Blacklist;
 import com.achep.activedisplay.services.SendNotificationService;
-import com.achep.activedisplay.utils.LogUtils;
 import com.achep.activedisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
@@ -43,12 +44,9 @@ import java.util.ArrayList;
 /**
  * Created by Artem on 27.12.13.
  */
-public class NotificationPresenter {
+public class NotificationPresenter implements NotificationList.Callback {
 
     private static final String TAG = "NotificationPresenter";
-
-    private static final String COM_ANDROID_PROVIDERS_DOWNLOADS = "com.android.providers.downloads";
-    private static final String COM_ANDROID_SETTINGS = "com.android.settings";
 
     private static final int UI_MULTI_START_TIMEOUT = 1000; // ms.
 
@@ -57,27 +55,55 @@ public class NotificationPresenter {
     private static final int INITIALIZING_PROCESS_DONE = 2;
 
     private static NotificationPresenter sNotificationPresenter;
-    public final Object monitor = new Object();
 
-    private final ArrayList<OpenStatusBarNotification> mList = new ArrayList<>();
-    private final ArrayList<OpenStatusBarNotification> mNotificationList = new ArrayList<>();
     private final ArrayList<OnNotificationListChangedListener> mListeners = new ArrayList<>();
 
     private long mUIStartTime;
     private int mInitProcess = INITIALIZING_PROCESS_NONE;
 
+    private NotificationList mGList = new NotificationList(null);
+    private NotificationList mLList = new NotificationList(this);
     private OpenStatusBarNotification mSelectedNotification;
     private OpenStatusBarNotification mFutureSelectedNotification;
     private boolean mSelectedNotificationLocked;
 
     private final Config mConfig;
+    private final Blacklist mBlacklist;
 
     private class ConfigListener implements Config.OnConfigChangedListener {
 
         @Override
         public void onConfigChanged(Config config, String key, Object value) {
             if (key.equals(Config.KEY_LOW_PRIORITY_NOTIFICATIONS)) {
-                rebuildLocalList();
+
+                // Check if the change touches our notifications.
+                for (OpenStatusBarNotification osbn : mGList.list()) {
+                    StatusBarNotification notification = osbn.getStatusBarNotification();
+
+                    if (notification.getNotification().priority <= Notification.PRIORITY_LOW) {
+                        rebuildLocalList();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private class BlacklistListener extends Blacklist.OnBlacklistChangedListener {
+
+        @Override
+        public void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff) {
+            if (Operator.bitandCompare(diff, AppConfig.DIFF_HIDDEN_REAL)) {
+
+                // Check if the change touches our notifications.
+                for (OpenStatusBarNotification osbn : mGList.list()) {
+                    StatusBarNotification notification = osbn.getStatusBarNotification();
+
+                    if (notification.getPackageName().equals(configNew.packageName)) {
+                        rebuildLocalList();
+                        break;
+                    }
+                }
             }
         }
     }
@@ -89,6 +115,8 @@ public class NotificationPresenter {
     private NotificationPresenter(Context context) {
         mConfig = Config.getInstance(context);
         mConfig.addOnConfigChangedListener(new ConfigListener());
+        mBlacklist = Blacklist.getInstance(context);
+        mBlacklist.addOnSharedListChangedListener(new BlacklistListener());
     }
 
     public synchronized static NotificationPresenter getInstance(Context context) {
@@ -100,15 +128,10 @@ public class NotificationPresenter {
     /**
      * Should be called when notification listener service is ready to receive events.
      */
-    synchronized void tryStartInitProcess(final Context context) {
-        boolean doNotStart = context == null || mInitProcess > INITIALIZING_PROCESS_NONE;
-        if (context == null) Log.i(TAG, "Tried to start init process but context is null.");
-        if (mInitProcess > INITIALIZING_PROCESS_NONE)
-            Log.wtf(TAG, "Initializing process is already on the way.");
-        if (doNotStart) return;
-
+    // Running on wrong thread
+    void tryStartInitProcess(final Context context) {
+        if (context == null || mInitProcess > INITIALIZING_PROCESS_NONE) return;
         mInitProcess = INITIALIZING_PROCESS_STARTED;
-        if (Project.DEBUG) LogUtils.d(TAG, "Sending initial notification.");
 
         // Send initializing notification with a short delay.
         Intent notificationIntent = new Intent(context, SendNotificationService.class)
@@ -116,215 +139,162 @@ public class NotificationPresenter {
                 .putExtra(SendNotificationService.EXTRA_ID, NotificationIds.INIT_NOTIFICATION)
                 .putExtra(SendNotificationService.EXTRA_ICON_RESOURCE, R.drawable.stat_test)
                 .putExtra(SendNotificationService.EXTRA_PRIORITY, Notification.PRIORITY_MIN);
-        SendNotificationService.sendDelayed(context, notificationIntent, 500);
+        SendNotificationService.notify(context, notificationIntent, 500);
     }
 
-    private void tryInit(Context context, StatusBarNotification n) {
+    void tryInit(Context context, StatusBarNotification n, StatusBarNotification[] activeNotifications) {
         if (mInitProcess != INITIALIZING_PROCESS_STARTED
                 || !(context instanceof NotificationHandleService)
                 || !Project.getPackageName(context).equals(n.getPackageName())) {
-            if (mInitProcess == INITIALIZING_PROCESS_STARTED)
-                Log.w(TAG, "Initializing notification failed: " + n.toString());
             return;
         }
         mInitProcess = INITIALIZING_PROCESS_DONE;
 
-        final NotificationHandleService nhs = (NotificationHandleService) context;
-        for (StatusBarNotification notification : nhs.getActiveNotifications()) {
-            postNotification(context, notification, false, false);
-        }
+        if (activeNotifications != null) {
+            for (StatusBarNotification notification : activeNotifications) {
+                postNotification(context, notification, true);
+            }
 
-        if (mFutureSelectedNotification == null)
-            setSelectedNotification(getLastNotification());
-        for (OnNotificationListChangedListener listener : mListeners)
-            listener.onNotificationInitialized(this);
+            trySelectNotification(getLastNotification());
+            for (OnNotificationListChangedListener listener : mListeners)
+                listener.onNotificationInitialized(this);
+        } else {
+            Log.w(TAG, "Failed to get current active notifications!");
+        }
 
         // Init notification isn't needed anymore.
         NotificationManager nm = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(n.getId());
-    }
-
-    private void rebuildLocalList() {
-        synchronized (monitor) {
-            mNotificationList.clear();
-
-            for (OpenStatusBarNotification notification : mList) {
-                if (isValidForLocal(notification.getStatusBarNotification()))
-                    mNotificationList.add(notification);
-            }
-
-            setSelectedNotification(getLastNotification());
-
-            for (OnNotificationListChangedListener listener : mListeners)
-                listener.onNotificationInitialized(this);
-        }
+        nm.cancel(NotificationIds.INIT_NOTIFICATION);
     }
 
     // //////////////////////////////////////////
     // //////// -- POST NOTIFICATION -- /////////
     // //////////////////////////////////////////
 
-    /**
-     * If notification is {@link #isValidForLocal(StatusBarNotification) valid} and
-     * {@link #isValid(Context, StatusBarNotification) valid} puts
-     * notification to the list and launches gui.
-     *
-     * @see OnNotificationListChangedListener#onNotificationPosted(NotificationPresenter, OpenStatusBarNotification)
-     * @see OnNotificationListChangedListener#onNotificationChanged(NotificationPresenter, OpenStatusBarNotification)
-     */
-    synchronized void postNotification(Context context, StatusBarNotification notification) {
-        synchronized (monitor) {
-            postNotification(context, notification, true, true);
+    public ArrayList<OpenStatusBarNotification> getList() {
+        return mLList.list();
+    }
+
+    public int getCount() {
+        return getList().size();
+    }
+
+    public void postNotification(Context context, StatusBarNotification n) {
+        postNotification(context, n, false);
+    }
+
+    public void postNotification(Context context, StatusBarNotification n, boolean internal) {
+        logNotification(context, n, "Post");
+        OpenStatusBarNotification osbn = OpenStatusBarNotification.wrap(n);
+
+        boolean globalValid = isValidForGlobal(context, n);
+        boolean localValid = globalValid && isValidForLocal(n);
+
+        if (globalValid) {
+            osbn.parse(context);
+        }
+
+        mGList.pushOrRemove(osbn, globalValid, internal);
+        mLList.pushOrRemove(osbn, localValid, internal);
+
+        if (localValid && !internal) {
+            trySelectNotification(osbn);
+            tryStartGui(context, osbn);
         }
     }
 
-    private void postNotification(Context context, StatusBarNotification notification,
-                                  boolean startGui, boolean makeActions) {
-        tryInit(context, notification);
+    public void removeNotification(Context context, StatusBarNotification n) {
+        logNotification(context, n, "Remove");
+        OpenStatusBarNotification osbn = OpenStatusBarNotification.wrap(n);
+        mGList.remove(osbn);
+        mLList.remove(osbn);
+    }
 
-        if (Project.DEBUG) logNotification(context, notification, "posted");
+    private void rebuildLocalList() {
+        if (Project.DEBUG) Log.d(TAG, "Rebuilding local list of notifications.");
 
+        OpenStatusBarNotification selectedOld = mFutureSelectedNotification;
+        ArrayList<OpenStatusBarNotification> list = mLList.list();
+        list.clear();
 
-        // ////////////// -- GLOBAL -- //////////////
-
-
-        int index = indexOf(mList, notification);
-        if (!isValid(context, notification)) {
-            if (index >= 0) removeNotification(context, notification);
-            return;
+        for (OpenStatusBarNotification notification : mGList.list()) {
+            if (isValidForLocal(notification.getStatusBarNotification()))
+                list.add(notification);
         }
 
-        OpenStatusBarNotification openNotification = new OpenStatusBarNotification(notification);
+        // Reselect old notification if available.
+        int index = mLList.indexOf(selectedOld);
+        setSelectedNotification(index < 0 ? getLastNotification() : list.get(index));
 
-        if (index < 0) {
-            mList.add(openNotification);
-        } else {
-            mList.remove(index);
-            mList.add(index, openNotification);
-        }
-
-
-        // ////////////// -- LOCAL -- ///////////////
-
-
-        index = indexOf(mNotificationList, notification);
-        if (!isValidForLocal(notification)) {
-            if (index >= 0) removeNotificationFromLocal(notification);
-            return;
-        }
-
-        if (index < 0) {
-            mNotificationList.add(openNotification);
-
-            // Notify on notification posted
-            if (makeActions)
-                for (OnNotificationListChangedListener listener : mListeners)
-                    listener.onNotificationPosted(this, openNotification);
-        } else {
-            mNotificationList.remove(index);
-            mNotificationList.add(index, openNotification);
-
-            // Notify on notification changed
-            if (makeActions)
-                for (OnNotificationListChangedListener listener : mListeners)
-                    listener.onNotificationChanged(this, openNotification);
-
-            if (Operator.bitandCompare(
-                    notification.getNotification().flags,
-                    Notification.FLAG_ONLY_ALERT_ONCE)
-                    || isPackageSpammer(notification)) {
-                startGui = false;
-            }
-        }
-
-        if (makeActions && (
-                NotificationUtils.equals(
-                        mFutureSelectedNotification, openNotification)
-                        || mFutureSelectedNotification == null)) {
-            setSelectedNotification(openNotification);
-        }
-
-        if (startGui) {
-            tryStartGui(context, openNotification);
-        }
+        for (OnNotificationListChangedListener listener : mListeners)
+            listener.onNotificationInitialized(this);
     }
 
     // //////////////////////////////////////////
-    // /////// -- REMOVE NOTIFICATION -- ////////
+    // ///////////// -- EVENTS -- ///////////////
     // //////////////////////////////////////////
 
-    synchronized void removeNotification(Context context, StatusBarNotification notification) {
-        synchronized (monitor) {
-            tryInit(context, notification);
-
-            if (Project.DEBUG) logNotification(context, notification, "removed");
-
-            int index = indexOf(mList, notification);
-            if (index < 0) {
-                return;
-            }
-
-            mList.remove(index);
-            removeNotificationFromLocal(notification);
+    private void trySelectNotification(OpenStatusBarNotification n) {
+        OpenStatusBarNotification f = mFutureSelectedNotification;
+        if (f == null || NotificationUtils.equals(n, f)) {
+            setSelectedNotification(n);
         }
     }
 
-    private void removeNotificationFromLocal(StatusBarNotification notification) {
-        int index = indexOf(mNotificationList, notification);
-        if (index < 0) {
-            return;
-        }
+    @Override
+    public int onNotificationAdded(OpenStatusBarNotification n) {
+        for (OnNotificationListChangedListener listener : mListeners)
+            listener.onNotificationPosted(this, n);
+        return 0;
+    }
 
-        OpenStatusBarNotification rmn = mNotificationList.get(index);
-        mNotificationList.remove(index);
+    @Override
+    public int onNotificationChanged(OpenStatusBarNotification n) {
+        for (OnNotificationListChangedListener listener : mListeners)
+            listener.onNotificationChanged(this, n);
+        return 0;
+    }
 
-        if (NotificationUtils.equals(mFutureSelectedNotification, rmn)) {
+    @Override
+    public int onNotificationRemoved(OpenStatusBarNotification n) {
+        if (NotificationUtils.equals(n, mFutureSelectedNotification)) {
             setSelectedNotification(getLastNotification());
         }
 
         for (OnNotificationListChangedListener listener : mListeners)
-            listener.onNotificationRemoved(this, rmn);
+            listener.onNotificationRemoved(this, n);
+        return 0;
     }
 
     // //////////////////////////////////////////
     // //////// -- NOTIFICATION UTILS -- ////////
     // //////////////////////////////////////////
 
-    private int indexOf(ArrayList<OpenStatusBarNotification> list, StatusBarNotification n) {
-        final int size = list.size();
-        for (int i = 0; i < size; i++)
-            if (NotificationUtils.equals(n, list.get(i)
-                    .getStatusBarNotification()))
-                return i;
-        return -1;
-    }
-
     private OpenStatusBarNotification getLastNotification() {
-        final int size = mNotificationList.size();
-        return size > 0 ? mNotificationList.get(size - 1) : null;
+        final int size = getList().size();
+        return size > 0 ? getList().get(size - 1) : null;
     }
 
     /**
-     * Returns {@code false} if the notification doesn't meet
+     * Returns {@code false} if the notification doesn't fit
      * the requirements (such as not ongoing and clearable).
      */
     private boolean isValidForLocal(StatusBarNotification n) {
-        return n.getNotification().priority >= Notification.PRIORITY_LOW
-                || mConfig.isLowPriorityNotificationsAllowed();
+        AppConfig config = AppConfig.wrap(n.getPackageName());
+        mBlacklist.fill(config);
+
+        boolean hidden = config.enabled && config.isHidden();
+
+        return (n.getNotification().priority >= Notification.PRIORITY_LOW
+                || mConfig.isLowPriorityNotificationsAllowed())
+                && !hidden;
     }
 
-    private boolean isValid(Context context, StatusBarNotification n) {
+    private boolean isValidForGlobal(Context context, StatusBarNotification n) {
         final boolean isInitNotification = n.getId() == NotificationIds.INIT_NOTIFICATION
                 && !Project.getPackageName(context).equals(n.getPackageName());
         return !n.isOngoing() && n.isClearable() && !isInitNotification;
-    }
-
-    // TODO: Add auto ban for some notifications
-    private boolean isPackageSpammer(StatusBarNotification n) {
-        String packageName = n.getPackageName();
-        return packageName.equals(COM_ANDROID_PROVIDERS_DOWNLOADS)
-                || packageName.equals(COM_ANDROID_SETTINGS);
     }
 
     // //////////////////////////////////////////
@@ -332,35 +302,23 @@ public class NotificationPresenter {
     // //////////////////////////////////////////
 
     /**
-     * Starts {@link ActiveDisplayActivity activity} if active display
+     * Starts {@link com.achep.activedisplay.activities.ActiveDisplayActivity activity} if active display
      * is enabled and screen is turned off and...
      */
     private boolean tryStartGui(Context context, OpenStatusBarNotification notification) {
-        if (notification.isBlacklisted(context)
+        if (notification.isRestricted(mBlacklist)
                 || !mConfig.isActiveDisplayEnabled()
+                || ProximitySensor.isNear()
                 || mConfig.isEnabledOnlyWhileCharging() /* show only      */
-                && !PowerUtils.isConnected(context))    /* while charging */
+                && !PowerUtils.isCharging(context))     /* while charging */
             return false;
 
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (pm.isScreenOn()
-                || /* activity is started    */ SystemClock.uptimeMillis() - mUIStartTime < UI_MULTI_START_TIMEOUT
-                || /* somebody is calling me */ ts.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
-            if (Project.DEBUG)
-                LogUtils.d(TAG, "Passed an UI launch:"
-                        + " screen_on=" + pm.isScreenOn()
-                        + " call_state=" + ts.getCallState());
+        // Inactive time
+        if (mConfig.isInactiveTimeEnabled() && InactiveHoursHelper.isInactiveTime(mConfig)) {
             return false;
-        } else if (Project.DEBUG) LogUtils.d(TAG, "Starting UI");
+        }
 
-        context.startActivity(new Intent(Intent.ACTION_MAIN, null)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                        | Intent.FLAG_ACTIVITY_NO_USER_ACTION
-                        | Intent.FLAG_ACTIVITY_NO_ANIMATION
-                        | Intent.FLAG_FROM_BACKGROUND)
-                .setClass(context, ActiveDisplayActivity.class));
+        ActiveDisplayPresenter.getInstance().start(context);
 
         mUIStartTime = SystemClock.uptimeMillis();
         setSelectedNotification(notification);
@@ -371,24 +329,19 @@ public class NotificationPresenter {
     // /////////// -- LOG THINGS -- /////////////
     // //////////////////////////////////////////
 
-    private void logNotification(Context context, StatusBarNotification notification, String action) {
-        LogUtils.d(TAG, action + ": owner=" + notification.getPackageName()
-                + " id=" + notification.getId()
-                + " user_id=" + notification.getUserId()
-                + " tag=" + notification.getTag()
-                + " post_time=" + notification.getPostTime()
-                + " is_valid=" + isValidForLocal(notification)
-                + " is_spammer=" + isPackageSpammer(notification)
-                + " is_blacklisted=" + Blacklist.getInstance(context).contains(notification.getPackageName()));
+    private void logNotification(Context context, StatusBarNotification n, String action) {
+        Log.d(TAG, action + ": package=" + n.getPackageName()
+                + " id=" + n.getId()
+                + " user_id=" + n.getUserId()
+                + " tag=" + n.getTag()
+                + " post_time=" + n.getPostTime()
+                + " is_valid_global=" + isValidForGlobal(context, n)
+                + " is_valid_local=" + isValidForLocal(n));
     }
 
     // //////////////////////////////////////////
     // // -- TRACKING SELECTED NOTIFICATION -- //
     // //////////////////////////////////////////
-
-    public ArrayList<OpenStatusBarNotification> getList() {
-        return mNotificationList;
-    }
 
     public void lockSelectedNotification() {
         mSelectedNotificationLocked = true;
@@ -400,10 +353,6 @@ public class NotificationPresenter {
     }
 
     public void setSelectedNotification(OpenStatusBarNotification notification) {
-        setSelectedNotification(notification, false);
-    }
-
-    private void setSelectedNotification(OpenStatusBarNotification notification, boolean isChanged) {
         mFutureSelectedNotification = notification;
 
         if (mSelectedNotificationLocked || mSelectedNotification == notification) {
@@ -412,7 +361,7 @@ public class NotificationPresenter {
 
         mSelectedNotification = notification;
         for (OnNotificationListChangedListener listener : mListeners) {
-            listener.onNotificationSelected(this, notification, isChanged);
+            listener.onNotificationSelected(this, notification, false);
         }
     }
 
@@ -491,8 +440,6 @@ public class NotificationPresenter {
         public void onNotificationEvent(NotificationPresenter nm,
                                         OpenStatusBarNotification notification,
                                         int event) {
-            LogUtils.track();
         }
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,9 +28,12 @@ public class Project {
     @SuppressWarnings("PointlessBooleanExpression")
     public static final boolean DEBUG = BuildConfig.MY_DEBUG && true;
 
-    public static final String EMAIL = "artemchep@gmail.com";
+    public static final String EMAIL = "support@artemchep.com";
+
+    public static final String SUFFIX = Project.class.getPackage().getName() + ":";
 
     public static String getPackageName(Context context) {
         return context.getApplicationInfo().packageName;
     }
+
 }

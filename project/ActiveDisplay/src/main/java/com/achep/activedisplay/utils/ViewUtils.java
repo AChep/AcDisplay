@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,12 +18,9 @@
  */
 package com.achep.activedisplay.utils;
 
-import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-
-import com.achep.activedisplay.Config;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,7 +44,7 @@ public class ViewUtils {
         view.getLocationInWindow(coordinates);
         int top = coordinates[1];
         decorView.getLocationInWindow(coordinates);
-        return top;
+        return top - coordinates[1];
     }
 
     public static int getBottom(View view, View decorView) {

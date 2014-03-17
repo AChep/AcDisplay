@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_more_title">
+
+    <CheckBoxPreference
+        android:key="only_while_charging"
+        android:title="@string/settings_only_while_charging_title"
+        android:summaryOn="@string/settings_only_while_charging_on"
+        android:summaryOff="@string/settings_only_while_charging_off" />
+
+    <com.achep.activedisplay.settings.preferences.InactiveHoursPreference
+        android:key="inactive_hours"
+        android:dialogIcon="@drawable/ic_night"
+        android:dialogTitle="@string/settings_inactive_hours_title"
+        android:title="@string/settings_inactive_hours_title" />
+
+    <com.achep.activedisplay.settings.preferences.TimeoutPreference
+        android:key="timeout"
+        android:dialogIcon="@drawable/ic_clock"
+        android:dialogTitle="@string/settings_timeout_title"
+        android:title="@string/settings_timeout_title" />
+
+    <PreferenceCategory
+        android:title="@string/settings_behavior_category" />
+
+    <ListPreference
+        android:enabled="false"
+        android:key="swipe_left_action"
+        android:title="@string/settings_swipe_left_title"
+        android:entries="@array/swipe_actions"
+        android:entryValues="@array/swipe_actions_entries"
+        android:defaultValue="2" />
+
+    <ListPreference
+        android:enabled="false"
+        android:key="swipe_right_action"
+        android:title="@string/settings_swipe_right_title"
+        android:entries="@array/swipe_actions"
+        android:entryValues="@array/swipe_actions_entries"
+        android:defaultValue="2" />
+
+</PreferenceScreen>

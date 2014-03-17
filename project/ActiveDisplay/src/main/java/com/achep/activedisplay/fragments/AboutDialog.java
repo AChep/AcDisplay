@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,16 +23,13 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import com.achep.activedisplay.DialogHelper;
+import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.utils.ViewUtils;
 
 /**
  * Created by Artem on 30.01.14.
@@ -41,11 +38,9 @@ public class AboutDialog extends DialogFragment {
 
     private static final String VERSION_UNAVAILABLE = "N/A";
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        PackageManager pm = getActivity().getPackageManager();
-        String packageName = getActivity().getPackageName();
+    static CharSequence getVersionTitle(Context context) {
+        PackageManager pm = context.getPackageManager();
+        String packageName = context.getPackageName();
         String versionName;
         try {
             PackageInfo info = pm.getPackageInfo(packageName, 0);
@@ -54,23 +49,23 @@ public class AboutDialog extends DialogFragment {
             versionName = VERSION_UNAVAILABLE;
         }
 
-        Drawable icon = getResources().getDrawable(R.mipmap.ic_launcher);
-        CharSequence title = Html.fromHtml(getString(R.string.about_title,
-                getString(R.string.app_name), versionName));
-        CharSequence message = Html.fromHtml(getString(R.string.about_message));
+        if (Project.DEBUG) versionName += "-dev";
 
-        // Setting up message
-        LayoutInflater inflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        TextView messageTextView = (TextView) inflater.inflate(R.layout.layout_dialog_message, null);
-        messageTextView.setMovementMethod(new LinkMovementMethod());
-        ViewUtils.safelySetText(messageTextView, message);
+        Resources res = context.getResources();
+        return Html.fromHtml(
+                res.getString(R.string.about_title,
+                        res.getString(R.string.app_name), versionName)
+        );
+    }
 
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new DialogHelper.Builder(getActivity())
-                .setIcon(icon)
-                .setTitle(title)
-                .setView(messageTextView)
-                .createAlertDialogBuilder()
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(getVersionTitle(getActivity()))
+                .setMessage(Html.fromHtml(getString(R.string.about_message)))
+                .wrap()
                 .setPositiveButton(R.string.close, null)
                 .create();
     }

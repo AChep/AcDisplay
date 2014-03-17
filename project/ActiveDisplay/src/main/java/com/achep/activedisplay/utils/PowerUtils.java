@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,24 +22,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.PowerManager;
 
 /**
  * Created by Artem on 28.01.14.
  */
 public class PowerUtils {
 
-    public static boolean isConnected(Context context) {
+    /**
+     * @return true is device is charging at this moment, false otherwise.
+     */
+    public static boolean isCharging(Context context) {
         Intent intent = context.registerReceiver(null,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-        // TODO: I'm not sure if we need that.
         if (intent == null) {
             return false;
         }
 
+        final int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        return status == BatteryManager.BATTERY_STATUS_CHARGING;
+        /*
         final int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
         return plugged == BatteryManager.BATTERY_PLUGGED_AC
-                || plugged == BatteryManager.BATTERY_PLUGGED_USB;
+                || plugged == BatteryManager.BATTERY_PLUGGED_USB
+                || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
+                */
+    }
+
+    public static boolean isScreenOn(Context context) {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        return pm.isScreenOn();
     }
 
 }

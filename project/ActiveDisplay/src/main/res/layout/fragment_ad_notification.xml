@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -36,12 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/icon"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:fontFamily="sans-serif-condensed"
-        android:ellipsize="end"
-        android:textColor="#fff"
-        android:textSize="24sp"
-        android:maxLines="2" />
+        style="?activeDisplayNotificationTitle"/>
 
     <TextView
         android:id="@+id/message"
@@ -49,9 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_toStartOf="@id/icon"
-        android:ellipsize="end"
-        android:maxLines="8"
-        android:paddingTop="4dp" />
+        android:paddingTop="4dp"
+        style="?activeDisplayNotificationMessage" />
 
     <Space
         android:id="@+id/divider"

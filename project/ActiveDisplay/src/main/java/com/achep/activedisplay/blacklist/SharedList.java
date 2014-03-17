@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ import java.util.Set;
 
 /**
  * Simple list which automatically saves items to private storage and restores on initialize.
- * This is useful for implementing blacklists.
+ * This may be useful for implementing blacklists or something fun.
  */
 public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
@@ -39,21 +39,37 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
     private final HashMap<V, Integer> mList;
     private final ArrayList<Integer> mPlaceholder;
+    private final Comparator<V> mComparator;
     private final T mSaver;
 
     private ArrayList<OnSharedListChangedListener<V>> mListeners;
 
     public interface OnSharedListChangedListener<V> {
-        public void onPut(V object);
 
-        public void onRemoved(V object);
+        /**
+         * Called on object put to / replaced in the list.
+         *
+         * @param objectNew current object
+         * @param objectOld old object from the list
+         * @param diff      the difference between old and new objects (provided by {@link Comparator})
+         */
+        public void onPut(V objectNew, V objectOld, int diff);
+
+        /**
+         * Called on object removed from the list.
+         *
+         * @param objectRemoved removed object from the list
+         */
+        public void onRemoved(V objectRemoved);
     }
 
     public void addOnSharedListChangedListener(OnSharedListChangedListener<V> listener) {
+        Log.i(TAG, "Registered new listener: (" + mListeners.size() + ")" + listener);
         mListeners.add(listener);
     }
 
     public void removeOnSharedListChangedListener(OnSharedListChangedListener<V> listener) {
+        Log.i(TAG, "Unregistered listener: (" + mListeners.size() + ")" + listener);
         mListeners.remove(listener);
     }
 
@@ -61,6 +77,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         mList = new HashMap<>();
         mPlaceholder = new ArrayList<>(3);
         mListeners = new ArrayList<>(6);
+        mComparator = onCreateComparator();
 
         try {
             mSaver = clazz.newInstance();
@@ -86,12 +103,42 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
     protected abstract String getPreferencesFileName();
 
-    public synchronized void remove(Context context, V object) {
-        Integer value = mList.remove(object);
-        if (value == null) {
-            Log.w(TAG, "Tried to remove non-existing object from blacklist.");
+    /**
+     * May be null.
+     */
+    protected Comparator<V> onCreateComparator() {
+        return null;
+    }
+
+    public Comparator<V> getComparator() {
+        return mComparator;
+    }
+
+    protected boolean isOverwriteAllowed(V object) {
+        return false;
+    }
+
+    // ///////// -- CORE CODE -- ///////////
+
+    public void remove(Context context, V object) {
+        remove(context, object, null);
+    }
+
+    public void remove(Context context, V object, OnSharedListChangedListener l) {
+        if (!mList.containsKey(object)) {
+            Log.w(TAG, "Tried to remove non-existing object from the list.");
             return;
         }
+
+        V objectRemoved = null;
+        for (V o : mList.keySet()) {
+            if (o.equals(object)) {
+                objectRemoved = o;
+                break;
+            }
+        }
+
+        Integer value = mList.remove(object);
 
         int i = 0;
         int length = mPlaceholder.size();
@@ -104,19 +151,44 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
                 .putBoolean(KEY_USED_ITEM + value, false)
                 .apply();
 
+        notifyOnRemoved(objectRemoved, l);
+    }
+
+    /**
+     * Notifies listener about Remove event
+     */
+    protected void notifyOnRemoved(V objectRemoved, OnSharedListChangedListener l) {
         for (OnSharedListChangedListener<V> listener : mListeners) {
-            listener.onRemoved(object);
+            if (listener == l) continue;
+            listener.onRemoved(objectRemoved);
         }
     }
 
-    public synchronized void put(Context context, V object) {
-        if (mList.containsKey(object)) {
-            Log.w(TAG, "Trying to put existing object to blacklist.");
-            return;
-        }
+    public V put(Context context, V object) {
+        return put(context, object, null);
+    }
 
+    public V put(Context context, V object, OnSharedListChangedListener l) {
         boolean growUp = mPlaceholder.size() == 0;
         int value = growUp ? mList.size() : mPlaceholder.get(0);
+
+        V old = null;
+        if (mList.containsKey(object)) {
+            if (!isOverwriteAllowed(object)) {
+                Log.w(TAG, "Trying to put an existing object to the list.");
+                return null;
+            }
+
+            for (V o : mList.keySet()) {
+                if (o.equals(object)) {
+                    old = o;
+                    break;
+                }
+            }
+            value = mList.get(object);
+            mList.remove(object);
+        }
+
         mList.put(object, value);
 
         SharedPreferences.Editor editor = mSaver
@@ -125,44 +197,52 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         if (growUp) editor.putInt(KEY_NUMBER, value);
         editor.apply();
 
+        notifyOnPut(object, old, l);
+        return old;
+    }
+
+    /**
+     * Notifies listener about Put event
+     *
+     * @param object new object
+     * @param old    old object from the list
+     */
+    protected void notifyOnPut(V object, V old, OnSharedListChangedListener l) {
+        int diff = mComparator != null ? mComparator.compare(object, old) : 0;
         for (OnSharedListChangedListener<V> listener : mListeners) {
-            listener.onPut(object);
+            if (listener == l) continue;
+            listener.onPut(object, old, diff);
         }
     }
 
-    public synchronized boolean contains(V object) {
+    public boolean contains(V object) {
         return mList.containsKey(object);
     }
 
-    public synchronized Set<V> valuesSet() {
+    public Set<V> valuesSet() {
         return mList.keySet();
     }
 
+    // ///////// -- CLASSES-- ///////////
+
+    /**
+     * Additional class to provide diffs between "old" and "new" objects.
+     */
+    public static abstract class Comparator<V> {
+        public abstract int compare(V object, V old);
+    }
+
+    // I could use Parcelable for that too.
     public static abstract class Saver<V> {
 
         /**
          * Should not overwrite value at {@link SharedList#KEY_NUMBER} or/and
-         * has key starts with {@link SharedList#KEY_USED_ITEM}!
+         * has key which starts with {@link SharedList#KEY_USED_ITEM}!
          */
         public abstract SharedPreferences.Editor put(V object, SharedPreferences.Editor editor, int position);
 
         public abstract V get(SharedPreferences prefs, int position);
 
-    }
-
-    public static class StringSaver extends Saver<String> {
-
-        private static final String KEY = "str_";
-
-        @Override
-        public SharedPreferences.Editor put(String str, SharedPreferences.Editor editor, int position) {
-            return editor.putString(KEY + position, str);
-        }
-
-        @Override
-        public String get(SharedPreferences prefs, int position) {
-            return prefs.getString(KEY + position, null);
-        }
     }
 
 }

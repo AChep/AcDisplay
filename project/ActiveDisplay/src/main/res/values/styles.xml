@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
         <item name="stroke_width">3dp</item>
         <item name="marker_visible">false</item>
         <item name="thumb_visible">false</item>
-        <item name="progress_background_color">#4fff</item>
+        <item name="progress_background_color">#3fff</item>
         <item name="progress_color">@android:color/white</item>
         <item name="progress">1</item>
         <item name="android:gravity">center</item>
@@ -147,8 +147,6 @@
 
     <style name="ADMain.Text.Clock" parent="ADMain.Text">
         <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="android:format12Hour">hh:mm</item>
-        <item name="android:format24Hour">HH:mm</item>
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
         <item name="android:textSize">80sp</item>
     </style>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -22,4 +22,7 @@
     <color name="selector_longpressed_dark">#CB0098CB</color>
     <color name="selector_disabled_dark">#80000000</color>
     <color name="selector_focused_dark">#4E31B3E4</color>
+
+    <!-- Active display -->
+    <color name="keyguard_background">#70000000</color>
 </resources>

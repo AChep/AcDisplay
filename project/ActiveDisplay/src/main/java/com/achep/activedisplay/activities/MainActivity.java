@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,7 +41,9 @@ import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.admin.AdminReceiver;
+import com.achep.activedisplay.blacklist.activities.BlacklistActivity;
 import com.achep.activedisplay.services.SendNotificationService;
+import com.achep.activedisplay.settings.Settings;
 import com.achep.activedisplay.utils.AccessUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 
@@ -65,7 +67,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     private View mAccessAllowNotification;
     private View mAccessAllowDeviceAdmin;
 
-    private MenuItem mTestMenuItem;
+    private MenuItem mSendTestNotificationMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +79,13 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(R.layout.layout_ab_switch);
-        mSwitch = (Switch) getActionBar().getCustomView().findViewById(R.id.swatch);
+        mSwitch = (Switch) getActionBar().getCustomView().findViewById(R.id.switch_);
         mSwitch.setChecked(mConfig.isActiveDisplayEnabled());
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                updateTestMenuItem();
+                updateSendTestNotificationMenuItem();
                 if (mBroadcasting) {
                     return;
                 }
@@ -141,15 +143,15 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         }
 
         mSwitch.setEnabled(!showDeviceAdminBtn && !showNotifiesBtn);
-        updateTestMenuItem();
+        updateSendTestNotificationMenuItem();
     }
 
-    private void updateTestMenuItem() {
-        if (mTestMenuItem == null) {
+    private void updateSendTestNotificationMenuItem() {
+        if (mSendTestNotificationMenuItem == null) {
             return;
         }
 
-        mTestMenuItem.setVisible(mSwitch.isEnabled() && mSwitch.isChecked());
+        mSendTestNotificationMenuItem.setVisible(mSwitch.isEnabled() && mSwitch.isChecked());
     }
 
     @Override
@@ -173,8 +175,8 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        mTestMenuItem = menu.findItem(R.id.action_test);
-        updateTestMenuItem();
+        mSendTestNotificationMenuItem = menu.findItem(R.id.action_test);
+        updateSendTestNotificationMenuItem();
         return true;
     }
 
@@ -182,18 +184,25 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, Settings.class));
+                break;
+            case R.id.action_blacklist:
+                startActivity(new Intent(this, BlacklistActivity.class));
                 break;
             case R.id.action_test:
-                Intent notificationIntent = new Intent(this, SendNotificationService.class)
-                        .putExtra(SendNotificationService.EXTRA_TITLE, getString(R.string.app_name))
-                        .putExtra(SendNotificationService.EXTRA_TEXT, getString(R.string.test_notification_message))
-                        .putExtra(SendNotificationService.EXTRA_ID, NotificationIds.TEST_NOTIFICATION)
-                        .putExtra(SendNotificationService.EXTRA_ICON_RESOURCE, R.drawable.stat_test)
-                        .putExtra(SendNotificationService.EXTRA_PRIORITY, Notification.PRIORITY_DEFAULT)
-                        .putExtra(SendNotificationService.EXTRA_SOUND_URI, RingtoneManager.getDefaultUri(
-                                RingtoneManager.TYPE_NOTIFICATION));
-                PendingIntent pi = SendNotificationService.sendDelayed(this,
+                Intent contentIntent = new Intent(this, MainActivity.class);
+                Intent notificationIntent = SendNotificationService
+                        .createNotificationIntent(this, getString(R.string.app_name),
+                                getString(R.string.test_notification_message),
+                                NotificationIds.TEST_NOTIFICATION,
+                                R.drawable.stat_test,
+                                R.mipmap.ic_launcher,
+                                Notification.PRIORITY_DEFAULT,
+                                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
+                                PendingIntent.getService(this, 0, contentIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT)
+                        );
+                PendingIntent pi = SendNotificationService.notify(this,
                         notificationIntent, SLEEP_SEND_NOTIFICATION_DELAY);
 
                 try {
@@ -213,6 +222,9 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 break;
             case R.id.action_about:
                 DialogHelper.showAboutDialog(this);
+                break;
+            case R.id.action_help:
+                DialogHelper.showHelpDialog(this);
                 break;
             default:
                 return super.onMenuItemSelected(featureId, item);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -22,12 +22,8 @@
     tools:context="com.achep.activedisplay.activities.MainActivity" >
 
     <item
-        android:id="@+id/action_add_to_blacklist"
+        android:id="@+id/action_launch_blacklist"
         android:showAsAction="never"
-        android:title="@string/blacklist_add" />
+        android:title="@string/blacklist_launch_app_directly" />
 
-    <item
-        android:id="@+id/action_remove_from_blacklist"
-        android:showAsAction="never"
-        android:title="@string/blacklist_from" />
 </menu>

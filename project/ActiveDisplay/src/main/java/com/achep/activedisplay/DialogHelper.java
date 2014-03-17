@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,15 +31,17 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.achep.activedisplay.fragments.AboutDialog;
 import com.achep.activedisplay.fragments.DonateDialog;
 import com.achep.activedisplay.fragments.FeedbackDialog;
-import com.achep.activedisplay.utils.ViewUtils;
+import com.achep.activedisplay.fragments.HelpDialog;
 
 /**
  * Helper class for showing fragment dialogs.
@@ -48,6 +50,10 @@ public class DialogHelper {
 
     public static void showAboutDialog(Activity activity) {
         showDialog(activity, AboutDialog.class, "dialog_about");
+    }
+
+    public static void showHelpDialog(Activity activity) {
+        showDialog(activity, HelpDialog.class, "dialog_help");
     }
 
     public static void showDonateDialog(Activity activity) {
@@ -79,10 +85,11 @@ public class DialogHelper {
      */
     public static class Builder {
 
-        private final Context mContext;
+        protected final Context mContext;
 
         private Drawable mIcon;
         private CharSequence mTitleText;
+        private CharSequence mMessageText;
         private View mView;
 
         public Builder(Context context) {
@@ -99,6 +106,23 @@ public class DialogHelper {
             return this;
         }
 
+        public Builder setMessage(CharSequence message) {
+            mMessageText = message;
+            return this;
+        }
+
+        public Builder setIcon(int iconRes) {
+            return iconRes == 0 ? null : setIcon(mContext.getResources().getDrawable(iconRes));
+        }
+
+        public Builder setTitle(int titleRes) {
+            return titleRes == 0 ? null : setTitle(mContext.getResources().getString(titleRes));
+        }
+
+        public Builder setMessage(int messageRes) {
+            return messageRes == 0 ? null : setMessage(mContext.getResources().getString(messageRes));
+        }
+
         public Builder setView(View view) {
             mView = view;
             return this;
@@ -108,29 +132,40 @@ public class DialogHelper {
          * Builds dialog's view
          */
         public View create() {
-            final LayoutInflater inflater = (LayoutInflater) mContext
+            LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View root = inflater.inflate(R.layout.dialog_base, null);
-            assert root != null;
+
+            ViewGroup rootLayout = (ViewGroup) inflater.inflate(R.layout.dialog_base, null);
+            TextView titleView = (TextView) rootLayout.findViewById(R.id.title);
+            ViewGroup bodyLayout = (ViewGroup) rootLayout.findViewById(R.id.content);
+            TextView messageView = (TextView) rootLayout.findViewById(R.id.message);
 
             Drawable left = (mContext.getResources().getConfiguration().screenLayout &
                     Configuration.SCREENLAYOUT_SIZE_MASK) !=
                     Configuration.SCREENLAYOUT_SIZE_LARGE ? mIcon : null;
             Drawable top = left == null ? mIcon : null;
 
-            // Setting up title
-            TextView title = (TextView) root.findViewById(R.id.title);
-            ViewUtils.safelySetText(title, mTitleText);
-            title.setCompoundDrawablesWithIntrinsicBounds(left, top, null, null);
+            // Setup title
+            if (mTitleText != null) {
+                titleView.setText(mTitleText);
+                titleView.setCompoundDrawablesWithIntrinsicBounds(left, top, null, null);
+            } else {
+                rootLayout.removeView(titleView);
+            }
 
-            // Setting up content
-            FrameLayout content = (FrameLayout) root.findViewById(R.id.content);
-            content.addView(mView);
+            // Setup content
+            bodyLayout.removeView(messageView);
+            if (mView != null) bodyLayout.addView(mView);
+            if (!TextUtils.isEmpty(mMessageText)) {
+                messageView.setMovementMethod(new LinkMovementMethod());
+                messageView.setText(mMessageText);
+                bodyLayout.addView(messageView);
+            }
 
-            return root;
+            return rootLayout;
         }
 
-        public AlertDialog.Builder createAlertDialogBuilder() {
+        public AlertDialog.Builder wrap() {
             return new AlertDialog.Builder(mContext).setView(create());
         }
 

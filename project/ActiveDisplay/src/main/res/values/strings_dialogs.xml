@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
     <string name="donate">Donate</string>
     <string name="donate_how_to">How to</string>
     <string name="donate_title">Donate to me</string>
+    <string name="donate_use_paypal">Use PayPal</string>
     <string name="donate_message"><![CDATA[
         <b>%1$s</b> is a free and <a href="https://www.github.com/AChep/AcDisplay">open source</a> app.
         If you want to support development, donating using <a href="%2$s">my %4$s wallet</a> is the best way to do that.<br/>
@@ -45,6 +46,23 @@
         <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
         <a href="http://commons.apache.org/">Apache Commons</a> and to all who <a href="https://crowdin.net/project/acdisplay">helped with translations</a>.
+    ]]></string>
+
+    <!-- Help -->
+    <string name="help">Help</string>
+    <string name="help_message"><![CDATA[
+        <font color="#ffffff"><b>How to uninstall this app?</b></font><br/>
+        Go to Settings/Security click <a href="acdisplay://launch_device_admins_activity">Device administrators</a>
+        and click AcDisplay so it\'s not checked. Now you can <a href="acdisplay://launch_uninstall_screen">uninstall</a>
+        the app like normal via the apps list or the play store.<br/>
+        <br/>
+        <font color="#ffffff"><b>What is an active mode?</b></font><br/>
+        Active mode uses the device\'s sensors to wake up your device just when you need it.
+        This works great for pulling your device from your pocket to get a quick glimpse at notifications.
+        Active mode doesn\'t lock CPU running so you shouldn\'t see much of a battery difference.<br/>
+        <br/>
+        <font color="#ffffff"><b>Can I help with translation?</b></font><br/>
+        Yes of course! Welcome to <a href="https://crowdin.net/project/acdisplay">project\'s page</a> on <a href="https://crowdin.net/">crowdin</a>.
     ]]></string>
 
 </resources>

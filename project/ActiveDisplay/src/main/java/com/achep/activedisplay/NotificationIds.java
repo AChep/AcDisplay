@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,9 @@ package com.achep.activedisplay;
  */
 public class NotificationIds {
 
+    public static final int LOCKSCREEN_NOTIFICATION = 1;
+    public static final int ACTIVE_MODE_NOTIFICATION = 2;
+
     public static final int INIT_NOTIFICATION = Integer.MAX_VALUE;
     public static final int TEST_NOTIFICATION = 11;
-    public static final int BREATHING_NOTIFICATION = 1;
 }

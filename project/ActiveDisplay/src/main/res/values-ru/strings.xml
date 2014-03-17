@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -23,10 +23,9 @@
     <string name="test_action">Проверить работу</string>
     <string name="test_notification_message">Пример того, как выглядит уведомление.</string>
 
-    <!-- Actions of notification -->
-    <string name="blacklist_add">Добавить в чёрный список</string>
-    <string name="blacklist_from">Удалить из чёрного списока</string>
-    <string name="blacklisted">В чёрном списке</string>
+    <!-- Lockscreen -->
+    <string name="service_lockscreen">1$s - экран блокировки</string>
+    <string name="service_lockscreen_text">Нажмите, чтобы запустить настройки.</string>
 
     <string name="device_admin_description">Это необходимо для того, что бы управлять собственным таймаутом выключения экрана.</string>
     <string name="app_auto_disabled">AcDisplay был отключен из-за удаления прав администратора.</string>
@@ -35,4 +34,6 @@
     <string name="access_to_admin_btn">Выключить экран</string>
     <string name="ad_description">Знание - это сила, и AcDisplay дает вам именно это, с первого взгляда. Он всегда отображает то, что вы хотите узнать, тогда, когда вам это нужно. Информация просто появляется на экране, так что вам не нужно разблокировать его, чтобы посмотреть на время, или увидеть ваши сообщения.</string>
 
+    <string name="service_active_mode">%1$s - активный режим</string>
+    <string name="service_active_mode_text">Нажмите, чтобы запустить настройки.</string>
 </resources>

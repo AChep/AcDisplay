@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
     <string name="donate">Пожертвовать</string>
     <string name="donate_how_to">Попробовать</string>
     <string name="donate_title">@string/donate</string>
+    <string name="donate_use_paypal">Через PayPal</string>
     <string name="donate_message"><![CDATA[
         <b>%1$s</b> – это бесплатное приложение с <a href="https://www.github.com/AChep/AcDisplay">открытым исходным кодом</a>.
         Если вы хотите поддержать разработку, то <a href="%2$s">мой %4$s кошелёк</a> – лучшее место для этого.<br/>
@@ -42,6 +43,23 @@
         <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
         <a href="http://commons.apache.org/">Apache Commons</a>, а также всем, кто <a href="https://crowdin.net/project/acdisplay">помог с переводом приложения</a>.
+    ]]></string>
+
+    <!-- Help -->
+    <string name="help">Помощь</string>
+    <string name="help_message"><![CDATA[
+        <font color="#ffffff"><b>Как удалить AcDisplay?</b></font><br/>
+        Перейдите в Настройки/Безопасность/<a href="acdisplay://launch_device_admins_activity">Администраторы устройства</a>
+        и отключите AcDisplay. Теперь вы можете <a href="acdisplay://launch_uninstall_screen">удалить</a> приложение как обычно -
+        через меню приложений или Play Маркет.<br/>
+        <br/>
+        <font color="#ffffff"><b>Что такое активный режим?</b></font><br/>
+        Активный режим пробуждает устройство тогда, когда вам это нужно.
+        Вы можете взглянуть на время или уведомления, просто достав устройство из кармана.
+        Эта функция не блокирует переход в спящий режим - вы не должны заметить существенной разницы в потреблении заряда батареи.<br/>
+        <br/>
+        <font color="#ffffff"><b>Могу ли я помочь с переводом?</b></font><br/>
+        Конечно! Добро пожаловать на <a href="https://crowdin.net/project/acdisplay">страницу проэкта</a> на сайте <a href="https://crowdin.net/">crowdin</a>.
     ]]></string>
 
 </resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,12 +21,13 @@ package com.achep.activedisplay.notifications;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.achep.activedisplay.Project;
 import com.achep.activedisplay.utils.LogUtils;
 
 /**
@@ -36,29 +37,27 @@ public class NotificationHandleService extends NotificationListenerService {
 
     private static final String TAG = "NotificationHandleService";
 
-    public static NotificationHandleService notificationHandleService;
-    public static boolean isNotificationAccessEnabled = false;
+    public static NotificationHandleService sService;
+    public static boolean isNotificationAccessEnabled;
 
     @Override
     public IBinder onBind(Intent intent) {
-        IBinder binder = super.onBind(intent);
-
-        if (Project.DEBUG) LogUtils.track();
-        NotificationPresenter.getInstance(this).tryStartInitProcess(this);
-
         isNotificationAccessEnabled = true;
-        notificationHandleService = this;
-        return binder;
+        sService = this;
+
+        LogUtils.track();
+        NotificationPresenter
+                .getInstance(this)
+                .tryStartInitProcess(this);
+
+        return super.onBind(intent);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         boolean unbind = super.onUnbind(intent);
-
-        if (Project.DEBUG) LogUtils.track();
-
         isNotificationAccessEnabled = false;
-        notificationHandleService = null;
+        sService = null;
         return unbind;
     }
 
@@ -73,23 +72,37 @@ public class NotificationHandleService extends NotificationListenerService {
     }
 
     @Override
-    public void onNotificationPosted(StatusBarNotification statusBarNotification) {
-        try {
-            NotificationPresenter.getInstance(this).postNotification(this, statusBarNotification);
-        } catch (Exception e) { // don't die
-            Log.wtf(TAG, "The world crashed. The details below:");
-            e.printStackTrace();
-        }
+    public void onNotificationPosted(final StatusBarNotification statusBarNotification) {
+        handleOnNotificationChanged(statusBarNotification, getActiveNotifications(), true);
     }
 
     @Override
-    public void onNotificationRemoved(StatusBarNotification statusBarNotification) {
-        try {
-            NotificationPresenter.getInstance(this).removeNotification(this, statusBarNotification);
-        } catch (Exception e) { // don't die
-            Log.wtf(TAG, "The world crashed. The details below:");
-            e.printStackTrace();
-        }
+    public void onNotificationRemoved(final StatusBarNotification statusBarNotification) {
+        handleOnNotificationChanged(statusBarNotification, getActiveNotifications(), false);
+    }
+
+    private void handleOnNotificationChanged(final StatusBarNotification statusBarNotification,
+                                             final StatusBarNotification[] activeNotifications,
+                                             final boolean post) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Context context = NotificationHandleService.this;
+                NotificationPresenter np = NotificationPresenter.getInstance(context);
+
+                try {
+                    np.tryInit(context, statusBarNotification, activeNotifications);
+                    if (post) {
+                        np.postNotification(context, statusBarNotification);
+                    } else {
+                        np.removeNotification(context, statusBarNotification);
+                    }
+                } catch (Exception e) { // don't die
+                    Log.wtf(TAG, "The world of pink unicorns just crashed:");
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

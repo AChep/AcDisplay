@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
 
      This program is free software; you can redistribute it and/or
      modify it under the terms of the GNU General Public License
@@ -17,53 +17,60 @@
      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
      MA  02110-1301, USA.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <TextClock
-        android:id="@+id/time"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        style="@style/ADMain.Text.Clock"/>
+        android:paddingStart="48dp">
 
-    <Space
-        android:id="@+id/right"
-        android:layout_width="52dp"
-        android:layout_height="0dp"
-        android:layout_toEndOf="@id/time"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10sp"
+            android:orientation="vertical">
 
-    <Space
-        android:id="@+id/zero"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_toEndOf="@id/right"/>
+            <com.achep.activedisplay.widgets.TimeView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-16sp"
+                style="@style/ADMain.Text.Clock" />
 
-    <TextClock
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-10sp"
-        android:layout_marginEnd="8sp"
-        android:layout_toStartOf="@id/zero"
-        android:paddingStart="40dp"
-        android:layout_below="@id/time"
-        style="@style/ADMain.Text.Date"/>
+                <TextClock
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    style="@style/ADMain.Text.Date" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/overflow"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_overflow"
+            style="?android:borderlessButtonStyle"/>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/handle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/date"
-        android:layout_centerHorizontal="true">
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="0sp">
 
         <de.passsy.holocircularprogressbar.HoloCircularProgressBar
             android:id="@+id/timeout"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_margin="10dp"
             app:progress="1" />
 
         <ImageView
@@ -73,30 +80,28 @@
             android:layout_gravity="center"
             android:src="@drawable/stat_unlock" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
+            android:background="#7e33"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="14dp"
+            tools:ignore="SpUsage" />
 
-    <ImageView
-        android:id="@+id/overflow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/right"
-        android:layout_below="@id/right"
-        android:layout_above="@id/handle"
-        android:layout_centerVertical="true"
-        android:clickable="true"
-        android:src="@drawable/ic_overflow"
-        android:background="?android:selectableItemBackground"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"/>
+    </FrameLayout>
 
     <RadioGroup
         android:id="@+id/radios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/handle"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
         android:animateLayoutChanges="true"
-        android:orientation="horizontal"
-        android:paddingTop="4dp" />
+        android:orientation="horizontal" />
 
-</RelativeLayout>
+</LinearLayout>

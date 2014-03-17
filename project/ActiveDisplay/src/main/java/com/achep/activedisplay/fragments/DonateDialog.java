@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,29 +25,26 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.cryptocoin.Bitcoin;
 import com.achep.activedisplay.cryptocoin.Coin;
-import com.achep.activedisplay.utils.ViewUtils;
-
-import java.util.List;
+import com.achep.activedisplay.utils.IntentUtils;
 
 /**
  * Donation dialog fragment.
  * <p/>
  * Provides an description of cryptocoin and ability
- * to donate.
+ * to donate via any cryptocoin or PayPal.
  */
 public class DonateDialog extends DialogFragment {
+
+    private static final String PAYPAL_DONATION_URL =
+            "http://goo.gl/UrecGo"; // shortened link to be able to get some stats
 
     private static class OnClickIntentLauncher implements DialogInterface.OnClickListener {
 
@@ -61,66 +58,60 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            try {
+            if (IntentUtils.hasActivityForThat(mContext, mIntent)) {
                 mContext.startActivity(mIntent);
-            } catch (android.content.ActivityNotFoundException ex) {
+            } else {
                 // TODO: Show toast message
-                ex.printStackTrace();
             }
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Coin coin = new Bitcoin();
-
         Activity activity = getActivity();
-        assert activity != null;
 
-        Drawable icon = getResources().getDrawable(coin.getIconResource());
-        CharSequence title = getString(R.string.donate_title);
-        CharSequence message = Html.fromHtml(getString(R.string.donate_message,
+        CharSequence messageText = Html.fromHtml(getString(R.string.donate_message,
                 getString(R.string.app_name),
                 coin.getBrowseUri().toString(),
                 coin.getWikiUri().toString(),
                 getString(coin.getNameResource())));
-
-        LayoutInflater inflater = (LayoutInflater) activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        TextView messageTextView = (TextView) inflater.inflate(R.layout.layout_dialog_message, null);
-        assert messageTextView != null;
-
-        // Setting up message
-        messageTextView.setMovementMethod(new LinkMovementMethod());
-        ViewUtils.safelySetText(messageTextView, message);
+        OnClickIntentLauncher payPalClick = createBrowserClicker(Uri.parse(PAYPAL_DONATION_URL));
 
         AlertDialog.Builder builder = new DialogHelper.Builder(getActivity())
-                .setIcon(icon)
-                .setTitle(title)
-                .setView(messageTextView)
-                .createAlertDialogBuilder()
-                .setNegativeButton(R.string.close, null);
+                .setIcon(coin.getIconResource())
+                .setTitle(R.string.donate_title)
+                .setMessage(messageText)
+                .wrap()
+                .setNegativeButton(R.string.close, null)
+                .setNeutralButton(R.string.donate_use_paypal, payPalClick);
 
         final Intent paymentIntent = Coin.getPaymentIntent(coin);
-        @SuppressWarnings("ConstantConditions")
-        final List apps = activity.getPackageManager().queryIntentActivities(paymentIntent, 0);
+        if (IntentUtils.hasActivityForThat(activity, paymentIntent)) {
 
-        if (apps != null && apps.size() > 0) {
-
-            // If user has any coin's wallet installed
-            // slap him with a large "Donate" button.
-            builder.setPositiveButton(R.string.donate,
-                    new OnClickIntentLauncher(getActivity(), paymentIntent));
+            // There's a wallet installed so show donation button
+            // to make the process faster.
+            builder.setPositiveButton(R.string.donate, createClicker(paymentIntent));
         } else {
-            Uri howtoUri = coin.getHowToUri();
-            if (howtoUri != null) {
-                Intent howtoIntent = new Intent(Intent.ACTION_VIEW, howtoUri);
-                builder.setPositiveButton(R.string.donate_how_to,
-                        new OnClickIntentLauncher(getActivity(), howtoIntent));
+
+            // Show tutorial button if link is present because user
+            // probably doesn't know about cryptocoins.
+            Uri howToUri = coin.getHowToUri();
+            if (howToUri != null) {
+                builder.setPositiveButton(R.string.donate_how_to, createBrowserClicker(howToUri));
             }
         }
 
         return builder.create();
+    }
+
+    private OnClickIntentLauncher createClicker(Intent intent) {
+        return new OnClickIntentLauncher(getActivity(), intent);
+    }
+
+    private OnClickIntentLauncher createBrowserClicker(Uri uri) {
+        return createClicker(new Intent(Intent.ACTION_VIEW, uri));
     }
 
 }

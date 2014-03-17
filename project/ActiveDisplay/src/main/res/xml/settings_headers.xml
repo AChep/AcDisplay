@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+
+     This program is free software; you can redistribute it and/or
+     modify it under the terms of the GNU General Public License
+     as published by the Free Software Foundation; either version 2
+     of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+     MA  02110-1301, USA.
+-->
+<preference-headers
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Lock screen -->
+    <header android:fragment="com.achep.activedisplay.settings.LockscreenFragment"
+        android:id="@+id/lockscreen_settings"
+        android:title="@string/settings_lockscreen_title"
+        android:icon="@drawable/ic_settings_lockscreen"/>
+
+    <!-- Active mode -->
+    <header android:fragment="com.achep.activedisplay.settings.ActiveFragment"
+        android:id="@+id/active_settings"
+        android:title="@string/settings_active_title"
+        android:icon="@drawable/ic_settings_active"/>
+
+    <!-- Notifications -->
+    <header android:fragment="com.achep.activedisplay.settings.NotificationFragment"
+        android:id="@+id/notification_settings"
+        android:title="@string/settings_notification_title"
+        android:icon="@drawable/ic_settings_notification"/>
+
+    <!-- Interface -->
+    <header android:fragment="com.achep.activedisplay.settings.InterfaceFragment"
+        android:id="@+id/interface_settings"
+        android:title="@string/settings_interface_title"
+        android:icon="@drawable/ic_settings_interface"/>
+
+    <!-- More -->
+    <header android:fragment="com.achep.activedisplay.settings.MoreFragment"
+        android:id="@+id/more_settings"
+        android:title="@string/settings_more_title"/>
+
+</preference-headers>

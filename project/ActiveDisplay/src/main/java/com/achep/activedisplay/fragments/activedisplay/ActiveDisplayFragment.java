@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,11 +20,11 @@ package com.achep.activedisplay.fragments.activedisplay;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,15 +34,15 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RadioGroup;
 import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.achep.activedisplay.Keys;
 import com.achep.activedisplay.Operator;
-import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.Timeout;
-import com.achep.activedisplay.blacklist.SharedList;
-import com.achep.activedisplay.fragments.MyFragment;
-import com.achep.activedisplay.notifications.Blacklist;
+import com.achep.activedisplay.activities.KeyguardActivity;
+import com.achep.activedisplay.blacklist.Blacklist;
+import com.achep.activedisplay.blacklist.activities.BlacklistActivity;
 import com.achep.activedisplay.notifications.NotificationPresenter;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
 import com.achep.activedisplay.utils.ViewUtils;
@@ -61,12 +61,12 @@ public class ActiveDisplayFragment extends MyFragment implements
 
     private static final int REFRESH_UI_NOTIFICATION = 1;
     private static final int REFRESH_UI_NOTIFICATION_LIST = 2;
-    private static final int REFRESH_UI_NOTIFICATION_STATE_INDICATOR = 4;
-    private static final int REFRESH_UI_TIMEOUT = 8;
+    private static final int REFRESH_UI_TIMEOUT = 4;
 
     private TextClock mDateView;
     private HoloCircularProgressBar mHandleTimeoutProgressBar;
     private ImageView mHandleIconImageView;
+    private TextView mNotificationNumber;
     private RadioGroup mRadioGroup;
 
     private View mOverflowView;
@@ -77,7 +77,6 @@ public class ActiveDisplayFragment extends MyFragment implements
     private NotificationPresenter mPresenter;
     private NotificationListener mNotificationListener = new NotificationListener();
     private Blacklist mBlacklist;
-    private BlacklistListener mBlacklistListener = new BlacklistListener();
     private boolean mBroadcasting;
 
     private Timeout mTimeout;
@@ -100,11 +99,9 @@ public class ActiveDisplayFragment extends MyFragment implements
 
         mBlacklist = Blacklist.getInstance(activity);
         mPresenter = NotificationPresenter.getInstance(getActivity());
-        synchronized (mPresenter.monitor) {
-            mPresenter.addOnNotificationListChangedListener(mNotificationListener);
-            updateNotification();
-            updateNotificationList();
-        }
+        mPresenter.addOnNotificationListChangedListener(mNotificationListener);
+        updateNotification();
+        updateNotificationList();
 
         setTimeoutPresenter(mTimeout); // may be null
 
@@ -115,12 +112,8 @@ public class ActiveDisplayFragment extends MyFragment implements
 
     @Override
     public void onDestroyView() {
-        mBlacklist.removeOnSharedListChangedListener(mBlacklistListener);
-
-        synchronized (mPresenter.monitor) {
-            mPresenter.removeOnNotificationListChangedListener(mNotificationListener);
-            mPresenter = null;
-        }
+        //mBlacklist.removeOnSharedListChangedListener(mBlacklistListener);
+        mPresenter.removeOnNotificationListChangedListener(mNotificationListener);
         if (mTimeout != null) {
             mTimeout.removeListener(this);
             mTimeout = null;
@@ -147,8 +140,6 @@ public class ActiveDisplayFragment extends MyFragment implements
             updateNotification();
         if (Operator.bitandCompare(v, REFRESH_UI_NOTIFICATION_LIST))
             updateNotificationList();
-        if (Operator.bitandCompare(v, REFRESH_UI_NOTIFICATION_STATE_INDICATOR))
-            updateNotificationStateIndicator();
         if (Operator.bitandCompare(v, REFRESH_UI_TIMEOUT))
             refreshTimeout();
     }
@@ -165,18 +156,14 @@ public class ActiveDisplayFragment extends MyFragment implements
                 boolean handled = true;
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        synchronized (mPresenter.monitor) {
 
-                            // Keep current selected notification to display
-                            // for all the time of this touch gesture.
-                            mPresenter.lockSelectedNotification();
-                        }
+                        // Keep current selected notification to display
+                        // for all the time of this touch gesture.
+                        mPresenter.lockSelectedNotification();
                         break;
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
-                        synchronized (mPresenter.monitor) {
-                            mPresenter.unlockSelectedNotification();
-                        }
+                        mPresenter.unlockSelectedNotification();
                         break;
                     default:
                         handled = false;
@@ -189,6 +176,7 @@ public class ActiveDisplayFragment extends MyFragment implements
         // handle
         mHandleTimeoutProgressBar = (HoloCircularProgressBar) handle.findViewById(R.id.timeout);
         mHandleIconImageView = (ImageView) handle.findViewById(R.id.icon);
+        mNotificationNumber = (TextView) handle.findViewById(R.id.count);
 
         // multi notifications
         mRadioGroup = (RadioGroup) root.findViewById(R.id.radios);
@@ -208,27 +196,18 @@ public class ActiveDisplayFragment extends MyFragment implements
             @SuppressWarnings("ConstantConditions")
             @Override
             public void onClick(View view) {
-                synchronized (mPresenter.monitor) {
-                    OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
-                    if (notification == null) {
-                        return;
-                    }
-
-                    Context context = view.getContext();
-                    mPopupMenu = new PopupMenu(context, view);
-                    mPopupMenu.inflate(R.menu.ad_overflow);
-
-                    // Manage available options.
-                    // TODO: Move it to OpenNotification class (?)
-                    Menu m = mPopupMenu.getMenu();
-                    boolean isBlacklisted = notification.isBlacklisted(context);
-                    m.findItem(R.id.action_add_to_blacklist).setVisible(!isBlacklisted);
-                    m.findItem(R.id.action_remove_from_blacklist).setVisible(isBlacklisted);
-
-                    mPopupMenu.setOnDismissListener(onDismissListener);
-                    mPopupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
-                    mPopupMenu.show();
+                OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
+                if (notification == null) {
+                    return;
                 }
+
+                Context context = view.getContext();
+                mPopupMenu = new PopupMenu(context, view);
+                mPopupMenu.inflate(R.menu.ad_overflow);
+
+                mPopupMenu.setOnDismissListener(onDismissListener);
+                mPopupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
+                mPopupMenu.show();
             }
         });
 
@@ -238,54 +217,44 @@ public class ActiveDisplayFragment extends MyFragment implements
     }
 
     private void updateNotification() {
-        if (tryPutTodo(REFRESH_UI_NOTIFICATION)) return;
-
-        updateNotificationStateIndicator();
-
-        synchronized (mPresenter.monitor) {
-            OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
-            boolean emptyNotification = notification == null;
-
-            ViewUtils.setVisible(mOverflowView, !emptyNotification && Project.DEBUG, View.INVISIBLE);
-            mHandleIconImageView.setImageDrawable(emptyNotification
-                    ? getResources().getDrawable(R.drawable.stat_unlock)
-                    : notification.getSmallIcon(getActivity()));
+        if (tryPutTodo(REFRESH_UI_NOTIFICATION)) {
+            return;
         }
+
+        final OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
+        final boolean emptyNotification = notification == null;
+
+        // Update overflow & notification icons
+        ViewUtils.setVisible(mOverflowView, !emptyNotification, View.INVISIBLE);
+        mHandleIconImageView.setImageDrawable(emptyNotification
+                ? getResources().getDrawable(R.drawable.stat_unlock)
+                : notification.getSmallIcon(getActivity()));
+
+        // Update notification number
+        final int number = emptyNotification ? 0 : notification.getNotificationData().number;
+        ViewUtils.setVisible(mNotificationNumber, number > 0);
+        mNotificationNumber.setText(Integer.toString(number));
     }
 
-    private void updateNotificationStateIndicator() {
-    /*
-        if (tryPutTodo(REFRESH_UI_NOTIFICATION_STATE_INDICATOR)) return;
-
-        synchronized (mPresenter.monitor) {
-            OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
-            ViewUtils.setVisible(mBlacklistedIndicator,
-                    notification != null && mBlacklist.contains(notification) && Project.DEBUG,
-                    View.GONE);
-        }
-    */
-    }
     private void updateNotificationList() {
         if (tryPutTodo(REFRESH_UI_NOTIFICATION_LIST)) return;
 
-        synchronized (mPresenter.monitor) {
-            boolean visible = Helper.updateNotificationList(mPresenter, mRadioGroup,
-                    R.layout.radio_notification_icon, getActivity().getLayoutInflater());
-            if (!visible) return;
+        boolean visible = Helper.updateNotificationList(mPresenter, mRadioGroup,
+                R.layout.radio_notification_icon, getActivity().getLayoutInflater());
+        if (!visible) return;
 
-            // Check current notification
-            final int size = mPresenter.getList().size();
-            final OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
-            for (int i = 0; i < size; i++) {
-                NotificationRadioButton nrb = (NotificationRadioButton) mRadioGroup.getChildAt(i);
+        // Check current notification
+        final int size = mPresenter.getList().size();
+        final OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
+        for (int i = 0; i < size; i++) {
+            NotificationRadioButton nrb = (NotificationRadioButton) mRadioGroup.getChildAt(i);
 
-                assert nrb != null;
-                nrb.setOnCheckedChangeListener(this);
-                if (notification == nrb.getNotification()) {
-                    mBroadcasting = true;
-                    nrb.setChecked(true);
-                    mBroadcasting = false;
-                }
+            assert nrb != null;
+            nrb.setOnCheckedChangeListener(this);
+            if (notification == nrb.getNotification()) {
+                mBroadcasting = true;
+                nrb.setChecked(true);
+                mBroadcasting = false;
             }
         }
     }
@@ -297,9 +266,7 @@ public class ActiveDisplayFragment extends MyFragment implements
         }
 
         NotificationRadioButton nrb = (NotificationRadioButton) compoundButton;
-        synchronized (mPresenter.monitor) {
-            mPresenter.setSelectedNotification(nrb.getNotification());
-        }
+        mPresenter.setSelectedNotification(nrb.getNotification());
     }
 
     // //////////////////////////////////////////
@@ -345,61 +312,49 @@ public class ActiveDisplayFragment extends MyFragment implements
     private class NotificationListener extends NotificationPresenter.SimpleOnNotificationListChangedListener {
 
         @Override
-        // running on wrong thread
         public void onNotificationEvent(NotificationPresenter nm,
                                         OpenStatusBarNotification notification,
                                         final int event) {
             super.onNotificationEvent(nm, notification, event);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    switch (event) {
-                        case SELECTED:
-                            updateNotification();
+            switch (event) {
+                case SELECTED:
+                    updateNotification();
 
-                            if (mPopupMenu != null) {
-                                mPopupMenu.dismiss();
-                            }
-                            break;
-                        default:
-                            updateNotificationList();
-                            break;
+                    if (mPopupMenu != null) {
+                        mPopupMenu.dismiss();
                     }
-                }
-            });
-        }
-    }
-
-    private class BlacklistListener implements SharedList.OnSharedListChangedListener<String> {
-
-        @Override
-        // running on ui thread
-        public void onPut(String object) {
-            updateNotificationStateIndicator();
-        }
-
-        @Override
-        // running on ui thread
-        public void onRemoved(String object) {
-            updateNotificationStateIndicator();
+                    break;
+                default:
+                    updateNotificationList();
+                    break;
+            }
         }
     }
 
     private class OverflowClickListener implements PopupMenu.OnMenuItemClickListener {
 
+        private Runnable mLaunchBlacklist = new Runnable() {
+            @Override
+            public void run() {
+                // TODO: Launch notification's app settings
+                startActivity(new Intent(getActivity(), BlacklistActivity.class));
+            }
+        };
+
         @Override
         public boolean onMenuItemClick(MenuItem item) {
-            synchronized (mPresenter.monitor) {
-                switch (item.getItemId()) {
-                    case R.id.action_add_to_blacklist:
-                        mBlacklist.put(getActivity(), mPresenter.getSelectedNotification());
-                        break;
-                    case R.id.action_remove_from_blacklist:
-                        mBlacklist.remove(getActivity(), mPresenter.getSelectedNotification());
-                        break;
-                    default:
-                        return false;
-                }
+            switch (item.getItemId()) {
+                case R.id.action_launch_blacklist:
+                    Activity activity = getActivity();
+                    if (activity instanceof KeyguardActivity) {
+                        KeyguardActivity keyguard = (KeyguardActivity) activity;
+                        keyguard.unlock(mLaunchBlacklist);
+                    } else {
+                        mLaunchBlacklist.run();
+                    }
+                    break;
+                default:
+                    return false;
             }
             return true;
         }

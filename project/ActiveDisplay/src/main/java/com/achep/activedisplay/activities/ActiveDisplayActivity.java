@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +33,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
+import android.service.notification.StatusBarNotification;
+import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -43,11 +43,11 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.achep.activedisplay.ActiveDisplayPresenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.DebugLayerView;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.Timeout;
 import com.achep.activedisplay.fragments.activedisplay.ActiveDisplayFragment;
 import com.achep.activedisplay.fragments.activedisplay.NotificationFragment;
 import com.achep.activedisplay.notifications.NotificationHelper;
@@ -61,11 +61,13 @@ import com.achep.activedisplay.widgets.WaveView;
 /**
  * Created by Artem on 25.01.14.
  */
-public class ActiveDisplayActivity extends Activity implements SensorEventListener,
-        ActiveDisplayFragment.OnEventListener,
-        Timeout.OnTimeoutEventListener {
+public class ActiveDisplayActivity extends KeyguardActivity implements
+        SensorEventListener,
+        ActiveDisplayFragment.OnEventListener {
 
     private static final String TAG = "ActiveDisplayActivity";
+
+    public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
 
     private WaveView mWaveView;
 
@@ -75,6 +77,7 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
     private View mFragmentPreviewContainer;
     private ImageView mUnlockImageView;
     private ImageView mLockImageView;
+    private View mContent;
 
     private View[] mClickableViews;
 
@@ -85,22 +88,25 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
     private final NotificationListener mNotificationListener = new NotificationListener();
 
     private Config mConfig;
-    private Timeout mTimeout;
+    private NotificationPresenter mPresenter;
+
     private SensorManager mSensorManager;
-    private boolean mUnlocking;
-    private boolean mLocking;
-    private boolean mPaused;
 
     private volatile boolean mLockFeature;
 
     // swipe to dismiss notification
     private float[] mTouchHyperbola = new float[2];
     private float[] mTouchDownHyperbola = new float[2];
+    private float[] mTouchDownOffset = new float[2];
     private DebugLayerView mDebugLayerView;
     private VelocityTracker mVelocityTracker;
 
+    // fade out effect
+    private View mBackgroundView;
+
     private float mMaxFlingVelocity;
     private float mMinFlingVelocity;
+    private GestureDetector mGestureDetector;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -109,14 +115,22 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
     }
 
     private void handleWindowFocusChanged(boolean hasFocus) {
+        int windowFlags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
         if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            getWindow().getDecorView().setSystemUiVisibility(visibility);
+            getWindow().addFlags(windowFlags);
+
+            getTimeout().release();
+            getTimeout().setTimeoutDelayed(mConfig.getTimeoutShort());
+        } else {
+            getWindow().clearFlags(windowFlags);
+            getTimeout().lock();
         }
     }
 
@@ -124,27 +138,39 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        int turnScreenOnFlag = 0;
+        if (intent != null) {
+            turnScreenOnFlag = WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON *
+                    MathUtils.bool(intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false));
+        }
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES);
+                | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES
+                | turnScreenOnFlag);
+
+        mConfig = Config.getInstance(this);
+        mPresenter = NotificationPresenter.getInstance(this);
+
+        if (mConfig.isWallpaperShown()) {
+            setTheme(R.style.ActiveDisplayTheme_Wallpaper);
+        }
 
         setContentView(R.layout.activity_active_display);
 
-        FragmentManager fm = getFragmentManager();
-        mFragmentNotification = (NotificationFragment)
-                fm.findFragmentById(R.id.notification_fragment);
-
+        mContent = findViewById(R.id.content);
+        mBackgroundView = findViewById(R.id.background);
         mDebugLayerView = (DebugLayerView) findViewById(R.id.debug);
         mWaveView = (WaveView) findViewById(R.id.wave);
-        mUnlockImageView = (ImageView) findViewById(R.id.unlock);
+        mUnlockImageView = (ImageView) mContent.findViewById(R.id.unlock);
         mUnlockImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                unlock();
+                unlock(null);
             }
         });
-        mLockImageView = (ImageView) findViewById(R.id.lock);
+        mLockImageView = (ImageView) mContent.findViewById(R.id.lock);
         mLockImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,13 +187,15 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                 // I should not care about syncing with NotificationPresenter because
                 // getting current notification from NotificationFragment will return
                 // current VISIBLE to user notification.
-                // Or is should...
-                OpenStatusBarNotification notification = mFragmentNotification.getNotification();
+                // Or I should...
+                final OpenStatusBarNotification notification = mPresenter.getSelectedNotification();
                 if (notification != null) {
-                    boolean successful = NotificationHelper.startContentIntent(notification);
-                    if (successful) {
-                        unlock();
-                    }
+                    unlock(new Runnable() {
+                        @Override
+                        public void run() {
+                            NotificationHelper.startContentIntent(notification);
+                        }
+                    });
                 }
             }
         });
@@ -175,12 +203,15 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
         ViewConfiguration vc = ViewConfiguration.get(this);
         mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
+        mGestureDetector = new GestureDetector(this, new GestureListener());
 
-        mTimeout = new Timeout();
-        mTimeout.addListener(this);
+
+        FragmentManager fm = getFragmentManager();
+        mFragmentNotification = (NotificationFragment)
+                fm.findFragmentById(R.id.notification_fragment);
         ActiveDisplayFragment activeDisplayFragment = (ActiveDisplayFragment)
                 fm.findFragmentById(R.id.active_display_fragment);
-        activeDisplayFragment.setTimeoutPresenter(mTimeout);
+        activeDisplayFragment.setTimeoutPresenter(getTimeout());
         activeDisplayFragment.setActiveDisplayActionsListener(this);
 
         mFragmentNotificationAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(
@@ -190,42 +221,49 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                 this, R.anim.card_flip_in_from_bottom);
         mFragmentPreviewAnimation.setTarget(mFragmentPreviewContainer);
 
-        mClickableViews = new View[]{mUnlockImageView, mLockImageView, mFragmentNotificationContainer};
+        mClickableViews = new View[]{
+                mUnlockImageView,
+                mLockImageView,
+                mFragmentNotificationContainer};
 
         // Register listeners
-        mConfig = Config.getInstance(this);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        registerReceiver(mTurnScreenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
-        NotificationPresenter np = NotificationPresenter.getInstance(this);
-        synchronized (np.monitor) {
-            np.addOnNotificationListChangedListener(mNotificationListener);
-        }
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(mTurnScreenOffReceiver, filter);
+
+        mPresenter.addOnNotificationListChangedListener(mNotificationListener);
+        handleSelectedNotificationChanged(mPresenter.getSelectedNotification());
+        handleNotificationCountChanged(mPresenter.getCount());
+
+        ActiveDisplayPresenter.getInstance().attachActivity(this);
+    }
+
+    private void handleSelectedNotificationChanged(OpenStatusBarNotification notification) {
+        boolean lockFeature = notification == null;
+        if (mLockFeature == lockFeature) return;
+        mLockFeature = lockFeature;
+    }
+
+    private void handleNotificationCountChanged(int count) {
+        ViewUtils.setVisible(mBackgroundView, count <= 1 && mConfig.isWallpaperShown());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mPaused = false;
-        mLocking = false;
-        mUnlocking = false;
-        if (mSensorManager != null)
-            mSensorManager.registerListener(this,
-                    mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),
-                    SensorManager.SENSOR_DELAY_NORMAL);
+        if (mSensorManager != null) mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),
+                SensorManager.SENSOR_DELAY_NORMAL);
 
-        setLockTimeout(mConfig.getTimeoutNormal(), true);
+        getTimeout().setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
         handleWindowFocusChanged(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPaused = true;
-        clearLockTimeout();
-
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(this);
-        }
+        if (mSensorManager != null) mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -233,52 +271,15 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
         super.onDestroy();
         unregisterReceiver(mTurnScreenOffReceiver);
         NotificationPresenter np = NotificationPresenter.getInstance(this);
-        synchronized (np.monitor) {
-            np.removeOnNotificationListChangedListener(mNotificationListener);
-        }
+        np.removeOnNotificationListChangedListener(mNotificationListener);
+
+        ActiveDisplayPresenter.getInstance().detachActivity();
     }
 
-    @Override
-    public void onTimeoutEvent(int event) {
-        switch (event) {
-            case Timeout.EVENT_TIMEOUT:
-                lock();
-                break;
-        }
-    }
-
-    private void lock() {
-        try {
-            DevicePolicyManager dpm = (DevicePolicyManager)
-                    getSystemService(Context.DEVICE_POLICY_SERVICE);
-            dpm.lockNow();
-
-            mLocking = true;
-        } catch (SecurityException e) {
-            mLocking = false;
-        }
-    }
-
-    private void unlock() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
-        mUnlocking = true;
-        clearLockTimeout();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-                overridePendingTransition(0, 0);
-            }
-        }, 100);
-    }
-
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean onTouchHandleEvent(View view, MotionEvent event) {
         final View notification = mFragmentNotificationContainer;
-        toSwipeCoordinates(mTouchHyperbola,
-                event.getX() - view.getWidth() / 2,
-                event.getY() - view.getHeight() / 2);
 
         float rawX = event.getRawX();
         float rawY = event.getRawY();
@@ -293,19 +294,23 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                 View decorView = getWindow().getDecorView();
                 mWaveView.init(
                         ViewUtils.getBottom(mLockFeature ?
-                                mLockImageView : mFragmentNotificationContainer, decorView),
+                                mLockImageView : notification, decorView),
                         ViewUtils.getTop(view, decorView) + view.getHeight() / 2,
                         ViewUtils.getTop(mUnlockImageView, decorView),
-                        view.getHeight() / 2);
+                        view.getHeight() / 2
+                );
                 mWaveView.animateExpand();
 
-                clearLockTimeout();
+                getTimeout().lock();
                 view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 
                 // ///////// -- SWIPE TO DISMISS -- /////////
 
                 if (!mLockFeature) {
                     toSwipeCoordinates(mTouchDownHyperbola, 0, 0);
+
+                    mTouchDownOffset[0] = event.getX();
+                    mTouchDownOffset[1] = event.getY();
 
                     mVelocityTracker = VelocityTracker.obtain();
                     mVelocityTracker.addMovement(event);
@@ -317,10 +322,16 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                 // ///////// -- SWIPE TO DISMISS -- /////////
 
                 if (!mLockFeature) {
+                    toSwipeCoordinates(mTouchHyperbola,
+                            event.getX() - mTouchDownOffset[0],
+                            event.getY() - mTouchDownOffset[1]);
+
                     float deltaX = mTouchHyperbola[0] - mTouchDownHyperbola[0];
+                    float alpha = Math.max(0f, Math.min(1f,
+                            1f - 2f * Math.abs(deltaX) / notification.getWidth()));
                     notification.setTranslationX(deltaX);
-                    notification.setAlpha(Math.max(0f, Math.min(1f,
-                            1f - 2f * Math.abs(deltaX) / notification.getWidth())));
+                    mBackgroundView.setAlpha(1 - alpha);
+                    mContent.setAlpha(alpha);
 
                     mVelocityTracker.addMovement(event);
                 }
@@ -338,13 +349,19 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                     }
                 }
+
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
+                getTimeout().release();
 
                 // ///////// -- SWIPE TO DISMISS -- /////////
 
                 if (!mLockFeature) {
+                    toSwipeCoordinates(mTouchHyperbola,
+                            event.getX() - mTouchDownOffset[0],
+                            event.getY() - mTouchDownOffset[1]);
+
                     mVelocityTracker.addMovement(event);
                     mVelocityTracker.computeCurrentVelocity(1000);
 
@@ -354,22 +371,29 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                     float velocityX = mVelocityTracker.getXVelocity();
                     float absVelocityX = Math.abs(velocityX);
                     float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
-                    float deltaX = mTouchHyperbola[0] - mTouchDownHyperbola[0];
-                    if (Math.abs(deltaX) > notification.getWidth() / 3) {
+                    final float deltaX = mTouchHyperbola[0] - mTouchDownHyperbola[0];
+                    float absDeltaX = Math.abs(deltaX);
+                    if (absDeltaX > notification.getWidth() / 3) {
                         dismiss = true;
                         dismissRight = deltaX > 0;
                     } else if (mMinFlingVelocity <= absVelocityX
                             && absVelocityX <= mMaxFlingVelocity
-                            && absVelocityY < absVelocityX
-                            && absVelocityY < absVelocityX) {
+                            && absVelocityY * 2 < absVelocityX
+                            && absDeltaX > notification.getWidth() / 5) {
                         // dismiss only if flinging in the same direction as dragging
                         dismiss = (velocityX < 0) == (deltaX < 0);
                         dismissRight = mVelocityTracker.getXVelocity() > 0;
                     }
 
                     if (dismiss) {
-                        notification.animate()
-                                .alpha(0f)
+                        int duration = Math.round(absDeltaX * 1000f / Math.max(absVelocityX, 500f));
+                        final StatusBarNotification statusBarNotification = mPresenter
+                                .getSelectedNotification()
+                                .getStatusBarNotification();
+
+                        mBackgroundView.animate().alpha(1f).setDuration(duration);
+                        mContent.animate().alpha(0f).setDuration(duration);
+                        notification.animate().setDuration(duration)
                                 .translationX(notification.getTranslationX()
                                         + notification.getWidth()
                                         * MathUtils.charge(deltaX))
@@ -381,9 +405,16 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
 
                                     @Override
                                     public void onAnimationCancel(Animator animation) {
-                                        NotificationHelper.dismissNotification(mFragmentNotification
-                                                .getNotification()
-                                                .getStatusBarNotification());
+                                        final int count = mPresenter.getCount();
+
+                                        NotificationHelper.dismissNotification(statusBarNotification);
+                                        if (count <= 1) {
+                                            lock();
+
+                                            // Do not update user interface to default
+                                            // screen cause it'll make some visual lags.
+                                            if (isLocking()) return;
+                                        }
 
                                         // Reset view presentation
                                         notification.setAlpha(1f);
@@ -391,7 +422,7 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
 
                                         showMainFragment();
                                     }
-                                }).start();
+                                });
 
                         break;
                     }
@@ -407,7 +438,7 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                         v.performClick();
                         v.refreshDrawableState();
                         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                        if (mUnlocking || mLocking) break main;
+                        if (isLocking() || isUnlocking()) break main;
                         break;
                     }
                 }
@@ -422,32 +453,29 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
 
     private void showMainFragment() {
         mWaveView.cancelExpand();
-
-        if (!mLockFeature)
-            mFragmentNotificationAnimation.cancel();
+        mFragmentNotificationAnimation.cancel();
         mFragmentPreviewAnimation.cancel();
         toggleVisibilities(true);
 
-        if (!mPaused) {
-            setLockTimeout(mConfig.getTimeoutShort());
-        }
+        getTimeout().setTimeoutDelayed(mConfig.getTimeoutShort());
     }
 
     private void toggleVisibilities(boolean showMain) {
         View main = mFragmentActiveDisplayContainer;
-        ViewUtils.setVisible(main, showMain, View.INVISIBLE);
-        main.animate().cancel();
-        if (showMain) {
+        if (showMain && main.getVisibility() != View.VISIBLE) {
             main.setAlpha(0);
-            main.animate().alpha(1).start();
+            main.animate().alpha(1).setDuration(180);
         }
 
+        mContent.setAlpha(1f);
+        mBackgroundView.setAlpha(0f);
+
+        ViewUtils.setVisible(main, showMain, View.INVISIBLE);
         ViewUtils.setVisible(mFragmentNotificationContainer, !mLockFeature && !showMain, View.INVISIBLE);
         ViewUtils.setVisible(mFragmentPreviewContainer, !mLockFeature && !showMain, View.INVISIBLE);
         ViewUtils.setVisible(mUnlockImageView, !showMain, View.INVISIBLE);
         ViewUtils.setVisible(mLockImageView, mLockFeature && !showMain, View.INVISIBLE);
     }
-
 
     private void toSwipeCoordinates(float[] out, float originX, float originY) {
         // x = (y0 - k1 * x0) / (k2 - k1)
@@ -471,20 +499,6 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
     // /////// -- ADDITIONAL SECURITY -- ////////
     // //////////////////////////////////////////
 
-    private void setLockTimeout(int delayMillis) {
-        setLockTimeout(delayMillis, false);
-    }
-
-    private void setLockTimeout(int delayMillis, boolean resetOld) {
-        if (!mUnlocking) {
-            mTimeout.setTimeoutDelayed(delayMillis, resetOld);
-        }
-    }
-
-    private void clearLockTimeout() {
-        mTimeout.clear();
-    }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         switch (event.sensor.getType()) {
@@ -501,7 +515,7 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
                 if (distance < 2 /* cm */) {
 
                     // Well, the device is probably somewhere in bag.
-                    setLockTimeout(mConfig.getTimeoutInstant());
+//                    getTimeout().setTimeoutDelayed(mConfig.getTimeoutInstant());
 
                     if (Project.DEBUG)
                         LogUtils.d(TAG, "Device is in pocket[proximity=" + distance
@@ -513,16 +527,18 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN)
-            setLockTimeout(mConfig.getTimeoutShort());
+        mGestureDetector.onTouchEvent(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                getTimeout().setTimeoutDelayed(mConfig.getTimeoutShort());
+                break;
+        }
         return super.onTouchEvent(event);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) { /* unused */ }
 
-    @Override
-    public void onBackPressed() { /* override back button */ }
 
     // //////////////////////////////////////////
     // ///////////// -- CLASSES -- //////////////
@@ -532,30 +548,46 @@ public class ActiveDisplayActivity extends Activity implements SensorEventListen
 
         @Override
         public void onReceive(final Context context, Intent intent) {
-
             // Finish the activity to avoid of displaying on turning screen on.
-            clearLockTimeout();
             finish();
         }
     }
 
-    private class NotificationListener extends NotificationPresenter.SimpleOnNotificationListChangedListener {
+    private class NotificationListener extends
+            NotificationPresenter.SimpleOnNotificationListChangedListener {
 
         @Override
-        // running on wrong thread
-        public void onNotificationEvent(NotificationPresenter nm,
-                                        OpenStatusBarNotification notification,
+        // running on wrong thread & already synced
+        public void onNotificationEvent(final NotificationPresenter nm,
+                                        final OpenStatusBarNotification notification,
                                         final int event) {
             super.onNotificationEvent(nm, notification, event);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    setLockTimeout(mConfig.getTimeoutNormal(), true);
+                    switch (event) {
+                        case SELECTED:
+                            handleSelectedNotificationChanged(notification);
+                            break;
+                        case POSTED:
+                        case REMOVED:
+                            handleNotificationCountChanged(nm.getCount());
+                            break;
+                    }
+
+                    getTimeout().setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
+
                 }
             });
-            if (event == SELECTED) {
-                mLockFeature = notification == null;
-            }
+        }
+    }
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            lock();
+            return true;
         }
     }
 }

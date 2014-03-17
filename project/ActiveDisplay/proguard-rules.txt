@@ -67,3 +67,6 @@
 -keepclassmembers public class com.achep.activedisplay.Config {
    *** *Timeout*(...);
 }
+
+# Keep settings' fragments to be able to access them from .xml
+-keep public class com.achep.activedisplay.settings.** extends android.app.Fragment

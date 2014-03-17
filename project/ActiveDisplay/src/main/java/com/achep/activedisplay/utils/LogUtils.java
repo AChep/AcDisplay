@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -71,7 +71,7 @@ public class LogUtils {
                     found = true;
 
                     StringBuilder sb = new StringBuilder();
-                    for (int j = i + 2; j < i + 5 && j < traces.length; j++) {
+                    for (int j = i + 2; j < i + 7 && j < traces.length; j++) {
                         sb.append(traces[j].getMethodName());
                         sb.append(" / ");
                     }
