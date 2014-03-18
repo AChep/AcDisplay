@@ -124,4 +124,12 @@
             tools:layout="@layout/fragment_ad" />
     </FrameLayout>
 
+    <!-- Smooth turning screen on -->
+    <View
+        android:id="@+id/foreground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/black"
+        android:alpha="1.0"/>
+
 </merge>

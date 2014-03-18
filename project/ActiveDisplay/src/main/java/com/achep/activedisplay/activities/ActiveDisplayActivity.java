@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.achep.activedisplay.ActiveDisplayPresenter;
 import com.achep.activedisplay.Config;
@@ -101,8 +102,9 @@ public class ActiveDisplayActivity extends KeyguardActivity implements
     private DebugLayerView mDebugLayerView;
     private VelocityTracker mVelocityTracker;
 
-    // fade out effect
+    // fade in/out effect
     private View mBackgroundView;
+    private View mForegroundView;
 
     private float mMaxFlingVelocity;
     private float mMinFlingVelocity;
@@ -161,6 +163,7 @@ public class ActiveDisplayActivity extends KeyguardActivity implements
 
         mContent = findViewById(R.id.content);
         mBackgroundView = findViewById(R.id.background);
+        mForegroundView = findViewById(R.id.foreground);
         mDebugLayerView = (DebugLayerView) findViewById(R.id.debug);
         mWaveView = (WaveView) findViewById(R.id.wave);
         mUnlockImageView = (ImageView) mContent.findViewById(R.id.unlock);
@@ -252,6 +255,7 @@ public class ActiveDisplayActivity extends KeyguardActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        mForegroundView.animate().alpha(0f).setDuration(800);
         if (mSensorManager != null) mSensorManager.registerListener(this,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),
                 SensorManager.SENSOR_DELAY_NORMAL);
