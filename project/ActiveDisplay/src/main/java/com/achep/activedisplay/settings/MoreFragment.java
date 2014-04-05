@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,7 +27,6 @@ import android.preference.PreferenceFragment;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.utils.DateUtils;
-import com.achep.activedisplay.utils.LogUtils;
 import com.achep.activedisplay.utils.MathUtils;
 
 /**
@@ -99,8 +98,8 @@ public class MoreFragment extends PreferenceFragment implements Config.OnConfigC
 
     private void updateTimeoutSummary(Config config) {
         mTimeoutPreference.setSummary(getString(R.string.settings_timeout_summary,
-                Float.toString(config.getTimeoutNormal() / 1000),
-                Float.toString(config.getTimeoutShort() / 1000)));
+                Float.toString(config.getTimeoutNormal() / 1000f),
+                Float.toString(config.getTimeoutShort() / 1000f)));
     }
 
     private void updateSwipeLeftSummary(Config config) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -91,10 +91,12 @@ class NotificationList {
     }
 
     public int indexOf(OpenStatusBarNotification n) {
-        for (int i = mList.size() - 1; i >= 0; i--) {
+        int size = mList.size();
+        for (int i = 0; i < size; i++) {
             OpenStatusBarNotification o = mList.get(i);
             if (o == null || o.getStatusBarNotification() == null) {
                 Log.wtf(TAG, "Null-notification found!");
+                throw new RuntimeException("Null-notification found! Notification list is probably corrupted. ");
             } else if (NotificationUtils.equals(n, o)) {
                 return i;
             }

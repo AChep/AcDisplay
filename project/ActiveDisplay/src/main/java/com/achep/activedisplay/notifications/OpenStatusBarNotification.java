@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,13 +19,10 @@
 package com.achep.activedisplay.notifications;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.service.notification.StatusBarNotification;
 
-import com.achep.activedisplay.R;
 import com.achep.activedisplay.blacklist.AppConfig;
 import com.achep.activedisplay.blacklist.Blacklist;
-import com.achep.activedisplay.notifications.parser.Parser;
 
 /**
  * Created by Artem on 23.01.14.
@@ -39,8 +36,9 @@ public class OpenStatusBarNotification {
         mStatusBarNotification = notification;
     }
 
-    public void parse(Context context) {
-        mNotificationData = Parser.parse(context, mStatusBarNotification);
+    public void loadData(Context context) {
+        mNotificationData = new NotificationData();
+        mNotificationData.loadNotification(context, mStatusBarNotification, false);
     }
 
     public static OpenStatusBarNotification wrap(StatusBarNotification notification) {
@@ -58,24 +56,12 @@ public class OpenStatusBarNotification {
         return mStatusBarNotification.equals(o);
     }
 
-    // -------------------------------------------------------------------------
-
     public StatusBarNotification getStatusBarNotification() {
         return mStatusBarNotification;
     }
 
     public NotificationData getNotificationData() {
         return mNotificationData;
-    }
-
-    // -------------------------------------------------------------------------
-
-    // TODO: Return special icon, not the random one.
-    public Drawable getSmallIcon(Context context) {
-        Drawable icon = NotificationUtils.getDrawable(context,
-                mStatusBarNotification,
-                mStatusBarNotification.getNotification().icon);
-        return icon != null ? icon : context.getResources().getDrawable(R.drawable.stat_test);
     }
 
     public AppConfig getAppConfig(Blacklist blacklist) {

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
-
-     This program is free software; you can redistribute it and/or
-     modify it under the terms of the GNU General Public License
-     as published by the Free Software Foundation; either version 2
-     of the License, or (at your option) any later version.
-
-     This program is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU General Public License for more details.
-
-     You should have received a copy of the GNU General Public License
-     along with this program; if not, write to the Free Software
-     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-     MA  02110-1301, USA.
--->
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
 <resources>
 
     <!-- All device dependent modification goes here -->
@@ -27,10 +27,6 @@
     <style name="AppTheme" parent="AppThemeBase">
         <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
 
-        <!-- My styles -->
-        <item name="circularProgressBarStyle">@style/CircularProgressBarStyle</item>
-        <item name="waveViewStyle">@style/WaveViewStyle</item>
-
         <!-- Dialog -->
         <item name="dialogTitleStyle">@style/Widget.Dialog.Title</item>
         <item name="dialogContentStyle">@style/Widget.Dialog.Content</item>
@@ -38,21 +34,25 @@
         <item name="textAppearanceDialogMessage">@style/TextAppearance.Dialog.Message</item>
         <item name="textAppearanceDialogInfo">@style/TextAppearance.Dialog.Info</item>
 
-        <!-- Active display -->
-        <item name="activeDisplayNotificationTitle">@style/Widget.ActiveDisplayNotification.Title</item>
-        <item name="activeDisplayNotificationMessage">@style/Widget.ActiveDisplayNotification.Message</item>
+        <!-- AcDisplay -->
+        <item name="acDisplayClock">@style/AcDisplay.Clock</item>
+        <item name="acDisplayClockSmall">@style/AcDisplay.Clock.Small</item>
+        <item name="acDisplayStatus">@style/AcDisplay.Status</item>
+        <item name="acDisplayNotificationTitle">@style/AcDisplay.Notification.Title</item>
+        <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message</item>
+        <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext</item>
     </style>
 
     <!-- All device dependent modification goes here -->
-    <style name="ActiveDisplayThemeBase" parent="AppTheme">
-    </style>
+    <style name="AcDisplayThemeBase" parent="AppTheme"/>
 
-    <style name="ActiveDisplayTheme" parent="ActiveDisplayThemeBase">
+    <style name="AcDisplayTheme" parent="AcDisplayThemeBase">
         <item name="android:inAnimation">@null</item>
         <item name="android:outAnimation">@null</item>
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="waveViewStyle">@style/WaveViewStyle</item>
-        <item name="circularProgressBarStyle">@style/CircularProgressBarStyle</item>
+
+        <!-- Keyguard background -->
+        <item name="android:windowBackground">@color/keyguard_background</item>
+        <item name="android:colorBackground">@color/keyguard_background</item>
 
         <!-- Theme.Holo.NoActionBar.Fullscreen -->
         <item name="android:windowActionBar">false</item>
@@ -61,13 +61,19 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="ActiveDisplayTheme.Wallpaper" parent="ActiveDisplayTheme">
+    <style name="AcDisplayTheme.Wallpaper" parent="AcDisplayTheme">
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowBackground">@color/keyguard_background</item>
+        <item name="android:windowBackground">@color/keyguard_background_semi</item>
         <item name="android:windowShowWallpaper">true</item>
-
-        <!-- Active display
-        <item name="activeDisplayNotificationTitle">@style/Widget.ActiveDisplayNotification.Title.WithShadows</item>
-        <item name="activeDisplayNotificationMessage">@style/Widget.ActiveDisplayNotification.Message.WithShadows</item> -->
     </style>
+
+    <style name="AcDisplayTheme.Wallpaper.WithShadow" parent="AcDisplayTheme.Wallpaper">
+        <item name="acDisplayClock">@style/AcDisplay.Clock.WithShadow</item>
+        <item name="acDisplayClockSmall">@style/AcDisplay.Clock.Small.WithShadow</item>
+        <item name="acDisplayStatus">@style/AcDisplay.Status.WithShadow</item>
+        <item name="acDisplayNotificationTitle">@style/AcDisplay.Notification.Title.WithShadow</item>
+        <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message.WithShadow</item>
+        <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext.WithShadow</item>
+    </style>
+
 </resources>

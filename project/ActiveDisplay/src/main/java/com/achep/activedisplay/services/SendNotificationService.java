@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +28,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.IBinder;
+
+import com.achep.activedisplay.Device;
 
 /**
  * Created by Artem on 15.02.14.
@@ -90,7 +92,11 @@ public class SendNotificationService extends Service {
         PendingIntent pendingIntent = PendingIntent.getService(context,
                 intent.getIntExtra(EXTRA_ID, 0), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayMillis, pendingIntent);
+        if (Device.hasKitKatApi()) {
+            am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayMillis, pendingIntent);
+        } else {
+            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayMillis, pendingIntent);
+        }
         return pendingIntent;
     }
 

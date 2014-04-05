@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 package com.achep.activedisplay.settings.preferences;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -53,6 +54,7 @@ public class TimeoutPreference extends DialogPreference implements
 
     private Group[] mGroups;
     private int[] mProgresses = new int[3];
+    private int mMin;
 
     public TimeoutPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -83,8 +85,9 @@ public class TimeoutPreference extends DialogPreference implements
                 (TextView) root.findViewById(R.id.short_timeout_value),
                 "setTimeoutShort", "getTimeoutShort");
 
-        final int max = getContext().getResources()
-                .getInteger(R.integer.config_timeout_maxDurationMillis) / MULTIPLIER;
+        Resources res = getContext().getResources();
+        final int max = res.getInteger(R.integer.config_timeout_maxDurationMillis) / MULTIPLIER;
+        mMin = res.getInteger(R.integer.config_timeout_minDurationMillis) / MULTIPLIER;
         mSoftStoredLabels = new SoftReference[max + 1];
 
         Config config = Config.getInstance(getContext());
@@ -159,6 +162,11 @@ public class TimeoutPreference extends DialogPreference implements
         group.textView.setText(label);
 
         if (!byUser) {
+            return;
+        }
+
+        if (progress < mMin) {
+            seekBar.setProgress(mMin);
             return;
         }
 

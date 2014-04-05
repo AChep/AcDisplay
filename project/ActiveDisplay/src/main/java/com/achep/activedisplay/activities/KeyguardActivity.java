@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,61 +20,75 @@ package com.achep.activedisplay.activities;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
-import com.achep.activedisplay.Timeout;
+import com.achep.activedisplay.R;
 
 /**
  * Created by Artem on 23.02.14.
  */
-public abstract class KeyguardActivity extends Activity implements Timeout.OnTimeoutEventListener {
+public abstract class KeyguardActivity extends Activity {
+
+    public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
+    public static final String EXTRA_FINISH_ON_SCREEN_OFF = "finish_on_screen_off";
+
+    private BroadcastReceiver mScreenOffReceiver;
 
     private boolean mLocking;
     private boolean mUnlocking;
 
-    private Timeout mTimeout = new Timeout();
-
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        boolean finishOnScreenOff = false;
+        int windowExtraFlags = 0;
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            finishOnScreenOff = intent.getBooleanExtra(EXTRA_FINISH_ON_SCREEN_OFF, false);
+            if (intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false)) {
+                windowExtraFlags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
+            }
+        }
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES
+                | windowExtraFlags);
 
         mLocking = false;
         mUnlocking = false;
-        mTimeout.addListener(this);
+
+        if (finishOnScreenOff) {
+            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            registerReceiver((mScreenOffReceiver = new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(final Context context, Intent intent) {
+                    finish();
+                }
+            }), filter);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mTimeout.release();
-
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         mUnlocking = false;
         mLocking = false;
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mTimeout.lock();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        mTimeout.removeListener(this);
-    }
-
-    @Override
-    public void onTimeoutEvent(int event) {
-        switch (event) {
-            case Timeout.EVENT_TIMEOUT:
-                lock();
-                break;
+        if (mScreenOffReceiver != null) {
+            unregisterReceiver(mScreenOffReceiver);
         }
     }
 
@@ -82,8 +96,6 @@ public abstract class KeyguardActivity extends Activity implements Timeout.OnTim
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         try {
             dpm.lockNow();
-
-            mTimeout.lock();
             mLocking = true;
         } catch (SecurityException e) {
             mLocking = false;
@@ -95,20 +107,20 @@ public abstract class KeyguardActivity extends Activity implements Timeout.OnTim
      *
      * @param runnable may be null
      */
-    public void unlock(final Runnable runnable) {
+    public void unlock(final Runnable runnable, final boolean finish) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        mTimeout.lock();
         mUnlocking = true;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (runnable != null) runnable.run();
-
-                finish();
-                overridePendingTransition(0, 0);
+                if (finish) {
+                    overridePendingTransition(0, 0);
+                    finish();
+                }
             }
-        }, 100 /* We need this delay to get new flags applied */);
+        }, 120 /* We need this delay to get new flags applied. */);
     }
 
     public final boolean isLocking() {
@@ -117,10 +129,6 @@ public abstract class KeyguardActivity extends Activity implements Timeout.OnTim
 
     public final boolean isUnlocking() {
         return mUnlocking;
-    }
-
-    public final Timeout getTimeout() {
-        return mTimeout;
     }
 
     @Override

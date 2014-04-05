@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,9 +24,8 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 
-import com.achep.activedisplay.activities.ActiveDisplayActivity;
+import com.achep.activedisplay.activities.AcDisplayActivity;
 import com.achep.activedisplay.services.LockscreenService;
-import com.achep.activedisplay.utils.LogUtils;
 import com.achep.activedisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class ActiveDisplayPresenter {
     public void stop(Context context) {
         if (mActivity != null
                 && mActivity.hasWindowFocus()
-                && mActivity.getTimeout().getTimeout() != 0
+               /* && mActivity.getTimeout().getTimeout() != 0*/
                 && PowerUtils.isScreenOn(context)) {
             mActivity.lock();
         }
@@ -66,18 +65,19 @@ public class ActiveDisplayPresenter {
         //      `---------'
         pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG).acquire(1000);
 
+        Config config = Config.getInstance(context);
+
+        kill();
         LockscreenService.ignoreCurrentTurningOn();
-        if (mActivity != null) mActivity.finish();
         context.startActivity(new Intent(Intent.ACTION_MAIN, null)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
                         | Intent.FLAG_ACTIVITY_NO_USER_ACTION
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_FROM_BACKGROUND)
-                .putExtra(ActiveDisplayActivity.EXTRA_TURN_SCREEN_ON, true)
-                .setClass(context, ActiveDisplayActivity.class));
-
-        LogUtils.track();
+                .putExtra(AcDisplayActivity.EXTRA_TURN_SCREEN_ON, true)
+                .putExtra(AcDisplayActivity.EXTRA_FINISH_ON_SCREEN_OFF, !config.isLockscreenEnabled())
+                .setClass(context, AcDisplayActivity.class));
     }
 
     public void kill() {
@@ -94,7 +94,7 @@ public class ActiveDisplayPresenter {
     private static ActiveDisplayPresenter sActiveDisplayPresenter;
 
     private ArrayList<OnActiveDisplayStateChangedListener> mListeners;
-    private ActiveDisplayActivity mActivity;
+    private AcDisplayActivity mActivity;
 
     public static synchronized ActiveDisplayPresenter getInstance() {
         if (sActiveDisplayPresenter == null)
@@ -114,7 +114,7 @@ public class ActiveDisplayPresenter {
         if (mListeners.contains(listener)) mListeners.remove(listener);
     }
 
-    public void attachActivity(ActiveDisplayActivity activity) {
+    public void attachActivity(AcDisplayActivity activity) {
         mActivity = activity;
 
         for (OnActiveDisplayStateChangedListener listener : mListeners) {
@@ -130,7 +130,7 @@ public class ActiveDisplayPresenter {
         return mActivity != null;
     }
 
-    public ActiveDisplayActivity getActivity() {
+    public AcDisplayActivity getActivity() {
         return mActivity;
     }
 

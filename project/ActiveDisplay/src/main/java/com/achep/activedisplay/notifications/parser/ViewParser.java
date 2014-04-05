@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,10 @@
  */
 package com.achep.activedisplay.notifications.parser;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
+import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,25 +30,26 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import com.achep.activedisplay.Device;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.notifications.NotificationData;
 import com.achep.activedisplay.notifications.NotificationUtils;
-import com.achep.activedisplay.utils.LogUtils;
 
 import java.util.ArrayList;
 
 /**
  * Jelly bean 4.3 backport.
  */
-final class ViewParser implements Parser.NotificationParser {
+public final class ViewParser implements IExtractor {
 
     private static final String TAG = "ViewParser";
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public NotificationData parse(Context contextApp, StatusBarNotification notification, NotificationData nd) {
+    public NotificationData loadTexts(Context contextApp, StatusBarNotification notification, NotificationData data) {
         Log.i(TAG, "Parsing notification using view parser.");
 
-        nd.number = notification.getNotification().number;
+        data.number = notification.getNotification().number;
 
         // Replace app's context with notification's context
         // to be able to get its resources.
@@ -54,97 +57,93 @@ final class ViewParser implements Parser.NotificationParser {
         final Notification n = notification.getNotification();
         final RemoteViews rvs = n.bigContentView == null ? n.contentView : n.bigContentView;
 
-        ViewGroup view;
+        // TODO: Compare both bigContentView and contentView to get actions and so.
+
+        LayoutInflater inflater = (LayoutInflater) contextNotify.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup view = (ViewGroup) inflater.inflate(rvs.getLayoutId(), null);
+
+        if (view == null) {
+            Log.e(TAG, "Failed to inflate notification\'s layout.");
+            return data;
+        }
         try {
-            LayoutInflater inflater = (LayoutInflater) contextNotify.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = (ViewGroup) inflater.inflate(rvs.getLayoutId(), null);
-            if (view == null) {
-                LogUtils.track();
-                return nd;
-            }
             rvs.reapply(contextNotify, view);
         } catch (Exception e) {
-            LogUtils.track();
+            Log.e(TAG, "Failed to reapply content from remote view.");
             e.printStackTrace();
-            return nd;
+            return data;
         }
 
-        ArrayList<ViewParentLink<TextView>> textViews =
-                new RecursiveFinder<>(TextView.class)
-                        .expand(view, true);
-        ViewParentLink<TextView> title = findTitleTextView(textViews);
+        ArrayList<TextView> textViews = new RecursiveFinder<>(TextView.class).expand(view, true);
 
-        nd.titleText = title.view.getText();
-        nd.messageText = findMessageText(contextApp, textViews, n, title);
-        return nd;
-    }
-
-    private ViewParentLink<TextView> findTitleTextView(
-            ArrayList<ViewParentLink<TextView>> textViewsList) {
-        int item = 0;
-        float maxTextSize = textViewsList.get(item).view.getTextSize();
-
-        final int size = textViewsList.size();
-        for (int i = 1; i < size; i++) {
-            float textSize = textViewsList.get(i).view.getTextSize();
-            if (textSize > maxTextSize) {
-                maxTextSize = textSize;
-                item = i;
-            }
-        }
-
-        return textViewsList.get(item);
-    }
-
-    private String findMessageText(Context context,
-                                   ArrayList<ViewParentLink<TextView>> textViewsList,
-                                   Notification notification,
-                                   ViewParentLink<TextView> title) {
-        float subtextSize = context.getResources().getDimension(R.dimen.notification_subtext_size);
-        int offset = 0;
-
-        // Remove title view
-        textViewsList.remove(title);
-
-        // Remove a lot of unneeded action texts
-        if (notification.actions != null)
-            for (Notification.Action action : notification.actions) {
-                final int size = textViewsList.size();
-                for (int i = 0; i < size; i++) {
-                    CharSequence text = textViewsList.get(i).view.getText();
+        // Get rid of notification' actions
+        if (Device.hasKitKatApi() && n.actions != null) {
+            for (Notification.Action action : n.actions) {
+                for (int i = textViews.size() - 1; i >= 0; i--) {
+                    CharSequence text = textViews.get(i).getText();
                     assert text != null;
                     if (text.equals(action.title)) {
-                        textViewsList.remove(i);
+                        textViews.remove(i);
                         break;
                     }
                 }
             }
+        }
 
+        // Clickable views are probably not needed too.
+        for (int i = textViews.size() - 1; i >= 0; i--) {
+            if (textViews.get(i).isClickable()) {
+                textViews.remove(i);
+                break;
+            }
+        }
+
+        TextView title = findTitleTextView(textViews);
+        textViews.remove(title); // no need of title
+
+        data.titleText = title.getText();
+        data.messageText = findMessageText(contextApp, textViews);
+        return data;
+    }
+
+    private TextView findTitleTextView(ArrayList<TextView> textViewsList) {
+        // The idea is that title text is biggest from all
+        // views here.
+        TextView biggest = null;
+        for (TextView textView : textViewsList) {
+            if (biggest == null || textView.getTextSize() > biggest.getTextSize()) {
+                biggest = textView;
+            }
+        }
+        return biggest;
+    }
+
+    private String findMessageText(Context context, ArrayList<TextView> textViewsList) {
         // Remove subtexts such as time or progress text.
-        int size = textViewsList.size();
-        for (int i = 0; i < size; i++) {
-            final int k = i + offset;
-            final TextView view = textViewsList.get(k).view;
+        float subtextSize = context.getResources().getDimension(R.dimen.notification_subtext_size);
+        for (int i = textViewsList.size() - 1; i >= 0; i--) {
+            final TextView view = textViewsList.get(i);
+            final String text = view.getText().toString();
             if (view.getTextSize() == subtextSize
-                    || view.toString().matches("^(\\s*|)$")) {
-                textViewsList.remove(k);
-                offset--;
+                    || text.matches("^(\\s*|)$")
+                    || text.matches("^\\d{1,2}:\\d{1,2}(\\s?\\w{2}|)$")) {
+                textViewsList.remove(i);
             }
         }
 
         StringBuilder sb = new StringBuilder();
-        for (ViewParentLink<TextView> tv : textViewsList) {
-            sb.append(tv.view.getText());
+        for (TextView tv : textViewsList) {
+            sb.append(tv.getText());
             sb.append('\n');
         }
         if (sb.length() > 0) sb.delete(sb.length() - 1, sb.length());
 
-        return Parser.removeSpaces(sb.toString());
+        return Utils.removeSpaces(sb.toString());
     }
 
     private static class RecursiveFinder<T extends View> {
 
-        private final ArrayList<ViewParentLink<T>> list;
+        private final ArrayList<T> list;
         private final Class<T> clazz;
 
         public RecursiveFinder(Class<T> clazz) {
@@ -152,37 +151,26 @@ final class ViewParser implements Parser.NotificationParser {
             this.clazz = clazz;
         }
 
-        private ArrayList<ViewParentLink<T>> expand(ViewGroup viewGroup, boolean visibleOnly) {
+        public ArrayList<T> expand(ViewGroup viewGroup, boolean visibleOnly) {
             int offset = 0;
             int childCount = viewGroup.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View child = viewGroup.getChildAt(i + offset);
 
-                if (child == null || (visibleOnly && child.getVisibility() != View.VISIBLE)) {
+                if (child == null
+                        || visibleOnly && child.getVisibility() != View.VISIBLE) {
                     continue;
                 }
 
                 if (clazz.isAssignableFrom(child.getClass())) {
                     //noinspection unchecked
-                    list.add(new ViewParentLink<>((T) child, viewGroup));
+                    list.add((T) child);
                 } else if (child instanceof ViewGroup) {
                     expand((ViewGroup) child, visibleOnly);
                 }
             }
             return list;
         }
-    }
-
-    private static class ViewParentLink<T extends View> {
-
-        private ViewGroup parent;
-        private T view;
-
-        public ViewParentLink(T view, ViewGroup parent) {
-            this.parent = parent;
-            this.view = view;
-        }
-
     }
 
 }

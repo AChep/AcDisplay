@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,8 +27,9 @@ import android.text.format.DateFormat;
 public class DateUtils {
 
     public static String formatTime(Context context, int h, int m) {
-        if (h > 12 && !DateFormat.is24HourFormat(context)) {
-            h -= 12;
+        if (!DateFormat.is24HourFormat(context)) {
+            if (h == 0) h = 12;
+            else if (h >= 13) h -= 12;
         }
         return h + ":" + (m < 10 ? "0" + m : m);
     }

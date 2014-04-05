@@ -25,7 +25,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 /**
- * Helper for the common pattern of implementing a {@link android.content.BroadcastReceiver}
+ * Helper for the common pattern of implementing a {@link BroadcastReceiver}
  * that receives a device wakeup event and then passes the work off
  * to a {@link android.app.Service}, while ensuring that the
  * device does not go back to sleep during the transition.
@@ -36,22 +36,22 @@ import android.util.SparseArray;
  *
  * <h3>Example</h3>
  *
- * <p>A {@link android.support.v4.content.WakefulBroadcastReceiver} uses the method
- * {@link android.support.v4.content.WakefulBroadcastReceiver#startWakefulService startWakefulService()}
+ * <p>A {@link WakefulBroadcastReceiver} uses the method
+ * {@link WakefulBroadcastReceiver#startWakefulService startWakefulService()}
  * to start the service that does the work. This method is comparable to
  * {@link android.content.Context#startService startService()}, except that
- * the {@link android.support.v4.content.WakefulBroadcastReceiver} is holding a wake lock when the service
+ * the {@link WakefulBroadcastReceiver} is holding a wake lock when the service
  * starts. The intent that is passed with
- * {@link android.support.v4.content.WakefulBroadcastReceiver#startWakefulService startWakefulService()}
+ * {@link WakefulBroadcastReceiver#startWakefulService startWakefulService()}
  * holds an extra identifying the wake lock.</p>
  *
  * {@sample development/samples/Support4Demos/src/com/example/android/supportv4/content/SimpleWakefulReceiver.java complete}
  *
  * <p>The service (in this example, an {@link android.app.IntentService}) does
  * some work. When it is finished, it releases the wake lock by calling
- * {@link android.support.v4.content.WakefulBroadcastReceiver#completeWakefulIntent
+ * {@link WakefulBroadcastReceiver#completeWakefulIntent
  * completeWakefulIntent(intent)}. The intent it passes as a parameter
- * is the same intent that the {@link android.support.v4.content.WakefulBroadcastReceiver} originally
+ * is the same intent that the {@link WakefulBroadcastReceiver} originally
  * passed in.</p>
  *
  * {@sample development/samples/Support4Demos/src/com/example/android/supportv4/content/SimpleWakefulService.java complete}
@@ -60,7 +60,7 @@ public abstract class WakefulBroadcastReceiver extends BroadcastReceiver {
     private static final String EXTRA_WAKE_LOCK_ID = "android.support.content.wakelockid";
 
     private static final SparseArray<PowerManager.WakeLock> mActiveWakeLocks
-            = new SparseArray<>();
+            = new SparseArray<PowerManager.WakeLock>();
     private static int mNextId = 1;
 
     /**

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
-
-     This program is free software; you can redistribute it and/or
-     modify it under the terms of the GNU General Public License
-     as published by the Free Software Foundation; either version 2
-     of the License, or (at your option) any later version.
-
-     This program is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU General Public License for more details.
-
-     You should have received a copy of the GNU General Public License
-     along with this program; if not, write to the Free Software
-     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-     MA  02110-1301, USA.
--->
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
 <resources>
 
     <string name="close">Close</string>
@@ -43,26 +43,39 @@
         Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
         <br/>
         Many thanks to those open source tools:
-        <a href="https://github.com/passsy/android-HoloCircularProgressBar/">HoloCircularProgressBar</a>,
+        <a href="https://github.com/romannurik/Android-SwipeToDismiss/">Android-SwipeToDismiss</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
-        <a href="http://commons.apache.org/">Apache Commons</a> and to all who <a href="https://crowdin.net/project/acdisplay">helped with translations</a>.
+        <a href="http://commons.apache.org/">Apache Commons</a> and to all who
+        <a href="https://crowdin.net/project/acdisplay">helped with translations</a> or
+        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
     ]]></string>
 
     <!-- Help -->
     <string name="help">Help</string>
     <string name="help_message"><![CDATA[
-        <font color="#ffffff"><b>How to uninstall this app?</b></font><br/>
-        Go to Settings/Security click <a href="acdisplay://launch_device_admins_activity">Device administrators</a>
-        and click AcDisplay so it\'s not checked. Now you can <a href="acdisplay://launch_uninstall_screen">uninstall</a>
-        the app like normal via the apps list or the play store.<br/>
+        <font color="#ffffff"><b><i>How can I uninstall this app?</i></b></font><br/>
+        Go to Settings > Security > <a href="acdisplay_internal://launch_device_admins_activity">Device Administrators</a> and uncheck AcDisplay.
+        You can now <a href="acdisplay_internal://uninstall">uninstall</a> AcDisplay normally.<br/>
         <br/>
-        <font color="#ffffff"><b>What is an active mode?</b></font><br/>
-        Active mode uses the device\'s sensors to wake up your device just when you need it.
-        This works great for pulling your device from your pocket to get a quick glimpse at notifications.
-        Active mode doesn\'t lock CPU running so you shouldn\'t see much of a battery difference.<br/>
+        <font color="#ffffff"><b><i>What is an active mode?</i></b></font><br/>
+        Active mode uses the device\'s sensors to wake your device up when you need it.
+        This works great if you want to pull your device from your pocket and get a quick glimpse at the notifications you\'ve received.
+        Active mode doesn\'t keep the CPU running so you shouldn\'t see a big difference in battery consumption.<br/>
         <br/>
-        <font color="#ffffff"><b>Can I help with translation?</b></font><br/>
-        Yes of course! Welcome to <a href="https://crowdin.net/project/acdisplay">project\'s page</a> on <a href="https://crowdin.net/">crowdin</a>.
+        <b><a href="http://goo.gl/PT1sPt">Read full FAQ…</a></b>
+    ]]></string>
+
+    <!-- News -->
+    <string name="news_message"><![CDATA[
+        Welcome to the new version of AcDisplay!
+        The update brings a completely new unique design and active mode.
+        The design is more streamlined and is aimed at giving you the best possible experience!<br/>
+        <br/>
+        Hello,<br/>
+        First of all I want to thank you for the amount of downloads and high ratings on Play Store.
+        Huge progress has been done in AcDisplay and to keep it <a href="https://www.github.com/AChep/AcDisplay">open</a> for everyone, and now I need some help from you.<br/>
+        This is my last school year and I would like to buy a notebook for future studies and to compile the world.
+        I would highly appreciate your help with it.
     ]]></string>
 
 </resources>

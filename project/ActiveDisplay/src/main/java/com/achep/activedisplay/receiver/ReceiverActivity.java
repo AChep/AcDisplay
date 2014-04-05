@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,24 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
 package com.achep.activedisplay.receiver;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.achep.activedisplay.Project;
-import com.achep.activedisplay.utils.IntentUtils;
+import com.achep.activedisplay.Config;
+import com.achep.activedisplay.R;
+import com.achep.activedisplay.utils.ToastUtils;
 
 /**
- * Created by Artem on 12.03.14.
+ * Created by Artem on 26.03.2014.
  */
 public class ReceiverActivity extends Activity {
 
-    private static final String TAG = "ReceiverActivity";
+    private static final String TAG = "PublicReceiverActivity";
+
+    public static final String HOST_ENABLE = "enable";
+    public static final String HOST_DISABLE = "disable";
+    public static final String HOST_TOGGLE = "toggle";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,61 +45,51 @@ public class ReceiverActivity extends Activity {
 
         Intent intent = getIntent();
         if (intent != null) {
-
-            if (Project.DEBUG) Log.d(TAG, "" + intent.getPackage());
-            if (true) {
-                handleLocalIntent(intent);
-            } else {
-                handleIntent(intent);
-            }
+            handleIntent(intent);
         } else {
-            Log.wtf(TAG, "Got an empty launch intent.");
+            Log.i(TAG, "Got an empty launch intent.");
         }
 
         finish();
     }
 
-    private void handleLocalIntent(Intent intent) {
-        Uri data = intent.getData();
-
-        if (data == null) {
-            return;
-        }
-
-        String host = data.getHost();
-
-        if (host == null) {
-            return;
-        }
-
-        switch (host) {
-            case "launch_device_admins_activity":
-                Intent launchIntent = new Intent().setComponent(new ComponentName(
-                        "com.android.settings",
-                        "com.android.settings.DeviceAdminSettings"));
-                if (IntentUtils.hasActivityForThat(this, launchIntent)) {
-                    startActivity(launchIntent);
-                } else {
-                    // TODO: Show toast message
-                }
-                break;
-            case "launch_uninstall_screen":
-                Uri packageUri = Uri.parse("package:" + Project.getPackageName(this));
-                launchIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-                if (IntentUtils.hasActivityForThat(this, launchIntent)) {
-                    startActivity(launchIntent);
-                } else {
-                    // TODO: Show toast message
-                }
-                break;
-            default:
-                Log.wtf(TAG, "Got an unknown intent: " + host);
-                break;
-        }
-    }
-
     private void handleIntent(Intent intent) {
+        String host = LocalReceiverActivity.extractHost(intent);
+        if (host == null) {
+            Log.i(TAG, "Got an empty launch intent.");
+            return;
+        }
 
+        Config config;
+        switch (host) {
+            case HOST_ENABLE:
+                Log.i(TAG, "Enabling active display by remote intent.");
+                ToastUtils.showLong(this, getString(R.string.remote_enable_acdisplay));
+
+                Config.getInstance(this).setActiveDisplayEnabled(this, true, null);
+                break;
+
+            case HOST_DISABLE:
+                Log.i(TAG, "Disabling active display by remote intent.");
+                ToastUtils.showLong(this, getString(R.string.remote_disable_acdisplay));
+
+                Config.getInstance(this).setActiveDisplayEnabled(this, false, null);
+                break;
+
+            case HOST_TOGGLE:
+                Log.i(TAG, "Toggling active display by remote intent.");
+                config = Config.getInstance(this);
+                config.setActiveDisplayEnabled(this, !config.isActiveDisplayEnabled(), null);
+
+                ToastUtils.showLong(this, getString(config.isActiveDisplayEnabled()
+                        ? R.string.remote_enable_acdisplay
+                        : R.string.remote_disable_acdisplay));
+                break;
+
+            default:
+                Log.i(TAG, "Got an unknown intent: " + host);
+                break;
+        }
     }
 
 }

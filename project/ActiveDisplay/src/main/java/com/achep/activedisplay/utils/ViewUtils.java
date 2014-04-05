@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,18 +40,18 @@ public class ViewUtils {
                 y >= top && y <= top + view.getHeight();
     }
 
-    public static int getTop(View view, View decorView) {
+    public static int getLeft(View view) {
         view.getLocationInWindow(coordinates);
-        int top = coordinates[1];
-        decorView.getLocationInWindow(coordinates);
-        return top - coordinates[1];
+        return coordinates[0];
     }
 
-    public static int getBottom(View view, View decorView) {
+    public static int getTop(View view) {
         view.getLocationInWindow(coordinates);
-        int bottom = coordinates[1] + view.getHeight();
-        decorView.getLocationInWindow(coordinates);
-        return bottom - coordinates[1];
+        return coordinates[1];
+    }
+
+    public static int getBottom(View view) {
+        return getTop(view) + view.getHeight();
     }
 
     // //////////////////////////////////////////
@@ -62,8 +62,13 @@ public class ViewUtils {
         setVisible(view, visible, View.GONE);
     }
 
-    public static void setVisible(View view, boolean visible, int notVisible) {
-        view.setVisibility(visible ? View.VISIBLE : notVisible);
+    public static void setVisible(View view, boolean visible, int invisibleFlag) {
+        int visibility = view.getVisibility();
+        int visibilityNew = visible ? View.VISIBLE : invisibleFlag;
+
+        if (visibility != visibilityNew) {
+            view.setVisibility(visibilityNew);
+        }
     }
 
     public static void safelySetText(TextView textView, CharSequence text) {

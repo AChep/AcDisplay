@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,8 +25,12 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +43,7 @@ import android.widget.Switch;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.NotificationIds;
+import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.admin.AdminReceiver;
 import com.achep.activedisplay.blacklist.activities.BlacklistActivity;
@@ -72,7 +77,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
 
         mConfig = Config.getInstance(this);
         mConfig.addOnConfigChangedListener(this);
@@ -100,6 +105,23 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 }
             }
         });
+
+
+        try {
+            PackageInfo pi = getPackageManager().getPackageInfo(Project.getPackageName(this), 0);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+            int oldVersionCode = prefs.getInt("previous_version_code", 0);
+            if (oldVersionCode < pi.versionCode) {
+                prefs.edit().putInt("previous_version_code", pi.versionCode).commit();
+
+                if (oldVersionCode < 15 /* version v2.0- */) {
+                    DialogHelper.showNewsDialog(this);
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.wtf(TAG, "Failed to find my PackageInfo.");
+        }
     }
 
     @Override
@@ -190,6 +212,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 startActivity(new Intent(this, BlacklistActivity.class));
                 break;
             case R.id.action_test:
+                // startActivity(new Intent(this, AcDisplayActivity.class));
                 Intent contentIntent = new Intent(this, MainActivity.class);
                 Intent notificationIntent = SendNotificationService
                         .createNotificationIntent(this, getString(R.string.app_name),

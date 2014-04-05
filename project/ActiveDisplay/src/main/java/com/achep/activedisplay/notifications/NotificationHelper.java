@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ package com.achep.activedisplay.notifications;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.service.notification.StatusBarNotification;
+import android.util.Log;
 
 import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.utils.PendingIntentUtils;
@@ -29,6 +30,8 @@ import com.achep.activedisplay.utils.PendingIntentUtils;
  * Created by Artem on 19.01.14.
  */
 public class NotificationHelper {
+
+    private static final String TAG = "NotificationHelper";
 
     public static boolean startContentIntent(OpenStatusBarNotification notification) {
         return startContentIntent(notification.getStatusBarNotification());
@@ -55,6 +58,9 @@ public class NotificationHelper {
                     notification.getPackageName(),
                     notification.getTag(),
                     notification.getId());
+            NotificationPresenter.getInstance(nhs).removeNotification(nhs, notification);
+        } else {
+            Log.e(TAG, "Failed to dismiss notification due to offline notification service.");
         }
     }
 

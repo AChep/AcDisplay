@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.achep.activedisplay.Project;
@@ -33,7 +32,7 @@ import com.achep.activedisplay.Project;
 /**
  * Created by Artem on 08.03.14.
  */
-public class ProximitySensor extends ActiveModeService.ActiveModeSensor implements
+public class ProximitySensor extends ActiveSensor implements
         SensorEventListener {
 
     private static final String TAG = "ProximitySensor";
@@ -54,13 +53,13 @@ public class ProximitySensor extends ActiveModeService.ActiveModeSensor implemen
     private Runnable mLockRunnable = new Runnable() {
         @Override
         public void run() {
-            stopActiveDisplay(mContext);
+            notifyHideEvent();
         }
     };
     private Runnable mLaunchRunnable = new Runnable() {
         @Override
         public void run() {
-            launchActiveDisplay(mContext);
+            notifyShowEvent();
         }
     };
 
@@ -75,8 +74,9 @@ public class ProximitySensor extends ActiveModeService.ActiveModeSensor implemen
         return (getTimeNow() - sLastEventTime < 1000 || sAttached) && sProximityNear;
     }
 
-    private static long getTimeNow() {
-        return SystemClock.elapsedRealtime();
+    @Override
+    public int getType() {
+        return PROXIMITY;
     }
 
     @Override
@@ -85,11 +85,11 @@ public class ProximitySensor extends ActiveModeService.ActiveModeSensor implemen
     }
 
     @Override
-    protected void onAttach(SensorManager sensorManager, Context context) {
+    protected void onAttached(SensorManager sensorManager, Context context) {
         Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         assert proximitySensor != null; // Otherwise excluded by Service.
 
-        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, proximitySensor, 0 /* proximity is event based */);
         mMaximumRange = proximitySensor.getMaximumRange();
         mContext = context;
 
@@ -101,7 +101,7 @@ public class ProximitySensor extends ActiveModeService.ActiveModeSensor implemen
     }
 
     @Override
-    protected void onDetach(SensorManager sensorManager) {
+    protected void onDetached(SensorManager sensorManager) {
         sensorManager.unregisterListener(this);
         mHandler.removeCallbacks(mLockRunnable);
         mHandler.removeCallbacks(mLaunchRunnable);
@@ -123,23 +123,22 @@ public class ProximitySensor extends ActiveModeService.ActiveModeSensor implemen
         if (!changed) {
             // Well just in cause if proximity sensor NOT always sends
             // binary results. This should not happen, but who knows...
-            // Maximum range is buggy enough :) :P
+            // I found maximum range buggy enough :P
             return;
         }
 
         mHandler.removeCallbacks(mLockRunnable);
         mHandler.removeCallbacks(mLaunchRunnable);
-
         long now = getTimeNow();
-        if (now > sLastEventTime + (isNear ? CHANGE_TO_NEAR_MIN_DELAY : CHANGE_TO_FAR_MIN_DELAY) && isNear == isScreenOn()) {
+
+        long delay = isNear ? CHANGE_TO_NEAR_MIN_DELAY : CHANGE_TO_FAR_MIN_DELAY;
+        if (now > sLastEventTime + delay && isNear == isScreenOn()) {
             if (isNear) {
                 mHandler.postDelayed(mLockRunnable, LOCK_DELAY);
             } else {
                 mHandler.postDelayed(mLaunchRunnable, LAUNCH_DELAY);
             }
         }
-
-        // TODO: Implement double swipe gesture.
 
         sLastEventTime = now;
     }

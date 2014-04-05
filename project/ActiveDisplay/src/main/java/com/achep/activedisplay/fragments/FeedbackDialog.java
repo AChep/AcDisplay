@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,6 +46,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.achep.activedisplay.Device;
 import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
@@ -211,8 +212,9 @@ public class FeedbackDialog extends DialogFragment {
     }
 
     private CharSequence createTitleMessage(Context context, int type) {
+        CharSequence osVersion = Device.hasKitKatApi() ? "KK" : Device.hasJellyBeanMR2Api() ? "JB" : "XX";
         CharSequence[] typeNames = new CharSequence[]{"bug", "suggestion", "other"};
-        return AboutDialog.getVersionTitle(context) + ": " + typeNames[type];
+        return AboutDialog.getVersionTitle(context) + ": " + osVersion + ", " + typeNames[type];
     }
 
     private CharSequence createBodyMessage(PackageInfo pi, CharSequence msg) {

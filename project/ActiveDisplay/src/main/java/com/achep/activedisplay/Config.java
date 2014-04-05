@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -58,10 +58,15 @@ public class Config {
 
     // interface
     public static final String KEY_INTERFACE_WALLPAPER_SHOWN = "wallpaper_shown";
+    public static final String KEY_INTERFACE_SHADOW_TOGGLE = "shadow_toggle";
+    public static final String KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
 
     // swipe actions
     public static final String KEY_SWIPE_LEFT_ACTION = "swipe_left_action";
     public static final String KEY_SWIPE_RIGHT_ACTION = "swipe_right_action";
+
+    public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
+    public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
 
     private static Config sConfigSoft;
 
@@ -74,11 +79,13 @@ public class Config {
     private int mInactiveTimeTo;
     private int mSwipeLeftAction;
     private int mSwipeRightAction;
+    private int mDynamicBackgroundMode;
     private boolean mInactiveTimeEnabled;
     private boolean mLockscreenEnabled;
     private Boolean mActiveMode;
     private ArrayList<OnConfigChangedListener> mListeners;
     private boolean mWallpaperShown;
+    private boolean mShadowShown;
 
     // //////////////////////////////////////////
     // /////////// -- LISTENERS -- //////////////
@@ -118,6 +125,7 @@ public class Config {
         mLockscreenEnabled = prefs.getBoolean(KEY_LOCK_SCREEN, false);
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE, false);
         mWallpaperShown = prefs.getBoolean(KEY_INTERFACE_WALLPAPER_SHOWN, false);
+        mShadowShown = prefs.getBoolean(KEY_INTERFACE_SHADOW_TOGGLE, false);
         mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL, 12000);
         mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT, 6000);
         mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM, 0);
@@ -125,6 +133,8 @@ public class Config {
         mInactiveTimeEnabled = prefs.getBoolean(KEY_INACTIVE_TIME_ENABLED, false);
         mSwipeLeftAction = prefs.getInt(KEY_SWIPE_LEFT_ACTION, 2);
         mSwipeRightAction = prefs.getInt(KEY_SWIPE_RIGHT_ACTION, 2);
+        mDynamicBackgroundMode = prefs.getInt(KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE,
+                DYNAMIC_BG_ARTWORK_MASK | DYNAMIC_BG_NOTIFICATION_MASK);
     }
 
     private SharedPreferences getSharedPreferences(Context context) {
@@ -188,11 +198,13 @@ public class Config {
                 mLowPriorityNotificationsAllowed != (mLowPriorityNotificationsAllowed = enabled));
     }
 
+    // used via reflections!
     public void setTimeoutNormal(Context context, int delayMillis, OnConfigChangedListener listener) {
         saveOption(context, KEY_TIMEOUT_NORMAL, delayMillis, listener,
                 mTimeoutNormal != (mTimeoutNormal = delayMillis));
     }
 
+    // used via reflections!
     public void setTimeoutShort(Context context, int delayMillis, OnConfigChangedListener listener) {
         saveOption(context, KEY_TIMEOUT_SHORT, delayMillis, listener,
                 mTimeoutShort != (mTimeoutShort = delayMillis));
@@ -245,6 +257,16 @@ public class Config {
                 mWallpaperShown != (mWallpaperShown = shown));
     }
 
+    public void setShadowEnabled(Context context, boolean shown, OnConfigChangedListener listener) {
+        saveOption(context, KEY_INTERFACE_SHADOW_TOGGLE, shown, listener,
+                mShadowShown != (mShadowShown = shown));
+    }
+
+    public void setDynamicBackgroundMode(Context context, int mode, OnConfigChangedListener listener) {
+        saveOption(context, KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE, mode, listener,
+                mDynamicBackgroundMode != (mDynamicBackgroundMode = mode));
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -269,6 +291,10 @@ public class Config {
         return mSwipeRightAction;
     }
 
+    public int getDynamicBackgroundMode() {
+        return mDynamicBackgroundMode;
+    }
+
     public boolean isActiveDisplayEnabled() {
         return mActiveDisplayEnabled;
     }
@@ -291,6 +317,10 @@ public class Config {
 
     public boolean isWallpaperShown() {
         return mWallpaperShown;
+    }
+
+    public boolean isShadowEnabled() {
+        return mShadowShown;
     }
 
     public boolean isInactiveTimeEnabled() {

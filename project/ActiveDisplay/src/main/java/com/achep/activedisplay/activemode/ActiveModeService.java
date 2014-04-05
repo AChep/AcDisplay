@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ import java.util.TimerTask;
 /**
  * Created by Artem on 16.02.14.
  */
-public class ActiveModeService extends Service implements Config.OnConfigChangedListener {
+public class ActiveModeService extends Service implements Config.OnConfigChangedListener, ActiveSensor.SensorCallback {
 
     private static final String TAG = "ActiveModeService";
 
@@ -56,7 +56,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     private static final int INACTIVE_HOURS_CHECK_PERIOD = 1000 * 60 * 5; // ms.
 
     private Timer mTimer;
-    private ActiveModeSensor[] mSensors;
+    private ActiveSensor[] mSensors;
 
     private boolean mListening;
     private boolean mInactiveTime;
@@ -112,7 +112,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         Intent intent = new Intent(context, ActiveModeService.class);
         Config config = Config.getInstance(context);
         if (config.isActiveDisplayEnabled() && config.isActiveModeEnabled()) {
-            if (!config.isEnabledOnlyWhileCharging() || PowerUtils.isCharging(context)) {
+            if (!config.isEnabledOnlyWhileCharging() || PowerUtils.isPlugged(context)) {
 
                 context.startService(intent);
             }
@@ -121,10 +121,10 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         }
     }
 
-    public static ActiveModeSensor[] buildSensorsList(Context context) {
+    public static ActiveSensor[] buildSensorsList(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        ActiveModeSensor[] sensors = new ActiveModeSensor[]{
-                new ShakeSensor(),
+        ActiveSensor[] sensors = new ActiveSensor[]{
+                new AccelerometerSensor(),
                 new ProximitySensor()
         };
 
@@ -137,7 +137,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
             }
         }
 
-        ActiveModeSensor[] sensorsSupported = new ActiveModeSensor[count];
+        ActiveSensor[] sensorsSupported = new ActiveSensor[count];
         for (int i = 0, j = 0; i < sensors.length; i++) {
             if (supportList[i]) {
                 sensorsSupported[j++] = sensors[i];
@@ -232,6 +232,16 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     }
 
     @Override
+    public void onShowEvent(ActiveSensor sensor) {
+        ActiveDisplayPresenter.getInstance().start(this);
+    }
+
+    @Override
+    public void onHideEvent(ActiveSensor sensor) {
+        ActiveDisplayPresenter.getInstance().stop(this);
+    }
+
+    @Override
     public void onConfigChanged(Config config, String key, Object value) {
         boolean inactiveTimeEnabled = config.isInactiveTimeEnabled();
         switch (key) {
@@ -242,7 +252,6 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
                 }
 
                 // Immediately update sensors' blocker.
-                // ~ FALL DOWN ~
             case Config.KEY_INACTIVE_TIME_ENABLED:
                 handleInactiveHoursChanged(inactiveTimeEnabled);
                 break;
@@ -274,8 +283,9 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         if (Project.DEBUG) Log.d(TAG, "Stopping listening to sensors.");
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        for (ActiveModeSensor sensor : mSensors) {
-            sensor.onDetach(sensorManager);
+        for (ActiveSensor sensor : mSensors) {
+            sensor.onDetached(sensorManager);
+            sensor.unregisterCallback(this);
         }
     }
 
@@ -293,27 +303,10 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         if (Project.DEBUG) Log.d(TAG, "Starting listening to sensors.");
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        for (ActiveModeSensor sensor : mSensors) {
-            sensor.onAttach(sensorManager, this);
+        for (ActiveSensor sensor : mSensors) {
+            sensor.onAttached(sensorManager, this);
+            sensor.registerCallback(this);
         }
-    }
-
-    public abstract static class ActiveModeSensor {
-
-        protected abstract boolean isSupported(SensorManager sensorManager, Context context);
-
-        protected abstract void onAttach(SensorManager sensorManager, Context context);
-
-        protected abstract void onDetach(SensorManager sensorManager);
-
-        protected void launchActiveDisplay(Context context) {
-            ActiveDisplayPresenter.getInstance().start(context);
-        }
-
-        protected void stopActiveDisplay(Context context) {
-            ActiveDisplayPresenter.getInstance().stop(context);
-        }
-
     }
 
 }

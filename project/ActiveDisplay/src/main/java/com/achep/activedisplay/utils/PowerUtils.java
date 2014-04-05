@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,22 +32,20 @@ public class PowerUtils {
     /**
      * @return true is device is charging at this moment, false otherwise.
      */
-    public static boolean isCharging(Context context) {
-        Intent intent = context.registerReceiver(null,
-                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+    public static boolean isPlugged(Context context) {
+        return isPlugged(context.registerReceiver(
+                null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED)));
+    }
 
+    public static boolean isPlugged(Intent intent) {
         if (intent == null) {
             return false;
         }
 
-        final int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        return status == BatteryManager.BATTERY_STATUS_CHARGING;
-        /*
         final int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
         return plugged == BatteryManager.BATTERY_PLUGGED_AC
                 || plugged == BatteryManager.BATTERY_PLUGGED_USB
                 || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
-                */
     }
 
     public static boolean isScreenOn(Context context) {

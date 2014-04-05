@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013-2014 AChep@xda <artemchep@gmail.com>
-
-     This program is free software; you can redistribute it and/or
-     modify it under the terms of the GNU General Public License
-     as published by the Free Software Foundation; either version 2
-     of the License, or (at your option) any later version.
-
-     This program is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU General Public License for more details.
-
-     You should have received a copy of the GNU General Public License
-     along with this program; if not, write to the Free Software
-     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-     MA  02110-1301, USA.
--->
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.achep.activedisplay"
-    android:versionCode="14"
-    android:versionName="2.0">
+    android:versionCode="15"
+    android:versionName="2.1">
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="18"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
@@ -98,13 +98,13 @@
         </activity>
 
         <activity
-            android:name=".activities.ActiveDisplayActivity"
+            android:name=".activities.AcDisplayActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="nosensor"
-            android:configChanges="keyboardHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
-            android:theme="@style/ActiveDisplayTheme"
+            android:theme="@style/AcDisplayTheme"
             android:exported="false"/>
 
         <!-- Notification listener service -->
@@ -121,12 +121,31 @@
         <service android:name=".activemode.ActiveModeService" />
         <service android:name=".services.SendNotificationService" />
 
+        <!--
+            This is transparent activity for handling internal intents.
+            -->
         <activity
-            android:name=".receiver.ReceiverActivity"
+            android:name=".receiver.LocalReceiverActivity"
             android:theme="@android:style/Theme.Translucent"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="acdisplay_internal" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            This is transparent activity for handling intents.
+            You can easily enable / disable AcDisplay via third apps.
+            -->
+        <activity
+            android:name=".receiver.ReceiverActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -161,6 +180,19 @@
         <provider android:name="com.achep.activedisplay.fragments.FeedbackDialog$LogAttachmentProvider"
             android:authorities="com.achep.activedisplay.logs"
             android:exported="true" />
+
+        <!--
+            AcDisplay does provide Xposed module.
+            -->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2.0*" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/xposed_description"/>
 
     </application>
 

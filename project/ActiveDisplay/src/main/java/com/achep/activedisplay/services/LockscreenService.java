@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ import com.achep.activedisplay.ActiveDisplayPresenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.activities.ActiveDisplayActivity;
+import com.achep.activedisplay.activities.AcDisplayActivity;
 import com.achep.activedisplay.settings.Settings;
 import com.achep.activedisplay.utils.PowerUtils;
 
@@ -55,7 +55,7 @@ public class LockscreenService extends Service {
         Intent intent = new Intent(context, LockscreenService.class);
         Config config = Config.getInstance(context);
         if (config.isActiveDisplayEnabled() && config.isLockscreenEnabled()) {
-            if (!config.isEnabledOnlyWhileCharging() || PowerUtils.isCharging(context)) {
+            if (!config.isEnabledOnlyWhileCharging() || PowerUtils.isPlugged(context)) {
 
                 context.startService(intent);
             }
@@ -105,7 +105,7 @@ public class LockscreenService extends Service {
                         | Intent.FLAG_ACTIVITY_NO_USER_ACTION
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_FROM_BACKGROUND)
-                .setClass(this, ActiveDisplayActivity.class));
+                .setClass(this, AcDisplayActivity.class));
     }
 
     @Override

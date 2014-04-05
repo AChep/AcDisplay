@@ -56,7 +56,13 @@ public class LocalBroadcastManager {
 
         @Override
         public String toString() {
-            return "Receiver{" + receiver + " filter=" + filter + "}";
+            StringBuilder builder = new StringBuilder(128);
+            builder.append("Receiver{");
+            builder.append(receiver);
+            builder.append(" filter=");
+            builder.append(filter);
+            builder.append("}");
+            return builder.toString();
         }
     }
 
@@ -76,12 +82,12 @@ public class LocalBroadcastManager {
     private final Context mAppContext;
 
     private final HashMap<BroadcastReceiver, ArrayList<IntentFilter>> mReceivers
-            = new HashMap<>();
+            = new HashMap<BroadcastReceiver, ArrayList<IntentFilter>>();
     private final HashMap<String, ArrayList<ReceiverRecord>> mActions
-            = new HashMap<>();
+            = new HashMap<String, ArrayList<ReceiverRecord>>();
 
     private final ArrayList<BroadcastRecord> mPendingBroadcasts
-            = new ArrayList<>();
+            = new ArrayList<BroadcastRecord>();
 
     static final int MSG_EXEC_PENDING_BROADCASTS = 1;
 
@@ -129,7 +135,7 @@ public class LocalBroadcastManager {
             ReceiverRecord entry = new ReceiverRecord(filter, receiver);
             ArrayList<IntentFilter> filters = mReceivers.get(receiver);
             if (filters == null) {
-                filters = new ArrayList<>(1);
+                filters = new ArrayList<IntentFilter>(1);
                 mReceivers.put(receiver, filters);
             }
             filters.add(filter);
@@ -137,7 +143,7 @@ public class LocalBroadcastManager {
                 String action = filter.getAction(i);
                 ArrayList<ReceiverRecord> entries = mActions.get(action);
                 if (entries == null) {
-                    entries = new ArrayList<>(1);
+                    entries = new ArrayList<ReceiverRecord>(1);
                     mActions.put(action, entries);
                 }
                 entries.add(entry);
@@ -160,12 +166,13 @@ public class LocalBroadcastManager {
             if (filters == null) {
                 return;
             }
-            for (IntentFilter filter : filters) {
-                for (int j = 0; j < filter.countActions(); j++) {
+            for (int i=0; i<filters.size(); i++) {
+                IntentFilter filter = filters.get(i);
+                for (int j=0; j<filter.countActions(); j++) {
                     String action = filter.getAction(j);
                     ArrayList<ReceiverRecord> receivers = mActions.get(action);
                     if (receivers != null) {
-                        for (int k = 0; k < receivers.size(); k++) {
+                        for (int k=0; k<receivers.size(); k++) {
                             if (receivers.get(k).receiver == receiver) {
                                 receivers.remove(k);
                                 k--;
@@ -199,7 +206,7 @@ public class LocalBroadcastManager {
             final String scheme = intent.getScheme();
             final Set<String> categories = intent.getCategories();
 
-            @SuppressWarnings("PointlessBooleanExpression") final boolean debug = DEBUG ||
+            final boolean debug = DEBUG ||
                     ((intent.getFlags() & Intent.FLAG_DEBUG_LOG_RESOLUTION) != 0);
             if (debug) Log.v(
                     TAG, "Resolving type " + type + " scheme " + scheme
@@ -210,7 +217,8 @@ public class LocalBroadcastManager {
                 if (debug) Log.v(TAG, "Action list: " + entries);
 
                 ArrayList<ReceiverRecord> receivers = null;
-                for (ReceiverRecord receiver : entries) {
+                for (int i=0; i<entries.size(); i++) {
+                    ReceiverRecord receiver = entries.get(i);
                     if (debug) Log.v(TAG, "Matching against filter " + receiver.filter);
 
                     if (receiver.broadcasting) {
@@ -226,7 +234,7 @@ public class LocalBroadcastManager {
                         if (debug) Log.v(TAG, "  Filter matched!  match=0x" +
                                 Integer.toHexString(match));
                         if (receivers == null) {
-                            receivers = new ArrayList<>();
+                            receivers = new ArrayList<ReceiverRecord>();
                         }
                         receivers.add(receiver);
                         receiver.broadcasting = true;
@@ -234,21 +242,11 @@ public class LocalBroadcastManager {
                         if (debug) {
                             String reason;
                             switch (match) {
-                                case IntentFilter.NO_MATCH_ACTION:
-                                    reason = "action";
-                                    break;
-                                case IntentFilter.NO_MATCH_CATEGORY:
-                                    reason = "category";
-                                    break;
-                                case IntentFilter.NO_MATCH_DATA:
-                                    reason = "data";
-                                    break;
-                                case IntentFilter.NO_MATCH_TYPE:
-                                    reason = "type";
-                                    break;
-                                default:
-                                    reason = "unknown reason";
-                                    break;
+                                case IntentFilter.NO_MATCH_ACTION: reason = "action"; break;
+                                case IntentFilter.NO_MATCH_CATEGORY: reason = "category"; break;
+                                case IntentFilter.NO_MATCH_DATA: reason = "data"; break;
+                                case IntentFilter.NO_MATCH_TYPE: reason = "type"; break;
+                                default: reason = "unknown reason"; break;
                             }
                             Log.v(TAG, "  Filter did not match: " + reason);
                         }
@@ -256,8 +254,8 @@ public class LocalBroadcastManager {
                 }
 
                 if (receivers != null) {
-                    for (ReceiverRecord receiver : receivers) {
-                        receiver.broadcasting = false;
+                    for (int i=0; i<receivers.size(); i++) {
+                        receivers.get(i).broadcasting = false;
                     }
                     mPendingBroadcasts.add(new BroadcastRecord(intent, receivers));
                     if (!mHandler.hasMessages(MSG_EXEC_PENDING_BROADCASTS)) {
@@ -293,8 +291,9 @@ public class LocalBroadcastManager {
                 mPendingBroadcasts.toArray(brs);
                 mPendingBroadcasts.clear();
             }
-            for (BroadcastRecord br : brs) {
-                for (int j = 0; j < br.receivers.size(); j++) {
+            for (int i=0; i<brs.length; i++) {
+                BroadcastRecord br = brs[i];
+                for (int j=0; j<br.receivers.size(); j++) {
                     br.receivers.get(j).receiver.onReceive(mAppContext, br.intent);
                 }
             }

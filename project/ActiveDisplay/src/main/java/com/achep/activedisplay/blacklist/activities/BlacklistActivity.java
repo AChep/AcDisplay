@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -229,7 +229,7 @@ public class BlacklistActivity extends PreferenceActivity {
 
             Header header = new Header();
             header.fragment = fragmentName;
-            header.title = app.loadLabel(pm); // TODO: This is pretty huge operation
+            header.title = app.loadLabel(pm); // TODO: This is a huge operation
             header.summary = app.packageName;
             header.id = system | id++ << 1; // Store if system app to id
 

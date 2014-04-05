@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,8 +21,6 @@ package com.achep.activedisplay;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-
-import com.achep.activedisplay.utils.LogUtils;
 
 import java.util.ArrayList;
 
@@ -66,7 +64,6 @@ public class Timeout {
     }
 
     private void notifyOnEvent(int event) {
-        LogUtils.track();
         for (OnTimeoutEventListener l : mListeners) {
             l.onTimeoutEvent(event);
         }
@@ -96,7 +93,7 @@ public class Timeout {
     }
 
     public void setTimeoutDelayed(long delayMillis) {
-        setTimeoutAt(SystemClock.uptimeMillis() + delayMillis);
+        setTimeoutDelayed(delayMillis, false);
     }
 
     public void setTimeoutDelayed(long delayMillis, boolean resetOld) {

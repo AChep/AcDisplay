@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,8 +28,6 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.achep.activedisplay.utils.LogUtils;
-
 /**
  * Created by Artem on 27.12.13.
  */
@@ -45,7 +43,6 @@ public class NotificationHandleService extends NotificationListenerService {
         isNotificationAccessEnabled = true;
         sService = this;
 
-        LogUtils.track();
         NotificationPresenter
                 .getInstance(this)
                 .tryStartInitProcess(this);

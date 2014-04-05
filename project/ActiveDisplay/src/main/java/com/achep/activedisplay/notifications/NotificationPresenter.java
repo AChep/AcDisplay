@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,7 +22,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
@@ -48,25 +47,18 @@ public class NotificationPresenter implements NotificationList.Callback {
 
     private static final String TAG = "NotificationPresenter";
 
-    private static final int UI_MULTI_START_TIMEOUT = 1000; // ms.
-
     private static final int INITIALIZING_PROCESS_NONE = 0;
     private static final int INITIALIZING_PROCESS_STARTED = 1;
     private static final int INITIALIZING_PROCESS_DONE = 2;
 
     private static NotificationPresenter sNotificationPresenter;
 
-    private final ArrayList<OnNotificationListChangedListener> mListeners = new ArrayList<>();
-
-    private long mUIStartTime;
     private int mInitProcess = INITIALIZING_PROCESS_NONE;
 
     private NotificationList mGList = new NotificationList(null);
     private NotificationList mLList = new NotificationList(this);
-    private OpenStatusBarNotification mSelectedNotification;
-    private OpenStatusBarNotification mFutureSelectedNotification;
-    private boolean mSelectedNotificationLocked;
 
+    private final ArrayList<OnNotificationListChangedListener> mListeners = new ArrayList<>();
     private final Config mConfig;
     private final Blacklist mBlacklist;
 
@@ -155,7 +147,6 @@ public class NotificationPresenter implements NotificationList.Callback {
                 postNotification(context, notification, true);
             }
 
-            trySelectNotification(getLastNotification());
             for (OnNotificationListChangedListener listener : mListeners)
                 listener.onNotificationInitialized(this);
         } else {
@@ -176,36 +167,31 @@ public class NotificationPresenter implements NotificationList.Callback {
         return mLList.list();
     }
 
-    public int getCount() {
-        return getList().size();
-    }
-
     public void postNotification(Context context, StatusBarNotification n) {
         postNotification(context, n, false);
     }
 
     public void postNotification(Context context, StatusBarNotification n, boolean internal) {
-        logNotification(context, n, "Post");
+        logNotification(n, "Post");
         OpenStatusBarNotification osbn = OpenStatusBarNotification.wrap(n);
 
-        boolean globalValid = isValidForGlobal(context, n);
+        boolean globalValid = isValidForGlobal(n);
         boolean localValid = globalValid && isValidForLocal(n);
 
         if (globalValid) {
-            osbn.parse(context);
+            osbn.loadData(context);
         }
 
         mGList.pushOrRemove(osbn, globalValid, internal);
         mLList.pushOrRemove(osbn, localValid, internal);
 
         if (localValid && !internal) {
-            trySelectNotification(osbn);
             tryStartGui(context, osbn);
         }
     }
 
     public void removeNotification(Context context, StatusBarNotification n) {
-        logNotification(context, n, "Remove");
+        logNotification(n, "Remove");
         OpenStatusBarNotification osbn = OpenStatusBarNotification.wrap(n);
         mGList.remove(osbn);
         mLList.remove(osbn);
@@ -214,7 +200,6 @@ public class NotificationPresenter implements NotificationList.Callback {
     private void rebuildLocalList() {
         if (Project.DEBUG) Log.d(TAG, "Rebuilding local list of notifications.");
 
-        OpenStatusBarNotification selectedOld = mFutureSelectedNotification;
         ArrayList<OpenStatusBarNotification> list = mLList.list();
         list.clear();
 
@@ -223,10 +208,6 @@ public class NotificationPresenter implements NotificationList.Callback {
                 list.add(notification);
         }
 
-        // Reselect old notification if available.
-        int index = mLList.indexOf(selectedOld);
-        setSelectedNotification(index < 0 ? getLastNotification() : list.get(index));
-
         for (OnNotificationListChangedListener listener : mListeners)
             listener.onNotificationInitialized(this);
     }
@@ -234,13 +215,6 @@ public class NotificationPresenter implements NotificationList.Callback {
     // //////////////////////////////////////////
     // ///////////// -- EVENTS -- ///////////////
     // //////////////////////////////////////////
-
-    private void trySelectNotification(OpenStatusBarNotification n) {
-        OpenStatusBarNotification f = mFutureSelectedNotification;
-        if (f == null || NotificationUtils.equals(n, f)) {
-            setSelectedNotification(n);
-        }
-    }
 
     @Override
     public int onNotificationAdded(OpenStatusBarNotification n) {
@@ -258,10 +232,6 @@ public class NotificationPresenter implements NotificationList.Callback {
 
     @Override
     public int onNotificationRemoved(OpenStatusBarNotification n) {
-        if (NotificationUtils.equals(n, mFutureSelectedNotification)) {
-            setSelectedNotification(getLastNotification());
-        }
-
         for (OnNotificationListChangedListener listener : mListeners)
             listener.onNotificationRemoved(this, n);
         return 0;
@@ -270,11 +240,6 @@ public class NotificationPresenter implements NotificationList.Callback {
     // //////////////////////////////////////////
     // //////// -- NOTIFICATION UTILS -- ////////
     // //////////////////////////////////////////
-
-    private OpenStatusBarNotification getLastNotification() {
-        final int size = getList().size();
-        return size > 0 ? getList().get(size - 1) : null;
-    }
 
     /**
      * Returns {@code false} if the notification doesn't fit
@@ -291,10 +256,8 @@ public class NotificationPresenter implements NotificationList.Callback {
                 && !hidden;
     }
 
-    private boolean isValidForGlobal(Context context, StatusBarNotification n) {
-        final boolean isInitNotification = n.getId() == NotificationIds.INIT_NOTIFICATION
-                && !Project.getPackageName(context).equals(n.getPackageName());
-        return !n.isOngoing() && n.isClearable() && !isInitNotification;
+    private boolean isValidForGlobal(StatusBarNotification n) {
+        return !n.isOngoing() && n.isClearable();
     }
 
     // //////////////////////////////////////////
@@ -302,7 +265,7 @@ public class NotificationPresenter implements NotificationList.Callback {
     // //////////////////////////////////////////
 
     /**
-     * Starts {@link com.achep.activedisplay.activities.ActiveDisplayActivity activity} if active display
+     * Starts {@link com.achep.activedisplay.activities.AcDisplayActivity activity} if active display
      * is enabled and screen is turned off and...
      */
     private boolean tryStartGui(Context context, OpenStatusBarNotification notification) {
@@ -310,7 +273,7 @@ public class NotificationPresenter implements NotificationList.Callback {
                 || !mConfig.isActiveDisplayEnabled()
                 || ProximitySensor.isNear()
                 || mConfig.isEnabledOnlyWhileCharging() /* show only      */
-                && !PowerUtils.isCharging(context))     /* while charging */
+                && !PowerUtils.isPlugged(context))     /* while charging */
             return false;
 
         // Inactive time
@@ -319,9 +282,6 @@ public class NotificationPresenter implements NotificationList.Callback {
         }
 
         ActiveDisplayPresenter.getInstance().start(context);
-
-        mUIStartTime = SystemClock.uptimeMillis();
-        setSelectedNotification(notification);
         return true;
     }
 
@@ -329,44 +289,14 @@ public class NotificationPresenter implements NotificationList.Callback {
     // /////////// -- LOG THINGS -- /////////////
     // //////////////////////////////////////////
 
-    private void logNotification(Context context, StatusBarNotification n, String action) {
+    private void logNotification(StatusBarNotification n, String action) {
         Log.d(TAG, action + ": package=" + n.getPackageName()
                 + " id=" + n.getId()
                 + " user_id=" + n.getUserId()
                 + " tag=" + n.getTag()
                 + " post_time=" + n.getPostTime()
-                + " is_valid_global=" + isValidForGlobal(context, n)
+                + " is_valid_global=" + isValidForGlobal(n)
                 + " is_valid_local=" + isValidForLocal(n));
-    }
-
-    // //////////////////////////////////////////
-    // // -- TRACKING SELECTED NOTIFICATION -- //
-    // //////////////////////////////////////////
-
-    public void lockSelectedNotification() {
-        mSelectedNotificationLocked = true;
-    }
-
-    public void unlockSelectedNotification() {
-        mSelectedNotificationLocked = false;
-        setSelectedNotification(mFutureSelectedNotification);
-    }
-
-    public void setSelectedNotification(OpenStatusBarNotification notification) {
-        mFutureSelectedNotification = notification;
-
-        if (mSelectedNotificationLocked || mSelectedNotification == notification) {
-            return;
-        }
-
-        mSelectedNotification = notification;
-        for (OnNotificationListChangedListener listener : mListeners) {
-            listener.onNotificationSelected(this, notification, false);
-        }
-    }
-
-    public OpenStatusBarNotification getSelectedNotification() {
-        return mSelectedNotification;
     }
 
     // //////////////////////////////////////////
@@ -394,9 +324,6 @@ public class NotificationPresenter implements NotificationList.Callback {
         public void onNotificationRemoved(NotificationPresenter nm,
                                           OpenStatusBarNotification notification);
 
-        public void onNotificationSelected(NotificationPresenter nm,
-                                           OpenStatusBarNotification notification,
-                                           boolean isChanged);
     }
 
     public static class SimpleOnNotificationListChangedListener implements OnNotificationListChangedListener {
@@ -405,7 +332,6 @@ public class NotificationPresenter implements NotificationList.Callback {
         public static final int POSTED = 1;
         public static final int CHANGED = 2;
         public static final int REMOVED = 3;
-        public static final int SELECTED = 4;
 
         @Override
         public void onNotificationInitialized(NotificationPresenter nm) {
@@ -428,13 +354,6 @@ public class NotificationPresenter implements NotificationList.Callback {
         public void onNotificationRemoved(NotificationPresenter nm,
                                           OpenStatusBarNotification notification) {
             onNotificationEvent(nm, notification, REMOVED);
-        }
-
-        @Override
-        public void onNotificationSelected(NotificationPresenter nm,
-                                           OpenStatusBarNotification notification,
-                                           boolean isChanged) {
-            onNotificationEvent(nm, notification, SELECTED);
         }
 
         public void onNotificationEvent(NotificationPresenter nm,

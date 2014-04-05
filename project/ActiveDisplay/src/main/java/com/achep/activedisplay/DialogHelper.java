@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,6 +42,7 @@ import com.achep.activedisplay.fragments.AboutDialog;
 import com.achep.activedisplay.fragments.DonateDialog;
 import com.achep.activedisplay.fragments.FeedbackDialog;
 import com.achep.activedisplay.fragments.HelpDialog;
+import com.achep.activedisplay.fragments.NewsDialog;
 
 /**
  * Helper class for showing fragment dialogs.
@@ -62,6 +63,10 @@ public class DialogHelper {
 
     public static void showFeedbackDialog(Activity activity) {
         showDialog(activity, FeedbackDialog.class, "dialog_feedback");
+    }
+
+    public static void showNewsDialog(Activity activity) {
+        showDialog(activity, NewsDialog.class, "dialog_news");
     }
 
     private static void showDialog(Activity activity, Class clazz, String tag) {

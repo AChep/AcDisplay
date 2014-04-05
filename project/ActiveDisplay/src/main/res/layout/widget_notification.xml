@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<com.achep.activedisplay.widgets.NotificationWidget xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:listChoiceBackgroundIndicator">
+
+    <com.achep.activedisplay.widgets.NotificationIcon
+        android:id="@+id/icon"
+        android:layout_width="32dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_alignParentEnd="true"
+        android:scaleType="centerInside"
+        android:background="#2999" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/icon"
+        style="?attr/acDisplayNotificationTitle" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_toStartOf="@id/icon"
+        android:layout_marginTop="4dp"
+        style="?attr/acDisplayNotificationMessage" />
+
+    <Space
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
+        android:layout_below="@id/message" />
+
+    <com.achep.activedisplay.widgets.NotificationIcon
+        android:id="@+id/icon_small"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_below="@id/message"
+        android:layout_toStartOf="@id/icon"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:alpha="0.6" />
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message"
+        android:layout_toStartOf="@id/icon_small"
+        android:layout_marginTop="6dp"
+        style="?attr/acDisplayNotificationSubtext" />
+
+    <TextView
+        android:id="@+id/when"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message"
+        android:layout_toStartOf="@id/number"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        style="?attr/acDisplayNotificationSubtext" />
+
+    <TextView
+        android:id="@+id/subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message"
+        android:layout_toStartOf="@id/when"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="6dp"
+        style="?attr/acDisplayNotificationSubtext" />
+
+    <LinearLayout
+        android:id="@+id/actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/when"
+        android:orientation="horizontal" />
+
+</com.achep.activedisplay.widgets.NotificationWidget>

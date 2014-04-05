@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
-
-     This program is free software; you can redistribute it and/or
-     modify it under the terms of the GNU General Public License
-     as published by the Free Software Foundation; either version 2
-     of the License, or (at your option) any later version.
-
-     This program is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU General Public License for more details.
-
-     You should have received a copy of the GNU General Public License
-     along with this program; if not, write to the Free Software
-     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-     MA  02110-1301, USA.
--->
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
 <resources>
 
     <!-- Settings -->
@@ -34,13 +34,13 @@
     <string name="settings_more_title">More…</string>
 
     <!-- Lockscreen -->
-    <string name="settings_lockscreen_description">Change default lockscreen to AcDisplay. This is beta feature and can be unstable.</string>
+    <string name="settings_lockscreen_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
 
     <!-- Active mode -->
-    <string name="settings_active_description">Active mode uses the device\'s sensors to wake up your device just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t lock CPU running so you shouldn\'t see much of a battery difference.</string>
-    <string name="settings_active_enabled_when_notification_list_empty_title">While no notifications</string>
-    <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled without carrying of present notifications.</string>
-    <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled while present notification list is empty.</string>
+    <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
+    <string name="settings_active_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
+    <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled regardless of whether there are notifications or not.</string>
+    <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled when there are no notifications.</string>
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
@@ -50,14 +50,20 @@
 
     <!-- Interface -->
     <string name="settings_use_wallpaper_title">Use wallpaper</string>
-    <string name="settings_use_wallpaper_on">A wallpaper from your home screen is used as a background.</string>
+    <string name="settings_use_wallpaper_on">Your home screen\'s wallpaper is used as the background.</string>
     <string name="settings_use_wallpaper_off">Solid black background.</string>
+    <string name="settings_shadow_toggle_title">Enable shadows</string>
+    <string name="settings_shadow_toggle_on"></string>
+    <string name="settings_shadow_toggle_off"></string>
+    <string name="settings_dynamic_background_title">Dynamic background</string>
+    <string name="settings_dynamic_background_summary">Those are used as background: %1$s</string>
+    <string name="settings_dynamic_background_disabled">Disabled</string>
     <string name="settings_show_date_title">Show date</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>
-    <string name="settings_only_while_charging_on">App is active only while your device is charging. This is true for all features of app such as lockscreen or active mode.</string>
-    <string name="settings_only_while_charging_off">App is active all the time.</string>
+    <string name="settings_only_while_charging_on">AcDisplay is only active while your device is charging. This applies to all features such as the lockscreen or active mode.</string>
+    <string name="settings_only_while_charging_off">AcDisplay is always active.</string>
     <string name="settings_inactive_hours_title">Inactive hours</string>
     <string name="settings_inactive_hours_disabled">Disabled</string>
     <string name="settings_inactive_hours_enabled">From %1$s to %2$s.</string>
@@ -78,8 +84,8 @@
     ]]></string>
 
     <!-- Preference: Sleep timeouts -->
-    <string name="preference_timeout_normal">On start or selecting a notification</string>
-    <string name="preference_timeout_short">After a touch on an inactive area</string>
+    <string name="preference_timeout_normal">After waking up or selecting a notification</string>
+    <string name="preference_timeout_short">After touching an inactive area</string>
     <string name="preference_timeout_sec">%1$s sec.</string>
 
 </resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,25 +18,31 @@
  */
 package com.achep.activedisplay.notifications.parser;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
+import com.achep.activedisplay.Device;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.notifications.NotificationData;
 
 /**
  * Created by Artem on 04.03.14.
  */
-final class NativeParser implements Parser.NotificationParser {
+public final class NativeParser implements IExtractor {
 
     private static final String TAG = "NativeParser";
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public NotificationData parse(Context context, StatusBarNotification statusBarNotification, NotificationData data) {
+    public NotificationData loadTexts(Context context, StatusBarNotification statusBarNotification, NotificationData data) {
         if (Project.DEBUG) Log.d(TAG, "Extracting notification data via native API.");
+        if (!Device.hasKitKatApi())
+            throw new RuntimeException("You must run KitKat to be able to access to native things.");
 
         Notification notification = statusBarNotification.getNotification();
         Bundle extras = notification.extras;
@@ -53,7 +59,6 @@ final class NativeParser implements Parser.NotificationParser {
             data.infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT);
             data.subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT);
             data.summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT);
-            data.number = notification.number;
 
             // Large message text
             CharSequence[] textLines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
@@ -63,13 +68,13 @@ final class NativeParser implements Parser.NotificationParser {
                     sb.append(line);
                     sb.append('\n');
                 }
-                data.messageTextLarge = Parser.removeSpaces(sb.toString());
+                data.messageTextLarge = Utils.removeSpaces(sb.toString());
             }
 
             // Small message text
             data.messageText = extras.getCharSequence(Notification.EXTRA_TEXT);
             if (data.messageText != null) {
-                data.messageText = Parser.removeSpaces(data.messageText.toString());
+                data.messageText = Utils.removeSpaces(data.messageText.toString());
             }
         } catch (Exception e) {
             Log.wtf(TAG, "Native notification parsing failed.");
