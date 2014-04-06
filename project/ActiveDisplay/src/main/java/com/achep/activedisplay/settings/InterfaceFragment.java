@@ -42,6 +42,7 @@ public class InterfaceFragment extends PreferenceFragment implements
 
     private CheckBoxPreference mShowWallpaper;
     private CheckBoxPreference mShadowToggle;
+    private CheckBoxPreference mMirroredTimeoutToggle;
     private MultiSelectListPreference mDynamicBackground;
 
     private boolean mBroadcasting;
@@ -58,6 +59,8 @@ public class InterfaceFragment extends PreferenceFragment implements
         mShadowToggle.setOnPreferenceChangeListener(this);
         mDynamicBackground = (MultiSelectListPreference) findPreference("dynamic_background_mode");
         mDynamicBackground.setOnPreferenceChangeListener(this);
+        mMirroredTimeoutToggle = (CheckBoxPreference) findPreference("mirrored_timeout_progress_bar");
+        mMirroredTimeoutToggle.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -68,6 +71,7 @@ public class InterfaceFragment extends PreferenceFragment implements
 
         updateShowWallpaperPreference(config);
         updateShowShadowPreference(config);
+        updateMirroredTimeoutPreference(config);
         updateDynamicBackgroundSummary(config);
     }
 
@@ -84,6 +88,10 @@ public class InterfaceFragment extends PreferenceFragment implements
 
     private void updateShowShadowPreference(Config config) {
         updateCheckBox(mShadowToggle, config.isWallpaperShown());
+    }
+
+    private void updateMirroredTimeoutPreference(Config config) {
+        updateCheckBox(mMirroredTimeoutToggle, config.isMirroredTimeoutProgressBarEnabled());
     }
 
     private void updateCheckBox(CheckBoxPreference preference, boolean checked) {
@@ -131,6 +139,8 @@ public class InterfaceFragment extends PreferenceFragment implements
             config.setWallpaperShown(getActivity(), (Boolean) newValue, this);
         } else if (preference == mShadowToggle) {
             config.setShadowEnabled(getActivity(), (Boolean) newValue, this);
+        } else if (preference == mMirroredTimeoutToggle) {
+            config.setMirroredTimeoutProgressBarEnabled(getActivity(), (Boolean) newValue, this);
         } else if (preference == mDynamicBackground) {
             int mode = 0;
 
@@ -153,6 +163,9 @@ public class InterfaceFragment extends PreferenceFragment implements
                 break;
             case Config.KEY_INTERFACE_SHADOW_TOGGLE:
                 updateShowWallpaperPreference(config);
+                break;
+            case Config.KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR:
+                updateMirroredTimeoutPreference(config);
                 break;
             case Config.KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE:
                 updateDynamicBackgroundSummary(config);

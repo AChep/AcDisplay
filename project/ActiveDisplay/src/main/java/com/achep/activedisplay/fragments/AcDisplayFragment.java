@@ -50,9 +50,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.Device;
@@ -72,6 +72,7 @@ import com.achep.activedisplay.notifications.NotificationUtils;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
 import com.achep.activedisplay.utils.MathUtils;
 import com.achep.activedisplay.utils.ViewUtils;
+import com.achep.activedisplay.widgets.ProgressBar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -305,7 +306,37 @@ public class AcDisplayFragment extends Fragment implements
         mUnlockImageView = (ImageView) root.findViewById(R.id.unlock);
         mPinImageView = (ImageView) root.findViewById(R.id.pin);
 
-        ProgressBar progressBar = (ProgressBar) root.findViewById(R.id.progress);
+        Config config = Config.getInstance(getActivity());
+
+        // /////////////////
+        // ~~ TIMEOUT GUI ~~
+        // /////////////////
+        ProgressBar progressBar;
+        ViewStub progressBarStub = (ViewStub) root.findViewById(R.id.progress_bar_stub);
+        if (config.isMirroredTimeoutProgressBarEnabled()) {
+            progressBarStub.setLayoutResource(R.layout.acdisplay_progress_bar_mirrored);
+            progressBar = (ProgressBar) progressBarStub.inflate().findViewById(R.id.progress_bar);
+
+            // Redirect all changes from the main progress bar
+            // to mirrored one.
+            final ProgressBar progressBarMirrored = (ProgressBar)
+                    root.findViewById(R.id.progress_bar_mirrored);
+            progressBar.setOnProgressChangeListener(new ProgressBar.OnProgressChangeListener() {
+
+                @Override
+                public void onProgressChanged(ProgressBar progressBar, int progress) {
+                    progressBarMirrored.setProgress(progress);
+                }
+
+                @Override
+                public void onMaxChanged(ProgressBar progressBar, int max) {
+                    progressBarMirrored.setMax(max);
+                }
+            });
+        } else {
+            progressBar = (ProgressBar) progressBarStub.inflate().findViewById(R.id.progress_bar);
+        }
+
         mTimeout = new TimeoutGui(getActivity(), progressBar);
         return root;
     }

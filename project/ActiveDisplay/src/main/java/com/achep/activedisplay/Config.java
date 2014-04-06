@@ -60,6 +60,7 @@ public class Config {
     public static final String KEY_INTERFACE_WALLPAPER_SHOWN = "wallpaper_shown";
     public static final String KEY_INTERFACE_SHADOW_TOGGLE = "shadow_toggle";
     public static final String KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
+    public static final String KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR = "mirrored_timeout_progress_bar";
 
     // swipe actions
     public static final String KEY_SWIPE_LEFT_ACTION = "swipe_left_action";
@@ -86,6 +87,7 @@ public class Config {
     private ArrayList<OnConfigChangedListener> mListeners;
     private boolean mWallpaperShown;
     private boolean mShadowShown;
+    private boolean mMirroredTimeoutProgressBarEnabled;
 
     // //////////////////////////////////////////
     // /////////// -- LISTENERS -- //////////////
@@ -126,6 +128,7 @@ public class Config {
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE, false);
         mWallpaperShown = prefs.getBoolean(KEY_INTERFACE_WALLPAPER_SHOWN, false);
         mShadowShown = prefs.getBoolean(KEY_INTERFACE_SHADOW_TOGGLE, false);
+        mMirroredTimeoutProgressBarEnabled = prefs.getBoolean(KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, false);
         mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL, 12000);
         mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT, 6000);
         mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM, 0);
@@ -267,6 +270,11 @@ public class Config {
                 mDynamicBackgroundMode != (mDynamicBackgroundMode = mode));
     }
 
+    public void setMirroredTimeoutProgressBarEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        saveOption(context, KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, enabled, listener,
+                mMirroredTimeoutProgressBarEnabled != (mMirroredTimeoutProgressBarEnabled = enabled));
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -321,6 +329,10 @@ public class Config {
 
     public boolean isShadowEnabled() {
         return mShadowShown;
+    }
+
+    public boolean isMirroredTimeoutProgressBarEnabled() {
+        return mMirroredTimeoutProgressBarEnabled;
     }
 
     public boolean isInactiveTimeEnabled() {

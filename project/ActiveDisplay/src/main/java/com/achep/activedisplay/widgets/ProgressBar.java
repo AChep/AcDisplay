@@ -31,7 +31,24 @@ import com.achep.activedisplay.R;
  */
 public class ProgressBar extends android.widget.ProgressBar {
 
+    /**
+     * A callback that notifies clients when the progress/max level has been changed.
+     */
+    public interface OnProgressChangeListener {
+
+        /**
+         * Notification that the progress level has changed.
+         *
+         * @param progressBar The ProgressBar whose progress has changed
+         * @param progress The current progress level. This will be in the range 0..{@link ProgressBar#getMax()}}
+         */
+        public void onProgressChanged(ProgressBar progressBar, int progress);
+
+        public void onMaxChanged(ProgressBar progressBar, int max);
+    }
+
     private boolean mMirrored;
+    private OnProgressChangeListener mListener;
 
     public ProgressBar(Context context) {
         this(context, null);
@@ -56,6 +73,24 @@ public class ProgressBar extends android.widget.ProgressBar {
     }
 
     @Override
+    public synchronized void setProgress(int progress) {
+        super.setProgress(progress);
+
+        if (mListener != null) {
+            mListener.onProgressChanged(this, progress);
+        }
+    }
+
+    @Override
+    public synchronized void setMax(int max) {
+        super.setMax(max);
+
+        if (mListener != null) {
+            mListener.onMaxChanged(this, max);
+        }
+    }
+
+    @Override
     protected synchronized void onDraw(Canvas canvas) {
         if (mMirrored) {
             canvas.save();
@@ -70,6 +105,13 @@ public class ProgressBar extends android.widget.ProgressBar {
 
     public void setMirrored(boolean mirrored) {
         mMirrored = mirrored;
+    }
+
+    /**
+     * Sets a listener to receive notifications of changes to the ProgressBar's progress/max level.
+     */
+    public void setOnProgressChangeListener(OnProgressChangeListener listener) {
+        mListener = listener;
     }
 
 }

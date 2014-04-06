@@ -59,6 +59,9 @@
     <string name="settings_dynamic_background_summary">Those are used as background: %1$s</string>
     <string name="settings_dynamic_background_disabled">Disabled</string>
     <string name="settings_show_date_title">Show date</string>
+    <string name="settings_mirrored_timeout_progress_bar_title">Mirrored timeout bar</string>
+    <string name="settings_mirrored_timeout_progress_bar_on">Timeout bar disappears from both sides to center.</string>
+    <string name="settings_mirrored_timeout_progress_bar_off">Timeout bar disappears from left to right.</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>

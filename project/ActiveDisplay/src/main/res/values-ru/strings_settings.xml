@@ -59,6 +59,9 @@
     <string name="settings_dynamic_background_summary">Используется как фон: %1$s</string>
     <string name="settings_dynamic_background_disabled">Отключен</string>
     <string name="settings_show_date_title">Отображать дату</string>
+    <string name="settings_mirrored_timeout_progress_bar_title">Зеркальный индикатор таймаута</string>
+    <string name="settings_mirrored_timeout_progress_bar_on">Индикатор времени таймаута уменьшается с двух сторон к центру.</string>
+    <string name="settings_mirrored_timeout_progress_bar_off">Индикатор времени таймаута уменьшается слева направо.</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Только во время зарядки</string>

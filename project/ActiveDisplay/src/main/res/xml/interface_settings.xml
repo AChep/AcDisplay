@@ -46,4 +46,11 @@
         android:title="@string/settings_show_date_title"
         android:defaultValue="true"/>
 
+    <CheckBoxPreference
+        android:key="mirrored_timeout_progress_bar"
+        android:title="@string/settings_mirrored_timeout_progress_bar_title"
+        android:summaryOff="@string/settings_mirrored_timeout_progress_bar_off"
+        android:summaryOn="@string/settings_mirrored_timeout_progress_bar_on"
+        android:defaultValue="false"/>
+
 </PreferenceScreen>
