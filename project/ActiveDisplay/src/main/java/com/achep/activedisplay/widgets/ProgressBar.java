@@ -34,34 +34,36 @@ public class ProgressBar extends android.widget.ProgressBar {
     private boolean mMirrored;
 
     public ProgressBar(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ProgressBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ProgressBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        final TypedArray attributes = context.obtainStyledAttributes(attrs,
-                R.styleable.ProgressBar, defStyle, 0);
+        if (attrs != null) {
+            final TypedArray attributes = context.obtainStyledAttributes(
+                    attrs, R.styleable.ProgressBar, defStyle, 0);
 
-        assert attributes != null;
-        setMirrored(attributes.getBoolean(R.styleable.ProgressBar_mirrored, mMirrored));
+            assert attributes != null;
+            setMirrored(attributes.getBoolean(R.styleable.ProgressBar_mirrored, mMirrored));
 
-        attributes.recycle();
+            attributes.recycle();
+        }
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        if (!mMirrored) {
+    protected synchronized void onDraw(Canvas canvas) {
+        if (mMirrored) {
             canvas.save();
             canvas.translate(getWidth() - getPaddingEnd(), getPaddingTop());
             canvas.scale(-1.0f, 1.0f);
         }
         super.onDraw(canvas);
-        if (!mMirrored) {
+        if (mMirrored) {
             canvas.restore();
         }
     }
@@ -69,4 +71,5 @@ public class ProgressBar extends android.widget.ProgressBar {
     public void setMirrored(boolean mirrored) {
         mMirrored = mirrored;
     }
+
 }
