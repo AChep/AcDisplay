@@ -41,6 +41,7 @@
         <item name="acDisplayNotificationTitle">@style/AcDisplay.Notification.Title</item>
         <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message</item>
         <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext</item>
+        <item name="acDisplayTimeoutProgressDrawable">@style/AcDisplayTimeoutProgressBar</item>
     </style>
 
     <!-- All device dependent modification goes here -->
@@ -74,6 +75,7 @@
         <item name="acDisplayNotificationTitle">@style/AcDisplay.Notification.Title.WithShadow</item>
         <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message.WithShadow</item>
         <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext.WithShadow</item>
+        <item name="acDisplayTimeoutProgressDrawable">@style/AcDisplayTimeoutProgressBar.WithShadow</item>
     </style>
 
 </resources>

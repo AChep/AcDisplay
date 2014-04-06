@@ -121,4 +121,22 @@
         <item name="android:shadowDy">2.0</item>
         <item name="android:shadowRadius">4.0</item>
     </style>
+
+    <!--
+        Timeout
+    -->
+
+    <style name="AcDisplayTimeoutProgressBar" parent="android:Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_bar_dash</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <!--
+        Timeout - shadows
+    -->
+
+    <style name="AcDisplayTimeoutProgressBar.WithShadow" parent="AcDisplayTimeoutProgressBar">
+        <item name="android:progressDrawable">@drawable/progress_bar_dash_withshadow</item>
+    </style>
+
 </resources>

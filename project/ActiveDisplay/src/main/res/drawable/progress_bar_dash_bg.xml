@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
@@ -17,17 +18,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@android:id/background" >
-        <shape/>
-    </item>
-    <item android:id="@android:id/secondaryProgress" >
-        <shape/>
-    </item>
-    <item android:id="@android:id/progress">
-        <clip android:drawable="@drawable/bg_divider_bright">
-        </clip>
-    </item>
-
-</layer-list>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/progress_bar_dash_src"
+    android:tileMode="repeat"
+    android:dither="true">
+</bitmap>
