@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.activedisplay.settings;
+package com.achep.activedisplay.settings.enablers;
 
 import android.content.Context;
 import android.widget.CompoundButton;
@@ -27,11 +27,11 @@ import com.achep.activedisplay.Config;
 /**
  * Created by Artem on 21.02.14.
  */
-public final class ActiveModeEnabler extends Enabler {
+public final class LockscreenEnabler extends Enabler {
 
     private boolean mBroadcasting;
 
-    public ActiveModeEnabler(Context context, Switch switch_) {
+    public LockscreenEnabler(Context context, Switch switch_) {
         super(context, switch_);
     }
 
@@ -39,7 +39,7 @@ public final class ActiveModeEnabler extends Enabler {
     protected void updateState() {
         mSwitch.setEnabled(mConfig.isActiveDisplayEnabled());
         mBroadcasting = true;
-        mSwitch.setChecked(mConfig.isActiveModeEnabled());
+        mSwitch.setChecked(mConfig.isLockscreenEnabled());
         mBroadcasting = false;
     }
 
@@ -49,14 +49,14 @@ public final class ActiveModeEnabler extends Enabler {
             return;
         }
 
-        mConfig.setActiveModeEnabled(mContext, isChecked, this);
+        mConfig.setLockscreenEnabled(mContext, isChecked, this);
     }
 
     @Override
     public void onConfigChanged(Config config, String key, Object value) {
         switch (key) {
             case Config.KEY_ENABLED:
-            case Config.KEY_ACTIVE_MODE:
+            case Config.KEY_LOCK_SCREEN:
                 updateState();
                 break;
         }

@@ -42,7 +42,9 @@ public class NotificationFragment extends PreferenceFragment implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.notification_settings);
 
-        mLowPriorityPreference = (CheckBoxPreference) findPreference("low_priority_notifications");
+        mLowPriorityPreference = (CheckBoxPreference) findPreference(
+                Config.KEY_LOW_PRIORITY_NOTIFICATIONS);
+
         mLowPriorityPreference.setOnPreferenceChangeListener(this);
     }
 
@@ -60,12 +62,6 @@ public class NotificationFragment extends PreferenceFragment implements
         super.onPause();
         Config config = Config.getInstance(getActivity());
         config.removeOnConfigChangedListener(this);
-    }
-
-    private void updateLowPriorityPreference(Config config) {
-        mBroadcasting = true;
-        mLowPriorityPreference.setChecked(config.isLowPriorityNotificationsAllowed());
-        mBroadcasting = false;
     }
 
     @Override
@@ -89,5 +85,15 @@ public class NotificationFragment extends PreferenceFragment implements
                 updateLowPriorityPreference(config);
                 break;
         }
+    }
+
+    private void updateLowPriorityPreference(Config config) {
+        updatePreference(mLowPriorityPreference, config.isLowPriorityNotificationsAllowed());
+    }
+
+    private void updatePreference(CheckBoxPreference preference, boolean checked) {
+        mBroadcasting = true;
+        preference.setChecked(checked);
+        mBroadcasting = false;
     }
 }

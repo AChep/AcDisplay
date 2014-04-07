@@ -21,14 +21,14 @@
     android:title="@string/settings_interface_title">
 
     <CheckBoxPreference
-        android:key="show_wallpaper"
+        android:key="wallpaper_shown"
         android:title="@string/settings_use_wallpaper_title"
         android:summaryOff="@string/settings_use_wallpaper_off"
         android:summaryOn="@string/settings_use_wallpaper_on"/>
 
     <CheckBoxPreference
         android:key="shadow_toggle"
-        android:dependency="show_wallpaper"
+        android:dependency="wallpaper_shown"
         android:title="@string/settings_shadow_toggle_title"
         android:summaryOff="@string/settings_shadow_toggle_off"
         android:summaryOn="@string/settings_shadow_toggle_on"

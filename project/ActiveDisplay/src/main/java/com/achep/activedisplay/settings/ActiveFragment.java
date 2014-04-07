@@ -25,6 +25,7 @@ import android.preference.PreferenceFragment;
 import android.widget.Switch;
 
 import com.achep.activedisplay.R;
+import com.achep.activedisplay.settings.enablers.ActiveModeEnabler;
 
 /**
  * Created by Artem on 09.02.14.

@@ -32,7 +32,9 @@ import com.achep.activedisplay.utils.MathUtils;
 /**
  * Created by Artem on 09.02.14.
  */
-public class MoreFragment extends PreferenceFragment implements Config.OnConfigChangedListener, Preference.OnPreferenceChangeListener {
+public class MoreFragment extends PreferenceFragment implements
+        Config.OnConfigChangedListener,
+        Preference.OnPreferenceChangeListener {
 
     private CheckBoxPreference mOnlyWhileChargingPreference;
     private Preference mInactiveHoursPreference;
@@ -47,11 +49,19 @@ public class MoreFragment extends PreferenceFragment implements Config.OnConfigC
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.more_settings);
 
-        mOnlyWhileChargingPreference = (CheckBoxPreference) findPreference("only_while_charging");
         mInactiveHoursPreference = findPreference("inactive_hours");
         mTimeoutPreference = findPreference("timeout");
-        mSwipeLeftListPreference = (ListPreference) findPreference("swipe_left_action");
-        mSwipeRightListPreference = (ListPreference) findPreference("swipe_right_action");
+
+        mOnlyWhileChargingPreference = (CheckBoxPreference) findPreference(
+                Config.KEY_ONLY_WHILE_CHARGING);
+        mSwipeLeftListPreference = (ListPreference) findPreference(
+                Config.KEY_SWIPE_LEFT_ACTION);
+        mSwipeRightListPreference = (ListPreference) findPreference(
+                Config.KEY_SWIPE_RIGHT_ACTION);
+
+        mOnlyWhileChargingPreference.setOnPreferenceChangeListener(this);
+        mSwipeLeftListPreference.setOnPreferenceChangeListener(this);
+        mSwipeRightListPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -60,15 +70,12 @@ public class MoreFragment extends PreferenceFragment implements Config.OnConfigC
         Config config = Config.getInstance(getActivity());
         config.addOnConfigChangedListener(this);
 
-        updateOnlyWhileCharging(config);
+        updateOnlyWhileChargingPreference(config);
+        updateSwipeLeftPreference(config);
+        updateSwipeRightPreference(config);
+
         updateInactiveHoursSummary(config);
         updateTimeoutSummary(config);
-        updateSwipeLeftSummary(config);
-        updateSwipeRightSummary(config);
-
-        mOnlyWhileChargingPreference.setOnPreferenceChangeListener(this);
-        mSwipeLeftListPreference.setOnPreferenceChangeListener(this);
-        mSwipeRightListPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -76,40 +83,6 @@ public class MoreFragment extends PreferenceFragment implements Config.OnConfigC
         super.onPause();
         Config config = Config.getInstance(getActivity());
         config.removeOnConfigChangedListener(this);
-    }
-
-    private void updateOnlyWhileCharging(Config config) {
-        mBroadcasting = true;
-        mOnlyWhileChargingPreference.setChecked(config.isEnabledOnlyWhileCharging());
-        mBroadcasting = false;
-    }
-
-    private void updateInactiveHoursSummary(Config config) {
-        if (config.isInactiveTimeEnabled()) {
-            int from = config.getInactiveTimeFrom();
-            int to = config.getInactiveTimeTo();
-            mInactiveHoursPreference.setSummary(getString(R.string.settings_inactive_hours_enabled,
-                    DateUtils.formatTime(getActivity(), MathUtils.div(from, 60), from % 60),
-                    DateUtils.formatTime(getActivity(), MathUtils.div(to, 60), to % 60)));
-        } else {
-            mInactiveHoursPreference.setSummary(getString(R.string.settings_inactive_hours_disabled));
-        }
-    }
-
-    private void updateTimeoutSummary(Config config) {
-        mTimeoutPreference.setSummary(getString(R.string.settings_timeout_summary,
-                Float.toString(config.getTimeoutNormal() / 1000f),
-                Float.toString(config.getTimeoutShort() / 1000f)));
-    }
-
-    private void updateSwipeLeftSummary(Config config) {
-        mSwipeLeftListPreference.setSummary(
-                mSwipeLeftListPreference.getEntries()[config.getSwipeLeftAction()]);
-    }
-
-    private void updateSwipeRightSummary(Config config) {
-        mSwipeRightListPreference.setSummary(
-                mSwipeRightListPreference.getEntries()[config.getSwipeRightAction()]);
     }
 
     @Override
@@ -120,11 +93,13 @@ public class MoreFragment extends PreferenceFragment implements Config.OnConfigC
 
         Config config = Config.getInstance(getActivity());
         if (preference == mOnlyWhileChargingPreference) {
-            config.setActiveDisplayEnabledOnlyWhileCharging(getActivity(), (Boolean) newValue, null);
+            config.setActiveDisplayEnabledOnlyWhileCharging(getActivity(), (Boolean) newValue, this);
         } else if (preference == mSwipeLeftListPreference) {
-            config.setSwipeLeftAction(getActivity(), Integer.parseInt((String) newValue), null);
+            config.setSwipeLeftAction(getActivity(), Integer.parseInt((String) newValue), this);
+            updatePreferenceListSummary(mSwipeLeftListPreference);
         } else if (preference == mSwipeRightListPreference) {
-            config.setSwipeRightAction(getActivity(), Integer.parseInt((String) newValue), null);
+            config.setSwipeRightAction(getActivity(), Integer.parseInt((String) newValue), this);
+            updatePreferenceListSummary(mSwipeRightListPreference);
         } else
             return false;
         return true;
@@ -143,14 +118,62 @@ public class MoreFragment extends PreferenceFragment implements Config.OnConfigC
                 updateTimeoutSummary(config);
                 break;
             case Config.KEY_ONLY_WHILE_CHARGING:
-                updateOnlyWhileCharging(config);
+                updateOnlyWhileChargingPreference(config);
                 break;
             case Config.KEY_SWIPE_LEFT_ACTION:
-                updateSwipeLeftSummary(config);
+                updateSwipeLeftPreference(config);
                 break;
             case Config.KEY_SWIPE_RIGHT_ACTION:
-                updateSwipeRightSummary(config);
+                updateSwipeRightPreference(config);
                 break;
         }
+    }
+
+    private void updateOnlyWhileChargingPreference(Config config) {
+        updatePreference(mOnlyWhileChargingPreference, config.isEnabledOnlyWhileCharging());
+    }
+
+    private void updateSwipeLeftPreference(Config config) {
+        updatePreference(mSwipeLeftListPreference, config.getSwipeLeftAction());
+        updatePreferenceListSummary(mSwipeLeftListPreference);
+    }
+
+    private void updateSwipeRightPreference(Config config) {
+        updatePreference(mSwipeRightListPreference, config.getSwipeRightAction());
+        updatePreferenceListSummary(mSwipeRightListPreference);
+    }
+
+    private void updatePreference(CheckBoxPreference preference, boolean checked) {
+        mBroadcasting = true;
+        preference.setChecked(checked);
+        mBroadcasting = false;
+    }
+
+    private void updatePreference(ListPreference preference, int item) {
+        mBroadcasting = true;
+        preference.setValue(Integer.toString(item));
+        mBroadcasting = false;
+    }
+
+    private void updatePreferenceListSummary(ListPreference preference) {
+        preference.setSummary(preference.getEntry());
+    }
+
+    private void updateInactiveHoursSummary(Config config) {
+        if (config.isInactiveTimeEnabled()) {
+            int from = config.getInactiveTimeFrom();
+            int to = config.getInactiveTimeTo();
+            mInactiveHoursPreference.setSummary(getString(R.string.settings_inactive_hours_enabled,
+                    DateUtils.formatTime(getActivity(), MathUtils.div(from, 60), from % 60),
+                    DateUtils.formatTime(getActivity(), MathUtils.div(to, 60), to % 60)));
+        } else {
+            mInactiveHoursPreference.setSummary(getString(R.string.settings_inactive_hours_disabled));
+        }
+    }
+
+    private void updateTimeoutSummary(Config config) {
+        mTimeoutPreference.setSummary(getString(R.string.settings_timeout_summary,
+                Float.toString(config.getTimeoutNormal() / 1000f),
+                Float.toString(config.getTimeoutShort() / 1000f)));
     }
 }

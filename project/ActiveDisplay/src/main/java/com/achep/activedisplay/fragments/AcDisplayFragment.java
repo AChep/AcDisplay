@@ -28,8 +28,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.media.AudioManager;
-import android.media.RemoteControlClient;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,7 +54,6 @@ import android.widget.LinearLayout;
 
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.Device;
-import com.achep.activedisplay.Keys;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.Timeout;
@@ -82,7 +79,6 @@ import java.util.HashMap;
  * This is main fragment of ActiveDisplay app.
  */
 public class AcDisplayFragment extends Fragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener,
         View.OnTouchListener {
 
     private static final String TAG = "AcDisplayFragment";
@@ -266,14 +262,6 @@ public class AcDisplayFragment extends Fragment implements
 
     private Widget findFragmentByIcon(View view) {
         return mWidgetsMap.get(view);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        switch (key) {
-            case Keys.Settings.SHOW_DATE:
-                break;
-        }
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

@@ -21,6 +21,7 @@
 
     <!-- Settings -->
     <string name="settings">Settings</string>
+    <string name="settings_multi_list_divider">, </string>
 
     <!-- Placeholder -->
     <string name="settings_placeholder_title">Placeholder</string>

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.activedisplay.settings;
+package com.achep.activedisplay.settings.enablers;
 
 import android.content.Context;
 import android.widget.CompoundButton;
@@ -27,38 +27,40 @@ import com.achep.activedisplay.Config;
 /**
  * Created by Artem on 21.02.14.
  */
-public final class LockscreenEnabler extends Enabler {
+public abstract class Enabler implements
+        Config.OnConfigChangedListener,
+        CompoundButton.OnCheckedChangeListener {
 
-    private boolean mBroadcasting;
+    protected final Context mContext;
+    protected final Config mConfig;
+    protected Switch mSwitch;
 
-    public LockscreenEnabler(Context context, Switch switch_) {
-        super(context, switch_);
+    public Enabler(Context context, Switch switch_) {
+        mContext = context;
+        mConfig = Config.getInstance(mContext);
+        mSwitch = switch_;
     }
 
-    @Override
-    protected void updateState() {
-        mSwitch.setEnabled(mConfig.isActiveDisplayEnabled());
-        mBroadcasting = true;
-        mSwitch.setChecked(mConfig.isLockscreenEnabled());
-        mBroadcasting = false;
+    abstract protected void updateState();
+
+    public void resume() {
+        mConfig.addOnConfigChangedListener(this);
+        mSwitch.setOnCheckedChangeListener(this);
+        updateState();
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (mBroadcasting) {
+    public void pause() {
+        mConfig.removeOnConfigChangedListener(this);
+        mSwitch.setOnCheckedChangeListener(null);
+    }
+
+    public void setSwitch(Switch switch_) {
+        if (mSwitch == switch_) {
             return;
         }
 
-        mConfig.setLockscreenEnabled(mContext, isChecked, this);
-    }
-
-    @Override
-    public void onConfigChanged(Config config, String key, Object value) {
-        switch (key) {
-            case Config.KEY_ENABLED:
-            case Config.KEY_LOCK_SCREEN:
-                updateState();
-                break;
-        }
+        mSwitch = switch_;
+        mSwitch.setOnCheckedChangeListener(this);
+        updateState();
     }
 }

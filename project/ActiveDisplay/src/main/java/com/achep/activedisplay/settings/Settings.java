@@ -42,6 +42,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.achep.activedisplay.R;
+import com.achep.activedisplay.settings.enablers.ActiveModeEnabler;
+import com.achep.activedisplay.settings.enablers.Enabler;
+import com.achep.activedisplay.settings.enablers.LockscreenEnabler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

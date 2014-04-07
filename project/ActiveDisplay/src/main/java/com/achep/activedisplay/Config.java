@@ -20,6 +20,10 @@ package com.achep.activedisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
+import android.preference.Preference;
 import android.util.Log;
 
 import com.achep.activedisplay.activemode.ActiveModeService;
@@ -36,9 +40,10 @@ public class Config {
     private static final String TAG = "Config";
 
     private static final String PREFERENCES_FILE_NAME = "config";
-    public static final String KEY_ENABLED = "a";
-    public static final String KEY_ONLY_WHILE_CHARGING = "b";
-    public static final String KEY_LOW_PRIORITY_NOTIFICATIONS = "c";
+
+    public static final String KEY_ENABLED = "enabled";
+    public static final String KEY_ONLY_WHILE_CHARGING = "only_while_charging";
+    public static final String KEY_LOW_PRIORITY_NOTIFICATIONS = "low_priority_notifications";
 
     // inactive time
     public static final String KEY_INACTIVE_TIME_FROM = "inactive_time_from";
@@ -60,14 +65,13 @@ public class Config {
     public static final String KEY_INTERFACE_WALLPAPER_SHOWN = "wallpaper_shown";
     public static final String KEY_INTERFACE_SHADOW_TOGGLE = "shadow_toggle";
     public static final String KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
+    public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
+    public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
     public static final String KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR = "mirrored_timeout_progress_bar";
 
     // swipe actions
     public static final String KEY_SWIPE_LEFT_ACTION = "swipe_left_action";
     public static final String KEY_SWIPE_RIGHT_ACTION = "swipe_right_action";
-
-    public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
-    public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
 
     private static Config sConfigSoft;
 
@@ -140,7 +144,7 @@ public class Config {
                 DYNAMIC_BG_ARTWORK_MASK | DYNAMIC_BG_NOTIFICATION_MASK);
     }
 
-    private SharedPreferences getSharedPreferences(Context context) {
+    static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
     }
 

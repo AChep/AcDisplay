@@ -18,6 +18,7 @@
  */
 package com.achep.activedisplay.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.MultiSelectListPreference;
@@ -25,16 +26,18 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.achep.activedisplay.Config;
-import com.achep.activedisplay.Keys;
 import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.utils.ToastUtils;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
 /**
- * Created by Artem on 09.02.14.
+ * Interface settings fragment.
+ *
+ * @author Artem Chepurnoy
  */
 public class InterfaceFragment extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener,
@@ -53,13 +56,17 @@ public class InterfaceFragment extends PreferenceFragment implements
         addPreferencesFromResource(R.xml.interface_settings);
 
         mShowWallpaper = (CheckBoxPreference) findPreference(
-                Keys.Settings.INTERFACE_IS_WALLPAPER_SHOWN);
+                Config.KEY_INTERFACE_WALLPAPER_SHOWN);
+        mShadowToggle = (CheckBoxPreference) findPreference(
+                Config.KEY_INTERFACE_SHADOW_TOGGLE);
+        mDynamicBackground = (MultiSelectListPreference) findPreference(
+                Config.KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE);
+        mMirroredTimeoutToggle = (CheckBoxPreference) findPreference(
+                Config.KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR);
+
         mShowWallpaper.setOnPreferenceChangeListener(this);
-        mShadowToggle = (CheckBoxPreference) findPreference("shadow_toggle");
         mShadowToggle.setOnPreferenceChangeListener(this);
-        mDynamicBackground = (MultiSelectListPreference) findPreference("dynamic_background_mode");
         mDynamicBackground.setOnPreferenceChangeListener(this);
-        mMirroredTimeoutToggle = (CheckBoxPreference) findPreference("mirrored_timeout_progress_bar");
         mMirroredTimeoutToggle.setOnPreferenceChangeListener(this);
     }
 
@@ -72,7 +79,7 @@ public class InterfaceFragment extends PreferenceFragment implements
         updateShowWallpaperPreference(config);
         updateShowShadowPreference(config);
         updateMirroredTimeoutPreference(config);
-        updateDynamicBackgroundSummary(config);
+        updateDynamicBackgroundPreference(config);
     }
 
     @Override
@@ -82,65 +89,20 @@ public class InterfaceFragment extends PreferenceFragment implements
         config.removeOnConfigChangedListener(this);
     }
 
-    private void updateShowWallpaperPreference(Config config) {
-        updateCheckBox(mShowWallpaper, config.isWallpaperShown());
-    }
-
-    private void updateShowShadowPreference(Config config) {
-        updateCheckBox(mShadowToggle, config.isShadowEnabled());
-    }
-
-    private void updateMirroredTimeoutPreference(Config config) {
-        updateCheckBox(mMirroredTimeoutToggle, config.isMirroredTimeoutProgressBarEnabled());
-    }
-
-    private void updateCheckBox(CheckBoxPreference preference, boolean checked) {
-        mBroadcasting = true;
-        preference.setChecked(checked);
-        mBroadcasting = false;
-    }
-
-    private void updateDynamicBackgroundSummary(Config config) {
-        if (config.getDynamicBackgroundMode() != 0) {
-            CharSequence[] entries = mDynamicBackground.getEntries();
-            CharSequence[] values = mDynamicBackground.getEntryValues();
-            int mode = config.getDynamicBackgroundMode();
-
-            StringBuilder sb = new StringBuilder();
-            boolean empty = true;
-
-            for (int i = 0; i < values.length; i++) {
-                int a = Integer.parseInt(values[i].toString());
-                if (Operator.bitandCompare(mode, a)) {
-                    if (!empty) {
-                        sb.append(", ");
-                    }
-                    sb.append(entries[i]);
-                    empty = false;
-                }
-            }
-
-            String text = sb.toString().toLowerCase(Locale.getDefault());
-
-            mDynamicBackground.setSummary(getString(R.string.settings_dynamic_background_summary, text));
-        } else {
-            mDynamicBackground.setSummary(getString(R.string.settings_dynamic_background_disabled));
-        }
-    }
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (mBroadcasting) {
             return true;
         }
 
-        Config config = Config.getInstance(getActivity());
+        Context context = getActivity();
+        Config config = Config.getInstance(context);
         if (preference == mShowWallpaper) {
-            config.setWallpaperShown(getActivity(), (Boolean) newValue, this);
+            config.setWallpaperShown(context, (Boolean) newValue, this);
         } else if (preference == mShadowToggle) {
-            config.setShadowEnabled(getActivity(), (Boolean) newValue, this);
+            config.setShadowEnabled(context, (Boolean) newValue, this);
         } else if (preference == mMirroredTimeoutToggle) {
-            config.setMirroredTimeoutProgressBarEnabled(getActivity(), (Boolean) newValue, this);
+            config.setMirroredTimeoutProgressBarEnabled(context, (Boolean) newValue, this);
         } else if (preference == mDynamicBackground) {
             int mode = 0;
 
@@ -149,7 +111,8 @@ public class InterfaceFragment extends PreferenceFragment implements
                 mode |= Integer.parseInt(v);
             }
 
-            config.setDynamicBackgroundMode(getActivity(), mode, null);
+            config.setDynamicBackgroundMode(context, mode, this);
+            updateDynamicBackgroundPreferenceSummary(config);
         } else
             return false;
         return true;
@@ -168,8 +131,79 @@ public class InterfaceFragment extends PreferenceFragment implements
                 updateMirroredTimeoutPreference(config);
                 break;
             case Config.KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE:
-                updateDynamicBackgroundSummary(config);
+                updateDynamicBackgroundPreference(config);
                 break;
         }
+    }
+
+    private void updateShowWallpaperPreference(Config config) {
+        updatePreference(mShowWallpaper, config.isWallpaperShown());
+    }
+
+    private void updateShowShadowPreference(Config config) {
+        updatePreference(mShadowToggle, config.isShadowEnabled());
+    }
+
+    private void updateMirroredTimeoutPreference(Config config) {
+        updatePreference(mMirroredTimeoutToggle, config.isMirroredTimeoutProgressBarEnabled());
+    }
+
+    private void updatePreference(CheckBoxPreference preference, boolean checked) {
+        mBroadcasting = true;
+        preference.setChecked(checked);
+        mBroadcasting = false;
+    }
+
+    private void updateDynamicBackgroundPreference(Config config) {
+        mBroadcasting = true;
+
+        int mode = config.getDynamicBackgroundMode();
+        String[] values = new String[Integer.bitCount(mode)];
+        for (int i = 1, j = 0; j < values.length; i <<= 1) {
+            if (Operator.bitandCompare(mode, i)) {
+                values[j++] = Integer.toString(i);
+            }
+        }
+
+        Set<String> valuesSet = new HashSet<>();
+        Collections.addAll(valuesSet, values);
+        mDynamicBackground.setValues(valuesSet);
+
+        mBroadcasting = false;
+        updateDynamicBackgroundPreferenceSummary(config);
+    }
+
+    private void updateDynamicBackgroundPreferenceSummary(Config config) {
+        CharSequence summary;
+        if (config.getDynamicBackgroundMode() != 0) {
+            CharSequence[] entries = mDynamicBackground.getEntries();
+            CharSequence[] values = mDynamicBackground.getEntryValues();
+            int mode = config.getDynamicBackgroundMode();
+
+            String divider = getString(R.string.settings_multi_list_divider);
+            StringBuilder sb = new StringBuilder();
+            boolean empty = true;
+
+            assert entries != null;
+            assert values != null;
+
+            // Append selected items.
+            for (int i = 0; i < values.length; i++) {
+                int a = Integer.parseInt(values[i].toString());
+                if (Operator.bitandCompare(mode, a)) {
+                    if (!empty) {
+                        sb.append(divider);
+                    }
+                    sb.append(entries[i]);
+                    empty = false;
+                }
+            }
+
+            String itemsText = sb.toString().toLowerCase(Locale.getDefault());
+            summary = getString(R.string.settings_dynamic_background_summary, itemsText);
+        } else {
+            summary = getString(R.string.settings_dynamic_background_disabled);
+        }
+        mDynamicBackground.setSummary(summary);
     }
 }

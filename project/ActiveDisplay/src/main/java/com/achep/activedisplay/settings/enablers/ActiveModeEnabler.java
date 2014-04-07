@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.activedisplay.settings;
+package com.achep.activedisplay.settings.enablers;
 
 import android.content.Context;
 import android.widget.CompoundButton;
@@ -27,40 +27,38 @@ import com.achep.activedisplay.Config;
 /**
  * Created by Artem on 21.02.14.
  */
-abstract class Enabler implements
-        Config.OnConfigChangedListener,
-        CompoundButton.OnCheckedChangeListener {
+public final class ActiveModeEnabler extends Enabler {
 
-    final Context mContext;
-    final Config mConfig;
-    Switch mSwitch;
+    private boolean mBroadcasting;
 
-    public Enabler(Context context, Switch switch_) {
-        mContext = context;
-        mConfig = Config.getInstance(mContext);
-        mSwitch = switch_;
+    public ActiveModeEnabler(Context context, Switch switch_) {
+        super(context, switch_);
     }
 
-    abstract protected void updateState();
-
-    public void resume() {
-        mConfig.addOnConfigChangedListener(this);
-        mSwitch.setOnCheckedChangeListener(this);
-        updateState();
+    @Override
+    protected void updateState() {
+        mSwitch.setEnabled(mConfig.isActiveDisplayEnabled());
+        mBroadcasting = true;
+        mSwitch.setChecked(mConfig.isActiveModeEnabled());
+        mBroadcasting = false;
     }
 
-    public void pause() {
-        mConfig.removeOnConfigChangedListener(this);
-        mSwitch.setOnCheckedChangeListener(null);
-    }
-
-    public void setSwitch(Switch switch_) {
-        if (mSwitch == switch_) {
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (mBroadcasting) {
             return;
         }
 
-        mSwitch = switch_;
-        mSwitch.setOnCheckedChangeListener(this);
-        updateState();
+        mConfig.setActiveModeEnabled(mContext, isChecked, this);
+    }
+
+    @Override
+    public void onConfigChanged(Config config, String key, Object value) {
+        switch (key) {
+            case Config.KEY_ENABLED:
+            case Config.KEY_ACTIVE_MODE:
+                updateState();
+                break;
+        }
     }
 }
