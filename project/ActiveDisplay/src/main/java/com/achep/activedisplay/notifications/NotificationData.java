@@ -20,8 +20,11 @@ package com.achep.activedisplay.notifications;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.renderscript.Allocation;
@@ -33,6 +36,7 @@ import android.util.Log;
 
 import com.achep.activedisplay.Device;
 import com.achep.activedisplay.Project;
+import com.achep.activedisplay.R;
 import com.achep.activedisplay.fragments.AcDisplayFragment;
 import com.achep.activedisplay.notifications.parser.IExtractor;
 import com.achep.activedisplay.notifications.parser.NativeParser;
@@ -246,15 +250,24 @@ public class NotificationData {
                 return null;
             }
 
-            Context contextNotify = NotificationUtils.createContext(context, sbn);
-            Bitmap icon = BitmapFactory.decodeResource(
-                    contextNotify.getResources(),
-                    sbn.getNotification().icon);
+            Drawable drawable = NotificationUtils.getDrawable(
+                    context, sbn, sbn.getNotification().icon);
 
-            if (icon == null) {
+            if (drawable == null) {
                 Log.w(TAG, "No notification icon found.");
-                return null;
+                Bitmap icon = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(icon);
+                canvas.drawColor(0x60000000);
+                return icon;
             }
+
+            Resources res = context.getResources();
+            int iconSize = res.getDimensionPixelSize(R.dimen.notification_icon_size);
+            drawable.setBounds(0, 0, iconSize, iconSize);
+
+            Bitmap icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_4444);
+            Canvas canvas = new Canvas(icon);
+            drawable.draw(canvas);
 
             if (Project.DEBUG) {
                 long delta = SystemClock.elapsedRealtime() - start;
