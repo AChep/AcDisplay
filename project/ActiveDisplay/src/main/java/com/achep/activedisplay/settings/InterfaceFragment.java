@@ -87,7 +87,7 @@ public class InterfaceFragment extends PreferenceFragment implements
     }
 
     private void updateShowShadowPreference(Config config) {
-        updateCheckBox(mShadowToggle, config.isWallpaperShown());
+        updateCheckBox(mShadowToggle, config.isShadowEnabled());
     }
 
     private void updateMirroredTimeoutPreference(Config config) {
@@ -162,7 +162,7 @@ public class InterfaceFragment extends PreferenceFragment implements
                 updateShowWallpaperPreference(config);
                 break;
             case Config.KEY_INTERFACE_SHADOW_TOGGLE:
-                updateShowWallpaperPreference(config);
+                updateShowShadowPreference(config);
                 break;
             case Config.KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR:
                 updateMirroredTimeoutPreference(config);
