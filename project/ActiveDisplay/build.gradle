@@ -69,7 +69,6 @@ android {
         debug {
             zipAlign true
             buildConfigField "boolean", "MY_DEBUG", "true"
-            packageNameSuffix '.debug'
             versionNameSuffix '-debug'
         }
         release {
