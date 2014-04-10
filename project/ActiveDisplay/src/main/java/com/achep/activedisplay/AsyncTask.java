@@ -17,18 +17,27 @@
  * MA  02110-1301, USA.
  */
 
-package com.achep.activedisplay.notifications.parser;
-
-import android.content.Context;
-import android.service.notification.StatusBarNotification;
-
-import com.achep.activedisplay.notifications.NotificationData;
+package com.achep.activedisplay;
 
 /**
- * Created by Artem on 29.03.2014.
+ * Created by Artem on 10.04.2014.
+ *
+ * @author Artem Chepurnoy
  */
-public interface IExtractor {
-    public NotificationData loadTexts(Context context,
-                                      StatusBarNotification notification,
-                                      NotificationData nd);
+public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
+
+    protected volatile boolean running = true;
+
+    /**
+     * Equals to calling: {@code AsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)}
+     */
+    public boolean isFinished() {
+        return getStatus().equals(android.os.AsyncTask.Status.FINISHED);
+    }
+
+    public void cancel() {
+        running = false;
+        cancel(false);
+    }
+
 }

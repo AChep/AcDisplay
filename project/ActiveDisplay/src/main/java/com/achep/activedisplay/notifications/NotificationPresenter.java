@@ -16,12 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
 package com.achep.activedisplay.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Handler;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
@@ -35,7 +37,6 @@ import com.achep.activedisplay.R;
 import com.achep.activedisplay.activemode.ProximitySensor;
 import com.achep.activedisplay.blacklist.AppConfig;
 import com.achep.activedisplay.blacklist.Blacklist;
-import com.achep.activedisplay.services.SendNotificationService;
 import com.achep.activedisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
@@ -47,6 +48,11 @@ public class NotificationPresenter implements NotificationList.Callback {
 
     private static final String TAG = "NotificationPresenter";
 
+    public static final int EVENT_BATH = 0;
+    public static final int EVENT_POSTED = 1;
+    public static final int EVENT_CHANGED = 2;
+    public static final int EVENT_REMOVED = 3;
+
     private static final int INITIALIZING_PROCESS_NONE = 0;
     private static final int INITIALIZING_PROCESS_STARTED = 1;
     private static final int INITIALIZING_PROCESS_DONE = 2;
@@ -55,47 +61,67 @@ public class NotificationPresenter implements NotificationList.Callback {
 
     private int mInitProcess = INITIALIZING_PROCESS_NONE;
 
-    private NotificationList mGList = new NotificationList(null);
-    private NotificationList mLList = new NotificationList(this);
+    private final NotificationList mGList;
+    private final NotificationList mLList;
 
-    private final ArrayList<OnNotificationListChangedListener> mListeners = new ArrayList<>();
+    private final ArrayList<OnNotificationListChangedListener> mListeners;
     private final Config mConfig;
     private final Blacklist mBlacklist;
 
+    /**
+     * Listens to config to update notification list when needed.
+     */
     private class ConfigListener implements Config.OnConfigChangedListener {
 
         @Override
         public void onConfigChanged(Config config, String key, Object value) {
-            if (key.equals(Config.KEY_LOW_PRIORITY_NOTIFICATIONS)) {
-
-                // Check if the change touches our notifications.
-                for (OpenStatusBarNotification osbn : mGList.list()) {
-                    StatusBarNotification notification = osbn.getStatusBarNotification();
-
-                    if (notification.getNotification().priority <= Notification.PRIORITY_LOW) {
-                        rebuildLocalList();
-                        break;
-                    }
-                }
+            switch (key) {
+                case Config.KEY_LOW_PRIORITY_NOTIFICATIONS:
+                    handleLowPriorityNotificationsPreferenceChanged();
+                    break;
             }
+        }
+
+        private void handleLowPriorityNotificationsPreferenceChanged() {
+            rebuildLocalList(new Comparator() {
+                @Override
+                public boolean needsRebuild(OpenStatusBarNotification osbn) {
+                    StatusBarNotification sbn = osbn.getStatusBarNotification();
+                    return sbn.getNotification().priority <= Notification.PRIORITY_LOW;
+                }
+            });
         }
     }
 
     private class BlacklistListener extends Blacklist.OnBlacklistChangedListener {
 
         @Override
-        public void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff) {
+        public void onBlacklistChanged(final AppConfig configNew, AppConfig configOld, int diff) {
             if (Operator.bitandCompare(diff, AppConfig.DIFF_HIDDEN_REAL)) {
+                handlePackageVisibilityChanged(configNew.packageName);
+            }
+        }
 
-                // Check if the change touches our notifications.
-                for (OpenStatusBarNotification osbn : mGList.list()) {
-                    StatusBarNotification notification = osbn.getStatusBarNotification();
-
-                    if (notification.getPackageName().equals(configNew.packageName)) {
-                        rebuildLocalList();
-                        break;
-                    }
+        private void handlePackageVisibilityChanged(final String packageName) {
+            rebuildLocalList(new Comparator() {
+                @Override
+                public boolean needsRebuild(OpenStatusBarNotification osbn) {
+                    StatusBarNotification sbn = osbn.getStatusBarNotification();
+                    return sbn.getPackageName().equals(packageName);
                 }
+            });
+        }
+    }
+
+    private interface Comparator {
+        public boolean needsRebuild(OpenStatusBarNotification osbn);
+    }
+
+    private void rebuildLocalList(Comparator comparator) {
+        for (OpenStatusBarNotification osbn : mGList.list()) {
+            if (comparator.needsRebuild(osbn)) {
+                rebuildLocalList();
+                break;
             }
         }
     }
@@ -104,94 +130,81 @@ public class NotificationPresenter implements NotificationList.Callback {
     // ////////////// -- MAIN -- ////////////////
     // //////////////////////////////////////////
 
+    public interface OnNotificationListChangedListener {
+
+        /**
+         * Callback that the list of notifications has changed.
+         *
+         * @param osbn  an instance of notification.
+         * @param event event type:
+         *              {@link #EVENT_BATH}, {@link #EVENT_POSTED},
+         *              {@link #EVENT_CHANGED}, {@link #EVENT_REMOVED}
+         */
+        public void onNotificationListChanged(NotificationPresenter np,
+                                              OpenStatusBarNotification osbn, int event);
+
+    }
+
+    public void addOnNotificationListChangedListener(OnNotificationListChangedListener listener) {
+        mListeners.add(listener);
+    }
+
+    public void removeOnNotificationListChangedListener(OnNotificationListChangedListener listener) {
+        mListeners.remove(listener);
+    }
+
     private NotificationPresenter(Context context) {
+        mListeners = new ArrayList<>();
+        mGList = new NotificationList(null);
+        mLList = new NotificationList(this);
+
         mConfig = Config.getInstance(context);
         mConfig.addOnConfigChangedListener(new ConfigListener());
+
         mBlacklist = Blacklist.getInstance(context);
         mBlacklist.addOnSharedListChangedListener(new BlacklistListener());
     }
 
     public synchronized static NotificationPresenter getInstance(Context context) {
-        if (sNotificationPresenter == null)
+        if (sNotificationPresenter == null) {
             sNotificationPresenter = new NotificationPresenter(context);
+        }
         return sNotificationPresenter;
     }
 
     /**
-     * Should be called when notification listener service is ready to receive events.
+     * Called on {@link NotificationHandleService#onNotificationPosted(StatusBarNotification)}
      */
-    // Running on wrong thread
-    void tryStartInitProcess(final Context context) {
-        if (context == null || mInitProcess > INITIALIZING_PROCESS_NONE) return;
-        mInitProcess = INITIALIZING_PROCESS_STARTED;
-
-        // Send initializing notification with a short delay.
-        Intent notificationIntent = new Intent(context, SendNotificationService.class)
-                .putExtra(SendNotificationService.EXTRA_TITLE, context.getString(R.string.app_name))
-                .putExtra(SendNotificationService.EXTRA_ID, NotificationIds.INIT_NOTIFICATION)
-                .putExtra(SendNotificationService.EXTRA_ICON_RESOURCE, R.drawable.stat_test)
-                .putExtra(SendNotificationService.EXTRA_PRIORITY, Notification.PRIORITY_MIN);
-        SendNotificationService.notify(context, notificationIntent, 500);
-    }
-
-    void tryInit(Context context, StatusBarNotification n, StatusBarNotification[] activeNotifications) {
-        if (mInitProcess != INITIALIZING_PROCESS_STARTED
-                || !(context instanceof NotificationHandleService)
-                || !Project.getPackageName(context).equals(n.getPackageName())) {
-            return;
-        }
-        mInitProcess = INITIALIZING_PROCESS_DONE;
-
-        if (activeNotifications != null) {
-            for (StatusBarNotification notification : activeNotifications) {
-                postNotification(context, notification, true);
-            }
-
-            for (OnNotificationListChangedListener listener : mListeners)
-                listener.onNotificationInitialized(this);
-        } else {
-            Log.w(TAG, "Failed to get current active notifications!");
-        }
-
-        // Init notification isn't needed anymore.
-        NotificationManager nm = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(NotificationIds.INIT_NOTIFICATION);
-    }
-
-    // //////////////////////////////////////////
-    // //////// -- POST NOTIFICATION -- /////////
-    // //////////////////////////////////////////
-
-    public ArrayList<OpenStatusBarNotification> getList() {
-        return mLList.list();
-    }
-
     public void postNotification(Context context, StatusBarNotification n) {
         postNotification(context, n, false);
     }
 
-    public void postNotification(Context context, StatusBarNotification n, boolean internal) {
-        logNotification(n, "Post");
+    public void postNotification(Context context, StatusBarNotification n, boolean silently) {
+        logNotification(n, "posted");
         OpenStatusBarNotification osbn = OpenStatusBarNotification.wrap(n);
 
         boolean globalValid = isValidForGlobal(n);
         boolean localValid = globalValid && isValidForLocal(n);
 
+        // If notification will not be added to the
+        // list there's no point of loading its data.
         if (globalValid) {
             osbn.loadData(context);
         }
 
-        mGList.pushOrRemove(osbn, globalValid, internal);
-        mLList.pushOrRemove(osbn, localValid, internal);
+        mGList.pushOrRemove(osbn, globalValid, silently);
+        mLList.pushOrRemove(osbn, localValid, silently);
 
-        if (localValid && !internal) {
+        if (localValid && !silently) {
             tryStartGui(context, osbn);
         }
     }
 
+    /**
+     * Called on {@link NotificationHandleService#onNotificationRemoved(StatusBarNotification)}
+     */
     public void removeNotification(Context context, StatusBarNotification n) {
-        logNotification(n, "Remove");
+        logNotification(n, "removed");
         OpenStatusBarNotification osbn = OpenStatusBarNotification.wrap(n);
         mGList.remove(osbn);
         mLList.remove(osbn);
@@ -208,8 +221,11 @@ public class NotificationPresenter implements NotificationList.Callback {
                 list.add(notification);
         }
 
-        for (OnNotificationListChangedListener listener : mListeners)
-            listener.onNotificationInitialized(this);
+        notifyListeners(null, EVENT_BATH);
+    }
+
+    public ArrayList<OpenStatusBarNotification> getList() {
+        return mLList.list();
     }
 
     // //////////////////////////////////////////
@@ -218,28 +234,31 @@ public class NotificationPresenter implements NotificationList.Callback {
 
     @Override
     public int onNotificationAdded(OpenStatusBarNotification n) {
-        for (OnNotificationListChangedListener listener : mListeners)
-            listener.onNotificationPosted(this, n);
+        notifyListeners(n, EVENT_POSTED);
         return 0;
     }
 
     @Override
     public int onNotificationChanged(OpenStatusBarNotification n) {
-        for (OnNotificationListChangedListener listener : mListeners)
-            listener.onNotificationChanged(this, n);
+        notifyListeners(n, EVENT_CHANGED);
         return 0;
     }
 
     @Override
     public int onNotificationRemoved(OpenStatusBarNotification n) {
-        for (OnNotificationListChangedListener listener : mListeners)
-            listener.onNotificationRemoved(this, n);
+        notifyListeners(n, EVENT_REMOVED);
         return 0;
     }
 
     // //////////////////////////////////////////
     // //////// -- NOTIFICATION UTILS -- ////////
     // //////////////////////////////////////////
+
+    private void notifyListeners(OpenStatusBarNotification notification, int event) {
+        for (OnNotificationListChangedListener listener : mListeners) {
+            listener.onNotificationListChanged(this, notification, event);
+        }
+    }
 
     /**
      * Returns {@code false} if the notification doesn't fit
@@ -250,14 +269,24 @@ public class NotificationPresenter implements NotificationList.Callback {
         mBlacklist.fill(config);
 
         boolean hidden = config.enabled && config.isHidden();
+        boolean priorityNormal = n.getNotification().priority >= Notification.PRIORITY_LOW;
+        boolean lowPriorPassed = priorityNormal || mConfig.isLowPriorityNotificationsAllowed();
 
-        return (n.getNotification().priority >= Notification.PRIORITY_LOW
-                || mConfig.isLowPriorityNotificationsAllowed())
-                && !hidden;
+        return lowPriorPassed && !hidden;
     }
 
     private boolean isValidForGlobal(StatusBarNotification n) {
         return !n.isOngoing() && n.isClearable();
+    }
+
+    private void logNotification(StatusBarNotification n, String action) {
+        Log.d(TAG, "Notification " + action + ": package=" + n.getPackageName()
+                + " id=" + n.getId()
+                + " user_id=" + n.getUserId()
+                + " tag=" + n.getTag()
+                + " post_time=" + n.getPostTime()
+                + " is_valid_global=" + isValidForGlobal(n)
+                + " is_valid_local=" + isValidForLocal(n));
     }
 
     // //////////////////////////////////////////
@@ -286,79 +315,68 @@ public class NotificationPresenter implements NotificationList.Callback {
     }
 
     // //////////////////////////////////////////
-    // /////////// -- LOG THINGS -- /////////////
+    // ////////// -- INITIALIZING -- ////////////
     // //////////////////////////////////////////
 
-    private void logNotification(StatusBarNotification n, String action) {
-        Log.d(TAG, action + ": package=" + n.getPackageName()
-                + " id=" + n.getId()
-                + " user_id=" + n.getUserId()
-                + " tag=" + n.getTag()
-                + " post_time=" + n.getPostTime()
-                + " is_valid_global=" + isValidForGlobal(n)
-                + " is_valid_local=" + isValidForLocal(n));
-    }
-
-    // //////////////////////////////////////////
-    // /////////// -- LISTENERS -- //////////////
-    // //////////////////////////////////////////
-
-    public void addOnNotificationListChangedListener(OnNotificationListChangedListener listener) {
-        mListeners.add(listener);
-    }
-
-    public void removeOnNotificationListChangedListener(OnNotificationListChangedListener listener) {
-        mListeners.remove(listener);
-    }
-
-    public interface OnNotificationListChangedListener {
-
-        public void onNotificationInitialized(NotificationPresenter nm);
-
-        public void onNotificationPosted(NotificationPresenter nm,
-                                         OpenStatusBarNotification notification);
-
-        public void onNotificationChanged(NotificationPresenter nm,
-                                          OpenStatusBarNotification notification);
-
-        public void onNotificationRemoved(NotificationPresenter nm,
-                                          OpenStatusBarNotification notification);
-
-    }
-
-    public static class SimpleOnNotificationListChangedListener implements OnNotificationListChangedListener {
-
-        public static final int INITIALIZED = 0;
-        public static final int POSTED = 1;
-        public static final int CHANGED = 2;
-        public static final int REMOVED = 3;
-
-        @Override
-        public void onNotificationInitialized(NotificationPresenter nm) {
-            onNotificationEvent(nm, null, INITIALIZED);
+    /**
+     * Should be called when notification listener service is ready to receive new notifications.
+     */
+    // Running on wrong thread
+    void tryStartInitProcess() {
+        if (mInitProcess != INITIALIZING_PROCESS_NONE) {
+            return;
         }
 
-        @Override
-        public void onNotificationPosted(NotificationPresenter nm,
-                                         OpenStatusBarNotification notification) {
-            onNotificationEvent(nm, notification, POSTED);
-        }
+        mInitProcess = INITIALIZING_PROCESS_STARTED;
 
-        @Override
-        public void onNotificationChanged(NotificationPresenter nm,
-                                          OpenStatusBarNotification notification) {
-            onNotificationEvent(nm, notification, CHANGED);
-        }
+        // Well I know that handler doesn't work properly on deep sleep.
+        // This is okay. It'll send this init notification after waking up.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NotificationHandleService service = NotificationHandleService.sService;
 
-        @Override
-        public void onNotificationRemoved(NotificationPresenter nm,
-                                          OpenStatusBarNotification notification) {
-            onNotificationEvent(nm, notification, REMOVED);
-        }
+                if (service == null) {
+                    Log.w(TAG, "Tried to send an init-notification but notification service is offline.");
+                    return;
+                }
 
-        public void onNotificationEvent(NotificationPresenter nm,
-                                        OpenStatusBarNotification notification,
-                                        int event) {
-        }
+                Resources res = service.getResources();
+                Notification.Builder builder = new Notification.Builder(service)
+                        .setContentTitle(res.getString(R.string.init_notification_text))
+                        .setContentText(res.getString(R.string.init_notification_text))
+                        .setSmallIcon(R.drawable.stat_notify_chat)
+                        .setPriority(Notification.PRIORITY_MIN)
+                        .setAutoCancel(true);
+
+                NotificationManager nm = (NotificationManager)
+                        service.getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.notify(NotificationIds.INIT_NOTIFICATION, builder.build());
+            }
+        }, 2500);
     }
+
+    @SuppressWarnings("PointlessBooleanExpression")
+    void tryInit(NotificationHandleService service, StatusBarNotification n, StatusBarNotification[] activeNotifications) {
+        if (mInitProcess != INITIALIZING_PROCESS_STARTED
+                // Is posted notification equals to init notification?
+                || n.getId() != NotificationIds.INIT_NOTIFICATION
+                || n.getPackageName().equals(Project.getPackageName(service)) == false) {
+            return;
+        } else {
+            mInitProcess = INITIALIZING_PROCESS_DONE;
+        }
+
+        if (activeNotifications != null) {
+            for (StatusBarNotification notification : activeNotifications) {
+                postNotification(service, notification, true);
+            }
+            notifyListeners(null, EVENT_BATH);
+        }
+
+        NotificationHelper.dismissNotification(n);
+    }
+    
 }
+
+

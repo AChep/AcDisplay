@@ -43,9 +43,13 @@ public class NotificationHandleService extends NotificationListenerService {
         isNotificationAccessEnabled = true;
         sService = this;
 
+        // What is the idea of init notification?
+        // Well the main goal is to access #getActiveNotifications()
+        // what seems to be not possible without dirty and buggy
+        // workarounds.
         NotificationPresenter
                 .getInstance(this)
-                .tryStartInitProcess(this);
+                .tryStartInitProcess();
 
         return super.onBind(intent);
     }
@@ -55,6 +59,7 @@ public class NotificationHandleService extends NotificationListenerService {
         boolean unbind = super.onUnbind(intent);
         isNotificationAccessEnabled = false;
         sService = null;
+
         return unbind;
     }
 
@@ -84,15 +89,14 @@ public class NotificationHandleService extends NotificationListenerService {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Context context = NotificationHandleService.this;
-                NotificationPresenter np = NotificationPresenter.getInstance(context);
+                NotificationPresenter np = NotificationPresenter.getInstance(sService);
 
                 try {
-                    np.tryInit(context, statusBarNotification, activeNotifications);
+                    np.tryInit(sService, statusBarNotification, activeNotifications);
                     if (post) {
-                        np.postNotification(context, statusBarNotification);
+                        np.postNotification(sService, statusBarNotification);
                     } else {
-                        np.removeNotification(context, statusBarNotification);
+                        np.removeNotification(sService, statusBarNotification);
                     }
                 } catch (Exception e) { // don't die
                     Log.wtf(TAG, "The world of pink unicorns just crashed:");

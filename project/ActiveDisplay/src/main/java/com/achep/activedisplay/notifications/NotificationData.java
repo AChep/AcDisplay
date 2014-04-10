@@ -22,25 +22,21 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.SystemClock;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.achep.activedisplay.AsyncTask;
 import com.achep.activedisplay.Device;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.fragments.AcDisplayFragment;
-import com.achep.activedisplay.notifications.parser.IExtractor;
-import com.achep.activedisplay.notifications.parser.NativeParser;
-import com.achep.activedisplay.notifications.parser.ViewParser;
+import com.achep.activedisplay.notifications.parser.Extractor;
+import com.achep.activedisplay.notifications.parser.NativeExtractor;
+import com.achep.activedisplay.notifications.parser.ViewExtractor;
 import com.achep.activedisplay.utils.BitmapUtils;
 
 import java.lang.ref.SoftReference;
@@ -107,7 +103,7 @@ public class NotificationData {
     // /////////// -- LISTENERS -- //////////////
     // //////////////////////////////////////////
 
-    private ArrayList<OnNotificationDataChangedListener> mListeners = new ArrayList<>(3);
+    private final ArrayList<OnNotificationDataChangedListener> mListeners = new ArrayList<>(3);
 
     public interface OnNotificationDataChangedListener {
 
@@ -134,8 +130,8 @@ public class NotificationData {
     // ///////////// -- MAIN -- /////////////////
     // //////////////////////////////////////////
 
-    private static SoftReference<IExtractor> sNativeExtractor = new SoftReference<>(null);
-    private static SoftReference<IExtractor> sViewExtractor = new SoftReference<>(null);
+    private static SoftReference<Extractor> sNativeExtractor = new SoftReference<>(null);
+    private static SoftReference<Extractor> sViewExtractor = new SoftReference<>(null);
     private AcDisplayFragment.BackgroundFactoryThread mBackgroundLoader;
     private IconLoaderThread mIconLoader;
 
@@ -158,9 +154,9 @@ public class NotificationData {
         boolean useViewExtractor = !Device.hasKitKatApi();
 
         if (!useViewExtractor) {
-            IExtractor extractor = sNativeExtractor.get();
+            Extractor extractor = sNativeExtractor.get();
             if (extractor == null) {
-                extractor = new NativeParser();
+                extractor = new NativeExtractor();
                 sNativeExtractor = new SoftReference<>(extractor);
             }
             extractor.loadTexts(context, sbn, this);
@@ -168,14 +164,15 @@ public class NotificationData {
             // Developer of that notification thinks that he'll be more awesome
             // while using truly custom notifications (90% percents of them
             // sucks a lot).
+            //noinspection PointlessBooleanExpression
             useViewExtractor = true
                     && TextUtils.isEmpty(titleText)
                     && TextUtils.isEmpty(getLargeMessage());
         }
         if (useViewExtractor) {
-            IExtractor extractor = sViewExtractor.get();
+            Extractor extractor = sViewExtractor.get();
             if (extractor == null) {
-                extractor = new ViewParser();
+                extractor = new ViewExtractor();
                 sViewExtractor = new SoftReference<>(extractor);
             }
             extractor.loadTexts(context, sbn, this);
@@ -184,26 +181,13 @@ public class NotificationData {
         number = sbn.getNotification().number;
         markAsRead(isRead);
 
-        if (mIconLoader != null && !mIconLoader.isFinished()) {
-            mIconLoader.running = false;
-            mIconLoader.cancel(false);
-        }
+        stopAsyncTask(mIconLoader);
         mIconLoader = new IconLoaderThread(context, sbn, this);
         mIconLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-
-        // /////////////////////
-        // ~~ LOAD BACKGROUND ~~
-        // /////////////////////
-        if (mBackgroundLoader != null && !mBackgroundLoader.isFinished()) {
-            mBackgroundLoader.cancel();
-        }
-
-        Bitmap largeIcon = sbn.getNotification().largeIcon;
-
-        if (largeIcon != null && !BitmapUtils.hasTransparentCorners(largeIcon)) {
-            background = sbn.getNotification().largeIcon;
-
+        stopAsyncTask(mBackgroundLoader);
+        background = sbn.getNotification().largeIcon;
+        if (background != null && !BitmapUtils.hasTransparentCorners(background)) {
             mBackgroundLoader = new AcDisplayFragment.BackgroundFactoryThread(context, background,
                     new AcDisplayFragment.BackgroundFactoryThread.Callback() {
                 @Override
@@ -217,26 +201,22 @@ public class NotificationData {
         }
     }
 
+    private void stopAsyncTask(AsyncTask asyncTask) {
+        if (asyncTask != null && !asyncTask.isFinished()) {
+            asyncTask.cancel();
+        }
+    }
+
     private static class IconLoaderThread extends AsyncTask<Void, Void, Bitmap> {
 
         private final WeakReference<NotificationData> mNotificationData;
         private final WeakReference<StatusBarNotification> mStatusBarNotification;
         private final WeakReference<Context> mContext;
 
-        public volatile boolean running = true;
-
         private IconLoaderThread(Context context, StatusBarNotification sbn, NotificationData data) {
             mNotificationData = new WeakReference<>(data);
             mStatusBarNotification = new WeakReference<>(sbn);
             mContext = new WeakReference<>(context);
-        }
-
-        /**
-         * Current method equals calling:
-         * {@code AsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)}
-         */
-        public boolean isFinished() {
-            return getStatus().equals(AsyncTask.Status.FINISHED);
         }
 
         @Override
@@ -288,84 +268,6 @@ public class NotificationData {
             }
 
             data.setIcon(bitmap);
-        }
-    }
-
-    private static class BackgroundBitmapLoaderThread extends AsyncTask<Void, Void, Bitmap> {
-
-        private final WeakReference<NotificationData> mNotificationData;
-        private final WeakReference<StatusBarNotification> mStatusBarNotification;
-        private final WeakReference<Context> mContext;
-
-        public volatile boolean running = true;
-
-        private BackgroundBitmapLoaderThread(Context context, StatusBarNotification sbn, NotificationData data) {
-            mNotificationData = new WeakReference<>(data);
-            mStatusBarNotification = new WeakReference<>(sbn);
-            mContext = new WeakReference<>(context);
-        }
-
-        /**
-         * Current method equals calling:
-         * {@code AsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)}
-         */
-        public boolean isFinished() {
-            return getStatus().equals(AsyncTask.Status.FINISHED);
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            final long start = SystemClock.elapsedRealtime();
-
-            StatusBarNotification sbn = mStatusBarNotification.get();
-            Context context = mContext.get();
-
-            if (context == null || sbn == null || !running) {
-                return null;
-            }
-
-            Bitmap largeIcon = sbn.getNotification().largeIcon;
-            if (largeIcon == null) {
-                return null;
-            }
-
-            Bitmap icon = Bitmap.createBitmap(
-                    largeIcon.getWidth(),
-                    largeIcon.getHeight(),
-                    largeIcon.getConfig());
-
-            try {
-                RenderScript rs = RenderScript.create(context);
-                Allocation overlayAlloc = Allocation.createFromBitmap(rs, largeIcon);
-                ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());
-
-                blur.setInput(overlayAlloc);
-                blur.setRadius(3f);
-                blur.forEach(overlayAlloc);
-                overlayAlloc.copyTo(icon);
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to blur notification icon.");
-            }
-
-            if (Project.DEBUG) {
-                long delta = SystemClock.elapsedRealtime() - start;
-                Log.d(TAG, "Notification background created in " + delta + " millis:"
-                        + " width=" + icon.getWidth()
-                        + " height=" + icon.getHeight());
-            }
-
-            return icon;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            NotificationData data = mNotificationData.get();
-            if (bitmap == null || data == null) {
-                return;
-            }
-
-            data.setBackground(bitmap);
         }
     }
 

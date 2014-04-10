@@ -40,11 +40,10 @@ import java.util.ArrayList;
 /**
  * Jelly bean 4.3 backport.
  */
-public final class ViewParser implements IExtractor {
+public final class ViewExtractor implements Extractor {
 
-    private static final String TAG = "ViewParser";
+    private static final String TAG = "ViewExtractor";
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public NotificationData loadTexts(Context contextApp, StatusBarNotification notification, NotificationData data) {
         Log.i(TAG, "Parsing notification using view parser.");
@@ -57,6 +56,7 @@ public final class ViewParser implements IExtractor {
         final Notification n = notification.getNotification();
         final RemoteViews rvs = n.bigContentView == null ? n.contentView : n.bigContentView;
 
+        assert rvs != null;
         // TODO: Compare both bigContentView and contentView to get actions and so.
 
         LayoutInflater inflater = (LayoutInflater) contextNotify.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -74,25 +74,17 @@ public final class ViewParser implements IExtractor {
             return data;
         }
 
-        ArrayList<TextView> textViews = new RecursiveFinder<>(TextView.class).expand(view, true);
+        ArrayList<TextView> textViews = new RecursiveFinder<>(TextView.class).expand(view);
 
         // Get rid of notification' actions
-        if (Device.hasKitKatApi() && n.actions != null) {
-            for (Notification.Action action : n.actions) {
-                for (int i = textViews.size() - 1; i >= 0; i--) {
-                    CharSequence text = textViews.get(i).getText();
-                    assert text != null;
-                    if (text.equals(action.title)) {
-                        textViews.remove(i);
-                        break;
-                    }
-                }
-            }
+        if (Device.hasKitKatApi()) {
+            removeActionViews(n, textViews);
         }
 
         // Clickable views are probably not needed too.
         for (int i = textViews.size() - 1; i >= 0; i--) {
-            if (textViews.get(i).isClickable()) {
+            TextView child = textViews.get(i);
+            if (child.isClickable() || child.getVisibility() != View.VISIBLE) {
                 textViews.remove(i);
                 break;
             }
@@ -104,6 +96,23 @@ public final class ViewParser implements IExtractor {
         data.titleText = title.getText();
         data.messageText = findMessageText(contextApp, textViews);
         return data;
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void removeActionViews(Notification n, ArrayList<TextView> textViews) {
+        if (n.actions == null) {
+            return;
+        }
+
+        for (Notification.Action action : n.actions) {
+            for (int i = textViews.size() - 1; i >= 0; i--) {
+                CharSequence text = textViews.get(i).getText();
+                if (text != null && text.equals(action.title)) {
+                    textViews.remove(i);
+                    break;
+                }
+            }
+        }
     }
 
     private TextView findTitleTextView(ArrayList<TextView> textViewsList) {
@@ -125,7 +134,9 @@ public final class ViewParser implements IExtractor {
             final TextView view = textViewsList.get(i);
             final String text = view.getText().toString();
             if (view.getTextSize() == subtextSize
+                    // empty textviews
                     || text.matches("^(\\s*|)$")
+                    // clock textviews
                     || text.matches("^\\d{1,2}:\\d{1,2}(\\s?\\w{2}|)$")) {
                 textViewsList.remove(i);
             }
@@ -151,14 +162,13 @@ public final class ViewParser implements IExtractor {
             this.clazz = clazz;
         }
 
-        public ArrayList<T> expand(ViewGroup viewGroup, boolean visibleOnly) {
+        public ArrayList<T> expand(ViewGroup viewGroup) {
             int offset = 0;
             int childCount = viewGroup.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View child = viewGroup.getChildAt(i + offset);
 
-                if (child == null
-                        || visibleOnly && child.getVisibility() != View.VISIBLE) {
+                if (child == null) {
                     continue;
                 }
 
@@ -166,7 +176,7 @@ public final class ViewParser implements IExtractor {
                     //noinspection unchecked
                     list.add((T) child);
                 } else if (child instanceof ViewGroup) {
-                    expand((ViewGroup) child, visibleOnly);
+                    expand((ViewGroup) child);
                 }
             }
             return list;

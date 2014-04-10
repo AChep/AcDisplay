@@ -52,15 +52,15 @@ public class NotificationHelper {
     }
 
     public static void dismissNotification(StatusBarNotification notification) {
-        NotificationHandleService nhs = NotificationHandleService.sService;
-        if (nhs != null) {
-            nhs.cancelNotification(
+        NotificationHandleService service = NotificationHandleService.sService;
+        if (service != null) {
+            service.cancelNotification(
                     notification.getPackageName(),
                     notification.getTag(),
                     notification.getId());
-            NotificationPresenter.getInstance(nhs).removeNotification(nhs, notification);
+            NotificationPresenter.getInstance(service).removeNotification(service, notification);
         } else {
-            Log.e(TAG, "Failed to dismiss notification due to offline notification service.");
+            Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
         }
     }
 

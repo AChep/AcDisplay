@@ -33,9 +33,9 @@ import com.achep.activedisplay.notifications.NotificationData;
 /**
  * Created by Artem on 04.03.14.
  */
-public final class NativeParser implements IExtractor {
+public final class NativeExtractor implements Extractor {
 
-    private static final String TAG = "NativeParser";
+    private static final String TAG = "NativeExtractor";
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override

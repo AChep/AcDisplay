@@ -25,10 +25,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +50,7 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.achep.activedisplay.AsyncTask;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.Device;
 import com.achep.activedisplay.Project;
@@ -789,21 +788,20 @@ public class AcDisplayFragment extends Fragment implements
     // ///////////// -- CLASSES -- //////////////
     // //////////////////////////////////////////
 
-    private class NotificationListener extends NotificationPresenter.SimpleOnNotificationListChangedListener {
+    private class NotificationListener implements NotificationPresenter.OnNotificationListChangedListener {
 
         @Override
-        public void onNotificationEvent(NotificationPresenter nm,
+        public void onNotificationListChanged(NotificationPresenter nm,
                                         OpenStatusBarNotification notification,
                                         final int event) {
-            super.onNotificationEvent(nm, notification, event);
             if (mTouched) {
                 mCollapsedViewsNeedsUpdate = true;
             } else {
                 switch (event) {
-                    case INITIALIZED:
-                    case POSTED:
-                    case CHANGED:
-                    case REMOVED:
+                    case NotificationPresenter.EVENT_BATH:
+                    case NotificationPresenter.EVENT_POSTED:
+                    case NotificationPresenter.EVENT_CHANGED:
+                    case NotificationPresenter.EVENT_REMOVED:
                         mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
                         updateNotificationList();
                         break;
@@ -897,8 +895,6 @@ public class AcDisplayFragment extends Fragment implements
         private final Bitmap mBitmapOriginal;
         private final Callback mCallback;
 
-        public volatile boolean running = true;
-
         public BackgroundFactoryThread(Context context, Bitmap original, Callback callback) {
             mContext = new WeakReference<>(context);
             mBitmapOriginal = original;
@@ -906,18 +902,6 @@ public class AcDisplayFragment extends Fragment implements
 
             if (original == null) throw new IllegalArgumentException("Bitmap may not be null!");
             if (callback == null) throw new IllegalArgumentException("Callback may not be null!");
-        }
-
-        /**
-         * Equals calling: {@code AsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)}
-         */
-        public boolean isFinished() {
-            return getStatus().equals(AsyncTask.Status.FINISHED);
-        }
-
-        public void cancel() {
-            running = false;
-            cancel(false);
         }
 
         @Override

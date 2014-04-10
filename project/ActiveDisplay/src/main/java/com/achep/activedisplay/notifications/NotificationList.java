@@ -16,21 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.activedisplay.notifications;
 
-import android.util.Log;
+package com.achep.activedisplay.notifications;
 
 import java.util.ArrayList;
 
 /**
- * Created by Artem on 20.02.14.
+ * Created by Artem on 10.04.2014.
+ *
+ * @author Artem Chepurnoy
  */
-class NotificationList {
-
-    private static final String TAG = "NotificationList";
+final class NotificationList {
 
     private ArrayList<OpenStatusBarNotification> mList;
-
     private Callback mCallback;
 
     public interface Callback {
@@ -46,10 +44,6 @@ class NotificationList {
         mList = new ArrayList<>(10);
     }
 
-    public void setCallback(Callback callback) {
-        mCallback = callback;
-    }
-
     public int pushOrRemove(OpenStatusBarNotification n, boolean push, boolean silently) {
         Callback cb = mCallback;
         if (silently) mCallback = null;
@@ -61,8 +55,8 @@ class NotificationList {
     /**
      * Replace or add notification to the list.
      *
-     * @return {@link Callback#onNotificationAdded(OpenStatusBarNotification n)} or
-     * {@link Callback#onNotificationChanged(OpenStatusBarNotification n)}
+     * @return {@link NotificationList.Callback#onNotificationAdded(com.achep.activedisplay.notifications.OpenStatusBarNotification n)} or
+     * {@link NotificationList.Callback#onNotificationChanged(com.achep.activedisplay.notifications.OpenStatusBarNotification n)}
      */
     public int push(OpenStatusBarNotification n) {
         int index = indexOf(n);
@@ -95,7 +89,6 @@ class NotificationList {
         for (int i = 0; i < size; i++) {
             OpenStatusBarNotification o = mList.get(i);
             if (o == null || o.getStatusBarNotification() == null) {
-                Log.wtf(TAG, "Null-notification found!");
                 throw new RuntimeException("Null-notification found! Notification list is probably corrupted. ");
             } else if (NotificationUtils.equals(n, o)) {
                 return i;
