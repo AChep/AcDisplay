@@ -33,7 +33,7 @@
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
         android:fontFamily="sans-serif-condensed"
-        android:maxLines="1"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        style="?acDisplayNotificationSubtext" />
 
 </FrameLayout>
