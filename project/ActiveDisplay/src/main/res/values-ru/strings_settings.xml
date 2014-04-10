@@ -21,7 +21,7 @@
 
     <!-- Settings -->
     <string name="settings">Настройки</string>
-    <string name="settings_multi_list_divider">, </string>
+    <string name="settings_multi_list_divider">,&#160;</string>
 
     <!-- Placeholder -->
     <string name="settings_placeholder_title">Заглушка</string>
