@@ -33,7 +33,7 @@ public class RestrictOption extends Option {
 
     public RestrictOption(Context context, CompoundButton cb, BlacklistEnabler enabler) {
         super(context, cb, enabler,
-                context.getResources().getDrawable(R.drawable.ic_blacklist_sleep_mode),
+                context.getResources().getDrawable(R.drawable.ic_settings_sleep_mode),
                 context.getResources().getString(R.string.blacklist_app_restricted_title),
                 context.getResources().getString(R.string.blacklist_app_restricted_summary));
     }

@@ -136,7 +136,7 @@ public class FeedbackDialog extends DialogFragment {
         });
 
         final AlertDialog alertDialog = new DialogHelper.Builder(getActivity())
-                .setIcon(getResources().getDrawable(R.drawable.ic_mail))
+                .setIcon(getResources().getDrawable(R.drawable.ic_large_mail))
                 .setTitle(getString(R.string.feedback))
                 .setView(root)
                 .wrap()

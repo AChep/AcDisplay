@@ -33,7 +33,7 @@ public class HideOption extends Option {
 
     public HideOption(Context context, CompoundButton cb, BlacklistEnabler enabler) {
         super(context, cb, enabler,
-                context.getResources().getDrawable(R.drawable.ic_settings_hide_notifications),
+                context.getResources().getDrawable(R.drawable.ic_settings_hide_notifies),
                 context.getResources().getString(R.string.blacklist_app_hide_title),
                 context.getResources().getString(R.string.blacklist_app_hide_summary));
     }

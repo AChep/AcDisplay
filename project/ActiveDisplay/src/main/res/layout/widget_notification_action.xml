@@ -32,7 +32,6 @@
         android:layout_gravity="center"
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
-        android:fontFamily="sans-serif-condensed"
         android:ellipsize="end"
         style="?acDisplayNotificationSubtext" />
 

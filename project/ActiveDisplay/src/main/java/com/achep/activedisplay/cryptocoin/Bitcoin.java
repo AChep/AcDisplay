@@ -37,7 +37,7 @@ public class Bitcoin extends Coin {
 
     @Override
     public int getIconResource() {
-        return R.drawable.ic_bitcoin;
+        return R.drawable.ic_large_bitcoin;
     }
 
     @Override

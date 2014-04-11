@@ -217,7 +217,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
                 notificationId, new Intent(this, Settings.ActiveModeSettingsActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.drawable.ic_settings_active)
+                .setSmallIcon(R.drawable.stat_active)
                 .setContentTitle(getString(
                         R.string.service_active_mode,
                         getString(R.string.app_name)))
