@@ -36,10 +36,13 @@
     <string name="service_active_mode">%1$s - active mode</string>
     <string name="service_active_mode_text">Touch to launch its settings.</string>
 
+    <!-- Initial notification -->
+    <string name="init_notification_text">You should never see this notification but if you do, just dismiss it.</string>
+
     <!-- Status text -->
-    <!-- Example: 1 April 14 -->
+    <!-- Example: Mon, 7 April -->
     <string name="status_format_date" formatted="false" translatable="false">EEE, d MMMM</string>
-    <!-- Example: 73%, 1 April 14 -->
+    <!-- Example: Mon, 7 April; 73% -->
     <string name="status_format_battery_plus_date" formatted="false" translatable="false">EEE, d MMMM;\t%1$d%%</string>
 
     <!-- Remote actions -->

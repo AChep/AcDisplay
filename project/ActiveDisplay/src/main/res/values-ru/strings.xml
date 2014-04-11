@@ -35,6 +35,9 @@
     <string name="service_active_mode">%1$s - активный режим</string>
     <string name="service_active_mode_text">Нажмите, чтобы запустить настройки.</string>
 
+    <!-- Initial notification -->
+    <string name="init_notification_text">Просто отклоните это уведомление.</string>
+
     <!-- Remote actions -->
     <string name="remote_enable_acdisplay">AcDisplay включен.</string>
     <string name="remote_disable_acdisplay">AcDisplay отключен.</string>
