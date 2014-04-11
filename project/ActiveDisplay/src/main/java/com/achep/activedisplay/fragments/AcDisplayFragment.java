@@ -255,6 +255,10 @@ public class AcDisplayFragment extends Fragment implements
         }
     }
 
+    public Config getConfig() {
+        return mConfig;
+    }
+
     private SceneCompat findSceneByFragment(Widget fragment) {
         return fragment.hasExpandedView() ? mScenesMap.get(fragment.getType()) : null;
     }

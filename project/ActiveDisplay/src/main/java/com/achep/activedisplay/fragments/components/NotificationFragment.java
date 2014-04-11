@@ -21,15 +21,17 @@ package com.achep.activedisplay.fragments.components;
 
 import android.app.PendingIntent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.achep.activedisplay.Config;
+import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.fragments.AcDisplayFragment;
 import com.achep.activedisplay.notifications.NotificationHelper;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
+import com.achep.activedisplay.utils.BitmapUtils;
 import com.achep.activedisplay.utils.PendingIntentUtils;
 import com.achep.activedisplay.view.SwipeDismissTouchListener;
 import com.achep.activedisplay.widgets.NotificationIconWidget;
@@ -160,15 +162,19 @@ public class NotificationFragment extends AcDisplayFragment.Widget implements No
     }
 
     private void displayBackgroundBitmap() {
+        AcDisplayFragment fragment = getHostFragment();
         Bitmap bitmap = mNotification.getNotificationData().getBackground();
 
-        if (bitmap == null
-                || bitmap.getPixel(0, 0) == Color.TRANSPARENT) {
-            getHostFragment().dispatchSetBackground(null);
+        if (bitmap == null || BitmapUtils.hasTransparentCorners(bitmap)
+                // dynamic background from notification is disabled
+                || !Operator.bitandCompare(
+                fragment.getConfig().getDynamicBackgroundMode(),
+                Config.DYNAMIC_BG_NOTIFICATION_MASK)) {
+            fragment.dispatchSetBackground(null);
             return;
         }
 
-        getHostFragment().dispatchSetBackground(bitmap);
+        fragment.dispatchSetBackground(bitmap);
     }
 
     @Override

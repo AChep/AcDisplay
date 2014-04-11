@@ -45,6 +45,7 @@ public class AcDisplayActivity extends KeyguardActivity {
 
     private AcDisplayFragment mAcDisplayFragment;
     private ImageView mBackgroundView;
+    private boolean mCustomBackgroundShown;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -90,7 +91,6 @@ public class AcDisplayActivity extends KeyguardActivity {
         mAcDisplayFragment = (AcDisplayFragment) fm.findFragmentById(R.id.acdisplay_fragment);
         mBackgroundView = (ImageView) findViewById(R.id.background);
 
-
         ActiveDisplayPresenter.getInstance().attachActivity(this);
     }
 
@@ -108,20 +108,25 @@ public class AcDisplayActivity extends KeyguardActivity {
 
     public void dispatchSetBackground(Bitmap bitmap) {
         if (bitmap == null) {
-            mBackgroundView.animate().alpha(0f).setListener(
-                    new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mBackgroundView.setImageBitmap(null);
-                            mBackgroundView.setVisibility(View.GONE);
+            if (mCustomBackgroundShown) {
+                mBackgroundView.animate().alpha(0f).setListener(
+                        new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                mBackgroundView.setImageBitmap(null);
+                                mBackgroundView.setVisibility(View.GONE);
+                            }
                         }
-                    });
+                );
+            }
+            mCustomBackgroundShown = false;
             return;
         }
 
         float alphaStart = mBackgroundView.getVisibility() == View.GONE ? 0f : 0.4f;
 
+        mCustomBackgroundShown = true;
         mBackgroundView.setAlpha(alphaStart);
         mBackgroundView.setImageBitmap(bitmap);
         mBackgroundView.setVisibility(View.VISIBLE);
