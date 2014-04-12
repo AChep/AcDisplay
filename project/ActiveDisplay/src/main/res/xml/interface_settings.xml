@@ -32,7 +32,8 @@
         android:title="@string/settings_shadow_toggle_title"
         android:summaryOff="@string/settings_shadow_toggle_off"
         android:summaryOn="@string/settings_shadow_toggle_on"
-        android:layout="?android:attr/preferenceLayoutChild"/>
+        android:layout="?android:attr/preferenceLayoutChild"
+        android:defaultValue="true"/>
 
     <MultiSelectListPreference
         android:key="dynamic_background_mode"
@@ -51,6 +52,6 @@
         android:title="@string/settings_mirrored_timeout_progress_bar_title"
         android:summaryOff="@string/settings_mirrored_timeout_progress_bar_off"
         android:summaryOn="@string/settings_mirrored_timeout_progress_bar_on"
-        android:defaultValue="false"/>
+        android:defaultValue="true"/>
 
 </PreferenceScreen>

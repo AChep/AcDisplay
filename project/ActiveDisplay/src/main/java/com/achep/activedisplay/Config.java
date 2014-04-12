@@ -127,8 +127,8 @@ public class Config {
         mLockscreenEnabled = prefs.getBoolean(KEY_LOCK_SCREEN, false);
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE, false);
         mWallpaperShown = prefs.getBoolean(KEY_INTERFACE_WALLPAPER_SHOWN, false);
-        mShadowShown = prefs.getBoolean(KEY_INTERFACE_SHADOW_TOGGLE, false);
-        mMirroredTimeoutProgressBarEnabled = prefs.getBoolean(KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, false);
+        mShadowShown = prefs.getBoolean(KEY_INTERFACE_SHADOW_TOGGLE, true);
+        mMirroredTimeoutProgressBarEnabled = prefs.getBoolean(KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, true);
         mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL, 12000);
         mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT, 6000);
         mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM, 0);
