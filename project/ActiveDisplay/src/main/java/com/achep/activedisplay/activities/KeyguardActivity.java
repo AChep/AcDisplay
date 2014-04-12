@@ -28,8 +28,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
-import com.achep.activedisplay.R;
-
 /**
  * Created by Artem on 23.02.14.
  */

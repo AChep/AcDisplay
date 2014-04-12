@@ -20,10 +20,6 @@ package com.achep.activedisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.MultiSelectListPreference;
-import android.preference.Preference;
 import android.util.Log;
 
 import com.achep.activedisplay.activemode.ActiveModeService;

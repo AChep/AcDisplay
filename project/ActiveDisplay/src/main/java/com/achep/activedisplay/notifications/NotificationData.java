@@ -190,11 +190,12 @@ public class NotificationData {
         if (background != null && !BitmapUtils.hasTransparentCorners(background)) {
             mBackgroundLoader = new AcDisplayFragment.BackgroundFactoryThread(context, background,
                     new AcDisplayFragment.BackgroundFactoryThread.Callback() {
-                @Override
-                public void onBackgroundCreated(Bitmap bitmap) {
-                    setBackground(bitmap);
-                }
-            });
+                        @Override
+                        public void onBackgroundCreated(Bitmap bitmap) {
+                            setBackground(bitmap);
+                        }
+                    }
+            );
             mBackgroundLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             background = null;

@@ -20,11 +20,7 @@
 package com.achep.activedisplay.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
 
 /**
  * Created by Artem on 24.03.2014.

@@ -376,7 +376,7 @@ public class NotificationPresenter implements NotificationList.Callback {
 
         NotificationHelper.dismissNotification(n);
     }
-    
+
 }
 
 

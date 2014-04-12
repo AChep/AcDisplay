@@ -709,10 +709,10 @@ public class AcDisplayFragment extends Fragment implements
         if (notifyCount > 0) {
             extras[0] = -1;
         } else for (int i = 1; i < extras.length; i++)
-                if (extras[i] >= 0) {
-                    extras[0] = -1;
-                    break;
-                }
+            if (extras[i] >= 0) {
+                extras[0] = -1;
+                break;
+            }
 
         for (int i = fragmentsExtraCount - 1; i >= 0; i--) {
             View child = container.getChildAt(i);
@@ -796,8 +796,8 @@ public class AcDisplayFragment extends Fragment implements
 
         @Override
         public void onNotificationListChanged(NotificationPresenter nm,
-                                        OpenStatusBarNotification notification,
-                                        final int event) {
+                                              OpenStatusBarNotification notification,
+                                              final int event) {
             if (mTouched) {
                 mCollapsedViewsNeedsUpdate = true;
             } else {
