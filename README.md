@@ -6,9 +6,9 @@ AcDisplay
 <img alt="Download from Google Play" align="right" height="300"
    src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot1.png" />
 
-*AcDisplay brings a piece of Motorola's Active Display to your device.*
+*AcDisplay is a new way of handling notifications in Android.*
 
-Using this app, you will see notifications light up your screen as they arrive and show as a circular icon with a timer ring, which is your chance to act on that notification before your screen times back out. If you’d like to act on the most recent notification, you can swipe up and into it. If you’d like to simply unlock your phone, you can do that by swiping down. Designed to be light on resources, battery and frustration, AcDisplay is the perfect companion for you.
+It will let you know about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what\'s going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
 
 **[Join app's community on Google Play](https://plus.google.com/u/0/communities/102085470313050914854)**
 
