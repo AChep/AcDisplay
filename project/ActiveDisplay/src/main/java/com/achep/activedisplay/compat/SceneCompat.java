@@ -54,7 +54,6 @@ public class SceneCompat {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public ViewGroup getView() {
         return mView;
     }
