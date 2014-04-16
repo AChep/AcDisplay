@@ -18,6 +18,7 @@
  */
 package com.achep.activedisplay.services;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -28,10 +29,12 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.achep.activedisplay.ActiveDisplayPresenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.NotificationIds;
+import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.activities.AcDisplayActivity;
 import com.achep.activedisplay.settings.Settings;
@@ -42,8 +45,18 @@ import com.achep.activedisplay.utils.PowerUtils;
  */
 public class LockscreenService extends Service {
 
+    private static final String TAG = "LockscreenService";
+
+    private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
+
+    private ActivityMonitorThread mActivityMonitorThread;
+
     public static long sIgnoreTillTime;
 
+    /**
+     * @deprecated hopefully the bug with it is fixed now, so no need to use it. Just in cause...
+     */
+    @Deprecated
     public static void ignoreCurrentTurningOn() {
         sIgnoreTillTime = SystemClock.elapsedRealtime() + 2000;
     }
@@ -73,25 +86,31 @@ public class LockscreenService extends Service {
 
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
+                    mActivityMonitorThread.monitor();
+                    stopMonitoringActivities();
+                    sIgnoreTillTime = 0;
 
-                    // Somebody requested this ignoring.
-                    if (SystemClock.elapsedRealtime() < sIgnoreTillTime && !isCall) {
-                        sIgnoreTillTime = 0;
-                        return;
-                    }
+                    long now = SystemClock.elapsedRealtime();
+                    boolean becauseOfActivityLaunch = now
+                            - mActivityMonitorThread.activityChangeTime
+                            < ACTIVITY_LAUNCH_MAX_TIME;
+                    boolean becauseOfIgnoringPolicy = now < sIgnoreTillTime;
 
-                    if (isCall) {
+                    if (isCall || becauseOfActivityLaunch || becauseOfIgnoringPolicy) {
 
-                        // Why do we need to kill it? Because otherwise it'll
-                        // be displayed after you've done with your call and
-                        // closed phone app.
+                        // Finish AcDisplay activity so it won't shown
+                        // after exiting from newly launched one.
                         ActiveDisplayPresenter.getInstance().kill();
                     } else startGui();
 
+                    if (Project.DEBUG)
+                        Log.d(TAG, "Screen is on: is_call=" + isCall +
+                                " activity_flag=" + becauseOfActivityLaunch);
                     break;
                 case Intent.ACTION_SCREEN_OFF:
-                    // Do not start
                     if (!isCall) startGui();
+
+                    startMonitoringActivities();
                     break;
             }
         }
@@ -108,10 +127,28 @@ public class LockscreenService extends Service {
                 .setClass(this, AcDisplayActivity.class));
     }
 
+    private void startMonitoringActivities() {
+        stopMonitoringActivities();
+        if (Project.DEBUG) Log.d(TAG, "Starting to monitor activities.");
+
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        mActivityMonitorThread = new ActivityMonitorThread(am);
+        mActivityMonitorThread.start();
+    }
+
+    private void stopMonitoringActivities() {
+        if (mActivityMonitorThread != null) {
+            if (Project.DEBUG) Log.d(TAG, "Stopping to monitor activities.");
+
+            mActivityMonitorThread.running = false;
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.setPriority(Integer.MAX_VALUE);
         registerReceiver(mReceiver, intentFilter);
@@ -138,11 +175,71 @@ public class LockscreenService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
+        stopMonitoringActivities();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    /**
+     * Thread that monitors current top activity.
+     * This is needed to prevent launching AcDisplay on any other
+     * activity launched with
+     * {@link android.view.WindowManager.LayoutParams#FLAG_TURN_SCREEN_ON} flag.
+     */
+    private static class ActivityMonitorThread extends Thread {
+
+        private static final long MONITORING_PERIOD = 10 * 60 * 1000; // ms.
+
+        public volatile boolean running = true;
+        public volatile long activityChangeTime;
+
+        private final ActivityManager mActivityManager;
+
+        private volatile String mPastActivityName;
+
+        public ActivityMonitorThread(ActivityManager activityManager) {
+            mActivityManager = activityManager;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+
+            while (running) {
+                monitor();
+
+                try {
+                    Thread.sleep(MONITORING_PERIOD);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /**
+         * Checks what activity is on the latest.
+         */
+        public synchronized void monitor() {
+            String latestActivityName;
+            try {
+                ActivityManager.RunningTaskInfo task = mActivityManager.getRunningTasks(1).get(0);
+                latestActivityName = task.topActivity.getClassName();
+            } catch (NullPointerException e) {
+                return; // Not a problem, just too lazy :)
+            }
+
+            assert latestActivityName != null;
+
+            if (!latestActivityName.equals(mPastActivityName)) {
+                mPastActivityName = latestActivityName;
+                this.activityChangeTime = SystemClock.elapsedRealtime(); // deep sleep
+
+                if (Project.DEBUG) Log.d(TAG, "Current latest activity is " + mPastActivityName);
+            }
+        }
     }
 
 }
