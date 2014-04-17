@@ -111,11 +111,14 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     public static void handleState(Context context) {
         Intent intent = new Intent(context, ActiveModeService.class);
         Config config = Config.getInstance(context);
-        if (config.isActiveDisplayEnabled() && config.isActiveModeEnabled()) {
-            if (!config.isEnabledOnlyWhileCharging() || PowerUtils.isPlugged(context)) {
 
-                context.startService(intent);
-            }
+        boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
+                || PowerUtils.isPlugged(context);
+
+        if (config.isActiveDisplayEnabled()
+                && config.isActiveModeEnabled()
+                && onlyWhileChangingOption) {
+            context.startService(intent);
         } else {
             context.stopService(intent);
         }

@@ -67,11 +67,14 @@ public class LockscreenService extends Service {
     public static void handleState(Context context) {
         Intent intent = new Intent(context, LockscreenService.class);
         Config config = Config.getInstance(context);
-        if (config.isActiveDisplayEnabled() && config.isLockscreenEnabled()) {
-            if (!config.isEnabledOnlyWhileCharging() || PowerUtils.isPlugged(context)) {
 
-                context.startService(intent);
-            }
+        boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
+                || PowerUtils.isPlugged(context);
+
+        if (config.isActiveDisplayEnabled()
+                && config.isLockscreenEnabled()
+                && onlyWhileChangingOption) {
+            context.startService(intent);
         } else {
             context.stopService(intent);
         }
