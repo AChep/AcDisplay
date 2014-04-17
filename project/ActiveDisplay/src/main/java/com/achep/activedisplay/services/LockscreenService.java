@@ -54,7 +54,7 @@ public class LockscreenService extends Service {
     public static long sIgnoreTillTime;
 
     /**
-     * @deprecated hopefully the bug with it is fixed now, so no need to use it. Just in cause...
+     * @deprecated hopefully the bug with it is fixed now, so no need to use it. Just in case...
      */
     @Deprecated
     public static void ignoreCurrentTurningOn() {
@@ -118,13 +118,10 @@ public class LockscreenService extends Service {
     };
 
     private void startGui() {
-        startActivity(new Intent(Intent.ACTION_MAIN, null)
+        startActivity(new Intent(this, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                        | Intent.FLAG_ACTIVITY_NO_USER_ACTION
-                        | Intent.FLAG_ACTIVITY_NO_ANIMATION
-                        | Intent.FLAG_FROM_BACKGROUND)
-                .setClass(this, AcDisplayActivity.class));
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION));
     }
 
     private void startMonitoringActivities() {
@@ -141,6 +138,7 @@ public class LockscreenService extends Service {
             if (Project.DEBUG) Log.d(TAG, "Stopping to monitor activities.");
 
             mActivityMonitorThread.running = false;
+            mActivityMonitorThread.interrupt();
         }
     }
 
@@ -150,13 +148,13 @@ public class LockscreenService extends Service {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.setPriority(Integer.MAX_VALUE);
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1);
         registerReceiver(mReceiver, intentFilter);
 
         int notificationId = NotificationIds.LOCKSCREEN_NOTIFICATION;
+        Intent intent = new Intent(this, Settings.LockscreenSettingsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                notificationId, new Intent(this, Settings.LockscreenSettingsActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.stat_lock)
                 .setContentTitle(getString(
@@ -213,14 +211,12 @@ public class LockscreenService extends Service {
 
                 try {
                     Thread.sleep(MONITORING_PERIOD);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                } catch (InterruptedException e) { /* unused */ }
             }
         }
 
         /**
-         * Checks what activity is on the latest.
+         * Checks what activity is the latest.
          */
         public synchronized void monitor() {
             String latestActivityName;
@@ -234,8 +230,11 @@ public class LockscreenService extends Service {
             assert latestActivityName != null;
 
             if (!latestActivityName.equals(mPastActivityName)) {
+                if (mPastActivityName != null) {
+                    this.activityChangeTime = SystemClock.elapsedRealtime(); // deep sleep
+                }
+
                 mPastActivityName = latestActivityName;
-                this.activityChangeTime = SystemClock.elapsedRealtime(); // deep sleep
 
                 if (Project.DEBUG) Log.d(TAG, "Current latest activity is " + mPastActivityName);
             }
