@@ -31,9 +31,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -66,11 +63,11 @@ import com.achep.activedisplay.fragments.components.UnlockFragment;
 import com.achep.activedisplay.notifications.NotificationPresenter;
 import com.achep.activedisplay.notifications.NotificationUtils;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
+import com.achep.activedisplay.utils.BitmapUtils;
 import com.achep.activedisplay.utils.MathUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 import com.achep.activedisplay.widgets.ProgressBar;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -885,22 +882,23 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     /**
-     * Factory to prepare your background for {@link AcDisplayFragment#dispatchSetBackground(android.graphics.Bitmap)}.
+     * Factory to prepare your background for
+     * {@link com.achep.activedisplay.fragments.AcDisplayFragment#dispatchSetBackground(android.graphics.Bitmap)}.
      */
     public static class BackgroundFactoryThread extends AsyncTask<Void, Void, Bitmap> {
 
-        private static final String TAG = "AcFragmentBackgroundFactory";
+        private static final String TAG = "DynamicBackgroundFactory";
 
         public interface Callback {
             void onBackgroundCreated(Bitmap bitmap);
         }
 
-        private final WeakReference<Context> mContext;
+        private final int mForegroundColor;
         private final Bitmap mBitmapOriginal;
         private final Callback mCallback;
 
         public BackgroundFactoryThread(Context context, Bitmap original, Callback callback) {
-            mContext = new WeakReference<>(context);
+            mForegroundColor = context.getResources().getColor(R.color.keyguard_background_semi);
             mBitmapOriginal = original;
             mCallback = callback;
 
@@ -912,38 +910,19 @@ public class AcDisplayFragment extends Fragment implements
         protected Bitmap doInBackground(Void... params) {
             final long start = SystemClock.elapsedRealtime();
 
-            Context context = mContext.get();
             Bitmap origin = mBitmapOriginal;
+            Bitmap bitmap = BitmapUtils.doBlur(origin, 3, false);
 
-            if (context == null || !running) {
+            if (!running) {
                 return null;
             }
 
-            // TODO: Reduce bitmap's size if needed.
-            Bitmap bitmap = Bitmap.createBitmap(
-                    origin.getWidth(),
-                    origin.getHeight(),
-                    origin.getConfig());
-
-            try {
-                RenderScript rs = RenderScript.create(context);
-                Allocation overlayAlloc = Allocation.createFromBitmap(rs, origin);
-                ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());
-
-                blur.setInput(overlayAlloc);
-                blur.setRadius(3f);
-                blur.forEach(overlayAlloc);
-                overlayAlloc.copyTo(bitmap);
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to blur bitmap.");
-            }
-
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawColor(0x50000000);
+            canvas.drawColor(mForegroundColor);
 
             if (Project.DEBUG) {
                 long delta = SystemClock.elapsedRealtime() - start;
-                Log.d(TAG, "AcFragment background created in " + delta + " millis:"
+                Log.d(TAG, "Dynamic background created in " + delta + " millis:"
                         + " width=" + bitmap.getWidth()
                         + " height=" + bitmap.getHeight());
             }
