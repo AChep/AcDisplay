@@ -240,7 +240,9 @@ public class AcDisplayFragment extends Fragment implements
             KeyguardActivity lockscreen = (KeyguardActivity) activity;
             lockscreen.unlock(runnable, !finishOnStop);
         } else {
-            runnable.run();
+            if (runnable != null) {
+                runnable.run();
+            }
         }
     }
 
