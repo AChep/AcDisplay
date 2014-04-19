@@ -119,12 +119,10 @@ public class NotificationData {
     }
 
     public void addOnNotificationDataChangedListener(OnNotificationDataChangedListener listener) {
-        if (Project.DEBUG) Log.d(TAG, "add_l_" + mListeners.size() + "=" + listener);
         mListeners.add(listener);
     }
 
     public void removeOnNotificationDataChangedListener(OnNotificationDataChangedListener listener) {
-        if (Project.DEBUG) Log.d(TAG, "remove_l_" + mListeners.size() + "=" + listener);
         mListeners.remove(listener);
     }
 
