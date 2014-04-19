@@ -74,6 +74,7 @@ final class NotificationList {
     public int remove(OpenStatusBarNotification n) {
         int index = indexOf(n);
         if (index >= 0) {
+            mList.get(index).getNotificationData().stopLoading();
             mList.remove(index);
             if (mCallback != null) return mCallback.onNotificationRemoved(n);
         }

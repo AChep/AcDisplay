@@ -99,6 +99,14 @@ public class NotificationData {
         return background;
     }
 
+    /**
+     * Stops running threads.
+     */
+    public void stopLoading() {
+        stopAsyncTask(mBackgroundLoader);
+        stopAsyncTask(mIconLoader);
+    }
+
     // //////////////////////////////////////////
     // /////////// -- LISTENERS -- //////////////
     // //////////////////////////////////////////
