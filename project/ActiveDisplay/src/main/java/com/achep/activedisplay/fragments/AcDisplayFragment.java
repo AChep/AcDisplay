@@ -99,8 +99,6 @@ public class AcDisplayFragment extends Fragment implements
     private SceneCompat mSceneMain;
     private Transition mTransition;
 
-    private long mFinishOnStopTime;
-
     // handlers
     private ImageView mPinImageView;
     private AnimatorSet mNotifyPinnedAnimation;
@@ -113,12 +111,6 @@ public class AcDisplayFragment extends Fragment implements
     private TimeoutGui mTimeout;
     private Handler mHandler = new Handler();
     private SelectWidgetRunnable mSelectWidgetRunnable = new SelectWidgetRunnable();
-    private Runnable mFinishRunnable = new Runnable() {
-        @Override
-        public void run() {
-            unlock();
-        }
-    };
 
     private GestureDetector mGestureDetector;
 
@@ -233,8 +225,6 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     public void unlock(Runnable runnable, boolean finishOnStop) {
-        if (finishOnStop) mFinishOnStopTime = SystemClock.uptimeMillis();
-
         Activity activity = getActivity();
         if (activity instanceof KeyguardActivity) {
             KeyguardActivity lockscreen = (KeyguardActivity) activity;
@@ -337,8 +327,6 @@ public class AcDisplayFragment extends Fragment implements
         Context context = getActivity();
         assert context != null;
 
-        mHandler.removeCallbacks(mFinishRunnable);
-
         mConfig = Config.getInstance(context);
         mPresenter = NotificationPresenter.getInstance(context);
         mPresenter.addOnNotificationListChangedListener(mNotificationListener);
@@ -351,10 +339,6 @@ public class AcDisplayFragment extends Fragment implements
     public void onStop() {
         mPresenter.removeOnNotificationListChangedListener(mNotificationListener);
         super.onStop();
-
-        if (SystemClock.uptimeMillis() - mFinishOnStopTime < 600) {
-            mHandler.postDelayed(mFinishRunnable, 400);
-        }
     }
 
     @Override

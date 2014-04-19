@@ -43,9 +43,20 @@ public class AcDisplayActivity extends KeyguardActivity {
 
     private static final String TAG = "AcDisplayActivity";
 
+    private static final int PENDING_FINISH_MAX_TIME = 1000; // ms.
+    private static final int PENDING_FINISH_DELAY = 600; // ms.
+
     private AcDisplayFragment mAcDisplayFragment;
     private ImageView mBackgroundView;
     private boolean mCustomBackgroundShown;
+
+    private long mPendingFinishTime;
+    private Runnable mPendingFinishRunnable = new Runnable() {
+        @Override
+        public void run() {
+            unlock(null, true);
+        }
+    };
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -98,12 +109,30 @@ public class AcDisplayActivity extends KeyguardActivity {
     protected void onResume() {
         super.onResume();
         handleWindowFocusChanged(true);
+        mHandler.removeCallbacks(mPendingFinishRunnable);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (SystemClock.uptimeMillis() - mPendingFinishTime < PENDING_FINISH_MAX_TIME) {
+            mHandler.postDelayed(mPendingFinishRunnable, PENDING_FINISH_DELAY);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ActiveDisplayPresenter.getInstance().detachActivity();
+    }
+
+    @Override
+    public void unlock(Runnable runnable, boolean finish) {
+        super.unlock(runnable, finish);
+        if (!finish) {
+            mPendingFinishTime = SystemClock.uptimeMillis();
+        }
     }
 
     public void dispatchSetBackground(Bitmap bitmap) {
