@@ -26,4 +26,6 @@
     <!-- AcDisplay -->
     <color name="keyguard_background">#F000</color>
     <color name="keyguard_background_semi">#7000</color>
+
+    <color name="acdisplay_subtext_color">#9eee</color>
 </resources>

@@ -46,7 +46,7 @@
 
     <style name="AcDisplay.Status" parent="AcDisplay">
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
-        <item name="android:textColor">#accc</item>
+        <item name="android:textColor">@color/acdisplay_subtext_color</item>
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:maxLines">2</item>
@@ -96,7 +96,7 @@
 
     <style name="AcDisplay.Notification.Subtext" parent="AcDisplay.Notification">
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
-        <item name="android:textColor">#accc</item>
+        <item name="android:textColor">@color/acdisplay_subtext_color</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:maxLines">1</item>
     </style>
