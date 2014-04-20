@@ -75,27 +75,36 @@ public final class ViewExtractor implements Extractor {
         }
 
         ArrayList<TextView> textViews = new RecursiveFinder<>(TextView.class).expand(view);
-
-        // Get rid of notification' actions
+        removeClickableViews(textViews);
+        removeSubtextViews(contextApp, textViews);
         if (Device.hasKitKatApi()) {
             removeActionViews(n, textViews);
         }
 
-        // Clickable views are probably not needed too.
-        for (int i = textViews.size() - 1; i >= 0; i--) {
-            TextView child = textViews.get(i);
-            if (child.isClickable() || child.getVisibility() != View.VISIBLE) {
-                textViews.remove(i);
-                break;
-            }
+        TextView title = findTitleTextView(textViews);
+        textViews.remove(title); // no need of title view anymore
+
+        int length = textViews.size();
+        CharSequence[] messages = new CharSequence[length];
+        for (int i = 0; i < length; i++) {
+            messages[i] = textViews.get(i).getText();
         }
 
-        TextView title = findTitleTextView(textViews);
-        textViews.remove(title); // no need of title
-
         data.titleText = title.getText();
-        data.messageText = findMessageText(contextApp, textViews);
+        data.messageText = Utils.mergeLargeMessage(messages);
         return data;
+    }
+
+    private TextView findTitleTextView(ArrayList<TextView> textViews) {
+        // The idea is that title text is biggest from all
+        // views here.
+        TextView biggest = null;
+        for (TextView textView : textViews) {
+            if (biggest == null || textView.getTextSize() > biggest.getTextSize()) {
+                biggest = textView;
+            }
+        }
+        return biggest;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -115,41 +124,29 @@ public final class ViewExtractor implements Extractor {
         }
     }
 
-    private TextView findTitleTextView(ArrayList<TextView> textViewsList) {
-        // The idea is that title text is biggest from all
-        // views here.
-        TextView biggest = null;
-        for (TextView textView : textViewsList) {
-            if (biggest == null || textView.getTextSize() > biggest.getTextSize()) {
-                biggest = textView;
+    private void removeClickableViews(ArrayList<TextView> textViews) {
+        for (int i = textViews.size() - 1; i >= 0; i--) {
+            TextView child = textViews.get(i);
+            if (child.isClickable() || child.getVisibility() != View.VISIBLE) {
+                textViews.remove(i);
+                break;
             }
         }
-        return biggest;
     }
 
-    private String findMessageText(Context context, ArrayList<TextView> textViewsList) {
-        // Remove subtexts such as time or progress text.
+    private void removeSubtextViews(Context context, ArrayList<TextView> textViews) {
         float subtextSize = context.getResources().getDimension(R.dimen.notification_subtext_size);
-        for (int i = textViewsList.size() - 1; i >= 0; i--) {
-            final TextView view = textViewsList.get(i);
-            final String text = view.getText().toString();
-            if (view.getTextSize() == subtextSize
+        for (int i = textViews.size() - 1; i >= 0; i--) {
+            final TextView child = textViews.get(i);
+            final String text = child.getText().toString();
+            if (child.getTextSize() == subtextSize
                     // empty textviews
                     || text.matches("^(\\s*|)$")
                     // clock textviews
                     || text.matches("^\\d{1,2}:\\d{1,2}(\\s?\\w{2}|)$")) {
-                textViewsList.remove(i);
+                textViews.remove(i);
             }
         }
-
-        StringBuilder sb = new StringBuilder();
-        for (TextView tv : textViewsList) {
-            sb.append(tv.getText());
-            sb.append('\n');
-        }
-        if (sb.length() > 0) sb.delete(sb.length() - 1, sb.length());
-
-        return Utils.removeSpaces(sb.toString());
     }
 
     private static class RecursiveFinder<T extends View> {

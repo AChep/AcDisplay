@@ -21,9 +21,18 @@ package com.achep.activedisplay.notifications.parser;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 
 import com.achep.activedisplay.Device;
@@ -63,12 +72,7 @@ public final class NativeExtractor implements Extractor {
             // Large message text
             CharSequence[] textLines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
             if (textLines != null) {
-                StringBuilder sb = new StringBuilder();
-                for (CharSequence line : textLines) {
-                    sb.append(line);
-                    sb.append('\n');
-                }
-                data.messageTextLarge = Utils.removeSpaces(sb.toString());
+                data.messageTextLarge = Utils.mergeLargeMessage(textLines);
             }
 
             // Small message text

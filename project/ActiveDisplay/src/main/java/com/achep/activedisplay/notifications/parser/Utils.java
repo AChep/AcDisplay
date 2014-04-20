@@ -19,6 +19,12 @@
 
 package com.achep.activedisplay.notifications.parser;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
+
 /**
  * Created by Artem on 29.03.2014.
  */
@@ -32,5 +38,63 @@ final class Utils {
         return string
                 .replaceAll("(\\s+$|^\\s+)", "")
                 .replaceAll("\n+", "\n");
+    }
+
+    static int indexOf(CharSequence charSequence, char c) {
+        int length = charSequence.length();
+        for (int i = 0; i < length; i++) {
+            char letter = charSequence.charAt(i);
+            if (letter == c) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    static CharSequence mergeLargeMessage(CharSequence[] messages) {
+        int length = messages.length;
+
+        boolean highlight = length > 1;
+        int[] trackStart = new int[length];
+        int[] trackEnd = new int[length];
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            CharSequence line = Utils.removeSpaces(messages[i].toString());
+
+            if (highlight) {
+                int offset = sb.length();
+                int end = Utils.indexOf(line, ' ');
+
+                if (end != -1) {
+                    trackStart[i] = offset;
+                    trackEnd[i] = offset + end;
+                }
+            }
+
+            sb.append(line);
+            sb.append('\n');
+        }
+
+        CharSequence text = Utils.removeSpaces(sb.toString());
+        if (highlight) {
+            Spannable textSpannable = new SpannableString(text);
+            for (int i = 0; i < length; i++) {
+                if (trackEnd[i] == 0) continue;
+
+                textSpannable.setSpan(new ForegroundColorSpan(0xaaFFFFFF),
+                        trackStart[i], trackStart[i] + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                textSpannable.setSpan(new UnderlineSpan(),
+                        trackStart[i], trackStart[i] + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        /*textSpannable.setSpan(new AbsoluteSizeSpan(19, true),
+                                trackStart[i], trackStart[i] + 1,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+            }
+            text = textSpannable;
+        }
+
+        return text;
     }
 }
