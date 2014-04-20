@@ -89,14 +89,18 @@ public class LockscreenService extends Service {
 
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
-                    mActivityMonitorThread.monitor();
+                    long activityChangeTime = 0;
+                    if (mActivityMonitorThread != null) {
+                        mActivityMonitorThread.monitor();
+                        activityChangeTime = mActivityMonitorThread.activityChangeTime;
+                    }
+
                     stopMonitoringActivities();
                     sIgnoreTillTime = 0;
 
                     long now = SystemClock.elapsedRealtime();
                     boolean becauseOfActivityLaunch = now
-                            - mActivityMonitorThread.activityChangeTime
-                            < ACTIVITY_LAUNCH_MAX_TIME;
+                            - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME;
                     boolean becauseOfIgnoringPolicy = now < sIgnoreTillTime;
 
                     if (isCall || becauseOfActivityLaunch || becauseOfIgnoringPolicy) {
