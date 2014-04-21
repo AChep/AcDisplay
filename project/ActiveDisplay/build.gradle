@@ -87,4 +87,5 @@ android {
 
 dependencies {
     provided files('src/main/libs/XposedBridgeApi-42.jar')
+    compile 'com.android.support:support-v4:19.1.0'
 }
