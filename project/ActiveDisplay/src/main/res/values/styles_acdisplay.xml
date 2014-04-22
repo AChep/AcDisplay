@@ -48,7 +48,7 @@
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
         <item name="android:textColor">@color/acdisplay_subtext_color</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:maxLines">2</item>
     </style>
 
