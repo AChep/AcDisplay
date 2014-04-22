@@ -25,6 +25,8 @@ import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -57,6 +59,7 @@ public class AcDisplayActivity extends KeyguardActivity {
             unlock(null, true);
         }
     };
+    private Handler mHandler = new Handler();
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

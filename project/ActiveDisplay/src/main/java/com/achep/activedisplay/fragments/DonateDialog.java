@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.widget.Toast;
 
 import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.R;
@@ -61,7 +62,8 @@ public class DonateDialog extends DialogFragment {
             if (IntentUtils.hasActivityForThat(mContext, mIntent)) {
                 mContext.startActivity(mIntent);
             } else {
-                // TODO: Show toast message
+                Toast toast = Toast.makeText(mContext,"Program Error: No ActivityForThat", Toast.LENGTH_SHORT);
+                toast.show();
             }
         }
     }
