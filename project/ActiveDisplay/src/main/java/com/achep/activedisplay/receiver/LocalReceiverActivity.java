@@ -27,6 +27,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.achep.activedisplay.R;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.utils.IntentUtils;
 import com.achep.activedisplay.utils.ToastUtils;
