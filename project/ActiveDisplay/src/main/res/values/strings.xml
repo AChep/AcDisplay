@@ -55,4 +55,8 @@
     <string name="access_warning_title">Access isn\'t granted!</string>
     <string name="access_to_notifications_btn">Notifications</string>
     <string name="access_to_admin_btn">Turn screen off</string>
+
+    <string name="device_admin_could_not_be_started">The device admin settings could not be started.</string>
+    <string name="package_could_not_be_uninstalled">The package could not be uninstalled.</string>
+
 </resources>

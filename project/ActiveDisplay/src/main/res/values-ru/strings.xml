@@ -48,4 +48,7 @@
     <string name="access_to_notifications_btn">Уведомления</string>
     <string name="access_to_admin_btn">Выключить экран</string>
 
+    <string name="device_admin_could_not_be_started">Настройки администраторов устройств отсутствуют.</string>
+    <string name="package_could_not_be_uninstalled">Приложение не может быть удалено.</string>
+
 </resources>
