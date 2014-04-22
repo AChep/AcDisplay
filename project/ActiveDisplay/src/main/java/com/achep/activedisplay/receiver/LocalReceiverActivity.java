@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.utils.IntentUtils;
+import com.achep.activedisplay.utils.ToastUtils;
 
 /**
  * Created by Artem on 12.03.14.
@@ -74,10 +75,8 @@ public class LocalReceiverActivity extends Activity {
                 if (IntentUtils.hasActivityForThat(this, launchIntent)) {
                     startActivity(launchIntent);
                 } else {
-                    Toast.makeText(this,
-                            getString(R.string.device_admin_could_not_be_started),
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    ToastUtils.showShort(this, 
+                            getString(R.string.device_admin_could_not_be_started));
                 }
                 break;
             case HOST_UNINSTALL:
@@ -86,10 +85,8 @@ public class LocalReceiverActivity extends Activity {
                 if (IntentUtils.hasActivityForThat(this, launchIntent)) {
                     startActivity(launchIntent);
                 } else {
-                    Toast.makeText(this,
-                            getString(R.string.package_could_not_be_uninstalled),
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    ToastUtils.showShort(this, 
+                            getString(R.string.package_could_not_be_uninstalled));
                 }
                 break;
             default:
