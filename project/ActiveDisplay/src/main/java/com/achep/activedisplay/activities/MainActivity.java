@@ -53,7 +53,10 @@ import com.achep.activedisplay.utils.AccessUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 
 /**
- * Created by Artem on 21.01.14.
+ * Main class, gets UI stuff and all that
+ *
+ * @author Artem
+ * @since 21.01.14
  */
 public class MainActivity extends Activity implements Config.OnConfigChangedListener {
 
@@ -130,6 +133,9 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         updateAccessPanel();
     }
 
+    /**
+     * Gives the annoying red bar to indicate not enough access
+     */
     private void initAccessPanel() {
         mAccessWarningPanel = (ViewGroup) ((ViewStub) findViewById(R.id.access)).inflate();
         mAccessAllowNotification = mAccessWarningPanel.findViewById(R.id.access_notification);
@@ -152,6 +158,9 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         });
     }
 
+    /**
+     * If some access was granted we update and maybe hide some parts
+     */
     private void updateAccessPanel() {
         boolean showDeviceAdminBtn = !AccessUtils.isDeviceAdminEnabled(this);
         boolean showNotifiesBtn = !AccessUtils.isNotificationAccessEnabled(this);

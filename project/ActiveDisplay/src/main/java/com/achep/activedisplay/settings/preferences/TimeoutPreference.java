@@ -39,7 +39,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * @author AChep
  * Preference to configure timeouts.
+ * Creates the dialog in settings to change the TimeOut settings.
  */
 public class TimeoutPreference extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
@@ -59,7 +61,6 @@ public class TimeoutPreference extends DialogPreference implements
     private int mMin;
 
     private CheckBox mDisabled;
-    private boolean isSeekable = true;
 
     public TimeoutPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -103,8 +104,8 @@ public class TimeoutPreference extends DialogPreference implements
         mDisabled.setChecked(config.isTimeOutAvailable());
         mDisabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    isSeekable = !isSeekable;
+                for (Group group : mGroups) {
+                    group.seekBar.setEnabled(!isChecked);
                 }
             }
         });
@@ -122,10 +123,10 @@ public class TimeoutPreference extends DialogPreference implements
             group.seekBar.setOnSeekBarChangeListener(this);
             group.seekBar.setMax(max);
             group.seekBar.setProgress(progress / MULTIPLIER);
-            group.seekBar.setEnabled(isSeekable);
+            group.seekBar.setEnabled(!mDisabled.isChecked());
         }
 
-        Method method = null;
+        //Method method = null;
 
         // Build custom dialog.
         return new DialogHelper.Builder(getContext())
@@ -219,6 +220,10 @@ public class TimeoutPreference extends DialogPreference implements
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) { /* unused */ }
 
+    /**
+     *
+     * An object to store the seekbars and variables in that are used in the dialog
+     */
     private static class Group {
         SeekBar seekBar;
         TextView textView;
