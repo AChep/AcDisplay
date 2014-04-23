@@ -47,9 +47,10 @@ public class Config {
     public static final String KEY_INACTIVE_TIME_ENABLED = "inactive_time_enabled";
 
     // timeouts
+    public static final String KEY_TIMEOUT_ACTIVE = "timeout_active";
     public static final String KEY_TIMEOUT_NORMAL = "timeout_normal";
     public static final String KEY_TIMEOUT_SHORT = "timeout_short";
-    public static final String KEY_TIMEOUT_INSTANT = "timeout_instant";
+    //public static final String KEY_TIMEOUT_INSTANT = "timeout_instant";   Unused Variable
 
     // lockscreen
     public static final String KEY_LOCK_SCREEN = "lock_screen";
@@ -74,6 +75,7 @@ public class Config {
     private boolean mActiveDisplayEnabled;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mLowPriorityNotificationsAllowed;
+    private boolean mCanTimeOut;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
@@ -129,6 +131,7 @@ public class Config {
         mWallpaperShown = prefs.getBoolean(KEY_INTERFACE_WALLPAPER_SHOWN, false);
         mShadowShown = prefs.getBoolean(KEY_INTERFACE_SHADOW_TOGGLE, true);
         mMirroredTimeoutProgressBarEnabled = prefs.getBoolean(KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, true);
+        mCanTimeOut = prefs.getBoolean(KEY_TIMEOUT_ACTIVE, true);
         mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL, 12000);
         mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT, 6000);
         mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM, 0);
@@ -199,6 +202,11 @@ public class Config {
                                                    OnConfigChangedListener listener) {
         saveOption(context, KEY_LOW_PRIORITY_NOTIFICATIONS, enabled, listener,
                 mLowPriorityNotificationsAllowed != (mLowPriorityNotificationsAllowed = enabled));
+    }
+
+    public void setTimeOutAvailable(Context context, boolean enabled, OnConfigChangedListener listener){
+        saveOption(context, KEY_TIMEOUT_ACTIVE, enabled, listener,
+                mCanTimeOut != (mCanTimeOut = enabled));
     }
 
     // used via reflections!
@@ -274,6 +282,8 @@ public class Config {
         saveOption(context, KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, enabled, listener,
                 mMirroredTimeoutProgressBarEnabled != (mMirroredTimeoutProgressBarEnabled = enabled));
     }
+
+    public boolean isTimeOutAvailable() {return mCanTimeOut; }
 
     public int getTimeoutNormal() {
         return mTimeoutNormal;
