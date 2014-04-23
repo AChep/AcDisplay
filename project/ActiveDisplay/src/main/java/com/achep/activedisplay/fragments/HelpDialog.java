@@ -34,7 +34,7 @@ public class HelpDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new DialogHelper.Builder(getActivity())
-                .setIcon(R.drawable.ic_large_help)
+                .setIcon(R.drawable.ic_dialog_help)
                 .setTitle(R.string.help)
                 .setMessage(Html.fromHtml(getString(R.string.help_message)))
                 .wrap()
