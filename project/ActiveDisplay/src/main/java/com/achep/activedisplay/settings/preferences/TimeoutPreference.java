@@ -25,6 +25,8 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -37,7 +39,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * @author AChep
  * Preference to configure timeouts.
+ * Creates the dialog in settings to change the TimeOut settings.
  */
 public class TimeoutPreference extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
@@ -55,6 +59,8 @@ public class TimeoutPreference extends DialogPreference implements
     private Group[] mGroups;
     private int[] mProgresses = new int[3];
     private int mMin;
+
+    private CheckBox mDisabled;
 
     public TimeoutPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -74,6 +80,9 @@ public class TimeoutPreference extends DialogPreference implements
         View root = inflater.inflate(R.layout.preference_dialog_timeout, null);
         assert root != null;
 
+        boolean hasTimeOut = true;
+        mDisabled = (CheckBox) root.findViewById(R.id.no_timeout_checkbox);
+
         mProgresses = new int[2];
         mGroups = new Group[mProgresses.length];
         mGroups[0] = new Group(
@@ -91,6 +100,16 @@ public class TimeoutPreference extends DialogPreference implements
         mSoftStoredLabels = new SoftReference[max + 1];
 
         Config config = Config.getInstance(getContext());
+
+        mDisabled.setChecked(config.isTimeOutAvailable());
+        mDisabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (Group group : mGroups) {
+                    group.seekBar.setEnabled(!isChecked);
+                }
+            }
+        });
+
         for (Group group : mGroups) {
             int progress = 0;
             try {
@@ -104,7 +123,10 @@ public class TimeoutPreference extends DialogPreference implements
             group.seekBar.setOnSeekBarChangeListener(this);
             group.seekBar.setMax(max);
             group.seekBar.setProgress(progress / MULTIPLIER);
+            group.seekBar.setEnabled(!mDisabled.isChecked());
         }
+
+        //Method method = null;
 
         // Build custom dialog.
         return new DialogHelper.Builder(getContext())
@@ -135,6 +157,7 @@ public class TimeoutPreference extends DialogPreference implements
                 e.printStackTrace();
             }
         }
+        config.setTimeOutAvailable(getContext(), mDisabled.isChecked(), null);
     }
 
     @Override
@@ -197,6 +220,10 @@ public class TimeoutPreference extends DialogPreference implements
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) { /* unused */ }
 
+    /**
+     *
+     * An object to store the seekbars and variables in that are used in the dialog
+     */
     private static class Group {
         SeekBar seekBar;
         TextView textView;

@@ -138,7 +138,7 @@ public class AcDisplayFragment extends Fragment implements
 
         private static final int MAX = 300;
 
-        private final ProgressBarAnimation mProgressBarAnimation;
+        private ProgressBarAnimation mProgressBarAnimation = null;
         private final ProgressBar mProgressBar;
 
         public TimeoutGui(Context context, ProgressBar progressBar) {
@@ -146,9 +146,12 @@ public class AcDisplayFragment extends Fragment implements
             mProgressBar = progressBar;
             mProgressBar.setMax(MAX);
             mProgressBar.setProgress(mProgressBar.getMax());
-            mProgressBarAnimation = new ProgressBarAnimation(mProgressBar, MAX, 0);
-            mProgressBarAnimation.setInterpolator(context, android.R.anim.linear_interpolator);
-            addListener(this);
+            Config config = Config.getInstance(context);
+            if(!config.isTimeOutAvailable()) {
+                mProgressBarAnimation = new ProgressBarAnimation(mProgressBar, MAX, 0);
+                mProgressBarAnimation.setInterpolator(context, android.R.anim.linear_interpolator);
+                addListener(this);
+            }
         }
 
         @Override
@@ -897,7 +900,8 @@ public class AcDisplayFragment extends Fragment implements
             final long start = SystemClock.elapsedRealtime();
 
             Bitmap origin = mBitmapOriginal;
-            Bitmap bitmap = BitmapUtils.doBlur(origin, 3, false);
+            BitmapUtils bitmapUtils= new BitmapUtils();
+            Bitmap bitmap = bitmapUtils.doBlur(origin, 3, false);
 
             if (!running) {
                 return null;
