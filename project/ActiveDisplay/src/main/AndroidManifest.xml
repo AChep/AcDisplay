@@ -179,6 +179,18 @@
             </intent-filter>
         </receiver>
 
+        <!--Reciever for a widget-->
+        <receiver android:name=".providers.MyWidgetProvider" >
+            <intent-filter >
+                <action
+                    android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/toggle_widget_provider" />
+        </receiver>
+
         <!-- For sending logs as attachments -->
         <provider android:name="com.achep.activedisplay.fragments.FeedbackDialog$LogAttachmentProvider"
             android:authorities="com.achep.activedisplay.logs"

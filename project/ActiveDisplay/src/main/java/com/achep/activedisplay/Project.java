@@ -21,7 +21,10 @@ package com.achep.activedisplay;
 import android.content.Context;
 
 /**
- * Created by Artem on 30.12.13.
+ * Does stuff with debug stuff
+ * TODO: write a better doc
+ * @author Artem
+ * @since 30.12.13
  */
 public class Project {
 
