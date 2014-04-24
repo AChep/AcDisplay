@@ -900,8 +900,7 @@ public class AcDisplayFragment extends Fragment implements
             final long start = SystemClock.elapsedRealtime();
 
             Bitmap origin = mBitmapOriginal;
-            BitmapUtils bitmapUtils= new BitmapUtils();
-            Bitmap bitmap = bitmapUtils.doBlur(origin, 3, false);
+            Bitmap bitmap = BitmapUtils.doBlur(origin, 3, false);
 
             if (!running) {
                 return null;

@@ -35,22 +35,30 @@ import java.util.ArrayList;
  */
 public class Config {
 
+    private static final String TAG = "Config";
+    private static final String PREFERENCES_FILE_NAME = "config";
+
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_ONLY_WHILE_CHARGING = "only_while_charging";
     public static final String KEY_LOW_PRIORITY_NOTIFICATIONS = "low_priority_notifications";
+
     // inactive time
     public static final String KEY_INACTIVE_TIME_FROM = "inactive_time_from";
     public static final String KEY_INACTIVE_TIME_TO = "inactive_time_to";
     public static final String KEY_INACTIVE_TIME_ENABLED = "inactive_time_enabled";
+
     // timeouts
     public static final String KEY_TIMEOUT_ACTIVE = "timeout_active";
     public static final String KEY_TIMEOUT_NORMAL = "timeout_normal";
     public static final String KEY_TIMEOUT_SHORT = "timeout_short";
+    //public static final String KEY_TIMEOUT_INSTANT = "timeout_instant";   Unused Variable
+
     // lockscreen
     public static final String KEY_LOCK_SCREEN = "lock_screen";
+
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
-    //public static final String KEY_TIMEOUT_INSTANT = "timeout_instant";   Unused Variable
+
     // interface
     public static final String KEY_INTERFACE_WALLPAPER_SHOWN = "wallpaper_shown";
     public static final String KEY_INTERFACE_SHADOW_TOGGLE = "shadow_toggle";
@@ -58,11 +66,10 @@ public class Config {
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
     public static final String KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR = "mirrored_timeout_progress_bar";
+
     // swipe actions
     public static final String KEY_SWIPE_LEFT_ACTION = "swipe_left_action";
     public static final String KEY_SWIPE_RIGHT_ACTION = "swipe_right_action";
-    private static final String TAG = "Config";
-    private static final String PREFERENCES_FILE_NAME = "config";
     private static Config sConfigSoft;
 
     private boolean mActiveDisplayEnabled;
@@ -130,6 +137,15 @@ public class Config {
         return context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Listeners modifiers
+     * TODO: add better doc
+     */
+
+    public interface OnConfigChangedListener {
+        public void onConfigChanged(Config config, String key, Object value);
+    }
+
     public void addOnConfigChangedListener(OnConfigChangedListener listener) {
         if (Project.DEBUG) Log.d(TAG, "add_l=" + listener);
         mListeners.add(listener);
@@ -139,6 +155,7 @@ public class Config {
         if (Project.DEBUG) Log.d(TAG, "remove_l=" + listener);
         mListeners.remove(listener);
     }
+
 
     /**
      * This is for debugging, writes to the log if a config changes.
@@ -467,15 +484,6 @@ public class Config {
 
     public boolean isInactiveTimeEnabled() {
         return mInactiveTimeEnabled;
-    }
-
-    /**
-     * Listeners
-     * TODO: add better doc
-     */
-
-    public interface OnConfigChangedListener {
-        public void onConfigChanged(Config config, String key, Object value);
     }
 
 }
