@@ -75,4 +75,13 @@
         android:layout_below="@id/short_timeout_title"
         android:layout_toStartOf="@id/short_timeout_value" />
 
+    <CheckBox
+    android:id="@+id/no_timeout_checkbox"
+    android:text="@string/preference_no_timeout"
+    android:padding="4dp"
+    android:layout_marginTop="16dp"
+    android:layout_below="@id/short_timeout_seekbar"
+    android:layout_alignLeft="@id/short_timeout_seekbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 </RelativeLayout>
