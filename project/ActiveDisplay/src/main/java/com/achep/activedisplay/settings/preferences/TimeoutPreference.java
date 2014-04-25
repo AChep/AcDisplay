@@ -80,9 +80,6 @@ public class TimeoutPreference extends DialogPreference implements
         View root = inflater.inflate(R.layout.preference_dialog_timeout, null);
         assert root != null;
 
-        boolean hasTimeOut = true;
-        mDisabled = (CheckBox) root.findViewById(R.id.no_timeout_checkbox);
-
         mProgresses = new int[2];
         mGroups = new Group[mProgresses.length];
         mGroups[0] = new Group(
@@ -101,6 +98,7 @@ public class TimeoutPreference extends DialogPreference implements
 
         Config config = Config.getInstance(getContext());
 
+        mDisabled = (CheckBox) root.findViewById(R.id.no_timeout_checkbox);
         mDisabled.setChecked(config.isTimeOutAvailable());
         mDisabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -125,8 +123,6 @@ public class TimeoutPreference extends DialogPreference implements
             group.seekBar.setProgress(progress / MULTIPLIER);
             group.seekBar.setEnabled(!mDisabled.isChecked());
         }
-
-        //Method method = null;
 
         // Build custom dialog.
         return new DialogHelper.Builder(getContext())
