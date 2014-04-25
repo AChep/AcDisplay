@@ -117,15 +117,15 @@ public class DialogHelper {
         }
 
         public Builder setIcon(int iconRes) {
-            return iconRes == 0 ? null : setIcon(mContext.getResources().getDrawable(iconRes));
+            return setIcon(iconRes == 0 ? null : mContext.getResources().getDrawable(iconRes));
         }
 
         public Builder setTitle(int titleRes) {
-            return titleRes == 0 ? null : setTitle(mContext.getResources().getString(titleRes));
+            return setTitle(titleRes == 0 ? null : mContext.getResources().getString(titleRes));
         }
 
         public Builder setMessage(int messageRes) {
-            return messageRes == 0 ? null : setMessage(mContext.getResources().getString(messageRes));
+            return setMessage(messageRes == 0 ? null : mContext.getResources().getString(messageRes));
         }
 
         public Builder setView(View view) {
