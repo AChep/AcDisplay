@@ -35,7 +35,7 @@ public class TimeView extends TextView {
 
     private static final String TAG = "TimeView";
 
-    private int mLastTime;
+    private int mLastTime = -1;
 
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
