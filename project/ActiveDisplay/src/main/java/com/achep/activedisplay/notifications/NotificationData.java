@@ -18,7 +18,6 @@
  */
 package com.achep.activedisplay.notifications;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -72,7 +71,7 @@ public class NotificationData {
      * example, before {@link android.os.Build.VERSION_CODES#HONEYCOMB}, this number was
      * superimposed over the icon in the status bar. Starting with
      * {@link android.os.Build.VERSION_CODES#HONEYCOMB}, the template used by
-     * {@link Notification.Builder} has displayed the number in the expanded notification view.
+     * {@link android.app.Notification.Builder} has displayed the number in the expanded notification view.
      * <p/>
      * If the number is 0 or negative, it is never shown.
      */

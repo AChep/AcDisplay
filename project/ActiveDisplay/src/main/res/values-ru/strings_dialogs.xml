@@ -40,7 +40,6 @@
         Авторское право 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Артём Чепурной</a>. Все права защищены.<br/>
         <br/>
         Большое спасибо этим открытым библиотекам:
-        <a href="https://github.com/romannurik/Android-SwipeToDismiss/">Android-SwipeToDismiss</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
         <a href="http://commons.apache.org/">Apache Commons</a>, а также всем, кто
         <a href="https://crowdin.net/project/acdisplay">помог с переводом приложения</a> или
@@ -74,6 +73,12 @@
         Этот год - мой последний год учёбы в школе.
         Я уверен, в скором будущем мне понадобится ноутбук для занятий и своевременной пересборки мира.
         Если вы желаете помочь мне с его покупкой, воспользуйтесь функцией Пожертвовать, и я буду вам премного благодарен!
+    ]]></string>
+
+    <!-- ParanoidAndroid -->
+    <string name="pa_title">Paranoid Android</string>
+    <string name="pa_message"><![CDATA[
+        Пользователи могут испытывать <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">некоторые проблемы</a> при использовании AcDisplay вместе с Paranoid Android.
     ]]></string>
 
 </resources>

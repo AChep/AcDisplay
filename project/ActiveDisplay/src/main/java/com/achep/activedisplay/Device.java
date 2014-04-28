@@ -21,14 +21,25 @@ package com.achep.activedisplay;
 import android.os.Build;
 
 /**
- * Created by Artem on 25.02.14.
+ * Contains params of current device. This is nice because we can override
+ * some here to test compatibility with old API.
+ *
+ * @author Artem Chepurnoy
  */
 public class Device {
 
+    /**
+     * @return True if device is running
+     * {@link Build.VERSION_CODES#KITKAT KitKat} or higher, False otherwise.
+     */
     public static boolean hasKitKatApi() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
+    /**
+     * @return True if device is running
+     * {@link Build.VERSION_CODES#JELLY_BEAN_MR2 Jelly Bean 4.3} or higher, False otherwise.
+     */
     public static boolean hasJellyBeanMR2Api() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
     }

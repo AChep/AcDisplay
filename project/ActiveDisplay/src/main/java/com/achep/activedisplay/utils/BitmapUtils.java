@@ -35,7 +35,7 @@ public class BitmapUtils {
                 || bitmap.getPixel(0, height) == Color.TRANSPARENT
                 || bitmap.getPixel(width, height) == Color.TRANSPARENT;
     }
-    
+
     public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
 
         // Stack Blur v1.0 from

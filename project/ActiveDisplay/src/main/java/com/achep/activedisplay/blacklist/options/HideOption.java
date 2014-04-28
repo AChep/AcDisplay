@@ -45,6 +45,6 @@ public class HideOption extends Option {
 
     @Override
     public boolean isChanged(int diff) {
-        return Operator.bitandCompare(diff, AppConfig.DIFF_HIDDEN);
+        return Operator.bitAnd(diff, AppConfig.DIFF_HIDDEN);
     }
 }

@@ -19,6 +19,7 @@
 package com.achep.activedisplay.activities;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,12 +27,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
+
+import com.achep.activedisplay.Project;
 
 /**
  * Created by Artem on 23.02.14.
  */
 public abstract class KeyguardActivity extends Activity {
+
+    private static final String TAG = "KeyguardActivity";
 
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
     public static final String EXTRA_FINISH_ON_SCREEN_OFF = "finish_on_screen_off";
@@ -45,32 +51,33 @@ public abstract class KeyguardActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean finishOnScreenOff = false;
-        int windowExtraFlags = 0;
+        int windowFlags = 0;
 
         Intent intent = getIntent();
         if (intent != null) {
             finishOnScreenOff = intent.getBooleanExtra(EXTRA_FINISH_ON_SCREEN_OFF, false);
             if (intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false)) {
-                windowExtraFlags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
+                windowFlags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
             }
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES
-                | windowExtraFlags);
+                | windowFlags);
 
         mLocking = false;
         mUnlocking = false;
 
         if (finishOnScreenOff) {
-            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1);
             registerReceiver((mScreenOffReceiver = new BroadcastReceiver() {
 
                 @Override
                 public void onReceive(final Context context, Intent intent) {
                     finish();
                 }
-            }), filter);
+            }), intentFilter);
         }
     }
 
@@ -90,7 +97,12 @@ public abstract class KeyguardActivity extends Activity {
         }
     }
 
-    public void lock() {
+    /**
+     * Turns screen off.
+     *
+     * @return True if successful, False otherwise.
+     */
+    public boolean lock() {
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         try {
             dpm.lockNow();
@@ -98,6 +110,7 @@ public abstract class KeyguardActivity extends Activity {
         } catch (SecurityException e) {
             mLocking = false;
         }
+        return mLocking;
     }
 
     /**
@@ -106,7 +119,17 @@ public abstract class KeyguardActivity extends Activity {
      * @param runnable may be null
      */
     public void unlock(final Runnable runnable, final boolean finish) {
+        if (Project.DEBUG) Log.d(TAG, "Unlocking with params: finish=" + finish);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
+        // If keyguard is disabled no need to make
+        // a delay between calling this method and
+        // unlocking.
+        // Otherwise we need this delay to get new
+        // flags applied.
+        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        int delay = km.isKeyguardLocked() ? 120 : 0;
 
         mUnlocking = true;
         new Handler().postDelayed(new Runnable() {
@@ -114,11 +137,11 @@ public abstract class KeyguardActivity extends Activity {
             public void run() {
                 if (runnable != null) runnable.run();
                 if (finish) {
-                    overridePendingTransition(0, 0);
                     finish();
+                    overridePendingTransition(0, 0);
                 }
             }
-        }, 120 /* We need this delay to get new flags applied. */);
+        }, delay);
     }
 
     public final boolean isLocking() {

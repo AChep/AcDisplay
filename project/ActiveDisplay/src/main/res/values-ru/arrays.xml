@@ -26,13 +26,6 @@
         <item>Другое</item>
     </string-array>
 
-    <!-- Swipe actions -->
-    <string-array name="swipe_actions">
-        <item>Отключен</item>
-        <item>Отклоняет уведомление из приложения</item>
-        <item>Отклоняет уведомление из приложения + системы</item>
-    </string-array>
-
     <!-- Dynamic background -->
     <string-array name="dynamic_background">
         <item>Обложка трека</item>

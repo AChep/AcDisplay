@@ -25,10 +25,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.achep.activedisplay.R;
 import com.achep.activedisplay.Project;
+import com.achep.activedisplay.R;
 import com.achep.activedisplay.utils.IntentUtils;
 import com.achep.activedisplay.utils.ToastUtils;
 
@@ -76,7 +75,7 @@ public class LocalReceiverActivity extends Activity {
                 if (IntentUtils.hasActivityForThat(this, launchIntent)) {
                     startActivity(launchIntent);
                 } else {
-                    ToastUtils.showShort(this, 
+                    ToastUtils.showShort(this,
                             getString(R.string.device_admin_could_not_be_started));
                 }
                 break;
@@ -86,7 +85,7 @@ public class LocalReceiverActivity extends Activity {
                 if (IntentUtils.hasActivityForThat(this, launchIntent)) {
                     startActivity(launchIntent);
                 } else {
-                    ToastUtils.showShort(this, 
+                    ToastUtils.showShort(this,
                             getString(R.string.package_could_not_be_uninstalled));
                 }
                 break;

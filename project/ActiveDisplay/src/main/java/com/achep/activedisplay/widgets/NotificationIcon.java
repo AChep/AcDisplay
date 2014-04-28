@@ -21,8 +21,6 @@ package com.achep.activedisplay.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -56,9 +54,9 @@ public class NotificationIcon extends ImageView implements NotificationView, Not
         init();
     }
 
+    @SuppressWarnings("EmptyMethod")
     private void init() {
-        if (true) return;
-
+        /*
         float c[] = new float[]{
                 1f, 0f, 0f, // red
                 0f, 1f, 0f, // green
@@ -78,6 +76,7 @@ public class NotificationIcon extends ImageView implements NotificationView, Not
 
         ColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
         setColorFilter(colorFilter);
+        */
     }
 
     private void registerListenerAndUpdateIcon() {

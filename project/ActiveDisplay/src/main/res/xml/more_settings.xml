@@ -38,23 +38,9 @@
         android:dialogTitle="@string/settings_timeout_title"
         android:title="@string/settings_timeout_title" />
 
+    <!--
     <PreferenceCategory
         android:title="@string/settings_behavior_category" />
-
-    <ListPreference
-        android:enabled="false"
-        android:key="swipe_left_action"
-        android:title="@string/settings_swipe_left_title"
-        android:entries="@array/swipe_actions"
-        android:entryValues="@array/swipe_actions_entries"
-        android:defaultValue="2" />
-
-    <ListPreference
-        android:enabled="false"
-        android:key="swipe_right_action"
-        android:title="@string/settings_swipe_right_title"
-        android:entries="@array/swipe_actions"
-        android:entryValues="@array/swipe_actions_entries"
-        android:defaultValue="2" />
+        -->
 
 </PreferenceScreen>

@@ -73,10 +73,9 @@
     <string name="settings_inactive_hours_enabled">От %1$s до %2$s.</string>
     <string name="settings_timeout_title">Спящий режим</string>
     <string name="settings_timeout_summary">После %1$s / %2$s секунд бездействия.</string>
+    <string name="settings_timeout_forever">Экран всегда остается включенным.</string>
     <!-- Behavior -->
     <string name="settings_behavior_category">Поведение</string>
-    <string name="settings_swipe_left_title">Бросок влево</string>
-    <string name="settings_swipe_right_title">Бросок вправо</string>
 
     <!-- Preference: Inactive hours -->
     <string name="preference_inactive_hours_enabled">Использовать неактивное время</string>
@@ -91,5 +90,6 @@
     <string name="preference_timeout_normal">При запуске или смене выбраного уведомления</string>
     <string name="preference_timeout_short">После касания экрана в неактивном месте</string>
     <string name="preference_timeout_sec">%1$s сек.</string>
+    <string name="preference_no_timeout">Экран всегда остается включенным</string>
 
 </resources>

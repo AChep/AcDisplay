@@ -18,87 +18,84 @@
   -->
 <com.achep.activedisplay.widgets.NotificationWidget xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:listChoiceBackgroundIndicator">
+    android:layout_height="wrap_content">
 
-    <com.achep.activedisplay.widgets.NotificationIcon
-        android:id="@+id/icon"
-        android:layout_width="32dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginStart="8dp"
-        android:layout_alignParentEnd="true"
-        android:scaleType="centerInside"
-        android:background="#2999" />
-
-    <TextView
-        android:id="@+id/title"
+    <RelativeLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/icon"
-        style="?attr/acDisplayNotificationTitle" />
+        android:background="?android:listChoiceBackgroundIndicator"
+        android:padding="8dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_toStartOf="@id/icon"
-        android:layout_marginTop="4dp"
-        style="?attr/acDisplayNotificationMessage" />
+        <com.achep.activedisplay.widgets.NotificationIcon
+            android:id="@+id/icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="centerInside" />
 
-    <Space
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="6dp"
-        android:layout_below="@id/message" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="-3dp"
+            android:layout_toEndOf="@id/icon"
+            android:minHeight="24dp"
+            style="?attr/acDisplayNotificationTitle" />
 
-    <com.achep.activedisplay.widgets.NotificationIcon
-        android:id="@+id/icon_small"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_below="@id/message"
-        android:layout_toStartOf="@id/icon"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="4dp"
-        android:alpha="0.6" />
+        <TextView
+            android:id="@+id/when"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_toEndOf="@id/icon"
+            android:minHeight="24dp"
+            style="?attr/acDisplayNotificationSubtext" />
 
-    <TextView
-        android:id="@+id/number"
+        <TextView
+            android:id="@+id/subtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_toEndOf="@id/when"
+            android:layout_marginStart="8dp"
+            style="?attr/acDisplayNotificationSubtext" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/when"
+            style="?attr/acDisplayNotificationMessage" />
+    </RelativeLayout>
+
+    <com.achep.activedisplay.view.NotifyingLayout
+        android:id="@+id/dismiss"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/message"
-        android:layout_toStartOf="@id/icon_small"
-        android:layout_marginTop="6dp"
-        style="?attr/acDisplayNotificationSubtext" />
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:minWidth="48dp"
+        android:background="?android:listChoiceBackgroundIndicator">
 
-    <TextView
-        android:id="@+id/when"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/message"
-        android:layout_toStartOf="@id/number"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="8dp"
-        style="?attr/acDisplayNotificationSubtext" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_cancel"
+            android:scaleType="centerInside" />
 
-    <TextView
-        android:id="@+id/subtext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/message"
-        android:layout_toStartOf="@id/when"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="6dp"
-        style="?attr/acDisplayNotificationSubtext" />
+    </com.achep.activedisplay.view.NotifyingLayout>
 
     <LinearLayout
         android:id="@+id/actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/when"
+        android:layout_below="@id/content"
         android:orientation="horizontal" />
 
 </com.achep.activedisplay.widgets.NotificationWidget>

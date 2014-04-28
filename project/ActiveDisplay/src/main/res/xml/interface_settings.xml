@@ -42,10 +42,12 @@
         android:entryValues="@array/dynamic_background_entries"
         android:defaultValue="@array/dynamic_background_entries" />
 
+    <!--
     <CheckBoxPreference
         android:key="show_date"
         android:title="@string/settings_show_date_title"
         android:defaultValue="true"/>
+        -->
 
     <CheckBoxPreference
         android:key="mirrored_timeout_progress_bar"

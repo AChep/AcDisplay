@@ -51,7 +51,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
          *
          * @param objectNew current object
          * @param objectOld old object from the list
-         * @param diff      the difference between old and new objects (provided by {@link Comparator})
+         * @param diff      the difference between old and new objects (provided by {@link com.achep.activedisplay.blacklist.SharedList.Comparator})
          */
         public void onPut(V objectNew, V objectOld, int diff);
 
@@ -236,8 +236,8 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
     public static abstract class Saver<V> {
 
         /**
-         * Should not overwrite value at {@link SharedList#KEY_NUMBER} or/and
-         * has key which starts with {@link SharedList#KEY_USED_ITEM}!
+         * Should not overwrite value at {@link com.achep.activedisplay.blacklist.SharedList#KEY_NUMBER} or/and
+         * has key which starts with {@link com.achep.activedisplay.blacklist.SharedList#KEY_USED_ITEM}!
          */
         public abstract SharedPreferences.Editor put(V object, SharedPreferences.Editor editor, int position);
 

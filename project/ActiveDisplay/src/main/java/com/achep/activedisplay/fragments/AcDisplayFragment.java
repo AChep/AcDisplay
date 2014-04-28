@@ -19,8 +19,6 @@
 
 package com.achep.activedisplay.fragments;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
@@ -37,14 +35,12 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.achep.activedisplay.AsyncTask;
@@ -55,7 +51,6 @@ import com.achep.activedisplay.R;
 import com.achep.activedisplay.Timeout;
 import com.achep.activedisplay.activities.AcDisplayActivity;
 import com.achep.activedisplay.activities.KeyguardActivity;
-import com.achep.activedisplay.animations.ProgressBarAnimation;
 import com.achep.activedisplay.compat.SceneCompat;
 import com.achep.activedisplay.fragments.components.MusicFragment;
 import com.achep.activedisplay.fragments.components.NotificationFragment;
@@ -64,8 +59,9 @@ import com.achep.activedisplay.notifications.NotificationPresenter;
 import com.achep.activedisplay.notifications.NotificationUtils;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
 import com.achep.activedisplay.utils.BitmapUtils;
-import com.achep.activedisplay.utils.MathUtils;
 import com.achep.activedisplay.utils.ViewUtils;
+import com.achep.activedisplay.view.ForwardingLayout;
+import com.achep.activedisplay.view.ForwardingListener;
 import com.achep.activedisplay.widgets.ProgressBar;
 
 import java.util.ArrayList;
@@ -87,7 +83,7 @@ public class AcDisplayFragment extends Fragment implements
     private NotificationPresenter mPresenter;
     private NotificationListener mNotificationListener = new NotificationListener();
 
-    private ViewGroup mSceneContainer;
+    private ForwardingLayout mSceneContainer;
     private LinearLayout mCollapsedViewsContainer;
     private HashMap<View, Widget> mWidgetsMap = new HashMap<>();
     private HashMap<Integer, SceneCompat> mScenesMap = new HashMap<>();
@@ -99,139 +95,20 @@ public class AcDisplayFragment extends Fragment implements
     private SceneCompat mSceneMain;
     private Transition mTransition;
 
-    // handlers
-    private ImageView mPinImageView;
-    private AnimatorSet mNotifyPinnedAnimation;
-    private ImageView mUnlockImageView;
-    private float mHandleCircleRadius;
-
     private boolean mTouched;
-    private boolean mParamsKeyguard;
 
-    private TimeoutGui mTimeout;
     private Handler mHandler = new Handler();
     private SelectWidgetRunnable mSelectWidgetRunnable = new SelectWidgetRunnable();
 
-    private GestureDetector mGestureDetector;
+    private Timeout mTimeout;
+    private Timeout.Gui mTimeoutGui;
+    private ForwardingListener mForwardingListener;
 
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            showMainWidget();
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            if (mParamsKeyguard) lock();
-            return mParamsKeyguard;
-        }
-    }
-
-    private class TimeoutGui extends Timeout implements Timeout.OnTimeoutEventListener {
-
-        private static final int MAX = 300;
-
-        private ProgressBarAnimation mProgressBarAnimation = null;
-        private final ProgressBar mProgressBar;
-
-        public TimeoutGui(Context context, ProgressBar progressBar) {
-            super();
-            mProgressBar = progressBar;
-            mProgressBar.setMax(MAX);
-            mProgressBar.setProgress(mProgressBar.getMax());
-            Config config = Config.getInstance(context);
-            if(!config.isTimeOutAvailable()) {
-                mProgressBarAnimation = new ProgressBarAnimation(mProgressBar, MAX, 0);
-                mProgressBarAnimation.setInterpolator(context, android.R.anim.linear_interpolator);
-                addListener(this);
-            }
-        }
-
-        @Override
-        public void onTimeoutEvent(int event) {
-            if (!mParamsKeyguard) return;
-            switch (event) {
-                case Timeout.EVENT_CLEARED:
-                    mProgressBar.clearAnimation();
-                    mProgressBar.setProgress(mProgressBar.getMax());
-                    break;
-                case Timeout.EVENT_CHANGED:
-                    long remainingTime = getRemainingTime();
-                    if (remainingTime > 0) {
-                        mProgressBarAnimation.setDuration(remainingTime);
-                        mProgressBar.startAnimation(mProgressBarAnimation);
-                    }
-                    break;
-                case Timeout.EVENT_TIMEOUT:
-                    AcDisplayFragment.this.lock();
-                    break;
-            }
-        }
-    }
-
-    /**
-     * This is needed to pause timeout while browsing status bar window,
-     * system dialogs etc.
-     */
-    public void onWindowFocusChanged(boolean hasFocus) {
-        if (hasFocus) {
-            if (!mTouched && mSelectedWidget == null) {
-                mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal());
-            }
-        } else {
-            mTimeout.clear();
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mHandleCircleRadius = getResources().getDimension(R.dimen.handler_circle_radius);
-        mNotifyPinnedAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(
-                activity, R.anim.notification_pinned);
-
-        mParamsKeyguard = activity instanceof KeyguardActivity;
-        mGestureDetector = new GestureDetector(activity, new GestureListener());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mTimeout.release();
-        mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mTimeout.clear();
-        mTimeout.lock();
-    }
-
-    private void lock() {
+    public void unlock(Runnable runnable, boolean finish) {
         Activity activity = getActivity();
         if (activity instanceof KeyguardActivity) {
-            KeyguardActivity lockscreen = (KeyguardActivity) activity;
-            lockscreen.lock();
-        }
-    }
-
-    private void unlock() {
-        unlock(null, false);
-    }
-
-    public void unlock(Runnable runnable, boolean finishOnStop) {
-        Activity activity = getActivity();
-        if (activity instanceof KeyguardActivity) {
-            KeyguardActivity lockscreen = (KeyguardActivity) activity;
-            lockscreen.unlock(runnable, !finishOnStop);
+            KeyguardActivity keyguard = (KeyguardActivity) activity;
+            keyguard.unlock(runnable, finish);
         } else {
             if (runnable != null) {
                 runnable.run();
@@ -265,9 +142,16 @@ public class AcDisplayFragment extends Fragment implements
         View root = inflater.inflate(R.layout.acdisplay, container, false);
         assert root != null;
 
-        mSceneContainer = (ViewGroup) root.findViewById(R.id.container);
+        mSceneContainer = (ForwardingLayout) root.findViewById(R.id.container);
         mCollapsedViewsContainer = (LinearLayout) root.findViewById(R.id.list);
         mCollapsedViewsContainer.setOnTouchListener(this);
+
+        mForwardingListener = new ForwardingListener(mCollapsedViewsContainer) {
+            @Override
+            public ForwardingLayout getForwardingLayout() {
+                return mSceneContainer;
+            }
+        };
 
         ViewGroup sceneMain = (ViewGroup) inflater.inflate(R.layout.acdisplay_scene_clock, mSceneContainer, false);
         if (Device.hasKitKatApi()) {
@@ -285,9 +169,6 @@ public class AcDisplayFragment extends Fragment implements
         }
         mCurrentScene = mSceneMain;
         mSceneMain.enter();
-
-        mUnlockImageView = (ImageView) root.findViewById(R.id.unlock);
-        mPinImageView = (ImageView) root.findViewById(R.id.pin);
 
         Config config = Config.getInstance(getActivity());
 
@@ -320,7 +201,18 @@ public class AcDisplayFragment extends Fragment implements
             progressBar = (ProgressBar) progressBarStub.inflate().findViewById(R.id.progress_bar);
         }
 
-        mTimeout = new TimeoutGui(getActivity(), progressBar);
+        Activity activity = getActivity();
+        if (activity instanceof AcDisplayActivity) {
+            mTimeoutGui = new Timeout.Gui(progressBar);
+
+            AcDisplayActivity a = (AcDisplayActivity) activity;
+            mTimeout = a.getTimeout();
+            mTimeout.registerListener(mTimeoutGui);
+        } else {
+            mTimeout = new Timeout(); // fake timeout that does nothing
+            progressBar.setProgress(progressBar.getMax());
+        }
+
         return root;
     }
 
@@ -345,19 +237,27 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mTimeout != null) {
+            mTimeout.unregisterListener(mTimeoutGui);
+        }
+    }
+
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
         final float rawX = event.getRawX();
         final float rawY = event.getRawY();
 
         if (v == mCollapsedViewsContainer) {
-            boolean pin = false;
-            boolean keepScene = false;
-            boolean touchDown = false;
+            mForwardingListener.onTouch(mCollapsedViewsContainer, event);
 
+            boolean touchDown = false;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     touchDown = true;
-                    mTimeout.clear();
+                    mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort(), true);
+                    mTimeout.pause();
                 case MotionEvent.ACTION_MOVE:
                     mTouched = true;
 
@@ -389,30 +289,8 @@ public class AcDisplayFragment extends Fragment implements
                         removeSelectWidgetCallbacks();
                     }
 
-                    handleSelectors(rawX, rawY);
                     break;
                 case MotionEvent.ACTION_UP:
-                    handleSelectors(rawX, rawY);
-
-                    // Handle basic features such as pinning notification and
-                    // unlocking device.
-                    handlers:
-                    if (true) {
-                        View view;
-                        if ((view = mUnlockImageView).getVisibility() == View.VISIBLE) {
-                            unlock();
-
-                            // Don't update the UI so user won't notice the lag
-                            // between unlocking and calling this method.
-                            keepScene = true;
-                        } else if ((view = mPinImageView).getVisibility() == View.VISIBLE) {
-                            pin = true;
-                            mNotifyPinnedAnimation.setTarget(mSceneContainer);
-                            mNotifyPinnedAnimation.start();
-                        } else break handlers; // do not vibrate
-
-                        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    }
 
                     // ///////////////
                     // ~~ FALL DOWN ~~
@@ -426,75 +304,20 @@ public class AcDisplayFragment extends Fragment implements
                         child.refreshDrawableState();
                     }
 
-                    if (!pin && !keepScene) {
-                        showMainWidget();
-                    }
-
-                    ViewUtils.setVisible(mUnlockImageView, false);
-                    ViewUtils.setVisible(mPinImageView, false);
+                    showMainWidget();
 
                     if (mCollapsedViewsNeedsUpdate) updateNotificationList();
+                    if (mTimeout != null) {
+                        mTimeout.resume();
+                    }
 
                     mTouched = false;
                     mCollapsedViewsNeedsUpdate = false;
                     break;
             }
             return true;
-        } else {
-            mGestureDetector.onTouchEvent(event);
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (mSelectedWidget == null) {
-                        mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort());
-                    }
-                    break;
-            }
-            return true;
         }
-    }
-
-    private void handleSelectors(float rawX, float rawY) {
-        if (mSelectedWidget == null) {
-            return;
-        }
-
-        View icon = mSelectedWidget.getCollapsedView();
-        int iconX = ViewUtils.getLeft(icon) + icon.getWidth() / 2;
-        int iconY = ViewUtils.getTop(icon) + icon.getHeight() / 2;
-
-        double length = Math.hypot(rawX - iconX, rawY - iconY);
-        if (length >= mHandleCircleRadius) {
-            View active = rawY > iconY ? mParamsKeyguard ? mUnlockImageView : null
-                    : mSelectedWidget.hasExpandedView() ? mPinImageView : null;
-            View passive = rawY > iconY ? mPinImageView : mUnlockImageView;
-
-            if (active != null) {
-                float[] point = new float[2];
-                calculateCrossPoint(iconX, iconY, rawX, rawY, mHandleCircleRadius, point);
-                active.setTranslationX(point[0] - active.getWidth() / 2 - ViewUtils.getLeft(getView()));
-                active.setTranslationY(point[1] - active.getHeight() / 2 - ViewUtils.getTop(getView()));
-
-                if (active.getVisibility() != View.VISIBLE) {
-                    active.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    active.setVisibility(View.VISIBLE);
-                }
-            }
-            ViewUtils.setVisible(passive, false, View.INVISIBLE);
-        } else {
-            ViewUtils.setVisible(mUnlockImageView, false, View.INVISIBLE);
-            ViewUtils.setVisible(mPinImageView, false, View.INVISIBLE);
-        }
-    }
-
-    private void calculateCrossPoint(float centerX, float centerY, float x1, float y1, float radius, float[] point) {
-        if ((x1 -= centerX) == 0) x1 = 0.00001f;
-        if ((y1 -= centerY) == 0) y1 = 0.00001f;
-        float k = y1 / x1;
-        float x = radius / (float) Math.sqrt(1 + k * k);
-        float y = k * x;
-
-        point[0] = x * MathUtils.charge(x1) + centerX;
-        point[1] = y * MathUtils.charge(x1) + centerY;
+        return false;
     }
 
     private class SelectWidgetRunnable implements Runnable {
@@ -552,7 +375,6 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     public void showMainWidget() {
-        mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal());
         selectWidget(null);
     }
 
@@ -580,6 +402,10 @@ public class AcDisplayFragment extends Fragment implements
     // TODO: Optimize it
     // Spent hours on optimizing with no result: 0h
     private void updateNotificationList() {
+        if (getActivity() == null) {
+            return;
+        }
+
         long now = SystemClock.elapsedRealtime();
 
         ViewGroup container = mCollapsedViewsContainer;
@@ -801,7 +627,7 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     /**
-     * Base class of {@link com.achep.activedisplay.fragments.AcDisplayFragment} widgets.
+     * Base class of {@link AcDisplayFragment} widgets.
      */
     public static abstract class Widget {
 
@@ -817,7 +643,7 @@ public class AcDisplayFragment extends Fragment implements
         }
 
         /**
-         * @return an instance of {@link com.achep.activedisplay.fragments.AcDisplayFragment}.
+         * @return an instance of {@link AcDisplayFragment}.
          */
         public AcDisplayFragment getHostFragment() {
             return mAcDisplayFragment;

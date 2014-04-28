@@ -121,11 +121,15 @@ public class DialogHelper {
         }
 
         public Builder setTitle(int titleRes) {
-            return setTitle(titleRes == 0 ? null : mContext.getResources().getString(titleRes));
+            return setTitle(titleRes == 0 ? null : getString(titleRes));
         }
 
         public Builder setMessage(int messageRes) {
-            return setMessage(messageRes == 0 ? null : mContext.getResources().getString(messageRes));
+            return setMessage(messageRes == 0 ? null : getString(messageRes));
+        }
+
+        private String getString(int stringRes) {
+            return mContext.getResources().getString(stringRes);
         }
 
         public Builder setView(View view) {
@@ -170,6 +174,9 @@ public class DialogHelper {
             return rootLayout;
         }
 
+        /**
+         * Wraps custom dialog to the default {@link AlertDialog.Builder} with custom view.
+         */
         public AlertDialog.Builder wrap() {
             return new AlertDialog.Builder(mContext).setView(create());
         }

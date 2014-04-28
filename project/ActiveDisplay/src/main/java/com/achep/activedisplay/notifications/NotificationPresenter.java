@@ -27,7 +27,7 @@ import android.os.Handler;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.achep.activedisplay.ActiveDisplayPresenter;
+import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
@@ -97,7 +97,7 @@ public class NotificationPresenter implements NotificationList.Callback {
 
         @Override
         public void onBlacklistChanged(final AppConfig configNew, AppConfig configOld, int diff) {
-            if (Operator.bitandCompare(diff, AppConfig.DIFF_HIDDEN_REAL)) {
+            if (Operator.bitAnd(diff, AppConfig.DIFF_HIDDEN_REAL)) {
                 handlePackageVisibilityChanged(configNew.packageName);
             }
         }
@@ -173,7 +173,7 @@ public class NotificationPresenter implements NotificationList.Callback {
     }
 
     /**
-     * Called on {@link NotificationHandleService#onNotificationPosted(StatusBarNotification)}
+     * Called on {@link NotificationHandleService#onNotificationPosted(android.service.notification.StatusBarNotification)}
      */
     public void postNotification(Context context, StatusBarNotification n) {
         postNotification(context, n, false);
@@ -201,7 +201,7 @@ public class NotificationPresenter implements NotificationList.Callback {
     }
 
     /**
-     * Called on {@link NotificationHandleService#onNotificationRemoved(StatusBarNotification)}
+     * Called on {@link NotificationHandleService#onNotificationRemoved(android.service.notification.StatusBarNotification)}
      */
     public void removeNotification(Context context, StatusBarNotification n) {
         logNotification(n, "removed");
@@ -299,10 +299,10 @@ public class NotificationPresenter implements NotificationList.Callback {
      */
     private boolean tryStartGui(Context context, OpenStatusBarNotification notification) {
         if (notification.isRestricted(mBlacklist)
-                || !mConfig.isActiveDisplayEnabled()
+                || !mConfig.isEnabled()
                 || ProximitySensor.isNear()
                 || mConfig.isEnabledOnlyWhileCharging() /* show only      */
-                && !PowerUtils.isPlugged(context))     /* while charging */
+                && !PowerUtils.isPlugged(context))      /* while charging */
             return false;
 
         // Inactive time
@@ -310,7 +310,7 @@ public class NotificationPresenter implements NotificationList.Callback {
             return false;
         }
 
-        ActiveDisplayPresenter.getInstance().start(context);
+        Presenter.getInstance().start(context);
         return true;
     }
 

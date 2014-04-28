@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.achep.activedisplay.activemode.ActiveModeService;
-import com.achep.activedisplay.services.LockscreenService;
+import com.achep.activedisplay.services.KeyguardService;
 
 /**
  * Created by Artem on 11.03.14.
@@ -36,12 +36,13 @@ public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "action=" + intent.getAction() + " intent=" + intent.toString());
+
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_POWER_CONNECTED:
             case Intent.ACTION_POWER_DISCONNECTED:
                 ActiveModeService.handleState(context);
-                LockscreenService.handleState(context);
+                KeyguardService.handleState(context);
                 break;
         }
     }

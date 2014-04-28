@@ -23,18 +23,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
-    <fragment
-        android:name="com.achep.activedisplay.fragments.AcDisplayFragment"
-        android:id="@+id/acdisplay_fragment"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.6"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        tools:layout="@layout/acdisplay" />
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+        <fragment
+            android:name="com.achep.activedisplay.fragments.AcDisplayFragment"
+            android:id="@+id/acdisplay_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:layout="@layout/acdisplay" />
+
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="0dp"

@@ -39,9 +39,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author AChep
  * Preference to configure timeouts.
  * Creates the dialog in settings to change the TimeOut settings.
+ *
+ * @author Artem Chepurnoy
  */
 public class TimeoutPreference extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
@@ -99,7 +100,7 @@ public class TimeoutPreference extends DialogPreference implements
         Config config = Config.getInstance(getContext());
 
         mDisabled = (CheckBox) root.findViewById(R.id.no_timeout_checkbox);
-        mDisabled.setChecked(config.isTimeOutAvailable());
+        mDisabled.setChecked(!config.isTimeoutEnabled());
         mDisabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (Group group : mGroups) {
@@ -153,7 +154,7 @@ public class TimeoutPreference extends DialogPreference implements
                 e.printStackTrace();
             }
         }
-        config.setTimeOutAvailable(getContext(), mDisabled.isChecked(), null);
+        config.setTimeoutEnabled(getContext(), !mDisabled.isChecked(), null);
     }
 
     @Override
@@ -217,7 +218,6 @@ public class TimeoutPreference extends DialogPreference implements
     public void onStopTrackingTouch(SeekBar seekBar) { /* unused */ }
 
     /**
-     *
      * An object to store the seekbars and variables in that are used in the dialog
      */
     private static class Group {

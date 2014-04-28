@@ -27,7 +27,7 @@
     <fragment
         android:name="com.achep.activedisplay.fragments.AcDisplayFragment"
         android:id="@+id/acdisplay_fragment"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"

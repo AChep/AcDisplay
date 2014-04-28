@@ -23,11 +23,15 @@
 
     <string name="xposed_description">Помогает AcDisplay глубже интегрироваться в систему.</string>
 
+    <!-- App widget -->
+    <string name="widget_toggle_enabled">Включен</string>
+    <string name="widget_toggle_disabled">Отключен</string>
+
     <!-- Test notification -->
     <string name="test_action">Проверить работу</string>
     <string name="test_notification_message">Пример того, как выглядит уведомление.</string>
 
-    <!-- Lockscreen -->
+    <!-- Keyguard -->
     <string name="service_lockscreen">%1$s - экран блокировки</string>
     <string name="service_lockscreen_text">Нажмите, чтобы запустить настройки.</string>
 

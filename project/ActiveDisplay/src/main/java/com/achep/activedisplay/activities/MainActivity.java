@@ -29,8 +29,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,10 +55,7 @@ import com.achep.activedisplay.utils.AccessUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 
 /**
- * Main class, gets UI stuff and all that
- *
- * @author Artem
- * @since 21.01.14
+ * Created by Artem on 21.01.14.
  */
 public class MainActivity extends Activity implements Config.OnConfigChangedListener {
 
@@ -88,7 +87,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(R.layout.layout_ab_switch);
         mSwitch = (Switch) getActionBar().getCustomView().findViewById(R.id.switch_);
-        mSwitch.setChecked(mConfig.isActiveDisplayEnabled());
+        mSwitch.setChecked(mConfig.isEnabled());
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -98,7 +97,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                     return;
                 }
 
-                boolean successfully = mConfig.setActiveDisplayEnabled(
+                boolean successfully = mConfig.setEnabled(
                         MainActivity.this, b, MainActivity.this);
 
                 if (!successfully) {
@@ -118,8 +117,23 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
             if (oldVersionCode < pi.versionCode) {
                 prefs.edit().putInt("previous_version_code", pi.versionCode).commit();
 
-                if (oldVersionCode < 15 /* version v2.0- */) {
-                    DialogHelper.showNewsDialog(this);
+                if (oldVersionCode < 18 /* v2.1.x- */) {
+
+                    // Show the warning message for Paranoid Android users.
+                    if (Build.DISPLAY.startsWith("pa_")) {
+                        CharSequence messageText = Html.fromHtml(getString(R.string.pa_message));
+                        new DialogHelper.Builder(this)
+                                .setTitle(R.string.pa_title)
+                                .setMessage(messageText)
+                                .wrap()
+                                .setPositiveButton(android.R.string.ok, null)
+                                .create()
+                                .show();
+                    }
+
+                    if (oldVersionCode < 15 /* v2.0- */) {
+                        DialogHelper.showNewsDialog(this);
+                    }
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {
@@ -133,9 +147,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         updateAccessPanel();
     }
 
-    /**
-     * Gives the annoying red bar to indicate not enough access
-     */
     private void initAccessPanel() {
         mAccessWarningPanel = (ViewGroup) ((ViewStub) findViewById(R.id.access)).inflate();
         mAccessAllowNotification = mAccessWarningPanel.findViewById(R.id.access_notification);
@@ -158,9 +169,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         });
     }
 
-    /**
-     * If some access was granted we update and maybe hide some parts
-     */
     private void updateAccessPanel() {
         boolean showDeviceAdminBtn = !AccessUtils.isDeviceAdminEnabled(this);
         boolean showNotifiesBtn = !AccessUtils.isNotificationAccessEnabled(this);

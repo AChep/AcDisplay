@@ -62,7 +62,10 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="AcDisplayTheme.Wallpaper" parent="AcDisplayTheme">
+    <!-- All device dependent modification goes here -->
+    <style name="AcDisplayTheme.WallpaperBase" parent="AcDisplayTheme"/>
+
+    <style name="AcDisplayTheme.Wallpaper" parent="AcDisplayTheme.WallpaperBase">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowBackground">@color/keyguard_background_semi</item>
         <item name="android:windowShowWallpaper">true</item>

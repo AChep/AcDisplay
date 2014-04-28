@@ -55,8 +55,8 @@ final class NotificationList {
     /**
      * Replace or add notification to the list.
      *
-     * @return {@link NotificationList.Callback#onNotificationAdded(com.achep.activedisplay.notifications.OpenStatusBarNotification n)} or
-     * {@link NotificationList.Callback#onNotificationChanged(com.achep.activedisplay.notifications.OpenStatusBarNotification n)}
+     * @return {@link com.achep.activedisplay.notifications.NotificationList.Callback#onNotificationAdded(com.achep.activedisplay.notifications.OpenStatusBarNotification n)} or
+     * {@link com.achep.activedisplay.notifications.NotificationList.Callback#onNotificationChanged(com.achep.activedisplay.notifications.OpenStatusBarNotification n)}
      */
     public int push(OpenStatusBarNotification n) {
         int index = indexOf(n);

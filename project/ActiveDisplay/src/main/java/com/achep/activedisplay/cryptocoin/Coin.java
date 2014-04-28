@@ -22,13 +22,20 @@ import android.content.Intent;
 import android.net.Uri;
 
 /**
- * Created by Artem on 06.02.14.
+ * Base class for simple virtual coins.
+ *
+ * @author Artem Chepurnoy
  */
 public abstract class Coin {
 
-    static final Class[] COINS = new Class[]{Bitcoin.class};
+    public static Intent getPaymentIntent(Coin coin) {
+        return getPaymentIntent(coin, coin.getPaymentAmount());
+    }
 
-    // ///////////// -- BASICS -- ///////////////
+    public static Intent getPaymentIntent(Coin coin, double amount) {
+        Uri uri = coin.getPaymentUri(amount);
+        return new Intent(Intent.ACTION_VIEW, uri);
+    }
 
     public abstract int getId();
 
@@ -36,39 +43,44 @@ public abstract class Coin {
 
     public abstract int getNameResource();
 
-    // //////////// -- PAYMENT -- ///////////////
-
+    /**
+     * @return The receiver's key. It may be an email or just "any string".
+     */
     public abstract String getPaymentKey();
 
+    /**
+     * @return The default amount of money.
+     * @see #getPaymentIntent(Coin)
+     * @see #getPaymentIntent(Coin, double)
+     */
     public abstract double getPaymentAmount();
 
+    /**
+     * @return Uri to page through which you can sends me moneys.
+     * @see #getPaymentIntent(Coin)
+     * @see #getPaymentIntent(Coin, double)
+     */
     public abstract Uri getPaymentUri(double amount);
 
-    public abstract Uri getBrowseUri();
+    /**
+     * @return Uri to page that shows my current money.
+     * @see #getUriWiki()
+     * @see #getUriTutorial()
+     */
+    public abstract Uri getUriBrowseWallet();
 
-    public abstract Uri getWikiUri();
+    /**
+     * @return Uri to page that explains the coin.
+     * @see #getUriBrowseWallet()
+     * @see #getUriTutorial()
+     */
+    public abstract Uri getUriWiki();
 
-    public abstract Uri getHowToUri();
-
-    // ///////////// -- GLOBAL -- ///////////////
-
-    public static Intent getPaymentIntent(int id) {
-        for (Class clazz : COINS) {
-            try {
-                Coin coin = (Coin) clazz.newInstance();
-                if (id == coin.getId()) {
-                    return getPaymentIntent(coin);
-                }
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    public static Intent getPaymentIntent(Coin coin) {
-        Uri uri = coin.getPaymentUri(coin.getPaymentAmount());
-        return new Intent(Intent.ACTION_VIEW, uri);
-    }
+    /**
+     * @return Uri to page that explains how to use that coin: send / receive money etc.
+     * @see #getUriWiki()
+     * @see #getUriBrowseWallet()
+     */
+    public abstract Uri getUriTutorial();
 
 }

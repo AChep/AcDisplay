@@ -52,12 +52,12 @@ public class AccelerometerSensor extends ActiveSensor implements
 
     @Override
     public int getType() {
-        return ACCELEROMETER;
+        return Sensor.TYPE_ACCELEROMETER;
     }
 
     @Override
     protected boolean isSupported(SensorManager sensorManager, Context context) {
-        return sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() > 0 && false;
+        return false;
     }
 
     @Override

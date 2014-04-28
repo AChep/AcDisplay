@@ -20,11 +20,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_notification_title">
 
+    <!--
     <CheckBoxPreference
         android:enabled="false"
         android:key="wake_up_on_notification"
         android:title="@string/settings_wake_up_on_notification_title"
         android:defaultValue="true"/>
+        -->
 
     <CheckBoxPreference
         android:key="low_priority_notifications"

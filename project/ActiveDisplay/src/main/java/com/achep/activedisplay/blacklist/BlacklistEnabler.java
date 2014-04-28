@@ -148,7 +148,7 @@ public class BlacklistEnabler extends Blacklist.OnBlacklistChangedListener
         if (configNew.equals(mAppConfig)) {
             AppConfig.copy(configNew, mAppConfig);
 
-            if (Operator.bitandCompare(diff, AppConfig.DIFF_ENABLED))
+            if (Operator.bitAnd(diff, AppConfig.DIFF_ENABLED))
                 setChecked(configNew.enabled);
             for (Blacklist.OnBlacklistChangedListener listener : mListeners)
                 listener.onBlacklistChanged(mAppConfig, configOld, diff);

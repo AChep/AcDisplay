@@ -43,7 +43,6 @@
         Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
         <br/>
         Many thanks to those open source tools:
-        <a href="https://github.com/romannurik/Android-SwipeToDismiss/">Android-SwipeToDismiss</a>,
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
         <a href="http://commons.apache.org/">Apache Commons</a> and to all who
         <a href="https://crowdin.net/project/acdisplay">helped with translations</a> or
@@ -76,6 +75,12 @@
         Huge progress has been done in AcDisplay and to keep it <a href="https://www.github.com/AChep/AcDisplay">open</a> for everyone, and now I need some help from you.<br/>
         This is my last school year and I would like to buy a notebook for future studies and to compile the world.
         I would highly appreciate your help with it.
+    ]]></string>
+
+    <!-- ParanoidAndroid -->
+    <string name="pa_title" translatable="false">Paranoid Android</string>
+    <string name="pa_message"><![CDATA[
+        Users may <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">expect trouble</a> when using AcDisplay on Paranoid Android.
     ]]></string>
 
 </resources>

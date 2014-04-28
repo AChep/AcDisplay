@@ -18,9 +18,10 @@
   ~ MA  02110-1301, USA.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.activedisplay"
-    android:versionCode="18"
-    android:versionName="2.1.3">
+    android:versionCode="19"
+    android:versionName="2.2">
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -29,7 +30,7 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    
+
     <!-- Needed to get the list of running activities. -->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
@@ -120,7 +121,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".services.LockscreenService" />
+        <service android:name=".services.KeyguardService" />
         <service android:name=".activemode.ActiveModeService" />
         <service android:name=".services.SendNotificationService" />
 
@@ -161,7 +162,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED"/> />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
@@ -179,22 +180,26 @@
             </intent-filter>
         </receiver>
 
-        <!--Reciever for a widget-->
-        <receiver android:name=".providers.MyWidgetProvider" >
-            <intent-filter >
-                <action
-                    android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        <!-- Receiver for a widget -->
+        <receiver android:name=".providers.ToggleWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/toggle_widget_provider" />
+                android:resource="@xml/appwidget_toggle_info" />
         </receiver>
 
         <!-- For sending logs as attachments -->
-        <provider android:name="com.achep.activedisplay.fragments.FeedbackDialog$LogAttachmentProvider"
+        <provider
+            android:name="com.achep.activedisplay.fragments.FeedbackDialog$LogAttachmentProvider"
             android:authorities="com.achep.activedisplay.logs"
-            android:exported="true" />
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 
         <!--
             AcDisplay does provide Xposed module.

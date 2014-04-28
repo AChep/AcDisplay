@@ -67,7 +67,7 @@ public class AppConfig {
     /**
      * Simple wrapper of package name.
      *
-     * @return an instance of empty {@link AppConfig} with package name.
+     * @return an instance of empty {@link com.achep.activedisplay.blacklist.AppConfig} with package name.
      */
     public static AppConfig wrap(String packageName) {
         return new AppConfig(packageName, DEFAULT_ENABLED, DEFAULT_RESTRICTED, DEFAULT_HIDDEN);

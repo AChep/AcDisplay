@@ -24,11 +24,15 @@
 
     <string name="xposed_description">Helps AcDisplay to integrate deeper into Android.</string>
 
+    <!-- App widget -->
+    <string name="widget_toggle_enabled">Enabled</string>
+    <string name="widget_toggle_disabled">Disabled</string>
+
     <!-- Test notification -->
     <string name="test_action">Send test notification</string>
     <string name="test_notification_message">This is a sample notification.</string>
 
-    <!-- Lockscreen -->
+    <!-- Keyguard -->
     <string name="service_lockscreen">%1$s - lockscreen</string>
     <string name="service_lockscreen_text">Touch to launch its settings.</string>
 
@@ -37,7 +41,7 @@
     <string name="service_active_mode_text">Touch to launch its settings.</string>
 
     <!-- Initial notification -->
-    <string name="init_notification_text">You should never see this notification but if you do, just dismiss it.</string>
+    <string name="init_notification_text">Just dismiss this notification.</string>
 
     <!-- Status text -->
     <!-- Example: Mon, 7 April -->

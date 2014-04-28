@@ -76,12 +76,7 @@ public class ProximitySensor extends ActiveSensor implements
 
     @Override
     public int getType() {
-        return PROXIMITY;
-    }
-
-    @Override
-    protected boolean isSupported(SensorManager sensorManager, Context context) {
-        return sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).size() > 0;
+        return Sensor.TYPE_PROXIMITY;
     }
 
     @Override

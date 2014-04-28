@@ -45,6 +45,6 @@ public class RestrictOption extends Option {
 
     @Override
     public boolean isChanged(int diff) {
-        return Operator.bitandCompare(diff, AppConfig.DIFF_RESTRICTED);
+        return Operator.bitAnd(diff, AppConfig.DIFF_RESTRICTED);
     }
 }

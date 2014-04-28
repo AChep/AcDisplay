@@ -21,6 +21,7 @@ package com.achep.activedisplay.fragments.components;
 
 import android.app.PendingIntent;
 import android.graphics.Bitmap;
+import android.service.notification.StatusBarNotification;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ import com.achep.activedisplay.notifications.NotificationHelper;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
 import com.achep.activedisplay.utils.BitmapUtils;
 import com.achep.activedisplay.utils.PendingIntentUtils;
-import com.achep.activedisplay.view.SwipeDismissTouchListener;
 import com.achep.activedisplay.widgets.NotificationIconWidget;
 import com.achep.activedisplay.widgets.NotificationView;
 import com.achep.activedisplay.widgets.NotificationWidget;
@@ -46,8 +46,6 @@ public class NotificationFragment extends AcDisplayFragment.Widget implements No
     private static final String TAG = "NotificationFragment";
 
     private NotificationIconWidget mIconView;
-    private ViewGroup mSceneView;
-
     private OpenStatusBarNotification mNotification;
     private NotificationWidget mNotifyWidget;
 
@@ -58,16 +56,6 @@ public class NotificationFragment extends AcDisplayFragment.Widget implements No
     @Override
     public int getType() {
         return AcDisplayFragment.SCENE_NOTIFICATION;
-    }
-
-    @Override
-    public View getCollapsedView() {
-        return mIconView;
-    }
-
-    @Override
-    public ViewGroup getExpandedView() {
-        return mSceneView;
     }
 
     @Override
@@ -93,64 +81,44 @@ public class NotificationFragment extends AcDisplayFragment.Widget implements No
         if (initialize) {
             // I do keep in mind that those settings are
             // shared over all who uses this scene too.
-
-            mNotifyWidget.setOnTouchListener(new SwipeDismissTouchListener(
-                    mNotifyWidget, null,
-                    new SwipeDismissTouchListener.DismissCallbacks() {
-
-                        @Override
-                        public boolean canDismiss(Object token) {
-                            OpenStatusBarNotification osbn = mNotifyWidget.getNotification();
-                            return osbn != null && osbn.getStatusBarNotification().isClearable();
-                        }
-
-                        @Override
-                        public void onDismiss(View view, Object token) {
-                            NotificationHelper.dismissNotification(mNotifyWidget
-                                    .getNotification()
-                                    .getStatusBarNotification());
-                            getHostFragment().showMainWidget();
-                        }
-                    }
-            ));
-
             mNotifyWidget.setOnClickListener(new NotificationWidget.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     final OpenStatusBarNotification osbn = mNotifyWidget.getNotification();
-
-                    if (osbn == null) {
-                        throw new IllegalStateException("Notification widget is shown but it doesn\'t contain notification.");
+                    if (osbn != null) {
+                        getHostFragment().showMainWidget();
+                        getHostFragment().unlock(new Runnable() {
+                            @Override
+                            public void run() {
+                                NotificationHelper.startContentIntent(osbn);
+                            }
+                        }, false);
                     }
-
-                    getHostFragment().showMainWidget();
-                    postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            NotificationHelper.startContentIntent(osbn);
-                        }
-                    });
                 }
 
                 @Override
-                public void onActionClick(View v, final PendingIntent pendingIntent) {
+                public void onActionButtonClick(View v, final PendingIntent pendingIntent) {
                     getHostFragment().showMainWidget();
-                    postRunnable(new Runnable() {
+                    getHostFragment().unlock(new Runnable() {
                         @Override
                         public void run() {
                             PendingIntentUtils.sendPendingIntent(pendingIntent);
                         }
-                    });
+                    }, false);
                 }
 
-                private void postRunnable(Runnable runnable) {
-                    getHostFragment().unlock(runnable, true);
+                @Override
+                public void onDismissButtonClick(View v, OpenStatusBarNotification osbn) {
+                    if (osbn != null) {
+                        StatusBarNotification sbn = osbn.getStatusBarNotification();
+                        NotificationHelper.dismissNotification(sbn);
+                    }
                 }
+
             });
         }
 
-        mSceneView = sceneView;
         return sceneView;
     }
 
@@ -158,18 +126,21 @@ public class NotificationFragment extends AcDisplayFragment.Widget implements No
     public void onExpandedViewAttached() {
         mNotification.getNotificationData().markAsRead(true);
         mNotifyWidget.setNotification(mNotification);
-        displayBackgroundBitmap();
+        dispatchSetBackground();
     }
 
-    private void displayBackgroundBitmap() {
+    /**
+     * Sets dynamic background
+     */
+    private void dispatchSetBackground() {
         AcDisplayFragment fragment = getHostFragment();
         Bitmap bitmap = mNotification.getNotificationData().getBackground();
 
-        if (bitmap == null || BitmapUtils.hasTransparentCorners(bitmap)
-                // dynamic background from notification is disabled
-                || !Operator.bitandCompare(
+        boolean enabled = Operator.bitAnd(
                 fragment.getConfig().getDynamicBackgroundMode(),
-                Config.DYNAMIC_BG_NOTIFICATION_MASK)) {
+                Config.DYNAMIC_BG_NOTIFICATION_MASK);
+
+        if (bitmap == null || BitmapUtils.hasTransparentCorners(bitmap) || !enabled) {
             fragment.dispatchSetBackground(null);
             return;
         }

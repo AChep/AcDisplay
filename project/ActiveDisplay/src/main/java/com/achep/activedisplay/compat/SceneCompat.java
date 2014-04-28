@@ -27,7 +27,10 @@ import android.view.ViewGroup;
 import com.achep.activedisplay.Device;
 
 /**
- * Created by Artem on 26.03.2014.
+ * This is a restricted {@link android.transition.Scene} compatibility
+ * class for supporting Android 4.3 or below.
+ *
+ * @author Artem Chepurnoy
  */
 public class SceneCompat {
 

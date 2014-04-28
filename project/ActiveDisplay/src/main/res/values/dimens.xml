@@ -28,10 +28,9 @@
     <!-- Notification widget -->
     <dimen name="notification_small_icon_size">16dp</dimen>
     <dimen name="notification_icon_size">24dp</dimen>
-    <dimen name="notification_icon_padding">1dp</dimen>
-    <item name="notification_icon_prefered_square_percent" type="dimen">85%</item>
     <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen>
 
     <!-- AcDisplay -->
-    <dimen name="handler_circle_radius">128dp</dimen>
+    <dimen name="circle_radius_target">180dp</dimen>
+    <dimen name="circle_radius_decrease_threshold">4dp</dimen>
 </resources>

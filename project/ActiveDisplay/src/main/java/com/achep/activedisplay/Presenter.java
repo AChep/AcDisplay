@@ -23,9 +23,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.achep.activedisplay.activities.AcDisplayActivity;
-import com.achep.activedisplay.services.LockscreenService;
+import com.achep.activedisplay.services.KeyguardService;
 import com.achep.activedisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
@@ -33,18 +34,24 @@ import java.util.ArrayList;
 /**
  * Created by Artem on 07.03.14.
  */
-public class ActiveDisplayPresenter {
+public class Presenter {
 
-    private static final String TAG = "ActiveDisplayPresenter";
-    private static final String WAKE_LOCK_TAG = "AcDisplay starter.";
+    private static final String TAG = "AcDisplayPresenter";
+    private static final String WAKE_LOCK_TAG = "AcDisplay launcher.";
 
-    public void stop(Context context) {
+    /**
+     * Requests to lock screen from AcDisplay activity.
+     *
+     * @return true if locked, false otherwise
+     */
+    public boolean stop(Context context) {
+        //noinspection SimplifiableIfStatement
         if (mActivity != null
-                && mActivity.hasWindowFocus()
-               /* && mActivity.getTimeout().getTimeout() != 0*/
+                && mActivity.isCloseableBySensor()
                 && PowerUtils.isScreenOn(context)) {
-            mActivity.lock();
+            return mActivity.lock();
         }
+        return false;
     }
 
     public void start(Context context) {
@@ -68,7 +75,7 @@ public class ActiveDisplayPresenter {
         Config config = Config.getInstance(context);
 
         kill();
-        LockscreenService.ignoreCurrentTurningOn();
+        KeyguardService.ignoreCurrentTurningOn();
         context.startActivity(new Intent(Intent.ACTION_MAIN, null)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
@@ -76,8 +83,10 @@ public class ActiveDisplayPresenter {
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_FROM_BACKGROUND)
                 .putExtra(AcDisplayActivity.EXTRA_TURN_SCREEN_ON, true)
-                .putExtra(AcDisplayActivity.EXTRA_FINISH_ON_SCREEN_OFF, !config.isLockscreenEnabled())
+                .putExtra(AcDisplayActivity.EXTRA_FINISH_ON_SCREEN_OFF, !config.isKeyguardEnabled())
                 .setClass(context, AcDisplayActivity.class));
+
+        Log.i(TAG, "Launching AcDisplay activity.");
     }
 
     public void kill() {
@@ -91,27 +100,28 @@ public class ActiveDisplayPresenter {
         public void OnActiveDisplayStateChanged(Activity activity);
     }
 
-    private static ActiveDisplayPresenter sActiveDisplayPresenter;
+    private static Presenter sPresenter;
 
     private ArrayList<OnActiveDisplayStateChangedListener> mListeners;
     private AcDisplayActivity mActivity;
 
-    public static synchronized ActiveDisplayPresenter getInstance() {
-        if (sActiveDisplayPresenter == null)
-            sActiveDisplayPresenter = new ActiveDisplayPresenter();
-        return sActiveDisplayPresenter;
+    public static synchronized Presenter getInstance() {
+        if (sPresenter == null) {
+            sPresenter = new Presenter();
+        }
+        return sPresenter;
     }
 
-    private ActiveDisplayPresenter() {
+    private Presenter() {
         mListeners = new ArrayList<>(4);
     }
 
-    public void addOnActiveDisplayStateChangedListener(OnActiveDisplayStateChangedListener listener) {
-        if (!mListeners.contains(listener)) mListeners.add(listener);
+    public void registerListener(OnActiveDisplayStateChangedListener listener) {
+        mListeners.add(listener);
     }
 
-    public void removeOnActiveDisplayStateChangedListener(OnActiveDisplayStateChangedListener listener) {
-        if (mListeners.contains(listener)) mListeners.remove(listener);
+    public void unregisterListener(OnActiveDisplayStateChangedListener listener) {
+        mListeners.remove(listener);
     }
 
     public void attachActivity(AcDisplayActivity activity) {

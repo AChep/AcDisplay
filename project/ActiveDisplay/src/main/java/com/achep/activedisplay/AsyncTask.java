@@ -20,7 +20,7 @@
 package com.achep.activedisplay;
 
 /**
- * Created by Artem on 10.04.2014.
+ * A better {@link com.achep.activedisplay.AsyncTask}.
  *
  * @author Artem Chepurnoy
  */
@@ -32,7 +32,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
      * Equals to calling: {@code AsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)}
      */
     public boolean isFinished() {
-        return getStatus().equals(android.os.AsyncTask.Status.FINISHED);
+        return getStatus().equals(Status.FINISHED);
     }
 
     public void cancel() {

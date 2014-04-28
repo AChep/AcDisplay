@@ -21,7 +21,7 @@ package com.achep.activedisplay;
 import android.app.Application;
 import android.content.Intent;
 
-import com.achep.activedisplay.services.LockscreenService;
+import com.achep.activedisplay.services.KeyguardService;
 
 /**
  * Created by Artem on 22.02.14.
@@ -34,8 +34,8 @@ public class App extends Application {
 
         // If lockscreen is enabled launch it on start.
         Config config = Config.getInstance(this);
-        if (config.isLockscreenEnabled()) {
-            Intent intent = new Intent(this, LockscreenService.class);
+        if (config.isKeyguardEnabled()) {
+            Intent intent = new Intent(this, KeyguardService.class);
             startService(intent);
         }
     }

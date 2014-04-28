@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.widget.Toast;
 
 import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.R;
@@ -62,8 +61,7 @@ public class DonateDialog extends DialogFragment {
             if (IntentUtils.hasActivityForThat(mContext, mIntent)) {
                 mContext.startActivity(mIntent);
             } else {
-                Toast toast = Toast.makeText(mContext,"Program Error: No ActivityForThat", Toast.LENGTH_SHORT);
-                toast.show();
+                // TODO: Show toast message
             }
         }
     }
@@ -76,8 +74,8 @@ public class DonateDialog extends DialogFragment {
 
         CharSequence messageText = Html.fromHtml(getString(R.string.donate_message,
                 getString(R.string.app_name),
-                coin.getBrowseUri().toString(),
-                coin.getWikiUri().toString(),
+                coin.getUriBrowseWallet().toString(),
+                coin.getUriWiki().toString(),
                 getString(coin.getNameResource())));
         OnClickIntentLauncher payPalClick = createBrowserClicker(Uri.parse(PAYPAL_DONATION_URL));
 
@@ -99,7 +97,7 @@ public class DonateDialog extends DialogFragment {
 
             // Show tutorial button if link is present because user
             // probably doesn't know about cryptocoins.
-            Uri howToUri = coin.getHowToUri();
+            Uri howToUri = coin.getUriTutorial();
             if (howToUri != null) {
                 builder.setPositiveButton(R.string.donate_how_to, createBrowserClicker(howToUri));
             }

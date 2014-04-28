@@ -23,12 +23,23 @@ import android.net.Uri;
 import com.achep.activedisplay.R;
 
 /**
- * Created by Artem on 06.02.14.
+ * An implementation of Bitcoin.
+ * <p></p>
+ * Bitcoin is a peer-to-peer payment system introduced as open source
+ * software in 2009 by developer Satoshi Nakamoto. The digital currency
+ * created and used in the system is also called bitcoin and is
+ * alternatively referred to as a virtual currency, electronic money,
+ * or cryptocurrency. The bitcoin system is not controlled by a single entity,
+ * like a central bank, which has led the US Treasury to call bitcoin a
+ * decentralized currency. Economists generally agree that it does not
+ * meet the definition of money.
+ *
+ * @author Artem Chepurnoy
  */
 public class Bitcoin extends Coin {
 
-    public static final String DONATION_KEY = "1GYj49ZnMByKj2f6p7r4f92GQi5pR6BSMz";
-    public static final double DONATION_AMOUNT = 0.005;
+    private static final String DONATION_KEY = "1GYj49ZnMByKj2f6p7r4f92GQi5pR6BSMz";
+    private static final double DONATION_AMOUNT = 0.005;
 
     @Override
     public int getId() {
@@ -61,17 +72,17 @@ public class Bitcoin extends Coin {
     }
 
     @Override
-    public Uri getBrowseUri() {
+    public Uri getUriBrowseWallet() {
         return Uri.parse("https://www.biteasy.com/blockchain/addresses/" + getPaymentKey());
     }
 
     @Override
-    public Uri getWikiUri() {
+    public Uri getUriWiki() {
         return Uri.parse("http://www.youtube.com/watch?v=Um63OQz3bjo");
     }
 
     @Override
-    public Uri getHowToUri() {
+    public Uri getUriTutorial() {
         return Uri.parse("https://www.trybtc.com/");
     }
 }

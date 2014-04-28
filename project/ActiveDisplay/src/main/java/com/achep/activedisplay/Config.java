@@ -20,22 +20,25 @@ package com.achep.activedisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.achep.activedisplay.activemode.ActiveModeService;
-import com.achep.activedisplay.services.LockscreenService;
+import com.achep.activedisplay.services.KeyguardService;
 import com.achep.activedisplay.utils.AccessUtils;
 
 import java.util.ArrayList;
 
 /**
- * @author Artem
+ * Saves all the configurations for the app.
+ *
+ * @author Artem Chepurnoy
  * @since 21.01.14
- * Saves all the configurations for the app
  */
 public class Config {
 
     private static final String TAG = "Config";
+
     private static final String PREFERENCES_FILE_NAME = "config";
 
     public static final String KEY_ENABLED = "enabled";
@@ -48,124 +51,123 @@ public class Config {
     public static final String KEY_INACTIVE_TIME_ENABLED = "inactive_time_enabled";
 
     // timeouts
-    public static final String KEY_TIMEOUT_ACTIVE = "timeout_active";
+    public static final String KEY_TIMEOUT_ENABLED = "timeout_enabled";
     public static final String KEY_TIMEOUT_NORMAL = "timeout_normal";
     public static final String KEY_TIMEOUT_SHORT = "timeout_short";
-    //public static final String KEY_TIMEOUT_INSTANT = "timeout_instant";   Unused Variable
 
-    // lockscreen
-    public static final String KEY_LOCK_SCREEN = "lock_screen";
+    // keyguard
+    public static final String KEY_KEYGUARD = "lock_screen";
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
 
     // interface
-    public static final String KEY_INTERFACE_WALLPAPER_SHOWN = "wallpaper_shown";
-    public static final String KEY_INTERFACE_SHADOW_TOGGLE = "shadow_toggle";
-    public static final String KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
+    public static final String KEY_UI_WALLPAPER_SHOWN = "wallpaper_shown";
+    public static final String KEY_UI_SHADOW_TOGGLE = "shadow_toggle";
+    public static final String KEY_UI_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
-    public static final String KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR = "mirrored_timeout_progress_bar";
+    public static final String KEY_UI_MIRRORED_TIMEOUT_BAR = "mirrored_timeout_progress_bar";
 
-    // swipe actions
-    public static final String KEY_SWIPE_LEFT_ACTION = "swipe_left_action";
-    public static final String KEY_SWIPE_RIGHT_ACTION = "swipe_right_action";
-    private static Config sConfigSoft;
+    private static Config sConfig;
 
-    private boolean mActiveDisplayEnabled;
+    private boolean mAcDisplayEnabled;
+    private boolean mKeyguardEnabled;
+    private boolean mActiveMode;
     private boolean mEnabledOnlyWhileCharging;
-    private boolean mLowPriorityNotificationsAllowed;
-    private boolean mCanTimeOut;
+    private boolean mNotifyLowPriority;
+    private boolean mTimeoutEnabled;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
     private int mInactiveTimeTo;
-    private int mSwipeLeftAction;
-    private int mSwipeRightAction;
-    private int mDynamicBackgroundMode;
+    private int mUiDynamicBackground;
     private boolean mInactiveTimeEnabled;
-    private boolean mLockscreenEnabled;
-    private Boolean mActiveMode;
+    private boolean mUiWallpaper;
+    private boolean mUiWallpaperShadow;
+    private boolean mUiMirroredTimeoutBar;
+
     private ArrayList<OnConfigChangedListener> mListeners;
-    private boolean mWallpaperShown;
-    private boolean mShadowShown;
-    private boolean mMirroredTimeoutProgressBarEnabled;
 
-    /**
-     * Config constructor, sets all the variables to the value using sharedPreference or uses a preset key
-     *
-     * @param context
-     */
-    private Config(Context context) {
-        mListeners = new ArrayList<>(6);
-
-        SharedPreferences prefs = getSharedPreferences(context);
-        mActiveDisplayEnabled = prefs.getBoolean(KEY_ENABLED, false);
-        mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING, false);
-        mLowPriorityNotificationsAllowed = prefs.getBoolean(KEY_LOW_PRIORITY_NOTIFICATIONS, false);
-        mLockscreenEnabled = prefs.getBoolean(KEY_LOCK_SCREEN, false);
-        mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE, false);
-        mWallpaperShown = prefs.getBoolean(KEY_INTERFACE_WALLPAPER_SHOWN, false);
-        mShadowShown = prefs.getBoolean(KEY_INTERFACE_SHADOW_TOGGLE, true);
-        mMirroredTimeoutProgressBarEnabled = prefs.getBoolean(KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, true);
-        mCanTimeOut = prefs.getBoolean(KEY_TIMEOUT_ACTIVE, false);
-        mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL, 12000);
-        mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT, 6000);
-        mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM, 0);
-        mInactiveTimeTo = prefs.getInt(KEY_INACTIVE_TIME_TO, 0);
-        mInactiveTimeEnabled = prefs.getBoolean(KEY_INACTIVE_TIME_ENABLED, false);
-        mSwipeLeftAction = prefs.getInt(KEY_SWIPE_LEFT_ACTION, 2);
-        mSwipeRightAction = prefs.getInt(KEY_SWIPE_RIGHT_ACTION, 2);
-        mDynamicBackgroundMode = prefs.getInt(KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE,
-                DYNAMIC_BG_ARTWORK_MASK | DYNAMIC_BG_NOTIFICATION_MASK);
-    }
-
-    /**
-     * Get's an instance of the config
-     *
-     * @param context
-     * @return a config instance
-     */
-
-    public static synchronized Config getInstance(Context context) {
-        if (sConfigSoft == null)
-            sConfigSoft = new Config(context);
-        return sConfigSoft;
-    }
-
-    static SharedPreferences getSharedPreferences(Context context) {
-        return context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-    }
-
-    /**
-     * Listeners modifiers
-     * TODO: add better doc
-     */
+    // //////////////////////////////////////////
+    // /////////// -- LISTENERS -- //////////////
+    // //////////////////////////////////////////
 
     public interface OnConfigChangedListener {
         public void onConfigChanged(Config config, String key, Object value);
     }
 
     public void addOnConfigChangedListener(OnConfigChangedListener listener) {
-        if (Project.DEBUG) Log.d(TAG, "add_l=" + listener);
         mListeners.add(listener);
     }
 
     public void removeOnConfigChangedListener(OnConfigChangedListener listener) {
-        if (Project.DEBUG) Log.d(TAG, "remove_l=" + listener);
         mListeners.remove(listener);
     }
 
+    // //////////////////////////////////////////
+    // ///////////// -- INIT -- /////////////////
+    // //////////////////////////////////////////
 
-    /**
-     * This is for debugging, writes to the log if a config changes.
-     *
-     * @param key
-     * @param value
-     * @param listener
-     */
+    public static synchronized Config getInstance(Context context) {
+        if (sConfig == null) {
+            sConfig = new Config(context);
+        }
+        return sConfig;
+    }
+
+    private Config(Context context) {
+        mListeners = new ArrayList<>(6);
+
+        Resources res = context.getResources();
+        SharedPreferences prefs = getSharedPreferences(context);
+        mAcDisplayEnabled = prefs.getBoolean(KEY_ENABLED,
+                res.getBoolean(R.bool.config_default_enabled));
+        mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
+                res.getBoolean(R.bool.config_default_keyguard_enabled));
+        mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
+                res.getBoolean(R.bool.config_default_active_mode_enabled));
+
+        // notifications
+        mNotifyLowPriority = prefs.getBoolean(KEY_LOW_PRIORITY_NOTIFICATIONS,
+                res.getBoolean(R.bool.config_default_notify_low_priority));
+
+        // timeout
+        mTimeoutEnabled = prefs.getBoolean(KEY_TIMEOUT_ENABLED,
+                res.getBoolean(R.bool.config_default_timeout_enabled));
+        mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL,
+                res.getInteger(R.integer.config_default_timeout_normal));
+        mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT,
+                res.getInteger(R.integer.config_default_timeout_short));
+
+        // inactive time
+        mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM,
+                res.getInteger(R.integer.config_default_inactive_time_from));
+        mInactiveTimeTo = prefs.getInt(KEY_INACTIVE_TIME_TO,
+                res.getInteger(R.integer.config_default_inactive_time_to));
+        mInactiveTimeEnabled = prefs.getBoolean(KEY_INACTIVE_TIME_ENABLED,
+                res.getBoolean(R.bool.config_default_inactive_time_enabled));
+
+        // interface
+        mUiWallpaper = prefs.getBoolean(KEY_UI_WALLPAPER_SHOWN,
+                res.getBoolean(R.bool.config_default_ui_show_wallpaper));
+        mUiWallpaperShadow = prefs.getBoolean(KEY_UI_SHADOW_TOGGLE,
+                res.getBoolean(R.bool.config_default_ui_show_shadow));
+        mUiDynamicBackground = prefs.getInt(KEY_UI_DYNAMIC_BACKGROUND_MODE,
+                res.getInteger(R.integer.config_default_ui_show_shadow_dynamic_bg));
+        mUiMirroredTimeoutBar = prefs.getBoolean(KEY_UI_MIRRORED_TIMEOUT_BAR,
+                res.getBoolean(R.bool.config_default_ui_mirrored_timeout_bar));
+
+        // other
+        mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
+                res.getBoolean(R.bool.config_default_enabled_only_while_charging));
+    }
+
+    static SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+    }
+
     private void notifyConfigChanged(String key, Object value, OnConfigChangedListener listener) {
-        if (Project.DEBUG) Log.d(TAG, "Notifying listeners: \"" + key + "\" = \"" + value + "\"");
         for (OnConfigChangedListener l : mListeners) {
             if (l == listener) continue;
             l.onConfigChanged(this, key, value);
@@ -174,7 +176,10 @@ public class Config {
 
     private void saveOption(Context context, String key, Object value,
                             OnConfigChangedListener listener, boolean changed) {
-        if (!changed) return;
+        if (!changed) {
+            // Don't update preferences if this change is a lie.
+            return;
+        }
 
         if (Project.DEBUG) Log.d(TAG, "Saving \"" + key + "\" to config as \"" + value + "\"");
 
@@ -189,237 +194,155 @@ public class Config {
         notifyConfigChanged(key, value, listener);
     }
 
-    /**
-     * Setter for the entire app enabler
-     *
-     * @param context
-     * @param enabled
-     * @param listener
-     * @return
-     */
+    // //////////////////////////////////////////
+    // ///////////// -- OPTIONS -- //////////////
+    // //////////////////////////////////////////
 
-    public boolean setActiveDisplayEnabled(Context context, boolean enabled,
-                                           OnConfigChangedListener listener) {
-        if (enabled && !(AccessUtils.isNotificationAccessEnabled(context)
+    /**
+     * Setter for the entire app enabler.
+     */
+    public boolean setEnabled(Context context, boolean enabled,
+                              OnConfigChangedListener listener) {
+        if (enabled
+                && !(AccessUtils.isNotificationAccessEnabled(context)
                 && AccessUtils.isDeviceAdminEnabled(context))) {
             return false;
         }
 
-        boolean changed = mActiveDisplayEnabled != (mActiveDisplayEnabled = enabled);
+        boolean changed = mAcDisplayEnabled != (mAcDisplayEnabled = enabled);
         saveOption(context, KEY_ENABLED, enabled, listener, changed);
 
         if (changed) {
             ActiveModeService.handleState(context);
-            LockscreenService.handleState(context);
+            KeyguardService.handleState(context);
         }
         return true;
     }
 
     /**
-     * Setter to only have the app running while charging
-     *
-     * @param context
-     * @param enabled
-     * @param listener
+     * Setter to enable the lockscreen mode.
      */
-    public void setActiveDisplayEnabledOnlyWhileCharging(Context context, boolean enabled,
-                                                         OnConfigChangedListener listener) {
-        saveOption(context, KEY_ONLY_WHILE_CHARGING, enabled, listener,
-                mEnabledOnlyWhileCharging != (mEnabledOnlyWhileCharging = enabled));
+    public void setKeyguardEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mKeyguardEnabled != (mKeyguardEnabled = enabled);
+        saveOption(context, KEY_KEYGUARD, enabled, listener, changed);
+
+        if (changed) {
+            KeyguardService.handleState(context);
+        }
     }
 
     /**
-     * Setter to allow notifications with a lower priority like Google Now
-     *
-     * @param context
-     * @param enabled
-     * @param listener
-     */
-    public void setLowPriorityNotificationsAllowed(Context context, boolean enabled,
-                                                   OnConfigChangedListener listener) {
-        saveOption(context, KEY_LOW_PRIORITY_NOTIFICATIONS, enabled, listener,
-                mLowPriorityNotificationsAllowed != (mLowPriorityNotificationsAllowed = enabled));
-    }
-
-    /**
-     * Setter to allow the screen to time out or not
-     *
-     * @param context
-     * @param enabled
-     * @param listener
-     */
-    public void setTimeOutAvailable(Context context, boolean enabled, OnConfigChangedListener listener) {
-        saveOption(context, KEY_TIMEOUT_ACTIVE, enabled, listener,
-                mCanTimeOut != (mCanTimeOut = enabled));
-    }
-
-    /**
-     * Setter to set the timeout in a normal situation
-     * used via reflections!
-     *
-     * @param context
-     * @param delayMillis
-     * @param listener
-     */
-    public void setTimeoutNormal(Context context, int delayMillis, OnConfigChangedListener listener) {
-        saveOption(context, KEY_TIMEOUT_NORMAL, delayMillis, listener,
-                mTimeoutNormal != (mTimeoutNormal = delayMillis));
-    }
-
-    /**
-     * Setter for short timeout time
-     * used via reflections!
-     *
-     * @param context
-     * @param delayMillis
-     * @param listener
-     */
-    public void setTimeoutShort(Context context, int delayMillis, OnConfigChangedListener listener) {
-        saveOption(context, KEY_TIMEOUT_SHORT, delayMillis, listener,
-                mTimeoutShort != (mTimeoutShort = delayMillis));
-    }
-
-    /**
-     * Setter to enable "night mode"
-     *
-     * @param context
-     * @param enabled
-     * @param listener
-     */
-    public void setInactiveTimeEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INACTIVE_TIME_ENABLED, enabled, listener,
-                mInactiveTimeEnabled != (mInactiveTimeEnabled = enabled));
-    }
-
-    /**
-     * Setter for the time "night mode" should start
-     *
-     * @param context
-     * @param minutes
-     * @param listener
-     */
-    public void setInactiveTimeFrom(Context context, int minutes, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INACTIVE_TIME_FROM, minutes, listener,
-                mInactiveTimeFrom != (mInactiveTimeFrom = minutes));
-    }
-
-    /**
-     * Setter for the time "night mode" should end
-     *
-     * @param context
-     * @param minutes
-     * @param listener
-     */
-    public void setInactiveTimeTo(Context context, int minutes, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INACTIVE_TIME_TO, minutes, listener,
-                mInactiveTimeTo != (mInactiveTimeTo = minutes));
-    }
-
-    /**
-     * TODO: write doc here
-     *
-     * @param context
-     * @param action
-     * @param listener
-     */
-    public void setSwipeLeftAction(Context context, int action, OnConfigChangedListener listener) {
-        saveOption(context, KEY_SWIPE_LEFT_ACTION, action, listener,
-                mSwipeLeftAction != (mSwipeLeftAction = action));
-    }
-
-    /**
-     * TODO: write doc here
-     *
-     * @param context
-     * @param action
-     * @param listener
-     */
-    public void setSwipeRightAction(Context context, int action, OnConfigChangedListener listener) {
-        saveOption(context, KEY_SWIPE_RIGHT_ACTION, action, listener,
-                mSwipeRightAction != (mSwipeRightAction = action));
-    }
-
-    /**
-     * Setter to enable the lockscreen mode
-     *
-     * @param context
-     * @param enabled
-     * @param listener
-     */
-    public void setLockscreenEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mLockscreenEnabled != (mLockscreenEnabled = enabled);
-
-        saveOption(context, KEY_LOCK_SCREEN, enabled, listener, changed);
-
-        // Launch / stop lockscreen service
-        if (changed) LockscreenService.handleState(context);
-    }
-
-    /**
-     * Setter to enable active mode
-     *
-     * @param context
-     * @param enabled
-     * @param listener
+     * Setter to enable the active mode.
      */
     public void setActiveModeEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
         boolean changed = mActiveMode != (mActiveMode = enabled);
         saveOption(context, KEY_ACTIVE_MODE, enabled, listener, changed);
 
-        // Launch / stop sensor monitor service
-        if (changed) ActiveModeService.handleState(context);
+        if (changed) {
+            ActiveModeService.handleState(context);
+        }
+    }
+
+    /**
+     * Setter to only have the app running while charging.
+     */
+    public void setActiveDisplayEnabledOnlyWhileCharging(Context context, boolean enabled,
+                                                         OnConfigChangedListener listener) {
+        boolean changed = mEnabledOnlyWhileCharging != (mEnabledOnlyWhileCharging = enabled);
+        saveOption(context, KEY_ONLY_WHILE_CHARGING, enabled, listener, changed);
+
+        if (changed) {
+            ActiveModeService.handleState(context);
+            KeyguardService.handleState(context);
+        }
+    }
+
+    /**
+     * Setter to allow notifications with a lower priority like Google Now.
+     */
+    public void setLowPriorityNotificationsAllowed(Context context, boolean enabled,
+                                                   OnConfigChangedListener listener) {
+        boolean changed = mNotifyLowPriority != (mNotifyLowPriority = enabled);
+        saveOption(context, KEY_LOW_PRIORITY_NOTIFICATIONS, enabled, listener, changed);
+    }
+
+    /**
+     * Setter to allow the screen to time out or not.
+     */
+    public void setTimeoutEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mTimeoutEnabled != (mTimeoutEnabled = enabled);
+        saveOption(context, KEY_TIMEOUT_ENABLED, enabled, listener, changed);
+    }
+
+    /**
+     * Setter to set the timeout in a normal situation.
+     */
+    // used via reflections!
+    public void setTimeoutNormal(Context context, int delayMillis, OnConfigChangedListener listener) {
+        boolean changed = mTimeoutNormal != (mTimeoutNormal = delayMillis);
+        saveOption(context, KEY_TIMEOUT_NORMAL, delayMillis, listener, changed);
+    }
+
+    /**
+     * Setter for short timeout time.
+     */
+    // used via reflections!
+    public void setTimeoutShort(Context context, int delayMillis, OnConfigChangedListener listener) {
+        boolean changed = mTimeoutShort != (mTimeoutShort = delayMillis);
+        saveOption(context, KEY_TIMEOUT_SHORT, delayMillis, listener, changed);
+    }
+
+    /**
+     * Setter to enable "night mode".
+     */
+    public void setInactiveTimeEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mInactiveTimeEnabled != (mInactiveTimeEnabled = enabled);
+        saveOption(context, KEY_INACTIVE_TIME_ENABLED, enabled, listener, changed);
+    }
+
+    /**
+     * Setter for the time "night mode" should start
+     */
+    public void setInactiveTimeFrom(Context context, int minutes, OnConfigChangedListener listener) {
+        boolean changed = mInactiveTimeFrom != (mInactiveTimeFrom = minutes);
+        saveOption(context, KEY_INACTIVE_TIME_FROM, minutes, listener, changed);
+    }
+
+    /**
+     * Setter for the time "night mode" should end.
+     */
+    public void setInactiveTimeTo(Context context, int minutes, OnConfigChangedListener listener) {
+        boolean changed = mInactiveTimeTo != (mInactiveTimeTo = minutes);
+        saveOption(context, KEY_INACTIVE_TIME_TO, minutes, listener, changed);
     }
 
     /**
      * Setter to allow the wallpaper to be shown instead of black
-     *
-     * @param context
-     * @param shown
-     * @param listener
      */
     public void setWallpaperShown(Context context, boolean shown, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INTERFACE_WALLPAPER_SHOWN, shown, listener,
-                mWallpaperShown != (mWallpaperShown = shown));
+        boolean changed = mUiWallpaper != (mUiWallpaper = shown);
+        saveOption(context, KEY_UI_WALLPAPER_SHOWN, shown, listener, changed);
     }
 
-    /**
-     * TODO: write doc
-     *
-     * @param context
-     * @param shown
-     * @param listener
-     */
     public void setShadowEnabled(Context context, boolean shown, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INTERFACE_SHADOW_TOGGLE, shown, listener,
-                mShadowShown != (mShadowShown = shown));
+        boolean changed = mUiWallpaperShadow != (mUiWallpaperShadow = shown);
+        saveOption(context, KEY_UI_SHADOW_TOGGLE, shown, listener, changed);
     }
 
     /**
-     * Allow the background to change based on the notification
-     *
-     * @param context
-     * @param mode
-     * @param listener
+     * Allow the background to change based on the notification.
      */
     public void setDynamicBackgroundMode(Context context, int mode, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE, mode, listener,
-                mDynamicBackgroundMode != (mDynamicBackgroundMode = mode));
+        boolean changed = mUiDynamicBackground != (mUiDynamicBackground = mode);
+        saveOption(context, KEY_UI_DYNAMIC_BACKGROUND_MODE, mode, listener, changed);
     }
 
     /**
-     * Allow the dots to move in from both sides
-     *
-     * @param context
-     * @param enabled
-     * @param listener
+     * Allow the timeout bar to move in from both sides.
      */
     public void setMirroredTimeoutProgressBarEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        saveOption(context, KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR, enabled, listener,
-                mMirroredTimeoutProgressBarEnabled != (mMirroredTimeoutProgressBarEnabled = enabled));
-    }
-
-    public boolean isTimeOutAvailable() {
-        return mCanTimeOut;
+        boolean changed = mUiMirroredTimeoutBar != (mUiMirroredTimeoutBar = enabled);
+        saveOption(context, KEY_UI_MIRRORED_TIMEOUT_BAR, enabled, listener, changed);
     }
 
     public int getTimeoutNormal() {
@@ -438,20 +361,20 @@ public class Config {
         return mInactiveTimeTo;
     }
 
-    public int getSwipeLeftAction() {
-        return mSwipeLeftAction;
-    }
-
-    public int getSwipeRightAction() {
-        return mSwipeRightAction;
-    }
-
     public int getDynamicBackgroundMode() {
-        return mDynamicBackgroundMode;
+        return mUiDynamicBackground;
     }
 
-    public boolean isActiveDisplayEnabled() {
-        return mActiveDisplayEnabled;
+    public boolean isEnabled() {
+        return mAcDisplayEnabled;
+    }
+
+    public boolean isKeyguardEnabled() {
+        return mKeyguardEnabled;
+    }
+
+    public boolean isActiveModeEnabled() {
+        return mActiveMode;
     }
 
     public boolean isEnabledOnlyWhileCharging() {
@@ -459,31 +382,27 @@ public class Config {
     }
 
     public boolean isLowPriorityNotificationsAllowed() {
-        return mLowPriorityNotificationsAllowed;
-    }
-
-    public boolean isLockscreenEnabled() {
-        return mLockscreenEnabled;
-    }
-
-    public boolean isActiveModeEnabled() {
-        return mActiveMode;
+        return mNotifyLowPriority;
     }
 
     public boolean isWallpaperShown() {
-        return mWallpaperShown;
+        return mUiWallpaper;
     }
 
     public boolean isShadowEnabled() {
-        return mShadowShown;
+        return mUiWallpaperShadow;
     }
 
     public boolean isMirroredTimeoutProgressBarEnabled() {
-        return mMirroredTimeoutProgressBarEnabled;
+        return mUiMirroredTimeoutBar;
     }
 
     public boolean isInactiveTimeEnabled() {
         return mInactiveTimeEnabled;
+    }
+
+    public boolean isTimeoutEnabled() {
+        return mTimeoutEnabled;
     }
 
 }

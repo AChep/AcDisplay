@@ -33,7 +33,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.achep.activedisplay.ActiveDisplayPresenter;
+import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
@@ -67,17 +67,17 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ActiveDisplayPresenter presenter = ActiveDisplayPresenter.getInstance();
+            Presenter presenter = Presenter.getInstance();
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
-                    presenter.addOnActiveDisplayStateChangedListener(mStateListener);
+                    presenter.registerListener(mStateListener);
 
                     if (!presenter.isActivityAttached()) {
                         stopListening();
                     }
                     break;
                 case Intent.ACTION_SCREEN_OFF:
-                    presenter.removeOnActiveDisplayStateChangedListener(mStateListener);
+                    presenter.unregisterListener(mStateListener);
                     startListeningDelayed(250);
                     break;
             }
@@ -93,8 +93,8 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         }
     };
 
-    private ActiveDisplayPresenter.OnActiveDisplayStateChangedListener mStateListener =
-            new ActiveDisplayPresenter.OnActiveDisplayStateChangedListener() {
+    private Presenter.OnActiveDisplayStateChangedListener mStateListener =
+            new Presenter.OnActiveDisplayStateChangedListener() {
                 @Override
                 public void OnActiveDisplayStateChanged(Activity activity) {
                     if (activity == null) {
@@ -115,7 +115,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
                 || PowerUtils.isPlugged(context);
 
-        if (config.isActiveDisplayEnabled()
+        if (config.isEnabled()
                 && config.isActiveModeEnabled()
                 && onlyWhileChangingOption) {
             context.startService(intent);
@@ -235,13 +235,15 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     }
 
     @Override
-    public void onShowEvent(ActiveSensor sensor) {
-        ActiveDisplayPresenter.getInstance().start(this);
+    public boolean onShowEvent(ActiveSensor sensor) {
+        Presenter.getInstance().start(this);
+        return false;
     }
 
     @Override
-    public void onHideEvent(ActiveSensor sensor) {
-        ActiveDisplayPresenter.getInstance().stop(this);
+    public boolean onHideEvent(ActiveSensor sensor) {
+        Presenter.getInstance().stop(this);
+        return false;
     }
 
     @Override
@@ -268,7 +270,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
 
     void start() {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        ActiveDisplayPresenter presenter = ActiveDisplayPresenter.getInstance();
+        Presenter presenter = Presenter.getInstance();
         if (pm.isScreenOn()) {
             mStateListener.OnActiveDisplayStateChanged(presenter.getActivity());
         } else {

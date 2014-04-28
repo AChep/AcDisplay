@@ -31,7 +31,7 @@ import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.achep.activedisplay.ActiveDisplayPresenter;
+import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.Project;
@@ -43,9 +43,9 @@ import com.achep.activedisplay.utils.PowerUtils;
 /**
  * Created by Artem on 16.02.14.
  */
-public class LockscreenService extends Service {
+public class KeyguardService extends Service {
 
-    private static final String TAG = "LockscreenService";
+    private static final String TAG = "KeyguardService";
 
     private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
 
@@ -54,6 +54,8 @@ public class LockscreenService extends Service {
     public static long sIgnoreTillTime;
 
     /**
+     * Prevents launching keyguard on soonest turning screen on.
+     *
      * @deprecated hopefully the bug with it is fixed now, so no need to use it. Just in case...
      */
     @Deprecated
@@ -65,14 +67,14 @@ public class LockscreenService extends Service {
      * Starts or stops this service as required by settings and device's state.
      */
     public static void handleState(Context context) {
-        Intent intent = new Intent(context, LockscreenService.class);
+        Intent intent = new Intent(context, KeyguardService.class);
         Config config = Config.getInstance(context);
 
         boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
                 || PowerUtils.isPlugged(context);
 
-        if (config.isActiveDisplayEnabled()
-                && config.isLockscreenEnabled()
+        if (config.isEnabled()
+                && config.isKeyguardEnabled()
                 && onlyWhileChangingOption) {
             context.startService(intent);
         } else {
@@ -89,25 +91,33 @@ public class LockscreenService extends Service {
 
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
+                    String activityName = null;
                     long activityChangeTime = 0;
                     if (mActivityMonitorThread != null) {
                         mActivityMonitorThread.monitor();
+                        activityName = mActivityMonitorThread.activityName;
                         activityChangeTime = mActivityMonitorThread.activityChangeTime;
                     }
 
                     stopMonitoringActivities();
-                    sIgnoreTillTime = 0;
 
                     long now = SystemClock.elapsedRealtime();
-                    boolean becauseOfActivityLaunch = now
-                            - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME;
                     boolean becauseOfIgnoringPolicy = now < sIgnoreTillTime;
+                    boolean becauseOfActivityLaunch =
+                            now - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME
+                                    && activityName != null && !activityName.startsWith(
+                                    Project.getPackageName(KeyguardService.this));
 
-                    if (isCall || becauseOfActivityLaunch || becauseOfIgnoringPolicy) {
+                    if (isCall || becauseOfIgnoringPolicy) {
+                        sIgnoreTillTime = 0;
+                        return;
+                    }
+
+                    if (becauseOfActivityLaunch) {
 
                         // Finish AcDisplay activity so it won't shown
                         // after exiting from newly launched one.
-                        ActiveDisplayPresenter.getInstance().kill();
+                        Presenter.getInstance().kill();
                     } else startGui();
 
                     if (Project.DEBUG)
@@ -155,7 +165,7 @@ public class LockscreenService extends Service {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1);
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
         registerReceiver(mReceiver, intentFilter);
 
         int notificationId = NotificationIds.LOCKSCREEN_NOTIFICATION;
@@ -196,14 +206,13 @@ public class LockscreenService extends Service {
      */
     private static class ActivityMonitorThread extends Thread {
 
-        private static final long MONITORING_PERIOD = 10 * 60 * 1000; // ms.
+        private static final long MONITORING_PERIOD = 15 * 60 * 1000; // ms.
 
         public volatile boolean running = true;
         public volatile long activityChangeTime;
+        public volatile String activityName;
 
         private final ActivityManager mActivityManager;
-
-        private volatile String mPastActivityName;
 
         public ActivityMonitorThread(ActivityManager activityManager) {
             mActivityManager = activityManager;
@@ -236,14 +245,14 @@ public class LockscreenService extends Service {
 
             assert latestActivityName != null;
 
-            if (!latestActivityName.equals(mPastActivityName)) {
-                if (mPastActivityName != null) {
+            if (!latestActivityName.equals(activityName)) {
+                if (activityName != null) { // first start
                     this.activityChangeTime = SystemClock.elapsedRealtime(); // deep sleep
                 }
 
-                mPastActivityName = latestActivityName;
+                activityName = latestActivityName;
 
-                if (Project.DEBUG) Log.d(TAG, "Current latest activity is " + mPastActivityName);
+                if (Project.DEBUG) Log.d(TAG, "Current latest activity is " + activityName);
             }
         }
     }

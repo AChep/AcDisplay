@@ -31,6 +31,7 @@ import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,26 +43,28 @@ import com.achep.activedisplay.notifications.NotificationData;
 import com.achep.activedisplay.notifications.NotificationUtils;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
 import com.achep.activedisplay.utils.ViewUtils;
+import com.achep.activedisplay.view.NotifyingLayout;
 
 /**
  * Created by Artem on 20.03.14.
  */
 public class NotificationWidget extends RelativeLayout implements NotificationView {
 
+    private NotifyingLayout mDismissBtnContainer;
     private NotificationIcon mIcon;
     private TextView mTitleTextView;
     private TextView mMessageTextView;
-    private NotificationIcon mSmallIcon;
-    private TextView mNumberTextView;
     private TextView mWhenTextView;
     private TextView mSubtextTextView;
     private LinearLayout mActionsContainer;
 
     private OnClickListener mOnClickListener;
     private OpenStatusBarNotification mNotification;
+    private ViewGroup mContent;
 
     public interface OnClickListener extends View.OnClickListener {
-        void onActionClick(View v, PendingIntent intent);
+        void onActionButtonClick(View v, PendingIntent intent);
+        void onDismissButtonClick(View v, OpenStatusBarNotification osbn);
     }
 
     public NotificationWidget(Context context, AttributeSet attrs) {
@@ -73,7 +76,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
     }
 
     public void setOnClickListener(OnClickListener l) {
-        setOnClickListener((View.OnClickListener) l);
+        mContent.setOnClickListener(l);
         mOnClickListener = l;
     }
 
@@ -81,17 +84,36 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        mContent = (ViewGroup) findViewById(R.id.content);
         mIcon = (NotificationIcon) findViewById(R.id.icon);
         mTitleTextView = (TextView) findViewById(R.id.title);
         mMessageTextView = (TextView) findViewById(R.id.message);
-        mSmallIcon = (NotificationIcon) findViewById(R.id.icon_small);
-        mNumberTextView = (TextView) findViewById(R.id.number);
         mWhenTextView = (TextView) findViewById(R.id.when);
         mSubtextTextView = (TextView) findViewById(R.id.subtext);
         mActionsContainer = (LinearLayout) findViewById(R.id.actions);
+        mDismissBtnContainer = (NotifyingLayout) findViewById(R.id.dismiss);
 
         mIcon.setNotificationIndicateReadStateEnabled(false);
-        mSmallIcon.setNotificationIndicateReadStateEnabled(false);
+        mDismissBtnContainer.setAlpha(isPressed() ? 1f : 0f);
+        mDismissBtnContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickListener != null) {
+                    mOnClickListener.onDismissButtonClick(v, getNotification());
+                }
+            }
+        });
+        mDismissBtnContainer.setOnPressStateChangedListener(
+                new NotifyingLayout.OnPressStateChangedListener() {
+            @Override
+            public void onPressStateChanged(NotifyingLayout view, boolean pressed) {
+                if (pressed) {
+                    view.animate().alpha(1f);
+                } else {
+                    view.animate().alpha(0f);
+                }
+            }
+        });
     }
 
     public void setNotification(OpenStatusBarNotification osbn) {
@@ -107,11 +129,8 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         ViewUtils.safelySetText(mTitleTextView, data.titleText);
         ViewUtils.safelySetText(mMessageTextView, data.getLargeMessage());
         ViewUtils.safelySetText(mSubtextTextView, data.infoText == null ? data.subText : data.infoText);
-        ViewUtils.safelySetText(mNumberTextView, data.number > 0 ? Integer.toString(data.number) : null);
 
         mWhenTextView.setText(DateUtils.formatDateTime(getContext(), sbn.getPostTime(), DateUtils.FORMAT_SHOW_TIME));
-
-        boolean showSmallIcon = mNumberTextView.getVisibility() == View.VISIBLE;
 
         Bitmap bitmap = sbn.getNotification().largeIcon;
         if (bitmap != null) {
@@ -120,15 +139,10 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             mIcon.setScaleType(bitmap.getPixel(0, 0) != Color.TRANSPARENT
                     ? ImageView.ScaleType.CENTER_CROP
                     : ImageView.ScaleType.CENTER_INSIDE);
-
-            showSmallIcon = true;
         } else {
             mIcon.setNotification(osbn);
             mIcon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
-
-        ViewUtils.setVisible(mSmallIcon, showSmallIcon);
-        if (showSmallIcon) mSmallIcon.setNotification(osbn);
 
         if (Device.hasKitKatApi()) {
             updateNotificationActions(sbn);
@@ -178,7 +192,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                     @Override
                     public void onClick(View v) {
                         if (mOnClickListener != null) {
-                            mOnClickListener.onActionClick(v, action.actionIntent);
+                            mOnClickListener.onActionButtonClick(v, action.actionIntent);
                         }
                     }
                 });

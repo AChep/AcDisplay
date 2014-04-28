@@ -30,13 +30,10 @@ import java.util.ArrayList;
  */
 public abstract class ActiveSensor {
 
-    public static final int PROXIMITY = 0;
-    public static final int ACCELEROMETER = 1;
-
     public interface SensorCallback {
-        public void onShowEvent(ActiveSensor sensor);
+        public boolean onShowEvent(ActiveSensor sensor);
 
-        public void onHideEvent(ActiveSensor sensor);
+        public boolean onHideEvent(ActiveSensor sensor);
     }
 
     private ArrayList<SensorCallback> mCallbacks;
@@ -65,9 +62,11 @@ public abstract class ActiveSensor {
         }
     }
 
-    public abstract int getType();
+    protected boolean isSupported(SensorManager sensorManager, Context context) {
+        return sensorManager.getSensorList(getType()).size() > 0;
+    }
 
-    protected abstract boolean isSupported(SensorManager sensorManager, Context context);
+    public abstract int getType();
 
     protected abstract void onAttached(SensorManager sensorManager, Context context);
 

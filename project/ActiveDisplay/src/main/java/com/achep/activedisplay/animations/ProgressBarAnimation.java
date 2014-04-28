@@ -29,10 +29,10 @@ import android.widget.ProgressBar;
 public class ProgressBarAnimation extends Animation {
 
     private final ProgressBar mProgressBar;
-    private final float from;
-    private final float to;
+    private int from;
+    private int to;
 
-    public ProgressBarAnimation(ProgressBar progressBar, float from, float to) {
+    public ProgressBarAnimation(ProgressBar progressBar, int from, int to) {
         super();
         mProgressBar = progressBar;
         this.from = from;
@@ -46,6 +46,11 @@ public class ProgressBarAnimation extends Animation {
         if (mProgressBar.getProgress() != value) {
             mProgressBar.setProgress(value);
         }
+    }
+
+    public void setRange(int from, int to) {
+        this.from = from;
+        this.to = to;
     }
 
 }

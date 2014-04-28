@@ -21,11 +21,18 @@ package com.achep.activedisplay;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.view.animation.LinearInterpolator;
+
+import com.achep.activedisplay.animations.ProgressBarAnimation;
+import com.achep.activedisplay.utils.MathUtils;
+import com.achep.activedisplay.widgets.ProgressBar;
 
 import java.util.ArrayList;
 
 /**
  * Created by Artem on 26.01.14.
+ *
+ * @author Artem Chepurnoy
  */
 public class Timeout {
 
@@ -34,6 +41,8 @@ public class Timeout {
     public static final int EVENT_TIMEOUT = 0;
     public static final int EVENT_CHANGED = 1;
     public static final int EVENT_CLEARED = 2;
+    public static final int EVENT_PAUSED = 3;
+    public static final int EVENT_RESUMED = 4;
 
     private final ArrayList<OnTimeoutEventListener> mListeners = new ArrayList<>();
     private final Handler mHandler = new Handler() {
@@ -48,48 +57,112 @@ public class Timeout {
         }
     };
 
+    private long mTimeoutLockedAt;
+    private long mTimeoutStart;
     private long mTimeoutAt;
-    private boolean mLocked;
 
     public interface OnTimeoutEventListener {
-        public void onTimeoutEvent(int event);
+        public void onTimeoutEvent(Timeout timeout, int event);
     }
 
-    public final void addListener(OnTimeoutEventListener listener) {
+    public final void registerListener(OnTimeoutEventListener listener) {
         mListeners.add(listener);
     }
 
-    public final void removeListener(OnTimeoutEventListener listener) {
+    public final void unregisterListener(OnTimeoutEventListener listener) {
         mListeners.remove(listener);
     }
 
-    private void notifyOnEvent(int event) {
+    private void notifyListeners(int event) {
         for (OnTimeoutEventListener l : mListeners) {
-            l.onTimeoutEvent(event);
+            l.onTimeoutEvent(this, event);
         }
     }
 
+    private long getTime() {
+        return SystemClock.uptimeMillis();
+    }
+
     private void timeout() {
-        notifyOnEvent(EVENT_TIMEOUT);
+        notifyListeners(EVENT_TIMEOUT);
+        mTimeoutAt = 0;
     }
 
-    public void lock() {
-        mLocked = true;
-        clear();
+    /**
+     * Pauses running timer and sends {@link #EVENT_PAUSED}.
+     * While it's paused all methods except of
+     * {@link #resume() resuming} will be ignored!
+     *
+     * @see #resume()
+     * @see #EVENT_PAUSED
+     */
+    public void pause() {
+        if (!isPaused()) {
+            mTimeoutLockedAt = getTime();
+            mHandler.removeMessages(0);
+            notifyListeners(EVENT_PAUSED);
+        }
     }
 
-    public void release() {
-        mLocked = false;
+    public void resume() {
+        if (!isPaused()) {
+            return;
+        }
+
+        long offset = getTime() - mTimeoutLockedAt;
+
+        mTimeoutLockedAt = 0;
+
+        if (mTimeoutAt > 0) {
+            mTimeoutStart += offset;
+            mTimeoutAt += offset;
+
+            mHandler.sendEmptyMessageAtTime(0, mTimeoutAt);
+        }
+
+        notifyListeners(EVENT_RESUMED);
     }
 
     public void clear() {
-        mTimeoutAt = 0;
-        mHandler.removeMessages(0);
-        notifyOnEvent(EVENT_CLEARED);
+        if (!isPaused()) {
+            mTimeoutAt = 0;
+            mHandler.removeMessages(0);
+            notifyListeners(EVENT_CLEARED);
+        }
     }
 
-    public void setTimeoutAt(long millis) {
-        setTimeoutAt(millis, false);
+    /**
+     * If timer isn't {@link #pause() paused} delays current
+     * timeout.
+     *
+     * @param delayMillis millis to delay
+     * @see #pause()
+     * @see #EVENT_CHANGED
+     */
+    public void delay(long delayMillis) {
+        if (!isPaused() && isOngoing()) {
+            mTimeoutStart += delayMillis;
+            mTimeoutAt += delayMillis;
+
+            mHandler.removeMessages(0);
+            mHandler.sendEmptyMessageAtTime(0, mTimeoutAt);
+
+            notifyListeners(EVENT_CHANGED);
+        }
+    }
+
+    /**
+     * @return True if countdown timer is active at this moment, False otherwise.
+     */
+    public boolean isOngoing() {
+        return mTimeoutAt > 0;
+    }
+
+    /**
+     * @return True if countdown timer is paused, False otherwise.
+     */
+    public boolean isPaused() {
+        return mTimeoutLockedAt > 0;
     }
 
     public void setTimeoutDelayed(long delayMillis) {
@@ -97,27 +170,80 @@ public class Timeout {
     }
 
     public void setTimeoutDelayed(long delayMillis, boolean resetOld) {
-        setTimeoutAt(SystemClock.uptimeMillis() + delayMillis, resetOld);
-    }
+        long timeoutStart = getTime();
+        long timeoutAt = timeoutStart + delayMillis;
 
-    public void setTimeoutAt(long millis, boolean resetOld) {
-        if (mTimeoutAt > 0 && mTimeoutAt < millis && !resetOld || mLocked) {
+        if (isOngoing() && mTimeoutAt < timeoutAt && !resetOld || isPaused()) {
             return;
         }
 
-        mTimeoutAt = millis;
-        mHandler.removeMessages(0);
-        mHandler.sendEmptyMessageAtTime(0, millis);
+        mTimeoutStart = timeoutStart;
+        mTimeoutAt = timeoutAt;
 
-        notifyOnEvent(EVENT_CHANGED);
+        mHandler.removeMessages(0);
+        mHandler.sendEmptyMessageAtTime(0, mTimeoutAt);
+
+        notifyListeners(EVENT_CHANGED);
+    }
+
+    private long getTimeoutNow() {
+        return isPaused() ? mTimeoutLockedAt : getTime();
     }
 
     public long getRemainingTime() {
-        return getTimeout() - SystemClock.uptimeMillis();
+        return mTimeoutAt - getTimeoutNow();
     }
 
-    public long getTimeout() {
-        return mTimeoutAt;
+    public float getProgress() {
+        float max = mTimeoutAt - mTimeoutStart;
+        float now = getRemainingTime();
+        return MathUtils.range(1f - now / max, 0, 1);
+    }
+
+    /**
+     * Updates given {@link com.achep.activedisplay.widgets.ProgressBar}
+     * due to timeout's event.
+     */
+    public static class Gui implements Timeout.OnTimeoutEventListener {
+
+        private static final int MAX = 300;
+
+        private final ProgressBarAnimation mProgressBarAnimation;
+        private final ProgressBar mProgressBar;
+
+        public Gui(ProgressBar progressBar) {
+            mProgressBar = progressBar;
+            mProgressBar.setMax(MAX);
+            mProgressBar.setProgress(MAX);
+            mProgressBarAnimation = new ProgressBarAnimation(mProgressBar, MAX, 0);
+            mProgressBarAnimation.setInterpolator(new LinearInterpolator());
+        }
+
+        @Override
+        public void onTimeoutEvent(Timeout timeout, int event) {
+            switch (event) {
+                case Timeout.EVENT_PAUSED:
+                    mProgressBar.clearAnimation();
+                    break;
+                case Timeout.EVENT_RESUMED:
+                case Timeout.EVENT_CHANGED:
+                    long remainingTime = timeout.getRemainingTime();
+                    if (remainingTime > 0 && !timeout.isPaused()) {
+                        int progress = (int) (
+                                mProgressBar.getMax() * (1f - timeout.getProgress())
+                        );
+                        mProgressBarAnimation.setRange(progress, 0);
+                        mProgressBarAnimation.setDuration(remainingTime);
+                        mProgressBar.setProgress(progress);
+                        mProgressBar.startAnimation(mProgressBarAnimation);
+                    }
+                    break;
+                case Timeout.EVENT_CLEARED:
+                    mProgressBar.clearAnimation();
+                    mProgressBar.setProgress(mProgressBar.getMax());
+                    break;
+            }
+        }
     }
 
 }

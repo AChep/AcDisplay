@@ -26,18 +26,6 @@
         <item>Other</item>
     </string-array>
 
-    <!-- Swipe actions -->
-    <string-array name="swipe_actions">
-        <item>Disabled</item>
-        <item>Dismisses from app</item>
-        <item>Dismisses from app + system</item>
-    </string-array>
-    <string-array name="swipe_actions_entries" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
     <!-- Dynamic background -->
     <string-array name="dynamic_background">
         <item>Artwork</item>

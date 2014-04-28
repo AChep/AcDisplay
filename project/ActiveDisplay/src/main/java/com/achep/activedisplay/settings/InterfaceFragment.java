@@ -56,13 +56,13 @@ public class InterfaceFragment extends PreferenceFragment implements
         addPreferencesFromResource(R.xml.interface_settings);
 
         mShowWallpaper = (CheckBoxPreference) findPreference(
-                Config.KEY_INTERFACE_WALLPAPER_SHOWN);
+                Config.KEY_UI_WALLPAPER_SHOWN);
         mShadowToggle = (CheckBoxPreference) findPreference(
-                Config.KEY_INTERFACE_SHADOW_TOGGLE);
+                Config.KEY_UI_SHADOW_TOGGLE);
         mDynamicBackground = (MultiSelectListPreference) findPreference(
-                Config.KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE);
+                Config.KEY_UI_DYNAMIC_BACKGROUND_MODE);
         mMirroredTimeoutToggle = (CheckBoxPreference) findPreference(
-                Config.KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR);
+                Config.KEY_UI_MIRRORED_TIMEOUT_BAR);
 
         mShowWallpaper.setOnPreferenceChangeListener(this);
         mShadowToggle.setOnPreferenceChangeListener(this);
@@ -121,16 +121,16 @@ public class InterfaceFragment extends PreferenceFragment implements
     @Override
     public void onConfigChanged(Config config, String key, Object value) {
         switch (key) {
-            case Config.KEY_INTERFACE_WALLPAPER_SHOWN:
+            case Config.KEY_UI_WALLPAPER_SHOWN:
                 updateShowWallpaperPreference(config);
                 break;
-            case Config.KEY_INTERFACE_SHADOW_TOGGLE:
+            case Config.KEY_UI_SHADOW_TOGGLE:
                 updateShowShadowPreference(config);
                 break;
-            case Config.KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR:
+            case Config.KEY_UI_MIRRORED_TIMEOUT_BAR:
                 updateMirroredTimeoutPreference(config);
                 break;
-            case Config.KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE:
+            case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
                 updateDynamicBackgroundPreference(config);
                 break;
         }
@@ -160,7 +160,7 @@ public class InterfaceFragment extends PreferenceFragment implements
         int mode = config.getDynamicBackgroundMode();
         String[] values = new String[Integer.bitCount(mode)];
         for (int i = 1, j = 0; j < values.length; i <<= 1) {
-            if (Operator.bitandCompare(mode, i)) {
+            if (Operator.bitAnd(mode, i)) {
                 values[j++] = Integer.toString(i);
             }
         }
@@ -190,7 +190,7 @@ public class InterfaceFragment extends PreferenceFragment implements
             // Append selected items.
             for (int i = 0; i < values.length; i++) {
                 int a = Integer.parseInt(values[i].toString());
-                if (Operator.bitandCompare(mode, a)) {
+                if (Operator.bitAnd(mode, a)) {
                     if (!empty) {
                         sb.append(divider);
                     }

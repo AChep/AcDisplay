@@ -37,7 +37,7 @@ public final class ActiveModeEnabler extends Enabler {
 
     @Override
     protected void updateState() {
-        mSwitch.setEnabled(mConfig.isActiveDisplayEnabled());
+        mSwitch.setEnabled(mConfig.isEnabled());
         mBroadcasting = true;
         mSwitch.setChecked(mConfig.isActiveModeEnabled());
         mBroadcasting = false;

@@ -21,19 +21,20 @@ package com.achep.activedisplay;
 import android.content.Context;
 
 /**
- * Does stuff with debug stuff
- * TODO: write a better doc
- * @author Artem
- * @since 30.12.13
+ * Created by Artem on 30.12.13.
  */
 public class Project {
 
+    /**
+     * Is it debug version?
+     */
     @SuppressWarnings("PointlessBooleanExpression")
     public static final boolean DEBUG = BuildConfig.MY_DEBUG && true;
 
+    /**
+     * Support email of this project.
+     */
     public static final String EMAIL = "support@artemchep.com";
-
-    public static final String SUFFIX = Project.class.getPackage().getName() + ":";
 
     public static String getPackageName(Context context) {
         return context.getApplicationInfo().packageName;

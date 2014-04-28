@@ -19,11 +19,18 @@
 package com.achep.activedisplay;
 
 /**
- * Created by Artem on 26.01.14.
+ * Additional functions which I'd like to see as
+ * operators.
+ *
+ * @author Artem Chepurnoy
  */
 public class Operator {
 
-    public static boolean bitandCompare(int v, int target) {
+    /**
+     * @return {@code (v & target) == target}
+     */
+    public static boolean bitAnd(int v, int target) {
         return (v & target) == target;
     }
+
 }

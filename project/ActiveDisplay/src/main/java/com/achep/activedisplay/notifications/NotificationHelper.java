@@ -41,7 +41,7 @@ public class NotificationHelper {
         if (notification != null) {
             PendingIntent pi = notification.getNotification().contentIntent;
             boolean successful = PendingIntentUtils.sendPendingIntent(pi);
-            if (successful && Operator.bitandCompare(
+            if (successful && Operator.bitAnd(
                     notification.getNotification().flags,
                     Notification.FLAG_AUTO_CANCEL)) {
                 dismissNotification(notification);

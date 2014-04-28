@@ -37,9 +37,9 @@ public final class LockscreenEnabler extends Enabler {
 
     @Override
     protected void updateState() {
-        mSwitch.setEnabled(mConfig.isActiveDisplayEnabled());
+        mSwitch.setEnabled(mConfig.isEnabled());
         mBroadcasting = true;
-        mSwitch.setChecked(mConfig.isLockscreenEnabled());
+        mSwitch.setChecked(mConfig.isKeyguardEnabled());
         mBroadcasting = false;
     }
 
@@ -49,14 +49,14 @@ public final class LockscreenEnabler extends Enabler {
             return;
         }
 
-        mConfig.setLockscreenEnabled(mContext, isChecked, this);
+        mConfig.setKeyguardEnabled(mContext, isChecked, this);
     }
 
     @Override
     public void onConfigChanged(Config config, String key, Object value) {
         switch (key) {
             case Config.KEY_ENABLED:
-            case Config.KEY_LOCK_SCREEN:
+            case Config.KEY_KEYGUARD:
                 updateState();
                 break;
         }

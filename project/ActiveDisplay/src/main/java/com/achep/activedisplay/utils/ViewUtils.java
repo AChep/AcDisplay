@@ -81,6 +81,13 @@ public class ViewUtils {
     // /////////// -- TOUCH EVENTS -- ///////////
     // //////////////////////////////////////////
 
+    public static boolean pointInView(View view, float localX, float localY, float slop) {
+        return localX >= view.getLeft() - slop
+                && localX < view.getRight() + slop
+                && localY >= view.getTop() - slop
+                && localY < view.getBottom() + slop;
+    }
+
     public static boolean toGlobalMotionEvent(View view, MotionEvent ev) {
         return toMotionEvent(view, ev, "toGlobalMotionEvent");
     }
