@@ -41,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.achep.activedisplay.AsyncTask;
@@ -88,6 +89,7 @@ public class AcDisplayFragment extends Fragment implements
     private HashMap<View, Widget> mWidgetsMap = new HashMap<>();
     private HashMap<Integer, SceneCompat> mScenesMap = new HashMap<>();
     private boolean mCollapsedViewsNeedsUpdate;
+    private ImageView mCollapsedUnlockFake;
 
     private Widget mSelectedWidget;
 
@@ -144,6 +146,7 @@ public class AcDisplayFragment extends Fragment implements
 
         mSceneContainer = (ForwardingLayout) root.findViewById(R.id.container);
         mSceneContainer.setVibrateOnForwardedEventEnabled(true);
+        mCollapsedUnlockFake = (ImageView) root.findViewById(R.id.unlock_icon);
         mCollapsedViewsContainer = (LinearLayout) root.findViewById(R.id.list);
         mCollapsedViewsContainer.setOnTouchListener(this);
 
@@ -511,21 +514,23 @@ public class AcDisplayFragment extends Fragment implements
         // ////////////
 
         int[] extras = new int[]{
-                SCENE_UNLOCK,
                 SCENE_MUSIC_CONTROLS,
         };
 
-        extras[1] = -1;
+        extras[0] = -1;
 
         // Show unlock widget only if there's no any
         // other views.
+        boolean empty = true;
         if (notifyCount > 0) {
-            extras[0] = -1;
+            empty = false;
         } else for (int i = 1; i < extras.length; i++)
             if (extras[i] >= 0) {
-                extras[0] = -1;
+                empty = false;
                 break;
             }
+
+        ViewUtils.setVisible(mCollapsedUnlockFake, empty);
 
         for (int i = fragmentsExtraCount - 1; i >= 0; i--) {
             View child = container.getChildAt(i);

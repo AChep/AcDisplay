@@ -53,6 +53,16 @@
             android:orientation="horizontal"
             android:padding="8dp" />
 
+        <ImageView
+            android:id="@+id/unlock_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:padding="4dp"
+            android:src="@drawable/stat_unlock"/>
+
     </FrameLayout>
 
 </LinearLayout>
