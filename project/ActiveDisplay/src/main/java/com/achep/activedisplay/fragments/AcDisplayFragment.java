@@ -143,6 +143,7 @@ public class AcDisplayFragment extends Fragment implements
         assert root != null;
 
         mSceneContainer = (ForwardingLayout) root.findViewById(R.id.container);
+        mSceneContainer.setVibrateOnForwardedEventEnabled(true);
         mCollapsedViewsContainer = (LinearLayout) root.findViewById(R.id.list);
         mCollapsedViewsContainer.setOnTouchListener(this);
 

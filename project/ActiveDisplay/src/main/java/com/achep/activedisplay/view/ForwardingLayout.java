@@ -21,6 +21,7 @@ package com.achep.activedisplay.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,9 @@ public class ForwardingLayout extends LinearLayout {
     private static final String TAG = "ForwardingLayout";
 
     private View mPressedChild;
+
     private OnForwardedEventListener mOnForwardedEventListener;
+    private boolean mVibrateOnForwarded;
 
     public ForwardingLayout(Context context) {
         super(context);
@@ -59,6 +62,14 @@ public class ForwardingLayout extends LinearLayout {
     }
 
     /**
+     * If enabled, forwarding motion event will be accompanied by
+     * haptic feedback on press / un-press / click.
+     */
+    public void setVibrateOnForwardedEventEnabled(boolean enabled) {
+        mVibrateOnForwarded = enabled;
+    }
+
+    /**
      * Handles forwarded events.
      *
      * @param activePointerId id of the pointer that activated forwarding
@@ -66,6 +77,7 @@ public class ForwardingLayout extends LinearLayout {
      */
     public boolean onForwardedEvent(MotionEvent event, int activePointerId) {
         boolean handledEvent = true;
+        View vibrateView = null;
 
         final int actionMasked = event.getActionMasked();
         switch (actionMasked) {
@@ -87,12 +99,14 @@ public class ForwardingLayout extends LinearLayout {
 
                 View pressedView = findViewByCoordinate(this, x, y);
                 if (mPressedChild != pressedView) {
+                    vibrateView = pressedView != null ? pressedView : mPressedChild;
                     if (pressedView != null) pressedView.setPressed(true);
                     if (mPressedChild != null) mPressedChild.setPressed(false);
                     mPressedChild = pressedView;
                 }
 
-                if (actionMasked == MotionEvent.ACTION_UP && mPressedChild != null) {
+                if (actionMasked == MotionEvent.ACTION_UP) {
+                    vibrateView = mPressedChild;
                     clickPressedItem();
                 }
                 break;
@@ -101,6 +115,10 @@ public class ForwardingLayout extends LinearLayout {
         // Failure to handle the event cancels forwarding.
         if (!handledEvent) {
             clearPressedItem();
+        }
+
+        if (vibrateView != null && mVibrateOnForwarded) {
+            vibrateView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         }
 
         if (mOnForwardedEventListener != null) {
