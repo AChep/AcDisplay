@@ -18,10 +18,18 @@
  */
 package com.achep.activedisplay.utils;
 
+import android.annotation.TargetApi;
+import android.graphics.Matrix;
+import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.TextView;
 
+import com.achep.activedisplay.Device;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -29,6 +37,8 @@ import java.lang.reflect.Method;
  * Created by Artem on 21.01.14.
  */
 public class ViewUtils {
+
+    private static final String TAG = "ViewUtils";
 
     private static final int[] coordinates = new int[3];
 
@@ -88,23 +98,160 @@ public class ViewUtils {
                 && localY < view.getBottom() + slop;
     }
 
+    /**
+     * Transforms a motion event from view-local coordinates to on-screen
+     * coordinates.
+     *
+     * @param ev the view-local motion event
+     * @return false if the transformation could not be applied
+     */
     public static boolean toGlobalMotionEvent(View view, MotionEvent ev) {
-        return toMotionEvent(view, ev, "toGlobalMotionEvent");
+        return Device.hasKitKatApi()
+                ? toMotionEvent(view, ev, "toGlobalMotionEvent")
+                : toGlobalMotionEventCompat(view, ev);
     }
 
+    /**
+     * Transforms a motion event from on-screen coordinates to view-local
+     * coordinates.
+     *
+     * @param ev the on-screen motion event
+     * @return false if the transformation could not be applied
+     */
     public static boolean toLocalMotionEvent(View view, MotionEvent ev) {
-        return toMotionEvent(view, ev, "toLocalMotionEvent");
+        return Device.hasKitKatApi()
+                ? toMotionEvent(view, ev, "toLocalMotionEvent")
+                : toLocalMotionEventCompat(view, ev);
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private static boolean toMotionEvent(View view, MotionEvent ev, String methodName) {
         try {
             Method method = View.class.getDeclaredMethod(methodName, MotionEvent.class);
             method.setAccessible(true);
             return (boolean) method.invoke(view, ev);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (InvocationTargetException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | NoClassDefFoundError e) {
+
+            // Should never happen, but if it does, blame vendor
+            // and try the luck with compat method.
+            switch (methodName) {
+                case "toGlobalMotionEvent":
+                    return toGlobalMotionEventCompat(view, ev);
+                case "toLocalMotionEvent":
+                    return toLocalMotionEventCompat(view, ev);
+            }
         }
         return false;
+    }
+
+    private static boolean toGlobalMotionEventCompat(View view, MotionEvent ev) {
+        final int[] windowPosition = getWindowPosition(view);
+        if (windowPosition == null) {
+            return false;
+        }
+
+        transformMotionEventToGlobal(view, ev);
+        ev.offsetLocation(windowPosition[0], windowPosition[1]);
+        return true;
+    }
+
+    private static boolean toLocalMotionEventCompat(View view, MotionEvent ev) {
+        final int[] windowPosition = getWindowPosition(view);
+        if (windowPosition == null) {
+            return false;
+        }
+
+        ev.offsetLocation(-windowPosition[0], -windowPosition[1]);
+        transformMotionEventToLocal(view, ev);
+        return true;
+    }
+
+    private static int[] getWindowPosition(View view) {
+        Object info;
+        try {
+            Field field = View.class.getDeclaredField("mAttachInfo");
+            field.setAccessible(true);
+            info = field.get(view);
+        } catch (Exception e) {
+            info = null;
+            Log.e(TAG, "Failed to get AttachInfo.");
+        }
+
+        if (info == null) {
+            return null;
+        }
+
+        int[] position = new int[2];
+
+        try {
+            Class clazz = Class.forName("android.view.View$AttachInfo");
+
+            Field field = clazz.getDeclaredField("mWindowLeft");
+            field.setAccessible(true);
+            position[0] = field.getInt(info);
+
+            field = clazz.getDeclaredField("mWindowTop");
+            field.setAccessible(true);
+            position[1] = field.getInt(info);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to get window\'s position from AttachInfo.");
+            return null;
+        }
+
+        return position;
+    }
+
+    /**
+     * Recursive helper method that applies transformations in post-order.
+     *
+     * @param ev the on-screen motion event
+     */
+    private static void transformMotionEventToLocal(View view, MotionEvent ev) {
+        final ViewParent parent = view.getParent();
+        if (parent instanceof View) {
+            final View vp = (View) parent;
+            transformMotionEventToLocal(vp, ev);
+            ev.offsetLocation(vp.getScrollX(), vp.getScrollY());
+        } // TODO: Use reflections to access ViewRootImpl
+          // else if (parent instanceof ViewRootImpl) {
+          //    final ViewRootImpl vr = (ViewRootImpl) parent;
+          //    ev.offsetLocation(0, vr.mCurScrollY);
+          // }
+
+        ev.offsetLocation(-view.getLeft(), -view.getTop());
+
+        Matrix matrix = view.getMatrix();
+        if (matrix != null) {
+            ev.transform(matrix);
+        }
+    }
+
+    /**
+     * Recursive helper method that applies transformations in pre-order.
+     *
+     * @param ev the on-screen motion event
+     */
+    private static void transformMotionEventToGlobal(View view, MotionEvent ev) {
+        Matrix matrix = view.getMatrix();
+        if (matrix != null) {
+            ev.transform(matrix);
+        }
+
+        ev.offsetLocation(view.getLeft(), view.getTop());
+
+        final ViewParent parent = view.getParent();
+        if (parent instanceof View) {
+            final View vp = (View) parent;
+            ev.offsetLocation(-vp.getScrollX(), -vp.getScrollY());
+            transformMotionEventToGlobal(vp, ev);
+        } // TODO: Use reflections to access ViewRootImpl
+          // else if (parent instanceof ViewRootImpl) {
+          //    final ViewRootImpl vr = (ViewRootImpl) parent;
+          //    ev.offsetLocation(0, -vr.mCurScrollY);
+          // }
     }
 
 }
