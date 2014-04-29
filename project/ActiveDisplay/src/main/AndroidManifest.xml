@@ -20,8 +20,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.activedisplay"
-    android:versionCode="19"
-    android:versionName="2.2">
+    android:versionCode="20"
+    android:versionName="2.2.1">
 
     <uses-sdk
         android:minSdkVersion="18"
