@@ -8,7 +8,7 @@ AcDisplay
 
 *AcDisplay is a new way of handling notifications in Android.*
 
-It will let you know about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what\'s going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
+It will let you know about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what's going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
 
 **[Join app's community on Google Play](https://plus.google.com/u/0/communities/102085470313050914854)**
 
