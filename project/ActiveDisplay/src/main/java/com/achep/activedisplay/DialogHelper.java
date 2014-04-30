@@ -44,6 +44,9 @@ import com.achep.activedisplay.fragments.FeedbackDialog;
 import com.achep.activedisplay.fragments.HelpDialog;
 import com.achep.activedisplay.fragments.NewsDialog;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * Helper class for showing fragment dialogs.
  */
