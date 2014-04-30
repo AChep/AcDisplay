@@ -31,6 +31,6 @@
     <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen>
 
     <!-- AcDisplay -->
-    <dimen name="circle_radius_target">180dp</dimen>
+    <dimen name="circle_radius_target">140dp</dimen>
     <dimen name="circle_radius_decrease_threshold">4dp</dimen>
 </resources>
