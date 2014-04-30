@@ -91,6 +91,13 @@
 
     </com.achep.activedisplay.view.NotifyingLayout>
 
+    <ImageView
+        android:layout_width="2dp"
+        android:layout_height="4dp"
+        android:layout_alignTop="@id/dismiss"
+        android:layout_toStartOf="@id/dismiss"
+        android:background="#6fff" />
+
     <LinearLayout
         android:id="@+id/actions"
         android:layout_width="match_parent"
