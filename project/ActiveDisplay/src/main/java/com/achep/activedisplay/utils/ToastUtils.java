@@ -22,14 +22,28 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * Created by Artem on 15.03.14.
+ * Helper class with utils related to toasts (no bacon.)
+ *
+ * @author Artem Chepurnoy
  */
 public class ToastUtils {
 
+    /**
+     * Shows toast message with given message shortly.
+     *
+     * @param text message to show
+     * @see #showLong(android.content.Context, CharSequence)
+     */
     public static void showShort(Context context, CharSequence text) {
         show(context, text, Toast.LENGTH_SHORT);
     }
 
+    /**
+     * Shows toast message with given message for a long time.
+     *
+     * @param text message to show
+     * @see #showShort(android.content.Context, CharSequence)
+     */
     public static void showLong(Context context, CharSequence text) {
         show(context, text, Toast.LENGTH_LONG);
     }

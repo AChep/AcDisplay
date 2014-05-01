@@ -24,19 +24,28 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.PowerManager;
 
+import com.achep.activedisplay.Device;
+
 /**
- * Created by Artem on 28.01.14.
+ * Helper class with utils related to power.
+ *
+ * @author Artem Chepurnoy
  */
 public class PowerUtils {
 
     /**
-     * @return true is device is charging at this moment, false otherwise.
+     * @return true is device is plugged at this moment, false otherwise.
+     * @see #isPlugged(android.content.Intent)
      */
     public static boolean isPlugged(Context context) {
-        return isPlugged(context.registerReceiver(
-                null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED)));
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        return isPlugged(context.registerReceiver(null, intentFilter));
     }
 
+    /**
+     * @return true is device is plugged at this moment, false otherwise.
+     * @see #isPlugged(android.content.Context)
+     */
     public static boolean isPlugged(Intent intent) {
         if (intent == null) {
             return false;
@@ -48,6 +57,11 @@ public class PowerUtils {
                 || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
     }
 
+    /**
+     * Gets Power Manager by context and checks if screen is on.
+     *
+     * @return True if screen is on atm, False otherwise.
+     */
     public static boolean isScreenOn(Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         return pm.isScreenOn();

@@ -22,12 +22,19 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 /**
- * Created by Artem on 03.01.14.
+ * Helper class with utils related to date.
+ *
+ * @author Artem Chepurnoy
  */
 public class DateUtils {
 
+    /**
+     * Formats given hours and minutes to 24 / 12 hours format (depends on current settings.)
+     *
+     * @return Formatted string time
+     */
     public static String formatTime(Context context, int h, int m) {
-        if (!DateFormat.is24HourFormat(context)) {
+        if (!DateFormat.is24HourFormat(context)) { // 24h formatting
             if (h == 0) h = 12;
             else if (h >= 13) h -= 12;
         }

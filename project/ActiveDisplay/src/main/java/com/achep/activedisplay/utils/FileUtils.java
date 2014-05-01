@@ -18,21 +18,21 @@
  */
 package com.achep.activedisplay.utils;
 
-import android.util.Log;
-
 import java.io.File;
 
 /**
- * Created by Artem on 15.03.14.
+ * Helper class with utils related to file system and files.
+ *
+ * @author Artem Chepurnoy
  */
 public class FileUtils {
 
-    private static final String TAG = "FileUtils";
-
     /**
-     * Deletes all files from given directory
+     * Deletes all files from given directory recursively.
+     *
+     * @return True if all files were deleted successfully, False otherwise or if given file is null.
      */
-    public static void deleteRecursive(File file) {
+    public static boolean deleteRecursive(File file) {
         if (file != null) {
             File[] children;
             if (file.isDirectory() && (children = file.listFiles()) != null && children.length > 0) {
@@ -47,9 +47,10 @@ public class FileUtils {
                         break;
                     }
                 }
-                if (i > 0) Log.w(TAG, "Failed to delete " + file.getName());
+                return i == 0;
             }
         }
+        return false;
     }
 
 }

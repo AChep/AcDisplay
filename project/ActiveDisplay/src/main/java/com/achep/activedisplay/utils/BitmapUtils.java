@@ -47,7 +47,6 @@ public class BitmapUtils {
         // Android port : Yahel Bouaziz <yahel at kayenko.com>
         // http://www.kayenko.com
         // ported april 5th, 2012
-        // Modified : Artem Chepurnoy <artemchep@gmail.com> for AcDisplay
 
         // This is a compromise between Gaussian Blur and Box blur
         // It creates much better looking blurs than Box Blur, but is
