@@ -25,8 +25,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -42,15 +44,18 @@ import com.achep.activedisplay.R;
 import com.achep.activedisplay.notifications.NotificationData;
 import com.achep.activedisplay.notifications.NotificationUtils;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
+import com.achep.activedisplay.utils.BitmapUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 import com.achep.activedisplay.view.NotifyingLayout;
 
 /**
- * Created by Artem on 20.03.14.
+ * Simple notification widget that shows the title of notification,
+ * its message, icon, actions and more.
+ *
+ * @author Artem Chepurnoy
  */
 public class NotificationWidget extends RelativeLayout implements NotificationView {
 
-    private NotifyingLayout mDismissBtnContainer;
     private NotificationIcon mIcon;
     private TextView mTitleTextView;
     private TextView mMessageTextView;
@@ -62,8 +67,35 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
     private OpenStatusBarNotification mNotification;
     private ViewGroup mContent;
 
+    /**
+     * Interface definition for a callback to be invoked
+     * when a notification's views are clicked.
+     */
     public interface OnClickListener extends View.OnClickListener {
+
+        /**
+         * Called on content view click.
+         *
+         * @param v clicked view
+         * @see NotificationWidget#getNotification()
+         */
+        @Override
+        public void onClick(View v);
+
+        /**
+         * Called on action button click.
+         *
+         * @param v clicked view
+         * @param intent action's intent
+         */
         void onActionButtonClick(View v, PendingIntent intent);
+
+        /**
+         * Called on dismiss notification button click.
+         *
+         * @param v clicked view
+         * @param osbn notification to dismiss
+         */
         void onDismissButtonClick(View v, OpenStatusBarNotification osbn);
     }
 
@@ -75,6 +107,10 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         super(context, attrs, defStyle);
     }
 
+    /**
+     * Register a callback to be invoked when notification views are clicked.
+     * If some of them are not clickable, they becomes clickable.
+     */
     public void setOnClickListener(OnClickListener l) {
         mContent.setOnClickListener(l);
         mOnClickListener = l;
@@ -91,11 +127,12 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         mWhenTextView = (TextView) findViewById(R.id.when);
         mSubtextTextView = (TextView) findViewById(R.id.subtext);
         mActionsContainer = (LinearLayout) findViewById(R.id.actions);
-        mDismissBtnContainer = (NotifyingLayout) findViewById(R.id.dismiss);
 
         mIcon.setNotificationIndicateReadStateEnabled(false);
-        mDismissBtnContainer.setAlpha(isPressed() ? 1f : 0f);
-        mDismissBtnContainer.setOnClickListener(new View.OnClickListener() {
+
+        NotifyingLayout dismissBtnContainer = (NotifyingLayout) findViewById(R.id.dismiss);
+        dismissBtnContainer.setAlpha(isPressed() ? 1f : 0f); // don't change to setting visibility.
+        dismissBtnContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnClickListener != null) {
@@ -103,19 +140,33 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                 }
             }
         });
-        mDismissBtnContainer.setOnPressStateChangedListener(
+        dismissBtnContainer.setOnPressStateChangedListener(
                 new NotifyingLayout.OnPressStateChangedListener() {
-            @Override
-            public void onPressStateChanged(NotifyingLayout view, boolean pressed) {
-                if (pressed) {
-                    view.animate().alpha(1f);
-                } else {
-                    view.animate().alpha(0f);
+                    @Override
+                    public void onPressStateChanged(NotifyingLayout view, boolean pressed) {
+                        // Toggle view's visibility on state change.
+                        if (pressed) {
+                            view.animate().alpha(1f);
+                        } else {
+                            view.animate().alpha(0f);
+                        }
+                    }
                 }
-            }
-        });
+        );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OpenStatusBarNotification getNotification() {
+        return mNotification;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setNotification(OpenStatusBarNotification osbn) {
         mNotification = osbn;
         if (osbn == null) {
@@ -126,32 +177,50 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         StatusBarNotification sbn = osbn.getStatusBarNotification();
         NotificationData data = osbn.getNotificationData();
 
-        ViewUtils.safelySetText(mTitleTextView, data.titleText);
-        ViewUtils.safelySetText(mMessageTextView, data.getLargeMessage());
-        ViewUtils.safelySetText(mSubtextTextView, data.infoText == null ? data.subText : data.infoText);
+        CharSequence message = data.getLargeMessage();
+        CharSequence subText = data.infoText == null ? data.subText : data.infoText;
+        CharSequence whenText = DateUtils.formatDateTime(getContext(),
+                sbn.getPostTime(), DateUtils.FORMAT_SHOW_TIME);
 
-        mWhenTextView.setText(DateUtils.formatDateTime(getContext(), sbn.getPostTime(), DateUtils.FORMAT_SHOW_TIME));
+        // If message is empty hide the view to free space
+        // taken by margins.
+        if (!TextUtils.isEmpty(message)) {
+            mMessageTextView.setText(message);
+            mMessageTextView.setVisibility(VISIBLE);
+        } else {
+            mMessageTextView.setVisibility(GONE);
+        }
+
+        mTitleTextView.setText(data.titleText);
+        mSubtextTextView.setText(subText);
+        mWhenTextView.setText(whenText);
 
         Bitmap bitmap = sbn.getNotification().largeIcon;
         if (bitmap != null) {
+
+            // Disable tracking notification's icon
+            // and set large icon.
             mIcon.setNotification(null);
             mIcon.setImageBitmap(bitmap);
-            mIcon.setScaleType(bitmap.getPixel(0, 0) != Color.TRANSPARENT
-                    ? ImageView.ScaleType.CENTER_CROP
-                    : ImageView.ScaleType.CENTER_INSIDE);
         } else {
             mIcon.setNotification(osbn);
-            mIcon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
 
         if (Device.hasKitKatApi()) {
-            updateNotificationActions(sbn);
+            updateNotificationActions(osbn);
         }
     }
 
+    /**
+     * Updates {@link #mActionsContainer actions container} with actions
+     * from given notification. Actually needs {@link android.os.Build.VERSION_CODES#KITKAT KitKat}
+     * or higher Android version.
+     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void updateNotificationActions(StatusBarNotification sbn) {
+    private void updateNotificationActions(OpenStatusBarNotification osbn) {
+        StatusBarNotification sbn = osbn.getStatusBarNotification();
         Notification.Action[] actions = sbn.getNotification().actions;
+
         ViewUtils.setVisible(mActionsContainer, actions != null);
         if (actions != null) {
             int actionCount = actions.length;
@@ -159,36 +228,43 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             View[] rootViews = new View[actionCount];
             TextView[] actionViews = new TextView[actionCount];
 
+            // Find available views.
             int length = Math.min(mActionsContainer.getChildCount(), actionCount);
             for (int i = 0; i < length; i++) {
                 rootViews[i] = mActionsContainer.getChildAt(i);
                 actionViews[i] = (TextView) rootViews[i].findViewById(R.id.title);
             }
+
+            // Remove redundant views.
             for (int i = mActionsContainer.getChildCount() - 1; i >= length; i--) {
                 mActionsContainer.removeViewAt(i);
             }
 
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // Setup every view's content and inflate missing items.
+            LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (int i = 0; i < actionCount; i++) {
                 final Notification.Action action = actions[i];
 
-                View view = rootViews[i];
-                TextView actionView = actionViews[i];
-                if (actionView == null) {
-                    view = inflater.inflate(
+                View root = rootViews[i];
+                TextView actionTextView = actionViews[i];
+                if (actionTextView == null) {
+                    // Create new view.
+                    root = inflater.inflate(
                             R.layout.widget_notification_action,
                             mActionsContainer, false);
-                    mActionsContainer.addView(view);
+                    mActionsContainer.addView(root);
 
-                    actionView = (TextView) view.findViewById(R.id.title);
+                    actionTextView = (TextView) root.findViewById(R.id.title);
                 }
 
-                actionView.setText(action.title);
-                actionView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        NotificationUtils.getDrawable(getContext(), sbn, action.icon),
-                        null, null, null);
+                // Setup content.
+                Drawable icon = NotificationUtils.getDrawable(getContext(), sbn, action.icon);
+                actionTextView.setText(action.title);
+                actionTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
 
-                view.setOnClickListener(new View.OnClickListener() {
+                // Transfer click.
+                root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (mOnClickListener != null) {
@@ -197,12 +273,6 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                     }
                 });
             }
-
         }
-    }
-
-    @Override
-    public OpenStatusBarNotification getNotification() {
-        return mNotification;
     }
 }

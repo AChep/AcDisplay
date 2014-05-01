@@ -16,23 +16,16 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:minHeight="48dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    android:background="?android:listChoiceBackgroundIndicator">
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawablePadding="6dp"
-        android:gravity="center_vertical"
-        android:ellipsize="end"
-        style="?acDisplayNotificationSubtext" />
-
-</FrameLayout>
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:drawablePadding="4dp"
+    android:background="?android:listChoiceBackgroundIndicator"
+    android:gravity="center_vertical"
+    android:ellipsize="end"
+    style="?acDisplayNotificationSubtext" />

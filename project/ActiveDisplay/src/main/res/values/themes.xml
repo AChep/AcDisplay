@@ -42,6 +42,7 @@
         <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message</item>
         <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext</item>
         <item name="acDisplayTimeoutProgressDrawable">@style/AcDisplayTimeoutProgressBar</item>
+        <item name="acDisplayDotsDrawable">@drawable/progress_bar_dash_src</item>
     </style>
 
     <!-- All device dependent modification goes here -->
@@ -79,6 +80,7 @@
         <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message.WithShadow</item>
         <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext.WithShadow</item>
         <item name="acDisplayTimeoutProgressDrawable">@style/AcDisplayTimeoutProgressBar.WithShadow</item>
+        <item name="acDisplayDotsDrawable">@drawable/progress_bar_dash_withshadow_src</item>
     </style>
 
 </resources>

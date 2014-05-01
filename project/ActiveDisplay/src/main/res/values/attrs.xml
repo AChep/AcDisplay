@@ -41,5 +41,6 @@
         <attr name="acDisplayNotificationMessage" format="reference"/>
         <attr name="acDisplayNotificationSubtext" format="reference"/>
         <attr name="acDisplayTimeoutProgressDrawable" format="reference"/>
+        <attr name="acDisplayDotsDrawable" format="reference"/>
     </declare-styleable>
 </resources>
