@@ -90,7 +90,7 @@
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:minWidth="48dp"
-        android:background="?android:listChoiceBackgroundIndicator">
+        android:background="@drawable/list_important_dark">
 
         <ImageView
             android:layout_width="match_parent"

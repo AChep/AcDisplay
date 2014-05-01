@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
@@ -17,19 +18,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<resources>
-    <color name="selector_pressed_dark">#30CCCCCC</color>
-    <color name="selector_longpressed_dark">#CB0098CB</color>
-    <color name="selector_disabled_dark">#80000000</color>
-    <color name="selector_focused_dark">#4E31B3E4</color>
-    <color name="selector_red_pressed_dark">#60ee2222</color>
-    <color name="selector_red_longpressed_dark">#DEee2222</color>
-    <color name="selector_red_focused_dark">#4ECC3524</color>
-    <color name="selector_red_selected_dark">#60CC3524</color>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
 
-    <!-- AcDisplay -->
-    <color name="keyguard_background">#F000</color>
-    <color name="keyguard_background_semi">#7000</color>
+    <solid android:color="@color/selector_disabled_dark" />
 
-    <color name="acdisplay_subtext_color">#9eee</color>
-</resources>
+</shape>
