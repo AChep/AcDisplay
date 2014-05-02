@@ -27,6 +27,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,7 +49,9 @@ import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.R;
+import com.achep.activedisplay.blacklist.AppConfig;
 import com.achep.activedisplay.blacklist.Blacklist;
 import com.achep.activedisplay.blacklist.BlacklistEnabler;
 import com.achep.activedisplay.blacklist.fragments.BlacklistAppFragment;
@@ -60,6 +64,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -562,6 +567,8 @@ public class BlacklistActivity extends PreferenceActivity {
                 holder = (Holder) view.getTag();
             }
 
+            Resources res = mContext.getResources();
+
             // All view fields must be updated every time, because the view may be recycled
             switch (headerType) {
                 case HEADER_TYPE_CATEGORY:
@@ -569,24 +576,60 @@ public class BlacklistActivity extends PreferenceActivity {
                     break;
 
                 case HEADER_TYPE_SWITCH:
-                    CharSequence title;
                     String packageName = "" + header.summary;
-                    if (header.title != null && !header.title.equals(packageName)) {
-                        title = header.title;
-                        holder.summary.setVisibility(View.VISIBLE);
-                        holder.summary.setText(packageName);
+
+                    // Track current app.
+                    holder.enabler.setSwitch(holder.switch_);
+                    holder.enabler.setPackageName(packageName);
+                    AppConfig config = holder.enabler.getAppConfig();
+
+                    // Show checked options in summary.
+                    // TODO: Find the way to optimize it.
+                    if (config.isHidden() || config.isRestricted()) {
+                        StringBuilder sb = new StringBuilder();
+                        boolean empty = true;
+
+                        int[] pairs = new int[]{
+                                // Hidden
+                                MathUtils.bool(config.isHidden()),
+                                R.string.blacklist_app_hide_title,
+                                // Restricted
+                                MathUtils.bool(config.isRestricted()),
+                                R.string.blacklist_app_restricted_title,
+                        };
+
+                        // Append checked options.
+                        String divider = res.getString(R.string.settings_multi_list_divider);
+                        for (int i = 0; i < pairs.length / 2; i++) {
+                            int a = pairs[i * 2];
+                            if (a == 1) {
+                                if (!empty) {
+                                    sb.append(divider);
+                                }
+                                sb.append(res.getString(pairs[i * 2 + 1]));
+                                empty = false;
+                            }
+                        }
+
+                        String summary = sb.toString();
+                        if (!TextUtils.isEmpty(summary)) {
+                            // Keep only first letter with upper case and
+                            // force all other to lower case.
+                            summary = summary.charAt(0)
+                                    + summary.substring(1).toLowerCase(Locale.getDefault());
+
+                            holder.summary.setVisibility(View.VISIBLE);
+                            holder.summary.setText(summary);
+                        } else {
+                            holder.summary.setVisibility(View.GONE);
+                        }
                     } else {
-                        title = packageName;
                         holder.summary.setVisibility(View.GONE);
                     }
 
                     Drawable icon = mIcons.get(packageName);
                     holder.icon.setImageDrawable(icon != null ? icon : mDefaultImg);
-                    holder.title.setText(title);
-
-                    // Track current app.
-                    holder.enabler.setSwitch(holder.switch_);
-                    holder.enabler.setPackageName(packageName);
+                    holder.title.setText(header.title != null ? header.title : packageName);
                     break;
             }
 

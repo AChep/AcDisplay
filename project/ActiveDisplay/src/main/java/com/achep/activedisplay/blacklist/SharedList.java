@@ -29,13 +29,19 @@ import java.util.Set;
 /**
  * Simple list which automatically saves items to private storage and restores on initialize.
  * This may be useful for implementing blacklists or something fun.
+ *
+ * @author Artem Chepurnoy
  */
 public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
     private static final String TAG = "SharedList";
 
-    public static final String KEY_NUMBER = "__n";
-    public static final String KEY_USED_ITEM = "__used_";
+    /**
+     * Key's prefix for SharedList's internal usage.
+     */
+    public static final String KEY_PREFIX = "__";
+    public static final String KEY_NUMBER = KEY_PREFIX + "n";
+    public static final String KEY_USED_ITEM = KEY_PREFIX + "used_";
 
     private final HashMap<V, Integer> mList;
     private final ArrayList<Integer> mPlaceholder;
@@ -44,6 +50,15 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
     private ArrayList<OnSharedListChangedListener<V>> mListeners;
 
+    /**
+     * Interface definition for a callback to be invoked
+     * when a shared list changed.
+     *
+     * @author Artem Chepurnoy
+     * @see SharedList
+     * @see SharedList#registerListener(SharedList.OnSharedListChangedListener)
+     * @see SharedList#unregisterListener(SharedList.OnSharedListChangedListener)
+     */
     public interface OnSharedListChangedListener<V> {
 
         /**
@@ -63,26 +78,80 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         public void onRemoved(V objectRemoved);
     }
 
-    public void addOnSharedListChangedListener(OnSharedListChangedListener<V> listener) {
-        Log.i(TAG, "Registered new listener: (" + mListeners.size() + ")" + listener);
+    /**
+     * The provider of the diffs between "old" and "new" objects in list.
+     *
+     * @see OnSharedListChangedListener#onPut(Object, Object, int)
+     * @author Artem Chepurnoy
+     */
+    public static abstract class Comparator<V> {
+
+        /**
+         * Compares old and new object and returns the difference between them.
+         *
+         * @return The difference between old and new objects.
+         */
+        public abstract int compare(V object, V old);
+    }
+
+    /**
+     * Skeleton of the saver class which needed to store and get values
+     * into the {@link android.content.SharedPreferences}.
+     *
+     * @author Artem Chepurnoy
+     */
+    // I could use Parcelable for that too.
+    public static abstract class Saver<V> {
+
+        /**
+         * Should put object's data to given shared prefs editor.
+         * <b>Note:</b> This should not write any values with
+         * a key starting with {@link #KEY_PREFIX}!
+         *
+         * @param position position of given object in list
+         * @see #get(android.content.SharedPreferences, int)
+         */
+        public abstract SharedPreferences.Editor put(V object, SharedPreferences.Editor editor, int position);
+
+        /**
+         * Restores previously save Object from shared preferences.
+         *
+         * @param position position of given object in list
+         * @see #put(Object, android.content.SharedPreferences.Editor, int)
+         */
+        public abstract V get(SharedPreferences prefs, int position);
+
+    }
+
+    /**
+     * Note, that you must unregister your listener lately.
+     *
+     * @see #unregisterListener(SharedList.OnSharedListChangedListener)
+     * @see SharedList.OnSharedListChangedListener
+     */
+    public void registerListener(OnSharedListChangedListener<V> listener) {
         mListeners.add(listener);
     }
 
-    public void removeOnSharedListChangedListener(OnSharedListChangedListener<V> listener) {
-        Log.i(TAG, "Unregistered listener: (" + mListeners.size() + ")" + listener);
+    /**
+     * Unregisters previously registered listener.
+     *
+     * @see #registerListener(SharedList.OnSharedListChangedListener)
+     * @see SharedList.OnSharedListChangedListener
+     */
+    public void unregisterListener(OnSharedListChangedListener<V> listener) {
         mListeners.remove(listener);
     }
 
-    protected SharedList(Context context, Class<T> clazz) {
+    protected SharedList(Context context) {
         mList = new HashMap<>();
         mPlaceholder = new ArrayList<>(3);
         mListeners = new ArrayList<>(6);
         mComparator = onCreateComparator();
+        mSaver = onCreateSaver();
 
-        try {
-            mSaver = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalArgumentException("Given class doesn't exist or/and I don\'t like you.");
+        if (mSaver == null) {
+            throw new NullPointerException("The saver of SharedList may not be null!");
         }
 
         SharedPreferences prefs = getSharedPreferences(context);
@@ -101,15 +170,33 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         return context.getSharedPreferences(getPreferencesFileName(), Context.MODE_PRIVATE);
     }
 
+    /**
+     * @return the name of the shared list's file.
+     * @see #getSharedPreferences(android.content.Context)
+     */
     protected abstract String getPreferencesFileName();
 
     /**
-     * May be null.
+     * @return Instance of saver which will save your Object to shared preferences.
+     * @see Saver
+     */
+    protected abstract T onCreateSaver();
+
+    /**
+     * @return The comparator of this shared list (may be null.)
+     * @see OnSharedListChangedListener#onPut(Object, Object, int)
+     * @see #put(android.content.Context, Object)
+     * @see #put(android.content.Context, Object, OnSharedListChangedListener)
+     * @see #getComparator()
      */
     protected Comparator<V> onCreateComparator() {
         return null;
     }
 
+    /**
+     * @return Previously created comparator.
+     * @see #onCreateComparator()
+     */
     public Comparator<V> getComparator() {
         return mComparator;
     }
@@ -117,8 +204,6 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
     protected boolean isOverwriteAllowed(V object) {
         return false;
     }
-
-    // ///////// -- CORE CODE -- ///////////
 
     public void remove(Context context, V object) {
         remove(context, object, null);
@@ -154,21 +239,15 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         notifyOnRemoved(objectRemoved, l);
     }
 
-    /**
-     * Notifies listener about Remove event
-     */
-    protected void notifyOnRemoved(V objectRemoved, OnSharedListChangedListener l) {
-        for (OnSharedListChangedListener<V> listener : mListeners) {
-            if (listener == l) continue;
-            listener.onRemoved(objectRemoved);
-        }
-    }
-
     public V put(Context context, V object) {
         return put(context, object, null);
     }
 
     public V put(Context context, V object, OnSharedListChangedListener l) {
+        if (object == null) {
+            throw new IllegalArgumentException();
+        }
+
         boolean growUp = mPlaceholder.size() == 0;
         int value = growUp ? mList.size() : mPlaceholder.get(0);
 
@@ -202,10 +281,26 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
     }
 
     /**
-     * Notifies listener about Put event
+     * Notifies {@link #registerListener(OnSharedListChangedListener) registered} listeners
+     * about removed from list object.
+     *
+     * @param objectRemoved removed object from the list
+     * @param l             Listener that will be ignored while notifying.
+     */
+    protected void notifyOnRemoved(V objectRemoved, OnSharedListChangedListener l) {
+        for (OnSharedListChangedListener<V> listener : mListeners) {
+            if (listener == l) continue;
+            listener.onRemoved(objectRemoved);
+        }
+    }
+
+    /**
+     * Notifies {@link #registerListener(OnSharedListChangedListener) registered} listeners
+     * that list got one more item / or one item is overwritten.
      *
      * @param object new object
      * @param old    old object from the list
+     * @param l      Listener that will be ignored while notifying.
      */
     protected void notifyOnPut(V object, V old, OnSharedListChangedListener l) {
         int diff = mComparator != null ? mComparator.compare(object, old) : 0;
@@ -215,34 +310,17 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         }
     }
 
+    /**
+     * Returns whether this list contains the specified object.
+     *
+     * @return {@code true} if this list contains the specified object, {@code true} otherwise.
+     */
     public boolean contains(V object) {
         return mList.containsKey(object);
     }
 
     public Set<V> valuesSet() {
         return mList.keySet();
-    }
-
-    // ///////// -- CLASSES-- ///////////
-
-    /**
-     * Additional class to provide diffs between "old" and "new" objects.
-     */
-    public static abstract class Comparator<V> {
-        public abstract int compare(V object, V old);
-    }
-
-    // I could use Parcelable for that too.
-    public static abstract class Saver<V> {
-
-        /**
-         * Should not overwrite value at {@link com.achep.activedisplay.blacklist.SharedList#KEY_NUMBER} or/and
-         * has key which starts with {@link com.achep.activedisplay.blacklist.SharedList#KEY_USED_ITEM}!
-         */
-        public abstract SharedPreferences.Editor put(V object, SharedPreferences.Editor editor, int position);
-
-        public abstract V get(SharedPreferences prefs, int position);
-
     }
 
 }

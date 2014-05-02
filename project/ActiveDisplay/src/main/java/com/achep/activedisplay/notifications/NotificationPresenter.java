@@ -27,11 +27,11 @@ import android.os.Handler;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.Operator;
+import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.activemode.ProximitySensor;
@@ -97,7 +97,7 @@ public class NotificationPresenter implements NotificationList.Callback {
 
         @Override
         public void onBlacklistChanged(final AppConfig configNew, AppConfig configOld, int diff) {
-            if (Operator.bitAnd(diff, AppConfig.DIFF_HIDDEN_REAL)) {
+            if (configNew.isHiddenReal() != configOld.isHiddenReal()) {
                 handlePackageVisibilityChanged(configNew.packageName);
             }
         }
@@ -162,7 +162,7 @@ public class NotificationPresenter implements NotificationList.Callback {
         mConfig.addOnConfigChangedListener(new ConfigListener());
 
         mBlacklist = Blacklist.getInstance(context);
-        mBlacklist.addOnSharedListChangedListener(new BlacklistListener());
+        mBlacklist.registerListener(new BlacklistListener());
     }
 
     public synchronized static NotificationPresenter getInstance(Context context) {
@@ -265,8 +265,7 @@ public class NotificationPresenter implements NotificationList.Callback {
      * the requirements (such as not ongoing and clearable).
      */
     private boolean isValidForLocal(StatusBarNotification n) {
-        AppConfig config = AppConfig.wrap(n.getPackageName());
-        mBlacklist.fill(config);
+        AppConfig config = mBlacklist.getAppConfig(n.getPackageName());
 
         boolean hidden = config.enabled && config.isHidden();
         boolean priorityNormal = n.getNotification().priority >= Notification.PRIORITY_LOW;
@@ -298,11 +297,12 @@ public class NotificationPresenter implements NotificationList.Callback {
      * is enabled and screen is turned off and...
      */
     private boolean tryStartGui(Context context, OpenStatusBarNotification notification) {
-        if (notification.isRestricted(mBlacklist)
-                || !mConfig.isEnabled()
-                || ProximitySensor.isNear()
+        String packageName = notification.getStatusBarNotification().getPackageName();
+        if (ProximitySensor.isNear()
+                || mConfig.isEnabled() == false
                 || mConfig.isEnabledOnlyWhileCharging() /* show only      */
-                && !PowerUtils.isPlugged(context))      /* while charging */
+                && !PowerUtils.isPlugged(context)       /* while charging */
+                || mBlacklist.getAppConfig(packageName).isRestrictedReal())
             return false;
 
         // Inactive time

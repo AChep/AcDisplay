@@ -28,6 +28,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * <b>Attention: its equality key is package name only!<b/>
+ *
+ * @author Artem Chepurnoy
  */
 public class AppConfig {
 
@@ -37,24 +39,18 @@ public class AppConfig {
     public static final int DIFF_RESTRICTED = 2;
     public static final int DIFF_HIDDEN = 4;
 
-    /**
-     * Really restricted app is enabled & restricted app
-     */
-    public static final int DIFF_RESTRICTED_REAL = 8;
-
-    /**
-     * Really hidden app is enabled & hidden app
-     */
-    public static final int DIFF_HIDDEN_REAL = 16;
-
     static final boolean DEFAULT_ENABLED = false;
     static final boolean DEFAULT_RESTRICTED = false;
     static final boolean DEFAULT_HIDDEN = false;
 
     public String packageName;
     public boolean enabled = DEFAULT_ENABLED;
-    public boolean[] restricted = new boolean[]{DEFAULT_RESTRICTED};
-    public boolean[] hidden = new boolean[]{DEFAULT_HIDDEN};
+    public boolean[] restricted = new boolean[] { DEFAULT_RESTRICTED };
+    public boolean[] hidden = new boolean[] { DEFAULT_HIDDEN };
+
+    public AppConfig(String packageName) {
+        this(packageName, DEFAULT_ENABLED, DEFAULT_RESTRICTED, DEFAULT_HIDDEN);
+    }
 
     public AppConfig(String packageName, boolean enabled,
                      boolean restricted, boolean hidden) {
@@ -65,16 +61,7 @@ public class AppConfig {
     }
 
     /**
-     * Simple wrapper of package name.
-     *
-     * @return an instance of empty {@link com.achep.activedisplay.blacklist.AppConfig} with package name.
-     */
-    public static AppConfig wrap(String packageName) {
-        return new AppConfig(packageName, DEFAULT_ENABLED, DEFAULT_RESTRICTED, DEFAULT_HIDDEN);
-    }
-
-    /**
-     * Resets all, except package name, to defaults
+     * Resets all (except package name!) to default values.
      */
     public static void reset(AppConfig config) {
         config.enabled = DEFAULT_ENABLED;
@@ -82,14 +69,24 @@ public class AppConfig {
         config.setHidden(DEFAULT_HIDDEN);
     }
 
-    public static void copy(AppConfig config, AppConfig clone) {
+    /**
+     * Copies data of the first config into the second one.
+     *
+     * @param config origin config
+     * @param clone clone config
+     * @return Cloned config
+     * @see #reset(AppConfig)
+     */
+    public static AppConfig copy(AppConfig config, AppConfig clone) {
+        clone.packageName = config.packageName;
         clone.enabled = config.enabled;
         clone.setRestricted(config.isRestricted());
         clone.setHidden(config.isHidden());
+        return clone;
     }
 
     /**
-     * Log this config (to debug cats)
+     * Logs given config with a debug output level.
      */
     public static void log(String tag, AppConfig config) {
         Log.d(tag, "enabled=" + config.enabled
@@ -98,6 +95,9 @@ public class AppConfig {
                 + " pkg=" + config.packageName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return new HashCodeBuilder(279, 351)
@@ -105,10 +105,12 @@ public class AppConfig {
                 .toHashCode();
     }
 
+    /**
+     * Compares given {@link com.achep.activedisplay.blacklist.AppConfig} with
+     * this one. <b>Warning: </b> the only criterion of equality is the package name!
+     */
     @Override
     public boolean equals(Object o) {
-        if (o == null)
-            return false;
         if (o == this)
             return true;
         if (!(o instanceof AppConfig))
@@ -118,11 +120,6 @@ public class AppConfig {
         return new EqualsBuilder()
                 .append(packageName, ps.packageName)
                 .isEquals();
-    }
-
-    // TODO: Make sure that it won't cause any problems.
-    public AppConfig clone() {
-        return new AppConfig(packageName, enabled, isRestricted(), isHidden());
     }
 
     public void setRestricted(boolean restricted) {
@@ -137,20 +134,38 @@ public class AppConfig {
         return restricted[0];
     }
 
+    public boolean isRestrictedReal() {
+        return restricted[0] && enabled;
+    }
+
     public boolean isHidden() {
         return hidden[0];
     }
 
-    public boolean isRestrictedReal() {
-        return enabled && isRestricted();
+    public boolean isHiddenReal() {
+        return hidden[0] && enabled;
     }
 
-    public boolean isHiddenReal() {
-        return enabled && isHidden();
+    public boolean isEnabled() {
+        return enabled;
     }
 
     /**
-     * Created by Artem on 01.03.14.
+     * @return True if all options are equals to defaults, False otherwise.
+     * @see AppConfig#DEFAULT_ENABLED
+     * @see AppConfig#DEFAULT_RESTRICTED
+     * @see AppConfig#DEFAULT_HIDDEN
+     */
+    boolean isEmpty() {
+        return isEnabled() == AppConfig.DEFAULT_ENABLED
+                && isRestricted() == AppConfig.DEFAULT_RESTRICTED
+                && isHidden() == AppConfig.DEFAULT_HIDDEN;
+    }
+
+    /**
+     * Saves and restores AppConfig from and to shared preferences.
+     *
+     * @author Artem Chepurnoy
      */
     static final class AppConfigSaver extends SharedList.Saver<AppConfig> {
 
@@ -159,6 +174,9 @@ public class AppConfig {
         private static final String KEY_RESTRICTED = "restricted_";
         private static final String KEY_HIDDEN = "hidden_";
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public SharedPreferences.Editor put(AppConfig ps, SharedPreferences.Editor editor, int position) {
             editor.putString(KEY_PACKAGE + position, ps.packageName);
@@ -168,6 +186,9 @@ public class AppConfig {
             return editor;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public AppConfig get(SharedPreferences prefs, int position) {
             String pkg = prefs.getString(KEY_PACKAGE + position, null);
@@ -179,21 +200,24 @@ public class AppConfig {
     }
 
     /**
-     * Created by Artem on 01.03.14.
+     * Compares different AppConfigs.
+     *
+     * @author Artem Chepurnoy
      */
     static final class AppConfigComparator extends SharedList.Comparator<AppConfig> {
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compare(AppConfig object, AppConfig old) {
             return orZero(DIFF_ENABLED, object.enabled, old.enabled)
                     | orZero(DIFF_HIDDEN, object.isHidden(), old.isHidden())
-                    | orZero(DIFF_HIDDEN_REAL, object.isHiddenReal(), old.isHiddenReal())
-                    | orZero(DIFF_RESTRICTED, object.isRestricted(), old.isRestricted())
-                    | orZero(DIFF_RESTRICTED_REAL, object.isRestrictedReal(), old.isRestrictedReal());
+                    | orZero(DIFF_RESTRICTED, object.isRestricted(), old.isRestricted());
         }
 
         private int orZero(int value, boolean a, boolean b) {
-            return value * MathUtils.bool(a != b);
+            return a != b ? value : 0;
         }
     }
 }

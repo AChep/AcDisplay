@@ -55,7 +55,7 @@ public class BlacklistEnabler extends Blacklist.OnBlacklistChangedListener
         mContext = context;
         mCompoundButton = cb;
         mBlacklist = Blacklist.getInstance(mContext);
-        mAppConfig = AppConfig.wrap(packageName);
+        mAppConfig = new AppConfig(packageName);
 
         mListeners = new ArrayList<>(6);
     }
@@ -70,7 +70,7 @@ public class BlacklistEnabler extends Blacklist.OnBlacklistChangedListener
         }
 
         mResumed = true;
-        mBlacklist.addOnSharedListChangedListener(this);
+        mBlacklist.registerListener(this);
         mCompoundButton.setOnCheckedChangeListener(this);
         reloadAppConfig();
     }
@@ -81,7 +81,7 @@ public class BlacklistEnabler extends Blacklist.OnBlacklistChangedListener
         }
 
         mResumed = false;
-        mBlacklist.removeOnSharedListChangedListener(this);
+        mBlacklist.unregisterListener(this);
         mCompoundButton.setOnCheckedChangeListener(null);
     }
 
@@ -117,7 +117,7 @@ public class BlacklistEnabler extends Blacklist.OnBlacklistChangedListener
     }
 
     private void reloadAppConfig() {
-        AppConfig configOld = mAppConfig.clone();
+        AppConfig configOld = AppConfig.copy(mAppConfig, new AppConfig(null));
         mBlacklist.fill(mAppConfig);
         onBlacklistChanged(mAppConfig, configOld,
                 mBlacklist.getComparator().compare(mAppConfig, configOld));
@@ -150,6 +150,7 @@ public class BlacklistEnabler extends Blacklist.OnBlacklistChangedListener
 
             if (Operator.bitAnd(diff, AppConfig.DIFF_ENABLED))
                 setChecked(configNew.enabled);
+
             for (Blacklist.OnBlacklistChangedListener listener : mListeners)
                 listener.onBlacklistChanged(mAppConfig, configOld, diff);
         }

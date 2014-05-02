@@ -24,7 +24,11 @@ import android.util.Log;
 import java.lang.ref.SoftReference;
 
 /**
- * Created by Artem on 09.02.14.
+ * The blacklist (also known as per-app-features.)
+ *
+ * @see #saveAppConfig(android.content.Context, AppConfig, SharedList.OnSharedListChangedListener)
+ * @see #getAppConfig(String)
+ * @author Artem Chepurnoy
  */
 public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSaver> {
 
@@ -32,27 +36,63 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSa
 
     public static final String PREF_NAME = "blacklist";
 
-    private static SoftReference<Blacklist> sBlacklistSoft;
+    private static Blacklist sBlacklist;
+
+    /**
+     * Interface definition for a callback to be invoked
+     * when a blacklist changed.
+     *
+     * @author Artem Chepurnoy
+     */
+    public static abstract class OnBlacklistChangedListener
+            implements OnSharedListChangedListener<AppConfig> {
+
+        /**
+         * Called on blacklist changed.
+         *
+         * @param configNew An instance of new app's config.
+         * @param configOld An instance of previous app's config (can not be null.)
+         * @param diff The difference between two configs.
+         */
+        public abstract void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff);
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public final void onPut(AppConfig objectNew, AppConfig objectOld, int diff) {
+            onBlacklistChanged(objectNew, objectOld, diff);
+        }
+
+        /**
+         * Should never be called.
+         * @see #onBlacklistChanged(AppConfig, AppConfig, int)
+         */
+        @Override
+        public final void onRemoved(AppConfig objectRemoved) {
+            Log.wtf(TAG, "Notified about removing an item from blacklist.");
+        }
+    }
 
     public static synchronized Blacklist getInstance(Context context) {
-        Blacklist instance;
-        if (sBlacklistSoft == null || (instance = sBlacklistSoft.get()) == null) {
-            Log.i(TAG, "Blacklist initialized.");
-
-            instance = new Blacklist(context);
-            sBlacklistSoft = new SoftReference<>(instance);
-            return instance;
+        if (sBlacklist == null) {
+            sBlacklist = new Blacklist(context);
         }
-        return instance;
+        return sBlacklist;
     }
 
     private Blacklist(Context context) {
-        super(context, AppConfig.AppConfigSaver.class);
+        super(context);
     }
 
     @Override
     protected String getPreferencesFileName() {
         return PREF_NAME;
+    }
+
+    @Override
+    protected AppConfig.AppConfigSaver onCreateSaver() {
+        return new AppConfig.AppConfigSaver();
     }
 
     @Override
@@ -65,21 +105,54 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSa
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    // Change remove-event to event about putting
+    // empty config to the list.
+    protected final void notifyOnRemoved(AppConfig object, OnSharedListChangedListener l) {
+        AppConfig emptyConfig = new AppConfig(object.packageName);
+        super.notifyOnPut(emptyConfig, object, l);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    // Do not allow nulls.
+    protected final void notifyOnPut(AppConfig object, AppConfig old, OnSharedListChangedListener l) {
+        if (old == null) old = new AppConfig(object.packageName);
+        super.notifyOnPut(object, old, l);
+    }
+
     public void saveAppConfig(Context context, AppConfig config,
                               OnSharedListChangedListener listener) {
-        if (config.enabled == AppConfig.DEFAULT_ENABLED
-                && config.isRestricted() == AppConfig.DEFAULT_RESTRICTED
-                && config.isHidden() == AppConfig.DEFAULT_HIDDEN) {
+        if (config.isEmpty()) {
 
-            // The config is empty. We can delete it without
-            // any cares of losing its data.
+            // The config is empty. We can remove it from list
+            // without any cares about losing its data.
             remove(context, config, listener);
             return;
         }
 
-        AppConfig clone = AppConfig.wrap(config.packageName);
+        // Put new config to the list.
+        // Note that overwriting is enabled.
+        AppConfig clone = new AppConfig(config.packageName);
         AppConfig.copy(config, clone);
         put(context, clone, listener);
+    }
+
+    /**
+     * <b>Creates</b> new instance of {@link com.achep.activedisplay.blacklist.AppConfig} and
+     * fills it with present data.
+     *
+     * @param packageName The package name of need application.
+     * @return New instance of app's config filled with present data.
+     * @see #fill(AppConfig)
+     */
+    public AppConfig getAppConfig(String packageName) {
+        return fill(new AppConfig(packageName));
     }
 
     public AppConfig fill(AppConfig config) {
@@ -93,36 +166,5 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSa
         return config;
     }
 
-    public static abstract class OnBlacklistChangedListener implements
-            OnSharedListChangedListener<AppConfig> {
-
-        public abstract void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff);
-
-        @Override
-        public final void onPut(AppConfig objectNew, AppConfig objectOld, int diff) {
-            onBlacklistChanged(objectNew, objectOld, diff);
-        }
-
-        @Override
-        public final void onRemoved(AppConfig objectRemoved) { /* unused */ }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    // No more Removed event
-    protected void notifyOnRemoved(AppConfig object, OnSharedListChangedListener l) {
-        super.notifyOnPut(AppConfig.wrap(object.packageName), object, l);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    // Do not allow null as old object
-    protected void notifyOnPut(AppConfig object, AppConfig old, OnSharedListChangedListener l) {
-        super.notifyOnPut(object, old == null ? AppConfig.wrap(object.packageName) : old, l);
-    }
 }
 

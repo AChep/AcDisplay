@@ -64,15 +64,4 @@ public class OpenStatusBarNotification {
         return mNotificationData;
     }
 
-    public AppConfig getAppConfig(Blacklist blacklist) {
-        return blacklist.fill(AppConfig.wrap(mStatusBarNotification.getPackageName()));
-    }
-
-    public boolean isHidden(Blacklist blacklist) {
-        return getAppConfig(blacklist).isHiddenReal();
-    }
-
-    public boolean isRestricted(Blacklist blacklist) {
-        return getAppConfig(blacklist).isRestrictedReal();
-    }
 }
