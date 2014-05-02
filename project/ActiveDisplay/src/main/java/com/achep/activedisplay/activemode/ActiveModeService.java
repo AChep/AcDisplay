@@ -33,10 +33,10 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
+import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
 import com.achep.activedisplay.settings.Settings;

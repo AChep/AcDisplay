@@ -30,11 +30,8 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.animations.AnimationListenerAdapter;
 import com.achep.activedisplay.animations.CircleViewAnimation;
 
 /**

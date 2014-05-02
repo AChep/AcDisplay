@@ -115,25 +115,33 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
             int oldVersionCode = prefs.getInt("previous_version_code", 0);
             if (oldVersionCode < pi.versionCode) {
-                prefs.edit().putInt("previous_version_code", pi.versionCode).commit();
+                prefs.edit().putInt("previous_version_code", pi.versionCode).apply();
 
-                if (oldVersionCode < 18 /* v2.1.x- */) {
+                // Show the warning message for Paranoid Android users.
+                if (Build.DISPLAY.startsWith("pa_") && oldVersionCode == 0) {
+                    CharSequence messageText = Html.fromHtml(getString(R.string.pa_message));
+                    new DialogHelper.Builder(this)
+                            .setTitle(R.string.pa_title)
+                            .setMessage(messageText)
+                            .wrap()
+                            .setPositiveButton(android.R.string.ok, null)
+                            .create()
+                            .show();
+                }
 
-                    // Show the warning message for Paranoid Android users.
-                    if (Build.DISPLAY.startsWith("pa_")) {
-                        CharSequence messageText = Html.fromHtml(getString(R.string.pa_message));
-                        new DialogHelper.Builder(this)
-                                .setTitle(R.string.pa_title)
-                                .setMessage(messageText)
-                                .wrap()
-                                .setPositiveButton(android.R.string.ok, null)
-                                .create()
-                                .show();
-                    }
+                if (oldVersionCode < 15 /* v2.0- */) {
+                    CharSequence messageText = Html.fromHtml(getString(R.string.speech_message));
+                    new DialogHelper.Builder(this)
+                            .setTitle(R.string.speech_title)
+                            .setMessage(messageText)
+                            .wrap()
+                            .setPositiveButton(android.R.string.ok, null)
+                            .create()
+                            .show();
+                }
 
-                    if (oldVersionCode < 15 /* v2.0- */) {
-                        DialogHelper.showNewsDialog(this);
-                    }
+                if (oldVersionCode < 20 /* v2.2.1- */) {
+                    DialogHelper.showNewsDialog(this);
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {

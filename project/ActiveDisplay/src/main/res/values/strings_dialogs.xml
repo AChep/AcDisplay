@@ -67,9 +67,19 @@
     <!-- News -->
     <string name="news_message"><![CDATA[
         Welcome to the new version of AcDisplay!
-        The update brings a completely new unique design and active mode.
+        This update brings a completely new and unique design with a lot of new possibilities.
         The design is more streamlined and is aimed at giving you the best possible experience!<br/>
         <br/>
+        <b>One touch for all actions.</b><br/>
+        Unlocking the device, checking the notifications or performing an actions on them can be done with a single motion.<br/>
+        <br/>
+        <b>Unlock field is anywhere and everywhere.</b><br/>
+        Swipe anywhere on free space to unlock.
+    ]]></string>
+
+    <!-- Speech -->
+    <string name="speech_title">Artem Chepurnoy</string>
+    <string name="speech_message"><![CDATA[
         Hello,<br/>
         First of all I want to thank you for the amount of downloads and high ratings on Play Store.
         Huge progress has been done in AcDisplay and to keep it <a href="https://www.github.com/AChep/AcDisplay">open</a> for everyone, and now I need some help from you.<br/>
