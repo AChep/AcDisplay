@@ -304,7 +304,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     }
 
     private void startListening() {
-        if (mListening & (mListening = true) | mInactiveTime) return;
+        if (mInactiveTime || mListening & (mListening = true)) return;
         if (Project.DEBUG) Log.d(TAG, "Starting listening to sensors.");
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
