@@ -343,7 +343,7 @@ public class NotificationPresenter implements NotificationList.Callback {
 
                 Resources res = service.getResources();
                 Notification.Builder builder = new Notification.Builder(service)
-                        .setContentTitle(res.getString(R.string.init_notification_text))
+                        .setContentTitle(res.getString(R.string.app_name))
                         .setContentText(res.getString(R.string.init_notification_text))
                         .setSmallIcon(R.drawable.stat_notify)
                         .setPriority(Notification.PRIORITY_MIN)
