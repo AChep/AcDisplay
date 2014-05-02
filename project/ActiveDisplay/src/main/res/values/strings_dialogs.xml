@@ -77,7 +77,7 @@
     ]]></string>
 
     <!-- Speech -->
-    <string name="speech_title">Artem Chepurnoy</string>
+    <string name="speech_title" translatable="false">Artem Chepurnoy</string>
     <string name="speech_message"><![CDATA[
         Hello,<br/>
         First of all I want to thank you for the amount of downloads and high ratings on Play Store.
