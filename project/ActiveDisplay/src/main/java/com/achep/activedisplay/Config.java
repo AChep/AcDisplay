@@ -60,6 +60,7 @@ public class Config {
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
+    public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
 
     // interface
     public static final String KEY_UI_WALLPAPER_SHOWN = "wallpaper_shown";
@@ -74,6 +75,7 @@ public class Config {
     private boolean mAcDisplayEnabled;
     private boolean mKeyguardEnabled;
     private boolean mActiveMode;
+    private boolean mActiveModeWithoutNotifies;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mNotifyLowPriority;
     private boolean mTimeoutEnabled;
@@ -127,6 +129,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_keyguard_enabled));
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
+        mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
+                res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
 
         // notifications
         mNotifyLowPriority = prefs.getBoolean(KEY_LOW_PRIORITY_NOTIFICATIONS,
@@ -241,6 +245,11 @@ public class Config {
         if (changed) {
             ActiveModeService.handleState(context);
         }
+    }
+
+    public void setActiveModeWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mActiveModeWithoutNotifies != (mActiveModeWithoutNotifies = enabled);
+        saveOption(context, KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
     }
 
     /**
@@ -375,6 +384,10 @@ public class Config {
 
     public boolean isActiveModeEnabled() {
         return mActiveMode;
+    }
+
+    public boolean isActiveModeWithoutNotifiesEnabled() {
+        return mActiveModeWithoutNotifies;
     }
 
     public boolean isEnabledOnlyWhileCharging() {

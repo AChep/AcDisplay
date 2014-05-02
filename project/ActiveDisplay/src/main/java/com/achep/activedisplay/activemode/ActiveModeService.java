@@ -39,6 +39,8 @@ import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
+import com.achep.activedisplay.notifications.NotificationPresenter;
+import com.achep.activedisplay.notifications.OpenStatusBarNotification;
 import com.achep.activedisplay.settings.Settings;
 import com.achep.activedisplay.utils.PowerUtils;
 
@@ -48,7 +50,10 @@ import java.util.TimerTask;
 /**
  * Created by Artem on 16.02.14.
  */
-public class ActiveModeService extends Service implements Config.OnConfigChangedListener, ActiveSensor.SensorCallback {
+// TODO: Do huge refactoring to completely fix inactive time and without-notifications options.
+public class ActiveModeService extends Service implements
+        Config.OnConfigChangedListener, ActiveSensor.SensorCallback,
+        NotificationPresenter.OnNotificationListChangedListener {
 
     private static final String TAG = "ActiveModeService";
 
@@ -58,8 +63,11 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     private Timer mTimer;
     private ActiveSensor[] mSensors;
 
+    private Config mConfig;
+
     private boolean mListening;
     private boolean mInactiveTime;
+    private boolean mLackOfNotifies;
 
     private Receiver mReceiver = new Receiver();
 
@@ -196,9 +204,13 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
         intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         registerReceiver(mReceiver, intentFilter);
 
-        Config config = Config.getInstance(this);
-        handleInactiveHoursChanged(config.isInactiveTimeEnabled());
-        config.addOnConfigChangedListener(this);
+        mConfig = Config.getInstance(this);
+        handleInactiveHoursChanged(mConfig.isInactiveTimeEnabled());
+        mConfig.addOnConfigChangedListener(this);
+
+        NotificationPresenter np = NotificationPresenter.getInstance(this);
+        handleNotificationsCountChange(np);
+        np.addOnNotificationListChangedListener(this);
     }
 
     @Override
@@ -209,6 +221,9 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
 
         Config config = Config.getInstance(this);
         config.removeOnConfigChangedListener(this);
+
+        NotificationPresenter np = NotificationPresenter.getInstance(this);
+        np.removeOnNotificationListChangedListener(this);
     }
 
     @Override
@@ -250,6 +265,18 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     public void onConfigChanged(Config config, String key, Object value) {
         boolean inactiveTimeEnabled = config.isInactiveTimeEnabled();
         switch (key) {
+            case Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS:
+                if ((boolean) value) {
+                    mLackOfNotifies = false;
+                    start();
+                } else {
+                    // If you've disabled the active mode check the
+                    // amount of notifications and probably stop
+                    // listening.
+                    NotificationPresenter np = NotificationPresenter.getInstance(this);
+                    handleNotificationsCountChange(np);
+                }
+                break;
             case Config.KEY_INACTIVE_TIME_FROM:
             case Config.KEY_INACTIVE_TIME_TO:
                 if (!inactiveTimeEnabled) {
@@ -260,6 +287,30 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
             case Config.KEY_INACTIVE_TIME_ENABLED:
                 handleInactiveHoursChanged(inactiveTimeEnabled);
                 break;
+        }
+    }
+
+    @Override
+    public void onNotificationListChanged(NotificationPresenter np,
+                                          OpenStatusBarNotification osbn,
+                                          int event) {
+        handleNotificationsCountChange(np);
+    }
+
+    private void handleNotificationsCountChange(NotificationPresenter np) {
+        boolean lackOfNotifies = !mConfig.isActiveModeWithoutNotifiesEnabled()
+                        && np.getList().size() == 0;
+
+        if (lackOfNotifies == mLackOfNotifies) {
+            // Nothing changed, go home.
+            return;
+        }
+
+        mLackOfNotifies = lackOfNotifies;
+        if (!mLackOfNotifies) {
+            start();
+        } else {
+            stopListening();
         }
     }
 
@@ -304,7 +355,7 @@ public class ActiveModeService extends Service implements Config.OnConfigChanged
     }
 
     private void startListening() {
-        if (mInactiveTime || mListening & (mListening = true)) return;
+        if (mInactiveTime || mLackOfNotifies || mListening & (mListening = true)) return;
         if (Project.DEBUG) Log.d(TAG, "Starting listening to sensors.");
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);

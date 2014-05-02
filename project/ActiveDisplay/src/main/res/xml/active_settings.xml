@@ -27,19 +27,11 @@
     <PreferenceCategory
         android:title="@string/settings"/>
 
-    <Preference
-        android:enabled="false"
-        android:title="@string/settings_placeholder_title"
-        android:summary="@string/settings_placeholder_summary" />
-
-    <!--
     <CheckBoxPreference
-        android:enabled="false"
-        android:key="active_enabled_when_notification_list_empty"
+        android:key="active_mode_without_notifications"
         android:title="@string/settings_active_enabled_when_notification_list_empty_title"
         android:summaryOff="@string/settings_active_enabled_when_notification_list_empty_off"
         android:summaryOn="@string/settings_active_enabled_when_notification_list_empty_on"
         android:defaultValue="true"/>
-        -->
 
 </PreferenceScreen>
