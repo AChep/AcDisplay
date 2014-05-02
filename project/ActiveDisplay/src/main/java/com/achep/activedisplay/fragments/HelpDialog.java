@@ -20,16 +20,25 @@ package com.achep.activedisplay.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 
 import com.achep.activedisplay.DialogHelper;
 import com.achep.activedisplay.R;
+import com.achep.activedisplay.utils.IntentUtils;
 
 /**
- * Created by Artem on 30.01.14.
+ * Dialog fragment that shows FAQ.
+ *
+ * @author Artem Chepurnoy
  */
 public class HelpDialog extends DialogFragment {
+
+    private static final String HELP_FULL_FAQ = "http://goo.gl/PT1sPt";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -38,7 +47,17 @@ public class HelpDialog extends DialogFragment {
                 .setTitle(R.string.help)
                 .setMessage(Html.fromHtml(getString(R.string.help_message)))
                 .wrap()
-                .setPositiveButton(R.string.close, null)
+                .setNegativeButton(R.string.close, null)
+                .setPositiveButton(R.string.help_read_more, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Context context = getActivity();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(HELP_FULL_FAQ));
+                        if (IntentUtils.hasActivityForThat(context, intent)) {
+                            context.startActivity(intent);
+                        }
+                    }
+                })
                 .create();
     }
 }

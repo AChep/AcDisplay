@@ -51,17 +51,16 @@
 
     <!-- Help -->
     <string name="help">Help</string>
+    <string name="help_read_more">Read more</string>
     <string name="help_message"><![CDATA[
-        <font color="#ffffff"><b><i>How can I uninstall this app?</i></b></font><br/>
+        <b>How can I uninstall this app?</b>
         Go to Settings > Security > <a href="acdisplay_internal://launch_device_admins_activity">Device Administrators</a> and uncheck AcDisplay.
         You can now <a href="acdisplay_internal://uninstall">uninstall</a> AcDisplay normally.<br/>
         <br/>
-        <font color="#ffffff"><b><i>What is an active mode?</i></b></font><br/>
+        <b>What is an active mode?</b>
         Active mode uses the device\'s sensors to wake your device up when you need it.
         This works great if you want to pull your device from your pocket and get a quick glimpse at the notifications you\'ve received.
-        Active mode doesn\'t keep the CPU running so you shouldn\'t see a big difference in battery consumption.<br/>
-        <br/>
-        <b><a href="http://goo.gl/PT1sPt">Read full FAQ…</a></b>
+        Active mode doesn\'t keep the CPU running so you shouldn\'t see a big difference in battery consumption.
     ]]></string>
 
     <!-- News -->
