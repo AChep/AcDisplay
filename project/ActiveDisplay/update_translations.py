@@ -58,9 +58,8 @@ for path, dirs, files in os.walk(translDir):
             fullpathstr.find(
                 os.path.basename(translDir)):]
         for line in open(fullpath):
-            if re.search('(\\$|%)\\s', line):
+            if re.search('(\\$|%)\\s', line) or re.search('(<!|\[CDATA)\\s', line):
                 print 'Problematic line: ' + line
-                input('Press <Enter> to continue...')
 
 # Copy translations to project
 print 'Copying translations to project...'
