@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.activedisplay.activemode;
+package com.achep.activedisplay.activemode.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -28,11 +28,12 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.achep.activedisplay.Project;
+import com.achep.activedisplay.activemode.ActiveModeSensor;
 
 /**
  * Created by Artem on 08.03.14.
  */
-public class ProximitySensor extends ActiveSensor implements
+public class ProximitySensor extends ActiveModeSensor implements
         SensorEventListener {
 
     private static final String TAG = "ProximitySensor";
@@ -80,11 +81,11 @@ public class ProximitySensor extends ActiveSensor implements
     }
 
     @Override
-    protected void onAttached(SensorManager sensorManager, Context context) {
+    public void onAttached(SensorManager sensorManager, Context context) {
         Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         assert proximitySensor != null; // Otherwise excluded by Service.
 
-        sensorManager.registerListener(this, proximitySensor, 0 /* proximity is event based */);
+        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         mMaximumRange = proximitySensor.getMaximumRange();
         mContext = context;
 
@@ -96,7 +97,7 @@ public class ProximitySensor extends ActiveSensor implements
     }
 
     @Override
-    protected void onDetached(SensorManager sensorManager) {
+    public void onDetached(SensorManager sensorManager) {
         sensorManager.unregisterListener(this);
         mHandler.removeCallbacks(mLockRunnable);
         mHandler.removeCallbacks(mLaunchRunnable);

@@ -18,100 +18,44 @@
  */
 package com.achep.activedisplay.activemode;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.hardware.SensorManager;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.achep.activedisplay.Config;
-import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
 import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
-import com.achep.activedisplay.notifications.NotificationPresenter;
-import com.achep.activedisplay.notifications.OpenStatusBarNotification;
+import com.achep.activedisplay.activemode.handlers.InactiveTimeHandler;
+import com.achep.activedisplay.activemode.handlers.ScreenHandler;
+import com.achep.activedisplay.activemode.handlers.WithoutNotifiesHandler;
+import com.achep.activedisplay.activemode.sensors.AccelerometerSensor;
+import com.achep.activedisplay.activemode.sensors.ProximitySensor;
 import com.achep.activedisplay.settings.Settings;
 import com.achep.activedisplay.utils.PowerUtils;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
- * Created by Artem on 16.02.14.
+ * Service that turns on AcDisplay exactly when it's needed.
+ *
+ * @author Artem Chepurnoy
+ * @see com.achep.activedisplay.activemode.ActiveModeHandler
+ * @see com.achep.activedisplay.activemode.ActiveModeSensor
  */
-// TODO: Do huge refactoring to completely fix inactive time and without-notifications options.
 public class ActiveModeService extends Service implements
-        Config.OnConfigChangedListener, ActiveSensor.SensorCallback,
-        NotificationPresenter.OnNotificationListChangedListener {
+        ActiveModeSensor.Callback, ActiveModeHandler.Callback {
 
     private static final String TAG = "ActiveModeService";
 
-    // TODO: Implement event based inactive time handling (using AlarmManager).
-    private static final int INACTIVE_HOURS_CHECK_PERIOD = 1000 * 60 * 5; // ms.
-
-    private Timer mTimer;
-    private ActiveSensor[] mSensors;
-
-    private Config mConfig;
+    private ActiveModeSensor[] mSensors;
+    private ActiveModeHandler[] mHandlers;
 
     private boolean mListening;
-    private boolean mInactiveTime;
-    private boolean mLackOfNotifies;
-
-    private Receiver mReceiver = new Receiver();
-
-    private class Receiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Presenter presenter = Presenter.getInstance();
-            switch (intent.getAction()) {
-                case Intent.ACTION_SCREEN_ON:
-                    presenter.registerListener(mStateListener);
-
-                    if (!presenter.isActivityAttached()) {
-                        stopListening();
-                    }
-                    break;
-                case Intent.ACTION_SCREEN_OFF:
-                    presenter.unregisterListener(mStateListener);
-                    startListeningDelayed(250);
-                    break;
-            }
-        }
-
-    }
-
-    private Handler mHandler = new Handler();
-    private Runnable mStartListeningRunnable = new Runnable() {
-        @Override
-        public void run() {
-            startListening();
-        }
-    };
-
-    private Presenter.OnActiveDisplayStateChangedListener mStateListener =
-            new Presenter.OnActiveDisplayStateChangedListener() {
-                @Override
-                public void OnActiveDisplayStateChanged(Activity activity) {
-                    if (activity == null) {
-                        stopListening();
-                    } else {
-                        startListening();
-                    }
-                }
-            };
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -132,13 +76,21 @@ public class ActiveModeService extends Service implements
         }
     }
 
-    public static ActiveSensor[] buildSensorsList(Context context) {
+    /**
+     * Builds the array of supported {@link ActiveModeSensor sensors}.
+     *
+     * @return The array of supported {@link ActiveModeSensor sensors}.
+     * @see ActiveModeSensor
+     */
+    public static ActiveModeSensor[] buildAvailableSensorsList(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        ActiveSensor[] sensors = new ActiveSensor[]{
+        ActiveModeSensor[] sensors = new ActiveModeSensor[]{ // all available sensors
                 new AccelerometerSensor(),
                 new ProximitySensor()
         };
 
+        // Count the number of supported sensors, and
+        // mark unsupported.
         int count = sensors.length;
         boolean[] supportList = new boolean[sensors.length];
         for (int i = 0; i < sensors.length; i++) {
@@ -148,88 +100,50 @@ public class ActiveModeService extends Service implements
             }
         }
 
-        ActiveSensor[] sensorsSupported = new ActiveSensor[count];
+        // Create the list of proven sensors.
+        ActiveModeSensor[] sensorsSupported = new ActiveModeSensor[count];
         for (int i = 0, j = 0; i < sensors.length; i++) {
             if (supportList[i]) {
                 sensorsSupported[j++] = sensors[i];
             }
         }
+
         return sensorsSupported;
-    }
-
-    private void handleInactiveHoursChanged(boolean enabled) {
-        if (mTimer != null) mTimer.cancel();
-        if (enabled) {
-            mTimer = new Timer();
-            mTimer.schedule(new TimerTask() {
-
-                private static final String TAG = "InactiveTimeTicker";
-
-                @Override
-                public void run() {
-                    Config config = Config.getInstance(ActiveModeService.this);
-                    boolean inactive = InactiveHoursHelper.isInactiveTime(config);
-                    boolean changed = inactive != mInactiveTime;
-
-                    if (Project.DEBUG)
-                        Log.d(TAG, "On timer tick: elapsed_real_time="
-                                + SystemClock.elapsedRealtime());
-
-                    if (changed) {
-                        mInactiveTime = inactive;
-
-                        if (Project.DEBUG)
-                            Log.d(TAG, "is_inactive_time=" + inactive);
-
-                        if (inactive) {
-                            stopListening();
-                        } else {
-                            start();
-                        }
-                    }
-                }
-            }, 0, INACTIVE_HOURS_CHECK_PERIOD);
-        } else {
-            mInactiveTime = false;
-        }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mSensors = buildSensorsList(this);
+        mSensors = buildAvailableSensorsList(this);
+        mHandlers = new ActiveModeHandler[]{
+                new ScreenHandler(this, this),
+                new InactiveTimeHandler(this, this),
+                new WithoutNotifiesHandler(this, this),
+        };
 
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        registerReceiver(mReceiver, intentFilter);
+        for (ActiveModeHandler handler : mHandlers) {
+            handler.onCreate();
+        }
 
-        mConfig = Config.getInstance(this);
-        handleInactiveHoursChanged(mConfig.isInactiveTimeEnabled());
-        mConfig.addOnConfigChangedListener(this);
-
-        NotificationPresenter np = NotificationPresenter.getInstance(this);
-        handleNotificationsCountChange(np);
-        np.addOnNotificationListChangedListener(this);
+        requestActive();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
+        for (ActiveModeHandler handler : mHandlers) {
+            handler.onDestroy();
+        }
+
         stopListening();
-
-        Config config = Config.getInstance(this);
-        config.removeOnConfigChangedListener(this);
-
-        NotificationPresenter np = NotificationPresenter.getInstance(this);
-        np.removeOnNotificationListChangedListener(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        start();
 
+        // Show foreground notification to prove that
+        // this service will not be killed when system
+        // needs some RAM or whatever.
         int notificationId = NotificationIds.ACTIVE_MODE_NOTIFICATION;
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 notificationId, new Intent(this, Settings.ActiveModeSettingsActivity.class),
@@ -250,119 +164,74 @@ public class ActiveModeService extends Service implements
     }
 
     @Override
-    public boolean onShowEvent(ActiveSensor sensor) {
-        Presenter.getInstance().start(this);
-        return false;
+    public void requestActive() {
+        if (mListening) {
+            return; // Already listening, no need to check all handlers.
+        }
+
+        // Check through all available handlers.
+        for (ActiveModeHandler handler : mHandlers) {
+            if (!handler.isActive()) {
+                return;
+            }
+        }
+
+        startListening();
     }
 
     @Override
-    public boolean onHideEvent(ActiveSensor sensor) {
-        Presenter.getInstance().stop(this);
-        return false;
-    }
-
-    @Override
-    public void onConfigChanged(Config config, String key, Object value) {
-        boolean inactiveTimeEnabled = config.isInactiveTimeEnabled();
-        switch (key) {
-            case Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS:
-                if ((boolean) value) {
-                    mLackOfNotifies = false;
-                    start();
-                } else {
-                    // If you've disabled the active mode check the
-                    // amount of notifications and probably stop
-                    // listening.
-                    NotificationPresenter np = NotificationPresenter.getInstance(this);
-                    handleNotificationsCountChange(np);
-                }
-                break;
-            case Config.KEY_INACTIVE_TIME_FROM:
-            case Config.KEY_INACTIVE_TIME_TO:
-                if (!inactiveTimeEnabled) {
-                    break;
-                }
-
-                // Immediately update sensors' blocker.
-            case Config.KEY_INACTIVE_TIME_ENABLED:
-                handleInactiveHoursChanged(inactiveTimeEnabled);
-                break;
-        }
-    }
-
-    @Override
-    public void onNotificationListChanged(NotificationPresenter np,
-                                          OpenStatusBarNotification osbn,
-                                          int event) {
-        handleNotificationsCountChange(np);
-    }
-
-    private void handleNotificationsCountChange(NotificationPresenter np) {
-        boolean lackOfNotifies = !mConfig.isActiveModeWithoutNotifiesEnabled()
-                        && np.getList().size() == 0;
-
-        if (lackOfNotifies == mLackOfNotifies) {
-            // Nothing changed, go home.
-            return;
-        }
-
-        mLackOfNotifies = lackOfNotifies;
-        if (!mLackOfNotifies) {
-            start();
-        } else {
-            stopListening();
-        }
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    void start() {
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        Presenter presenter = Presenter.getInstance();
-        if (pm.isScreenOn()) {
-            mStateListener.OnActiveDisplayStateChanged(presenter.getActivity());
-        } else {
-            startListening();
-        }
+    public void requestInactive() {
+        stopListening();
     }
 
     /**
-     * Stops all monitoring sensors and removes delayed start event.
+     * Stops listening to {@link ActiveModeSensor sensors} (if not stopped already.)
+     *
+     * @see #buildAvailableSensorsList(android.content.Context)
+     * @see #startListening()
      */
     private void stopListening() {
-        mHandler.removeCallbacks(mStartListeningRunnable);
-
         if (!mListening & !(mListening = false)) return;
         if (Project.DEBUG) Log.d(TAG, "Stopping listening to sensors.");
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        for (ActiveSensor sensor : mSensors) {
+        for (ActiveModeSensor sensor : mSensors) {
             sensor.onDetached(sensorManager);
             sensor.unregisterCallback(this);
         }
     }
 
     /**
-     * Starts all monitoring sensors after a delay.
+     * Starts listening to {@link ActiveModeSensor sensors} (if not started already.)
      *
-     * @param millis the delay before monitoring started.
+     * @see #buildAvailableSensorsList(android.content.Context)
+     * @see #stopListening()
      */
-    private void startListeningDelayed(int millis) {
-        mHandler.postDelayed(mStartListeningRunnable, millis);
-    }
-
     private void startListening() {
-        if (mInactiveTime || mLackOfNotifies || mListening & (mListening = true)) return;
+        if (mListening & (mListening = true)) return;
         if (Project.DEBUG) Log.d(TAG, "Starting listening to sensors.");
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        for (ActiveSensor sensor : mSensors) {
-            sensor.onAttached(sensorManager, this);
+        for (ActiveModeSensor sensor : mSensors) {
             sensor.registerCallback(this);
+            sensor.onAttached(sensorManager, this);
         }
+    }
+
+    @Override
+    public boolean show(ActiveModeSensor sensor) {
+        Presenter.getInstance().start(this);
+        return false;
+    }
+
+    @Override
+    public boolean hide(ActiveModeSensor sensor) {
+        return false; // moved to AcDisplayActivity
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
 }

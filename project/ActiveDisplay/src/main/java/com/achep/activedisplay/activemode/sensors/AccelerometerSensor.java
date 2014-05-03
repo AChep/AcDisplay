@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.activedisplay.activemode;
+package com.achep.activedisplay.activemode.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -25,10 +25,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import com.achep.activedisplay.activemode.ActiveModeSensor;
+
 /**
  * Created by Artem on 08.03.14.
  */
-public class AccelerometerSensor extends ActiveSensor implements
+public class AccelerometerSensor extends ActiveModeSensor implements
         SensorEventListener {
 
     private static final String TAG = "AccelerometerSensor";
@@ -61,7 +63,7 @@ public class AccelerometerSensor extends ActiveSensor implements
     }
 
     @Override
-    protected void onAttached(SensorManager sensorManager, Context context) {
+    public void onAttached(SensorManager sensorManager, Context context) {
         Sensor accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         assert accelSensor != null; // Otherwise excluded by Service.
 
@@ -76,7 +78,7 @@ public class AccelerometerSensor extends ActiveSensor implements
     }
 
     @Override
-    protected void onDetached(SensorManager sensorManager) {
+    public void onDetached(SensorManager sensorManager) {
         sensorManager.unregisterListener(this);
         mContext = null;
 

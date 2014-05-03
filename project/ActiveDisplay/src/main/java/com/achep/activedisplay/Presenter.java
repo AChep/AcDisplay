@@ -44,6 +44,7 @@ public class Presenter {
      *
      * @return true if locked, false otherwise
      */
+    @Deprecated
     public boolean stop(Context context) {
         //noinspection SimplifiableIfStatement
         if (mActivity != null
