@@ -77,16 +77,13 @@ public class AcDisplayActivity extends KeyguardActivity implements
     private ActiveModeSensor[] mSensors;
     private ActiveModeSensor.Callback mSensorCallback = new ActiveModeSensor.Callback() {
         @Override
-        public boolean show(ActiveModeSensor sensor) {
-            return true;
-        }
+        public void show(ActiveModeSensor sensor) { /* unused */ }
 
         @Override
-        public boolean hide(ActiveModeSensor sensor) {
+        public void hide(ActiveModeSensor sensor) {
             if (isCloseableBySensor()) {
                 lock();
             }
-            return isLocking();
         }
     };
 

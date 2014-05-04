@@ -42,22 +42,18 @@ public abstract class ActiveModeSensor {
 
         /**
          * Requests to show the AcDisplay.
-         *
-         * @return {@code true} if AcDisplay is showing, {@code false} otherwise.
          */
-        public boolean show(ActiveModeSensor sensor);
+        public void show(ActiveModeSensor sensor);
 
         /**
          * Requests to hide the AcDisplay.
-         *
-         * @return {@code true} if AcDisplay is hidden, {@code false} otherwise.
          */
-        public boolean hide(ActiveModeSensor sensor);
+        public void hide(ActiveModeSensor sensor);
     }
 
     private ArrayList<Callback> mCallbacks;
 
-    public ActiveModeSensor() {
+    protected ActiveModeSensor() {
         mCallbacks = new ArrayList<>(4);
     }
 
@@ -81,13 +77,13 @@ public abstract class ActiveModeSensor {
         mCallbacks.remove(callback);
     }
 
-    protected void notifyShowEvent() {
+    protected void requestShowAcDisplay() {
         for (Callback callback : mCallbacks) {
             callback.show(this);
         }
     }
 
-    protected void notifyHideEvent() {
+    protected void requestHideAcDisplay() {
         for (Callback callback : mCallbacks) {
             callback.hide(this);
         }

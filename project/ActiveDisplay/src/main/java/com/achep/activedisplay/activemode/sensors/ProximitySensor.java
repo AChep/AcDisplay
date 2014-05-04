@@ -30,8 +30,14 @@ import android.util.Log;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.activemode.ActiveModeSensor;
 
+import java.lang.ref.WeakReference;
+
 /**
- * Created by Artem on 08.03.14.
+ * Basing on results of proximity sensor it notifies when
+ * {@link com.achep.activedisplay.activities.AcDisplayActivity AcDisplay}
+ * should be shown or hidden.
+ *
+ * @author Artem Chepurnoy
  */
 public class ProximitySensor extends ActiveModeSensor implements
         SensorEventListener {
@@ -40,39 +46,63 @@ public class ProximitySensor extends ActiveModeSensor implements
 
     private static final long CHANGE_TO_FAR_MIN_DELAY = 2500; // ms.
     private static final long CHANGE_TO_NEAR_MIN_DELAY = 0; // ms.
-    private static final long LOCK_DELAY = 1400; // ms.
-    private static final long LAUNCH_DELAY = 0; // ms.
-
-    private static boolean sProximityNear;
-    private static boolean sAttached;
-    private static long sLastEventTime;
-    private float mMaximumRange;
-
-    private Context mContext;
-
-    private Handler mHandler = new Handler();
-    private Runnable mLockRunnable = new Runnable() {
-        @Override
-        public void run() {
-            notifyHideEvent();
-        }
-    };
-    private Runnable mLaunchRunnable = new Runnable() {
-        @Override
-        public void run() {
-            notifyShowEvent();
-        }
-    };
 
     /**
-     * True if sensor is in "near" position, and False otherwise
-     * (or if data is too old / sensor unsupported).
-     *
-     * @return True if sensor is in "near" position, and False otherwise
-     * (or if data is too old / sensor unsupported).
+     * The delay in millis between sensor's change and hiding
+     * {@link com.achep.activedisplay.activities.AcDisplayActivity AcDisplay}
+     */
+    private static final long REQUEST_HIDE_ACDISPLAY_DELAY = 1400; // ms.
+
+    /**
+     * The delay in millis between sensor's change and showing
+     * {@link com.achep.activedisplay.activities.AcDisplayActivity AcDisplay}
+     */
+    private static final long REQUEST_SHOW_ACDISPLAY_DELAY = 200; // ms.
+
+    private static WeakReference<ProximitySensor> sProximitySensorWeak;
+    private static long sLastEventTime;
+    private static boolean sAttached;
+    private static boolean sNear;
+
+    private float mAttachedNumber;
+    private float mMaximumRange;
+    private boolean mFirstChange;
+
+    private PowerManager mPowerManager;
+
+    private Handler mHandler = new Handler();
+    private Runnable mHideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            requestHideAcDisplay();
+        }
+    };
+    private Runnable mShowRunnable = new Runnable() {
+        @Override
+        public void run() {
+            requestShowAcDisplay();
+        }
+    };
+
+    private ProximitySensor() {
+        super();
+    }
+
+    public static ProximitySensor getInstance() {
+        ProximitySensor sensor = sProximitySensorWeak != null
+                ? sProximitySensorWeak.get() : null;
+        if (sensor == null) {
+            sensor = new ProximitySensor();
+            sProximitySensorWeak = new WeakReference<>(sensor);
+        }
+        return sensor;
+    }
+
+    /**
+     * @return {@code true} if sensor is currently in "near" state, and {@code false} otherwise.
      */
     public static boolean isNear() {
-        return (getTimeNow() - sLastEventTime < 1000 || sAttached) && sProximityNear;
+        return (getTimeNow() - sLastEventTime < 1000 || sAttached) && sNear;
     }
 
     @Override
@@ -82,68 +112,79 @@ public class ProximitySensor extends ActiveModeSensor implements
 
     @Override
     public void onAttached(SensorManager sensorManager, Context context) {
-        Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        assert proximitySensor != null; // Otherwise excluded by Service.
+        // Register sensors only once.
+        if (mAttachedNumber++ > 0) {
+            return;
+        }
 
+        Sensor proximitySensor = sensorManager.getDefaultSensor(getType());
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mMaximumRange = proximitySensor.getMaximumRange();
-        mContext = context;
 
         sAttached = true;
-        sProximityNear = false;
-        sLastEventTime = getTimeNow();
-
-        if (Project.DEBUG) Log.d(TAG, "maximum_range=" + mMaximumRange);
+        mFirstChange = true;
     }
 
     @Override
     public void onDetached(SensorManager sensorManager) {
+        if (--mAttachedNumber == 0) {
+            return;
+        }
+
         sensorManager.unregisterListener(this);
-        mHandler.removeCallbacks(mLockRunnable);
-        mHandler.removeCallbacks(mLaunchRunnable);
-        mContext = null;
+        mHandler.removeCallbacks(mHideRunnable);
+        mHandler.removeCallbacks(mShowRunnable);
 
         sAttached = false;
-        sLastEventTime = getTimeNow();
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         final float distance = event.values[0];
         final boolean isNear = distance < mMaximumRange || distance < 1.0f;
-        final boolean changed = sProximityNear != (sProximityNear = isNear);
+        final boolean changed = sNear != (sNear = isNear) || mFirstChange;
 
-        if (Project.DEBUG)
-            Log.d(TAG, "distance=" + distance + " is_near=" + isNear + " changed=" + changed);
+        if (Project.DEBUG) {
+            Log.d(TAG, "distance=" + distance
+                    + " is_near=" + isNear
+                    + " changed=" + changed);
+        }
 
         if (!changed) {
-            // Well just in cause if proximity sensor NOT always sends
-            // binary results. This should not happen, but who knows...
-            // I found maximum range buggy enough :P
+            // Well just in cause if proximity sensor is NOT always eventual.
+            // This should not happen, but who knows... I found maximum
+            // range buggy enough.
             return;
         }
 
-        mHandler.removeCallbacks(mLockRunnable);
-        mHandler.removeCallbacks(mLaunchRunnable);
+        mHandler.removeCallbacks(mHideRunnable);
+        mHandler.removeCallbacks(mShowRunnable);
         long now = getTimeNow();
 
         long delay = isNear ? CHANGE_TO_NEAR_MIN_DELAY : CHANGE_TO_FAR_MIN_DELAY;
-        if (now > sLastEventTime + delay && isNear == isScreenOn()) {
+        if (now > sLastEventTime + delay && isNear == isScreenOn() && !mFirstChange) {
+
+            // Hide or show the AcDisplay after a short delay
+            // during which this action can be canceled.
             if (isNear) {
-                mHandler.postDelayed(mLockRunnable, LOCK_DELAY);
+                mHandler.postDelayed(mHideRunnable,
+                        REQUEST_HIDE_ACDISPLAY_DELAY);
             } else {
-                mHandler.postDelayed(mLaunchRunnable, LAUNCH_DELAY);
+                mHandler.postDelayed(mShowRunnable,
+                        REQUEST_SHOW_ACDISPLAY_DELAY);
             }
         }
 
         sLastEventTime = now;
-    }
-
-    private boolean isScreenOn() {
-        PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-        return pm.isScreenOn();
+        mFirstChange = false;
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { /* unused */ }
+
+    private boolean isScreenOn() {
+        return mPowerManager.isScreenOn();
+    }
 }

@@ -84,9 +84,9 @@ public class ActiveModeService extends Service implements
      */
     public static ActiveModeSensor[] buildAvailableSensorsList(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        ActiveModeSensor[] sensors = new ActiveModeSensor[]{ // all available sensors
-                new AccelerometerSensor(),
-                new ProximitySensor()
+        ActiveModeSensor[] sensors = new ActiveModeSensor[] { // all available sensors
+                AccelerometerSensor.getInstance(),
+                ProximitySensor.getInstance()
         };
 
         // Count the number of supported sensors, and
