@@ -219,16 +219,13 @@ public class ActiveModeService extends Service implements
     }
 
     @Override
-    public boolean show(ActiveModeSensor sensor) {
+    public void show(ActiveModeSensor sensor) {
         Presenter.getInstance().start(this);
-        return false;
     }
 
     @Override
-    public boolean hide(ActiveModeSensor sensor) {
-        return false; // moved to AcDisplayActivity
-    }
-
+    public void hide(ActiveModeSensor sensor) { /* handled by AcDisplay activity */ }
+    
     @Override
     public IBinder onBind(Intent intent) {
         return null;
