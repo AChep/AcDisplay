@@ -29,7 +29,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.activedisplay.AsyncTask;
-import com.achep.activedisplay.Config;
 import com.achep.activedisplay.Device;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
@@ -62,7 +61,7 @@ public class NotificationData {
     public CharSequence summaryText;
 
     private Bitmap icon;
-    private Bitmap circledLargeIcon;
+    private Bitmap circleIcon;
     private Bitmap background;
 
     /**
@@ -96,8 +95,8 @@ public class NotificationData {
         return icon;
     }
 
-    public Bitmap getCircledLargeIcon() {
-        return circledLargeIcon;
+    public Bitmap getCircleIcon() {
+        return circleIcon;
     }
 
     public Bitmap getBackground() {
@@ -168,9 +167,62 @@ public class NotificationData {
         notifyListeners(BACKGROUND);
     }
 
-    public void loadNotification(Context context, StatusBarNotification sbn, boolean isRead) {
-        Config config = Config.getInstance(context);
+    /**
+     * Asynchronously loads the background of notification.
+     *
+     * @param sbn Notification to load from.
+     * @see #clearBackground()
+     */
+    public void loadBackground(Context context, StatusBarNotification sbn) {
+        // Stop previous thread if it is still
+        // running.
+        stopAsyncTask(mBackgroundLoader);
 
+        Bitmap bitmapIcon = sbn.getNotification().largeIcon;
+        if (bitmapIcon != null && !BitmapUtils.hasTransparentCorners(bitmapIcon)) {
+            mBackgroundLoader = new AcDisplayFragment.BackgroundFactoryThread(
+                    context, bitmapIcon, mBackgroundLoaderCallback);
+            mBackgroundLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    /**
+     * Frees the background of this notification.
+     *
+     * @see #loadBackground(Context, StatusBarNotification)
+     */
+    public void clearBackground() {
+        if (background != null) {
+            background.recycle();
+            setBackground(null);
+        }
+    }
+
+    /**
+     * Loads the circle icon of this notification.
+     *
+     * @see #clearCircleIcon()
+     */
+    public void loadCircleIcon(StatusBarNotification sbn) {
+        Bitmap bitmapIcon = sbn.getNotification().largeIcon;
+        if (bitmapIcon != null && !BitmapUtils.hasTransparentCorners(bitmapIcon)) {
+            circleIcon = BitmapUtils.createCircleBitmap(bitmapIcon);
+        }
+    }
+
+    /**
+     * Frees the circle icon of this notification.
+     *
+     * @see #loadBackground(Context, StatusBarNotification)
+     */
+    public void clearCircleIcon() {
+        if (circleIcon != null) {
+            circleIcon.recycle();
+            circleIcon = null;
+        }
+    }
+
+    public void loadNotification(Context context, StatusBarNotification sbn, boolean isRead) {
         boolean useViewExtractor = !Device.hasKitKatApi();
 
         if (!useViewExtractor) {
@@ -204,19 +256,6 @@ public class NotificationData {
         stopAsyncTask(mIconLoader);
         mIconLoader = new IconLoaderThread(context, sbn, this);
         mIconLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        stopAsyncTask(mBackgroundLoader);
-        background = sbn.getNotification().largeIcon;
-        if (background != null && !BitmapUtils.hasTransparentCorners(background)) {
-            mBackgroundLoader = new AcDisplayFragment.BackgroundFactoryThread(context, background, mBackgroundLoaderCallback);
-            mBackgroundLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-            if (config.isCircledLargeIconEnabled()) {
-                circledLargeIcon = BitmapUtils.createCircleBitmap(background);
-            }
-        } else {
-            background = null;
-        }
     }
 
     private void stopAsyncTask(AsyncTask asyncTask) {

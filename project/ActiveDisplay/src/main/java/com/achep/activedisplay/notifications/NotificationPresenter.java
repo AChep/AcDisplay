@@ -30,6 +30,7 @@ import android.util.Log;
 import com.achep.activedisplay.Config;
 import com.achep.activedisplay.InactiveHoursHelper;
 import com.achep.activedisplay.NotificationIds;
+import com.achep.activedisplay.Operator;
 import com.achep.activedisplay.Presenter;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
@@ -74,9 +75,36 @@ public class NotificationPresenter implements NotificationList.Callback {
 
         @Override
         public void onConfigChanged(Config config, String key, Object value) {
+            boolean enabled;
             switch (key) {
                 case Config.KEY_LOW_PRIORITY_NOTIFICATIONS:
                     handleLowPriorityNotificationsPreferenceChanged();
+                    break;
+                case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
+                    enabled = Operator.bitAnd((int) value, Config.DYNAMIC_BG_NOTIFICATION_MASK);
+                    for (OpenStatusBarNotification osbn : mGList.list()) {
+                        StatusBarNotification sbn = osbn.getStatusBarNotification();
+                        NotificationData data = osbn.getNotificationData();
+
+                        if (enabled) {
+                            data.loadBackground(config.getContext(), sbn);
+                        } else {
+                            data.clearBackground();
+                        }
+                    }
+                    break;
+                case Config.KEY_UI_NOTIFY_CIRCLED_ICON:
+                    enabled = (boolean) value;
+                    for (OpenStatusBarNotification osbn : mGList.list()) {
+                        StatusBarNotification sbn = osbn.getStatusBarNotification();
+                        NotificationData data = osbn.getNotificationData();
+
+                        if (enabled) {
+                            data.loadCircleIcon(sbn);
+                        } else {
+                            data.clearCircleIcon();
+                        }
+                    }
                     break;
             }
         }
@@ -189,6 +217,19 @@ public class NotificationPresenter implements NotificationList.Callback {
         // list there's no point of loading its data.
         if (globalValid) {
             osbn.loadData(context);
+
+            StatusBarNotification sbn = osbn.getStatusBarNotification();
+            NotificationData data = osbn.getNotificationData();
+            Config config = Config.getInstance(context);
+
+            // Selective load exactly what we need and nothing more.
+            // This will reduce RAM consumption for a bit (1% or so.)
+            if (config.isCircledLargeIconEnabled())
+                data.loadCircleIcon(sbn);
+            if (Operator.bitAnd(
+                    config.getDynamicBackgroundMode(),
+                    Config.DYNAMIC_BG_NOTIFICATION_MASK))
+                data.loadBackground(context, sbn);
         }
 
         mGList.pushOrRemove(osbn, globalValid, silently);

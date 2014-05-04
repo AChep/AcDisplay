@@ -24,7 +24,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
@@ -34,7 +33,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,7 +42,6 @@ import com.achep.activedisplay.R;
 import com.achep.activedisplay.notifications.NotificationData;
 import com.achep.activedisplay.notifications.NotificationUtils;
 import com.achep.activedisplay.notifications.OpenStatusBarNotification;
-import com.achep.activedisplay.utils.BitmapUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 import com.achep.activedisplay.view.NotifyingLayout;
 
@@ -195,7 +192,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         mSubtextTextView.setText(subText);
         mWhenTextView.setText(whenText);
 
-        Bitmap bitmap = data.getCircledLargeIcon();
+        Bitmap bitmap = data.getCircleIcon();
         if (bitmap == null) bitmap = sbn.getNotification().largeIcon;
         if (bitmap != null) {
 

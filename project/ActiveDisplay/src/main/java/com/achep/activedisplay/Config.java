@@ -92,6 +92,7 @@ public class Config {
     private boolean mUiNotifyCircledIcon;
 
     private ArrayList<OnConfigChangedListener> mListeners;
+    private Context mContext;
 
     // //////////////////////////////////////////
     // /////////// -- LISTENERS -- //////////////
@@ -175,6 +176,14 @@ public class Config {
         return context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
     }
 
+    /**
+     * You may get a context from here only on
+     * {@link Config.OnConfigChangedListener#onConfigChanged(Config, String, Object) config change}.
+     */
+    public Context getContext() {
+        return mContext;
+    }
+
     private void notifyConfigChanged(String key, Object value, OnConfigChangedListener listener) {
         for (OnConfigChangedListener l : mListeners) {
             if (l == listener) continue;
@@ -199,7 +208,9 @@ public class Config {
         } else throw new IllegalArgumentException("Unknown option type.");
         editor.apply();
 
+        mContext = context;
         notifyConfigChanged(key, value, listener);
+        mContext = null;
     }
 
     // //////////////////////////////////////////
