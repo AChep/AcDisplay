@@ -20,7 +20,13 @@
 package com.achep.activedisplay.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.util.Log;
 
 /**
  * Created by Artem on 24.03.2014.
@@ -34,6 +40,31 @@ public class BitmapUtils {
                 || bitmap.getPixel(width, 0) == Color.TRANSPARENT
                 || bitmap.getPixel(0, height) == Color.TRANSPARENT
                 || bitmap.getPixel(width, height) == Color.TRANSPARENT;
+    }
+
+    /**
+     * Create a bitmap which is wrapped to circle
+     * (similar to what you can see in G+ profile pic.)
+     *
+     * @param bitmap Original Bitmap
+     * @return Circled bitmap
+     */
+    public static Bitmap createCircleBitmap(Bitmap bitmap) {
+        final int width = bitmap.getWidth();
+        final int height = bitmap.getHeight();
+
+        BitmapShader bitmapShader = new BitmapShader(bitmap,
+                Shader.TileMode.CLAMP,
+                Shader.TileMode.CLAMP);
+        Paint bitmapPaint = new Paint();
+        bitmapPaint.setAntiAlias(true);
+        bitmapPaint.setShader(bitmapShader);
+
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        canvas.drawCircle(width / 2, height / 2, Math.min(width, height) / 2, bitmapPaint);
+
+        return output;
     }
 
     public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {

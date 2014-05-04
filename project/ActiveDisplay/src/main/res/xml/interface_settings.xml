@@ -50,6 +50,12 @@
         -->
 
     <CheckBoxPreference
+        android:key="notify_circled_icon"
+        android:title="@string/settings_notify_circled_icon_title"
+        android:summaryOn="@string/settings_notify_circled_icon_on"
+        android:defaultValue="@bool/config_default_ui_notify_circled_icon"/>
+
+    <CheckBoxPreference
         android:key="mirrored_timeout_progress_bar"
         android:title="@string/settings_mirrored_timeout_progress_bar_title"
         android:summaryOff="@string/settings_mirrored_timeout_progress_bar_off"

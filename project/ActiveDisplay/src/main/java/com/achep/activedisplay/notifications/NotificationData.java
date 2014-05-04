@@ -29,6 +29,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.activedisplay.AsyncTask;
+import com.achep.activedisplay.Config;
 import com.achep.activedisplay.Device;
 import com.achep.activedisplay.Project;
 import com.achep.activedisplay.R;
@@ -61,6 +62,7 @@ public class NotificationData {
     public CharSequence summaryText;
 
     private Bitmap icon;
+    private Bitmap circledLargeIcon;
     private Bitmap background;
 
     /**
@@ -92,6 +94,10 @@ public class NotificationData {
      */
     public Bitmap getIcon() {
         return icon;
+    }
+
+    public Bitmap getCircledLargeIcon() {
+        return circledLargeIcon;
     }
 
     public Bitmap getBackground() {
@@ -137,8 +143,15 @@ public class NotificationData {
 
     private static SoftReference<Extractor> sNativeExtractor = new SoftReference<>(null);
     private static SoftReference<Extractor> sViewExtractor = new SoftReference<>(null);
-    private AcDisplayFragment.BackgroundFactoryThread mBackgroundLoader;
     private IconLoaderThread mIconLoader;
+    private AcDisplayFragment.BackgroundFactoryThread mBackgroundLoader;
+    private AcDisplayFragment.BackgroundFactoryThread.Callback mBackgroundLoaderCallback =
+            new AcDisplayFragment.BackgroundFactoryThread.Callback() {
+        @Override
+        public void onBackgroundCreated(Bitmap bitmap) {
+            setBackground(bitmap);
+        }
+    };
 
     public void markAsRead(boolean value) {
         if (isRead == (isRead = value)) return;
@@ -156,6 +169,8 @@ public class NotificationData {
     }
 
     public void loadNotification(Context context, StatusBarNotification sbn, boolean isRead) {
+        Config config = Config.getInstance(context);
+
         boolean useViewExtractor = !Device.hasKitKatApi();
 
         if (!useViewExtractor) {
@@ -193,15 +208,12 @@ public class NotificationData {
         stopAsyncTask(mBackgroundLoader);
         background = sbn.getNotification().largeIcon;
         if (background != null && !BitmapUtils.hasTransparentCorners(background)) {
-            mBackgroundLoader = new AcDisplayFragment.BackgroundFactoryThread(context, background,
-                    new AcDisplayFragment.BackgroundFactoryThread.Callback() {
-                        @Override
-                        public void onBackgroundCreated(Bitmap bitmap) {
-                            setBackground(bitmap);
-                        }
-                    }
-            );
+            mBackgroundLoader = new AcDisplayFragment.BackgroundFactoryThread(context, background, mBackgroundLoaderCallback);
             mBackgroundLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+            if (config.isCircledLargeIconEnabled()) {
+                circledLargeIcon = BitmapUtils.createCircleBitmap(background);
+            }
         } else {
             background = null;
         }

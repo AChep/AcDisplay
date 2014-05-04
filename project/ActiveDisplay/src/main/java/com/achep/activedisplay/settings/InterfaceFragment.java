@@ -46,6 +46,7 @@ public class InterfaceFragment extends PreferenceFragment implements
     private CheckBoxPreference mShowWallpaper;
     private CheckBoxPreference mShadowToggle;
     private CheckBoxPreference mMirroredTimeoutToggle;
+    private CheckBoxPreference mCircledIconToggle;
     private MultiSelectListPreference mDynamicBackground;
 
     private boolean mBroadcasting;
@@ -63,11 +64,14 @@ public class InterfaceFragment extends PreferenceFragment implements
                 Config.KEY_UI_DYNAMIC_BACKGROUND_MODE);
         mMirroredTimeoutToggle = (CheckBoxPreference) findPreference(
                 Config.KEY_UI_MIRRORED_TIMEOUT_BAR);
+        mCircledIconToggle = (CheckBoxPreference) findPreference(
+                Config.KEY_UI_NOTIFY_CIRCLED_ICON);
 
         mShowWallpaper.setOnPreferenceChangeListener(this);
         mShadowToggle.setOnPreferenceChangeListener(this);
         mDynamicBackground.setOnPreferenceChangeListener(this);
         mMirroredTimeoutToggle.setOnPreferenceChangeListener(this);
+        mCircledIconToggle.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -79,6 +83,7 @@ public class InterfaceFragment extends PreferenceFragment implements
         updateShowWallpaperPreference(config);
         updateShowShadowPreference(config);
         updateMirroredTimeoutPreference(config);
+        updateCircledIconPreference(config);
         updateDynamicBackgroundPreference(config);
     }
 
@@ -103,6 +108,8 @@ public class InterfaceFragment extends PreferenceFragment implements
             config.setShadowEnabled(context, (Boolean) newValue, this);
         } else if (preference == mMirroredTimeoutToggle) {
             config.setMirroredTimeoutProgressBarEnabled(context, (Boolean) newValue, this);
+        } else if (preference == mCircledIconToggle) {
+            config.setCircledLargeIconEnabled(context, (Boolean) newValue, this);
         } else if (preference == mDynamicBackground) {
             int mode = 0;
 
@@ -130,6 +137,9 @@ public class InterfaceFragment extends PreferenceFragment implements
             case Config.KEY_UI_MIRRORED_TIMEOUT_BAR:
                 updateMirroredTimeoutPreference(config);
                 break;
+            case Config.KEY_UI_NOTIFY_CIRCLED_ICON:
+                updateCircledIconPreference(config);
+                break;
             case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
                 updateDynamicBackgroundPreference(config);
                 break;
@@ -146,6 +156,10 @@ public class InterfaceFragment extends PreferenceFragment implements
 
     private void updateMirroredTimeoutPreference(Config config) {
         updatePreference(mMirroredTimeoutToggle, config.isMirroredTimeoutProgressBarEnabled());
+    }
+
+    private void updateCircledIconPreference(Config config) {
+        updatePreference(mCircledIconToggle, config.isCircledLargeIconEnabled());
     }
 
     private void updatePreference(CheckBoxPreference preference, boolean checked) {

@@ -30,6 +30,7 @@
     <bool name="config_default_ui_mirrored_timeout_bar">true</bool>
     <bool name="config_default_inactive_time_enabled">false</bool>
     <bool name="config_default_timeout_enabled">true</bool>
+    <bool name="config_default_ui_notify_circled_icon">false</bool>
     <integer name="config_default_timeout_normal">10000</integer>
     <integer name="config_default_timeout_short">5000</integer>
     <integer name="config_default_inactive_time_from">60</integer>

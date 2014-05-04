@@ -69,6 +69,7 @@ public class Config {
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
     public static final String KEY_UI_MIRRORED_TIMEOUT_BAR = "mirrored_timeout_progress_bar";
+    public static final String KEY_UI_NOTIFY_CIRCLED_ICON = "notify_circled_icon";
 
     private static Config sConfig;
 
@@ -88,6 +89,7 @@ public class Config {
     private boolean mUiWallpaper;
     private boolean mUiWallpaperShadow;
     private boolean mUiMirroredTimeoutBar;
+    private boolean mUiNotifyCircledIcon;
 
     private ArrayList<OnConfigChangedListener> mListeners;
 
@@ -161,6 +163,8 @@ public class Config {
                 res.getInteger(R.integer.config_default_ui_show_shadow_dynamic_bg));
         mUiMirroredTimeoutBar = prefs.getBoolean(KEY_UI_MIRRORED_TIMEOUT_BAR,
                 res.getBoolean(R.bool.config_default_ui_mirrored_timeout_bar));
+        mUiNotifyCircledIcon = prefs.getBoolean(KEY_UI_NOTIFY_CIRCLED_ICON,
+                res.getBoolean(R.bool.config_default_ui_notify_circled_icon));
 
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
@@ -354,6 +358,11 @@ public class Config {
         saveOption(context, KEY_UI_MIRRORED_TIMEOUT_BAR, enabled, listener, changed);
     }
 
+    public void setCircledLargeIconEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mUiNotifyCircledIcon != (mUiNotifyCircledIcon = enabled);
+        saveOption(context, KEY_UI_NOTIFY_CIRCLED_ICON, enabled, listener, changed);
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -404,6 +413,10 @@ public class Config {
 
     public boolean isShadowEnabled() {
         return mUiWallpaperShadow;
+    }
+
+    public boolean isCircledLargeIconEnabled() {
+        return mUiNotifyCircledIcon;
     }
 
     public boolean isMirroredTimeoutProgressBarEnabled() {

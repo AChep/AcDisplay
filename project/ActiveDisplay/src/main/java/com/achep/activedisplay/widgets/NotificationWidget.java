@@ -195,7 +195,8 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         mSubtextTextView.setText(subText);
         mWhenTextView.setText(whenText);
 
-        Bitmap bitmap = sbn.getNotification().largeIcon;
+        Bitmap bitmap = data.getCircledLargeIcon();
+        if (bitmap == null) bitmap = sbn.getNotification().largeIcon;
         if (bitmap != null) {
 
             // Disable tracking notification's icon

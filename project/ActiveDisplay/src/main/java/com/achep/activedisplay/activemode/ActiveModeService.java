@@ -225,7 +225,7 @@ public class ActiveModeService extends Service implements
 
     @Override
     public void hide(ActiveModeSensor sensor) { /* handled by AcDisplay activity */ }
-    
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;

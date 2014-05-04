@@ -63,6 +63,8 @@
     <string name="settings_mirrored_timeout_progress_bar_title">Mirrored timeout bar</string>
     <string name="settings_mirrored_timeout_progress_bar_on">Timeout bar disappears from both sides to center.</string>
     <string name="settings_mirrored_timeout_progress_bar_off">Timeout bar disappears from left to right.</string>
+    <string name="settings_notify_circled_icon_title">Circled notification icon</string>
+    <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>
