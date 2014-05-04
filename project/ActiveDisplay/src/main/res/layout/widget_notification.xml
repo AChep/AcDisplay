@@ -100,6 +100,7 @@
 
     </com.achep.activedisplay.view.NotifyingLayout>
 
+    <!--
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -108,5 +109,6 @@
         android:minWidth="2dp"
         android:minHeight="2dp"
         android:src="?acDisplayDotsDrawable" />
+        -->
 
 </com.achep.activedisplay.widgets.NotificationWidget>
