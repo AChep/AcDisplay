@@ -43,11 +43,13 @@ public class AccelerometerSensor extends ActiveModeSensor implements
 
     private static WeakReference<AccelerometerSensor> sAccelerometerSensorWeak;
 
+    private int mAttachedNumber;
+
     private AccelerometerSensor() {
         super();
     }
 
-    public static AccelerometerSensor getInstance() {
+    public static synchronized AccelerometerSensor getInstance() {
         AccelerometerSensor sensor = sAccelerometerSensorWeak != null
                 ? sAccelerometerSensorWeak.get() : null;
         if (sensor == null) {
@@ -69,13 +71,26 @@ public class AccelerometerSensor extends ActiveModeSensor implements
 
     @Override
     public void onAttached(SensorManager sensorManager, Context context) {
-        Sensor accelerationSensor = sensorManager.getDefaultSensor(getType());
-        sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        synchronized (this) {
+            // Register sensors only once.
+            if (mAttachedNumber++ > 0) {
+                return;
+            }
+
+            Sensor accelerationSensor = sensorManager.getDefaultSensor(getType());
+            sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     @Override
     public void onDetached(SensorManager sensorManager) {
-        sensorManager.unregisterListener(this);
+        synchronized (this) {
+            if (--mAttachedNumber > 0) {
+                return;
+            }
+
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Override

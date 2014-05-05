@@ -88,7 +88,7 @@ public class ProximitySensor extends ActiveModeSensor implements
         super();
     }
 
-    public static ProximitySensor getInstance() {
+    public static synchronized ProximitySensor getInstance() {
         ProximitySensor sensor = sProximitySensorWeak != null
                 ? sProximitySensorWeak.get() : null;
         if (sensor == null) {
@@ -112,32 +112,36 @@ public class ProximitySensor extends ActiveModeSensor implements
 
     @Override
     public void onAttached(SensorManager sensorManager, Context context) {
-        // Register sensors only once.
-        if (mAttachedNumber++ > 0) {
-            return;
+        synchronized (this) {
+            // Register sensors only once.
+            if (mAttachedNumber++ > 0) {
+                return;
+            }
+
+            Sensor proximitySensor = sensorManager.getDefaultSensor(getType());
+            sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+            mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mMaximumRange = proximitySensor.getMaximumRange();
+
+            sAttached = true;
+            mFirstChange = true;
         }
-
-        Sensor proximitySensor = sensorManager.getDefaultSensor(getType());
-        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        mMaximumRange = proximitySensor.getMaximumRange();
-
-        sAttached = true;
-        mFirstChange = true;
     }
 
     @Override
     public void onDetached(SensorManager sensorManager) {
-        if (--mAttachedNumber == 0) {
-            return;
+        synchronized (this) {
+            if (--mAttachedNumber > 0) {
+                return;
+            }
+
+            sensorManager.unregisterListener(this);
+            mHandler.removeCallbacks(mHideRunnable);
+            mHandler.removeCallbacks(mShowRunnable);
+
+            sAttached = false;
         }
-
-        sensorManager.unregisterListener(this);
-        mHandler.removeCallbacks(mHideRunnable);
-        mHandler.removeCallbacks(mShowRunnable);
-
-        sAttached = false;
     }
 
     @Override
