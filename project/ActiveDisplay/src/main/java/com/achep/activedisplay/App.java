@@ -21,6 +21,7 @@ package com.achep.activedisplay;
 import android.app.Application;
 import android.content.Intent;
 
+import com.achep.activedisplay.activemode.ActiveModeService;
 import com.achep.activedisplay.services.KeyguardService;
 
 /**
@@ -32,11 +33,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // If lockscreen is enabled launch it on start.
-        Config config = Config.getInstance(this);
-        if (config.isKeyguardEnabled()) {
-            Intent intent = new Intent(this, KeyguardService.class);
-            startService(intent);
-        }
+        // Launch keyguard and (or) active mode on
+        // app launch.
+        KeyguardService.handleState(this);
+        ActiveModeService.handleState(this);
     }
 }
