@@ -100,7 +100,7 @@ public class InactiveHoursPreference extends DialogPreference implements View.On
         mTo.labelTextView = toTextView;
         mTo.labelSource = context.getString(R.string.preference_inactive_hours_to);
 
-        Config config = Config.getInstance(context);
+        Config config = Config.getInstance();
         mFrom.setTime(context, config.getInactiveTimeFrom());
         mTo.setTime(context, config.getInactiveTimeTo());
         mEnabled.setChecked(config.isInactiveTimeEnabled());
@@ -122,7 +122,7 @@ public class InactiveHoursPreference extends DialogPreference implements View.On
         }
 
         Context context = getContext();
-        Config config = Config.getInstance(context);
+        Config config = Config.getInstance();
         config.setInactiveTimeFrom(context, mFrom.hours * 60 + mFrom.minutes, null);
         config.setInactiveTimeTo(context, mTo.hours * 60 + mTo.minutes, null);
         config.setInactiveTimeEnabled(context, mEnabled.isChecked(), null);

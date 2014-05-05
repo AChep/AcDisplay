@@ -114,14 +114,20 @@ public class Config {
     // ///////////// -- INIT -- /////////////////
     // //////////////////////////////////////////
 
-    public static synchronized Config getInstance(Context context) {
+    public static synchronized Config getInstance() {
         if (sConfig == null) {
-            sConfig = new Config(context);
+            sConfig = new Config();
         }
         return sConfig;
     }
 
-    private Config(Context context) {
+    private Config() { /* unused */ }
+
+    /**
+     * Loads saved values from shared preferences.
+     * This is called on {@link App app's} create.
+     */
+    void init(Context context) {
         mListeners = new ArrayList<>(6);
 
         Resources res = context.getResources();

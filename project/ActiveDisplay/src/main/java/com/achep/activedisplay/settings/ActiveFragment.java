@@ -64,7 +64,7 @@ public class ActiveFragment extends PreferenceFragment implements
     public void onResume() {
         super.onResume();
         mActiveModeEnabler.resume();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.addOnConfigChangedListener(this);
 
         updateActiveModeWithoutNotifiesPreference(config);
@@ -74,7 +74,7 @@ public class ActiveFragment extends PreferenceFragment implements
     public void onPause() {
         super.onPause();
         mActiveModeEnabler.pause();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.removeOnConfigChangedListener(this);
     }
 
@@ -84,7 +84,7 @@ public class ActiveFragment extends PreferenceFragment implements
             return true;
         }
 
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         if (preference == mActiveModeWithoutNotifiesPreference) {
             config.setActiveModeWithoutNotificationsEnabled(getActivity(), (Boolean) newValue, this);
         } else

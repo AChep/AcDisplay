@@ -31,6 +31,8 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+        Config.getInstance().init(this);
+
         super.onCreate();
 
         // Launch keyguard and (or) active mode on

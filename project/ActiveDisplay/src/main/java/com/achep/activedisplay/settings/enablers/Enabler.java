@@ -37,7 +37,7 @@ public abstract class Enabler implements
 
     public Enabler(Context context, Switch switch_) {
         mContext = context;
-        mConfig = Config.getInstance(mContext);
+        mConfig = Config.getInstance();
         mSwitch = switch_;
     }
 

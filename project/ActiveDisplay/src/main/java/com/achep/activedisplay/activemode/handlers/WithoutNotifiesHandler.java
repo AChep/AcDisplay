@@ -46,7 +46,7 @@ public final class WithoutNotifiesHandler extends ActiveModeHandler implements
 
     @Override
     public void onCreate() {
-        mConfig = Config.getInstance(getContext());
+        mConfig = Config.getInstance();
         mConfig.addOnConfigChangedListener(this);
 
         mNotificationPresenter = NotificationPresenter.getInstance(getContext());

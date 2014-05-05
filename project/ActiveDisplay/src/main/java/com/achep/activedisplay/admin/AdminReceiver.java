@@ -39,7 +39,7 @@ public class AdminReceiver extends android.app.admin.DeviceAdminReceiver {
         super.onDisabled(context, intent);
         LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ACTION_DISABLED));
 
-        Config config = Config.getInstance(context);
+        Config config = Config.getInstance();
         if (config.isEnabled()) {
 
             Toast.makeText(context, R.string.app_auto_disabled, Toast.LENGTH_LONG).show();

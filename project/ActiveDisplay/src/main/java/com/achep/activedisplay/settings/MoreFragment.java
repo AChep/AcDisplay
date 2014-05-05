@@ -59,7 +59,7 @@ public class MoreFragment extends PreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.addOnConfigChangedListener(this);
 
         updateOnlyWhileChargingPreference(config);
@@ -71,7 +71,7 @@ public class MoreFragment extends PreferenceFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.removeOnConfigChangedListener(this);
     }
 
@@ -81,7 +81,7 @@ public class MoreFragment extends PreferenceFragment implements
             return true;
         }
 
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         if (preference == mOnlyWhileChargingPreference) {
             config.setActiveDisplayEnabledOnlyWhileCharging(getActivity(), (Boolean) newValue, this);
         } else

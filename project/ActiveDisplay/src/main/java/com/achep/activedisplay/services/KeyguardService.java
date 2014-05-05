@@ -68,7 +68,7 @@ public class KeyguardService extends Service {
      */
     public static void handleState(Context context) {
         Intent intent = new Intent(context, KeyguardService.class);
-        Config config = Config.getInstance(context);
+        Config config = Config.getInstance();
 
         boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
                 || PowerUtils.isPlugged(context);

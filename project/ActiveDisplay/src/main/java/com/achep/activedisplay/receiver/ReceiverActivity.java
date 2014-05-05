@@ -66,19 +66,19 @@ public class ReceiverActivity extends Activity {
                 Log.i(TAG, "Enabling active display by remote intent.");
                 ToastUtils.showLong(this, getString(R.string.remote_enable_acdisplay));
 
-                Config.getInstance(this).setEnabled(this, true, null);
+                Config.getInstance().setEnabled(this, true, null);
                 break;
 
             case HOST_DISABLE:
                 Log.i(TAG, "Disabling active display by remote intent.");
                 ToastUtils.showLong(this, getString(R.string.remote_disable_acdisplay));
 
-                Config.getInstance(this).setEnabled(this, false, null);
+                Config.getInstance().setEnabled(this, false, null);
                 break;
 
             case HOST_TOGGLE:
                 Log.i(TAG, "Toggling active display by remote intent.");
-                config = Config.getInstance(this);
+                config = Config.getInstance();
                 config.setEnabled(this, !config.isEnabled(), null);
 
                 ToastUtils.showLong(this, getString(config.isEnabled()

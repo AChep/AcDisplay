@@ -73,7 +73,7 @@ public class Presenter {
         //      `---------'
         pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG).acquire(1000);
 
-        Config config = Config.getInstance(context);
+        Config config = Config.getInstance();
 
         kill();
         KeyguardService.ignoreCurrentTurningOn();

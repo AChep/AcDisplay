@@ -174,7 +174,7 @@ public class AcDisplayFragment extends Fragment implements
         mCurrentScene = mSceneMain;
         mSceneMain.enter();
 
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
 
         // /////////////////
         // ~~ TIMEOUT GUI ~~
@@ -226,7 +226,7 @@ public class AcDisplayFragment extends Fragment implements
         Context context = getActivity();
         assert context != null;
 
-        mConfig = Config.getInstance(context);
+        mConfig = Config.getInstance();
         mPresenter = NotificationPresenter.getInstance(context);
         mPresenter.addOnNotificationListChangedListener(mNotificationListener);
         updateNotificationList();

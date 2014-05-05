@@ -51,7 +51,7 @@ public class NotificationFragment extends PreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.addOnConfigChangedListener(this);
 
         updateLowPriorityPreference(config);
@@ -60,7 +60,7 @@ public class NotificationFragment extends PreferenceFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.removeOnConfigChangedListener(this);
     }
 
@@ -70,7 +70,7 @@ public class NotificationFragment extends PreferenceFragment implements
             return true;
         }
 
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         if (preference == mLowPriorityPreference) {
             config.setLowPriorityNotificationsAllowed(getActivity(), (Boolean) newValue, this);
         } else

@@ -97,7 +97,7 @@ public class TimeoutPreference extends DialogPreference implements
         mMin = res.getInteger(R.integer.config_timeout_minDurationMillis) / MULTIPLIER;
         mSoftStoredLabels = new SoftReference[max + 1];
 
-        Config config = Config.getInstance(getContext());
+        Config config = Config.getInstance();
 
         mDisabled = (CheckBox) root.findViewById(R.id.no_timeout_checkbox);
         mDisabled.setChecked(!config.isTimeoutEnabled());
@@ -142,7 +142,7 @@ public class TimeoutPreference extends DialogPreference implements
         }
 
         // Save changes to config.
-        Config config = Config.getInstance(getContext());
+        Config config = Config.getInstance();
         for (Group group : mGroups) {
             try {
                 Method method = Config.class.getDeclaredMethod(group.setterName,

@@ -77,7 +77,7 @@ public class InterfaceFragment extends PreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.addOnConfigChangedListener(this);
 
         updateShowWallpaperPreference(config);
@@ -90,7 +90,7 @@ public class InterfaceFragment extends PreferenceFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        Config config = Config.getInstance(getActivity());
+        Config config = Config.getInstance();
         config.removeOnConfigChangedListener(this);
     }
 
@@ -101,7 +101,7 @@ public class InterfaceFragment extends PreferenceFragment implements
         }
 
         Context context = getActivity();
-        Config config = Config.getInstance(context);
+        Config config = Config.getInstance();
         if (preference == mShowWallpaper) {
             config.setWallpaperShown(context, (Boolean) newValue, this);
         } else if (preference == mShadowToggle) {

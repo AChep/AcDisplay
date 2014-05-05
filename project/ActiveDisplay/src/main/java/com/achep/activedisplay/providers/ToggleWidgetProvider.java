@@ -81,7 +81,7 @@ public class ToggleWidgetProvider extends AppWidgetProvider
         }
 
         mContext = context;
-        mConfig = Config.getInstance(context);
+        mConfig = Config.getInstance();
         mConfig.addOnConfigChangedListener(this);
 
         if (Project.DEBUG) Log.d(TAG, "Toggle widget enabled");

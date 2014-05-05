@@ -81,7 +81,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mConfig = Config.getInstance(this);
+        mConfig = Config.getInstance();
         mConfig.addOnConfigChangedListener(this);
 
         getActionBar().setDisplayShowCustomEnabled(true);

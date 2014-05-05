@@ -154,7 +154,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mConfig = Config.getInstance(this);
+        mConfig = Config.getInstance();
         if (mConfig.isWallpaperShown()) {
             if (mConfig.isShadowEnabled()) {
                 setTheme(R.style.AcDisplayTheme_Wallpaper_WithShadow);
