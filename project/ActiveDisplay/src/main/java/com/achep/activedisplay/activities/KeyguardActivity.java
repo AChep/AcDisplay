@@ -42,6 +42,9 @@ public abstract class KeyguardActivity extends Activity {
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
     public static final String EXTRA_FINISH_ON_SCREEN_OFF = "finish_on_screen_off";
 
+    public static final String INTENT_EAT_HOME_PRESS_START = "com.achep.acdisplay.EAT_HOME_PRESS_START";
+    public static final String INTENT_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
+
     private BroadcastReceiver mScreenOffReceiver;
 
     private boolean mLocking;
@@ -87,6 +90,21 @@ public abstract class KeyguardActivity extends Activity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         mUnlocking = false;
         mLocking = false;
+
+        // Notifies Xposed module to start ignoring
+        // home button press.
+        Intent intent = new Intent(INTENT_EAT_HOME_PRESS_START);
+        sendBroadcast(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Notifies Xposed module to stop ignoring
+        // home button press.
+        Intent intent = new Intent(INTENT_EAT_HOME_PRESS_STOP);
+        sendBroadcast(intent);
     }
 
     @Override
