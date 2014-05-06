@@ -57,7 +57,7 @@ public class OverrideHomeButton implements IXposedHookZygoteInit {
                                         active = true;
                                         break;
                                     case INTENT_EAT_HOME_PRESS_STOP:
-                                        active = true;
+                                        active = false;
                                         break;
                                 }
                             }
