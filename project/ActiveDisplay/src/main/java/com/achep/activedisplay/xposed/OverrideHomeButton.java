@@ -32,10 +32,11 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 public class OverrideHomeButton implements IXposedHookZygoteInit {
 
-    static boolean active = false;
     public static final String INTENT_EAT_HOME_PRESS_START = "com.achep.acdisplay.EAT_HOME_PRESS_START";
     public static final String INTENT_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
 
+    private static boolean active = false;
+    
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
 
@@ -51,15 +52,19 @@ public class OverrideHomeButton implements IXposedHookZygoteInit {
                         BroadcastReceiver mAcDisplayReceiver = new BroadcastReceiver() {
                             @Override
                             public void onReceive(Context context, Intent intent) {
-                                if (intent.getAction().equals(INTENT_EAT_HOME_PRESS_START))
-                                    active = true;
-                                else if (intent.getAction().equals(EAT_HOME_PRESS_STOP))
-                                    active = false;
+                                switch (intent.getAction()) {
+                                    case INTENT_EAT_HOME_PRESS_START:
+                                        active = true;
+                                        break;
+                                    case INTENT_EAT_HOME_PRESS_STOP:
+                                        active = true;
+                                        break;
+                                }
                             }
                         };
                         IntentFilter filter = new IntentFilter();
-                        filter.addAction(EAT_HOME_PRESS_START);
-                        filter.addAction(EAT_HOME_PRESS_STOP);
+                        filter.addAction(INTENT_EAT_HOME_PRESS_START);
+                        filter.addAction(INTENT_EAT_HOME_PRESS_STOP);
                         Context context = (Context) getObjectField(param.thisObject, "mContext");
                         context.registerReceiver(mAcDisplayReceiver, filter);
                     }
