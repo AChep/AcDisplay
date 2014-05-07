@@ -99,6 +99,7 @@ public class DialogHelper {
         private CharSequence mTitleText;
         private CharSequence mMessageText;
         private View mView;
+        private int mViewRes;
 
         public Builder(Context context) {
             mContext = context;
@@ -114,6 +115,7 @@ public class DialogHelper {
                     .append(mIcon)
                     .append(mTitleText)
                     .append(mMessageText)
+                    .append(mViewRes)
                     .append(mView)
                     .toHashCode();
         }
@@ -136,6 +138,7 @@ public class DialogHelper {
                     .append(mIcon, builder.mIcon)
                     .append(mTitleText, builder.mTitleText)
                     .append(mMessageText, builder.mMessageText)
+                    .append(mViewRes, builder.mViewRes)
                     .append(mView, builder.mView)
                     .isEquals();
         }
@@ -173,6 +176,13 @@ public class DialogHelper {
 
         public Builder setView(View view) {
             mView = view;
+            mViewRes = 0;
+            return this;
+        }
+
+        public Builder setView(int layoutRes) {
+            mView = null;
+            mViewRes = layoutRes;
             return this;
         }
 
@@ -185,8 +195,9 @@ public class DialogHelper {
 
             ViewGroup rootLayout = (ViewGroup) inflater.inflate(R.layout.dialog_base, null);
             TextView titleView = (TextView) rootLayout.findViewById(R.id.title);
-            ViewGroup bodyLayout = (ViewGroup) rootLayout.findViewById(R.id.content);
-            TextView messageView = (TextView) rootLayout.findViewById(R.id.message);
+            ScrollView bodyScrollView = (ScrollView) rootLayout.findViewById(R.id.scrollview);
+            ViewGroup bodyLayout = (ViewGroup) bodyScrollView.findViewById(R.id.content);
+            TextView messageView = (TextView) bodyLayout.findViewById(R.id.message);
 
             Drawable left = (mContext.getResources().getConfiguration().screenLayout &
                     Configuration.SCREENLAYOUT_SIZE_MASK) !=
@@ -203,12 +214,15 @@ public class DialogHelper {
 
             // Setup content
             bodyLayout.removeView(messageView);
-            if (mView != null) bodyLayout.addView(mView);
             if (!TextUtils.isEmpty(mMessageText)) {
                 messageView.setMovementMethod(new LinkMovementMethod());
                 messageView.setText(mMessageText);
                 bodyLayout.addView(messageView);
             }
+
+            // Custom view
+            if (mViewRes != 0) mView = inflater.inflate(mViewRes, bodyLayout, false);
+            if (mView != null) bodyLayout.addView(mView);
 
             return rootLayout;
         }
@@ -217,7 +231,17 @@ public class DialogHelper {
          * Wraps custom dialog to the default {@link AlertDialog.Builder} with custom view.
          */
         public AlertDialog.Builder wrap() {
-            return new AlertDialog.Builder(mContext).setView(create());
+            return wrap(null);
+        }
+
+        public AlertDialog.Builder wrap(View[] customView) {
+            View view = create();
+
+            if (customView != null && customView.length == 1) {
+                customView[0] = mView;
+            }
+
+            return new AlertDialog.Builder(mContext).setView(view);
         }
 
     }
