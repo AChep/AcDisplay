@@ -130,7 +130,7 @@ public class TimeoutPreference extends DialogPreference implements
                 .setIcon(mIcon)
                 .setTitle(mTitle)
                 .setView(root)
-                .create();
+                .createCommonView();
     }
 
     @Override

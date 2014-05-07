@@ -110,7 +110,7 @@ public class InactiveHoursPreference extends DialogPreference implements View.On
                 .setIcon(mIcon)
                 .setTitle(mTitle)
                 .setView(root)
-                .create();
+                .createCommonView();
     }
 
     @Override

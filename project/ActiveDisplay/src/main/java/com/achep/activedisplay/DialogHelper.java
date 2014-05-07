@@ -93,6 +93,29 @@ public class DialogHelper {
      */
     public static class Builder {
 
+        /**
+         * Layout where content's layout exists in a {@link android.widget.ScrollView}.
+         * This is nice to display simple layout without scrollable elements such as
+         * {@link android.widget.ListView} or any similar. Use {@link #LAYOUT_SKELETON}
+         * for them.
+         *
+         * @see #LAYOUT_SKELETON
+         * @see #createCommonView()
+         * @see #wrap(android.view.View[], int)
+         */
+        public static final int LAYOUT_COMMON = 0;
+
+        /**
+         * The skeleton of dialog's layout. The only thing that is here is the custom
+         * view you set and the title / icon. Use it to display scrollable elements such as
+         * {@link android.widget.ListView}.
+         *
+         * @see #LAYOUT_COMMON
+         * @see #createSkeletonView()
+         * @see #wrap(android.view.View[], int)
+         */
+        public static final int LAYOUT_SKELETON = 1;
+
         protected final Context mContext;
 
         private Drawable mIcon;
@@ -188,29 +211,43 @@ public class DialogHelper {
 
         /**
          * Builds dialog's view
+         *
+         * @see #LAYOUT_COMMON
+         * @see #LAYOUT_SKELETON
          */
-        public View create() {
+        public View createView(int type) {
+            switch (type) {
+                case LAYOUT_COMMON:
+                    return createCommonView();
+                case LAYOUT_SKELETON:
+                    return createSkeletonView();
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
+        /**
+         * @see #LAYOUT_COMMON
+         * @see #createView(int)
+         */
+        public View createCommonView() {
+
+            // Creating skeleton layout will also
+            // add custom view. Avoid of doing it.
+            int customViewRes = mViewRes;
+            View customView = mView;
+            mViewRes = 0;
+            mView = null;
+
             LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            ViewGroup rootLayout = (ViewGroup) inflater.inflate(R.layout.dialog_base, null);
-            TextView titleView = (TextView) rootLayout.findViewById(R.id.title);
-            ScrollView bodyScrollView = (ScrollView) rootLayout.findViewById(R.id.scrollview);
-            ViewGroup bodyLayout = (ViewGroup) bodyScrollView.findViewById(R.id.content);
+            ViewGroup rootLayout = (ViewGroup) createSkeletonView();
+            View bodyRootView = inflater.inflate(R.layout.dialog_common, rootLayout, false);
+            ViewGroup bodyLayout = (ViewGroup) bodyRootView.findViewById(R.id.content);
             TextView messageView = (TextView) bodyLayout.findViewById(R.id.message);
 
-            Drawable left = (mContext.getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) !=
-                    Configuration.SCREENLAYOUT_SIZE_LARGE ? mIcon : null;
-            Drawable top = left == null ? mIcon : null;
-
-            // Setup title
-            if (mTitleText != null) {
-                titleView.setText(mTitleText);
-                titleView.setCompoundDrawablesWithIntrinsicBounds(left, top, null, null);
-            } else {
-                rootLayout.removeView(titleView);
-            }
+            rootLayout.addView(bodyRootView);
 
             // Setup content
             bodyLayout.removeView(messageView);
@@ -221,21 +258,51 @@ public class DialogHelper {
             }
 
             // Custom view
-            if (mViewRes != 0) mView = inflater.inflate(mViewRes, bodyLayout, false);
-            if (mView != null) bodyLayout.addView(mView);
+            if (customViewRes != 0) customView = inflater.inflate(customViewRes, bodyLayout, false);
+            if (customView != null) bodyLayout.addView(customView);
 
             return rootLayout;
         }
 
         /**
-         * Wraps custom dialog to the default {@link AlertDialog.Builder} with custom view.
+         * @see #LAYOUT_SKELETON
+         * @see #createView(int)
          */
-        public AlertDialog.Builder wrap() {
-            return wrap(null);
+        public View createSkeletonView() {
+            LayoutInflater inflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            ViewGroup rootLayout = (ViewGroup) inflater.inflate(R.layout.dialog_skeleton, null);
+            TextView titleView = (TextView) rootLayout.findViewById(R.id.title);
+
+            // Setup icon
+            Drawable left = (mContext.getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) !=
+                    Configuration.SCREENLAYOUT_SIZE_LARGE ? mIcon : null;
+            Drawable top = left == null ? mIcon : null;
+
+            // Setup title
+            if (mTitleText != null) {
+                titleView.setText(mTitleText);
+                titleView.setCompoundDrawablesWithIntrinsicBounds(left, top, null, null);
+            } else {
+                // This also removes an icon.
+                rootLayout.removeView(titleView);
+            }
+
+            // Custom view
+            if (mViewRes != 0) mView = inflater.inflate(mViewRes, rootLayout, false);
+            if (mView != null) rootLayout.addView(mView);
+
+            return rootLayout;
         }
 
-        public AlertDialog.Builder wrap(View[] customView) {
-            View view = create();
+        public AlertDialog.Builder wrap() {
+            return wrap(null, LAYOUT_COMMON);
+        }
+
+        public AlertDialog.Builder wrap(View[] customView, int type) {
+            View view = createView(type);
 
             if (customView != null && customView.length == 1) {
                 customView[0] = mView;
