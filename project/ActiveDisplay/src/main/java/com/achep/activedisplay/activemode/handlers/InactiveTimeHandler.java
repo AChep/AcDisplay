@@ -61,6 +61,11 @@ public final class InactiveTimeHandler extends ActiveModeHandler implements
     @Override
     public void onDestroy() {
         mConfig.removeOnConfigChangedListener(this);
+        
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
     }
 
     @Override
