@@ -17,6 +17,9 @@
  * MA  02110-1301, USA.
  */
 
+import groovy.swing.SwingBuilder
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         mavenCentral()
@@ -25,6 +28,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:0.10.+'
     }
 }
+
 apply plugin: 'android'
 
 repositories {
@@ -36,7 +40,7 @@ android {
     buildToolsVersion '19.0.3'
 
     lintOptions {
-        //checkReleaseBuilds false
+        checkReleaseBuilds true
         abortOnError false
     }
 
@@ -48,44 +52,117 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
-    final Console console = System.console();
-    if (console != null) {
-        signingConfigs {
-            release {
-                storeFile file(console.readLine("Enter keystore path: "))
-                storePassword console.readLine("Enter keystore password: ")
-                keyAlias console.readLine("Enter alias key: ")
-                keyPassword console.readLine("Enter key password: ")
-            }
-        }
-    } else {
-        signingConfigs {
-            release {
-            }
+    sourceSets {
+        main {
+            aidl.srcDirs = ['src/main/java']
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("ACDISPLAY_SIGN_STORE_FILE") + "")
+            keyAlias System.getenv("ACDISPLAY_SIGN_KEY_ALIAS") + ""
+
+            // These two lines make gradle believe that the signingConfigs
+            // section is complete. Without them, tasks like installRelease
+            // will not be available!
+            storePassword "empty"
+            keyPassword "empty"
+        }
+    }
+
+    SimpleDateFormat timeStampFormat = new SimpleDateFormat(
+            "EEE MMMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+    String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());
+
     buildTypes {
         debug {
-            zipAlign true
-            buildConfigField "boolean", "MY_DEBUG", "true"
             versionNameSuffix '-debug'
+
+            buildConfigField "boolean", "MY_DEBUG", "true"
+            buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
         }
+
         release {
             zipAlign true
             runProguard true
             proguardFile 'proguard-rules.txt'
             signingConfig signingConfigs.release
+
             buildConfigField "boolean", "MY_DEBUG", "false"
+            buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
         }
     }
     productFlavors {
-        defaultFlavor { }
-        localized { }
+        defaultFlavor {}
+        localized {}
     }
 }
 
 dependencies {
     provided files('src/main/libs/XposedBridgeApi-42.jar')
     compile 'com.android.support:support-v4:19.1.0'
+}
+
+project.task('askForPasswords') << {
+    def passKeystore = ''
+    def passKey = ''
+    if (System.console() == null) {
+        new SwingBuilder().dialog(
+                modal: true,
+                title: 'Enter sign config:',
+                alwaysOnTop: true,
+                resizable: false,
+                locationRelativeTo: null,
+                pack: true,
+                show: true
+        ) {
+            panel(constraints: BorderLayout.CENTER) {
+                tableLayout(cellpadding: 4) {
+                    tr {
+                        td { label(text: "Keystore password:") }
+                        td { passwordField(columns: 20, id: 'inputKeystore') }
+                    }
+                    tr {
+                        td { label(text: "Key password:") }
+                        td { passwordField(columns: 20, id: 'inputKey') }
+                    }
+                }
+            }
+            panel(constraints: BorderLayout.SOUTH) {
+                button(defaultButton: true, text: "OK", actionPerformed: {
+                    passKeystore = inputKeystore.password;
+                    passKey = inputKey.password;
+                    dispose(); // Close dialog
+                })
+            }
+        } // dialog end
+    } else {
+        Console console = System.console();
+        console.printf("\n\n\u001B[36m\u001B[1mSigning config\u001B[0m\n")
+        passKeystore = new String(console.readPassword("Please enter store password: "))
+        passKey = new String(console.readPassword("Please enter key password: "))
+    }
+
+    if (passKeystore.size() <= 0 || passKey.size() <= 0) {
+        throw new InvalidUserDataException("You must enter a password to proceed.")
+    }
+
+    android.signingConfigs.release.storePassword = passKeystore
+    android.signingConfigs.release.keyPassword = passKey
+
+}
+
+project.configure(project) {
+    if (it.hasProperty("android")) {
+        tasks.whenTaskAdded { theTask ->
+            if ((theTask.name ==~ /package.*Release/)
+                    && it.android.hasProperty("signingConfigs")
+                    && it.android.signingConfigs.hasProperty("release")) {
+                it.android.signingConfigs.release.storePassword = "-"
+                it.android.signingConfigs.release.keyPassword = "-"
+                theTask.dependsOn "askForPasswords"
+            }
+        }
+    }
 }
