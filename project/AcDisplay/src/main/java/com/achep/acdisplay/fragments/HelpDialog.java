@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.text.Html;
 
 import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.utils.IntentUtils;
 
 /**

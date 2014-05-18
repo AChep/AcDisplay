@@ -42,6 +42,7 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.Presenter;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.activemode.ActiveModeSensor;
 import com.achep.acdisplay.activemode.ActiveModeService;

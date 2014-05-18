@@ -30,6 +30,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.content.pm.ResolveInfo;
 
+import com.android.vending.billing.IInAppBillingService;
+
 import org.json.JSONException;
 
 import java.util.ArrayList;

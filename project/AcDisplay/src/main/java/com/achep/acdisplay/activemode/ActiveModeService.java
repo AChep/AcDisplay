@@ -31,6 +31,7 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.activemode.handlers.InactiveTimeHandler;
 import com.achep.acdisplay.activemode.handlers.ScreenHandler;
 import com.achep.acdisplay.activemode.handlers.WithoutNotifiesHandler;

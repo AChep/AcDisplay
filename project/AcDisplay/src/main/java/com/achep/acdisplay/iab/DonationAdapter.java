@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.achep.acdisplay.R;
+
 import java.util.HashSet;
 
 /**

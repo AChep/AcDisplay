@@ -22,6 +22,7 @@ import android.content.Context;
 import android.widget.CompoundButton;
 
 import com.achep.acdisplay.Operator;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
 

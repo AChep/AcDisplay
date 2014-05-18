@@ -24,6 +24,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 
+import com.achep.acdisplay.R;
+
 /**
  * {@inheritDoc}
  */

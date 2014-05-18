@@ -48,6 +48,7 @@ import android.widget.Spinner;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.utils.FileUtils;
 import com.achep.acdisplay.utils.IntentUtils;
 import com.achep.acdisplay.utils.PackageUtils;

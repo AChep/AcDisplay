@@ -49,6 +49,7 @@ import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
