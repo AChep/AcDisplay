@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<resources>
+
+    <string name="close">Close</string>
+
+    <!-- About -->
+    <string name="about_action">About</string>
+    <string name="about_title" translatable="false"><![CDATA[
+        <b>%1$s</b>&nbsp;<font color="#888888">v%2$s</font>
+    ]]></string>
+    <string name="about_message"><![CDATA[
+        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+        <br/>
+        Many thanks to those open source tools:
+        <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
+        <a href="http://commons.apache.org/">Apache Commons</a> and to all who
+        <a href="https://crowdin.net/project/acdisplay">helped with translations</a> or
+        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
+    ]]></string>
+
+    <!-- Help -->
+    <string name="help">Help</string>
+    <string name="help_read_more">Read more</string>
+    <string name="help_message"><![CDATA[
+        <b>How can I uninstall this app?</b>
+        Go to Settings > Security > <a href="acdisplay_internal://launch_device_admins_activity">Device Administrators</a> and uncheck AcDisplay.
+        You can now <a href="acdisplay_internal://uninstall">uninstall</a> AcDisplay normally.<br/>
+        <br/>
+        <b>What is an active mode?</b>
+        Active mode uses the device\'s sensors to wake your device up when you need it.
+        This works great if you want to pull your device from your pocket and get a quick glimpse at the notifications you\'ve received.
+        Active mode doesn\'t keep the CPU running so you shouldn\'t see a big difference in battery consumption.
+    ]]></string>
+
+    <!-- News -->
+    <string name="news_message"><![CDATA[
+        Welcome to the new version of AcDisplay!
+        This update brings a completely new and unique design with a lot of new possibilities.
+        The design is more streamlined and is aimed at giving you the best possible experience!<br/>
+        <br/>
+        <b>One touch for all actions.</b><br/>
+        Unlocking the device, checking the notifications or performing an actions on them can be done with a single motion.<br/>
+        <br/>
+        <b>Unlock field is anywhere and everywhere.</b><br/>
+        Swipe anywhere on free space to unlock.
+    ]]></string>
+
+    <!-- Speech -->
+    <string name="speech_title" translatable="false">Artem Chepurnoy</string>
+    <string name="speech_message"><![CDATA[
+        Hello,<br/>
+        First of all I want to thank you for the amount of downloads and high ratings on Play Store.
+        Huge progress has been made in AcDisplay and a this could not have been done without the community. That is why AcDisplay is <a href="https://www.github.com/AChep/AcDisplay">open</a> for everyone. But I need some help from you.<br/>
+        This is my last school year and I would like to buy a notebook for future studies and to bring the world awesome software wherever I may be.
+        I would highly appreciate your help with it.
+    ]]></string>
+
+    <!-- ParanoidAndroid -->
+    <string name="pa_title" translatable="false">Paranoid Android</string>
+    <string name="pa_message"><![CDATA[
+        Users may <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">expect trouble</a> when using AcDisplay on Paranoid Android.
+    ]]></string>
+
+</resources>

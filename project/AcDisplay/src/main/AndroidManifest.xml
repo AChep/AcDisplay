@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.achep.acdisplay"
+    android:versionCode="21"
+    android:versionName="2.3">
+
+    <uses-sdk
+        android:minSdkVersion="18"
+        android:targetSdkVersion="19" />
+
+    <!-- Needed to show AcDisplay above the keyguard. -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
+    <!-- Needed to wake up the device to show AcDisplay. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Needed to launch all services after the boot. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Needed to get the list of running activities. -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- Not used yet, but may be pretty useful. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Needed to provide donation via IAB. -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <!-- Needed to be able to get notifications from system. -->
+    <permission android:name="android.permission.STATUS_BAR_SERVICE" />
+
+    <application
+        android:name="com.achep.acdisplay.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true"
+        android:taskAffinity="com.achep.acdisplay"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.achep.acdisplay.activities.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.achep.acdisplay.blacklist.activities.BlacklistActivity"
+            android:label="@string/blacklist"
+            android:launchMode="singleTask"
+            android:icon="@drawable/ic_activity_blacklist"
+            android:parentActivityName="com.achep.acdisplay.activities.MainActivity"/>
+
+        <activity
+            android:name="com.achep.acdisplay.blacklist.activities.SubBlacklistActivity"
+            android:label="@string/blacklist_app_config"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/ic_activity_blacklist"
+            android:parentActivityName="com.achep.acdisplay.blacklist.activities.BlacklistActivity"/>
+
+        <activity
+            android:name="com.achep.acdisplay.settings.Settings"
+            android:label="@string/settings"
+            android:launchMode="singleTask"
+            android:icon="@drawable/ic_activity_settings"
+            android:parentActivityName="com.achep.acdisplay.activities.MainActivity"/>
+
+        <activity
+            android:name="com.achep.acdisplay.settings.SubSettings"
+            android:icon="@drawable/ic_activity_settings"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName="com.achep.acdisplay.settings.Settings"/>
+
+        <activity android:name="com.achep.acdisplay.settings.Settings$ActiveModeSettingsActivity"
+            android:taskAffinity=""
+            android:label="@string/settings_active_title"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true">
+            <meta-data android:name="com.achep.acdisplay.FRAGMENT_CLASS"
+                android:value="com.achep.acdisplay.settings.ActiveFragment" />
+            <meta-data android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/active_settings" />
+        </activity>
+
+        <activity android:name="com.achep.acdisplay.settings.Settings$LockscreenSettingsActivity"
+            android:taskAffinity=""
+            android:label="@string/settings_lockscreen_title"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true">
+            <meta-data android:name="com.achep.acdisplay.FRAGMENT_CLASS"
+                android:value="com.achep.acdisplay.settings.LockscreenFragment" />
+            <meta-data android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/lockscreen_settings" />
+        </activity>
+
+        <activity
+            android:name="com.achep.acdisplay.acdisplay.AcDisplayActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="nosensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:theme="@style/AcDisplayTheme"
+            android:exported="false"/>
+
+        <!-- Notification listener service -->
+        <service
+            android:name="com.achep.acdisplay.notifications.NotificationHandleService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <service android:name="com.achep.acdisplay.services.KeyguardService" />
+        <service android:name="com.achep.acdisplay.activemode.ActiveModeService" />
+
+        <!--
+            This is transparent activity for handling internal intents.
+            -->
+        <activity
+            android:name="com.achep.acdisplay.receiver.LocalReceiverActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="acdisplay_internal" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            This is transparent activity for handling intents.
+            You can easily enable / disable AcDisplay via third apps.
+            -->
+        <activity
+            android:name="com.achep.acdisplay.receiver.ReceiverActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="acdisplay" />
+            </intent-filter>
+        </activity>
+
+        <!-- A receiver to start some services. -->
+        <receiver android:name="com.achep.acdisplay.receiver.Receiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Device admin rights. -->
+        <receiver
+            android:name="com.achep.acdisplay.admin.AdminReceiver"
+            android:label="@string/device_admin"
+            android:description="@string/device_admin_description"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Receiver for a widget -->
+        <receiver android:name="com.achep.acdisplay.providers.ToggleWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_toggle_info" />
+        </receiver>
+
+        <!-- For sending logs as attachments -->
+        <provider
+            android:name="com.achep.acdisplay.fragments.FeedbackDialog$LogAttachmentProvider"
+            android:authorities="com.achep.acdisplay.logs"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+
+        <!--
+            AcDisplay does provide Xposed module.
+            -->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2.0*" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/xposed_description"/>
+
+    </application>
+
+</manifest>
