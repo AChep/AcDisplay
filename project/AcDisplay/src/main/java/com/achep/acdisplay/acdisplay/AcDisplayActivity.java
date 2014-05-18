@@ -168,7 +168,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         mCircleView = (CircleView) findViewById(R.id.circle);
         mCircleView.setCallback(this);
 
-        mImmersiveMode = Device.hasKitKatApi();
+        mImmersiveMode = Config.isImmersible();
         mGestureDetector = new GestureDetector(this, new GestureListener());
         mSensors = ActiveModeService.buildAvailableSensorsList(this);
 

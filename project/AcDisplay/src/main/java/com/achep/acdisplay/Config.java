@@ -27,6 +27,7 @@ import com.achep.acdisplay.activemode.ActiveModeService;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.utils.AccessUtils;
 
+import java.lang.String;
 import java.util.ArrayList;
 
 /**
@@ -74,6 +75,7 @@ public class Config {
     public static final String KEY_UI_MIRRORED_TIMEOUT_BAR = "mirrored_timeout_progress_bar";
     public static final String KEY_UI_NOTIFY_CIRCLED_ICON = "notify_circled_icon";
     public static final String KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE = "ui_status_battery_always_visible";
+    public static final String KEY_UI_IMMERSIVE_MODE = "immersive_mode_kitkat";
 
     private static Config sConfig;
 
@@ -96,6 +98,7 @@ public class Config {
     private boolean mUiMirroredTimeoutBar;
     private boolean mUiBatteryAlwaysVisible;
     private boolean mUiNotifyCircledIcon;
+    private boolean mImmersiveMode;
 
     private boolean mConstAlternativePayments;
 
@@ -184,6 +187,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_ui_notify_circled_icon));
         mUiBatteryAlwaysVisible = prefs.getBoolean(KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE,
                 res.getBoolean(R.bool.config_default_ui_status_battery_always_visible));
+        mImmersiveMode = prefs.getBoolean(KEY_UI_IMMERSIVE_MODE,
+                res.getBoolean(R.bool.config_default_ui_immersive_mode_kitkat));
 
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
@@ -407,6 +412,15 @@ public class Config {
         saveOption(context, KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE, visible, listener, changed);
     }
 
+    /**
+     * Setter for Immersive Mode
+     *
+     */
+    public void setImmersiveMode(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mImmersiveMode != (mImmersiveMode = enabled);
+        saveOption(context, KEY_UI_IMMERSIVE_MODE, enabled, listener, changed);
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -485,6 +499,14 @@ public class Config {
 
     public boolean isAlternativePaymentsEnabled() {
         return mConstAlternativePayments;
+    }
+
+    public boolean isImmersible(){
+        if(Device.hasKitKatApi()) {
+            return mImmersiveMode;
+        }else{
+            return false;
+        }
     }
 
 }

@@ -60,12 +60,15 @@
     <string name="settings_dynamic_background_disabled">Disabled</string>
     <string name="settings_show_date_title">Show date</string>
     <string name="settings_status_battery_always_visible">Keep battery status</string>
-    <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
     <string name="settings_mirrored_timeout_progress_bar_title">Mirrored timeout bar</string>
+    <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
     <string name="settings_mirrored_timeout_progress_bar_on">Timeout bar disappears from both sides to center.</string>
     <string name="settings_mirrored_timeout_progress_bar_off">Timeout bar disappears from left to right.</string>
     <string name="settings_notify_circled_icon_title">Circled notification icon</string>
     <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
+    <string name="settings_immersive_mode_kitkat_title">Immersive Mode</string>
+    <string name="settings_mimmersive_mode_kitkat_off">The app wont be shown in full screen.</string>
+    <string name="settings_immersive_mode_kitkat_on">The app will be full screen.</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>

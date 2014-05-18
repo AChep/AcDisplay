@@ -27,6 +27,7 @@ import android.preference.PreferenceFragment;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Operator;
+import com.achep.acdisplay.R;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ public class InterfaceFragment extends PreferenceFragment implements
     private CheckBoxPreference mMirroredTimeoutToggle;
     private CheckBoxPreference mCircledIconToggle;
     private CheckBoxPreference mBatteryAlwaysVisibleToggle;
+    private CheckBoxPreference mImmersiveMode;
     private MultiSelectListPreference mDynamicBackground;
 
     private boolean mBroadcasting;
@@ -68,6 +70,8 @@ public class InterfaceFragment extends PreferenceFragment implements
                 Config.KEY_UI_NOTIFY_CIRCLED_ICON);
         mBatteryAlwaysVisibleToggle = (CheckBoxPreference) findPreference(
                 Config.KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE);
+        mImmersiveMode = (CheckBoxPreference) findPreference(
+                Config.KEY_UI_IMMERSIVE_MODE);
 
         mShowWallpaper.setOnPreferenceChangeListener(this);
         mShadowToggle.setOnPreferenceChangeListener(this);
@@ -75,6 +79,7 @@ public class InterfaceFragment extends PreferenceFragment implements
         mMirroredTimeoutToggle.setOnPreferenceChangeListener(this);
         mCircledIconToggle.setOnPreferenceChangeListener(this);
         mBatteryAlwaysVisibleToggle.setOnPreferenceChangeListener(this);
+        mImmersiveMode.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -89,6 +94,7 @@ public class InterfaceFragment extends PreferenceFragment implements
         updateCircledIconPreference(config);
         updateBatteryAlwaysVisiblePreference(config);
         updateDynamicBackgroundPreference(config);
+        updateImmersiveMode(config);
     }
 
     @Override
@@ -126,7 +132,9 @@ public class InterfaceFragment extends PreferenceFragment implements
 
             config.setDynamicBackgroundMode(context, mode, this);
             updateDynamicBackgroundPreferenceSummary(config);
-        } else
+        } else if (preference == mImmersiveMode){
+            config.setImmersiveMode(context, (Boolean) newValue, this);
+        }else
             return false;
         return true;
     }
@@ -152,6 +160,9 @@ public class InterfaceFragment extends PreferenceFragment implements
             case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
                 updateDynamicBackgroundPreference(config);
                 break;
+            case Config.KEY_UI_IMMERSIVE_MODE:
+                updateImmersiveMode(config);
+                break;
         }
     }
 
@@ -173,6 +184,10 @@ public class InterfaceFragment extends PreferenceFragment implements
 
     private void updateBatteryAlwaysVisiblePreference(Config config) {
         updatePreference(mBatteryAlwaysVisibleToggle, config.isBatteryAlwaysVisible());
+    }
+
+    private void updateImmersiveMode(Config config) {
+        updatePreference(mImmersiveMode, config.isImmersible());
     }
 
     private void updatePreference(CheckBoxPreference preference, boolean checked) {
