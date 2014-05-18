@@ -42,6 +42,7 @@ import android.widget.TextView;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.cryptocoin.Bitcoin;
 import com.achep.acdisplay.cryptocoin.Coin;
 import com.achep.acdisplay.iab.utils.IabHelper;

@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationData;
 import com.achep.acdisplay.notifications.OpenStatusBarNotification;
 import com.achep.acdisplay.utils.ViewUtils;

@@ -31,6 +31,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.animations.CircleViewAnimation;
 
 /**

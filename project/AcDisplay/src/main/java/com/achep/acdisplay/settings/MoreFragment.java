@@ -25,6 +25,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.utils.DateUtils;
 import com.achep.acdisplay.utils.MathUtils;
 

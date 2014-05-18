@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.widget.Switch;
 
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.settings.enablers.LockscreenEnabler;
 
 /**

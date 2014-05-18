@@ -29,6 +29,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.utils.PowerUtils;
 
 import java.util.Calendar;

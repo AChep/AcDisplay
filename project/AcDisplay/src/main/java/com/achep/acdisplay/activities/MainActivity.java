@@ -49,6 +49,7 @@ import android.widget.Switch;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.admin.AdminReceiver;
 import com.achep.acdisplay.blacklist.activities.BlacklistActivity;
 import com.achep.acdisplay.fragments.AboutDialog;

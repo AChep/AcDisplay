@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.achep.acdisplay.AsyncTask;
 import com.achep.acdisplay.Build;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.utils.BitmapUtils;
 
 /**

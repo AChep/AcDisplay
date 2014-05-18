@@ -24,6 +24,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.R;
 
 /**
  * Created by Artem on 03.01.14.

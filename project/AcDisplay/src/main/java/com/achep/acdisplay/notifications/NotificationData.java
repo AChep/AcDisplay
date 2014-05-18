@@ -31,6 +31,7 @@ import android.util.Log;
 import com.achep.acdisplay.AsyncTask;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Device;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.BackgroundFactoryThread;
 import com.achep.acdisplay.notifications.parser.Extractor;
 import com.achep.acdisplay.notifications.parser.NativeExtractor;

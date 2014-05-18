@@ -24,6 +24,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.R;
 
 /**
  * Created by Artem on 09.02.14.
