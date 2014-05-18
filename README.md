@@ -22,7 +22,7 @@ Download & Build
 Clone the project and come in:
 
          $ git clone git://github.com/AChep/AcDisplay.git
-         $ cd AcDisplay/
+         $ cd AcDisplay/project/
 
 If you want to build AcDisplay with additional languges (not only English and Russian), you can download them by running the following line: _by default tranlations will appear only in **Release** build._
 
