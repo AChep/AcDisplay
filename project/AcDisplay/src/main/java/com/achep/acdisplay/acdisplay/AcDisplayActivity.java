@@ -132,7 +132,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         Window window = getWindow();
 
         int windowFlags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-        if (hasFocus) {
+        if (hasFocus && mImmersiveMode) {
             int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -169,7 +169,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         mCircleView = (CircleView) findViewById(R.id.circle);
         mCircleView.setCallback(this);
 
-        mImmersiveMode = Config.isImmersible();
+        mImmersiveMode = getConfig().isImmersible();
         mGestureDetector = new GestureDetector(this, new GestureListener());
         mSensors = ActiveModeService.buildAvailableSensorsList(this);
 
