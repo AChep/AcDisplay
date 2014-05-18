@@ -48,6 +48,7 @@ import android.widget.LinearLayout;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.acdisplay.components.NotificationUI;
 import com.achep.acdisplay.acdisplay.components.Widget;

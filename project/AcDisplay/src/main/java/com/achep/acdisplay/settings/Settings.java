@@ -41,6 +41,7 @@ import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.settings.enablers.ActiveModeEnabler;
 import com.achep.acdisplay.settings.enablers.Enabler;
 import com.achep.acdisplay.settings.enablers.LockscreenEnabler;

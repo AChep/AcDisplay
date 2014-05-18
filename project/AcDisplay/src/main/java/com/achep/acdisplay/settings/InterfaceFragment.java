@@ -27,6 +27,7 @@ import android.preference.PreferenceFragment;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Operator;
+import com.achep.acdisplay.R;
 
 import java.util.Collections;
 import java.util.HashSet;

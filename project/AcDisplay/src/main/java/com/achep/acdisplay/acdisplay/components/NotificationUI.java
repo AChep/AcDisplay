@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayFragment;
 import com.achep.acdisplay.notifications.OpenStatusBarNotification;
 import com.achep.acdisplay.utils.BitmapUtils;
