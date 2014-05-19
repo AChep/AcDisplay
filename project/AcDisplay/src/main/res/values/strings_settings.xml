@@ -97,5 +97,9 @@
     <string name="preference_timeout_short">After touching an inactive area</string>
     <string name="preference_timeout_sec">%1$s sec.</string>
     <string name="preference_no_timeout">Screen stays on forever</string>
+    <string name="ui_backgrounds">Background settings</string>
+    <string name="ui_icons">Icon settings</string>
+    <string name="ui_timeout_bar">Timebar settings</string>
+    <string name="ui_overall">System visual settings</string>
 
 </resources>
