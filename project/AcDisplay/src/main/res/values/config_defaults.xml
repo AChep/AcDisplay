@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<resources>
+
+    <bool name="config_default_enabled">false</bool>
+    <bool name="config_default_keyguard_enabled">false</bool>
+    <bool name="config_default_active_mode_enabled">false</bool>
+    <bool name="config_default_active_mode_without_notifies_enabled">true</bool>
+    <bool name="config_default_enabled_only_while_charging">false</bool>
+    <bool name="config_default_notify_low_priority">false</bool>
+    <bool name="config_default_notify_wake_up_on">true</bool>
+    <bool name="config_default_ui_show_wallpaper">false</bool>
+    <bool name="config_default_ui_show_shadow">true</bool>
+    <bool name="config_default_ui_mirrored_timeout_bar">true</bool>
+    <bool name="config_default_inactive_time_enabled">false</bool>
+    <bool name="config_default_timeout_enabled">true</bool>
+    <bool name="config_default_ui_notify_circled_icon">false</bool>
+    <bool name="config_default_ui_status_battery_always_visible">false</bool>
+    <bool name="config_default_ui_immersive_mode_kitkat">true</bool>
+    <integer name="config_default_timeout_normal">10000</integer>
+    <integer name="config_default_timeout_short">5000</integer>
+    <integer name="config_default_inactive_time_from">60</integer>
+    <integer name="config_default_inactive_time_to">300</integer>
+    <integer name="config_default_notify_swipe_left_action">2</integer>
+    <integer name="config_default_notify_swipe_right_action">2</integer>
+    <integer name="config_default_ui_show_shadow_dynamic_bg">3</integer>
+
+</resources>
