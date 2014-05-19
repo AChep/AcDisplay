@@ -20,6 +20,7 @@
 package com.achep.acdisplay.acdisplay.components;
 
 import android.graphics.Bitmap;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,23 @@ public abstract class Widget {
      * @see #isDismissible()
      */
     public void onDismissed(boolean right) { /* reserved for children */ }
+
+    /**
+     * @return {@code true} if the widget can be read aloud, {@code false} otherwise
+     * @see #onReadAloud(android.speech.tts.TextToSpeech)
+     */
+    public boolean isReadable() {
+        return false;
+    }
+
+    /**
+     * Called when widget need to read its content aloud.
+     *
+     * @see #isReadable()
+     */
+    public void onReadAloud(TextToSpeech tts) {
+        // TODO: Add an ability to read widgets aloud.
+    }
 
     /**
      * @return The bitmap to be used as background, {@code null} if no background.
