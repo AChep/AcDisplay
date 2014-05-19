@@ -491,6 +491,7 @@ public class AcDisplayFragment extends Fragment implements
             mSelectedWidget.onExpandedViewAttached();
             mSelectedWidget.getCollapsedView().setSelected(true);
             mSelectedWidget.getCollapsedView().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+            dispatchSetBackground(mSelectedWidget.getBackground(), Config.DYNAMIC_BG_NOTIFICATION_MASK);
         }
     }
 

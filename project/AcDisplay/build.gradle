@@ -76,6 +76,12 @@ android {
     String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());
     String playPublicKey = System.getenv("ACDISPLAY_GOOGLE_PLAY_PUBLIC_KEY");
 
+    // Google Play key is very important and better to check it twice
+    // then to get a billion of Force Close reports.
+    println "- - - - - - - - - - - -"
+    println "\u001B[36m\u001B[1mGOOGLE_PLAY_PUBLIC_KEY\u001B[0m: " + playPublicKey
+    println "- - - - - - - - - - - -"
+
     buildTypes {
         debug {
             versionNameSuffix '-debug'
@@ -156,7 +162,6 @@ project.task('askForPasswords') << {
 
     android.signingConfigs.release.storePassword = passKeystore
     android.signingConfigs.release.keyPassword = passKey
-
 }
 
 project.configure(project) {
