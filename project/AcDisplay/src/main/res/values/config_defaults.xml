@@ -37,8 +37,6 @@
     <integer name="config_default_timeout_short">5000</integer>
     <integer name="config_default_inactive_time_from">60</integer>
     <integer name="config_default_inactive_time_to">300</integer>
-    <integer name="config_default_notify_swipe_left_action">2</integer>
-    <integer name="config_default_notify_swipe_right_action">2</integer>
     <integer name="config_default_ui_show_shadow_dynamic_bg">3</integer>
 
 </resources>

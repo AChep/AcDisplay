@@ -22,10 +22,6 @@
     <color name="selector_longpressed_dark">#CB0098CB</color>
     <color name="selector_disabled_dark">#80000000</color>
     <color name="selector_focused_dark">#4E31B3E4</color>
-    <color name="selector_red_pressed_dark">#60ee2222</color>
-    <color name="selector_red_longpressed_dark">#DEee2222</color>
-    <color name="selector_red_focused_dark">#4ECC3524</color>
-    <color name="selector_red_selected_dark">#60CC3524</color>
 
     <!-- AcDisplay -->
     <color name="keyguard_background">#F000</color>
