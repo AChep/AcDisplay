@@ -31,7 +31,7 @@ If you want to build AcDisplay with additional languges (not only English and Ru
 
 To build debug version:
 
-         $ ./gradlew aD
+         $ ./gradlew assembleDebug
          # Builds all the things. Grab compiled application from ./AcDisplay/build/apk/
 
 To build release version:
@@ -41,7 +41,7 @@ To build release version:
          $ export ACDISPLAY_SIGN_STORE_FILE=path_to_your_keystore
          $ export ACDISPLAY_SIGN_KEY_ALIAS=key_alias
          
-         $ ./gradlew aR
+         $ ./gradlew assembleRelease
          # You will be asked for passwords in proccess.
          # Grab compiled application from ./AcDisplay/build/apk/
 
