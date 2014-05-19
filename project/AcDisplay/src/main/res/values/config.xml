@@ -22,6 +22,9 @@
     <integer name="config_timeout_minDurationMillis">3000</integer>
     <integer name="config_timeout_maxDurationMillis">25000</integer>
 
+    <integer name="config_minIconSize">48</integer>
+    <integer name="config_maxIconSize">192</integer>
+
     <integer name="config_feedback_minMessageLength">15</integer>
 
     <!-- True to allow fade transition between scenes. This may decrease FPS on low-end devices -->

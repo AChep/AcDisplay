@@ -68,7 +68,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
     private ImageView mBackgroundView;
 
     private boolean mCustomBackgroundShown;
-    private boolean mImmersiveMode;
+    private boolean mImmersiveMode, mImmersiveModeToggle;
 
     private GestureDetector mGestureDetector;
     private Handler mHandler = new Handler();
@@ -133,13 +133,15 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
         int windowFlags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
         if (hasFocus) {
-            int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            if (mImmersiveMode) visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            window.getDecorView().setSystemUiVisibility(visibility);
+            if (mImmersiveModeToggle) {
+                int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                if (mImmersiveMode) visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                window.getDecorView().setSystemUiVisibility(visibility);
+            }
             window.addFlags(windowFlags);
 
             // Start ticking.
@@ -170,6 +172,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         mCircleView.setCallback(this);
 
         mImmersiveMode = Device.hasKitKatApi();
+        mImmersiveModeToggle = getConfig().isImmersible();
         mGestureDetector = new GestureDetector(this, new GestureListener());
         mSensors = ActiveModeService.buildAvailableSensorsList(this);
 
