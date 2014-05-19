@@ -28,6 +28,7 @@ import android.preference.PreferenceFragment;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.settings.preferences.IconSizePreference;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,6 +50,7 @@ public class InterfaceFragment extends PreferenceFragment implements
     private CheckBoxPreference mCircledIconToggle;
     private CheckBoxPreference mBatteryAlwaysVisibleToggle;
     private CheckBoxPreference mImmersiveMode;
+    private IconSizePreference mIconSize;
     private MultiSelectListPreference mDynamicBackground;
 
     private boolean mBroadcasting;
@@ -72,6 +74,8 @@ public class InterfaceFragment extends PreferenceFragment implements
                 Config.KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE);
         mImmersiveMode = (CheckBoxPreference) findPreference(
                 Config.KEY_UI_IMMERSIVE_MODE);
+        mIconSize = (IconSizePreference) findPreference(
+                Config.KEY_UI_ICON_SIZE);
 
         mShowWallpaper.setOnPreferenceChangeListener(this);
         mShadowToggle.setOnPreferenceChangeListener(this);

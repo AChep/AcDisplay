@@ -56,6 +56,11 @@
             android:title="@string/settings_notify_circled_icon_title"
             android:summaryOn="@string/settings_notify_circled_icon_on"
             android:defaultValue="@bool/config_default_ui_notify_circled_icon" />
+        <com.achep.acdisplay.settings.preferences.IconSizePreference
+            android:key="ui_icon_size"
+            android:dialogIcon="@drawable/ic_dialog_resize"
+            android:dialogTitle="@string/settings_resize_title"
+            android:title="@string/settings_resize_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/ui_timeout_bar">
         <CheckBoxPreference

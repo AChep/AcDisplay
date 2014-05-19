@@ -56,7 +56,6 @@ public class NotificationIconWidget extends FrameLayout implements NotificationV
         mNotification = notification;
 
         mIcon.setNotification(mNotification);
-
         NotificationData data = mNotification.getNotificationData();
         String tileText = data.number > 0 ? Integer.toString(data.number) : null;
         ViewUtils.safelySetText(mNumberTextView, tileText);

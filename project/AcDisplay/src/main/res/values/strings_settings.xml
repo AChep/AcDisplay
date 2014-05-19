@@ -69,6 +69,7 @@
     <string name="settings_immersive_mode_kitkat_title">Immersive Mode</string>
     <string name="settings_mimmersive_mode_kitkat_off">The app wont be shown in full screen.</string>
     <string name="settings_immersive_mode_kitkat_on">The app will be full screen.</string>
+    <string name="settings_resize_title">Change icon size</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>
@@ -97,9 +98,14 @@
     <string name="preference_timeout_short">After touching an inactive area</string>
     <string name="preference_timeout_sec">%1$s sec.</string>
     <string name="preference_no_timeout">Screen stays on forever</string>
+
+    <!-- Preference: Interface categories -->
     <string name="ui_backgrounds">Background settings</string>
     <string name="ui_icons">Icon settings</string>
     <string name="ui_timeout_bar">Timebar settings</string>
     <string name="ui_overall">System visual settings</string>
+
+    <!-- Prefence: Resize icons -->
+    <string name="preference_resize_dpi">%1$s dpi.</string>
 
 </resources>

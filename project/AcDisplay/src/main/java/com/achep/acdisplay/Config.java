@@ -22,12 +22,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.achep.acdisplay.activemode.ActiveModeService;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.utils.AccessUtils;
 
-import java.lang.String;
 import java.util.ArrayList;
 
 /**
@@ -76,6 +76,7 @@ public class Config {
     public static final String KEY_UI_NOTIFY_CIRCLED_ICON = "notify_circled_icon";
     public static final String KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE = "ui_status_battery_always_visible";
     public static final String KEY_UI_IMMERSIVE_MODE = "immersive_mode_kitkat";
+    public static final String KEY_UI_ICON_SIZE = "ui_icon_size";
 
     private static Config sConfig;
 
@@ -87,6 +88,7 @@ public class Config {
     private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
     private boolean mTimeoutEnabled;
+    private int mIconSize;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
@@ -104,6 +106,7 @@ public class Config {
 
     private ArrayList<OnConfigChangedListener> mListeners;
     private Context mContext;
+
 
     // //////////////////////////////////////////
     // /////////// -- LISTENERS -- //////////////
@@ -189,6 +192,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_ui_status_battery_always_visible));
         mImmersiveMode = prefs.getBoolean(KEY_UI_IMMERSIVE_MODE,
                 res.getBoolean(R.bool.config_default_ui_immersive_mode_kitkat));
+        mIconSize = prefs.getInt(KEY_UI_ICON_SIZE,
+                res.getInteger(R.integer.config_default_ui_icon_size));
 
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
@@ -414,11 +419,18 @@ public class Config {
 
     /**
      * Setter for Immersive Mode
-     *
      */
     public void setImmersiveMode(Context context, boolean enabled, OnConfigChangedListener listener) {
         boolean changed = mImmersiveMode != (mImmersiveMode = enabled);
         saveOption(context, KEY_UI_IMMERSIVE_MODE, enabled, listener, changed);
+    }
+
+    /**
+     * Setter for Icon Size
+     */
+    public void setIconSize(Context context, int size, OnConfigChangedListener listener) {
+        boolean changed = mIconSize != (mIconSize = size);
+        saveOption(context, KEY_UI_ICON_SIZE, size, listener, changed);
     }
 
     public int getTimeoutNormal() {
@@ -435,6 +447,20 @@ public class Config {
 
     public int getInactiveTimeTo() {
         return mInactiveTimeTo;
+    }
+
+    public int getIconSize(){ return getIconSize("dip");}
+
+    public int getIconSize(String s) {
+        if(s == "px"){
+            Resources r = Resources.getSystem();
+            int mIconPX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mIconSize, r.getDisplayMetrics());
+            Log.d(TAG, ""+mIconPX);
+            return mIconPX;
+        }else{
+            Log.d(TAG, ""+mIconSize);
+            return mIconSize;
+        }
     }
 
     public int getDynamicBackgroundMode() {

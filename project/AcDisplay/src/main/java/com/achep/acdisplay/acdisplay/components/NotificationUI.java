@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayFragment;
 import com.achep.acdisplay.notifications.OpenStatusBarNotification;
@@ -103,6 +104,8 @@ public class NotificationUI extends Widget implements NotificationView {
         assert view != null;
 
         mIconView = (NotificationIconWidget) view;
+        int size = Config.getInstance().getIconSize("px");
+        mIconView.setLayoutParams(new ViewGroup.LayoutParams(size, size));
         mIconView.setNotification(mNotification);
         return view;
     }
