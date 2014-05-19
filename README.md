@@ -37,7 +37,8 @@ To build debug version:
 To build release version:
 
          # First you need to set the path to your keystore and the alias.
-         # This's required only once.
+         # You may want to put those to your ~/.bashrc file to save them
+         # for future bash sessions.
          $ export ACDISPLAY_SIGN_STORE_FILE=path_to_your_keystore
          $ export ACDISPLAY_SIGN_KEY_ALIAS=key_alias
          
