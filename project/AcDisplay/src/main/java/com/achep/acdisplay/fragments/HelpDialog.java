@@ -38,7 +38,7 @@ import com.achep.acdisplay.utils.IntentUtils;
  */
 public class HelpDialog extends DialogFragment {
 
-    private static final String HELP_FULL_FAQ = "http://goo.gl/PT1sPt";
+    private static final String HELP_FULL_FAQ = "https://github.com/AChep/AcDisplay/blob/master/FAQ.md";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
