@@ -58,5 +58,14 @@
 
     <string name="device_admin_could_not_be_started">The device admin settings could not be started.</string>
     <string name="package_could_not_be_uninstalled">The package could not be uninstalled.</string>
+    
+    <string name="preference_clock_title">Clock Font</string>
+    <string name="preference_clock_font_description">Change the default clock Font</string>
+    
+    <string name="preference_clock_size_title">Clock size</string>
+    <string name="preference_clock_size_description">Change the default clock size</string>
+    
+    <string name="preference_clock_color_title">Clock color</string>
+    <string name="preference_clock_color_description">Change the default clock color</string>
 
 </resources>

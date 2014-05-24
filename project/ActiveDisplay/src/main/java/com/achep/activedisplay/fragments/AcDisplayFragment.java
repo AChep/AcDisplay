@@ -27,6 +27,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -67,6 +68,7 @@ import com.achep.activedisplay.utils.BitmapUtils;
 import com.achep.activedisplay.utils.MathUtils;
 import com.achep.activedisplay.utils.ViewUtils;
 import com.achep.activedisplay.widgets.ProgressBar;
+import com.achep.activedisplay.widgets.TimeView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -206,6 +208,12 @@ public class AcDisplayFragment extends Fragment implements
         super.onResume();
         mTimeout.release();
         mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal());
+        ViewGroup clockView = mSceneMain.getView();
+        TimeView clock = (TimeView) clockView.findViewById(R.id.time);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), mConfig.getClockFont());
+        clock.setTypeface(tf);
+        clock.setTextColor(mConfig.getClockColor());
+        clock.setTextSize((float)mConfig.getClockSize());
     }
 
     @Override
@@ -290,6 +298,12 @@ public class AcDisplayFragment extends Fragment implements
         mPinImageView = (ImageView) root.findViewById(R.id.pin);
 
         Config config = Config.getInstance(getActivity());
+       
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), config.getClockFont());
+        TimeView clock = (TimeView)sceneMain.findViewById(R.id.time);
+        clock.setTypeface(tf);
+        clock.setTextColor(config.getClockColor());
+        clock.setTextSize((float)config.getClockSize());
 
         // /////////////////
         // ~~ TIMEOUT GUI ~~
@@ -319,7 +333,7 @@ public class AcDisplayFragment extends Fragment implements
         } else {
             progressBar = (ProgressBar) progressBarStub.inflate().findViewById(R.id.progress_bar);
         }
-
+        
         mTimeout = new TimeoutGui(getActivity(), progressBar);
         return root;
     }

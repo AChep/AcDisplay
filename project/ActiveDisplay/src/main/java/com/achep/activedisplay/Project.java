@@ -29,7 +29,7 @@ import android.content.Context;
 public class Project {
 
     @SuppressWarnings("PointlessBooleanExpression")
-    public static final boolean DEBUG = BuildConfig.MY_DEBUG && true;
+    public static final boolean DEBUG = BuildConfig.DEBUG && true;
 
     public static final String EMAIL = "support@artemchep.com";
 

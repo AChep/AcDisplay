@@ -20,6 +20,7 @@ package com.achep.activedisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.achep.activedisplay.activemode.ActiveModeService;
@@ -66,6 +67,9 @@ public class Config {
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
     public static final String KEY_INTERFACE_MIRRORED_TIMEOUT_PROGRESS_BAR = "mirrored_timeout_progress_bar";
+    public static final String KEY_CLOCK_FONT ="clock_font";
+    public static final String KEY_CLOCK_COLOR ="clock_color";
+    public static final String KEY_CLOCK_SIZE ="clock_size";
 
     // swipe actions
     public static final String KEY_SWIPE_LEFT_ACTION = "swipe_left_action";
@@ -90,6 +94,9 @@ public class Config {
     private boolean mWallpaperShown;
     private boolean mShadowShown;
     private boolean mMirroredTimeoutProgressBarEnabled;
+    private String mClockFont;
+    private int mClockColor;
+    private int mClockSize;
 
     /**
      * Config constructor, sets all the variables to the value using sharedPreference or uses a preset key
@@ -118,6 +125,9 @@ public class Config {
         mSwipeRightAction = prefs.getInt(KEY_SWIPE_RIGHT_ACTION, 2);
         mDynamicBackgroundMode = prefs.getInt(KEY_INTERFACE_DYNAMIC_BACKGROUND_MODE,
                 DYNAMIC_BG_ARTWORK_MASK | DYNAMIC_BG_NOTIFICATION_MASK);
+        mClockFont = prefs.getString(KEY_CLOCK_FONT, "fonts/Roboto-Light.ttf");
+        mClockColor = prefs.getInt(KEY_CLOCK_COLOR, Color.parseColor("#ffffff"));
+        mClockSize=prefs.getInt(KEY_CLOCK_SIZE, 85);
     }
 
     /**
@@ -183,7 +193,9 @@ public class Config {
             editor.putBoolean(key, (Boolean) value);
         } else if (value instanceof Integer) {
             editor.putInt(key, (Integer) value);
-        } else throw new IllegalArgumentException("Unknown option type.");
+        }else if(value instanceof String) {
+        	editor.putString(key, (String)value);
+        }else throw new IllegalArgumentException("Unknown option type.");
         editor.apply();
 
         notifyConfigChanged(key, value, listener);
@@ -418,6 +430,18 @@ public class Config {
                 mMirroredTimeoutProgressBarEnabled != (mMirroredTimeoutProgressBarEnabled = enabled));
     }
 
+    public void setClockFont(Context context, String value, OnConfigChangedListener listener) {
+    	saveOption(context, KEY_CLOCK_FONT, value, listener, mClockFont != (mClockFont = value));
+    }
+    
+    public void setClockColor(Context context, int value, OnConfigChangedListener listener) {
+    	saveOption(context, KEY_CLOCK_COLOR, value, listener, mClockColor != (mClockColor = value));
+    }
+    
+    public void setClockSize(Context context, int value, OnConfigChangedListener listener) {
+    	saveOption(context, KEY_CLOCK_SIZE, value, listener, mClockSize != (mClockSize = value));
+    }
+    
     public boolean isTimeOutAvailable() {
         return mCanTimeOut;
     }
@@ -484,6 +508,18 @@ public class Config {
 
     public boolean isInactiveTimeEnabled() {
         return mInactiveTimeEnabled;
+    }
+    
+    public String getClockFont() {
+    	return mClockFont;
+    }
+    
+    public int getClockColor() {
+    	return mClockColor;
+    }
+    
+    public int getClockSize() {
+    	return mClockSize;
     }
 
 }
