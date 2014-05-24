@@ -23,9 +23,7 @@ package com.achep.acdisplay;
  */
 public final class Build {
 
-    public static final boolean DEBUG = BuildConfig.MY_DEBUG;
-    public static final String TIME_STAMP = BuildConfig.MY_TIME_STAMP;
-    public static final String GOOGLE_PLAY_PUBLIC_KEY = BuildConfig.MY_GOOGLE_PLAY_PUBLIC_KEY;
+    public static final boolean DEBUG = BuildConfig.DEBUG;
 
     public static final String SUPPORT_EMAIL = "support@artemchep.com";
 

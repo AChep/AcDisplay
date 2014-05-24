@@ -16,7 +16,7 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
-  -->
+-->
 <resources>
 
     <!-- Settings -->
@@ -86,12 +86,16 @@
 
     <!-- Preference: Inactive hours -->
     <string name="preference_inactive_hours_enabled">Inactive hours enabled</string>
-    <string name="preference_inactive_hours_from"><![CDATA[
+    <string name="preference_inactive_hours_from">
+<![CDATA[
         from:<br/><b><font color="#ffffff">%1$s</font></b>
-    ]]></string>
-    <string name="preference_inactive_hours_to"><![CDATA[
+    ]]>
+    </string>
+    <string name="preference_inactive_hours_to">
+<![CDATA[
         to:<br/><b><font color="#ffffff">%1$s</font></b>
-    ]]></string>
+    ]]>
+    </string>
 
     <!-- Preference: Sleep timeouts -->
     <string name="preference_timeout_normal">After waking up or selecting a notification</string>
@@ -104,6 +108,7 @@
     <string name="ui_icons">Icon settings</string>
     <string name="ui_timeout_bar">Timebar settings</string>
     <string name="ui_overall">System visual settings</string>
+    <string name="ui_clock">Clock settings</string>
 
     <!-- Prefence: Resize icons -->
     <string name="preference_resize_dpi">%1$s dpi.</string>

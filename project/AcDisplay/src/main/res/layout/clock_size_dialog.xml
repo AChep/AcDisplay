@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center_vertical" >
+    
+     <com.achep.acdisplay.widgets.TimeView
+         android:id="@+id/time"
+         style="?attr/acDisplayClock"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center"
+         android:padding="2dp" />
+
+    <SeekBar
+        android:id="@+id/size_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp" />
+
+</LinearLayout>

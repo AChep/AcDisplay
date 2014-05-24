@@ -16,12 +16,11 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
-  -->
+-->
 <resources>
 
     <string name="app_name" translatable="false">AcDisplay</string>
     <string name="app_description">AcDisplay is a new way of handling notifications in Android. It will let you know about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what\'s going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.</string>
-
     <string name="xposed_description">Helps AcDisplay to integrate deeper into Android.</string>
 
     <!-- App widget -->
@@ -53,15 +52,19 @@
     <!-- Remote actions -->
     <string name="remote_enable_acdisplay">AcDisplay is enabled.</string>
     <string name="remote_disable_acdisplay">AcDisplay is disabled.</string>
-
     <string name="device_admin" translatable="false">@string/app_name</string>
     <string name="device_admin_description">This is needed to manage the screen timeout policy.</string>
     <string name="app_auto_disabled">AcDisplay has been turned off because it\'s missing admin rights.</string>
     <string name="access_warning_title">Access isn\'t granted!</string>
     <string name="access_to_notifications_btn">Notifications</string>
     <string name="access_to_admin_btn">Turn screen off</string>
-
     <string name="device_admin_could_not_be_started">The device admin settings could not be started.</string>
     <string name="package_could_not_be_uninstalled">The package could not be uninstalled.</string>
+    <string name="preference_clock_title">Clock Font</string>
+    <string name="preference_clock_font_description">Change the default clock Font</string>
+    <string name="preference_clock_size_title">Clock size</string>
+    <string name="preference_clock_size_description">Change the default clock size</string>
+    <string name="preference_clock_color_title">Clock color</string>
+    <string name="preference_clock_color_description">Change the default clock color</string>
 
 </resources>

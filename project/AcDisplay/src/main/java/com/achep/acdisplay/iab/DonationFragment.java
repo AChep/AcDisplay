@@ -315,7 +315,7 @@ public class DonationFragment extends DialogFragment {
         setWaitScreen(true);
         disposeBilling();
 
-        String base64EncodedPublicKey = Build.GOOGLE_PLAY_PUBLIC_KEY;
+        String base64EncodedPublicKey = "";
         mHelper = new IabHelper(getActivity(), base64EncodedPublicKey);
         mHelper.enableDebugLogging(Build.DEBUG);
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
