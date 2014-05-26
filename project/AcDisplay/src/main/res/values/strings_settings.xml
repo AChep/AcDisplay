@@ -48,6 +48,11 @@
     <string name="settings_low_priority_notifications_title">Low-priority notifications</string>
     <string name="settings_low_priority_notifications_on">All notifications are shown.</string>
     <string name="settings_low_priority_notifications_off">Low-priority notifications such as those from Google Now aren\'t shown.</string>
+    
+    <!-- Notifications privacy -->
+    <string name="settings_privacy_notifications_title">Notifications Privacy</string>
+    <string name="settings_privacy_notifications_on">Show only notification title</string>
+    <string name="settings_privacy_notifications_off">Show notification title and description</string>
 
     <!-- Interface -->
     <string name="settings_use_wallpaper_title">Use wallpaper</string>

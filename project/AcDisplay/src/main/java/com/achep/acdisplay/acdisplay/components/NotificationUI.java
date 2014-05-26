@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
@@ -160,6 +161,10 @@ public class NotificationUI extends Widget implements NotificationView {
     public void onExpandedViewAttached() {
         mNotification.getNotificationData().markAsRead(true);
         mNotifyWidget.setNotification(mNotification);
+        
+        //Apply privacy stuff
+        boolean mPrivacyOn = Config.getInstance().isPrivacyEnabled();
+        mNotifyWidget.hideMessage(mPrivacyOn);
     }
 
     @Override

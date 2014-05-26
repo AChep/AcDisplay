@@ -20,6 +20,11 @@ package com.achep.acdisplay.acdisplay;
  */
 
 
+/*
+ * This class will create a rounded Drawable to display a coloured circle on 
+ * Custom clock color preference 
+ */
+
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;

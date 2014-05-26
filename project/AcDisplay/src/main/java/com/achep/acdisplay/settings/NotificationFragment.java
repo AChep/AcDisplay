@@ -35,6 +35,7 @@ public class NotificationFragment extends PreferenceFragment implements
 
     private CheckBoxPreference mLowPriorityPreference;
     private CheckBoxPreference mWakeUpOnPreference;
+    private CheckBoxPreference mPrivacyPreference;
 
     private boolean mBroadcasting;
 
@@ -47,9 +48,13 @@ public class NotificationFragment extends PreferenceFragment implements
                 Config.KEY_NOTIFY_LOW_PRIORITY);
         mWakeUpOnPreference = (CheckBoxPreference) findPreference(
                 Config.KEY_NOTIFY_WAKE_UP_ON);
+        
+        mPrivacyPreference = (CheckBoxPreference) findPreference(
+                Config.KEY_NOTIFY_PRIVACY);
 
         mLowPriorityPreference.setOnPreferenceChangeListener(this);
         mWakeUpOnPreference.setOnPreferenceChangeListener(this);
+        mPrivacyPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -60,6 +65,7 @@ public class NotificationFragment extends PreferenceFragment implements
 
         updateLowPriorityPreference(config);
         updateWakeUpOnPreference(config);
+        updatePrivacyPreference(config);
     }
 
     @Override
@@ -80,8 +86,9 @@ public class NotificationFragment extends PreferenceFragment implements
             config.setLowPriorityNotificationsAllowed(getActivity(), (Boolean) newValue, this);
         } else if (preference == mWakeUpOnPreference) {
             config.setWakeUpOnNotifyEnabled(getActivity(), (Boolean) newValue, this);
-        } else
-            return false;
+        } else if(preference == mPrivacyPreference) {
+           config.setNotificationPrivacy(getActivity(), (Boolean) newValue, this);
+        } else return false;
         return true;
     }
 
@@ -94,6 +101,9 @@ public class NotificationFragment extends PreferenceFragment implements
             case Config.KEY_NOTIFY_WAKE_UP_ON:
                 updateLowPriorityPreference(config);
                 break;
+            case Config.KEY_NOTIFY_PRIVACY:
+                updatePrivacyPreference(config);
+                break;
         }
     }
 
@@ -103,6 +113,10 @@ public class NotificationFragment extends PreferenceFragment implements
 
     private void updateWakeUpOnPreference(Config config) {
         updatePreference(mWakeUpOnPreference, config.isNotifyWakingUp());
+    }
+    
+    private void updatePrivacyPreference(Config config) {
+        updatePreference(mPrivacyPreference, config.isPrivacyEnabled());
     }
 
     private void updatePreference(CheckBoxPreference preference, boolean checked) {

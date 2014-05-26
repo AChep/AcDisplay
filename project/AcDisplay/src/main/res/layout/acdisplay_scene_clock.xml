@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -15,31 +16,34 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
-  -->
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scene"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <!--
         IF YOU WANT TO CHANGE TOP/BOTTOM MARGINS:
         don't forget to check its style code - you probably
         will need to compensate font margins.
     -->
+
+    <!-- Added padding to TimeView , should wrap custom fonts-->
+    
     <com.achep.acdisplay.widgets.TimeView
         android:id="@+id/time"
+        style="?attr/acDisplayClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        style="?attr/acDisplayClock" />
+        android:padding="2dp" />
 
     <com.achep.acdisplay.widgets.StatusTextView
         android:id="@+id/status"
+        style="?attr/acDisplayStatus"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?attr/acDisplayStatus" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

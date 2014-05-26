@@ -240,4 +240,15 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             }
         }
     }
+    
+    
+    //Hide message View based on user choice
+    
+    public void hideMessage(boolean hide) {
+        if(hide) {
+            mMessageTextView.setVisibility(View.GONE);
+        }else {
+            mMessageTextView.setVisibility(View.VISIBLE);
+        }
+    }
 }
