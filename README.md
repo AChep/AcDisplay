@@ -11,6 +11,7 @@ AcDisplay
 It will let you know about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what's going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
 
 **[Join app's community on Google+](https://plus.google.com/u/0/communities/102085470313050914854)**
+**[Join app's dev channel on freenode](http://webchat.freenode.net?channels=acdisplay)**
 
 <a href="http://get.acdisplay.artemchep.com">
   <img alt="Get AcDisplay on Google Play" vspace="20"
