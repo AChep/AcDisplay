@@ -63,11 +63,13 @@
     
     <!-- Clock customization stuff -->
     <string name="preference_clock_title">Clock Font</string>
-    <string name="preference_clock_font_description">Change the default clock Font</string>
+    <string name="preference_clock_font_description">Change default clock Font</string>
     <string name="preference_clock_size_title">Clock size</string>
-    <string name="preference_clock_size_description">Change the default clock size</string>
-    <string name="preference_clock_color_title">Clock color</string>
-    <string name="preference_clock_color_description">Change the default clock color</string>
+    <string name="preference_clock_size_description">Change default clock size</string>
+    <string name="preference_clock_color_title">Select color</string>
+    <string name="preference_clock_color_description">Change default clock color</string>
+    <string name="preference_clock_color_bg_title">Clock Background color</string>
+    <string name="preference_clock_color_bg_description">Change default clock Backgorund color</string>
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Cancel</string>
 

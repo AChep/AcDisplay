@@ -36,6 +36,11 @@
 
     <!-- Lockscreen -->
     <string name="settings_lockscreen_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+    <string name="settings_lockscreen_customize_category">Customizations</string>
+    <string name="settings_lockscreen_customize_circle_title">Lock Circle Color</string>
+    <string name="settings_lockscreen_customize_circle_description">Custom lock circle color</string>
+    <string name="settings_lockscreen_customize_lock_title">Lock Icon Color</string>
+    <string name="settings_lockscreen_customize_lock_description">Custom Lock icon color</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>

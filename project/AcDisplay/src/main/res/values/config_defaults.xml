@@ -35,7 +35,7 @@
     <bool name="config_default_ui_status_battery_always_visible">false</bool>
     <bool name="config_default_ui_immersive_mode_kitkat">true</bool>
     
-    <bool name="config_default_notify_privacy">true</bool>
+    <bool name="config_default_notify_privacy">false</bool>
     
     <integer name="config_default_ui_icon_size">48</integer>
     <integer name="config_default_timeout_normal">10000</integer>

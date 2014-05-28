@@ -38,6 +38,5 @@
         android:summaryOn="@string/settings_privacy_notifications_on"
         android:summaryOff="@string/settings_privacy_notifications_off"
         android:defaultValue="@bool/config_default_notify_privacy"/>
-    
 
 </PreferenceScreen>

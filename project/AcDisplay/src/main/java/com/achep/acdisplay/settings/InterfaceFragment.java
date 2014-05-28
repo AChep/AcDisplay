@@ -254,11 +254,9 @@ Config.OnConfigChangedListener, OnPreferenceClickListener {
         // TODO Auto-generated method stub
         if(arg0 == mClockFont) {
             showClockFontDialog();
-        }
-        if(arg0 == mClockColor) {
+        }else if(arg0 == mClockColor) {
             showClockColorDialog();
-        }
-        if(arg0 == mClockSize) {
+        }else if(arg0 == mClockSize) {
             showClockSizeDialog();
         }
         return false;
@@ -388,7 +386,7 @@ Config.OnConfigChangedListener, OnPreferenceClickListener {
 
 
     /*
-     * Custom Clock color Diaog
+     * Custom Clock color Dialog
      */
     private void showClockColorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

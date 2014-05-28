@@ -170,6 +170,8 @@ public class AcDisplayActivity extends KeyguardActivity implements
         mBackgroundView = (ImageView) findViewById(R.id.background);
         mCircleView = (CircleView) findViewById(R.id.circle);
         mCircleView.setCallback(this);
+        mCircleView.setLockCircleColor(mConfig.getLockCircleColor());
+        mCircleView.setLockIconColor(mConfig.getLockIconColor());
 
         mImmersiveMode = Device.hasKitKatApi();
         mImmersiveModeToggle = getConfig().isImmersible();

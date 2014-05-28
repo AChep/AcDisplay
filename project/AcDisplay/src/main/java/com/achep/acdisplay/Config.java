@@ -88,6 +88,11 @@ public class Config {
     //Notification privacy stuff
     public static final String KEY_NOTIFY_PRIVACY="notify_privacy";
     
+    
+    //Lockscreen
+    public static final String KEY_LOCK_CIRCLE_COLOR="lock_circle_color";
+    public static final String KEY_LOCK_ICON_COLOR="lock_icon_color";
+    
     private static Config sConfig;
 
     private boolean mAcDisplayEnabled;
@@ -119,6 +124,12 @@ public class Config {
 
     //Notification privacy
     private boolean mPrivacy;
+    
+    //Lockscreen colors
+    private int mLockCircleColor;
+    private int mLockIconColor;
+    private int mLockCircleAlpha;
+    private int mLockIconAlpha;
     
     private boolean mConstAlternativePayments;
 
@@ -222,7 +233,9 @@ public class Config {
         mPrivacy = prefs.getBoolean(KEY_NOTIFY_PRIVACY, 
                 res.getBoolean(R.bool.config_default_notify_privacy));
 
-        
+        //Lockscreen colors
+        mLockCircleColor = prefs.getInt(KEY_LOCK_CIRCLE_COLOR, Color.WHITE);
+        mLockIconColor = prefs.getInt(KEY_LOCK_ICON_COLOR, Color.BLACK);
         
         
         // other
@@ -500,6 +513,18 @@ public class Config {
     public void setNotificationPrivacy(Context context, boolean value, OnConfigChangedListener listener) {
         saveOption(context, KEY_NOTIFY_PRIVACY, value, listener, mPrivacy != (mPrivacy = value));
     }
+    
+    //////////////
+    //LockScreen//
+    //////////////
+    
+    public void setLockCircleColor(Context context, int value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_LOCK_CIRCLE_COLOR, value, listener, mLockCircleColor != (mLockCircleColor = value));
+    }
+    
+    public void setLockIconColor(Context context, int value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_LOCK_ICON_COLOR, value, listener, mLockIconColor != (mLockIconColor = value));
+    }
 
 
     public int getTimeoutNormal() {
@@ -627,6 +652,18 @@ public class Config {
     
     public boolean isPrivacyEnabled() {
         return mPrivacy;
+    }
+    
+    //////////////////////
+    //LockScreen getters//
+    //////////////////////
+    
+    public int getLockCircleColor() {
+        return this.mLockCircleColor;
+    }
+    
+    public int getLockIconColor() {
+        return this.mLockIconColor;
     }
 
 }
