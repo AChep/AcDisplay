@@ -42,6 +42,9 @@ To do so, just use the feedback option and check «Attach a log» and the log wi
 ##### Q: When will AcDisplay be available for older devices/versions of Android?
 >While it is understandable that you want the AcDisplay awsomeness on your own device, the truth is that it’s really difficult. Most of the features depend on programming APIs that were just released Android 4.4 KitKat. While nothing is impossible, for now the focus is on further improving AcDisplay for KitKat first. If you are a developer however and you want work on this or have something else in mind, don’t hesitate to fork the AcDisplay git [repo] and give it a whirl.
 
+##### Q: I see some Xposed modules are included, what do they do?
+>Good that you ask that, there are currently two of them. Number one makes the annoying blue immersive mode popup go away and number two disables the homebutton when you have AcDisplay enabled as a lockscreen. These are both features that can't be done using conventional methods and therefore they are seperate from the app in an Xposed module.
+
 [community]:https://plus.google.com/u/0/communities/102085470313050914854
 [testing]:https://play.google.com/apps/testing/com.achep.activedisplay
 [repo]:https://github.com/AChep/AcDisplay
