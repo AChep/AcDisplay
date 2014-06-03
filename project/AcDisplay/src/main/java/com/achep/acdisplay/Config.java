@@ -74,6 +74,7 @@ public class Config {
     public static final String KEY_UI_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
+    public static final int DYNAMIC_BG_NOTIFICATION_PICTURE = 4;
     public static final String KEY_UI_MIRRORED_TIMEOUT_BAR = "mirrored_timeout_progress_bar";
     public static final String KEY_UI_NOTIFY_CIRCLED_ICON = "notify_circled_icon";
     public static final String KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE = "ui_status_battery_always_visible";
