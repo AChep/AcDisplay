@@ -21,6 +21,7 @@
 
     <bool name="config_default_enabled">false</bool>
     <bool name="config_default_keyguard_enabled">false</bool>
+    <bool name="config_default_keyguard_without_notifies_enabled">true</bool>
     <bool name="config_default_active_mode_enabled">false</bool>
     <bool name="config_default_active_mode_without_notifies_enabled">true</bool>
     <bool name="config_default_enabled_only_while_charging">false</bool>

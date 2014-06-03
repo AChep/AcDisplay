@@ -61,6 +61,7 @@ public class Config {
 
     // keyguard
     public static final String KEY_KEYGUARD = "keyguard";
+    public static final String KEY_KEYGUARD_WITHOUT_NOTIFICATIONS = "keyguard_without_notifications";
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
@@ -82,6 +83,7 @@ public class Config {
 
     private boolean mAcDisplayEnabled;
     private boolean mKeyguardEnabled;
+    private boolean mKeyguardWithoutNotifies;
     private boolean mActiveMode;
     private boolean mActiveModeWithoutNotifies;
     private boolean mEnabledOnlyWhileCharging;
@@ -150,6 +152,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_enabled));
         mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
                 res.getBoolean(R.bool.config_default_keyguard_enabled));
+        mKeyguardWithoutNotifies = prefs.getBoolean(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS,
+                res.getBoolean(R.bool.config_default_keyguard_without_notifies_enabled));
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
@@ -280,6 +284,11 @@ public class Config {
         if (changed) {
             KeyguardService.handleState(context);
         }
+    }
+
+    public void setKeyguardWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mKeyguardWithoutNotifies != (mKeyguardWithoutNotifies = enabled);
+        saveOption(context, KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
     }
 
     /**
@@ -473,6 +482,10 @@ public class Config {
 
     public boolean isKeyguardEnabled() {
         return mKeyguardEnabled;
+    }
+
+    public boolean isKeyguardWithoutNotifiesEnabled() {
+        return mKeyguardWithoutNotifies;
     }
 
     public boolean isActiveModeEnabled() {

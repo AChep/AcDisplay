@@ -37,6 +37,8 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayActivity;
+import com.achep.acdisplay.notifications.NotificationPresenter;
+import com.achep.acdisplay.notifications.OpenStatusBarNotification;
 import com.achep.acdisplay.settings.Settings;
 import com.achep.acdisplay.utils.PackageUtils;
 import com.achep.acdisplay.utils.PowerUtils;
@@ -44,11 +46,18 @@ import com.achep.acdisplay.utils.PowerUtils;
 /**
  * Created by Artem on 16.02.14.
  */
-public class KeyguardService extends Service {
+public class KeyguardService extends Service implements
+        NotificationPresenter.OnNotificationListChangedListener,
+        Config.OnConfigChangedListener {
 
     private static final String TAG = "KeyguardService";
 
     private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
+
+    private static Config mConfig = Config.getInstance();
+    private static NotificationPresenter mNotificationPresenter = NotificationPresenter.getInstance();
+    // used for when the keyguard should only be shown when there are notifications
+    private boolean mActive = true;
 
     private ActivityMonitorThread mActivityMonitorThread;
 
@@ -69,6 +78,7 @@ public class KeyguardService extends Service {
      */
     public static void handleState(Context context) {
         Intent intent = new Intent(context, KeyguardService.class);
+
         Config config = Config.getInstance();
 
         boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
@@ -87,6 +97,8 @@ public class KeyguardService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (!mActive)
+                return;
             TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             final boolean isCall = ts.getCallState() != TelephonyManager.CALL_STATE_IDLE;
 
@@ -163,6 +175,9 @@ public class KeyguardService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        mConfig.addOnConfigChangedListener(this);
+        mNotificationPresenter.addOnNotificationListChangedListener(this);
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -190,6 +205,8 @@ public class KeyguardService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mConfig.removeOnConfigChangedListener(this);
+        mNotificationPresenter.removeOnNotificationListChangedListener(this);
         unregisterReceiver(mReceiver);
         stopMonitoringActivities();
     }
@@ -197,6 +214,23 @@ public class KeyguardService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onNotificationListChanged(NotificationPresenter np, OpenStatusBarNotification osbn, int event) {
+        mActive = mConfig.isKeyguardWithoutNotifiesEnabled() || mNotificationPresenter.getList().size() > 0;
+    }
+
+    @Override
+    public void onConfigChanged(Config config, String key, Object value) {
+        switch (key) {
+            case Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS:
+                if ((boolean) value)
+                    mActive = true;
+                else
+                    mActive = mNotificationPresenter.getList().size() > 0;
+                break;
+        }
     }
 
     /**
