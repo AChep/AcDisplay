@@ -374,12 +374,19 @@ public class AcDisplayFragment extends Fragment implements
                         }
 
                         if (dismiss) {
+                            Activity activity = getActivity();
+                            if (mConfig.isScreenOffAfterLastNotifEnabled() &&
+                                    activity instanceof KeyguardActivity &&
+                                    mPresenter.getList().size() == 1)
+                                ((KeyguardActivity) getActivity()).lock();
+
                             mTouched = false;
                             mTouchHandler.removeCallbacksAndMessages(null);
 
                             int duration = Math.round(absDeltaX * 1000f / Math.max(absVelocityX, 500f));
 
                             mWidgetTranslatorX.stop();
+
                             mWidgetTranslatorX.getView().animate()
                                     .alpha(0)
                                     .translationX(deltaX + width * MathUtils.charge(deltaX))

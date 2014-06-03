@@ -44,6 +44,7 @@ public class Config {
 
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_ONLY_WHILE_CHARGING = "only_while_charging";
+    public static final String KEY_SCREEN_OFF_AFTER_LAST_NOTIF = "screen_off_after_last_notif";
 
     // notifications
     public static final String KEY_NOTIFY_LOW_PRIORITY = "notify_low_priority";
@@ -87,6 +88,7 @@ public class Config {
     private boolean mActiveMode;
     private boolean mActiveModeWithoutNotifies;
     private boolean mEnabledOnlyWhileCharging;
+    private boolean mScreenOffAfterLastNotif;
     private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
     private boolean mTimeoutEnabled;
@@ -202,6 +204,8 @@ public class Config {
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
                 res.getBoolean(R.bool.config_default_enabled_only_while_charging));
+        mScreenOffAfterLastNotif = prefs.getBoolean(KEY_SCREEN_OFF_AFTER_LAST_NOTIF,
+                res.getBoolean(R.bool.config_default_screen_off_after_last_notif));
 
         // const
         mConstAlternativePayments =
@@ -320,6 +324,15 @@ public class Config {
             ActiveModeService.handleState(context);
             KeyguardService.handleState(context);
         }
+    }
+
+    /**
+     * Setter to turn the screen off after dismissing the last notification.
+     */
+    public void setScreenOffAfterLastNotif(Context context, boolean enabled,
+                                           OnConfigChangedListener listener) {
+        boolean changed = mScreenOffAfterLastNotif != (mScreenOffAfterLastNotif = enabled);
+        saveOption(context, KEY_SCREEN_OFF_AFTER_LAST_NOTIF, enabled, listener, changed);
     }
 
     /**
@@ -498,6 +511,10 @@ public class Config {
 
     public boolean isEnabledOnlyWhileCharging() {
         return mEnabledOnlyWhileCharging;
+    }
+
+    public boolean isScreenOffAfterLastNotifEnabled() {
+        return mScreenOffAfterLastNotif;
     }
 
     public boolean isNotifyWakingUp() {
