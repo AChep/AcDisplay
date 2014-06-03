@@ -43,6 +43,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.achep.acdisplay.Build;
@@ -227,6 +229,10 @@ public class AcDisplayFragment extends Fragment implements
             AcDisplayActivity a = (AcDisplayActivity) activity;
             mTimeout = a.getTimeout();
             mTimeout.registerListener(mTimeoutGui);
+
+            Animation animation = AnimationUtils.loadAnimation(a, android.R.anim.fade_in);
+            animation.setDuration(500);
+            root.setAnimation(animation);
         } else {
             mTimeout = new Timeout(); // fake timeout that does nothing
             progressBar.setProgress(progressBar.getMax());
