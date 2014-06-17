@@ -46,9 +46,9 @@
 
     <!-- Status text -->
     <!-- Example: Mon, 7 April -->
-    <string name="status_format_date" formatted="false" translatable="false">EEE, d MMMM</string>
+    <string name="status_format_date" formatted="false" translatable="true">EEE, d MMMM</string>
     <!-- Example: Mon, 7 April; 73% -->
-    <string name="status_format_battery_plus_date" formatted="false" translatable="false">EEE, d MMMM;\t%1$d%%</string>
+    <string name="status_format_battery_plus_date" formatted="false" translatable="true">EEE, d MMMM;\t%1$d%%</string>
 
     <!-- Remote actions -->
     <string name="remote_enable_acdisplay">AcDisplay is enabled.</string>
