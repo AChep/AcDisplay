@@ -30,10 +30,12 @@
     <string-array name="dynamic_background">
         <item>Artwork</item>
         <item>Notification icon</item>
+        <item>Notification picture</item>
     </string-array>
     <string-array name="dynamic_background_entries" translatable="false">
         <item>1</item>
         <item>2</item>
+        <item>4</item>
     </string-array>
 
 </resources>

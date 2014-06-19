@@ -37,6 +37,7 @@ public class MoreFragment extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     private CheckBoxPreference mOnlyWhileChargingPreference;
+    private CheckBoxPreference mScreenOffAfterLastNotif;
     private Preference mInactiveHoursPreference;
     private Preference mTimeoutPreference;
 
@@ -53,7 +54,11 @@ public class MoreFragment extends PreferenceFragment implements
         mOnlyWhileChargingPreference = (CheckBoxPreference) findPreference(
                 Config.KEY_ONLY_WHILE_CHARGING);
 
+        mScreenOffAfterLastNotif = (CheckBoxPreference) findPreference(
+                Config.KEY_SCREEN_OFF_AFTER_LAST_NOTIF);
+
         mOnlyWhileChargingPreference.setOnPreferenceChangeListener(this);
+        mScreenOffAfterLastNotif.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -63,6 +68,7 @@ public class MoreFragment extends PreferenceFragment implements
         config.addOnConfigChangedListener(this);
 
         updateOnlyWhileChargingPreference(config);
+        updateScreenOffAfterLastNotif(config);
 
         updateInactiveHoursSummary(config);
         updateTimeoutSummary(config);
@@ -84,6 +90,8 @@ public class MoreFragment extends PreferenceFragment implements
         Config config = Config.getInstance();
         if (preference == mOnlyWhileChargingPreference) {
             config.setActiveDisplayEnabledOnlyWhileCharging(getActivity(), (Boolean) newValue, this);
+        } else if (preference == mScreenOffAfterLastNotif) {
+            config.setScreenOffAfterLastNotif(getActivity(), (Boolean) newValue, this);
         } else
             return false;
         return true;
@@ -110,6 +118,10 @@ public class MoreFragment extends PreferenceFragment implements
 
     private void updateOnlyWhileChargingPreference(Config config) {
         updatePreference(mOnlyWhileChargingPreference, config.isEnabledOnlyWhileCharging());
+    }
+
+    private void updateScreenOffAfterLastNotif(Config config) {
+        updatePreference(mScreenOffAfterLastNotif, config.isScreenOffAfterLastNotifEnabled());
     }
 
     private void updatePreference(CheckBoxPreference preference, boolean checked) {

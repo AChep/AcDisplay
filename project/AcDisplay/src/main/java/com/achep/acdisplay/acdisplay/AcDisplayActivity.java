@@ -47,6 +47,7 @@ import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.activemode.ActiveModeSensor;
 import com.achep.acdisplay.activemode.ActiveModeService;
 import com.achep.acdisplay.activities.KeyguardActivity;
+import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.widgets.CircleView;
 
 /**
@@ -198,6 +199,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+
         mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
         mTimeout.pause();
 
@@ -213,6 +215,10 @@ public class AcDisplayActivity extends KeyguardActivity implements
             sensor.onDetached(sensorManager);
             sensor.unregisterCallback(mSensorCallback);
         }
+
+        if (!mConfig.isKeyguardWithoutNotifiesEnabled() &&
+                NotificationPresenter.getInstance().getList().size() == 0)
+            finish();
     }
 
     @Override

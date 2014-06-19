@@ -43,6 +43,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.achep.acdisplay.Build;
@@ -227,6 +229,10 @@ public class AcDisplayFragment extends Fragment implements
             AcDisplayActivity a = (AcDisplayActivity) activity;
             mTimeout = a.getTimeout();
             mTimeout.registerListener(mTimeoutGui);
+
+            Animation animation = AnimationUtils.loadAnimation(a, android.R.anim.fade_in);
+            animation.setDuration(500);
+            root.setAnimation(animation);
         } else {
             mTimeout = new Timeout(); // fake timeout that does nothing
             progressBar.setProgress(progressBar.getMax());
@@ -368,12 +374,19 @@ public class AcDisplayFragment extends Fragment implements
                         }
 
                         if (dismiss) {
+                            Activity activity = getActivity();
+                            if (mConfig.isScreenOffAfterLastNotifEnabled() &&
+                                    activity instanceof KeyguardActivity &&
+                                    mPresenter.getList().size() == 1)
+                                ((KeyguardActivity) getActivity()).lock();
+
                             mTouched = false;
                             mTouchHandler.removeCallbacksAndMessages(null);
 
                             int duration = Math.round(absDeltaX * 1000f / Math.max(absVelocityX, 500f));
 
                             mWidgetTranslatorX.stop();
+
                             mWidgetTranslatorX.getView().animate()
                                     .alpha(0)
                                     .translationX(deltaX + width * MathUtils.charge(deltaX))

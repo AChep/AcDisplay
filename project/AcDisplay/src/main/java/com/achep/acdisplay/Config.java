@@ -44,6 +44,7 @@ public class Config {
 
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_ONLY_WHILE_CHARGING = "only_while_charging";
+    public static final String KEY_SCREEN_OFF_AFTER_LAST_NOTIF = "screen_off_after_last_notif";
 
     // notifications
     public static final String KEY_NOTIFY_LOW_PRIORITY = "notify_low_priority";
@@ -61,6 +62,7 @@ public class Config {
 
     // keyguard
     public static final String KEY_KEYGUARD = "keyguard";
+    public static final String KEY_KEYGUARD_WITHOUT_NOTIFICATIONS = "keyguard_without_notifications";
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
@@ -72,6 +74,7 @@ public class Config {
     public static final String KEY_UI_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
+    public static final int DYNAMIC_BG_NOTIFICATION_PICTURE = 4;
     public static final String KEY_UI_MIRRORED_TIMEOUT_BAR = "mirrored_timeout_progress_bar";
     public static final String KEY_UI_NOTIFY_CIRCLED_ICON = "notify_circled_icon";
     public static final String KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE = "ui_status_battery_always_visible";
@@ -82,9 +85,11 @@ public class Config {
 
     private boolean mAcDisplayEnabled;
     private boolean mKeyguardEnabled;
+    private boolean mKeyguardWithoutNotifies;
     private boolean mActiveMode;
     private boolean mActiveModeWithoutNotifies;
     private boolean mEnabledOnlyWhileCharging;
+    private boolean mScreenOffAfterLastNotif;
     private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
     private boolean mTimeoutEnabled;
@@ -150,6 +155,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_enabled));
         mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
                 res.getBoolean(R.bool.config_default_keyguard_enabled));
+        mKeyguardWithoutNotifies = prefs.getBoolean(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS,
+                res.getBoolean(R.bool.config_default_keyguard_without_notifies_enabled));
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
@@ -198,6 +205,8 @@ public class Config {
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
                 res.getBoolean(R.bool.config_default_enabled_only_while_charging));
+        mScreenOffAfterLastNotif = prefs.getBoolean(KEY_SCREEN_OFF_AFTER_LAST_NOTIF,
+                res.getBoolean(R.bool.config_default_screen_off_after_last_notif));
 
         // const
         mConstAlternativePayments =
@@ -282,6 +291,11 @@ public class Config {
         }
     }
 
+    public void setKeyguardWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mKeyguardWithoutNotifies != (mKeyguardWithoutNotifies = enabled);
+        saveOption(context, KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
+    }
+
     /**
      * Setter to enable the active mode.
      */
@@ -311,6 +325,15 @@ public class Config {
             ActiveModeService.handleState(context);
             KeyguardService.handleState(context);
         }
+    }
+
+    /**
+     * Setter to turn the screen off after dismissing the last notification.
+     */
+    public void setScreenOffAfterLastNotif(Context context, boolean enabled,
+                                           OnConfigChangedListener listener) {
+        boolean changed = mScreenOffAfterLastNotif != (mScreenOffAfterLastNotif = enabled);
+        saveOption(context, KEY_SCREEN_OFF_AFTER_LAST_NOTIF, enabled, listener, changed);
     }
 
     /**
@@ -475,6 +498,10 @@ public class Config {
         return mKeyguardEnabled;
     }
 
+    public boolean isKeyguardWithoutNotifiesEnabled() {
+        return mKeyguardWithoutNotifies;
+    }
+
     public boolean isActiveModeEnabled() {
         return mActiveMode;
     }
@@ -485,6 +512,10 @@ public class Config {
 
     public boolean isEnabledOnlyWhileCharging() {
         return mEnabledOnlyWhileCharging;
+    }
+
+    public boolean isScreenOffAfterLastNotifEnabled() {
+        return mScreenOffAfterLastNotif;
     }
 
     public boolean isNotifyWakingUp() {

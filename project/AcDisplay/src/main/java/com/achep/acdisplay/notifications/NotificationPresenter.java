@@ -227,9 +227,10 @@ public class NotificationPresenter implements NotificationList.Callback {
             // This will reduce RAM consumption for a bit (1% or so.)
             if (config.isCircledLargeIconEnabled())
                 data.loadCircleIcon(sbn);
-            if (Operator.bitAnd(
-                    config.getDynamicBackgroundMode(),
-                    Config.DYNAMIC_BG_NOTIFICATION_MASK))
+            if (Operator.bitAnd(config.getDynamicBackgroundMode(),
+                    Config.DYNAMIC_BG_NOTIFICATION_MASK) ||
+                    Operator.bitAnd(config.getDynamicBackgroundMode(),
+                            Config.DYNAMIC_BG_NOTIFICATION_PICTURE))
                 data.loadBackground(context, sbn);
         }
 

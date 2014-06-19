@@ -36,6 +36,9 @@
 
     <!-- Lockscreen -->
     <string name="settings_lockscreen_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+    <string name="settings_lockscreen_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
+    <string name="settings_lockscreen_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
+    <string name="settings_lockscreen_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
@@ -75,6 +78,9 @@
     <string name="settings_only_while_charging_title">Only while charging</string>
     <string name="settings_only_while_charging_on">AcDisplay is only active while your device is charging. This applies to all features such as the lockscreen or active mode.</string>
     <string name="settings_only_while_charging_off">AcDisplay is always active.</string>
+    <string name="settings_screen_off_after_last_notif">Screen off after last notification</string>
+    <string name="settings_screen_off_after_last_notif_on">AcDisplay will turn off your screen after you dismiss the last notification. Applies to all features.</string>
+    <string name="settings_screen_off_after_last_notif_off">AcDisplay will only turn off your screen after the timeout.</string>
     <string name="settings_inactive_hours_title">Inactive hours</string>
     <string name="settings_inactive_hours_disabled">Disabled</string>
     <string name="settings_inactive_hours_enabled">From %1$s to %2$s.</string>

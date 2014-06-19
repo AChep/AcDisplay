@@ -27,6 +27,13 @@
         android:summaryOff="@string/settings_only_while_charging_off"
         android:defaultValue="@bool/config_default_enabled_only_while_charging"/>
 
+    <CheckBoxPreference
+        android:key="screen_off_after_last_notif"
+        android:title="@string/settings_screen_off_after_last_notif"
+        android:summaryOn="@string/settings_screen_off_after_last_notif_on"
+        android:summaryOff="@string/settings_screen_off_after_last_notif_off"
+        android:defaultValue="@bool/config_default_screen_off_after_last_notif"/>
+
     <com.achep.acdisplay.settings.preferences.InactiveHoursPreference
         android:key="inactive_hours"
         android:dialogIcon="@drawable/ic_dialog_night"

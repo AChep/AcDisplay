@@ -18,11 +18,13 @@
  */
 package com.achep.acdisplay.notifications;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
@@ -30,7 +32,9 @@ import android.util.Log;
 
 import com.achep.acdisplay.AsyncTask;
 import com.achep.acdisplay.Build;
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
+import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.BackgroundFactoryThread;
 import com.achep.acdisplay.notifications.parser.Extractor;
@@ -40,6 +44,7 @@ import com.achep.acdisplay.utils.BitmapUtils;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -178,7 +183,29 @@ public class NotificationData {
         // running.
         stopAsyncTask(mBackgroundLoader);
 
-        Bitmap bitmapIcon = sbn.getNotification().largeIcon;
+        Notification notification = sbn.getNotification();
+        Bitmap bitmapIcon = null;
+
+        if (Operator.bitAnd(Config.getInstance().getDynamicBackgroundMode(),
+                Config.DYNAMIC_BG_NOTIFICATION_PICTURE)) {
+            if (Device.hasKitKatApi()) {
+                bitmapIcon = notification.extras.getParcelable(Notification.EXTRA_PICTURE);
+            } else {
+                try {
+                    Field extrasField = notification.getClass().getDeclaredField("extras");
+                    extrasField.setAccessible(true);
+                    Bundle extras = (Bundle) extrasField.get(notification);
+                    bitmapIcon = extras.getParcelable(Notification.EXTRA_PICTURE);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (bitmapIcon == null && Operator.bitAnd(Config.getInstance().getDynamicBackgroundMode(),
+                Config.DYNAMIC_BG_NOTIFICATION_MASK))
+            bitmapIcon = notification.largeIcon;
+
         if (bitmapIcon != null && !BitmapUtils.hasTransparentCorners(bitmapIcon)) {
             mBackgroundLoader = new BackgroundFactoryThread(
                     context, bitmapIcon, mBackgroundLoaderCallback);
