@@ -31,5 +31,19 @@
         android:enabled="false"
         android:title="@string/settings_placeholder_title"
         android:summary="@string/settings_placeholder_summary" />
+    
+    <PreferenceCategory
+        android:title="@string/settings_lockscreen_customize_category">
+        
+        <Preference 
+            android:key="lock_circle_color"
+            android:title="@string/settings_lockscreen_customize_circle_title"
+            android:summary="@string/settings_lockscreen_customize_circle_description"/>
+        <Preference 
+            android:key="lock_icon_color"
+            android:title="@string/settings_lockscreen_customize_lock_title"
+            android:summary="@string/settings_lockscreen_customize_lock_description"/>
+        
+    </PreferenceCategory>
 
 </PreferenceScreen>

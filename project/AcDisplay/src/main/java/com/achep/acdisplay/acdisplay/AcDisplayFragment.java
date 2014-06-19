@@ -21,11 +21,13 @@ package com.achep.acdisplay.acdisplay;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -44,7 +46,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
-
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
@@ -63,7 +64,7 @@ import com.achep.acdisplay.view.ElasticValue;
 import com.achep.acdisplay.view.ForwardingLayout;
 import com.achep.acdisplay.view.ForwardingListener;
 import com.achep.acdisplay.widgets.ProgressBar;
-
+import com.achep.acdisplay.widgets.TimeView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -71,7 +72,7 @@ import java.util.HashMap;
  * This is main fragment of ActiveDisplay app.
  */
 public class AcDisplayFragment extends Fragment implements
-        View.OnTouchListener {
+View.OnTouchListener {
 
     private static final String TAG = "AcDisplayFragment";
 
@@ -145,6 +146,23 @@ public class AcDisplayFragment extends Fragment implements
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
     }
 
+    /*
+     * Add back onResume() method to apply clock customizations changes on the preview
+     */
+    
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal());
+        ViewGroup clockView = mSceneMain.getView();
+        TimeView clock = (TimeView) clockView.findViewById(R.id.time);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), mConfig.getClockFont());
+        clock.setTypeface(tf);
+        clock.setTextColor(mConfig.getClockColor());
+        clock.setTextSize((float)mConfig.getClockSize());
+    }
+
     @TargetApi(android.os.Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -177,9 +195,9 @@ public class AcDisplayFragment extends Fragment implements
             mSceneMain = new SceneCompat(mSceneContainer, sceneMain);
             if (getResources().getBoolean(R.bool.config_transition_fade)) {
                 mTransition = new TransitionSet()
-                        .setOrdering(TransitionSet.ORDERING_TOGETHER)
-                        .addTransition(new Fade())
-                        .addTransition(new ChangeBounds());
+                .setOrdering(TransitionSet.ORDERING_TOGETHER)
+                .addTransition(new Fade())
+                .addTransition(new ChangeBounds());
             } else {
                 mTransition = new ChangeBounds();
             }
@@ -189,7 +207,16 @@ public class AcDisplayFragment extends Fragment implements
         mCurrentScene = mSceneMain;
         mSceneMain.enter();
 
+        
+        // //////////////////////////////////////////////////
+        // Apply clock customizazions while creating views //
+        ////////////////////////////////////////////////////
         Config config = Config.getInstance();
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), config.getClockFont());
+        TimeView clock = (TimeView)sceneMain.findViewById(R.id.time);
+        clock.setTypeface(tf);
+        clock.setTextColor(config.getClockColor());
+        clock.setTextSize((float)config.getClockSize());
 
         // /////////////////
         // ~~ TIMEOUT GUI ~~
@@ -277,131 +304,131 @@ public class AcDisplayFragment extends Fragment implements
 
             final int action = event.getAction();
             switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    mTouched = true;
+            case MotionEvent.ACTION_DOWN:
+                mTouched = true;
 
-                    // Restart timeout and immediately pause it to
-                    // get full line of timeout.
-                    mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort(), true);
-                    mTimeout.pause();
+                // Restart timeout and immediately pause it to
+                // get full line of timeout.
+                mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort(), true);
+                mTimeout.pause();
 
-                    // Track the velocity of movement, so we
-                    // can do swipe-to-dismiss.
-                    mVelocityTracker = VelocityTracker.obtain();
-                    mStdTouchGen[0] = 0;
-                    mStdTouchGen[1] = 0;
+                // Track the velocity of movement, so we
+                // can do swipe-to-dismiss.
+                mVelocityTracker = VelocityTracker.obtain();
+                mStdTouchGen[0] = 0;
+                mStdTouchGen[1] = 0;
 
-                    // ///////////////
-                    // ~~ FALL DOWN ~~
-                    // ///////////////
-                case MotionEvent.ACTION_MOVE:
+                // ///////////////
+                // ~~ FALL DOWN ~~
+                // ///////////////
+            case MotionEvent.ACTION_MOVE:
 
-                    // Probably best solution would be to use
-                    // motion forwarding... But it's more complex.
-                    final float rawX = event.getRawX();
-                    final float rawY = event.getRawY();
+                // Probably best solution would be to use
+                // motion forwarding... But it's more complex.
+                final float rawX = event.getRawX();
+                final float rawY = event.getRawY();
 
-                    boolean anythingPressed = false;
-                    final int length = mCollapsedViewsContainer.getChildCount();
-                    for (int i = 0; i < length; i++) {
-                        final View child = mCollapsedViewsContainer.getChildAt(i);
-                        assert child != null;
-                        if (child.getVisibility() != View.VISIBLE) continue;
+                boolean anythingPressed = false;
+                final int length = mCollapsedViewsContainer.getChildCount();
+                for (int i = 0; i < length; i++) {
+                    final View child = mCollapsedViewsContainer.getChildAt(i);
+                    assert child != null;
+                    if (child.getVisibility() != View.VISIBLE) continue;
 
-                        // Check if current touch is on view, simulate pressing
-                        // and update its state so view can update background etc.
-                        final boolean pressedOld = child.isPressed();
-                        final boolean pressed = ViewUtils.isTouchPointInView(child, rawX, rawY);
-                        child.setPressed(pressed);
+                    // Check if current touch is on view, simulate pressing
+                    // and update its state so view can update background etc.
+                    final boolean pressedOld = child.isPressed();
+                    final boolean pressed = ViewUtils.isTouchPointInView(child, rawX, rawY);
+                    child.setPressed(pressed);
 
-                        if (pressed) anythingPressed = true;
-                        if (pressed != pressedOld && !child.isSelected()) {
-                            child.refreshDrawableState();
-                            if (pressed) {
-                                mTouchHandler.removeCallbacksAndMessages(null);
-                                mTouchHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showWidget(findWidgetByCollapsedView(child));
-                                    }
-                                }, action == MotionEvent.ACTION_DOWN ? 0 : 120);
-                            }
-                        }
-                    }
-                    if (!anythingPressed) {
-                        mTouchHandler.removeCallbacksAndMessages(null);
-                    }
-
-                    addSwipeMovement(event, action == MotionEvent.ACTION_DOWN);
-
-                    break;
-                case MotionEvent.ACTION_UP:
-
-                    if (mSelectedWidget != null && mSelectedWidget.isDismissible()) {
-                        addSwipeMovement(event, false);
-                        mVelocityTracker.computeCurrentVelocity(1000);
-                        float velocityX = mVelocityTracker.getXVelocity();
-                        velocityX = velocityX >= 0
-                                ? Math.max(0, velocityX - mWidgetTranslatorX.getStrength())
-                                : Math.min(0, velocityX + mWidgetTranslatorX.getStrength());
-
-                        boolean dismiss = false;
-                        final boolean dismissRight;
-
-                        int width = mWidgetTranslatorX.getView().getWidth();
-                        float absVelocityX = Math.abs(velocityX);
-                        float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
-                        float deltaX = mWidgetTranslatorX.getValue();
-                        float absDeltaX = Math.abs(deltaX);
-                        if (absDeltaX > width / 4) {
-                            dismiss = true;
-                            dismissRight = deltaX > 0;
-                        } else if (mMinFlingVelocity <= absVelocityX
-                                && absVelocityX <= mMaxFlingVelocity
-                                && absVelocityY * 2 < absVelocityX
-                                && absDeltaX > width / 6) {
-                            // dismiss only if flinging in the same direction as dragging
-                            dismiss = (velocityX < 0) == (deltaX < 0);
-                            dismissRight = mVelocityTracker.getXVelocity() > 0;
-                        } else {
-                            dismissRight = false;
-                        }
-
-                        if (dismiss) {
-                            mTouched = false;
+                    if (pressed) anythingPressed = true;
+                    if (pressed != pressedOld && !child.isSelected()) {
+                        child.refreshDrawableState();
+                        if (pressed) {
                             mTouchHandler.removeCallbacksAndMessages(null);
-
-                            int duration = Math.round(absDeltaX * 1000f / Math.max(absVelocityX, 500f));
-
-                            mWidgetTranslatorX.stop();
-                            mWidgetTranslatorX.getView().animate()
-                                    .alpha(0)
-                                    .translationX(deltaX + width * MathUtils.charge(deltaX))
-                                    .setDuration(duration)
-                                    .setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            onAnimationCancel(animation);
-                                            endTouch();
-                                        }
-
-                                        @Override
-                                        public void onAnimationCancel(Animator animation) {
-                                            mSelectedWidget.onDismissed(!dismissRight);
-                                            mWidgetTranslatorX.setValue(0f);
-                                        }
-                                    });
-                            break;
+                            mTouchHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showWidget(findWidgetByCollapsedView(child));
+                                }
+                            }, action == MotionEvent.ACTION_DOWN ? 0 : 120);
                         }
                     }
-
-                    // ///////////////
-                    // ~~ FALL DOWN ~~
-                    // ///////////////
-                case MotionEvent.ACTION_CANCEL:
+                }
+                if (!anythingPressed) {
                     mTouchHandler.removeCallbacksAndMessages(null);
-                    endTouch();
-                    break;
+                }
+
+                addSwipeMovement(event, action == MotionEvent.ACTION_DOWN);
+
+                break;
+            case MotionEvent.ACTION_UP:
+
+                if (mSelectedWidget != null && mSelectedWidget.isDismissible()) {
+                    addSwipeMovement(event, false);
+                    mVelocityTracker.computeCurrentVelocity(1000);
+                    float velocityX = mVelocityTracker.getXVelocity();
+                    velocityX = velocityX >= 0
+                            ? Math.max(0, velocityX - mWidgetTranslatorX.getStrength())
+                                    : Math.min(0, velocityX + mWidgetTranslatorX.getStrength());
+
+                            boolean dismiss = false;
+                            final boolean dismissRight;
+
+                            int width = mWidgetTranslatorX.getView().getWidth();
+                            float absVelocityX = Math.abs(velocityX);
+                            float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
+                            float deltaX = mWidgetTranslatorX.getValue();
+                            float absDeltaX = Math.abs(deltaX);
+                            if (absDeltaX > width / 4) {
+                                dismiss = true;
+                                dismissRight = deltaX > 0;
+                            } else if (mMinFlingVelocity <= absVelocityX
+                                    && absVelocityX <= mMaxFlingVelocity
+                                    && absVelocityY * 2 < absVelocityX
+                                    && absDeltaX > width / 6) {
+                                // dismiss only if flinging in the same direction as dragging
+                                dismiss = (velocityX < 0) == (deltaX < 0);
+                                dismissRight = mVelocityTracker.getXVelocity() > 0;
+                            } else {
+                                dismissRight = false;
+                            }
+
+                            if (dismiss) {
+                                mTouched = false;
+                                mTouchHandler.removeCallbacksAndMessages(null);
+
+                                int duration = Math.round(absDeltaX * 1000f / Math.max(absVelocityX, 500f));
+
+                                mWidgetTranslatorX.stop();
+                                mWidgetTranslatorX.getView().animate()
+                                .alpha(0)
+                                .translationX(deltaX + width * MathUtils.charge(deltaX))
+                                .setDuration(duration)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        onAnimationCancel(animation);
+                                        endTouch();
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+                                        mSelectedWidget.onDismissed(!dismissRight);
+                                        mWidgetTranslatorX.setValue(0f);
+                                    }
+                                });
+                                break;
+                            }
+                }
+
+                // ///////////////
+                // ~~ FALL DOWN ~~
+                // ///////////////
+            case MotionEvent.ACTION_CANCEL:
+                mTouchHandler.removeCallbacksAndMessages(null);
+                endTouch();
+                break;
             }
             return true;
         }
@@ -458,6 +485,7 @@ public class AcDisplayFragment extends Fragment implements
         mCollapsedViewsNeedsUpdate = false;
     }
 
+    @SuppressLint("NewApi")
     private void showWidget(Widget widget) {
         if (mSelectedWidget != null) {
             mSelectedWidget.getCollapsedView().setSelected(false);
@@ -502,6 +530,7 @@ public class AcDisplayFragment extends Fragment implements
     /**
      * Changes current scene to given one.
      */
+    @SuppressLint("NewApi")
     private void goScene(SceneCompat sceneCompat) {
         if (mCurrentScene != sceneCompat) {
             mCurrentScene = sceneCompat;
@@ -522,6 +551,7 @@ public class AcDisplayFragment extends Fragment implements
      */
     // TODO: Optimize it
     // Spent hours on optimizing with no result: 0h
+    @SuppressLint("NewApi")
     private void updateNotificationList() {
         if (getActivity() == null) {
             return;
@@ -629,7 +659,7 @@ public class AcDisplayFragment extends Fragment implements
         // ////////////
         // ~~ EXTRAS ~~
         // ////////////
-/*
+        /*
         int[] extras = new int[]{
                 SCENE_MUSIC_CONTROLS,
         };
@@ -732,19 +762,19 @@ public class AcDisplayFragment extends Fragment implements
 
         @Override
         public void onNotificationListChanged(NotificationPresenter nm,
-                                              OpenStatusBarNotification notification,
-                                              final int event) {
+                OpenStatusBarNotification notification,
+                final int event) {
             if (mTouched) {
                 mCollapsedViewsNeedsUpdate = true;
             } else {
                 switch (event) {
-                    case NotificationPresenter.EVENT_BATH:
-                    case NotificationPresenter.EVENT_POSTED:
-                    case NotificationPresenter.EVENT_CHANGED:
-                    case NotificationPresenter.EVENT_REMOVED:
-                        mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
-                        updateNotificationList();
-                        break;
+                case NotificationPresenter.EVENT_BATH:
+                case NotificationPresenter.EVENT_POSTED:
+                case NotificationPresenter.EVENT_CHANGED:
+                case NotificationPresenter.EVENT_REMOVED:
+                    mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
+                    updateNotificationList();
+                    break;
                 }
             }
         }

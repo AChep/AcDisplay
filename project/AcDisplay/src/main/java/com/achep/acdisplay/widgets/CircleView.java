@@ -22,7 +22,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -52,6 +54,8 @@ public class CircleView extends View {
     private float mRadiusMax;
     private float mRadius;
     private Paint mPaint;
+    private int lockColor = Color.WHITE;
+    private int lockIconColor = Color.BLACK;
 
     private Drawable mDrawable;
 
@@ -98,13 +102,14 @@ public class CircleView extends View {
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(lockColor);
         mPaint.setStrokeWidth(2);
 
         mRadiusTarget = res.getDimension(R.dimen.circle_radius_target);
         mRadiusDecreaseThreshold = res.getDimension(R.dimen.circle_radius_decrease_threshold);
 
         mDrawable = res.getDrawable(R.drawable.ic_unlock);
+        mDrawable.setColorFilter(lockIconColor, Mode.SRC_ATOP);
         mDrawable.setBounds(0, 0,
                 mDrawable.getIntrinsicWidth(),
                 mDrawable.getIntrinsicHeight());
@@ -246,6 +251,16 @@ public class CircleView extends View {
 
     public void setCallback(Callback callback) {
         mCallback = callback;
+    }
+    
+    public void setLockCircleColor(int color) {
+        this.lockColor = color;
+        mPaint.setColor(lockColor);
+    }
+    
+    public void setLockIconColor(int color) {
+        this.lockIconColor = color;
+        mDrawable.setColorFilter(lockIconColor, Mode.SRC_ATOP);
     }
 
 }

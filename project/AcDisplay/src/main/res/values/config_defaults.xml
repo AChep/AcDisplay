@@ -34,11 +34,15 @@
     <bool name="config_default_ui_notify_circled_icon">false</bool>
     <bool name="config_default_ui_status_battery_always_visible">false</bool>
     <bool name="config_default_ui_immersive_mode_kitkat">true</bool>
+    
+    <bool name="config_default_notify_privacy">false</bool>
+    
     <integer name="config_default_ui_icon_size">48</integer>
     <integer name="config_default_timeout_normal">10000</integer>
     <integer name="config_default_timeout_short">5000</integer>
     <integer name="config_default_inactive_time_from">60</integer>
     <integer name="config_default_inactive_time_to">300</integer>
     <integer name="config_default_ui_show_shadow_dynamic_bg">3</integer>
+    
 
 </resources>

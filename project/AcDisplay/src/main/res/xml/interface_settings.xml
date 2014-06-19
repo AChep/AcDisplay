@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -15,67 +16,82 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
-  -->
+-->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/settings_interface_title">
+    android:title="@string/settings_interface_title" >
 
-    <PreferenceCategory android:title="@string/ui_backgrounds">
-
+    <PreferenceCategory android:title="@string/ui_backgrounds" >
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_ui_show_wallpaper"
             android:key="wallpaper_shown"
-            android:title="@string/settings_use_wallpaper_title"
             android:summaryOff="@string/settings_use_wallpaper_off"
             android:summaryOn="@string/settings_use_wallpaper_on"
-            android:defaultValue="@bool/config_default_ui_show_wallpaper" />
-
+            android:title="@string/settings_use_wallpaper_title" />
         <CheckBoxPreference
-            android:key="shadow_toggle"
+            android:defaultValue="@bool/config_default_ui_show_shadow"
             android:dependency="wallpaper_shown"
-            android:title="@string/settings_shadow_toggle_title"
-            android:summaryOn="@string/settings_shadow_toggle_on"
+            android:key="shadow_toggle"
             android:layout="?android:attr/preferenceLayoutChild"
-            android:defaultValue="@bool/config_default_ui_show_shadow" />
+            android:summaryOn="@string/settings_shadow_toggle_on"
+            android:title="@string/settings_shadow_toggle_title" />
 
         <MultiSelectListPreference
-            android:key="dynamic_background_mode"
-            android:title="@string/settings_dynamic_background_title"
+            android:defaultValue="@array/dynamic_background_entries"
             android:entries="@array/dynamic_background"
             android:entryValues="@array/dynamic_background_entries"
-            android:defaultValue="@array/dynamic_background_entries" />
-
+            android:key="dynamic_background_mode"
+            android:title="@string/settings_dynamic_background_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/ui_icons">
+    <PreferenceCategory android:title="@string/ui_icons" >
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_ui_status_battery_always_visible"
             android:key="ui_status_battery_always_visible"
-            android:title="@string/settings_status_battery_always_visible"
             android:summaryOff="@string/settings_status_battery_always_visible_off"
-            android:defaultValue="@bool/config_default_ui_status_battery_always_visible" />
-
+            android:title="@string/settings_status_battery_always_visible" />
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_ui_notify_circled_icon"
             android:key="notify_circled_icon"
-            android:title="@string/settings_notify_circled_icon_title"
             android:summaryOn="@string/settings_notify_circled_icon_on"
-            android:defaultValue="@bool/config_default_ui_notify_circled_icon" />
+            android:title="@string/settings_notify_circled_icon_title" />
+
         <com.achep.acdisplay.settings.preferences.IconSizePreference
-            android:key="ui_icon_size"
             android:dialogIcon="@drawable/ic_dialog_resize"
             android:dialogTitle="@string/settings_resize_title"
+            android:key="ui_icon_size"
             android:title="@string/settings_resize_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/ui_timeout_bar">
+    
+    <!-- Clock customization category -->
+    <PreferenceCategory android:title="@string/ui_clock">
+        <Preference
+            android:key="clock_font"
+            android:summary="@string/preference_clock_font_description"
+            android:title="@string/preference_clock_title" />
+        <Preference
+            android:key="clock_size"
+            android:summary="@string/preference_clock_size_description"
+            android:title="@string/preference_clock_size_title" />
+        <Preference
+            android:key="clock_color"
+            android:summary="@string/preference_clock_color_description"
+            android:title="@string/preference_clock_color_title" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/ui_timeout_bar" >
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_ui_mirrored_timeout_bar"
             android:key="mirrored_timeout_progress_bar"
-            android:title="@string/settings_mirrored_timeout_progress_bar_title"
             android:summaryOff="@string/settings_mirrored_timeout_progress_bar_off"
             android:summaryOn="@string/settings_mirrored_timeout_progress_bar_on"
-            android:defaultValue="@bool/config_default_ui_mirrored_timeout_bar" />
+            android:title="@string/settings_mirrored_timeout_progress_bar_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/ui_overall">
+    <PreferenceCategory android:title="@string/ui_overall" >
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_ui_immersive_mode_kitkat"
             android:key="immersive_mode_kitkat"
-            android:title="@string/settings_immersive_mode_kitkat_title"
             android:summaryOff="@string/settings_mimmersive_mode_kitkat_off"
             android:summaryOn="@string/settings_immersive_mode_kitkat_on"
-            android:defaultValue="@bool/config_default_ui_immersive_mode_kitkat" />
+            android:title="@string/settings_immersive_mode_kitkat_title" />
     </PreferenceCategory>
+
 </PreferenceScreen>

@@ -96,7 +96,7 @@ public class AboutDialog extends DialogFragment {
                     mEasterEggClicks = 0;
                     // TODO: Put an Easter egg here.
                 } else {
-                    mTimeStampToast = Toast.makeText(context, Build.TIME_STAMP, Toast.LENGTH_LONG);
+                    mTimeStampToast = Toast.makeText(context, "", Toast.LENGTH_LONG);
                     mTimeStampToast.show();
                 }
             }

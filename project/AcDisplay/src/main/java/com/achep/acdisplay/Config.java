@@ -18,9 +18,11 @@
  */
 package com.achep.acdisplay;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
 
@@ -77,7 +79,20 @@ public class Config {
     public static final String KEY_UI_STATUS_BATTERY_ALWAYS_VISIBLE = "ui_status_battery_always_visible";
     public static final String KEY_UI_IMMERSIVE_MODE = "immersive_mode_kitkat";
     public static final String KEY_UI_ICON_SIZE = "ui_icon_size";
+    
+    //Clock stuff
+    public static final String KEY_CLOCK_FONT ="clock_font";
+    public static final String KEY_CLOCK_COLOR ="clock_color";
+    public static final String KEY_CLOCK_SIZE ="clock_size";
 
+    //Notification privacy stuff
+    public static final String KEY_NOTIFY_PRIVACY="notify_privacy";
+    
+    
+    //Lockscreen
+    public static final String KEY_LOCK_CIRCLE_COLOR="lock_circle_color";
+    public static final String KEY_LOCK_ICON_COLOR="lock_icon_color";
+    
     private static Config sConfig;
 
     private boolean mAcDisplayEnabled;
@@ -101,7 +116,21 @@ public class Config {
     private boolean mUiBatteryAlwaysVisible;
     private boolean mUiNotifyCircledIcon;
     private boolean mImmersiveMode;
+    
+    //Clock customization parameters
+    private String mClockFont;
+    private int mClockColor;
+    private int mClockSize;
 
+    //Notification privacy
+    private boolean mPrivacy;
+    
+    //Lockscreen colors
+    private int mLockCircleColor;
+    private int mLockIconColor;
+    private int mLockCircleAlpha;
+    private int mLockIconAlpha;
+    
     private boolean mConstAlternativePayments;
 
     private ArrayList<OnConfigChangedListener> mListeners;
@@ -194,7 +223,21 @@ public class Config {
                 res.getBoolean(R.bool.config_default_ui_immersive_mode_kitkat));
         mIconSize = prefs.getInt(KEY_UI_ICON_SIZE,
                 res.getInteger(R.integer.config_default_ui_icon_size));
+        
+        //clock customization
+        mClockFont = prefs.getString(KEY_CLOCK_FONT, "fonts/Roboto-Light.ttf");
+        mClockColor = prefs.getInt(KEY_CLOCK_COLOR, Color.parseColor("#ffffff"));
+        mClockSize=prefs.getInt(KEY_CLOCK_SIZE, 85);
+        
+        //Notification privacy
+        mPrivacy = prefs.getBoolean(KEY_NOTIFY_PRIVACY, 
+                res.getBoolean(R.bool.config_default_notify_privacy));
 
+        //Lockscreen colors
+        mLockCircleColor = prefs.getInt(KEY_LOCK_CIRCLE_COLOR, Color.WHITE);
+        mLockIconColor = prefs.getInt(KEY_LOCK_ICON_COLOR, Color.BLACK);
+        
+        
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
                 res.getBoolean(R.bool.config_default_enabled_only_while_charging));
@@ -202,6 +245,8 @@ public class Config {
         // const
         mConstAlternativePayments =
                 res.getBoolean(R.bool.config_alternative_payments);
+
+
     }
 
     static SharedPreferences getSharedPreferences(Context context) {
@@ -224,7 +269,7 @@ public class Config {
     }
 
     private void saveOption(Context context, String key, Object value,
-                            OnConfigChangedListener listener, boolean changed) {
+            OnConfigChangedListener listener, boolean changed) {
         if (!changed) {
             // Don't update preferences if this change is a lie.
             return;
@@ -237,7 +282,9 @@ public class Config {
             editor.putBoolean(key, (Boolean) value);
         } else if (value instanceof Integer) {
             editor.putInt(key, (Integer) value);
-        } else throw new IllegalArgumentException("Unknown option type.");
+        } else if(value instanceof String) {
+            editor.putString(key, (String)value);
+        }else throw new IllegalArgumentException("Unknown option type.");
         editor.apply();
 
         mContext = context;
@@ -253,10 +300,10 @@ public class Config {
      * Setter for the entire app enabler.
      */
     public boolean setEnabled(Context context, boolean enabled,
-                              OnConfigChangedListener listener) {
+            OnConfigChangedListener listener) {
         if (enabled
                 && !(AccessUtils.isNotificationAccessEnabled(context)
-                && AccessUtils.isDeviceAdminEnabled(context))) {
+                        && AccessUtils.isDeviceAdminEnabled(context))) {
             return false;
         }
 
@@ -303,7 +350,7 @@ public class Config {
      * Setter to only have the app running while charging.
      */
     public void setActiveDisplayEnabledOnlyWhileCharging(Context context, boolean enabled,
-                                                         OnConfigChangedListener listener) {
+            OnConfigChangedListener listener) {
         boolean changed = mEnabledOnlyWhileCharging != (mEnabledOnlyWhileCharging = enabled);
         saveOption(context, KEY_ONLY_WHILE_CHARGING, enabled, listener, changed);
 
@@ -317,13 +364,13 @@ public class Config {
      * Setter to allow notifications with a lower priority like Google Now.
      */
     public void setLowPriorityNotificationsAllowed(Context context, boolean enabled,
-                                                   OnConfigChangedListener listener) {
+            OnConfigChangedListener listener) {
         boolean changed = mNotifyLowPriority != (mNotifyLowPriority = enabled);
         saveOption(context, KEY_NOTIFY_LOW_PRIORITY, enabled, listener, changed);
     }
 
     public void setWakeUpOnNotifyEnabled(Context context, boolean enabled,
-                                                   OnConfigChangedListener listener) {
+            OnConfigChangedListener listener) {
         boolean changed = mNotifyWakeUpOn != (mNotifyWakeUpOn = enabled);
         saveOption(context, KEY_NOTIFY_WAKE_UP_ON, enabled, listener, changed);
     }
@@ -432,6 +479,53 @@ public class Config {
         boolean changed = mIconSize != (mIconSize = size);
         saveOption(context, KEY_UI_ICON_SIZE, size, listener, changed);
     }
+    
+    
+    //////////////////////////////
+    // Clock Customization stuff//
+    //////////////////////////////   
+    /**
+     * Clock Font setter
+     */
+    public void setClockFont(Context context, String value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_CLOCK_FONT, value, listener, mClockFont != (mClockFont = value));
+    }
+    
+    /**
+     * Clock Color setter
+     */
+    public void setClockColor(Context context, int value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_CLOCK_COLOR, value, listener, mClockColor != (mClockColor = value));
+    }
+
+    /**
+     * Clock Size setter
+     */
+    public void setClockSize(Context context, int value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_CLOCK_SIZE, value, listener, mClockSize != (mClockSize = value));
+    }
+    
+    
+    ////////////////////////
+    //Notification privacy//
+    ////////////////////////
+    
+    public void setNotificationPrivacy(Context context, boolean value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_NOTIFY_PRIVACY, value, listener, mPrivacy != (mPrivacy = value));
+    }
+    
+    //////////////
+    //LockScreen//
+    //////////////
+    
+    public void setLockCircleColor(Context context, int value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_LOCK_CIRCLE_COLOR, value, listener, mLockCircleColor != (mLockCircleColor = value));
+    }
+    
+    public void setLockIconColor(Context context, int value, OnConfigChangedListener listener) {
+        saveOption(context, KEY_LOCK_ICON_COLOR, value, listener, mLockIconColor != (mLockIconColor = value));
+    }
+
 
     public int getTimeoutNormal() {
         return mTimeoutNormal;
@@ -533,6 +627,43 @@ public class Config {
         }else{
             return false;
         }
+    }
+
+    
+    ////////////////////////////////
+    //Clock customizations getters//
+    ////////////////////////////////
+
+    public String getClockFont() {
+        return mClockFont;
+    }
+
+    public int getClockColor() {
+        return mClockColor;
+    }
+
+    public int getClockSize() {
+        return mClockSize;
+    }
+    
+    ///////////////////////////////
+    //Notification Privacy Getter//
+    ///////////////////////////////
+    
+    public boolean isPrivacyEnabled() {
+        return mPrivacy;
+    }
+    
+    //////////////////////
+    //LockScreen getters//
+    //////////////////////
+    
+    public int getLockCircleColor() {
+        return this.mLockCircleColor;
+    }
+    
+    public int getLockIconColor() {
+        return this.mLockIconColor;
     }
 
 }

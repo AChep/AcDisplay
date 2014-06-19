@@ -16,7 +16,7 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
-  -->
+-->
 <resources>
 
     <!-- Settings -->
@@ -36,6 +36,11 @@
 
     <!-- Lockscreen -->
     <string name="settings_lockscreen_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+    <string name="settings_lockscreen_customize_category">Customizations</string>
+    <string name="settings_lockscreen_customize_circle_title">Lock Circle Color</string>
+    <string name="settings_lockscreen_customize_circle_description">Custom lock circle color</string>
+    <string name="settings_lockscreen_customize_lock_title">Lock Icon Color</string>
+    <string name="settings_lockscreen_customize_lock_description">Custom Lock icon color</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
@@ -48,6 +53,11 @@
     <string name="settings_low_priority_notifications_title">Low-priority notifications</string>
     <string name="settings_low_priority_notifications_on">All notifications are shown.</string>
     <string name="settings_low_priority_notifications_off">Low-priority notifications such as those from Google Now aren\'t shown.</string>
+    
+    <!-- Notifications privacy -->
+    <string name="settings_privacy_notifications_title">Notifications Privacy</string>
+    <string name="settings_privacy_notifications_on">Show only notification title</string>
+    <string name="settings_privacy_notifications_off">Show notification title and description</string>
 
     <!-- Interface -->
     <string name="settings_use_wallpaper_title">Use wallpaper</string>
@@ -86,12 +96,16 @@
 
     <!-- Preference: Inactive hours -->
     <string name="preference_inactive_hours_enabled">Inactive hours enabled</string>
-    <string name="preference_inactive_hours_from"><![CDATA[
+    <string name="preference_inactive_hours_from">
+<![CDATA[
         from:<br/><b><font color="#ffffff">%1$s</font></b>
-    ]]></string>
-    <string name="preference_inactive_hours_to"><![CDATA[
+    ]]>
+    </string>
+    <string name="preference_inactive_hours_to">
+<![CDATA[
         to:<br/><b><font color="#ffffff">%1$s</font></b>
-    ]]></string>
+    ]]>
+    </string>
 
     <!-- Preference: Sleep timeouts -->
     <string name="preference_timeout_normal">After waking up or selecting a notification</string>
@@ -104,6 +118,7 @@
     <string name="ui_icons">Icon settings</string>
     <string name="ui_timeout_bar">Timebar settings</string>
     <string name="ui_overall">System visual settings</string>
+    <string name="ui_clock">Clock settings</string>
 
     <!-- Prefence: Resize icons -->
     <string name="preference_resize_dpi">%1$s dpi.</string>

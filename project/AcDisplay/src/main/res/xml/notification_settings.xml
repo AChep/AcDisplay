@@ -31,5 +31,12 @@
         android:summaryOn="@string/settings_low_priority_notifications_on"
         android:summaryOff="@string/settings_low_priority_notifications_off"
         android:defaultValue="@bool/config_default_notify_low_priority"/>
+    
+    <CheckBoxPreference
+        android:key="notify_privacy"
+        android:title="@string/settings_privacy_notifications_title"
+        android:summaryOn="@string/settings_privacy_notifications_on"
+        android:summaryOff="@string/settings_privacy_notifications_off"
+        android:defaultValue="@bool/config_default_notify_privacy"/>
 
 </PreferenceScreen>
