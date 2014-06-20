@@ -361,7 +361,7 @@ public class AcDisplayFragment extends Fragment implements
                         onWidgetPinned(mSelectedWidget);
 
                         // TODO: Detect animation by Android API, not by delay.
-                        elapsedTime = event.getEventTime() - event.getDownTime();
+                        long elapsedTime = event.getEventTime() - event.getDownTime();
                         if (elapsedTime > 150) {
                             mSceneContainerPinAnim.setTarget(getSceneView());
                             mSceneContainerPinAnim.start();
