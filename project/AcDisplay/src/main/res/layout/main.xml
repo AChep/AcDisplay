@@ -23,12 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Access panel. -->
         <ViewStub
             android:id="@+id/access"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout="@layout/layout_main_access_help" />
+            android:layout="@layout/main_content_access_panel" />
 
+        <!-- Description and preview of AcDisplay fragment. -->
         <include layout="@layout/main_content" />
 
     </LinearLayout>

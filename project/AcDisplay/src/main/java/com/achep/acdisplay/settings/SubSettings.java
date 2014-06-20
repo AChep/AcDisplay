@@ -29,6 +29,8 @@ import com.achep.acdisplay.Build;
  */
 public class SubSettings extends Settings {
 
+    private static final String TAG = "SubSettings";
+
     @Override
     public boolean onNavigateUp() {
         if (!popFragment()) {
@@ -39,7 +41,7 @@ public class SubSettings extends Settings {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        if (Build.DEBUG) Log.d("SubSettings", "Launching fragment " + fragmentName);
+        if (Build.DEBUG) Log.d(TAG, "Launching fragment " + fragmentName);
         return true;
     }
 

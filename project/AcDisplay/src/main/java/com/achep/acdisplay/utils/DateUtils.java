@@ -29,7 +29,8 @@ import android.text.format.DateFormat;
 public class DateUtils {
 
     /**
-     * Formats given hours and minutes to 24 / 12 hours format (depends on current settings.)
+     * Formats given hours and minutes to 24 / 12 hours format
+     * (depends on current system settings.)
      *
      * @return Formatted string time
      */

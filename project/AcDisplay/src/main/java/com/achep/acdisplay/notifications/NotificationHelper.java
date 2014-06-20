@@ -24,6 +24,7 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 import com.achep.acdisplay.Operator;
+import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
 
 /**
@@ -48,7 +49,7 @@ public class NotificationHelper {
     }
 
     public static void dismissNotification(StatusBarNotification notification) {
-        NotificationHandleService service = NotificationHandleService.sService;
+        MediaService service = MediaService.sService;
         if (service != null) {
             service.cancelNotification(
                     notification.getPackageName(),

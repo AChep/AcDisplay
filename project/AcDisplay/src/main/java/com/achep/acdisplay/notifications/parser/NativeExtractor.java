@@ -26,7 +26,6 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
-import com.achep.acdisplay.Device;
 import com.achep.acdisplay.notifications.NotificationData;
 
 /**
@@ -38,16 +37,16 @@ public final class NativeExtractor implements Extractor {
 
     @TargetApi(android.os.Build.VERSION_CODES.KITKAT)
     @Override
-    public NotificationData loadTexts(Context context, StatusBarNotification statusBarNotification, NotificationData data) {
+    public NotificationData loadTexts(Context context,
+                                      StatusBarNotification statusBarNotification,
+                                      NotificationData data) {
         if (Build.DEBUG) Log.d(TAG, "Extracting notification data via native API.");
-        if (!Device.hasKitKatApi())
-            throw new RuntimeException("You must run KitKat to be able to access to native things.");
 
         Notification notification = statusBarNotification.getNotification();
         Bundle extras = notification.extras;
 
         if (extras == null) {
-            Log.i(TAG, "");
+            Log.i(TAG, "Shit happens: notification is empty.");
             return data;
         }
 

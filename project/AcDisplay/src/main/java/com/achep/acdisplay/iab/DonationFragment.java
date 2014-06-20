@@ -26,10 +26,12 @@ import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,11 +42,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.achep.acdisplay.Build;
-import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.cryptocoin.Bitcoin;
-import com.achep.acdisplay.cryptocoin.Coin;
+import com.achep.acdisplay.iab.cryptocoin.Bitcoin;
+import com.achep.acdisplay.iab.cryptocoin.Coin;
 import com.achep.acdisplay.iab.utils.IabHelper;
 import com.achep.acdisplay.iab.utils.IabResult;
 import com.achep.acdisplay.iab.utils.Inventory;
@@ -66,7 +67,6 @@ public class DonationFragment extends DialogFragment {
 
     private static final String TAG = "DonationFragment";
 
-    private static final Uri PAY_PAL_DONATION_URI = Uri.parse("http://goo.gl/UrecGo");
     public static final int RC_REQUEST = 10001;
 
     private GridView mGridView;
@@ -131,9 +131,9 @@ public class DonationFragment extends DialogFragment {
         // Alternative payment methods
         Coin bitcoin = new Bitcoin();
         final Intent bitcoinIntent = Coin.getPaymentIntent(bitcoin);
-        final Intent paypalIntent = new Intent(Intent.ACTION_VIEW, PAY_PAL_DONATION_URI);
+        final Intent paypalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Build.Links.DONATE));
 
-        if (Config.getInstance().isAlternativePaymentsEnabled()) {
+        if (getResources().getBoolean(R.bool.config_alternative_payments)) {
             if (IntentUtils.hasActivityForThat(activity, bitcoinIntent)) {
                 builder.setPositiveButton(bitcoin.getNameResource(), null);
             }
@@ -159,7 +159,7 @@ public class DonationFragment extends DialogFragment {
 
             @Override
             public void onShow(DialogInterface dialog) {
-                Data[] datas = new Data[] {
+                Data[] datas = new Data[]{
                         new Data(
                                 alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL),
                                 paypalIntent, R.drawable.ic_action_paypal),
@@ -168,13 +168,17 @@ public class DonationFragment extends DialogFragment {
                                 paypalIntent, R.drawable.ic_action_bitcoin),
                 };
 
+                ImageSpan span;
+                SpannableString string;
                 for (final Data data : datas) {
                     final Button btn = data.button;
                     if (btn != null) {
-                        final Drawable icon = getResources().getDrawable(data.iconResource);
+                        span = new ImageSpan(getActivity(), data.iconResource);
 
-                        btn.setText(null);
-                        btn.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
+                        string = new SpannableString(" ");
+                        string.setSpan(span, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        btn.setText(string);
                         btn.setLayoutParams(new LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT));

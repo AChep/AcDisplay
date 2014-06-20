@@ -216,10 +216,10 @@ public class ViewUtils {
             transformMotionEventToLocal(vp, ev);
             ev.offsetLocation(vp.getScrollX(), vp.getScrollY());
         } // TODO: Use reflections to access ViewRootImpl
-          // else if (parent instanceof ViewRootImpl) {
-          //    final ViewRootImpl vr = (ViewRootImpl) parent;
-          //    ev.offsetLocation(0, vr.mCurScrollY);
-          // }
+        // else if (parent instanceof ViewRootImpl) {
+        //    final ViewRootImpl vr = (ViewRootImpl) parent;
+        //    ev.offsetLocation(0, vr.mCurScrollY);
+        // }
 
         ev.offsetLocation(-view.getLeft(), -view.getTop());
 
@@ -248,10 +248,10 @@ public class ViewUtils {
             ev.offsetLocation(-vp.getScrollX(), -vp.getScrollY());
             transformMotionEventToGlobal(vp, ev);
         } // TODO: Use reflections to access ViewRootImpl
-          // else if (parent instanceof ViewRootImpl) {
-          //    final ViewRootImpl vr = (ViewRootImpl) parent;
-          //    ev.offsetLocation(0, -vr.mCurScrollY);
-          // }
+        // else if (parent instanceof ViewRootImpl) {
+        //    final ViewRootImpl vr = (ViewRootImpl) parent;
+        //    ev.offsetLocation(0, -vr.mCurScrollY);
+        // }
     }
 
 }

@@ -23,8 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="8dp"
-    android:paddingEnd="8dp"
-    android:alpha="0.5">
+    android:paddingEnd="8dp">
 
     <!--
         Do you think that mirroring for RTL is wrong? Well it's not.

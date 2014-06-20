@@ -29,7 +29,7 @@ import com.achep.acdisplay.utils.ViewUtils;
 /**
  * Abstract class that forwards touch events to a {@link ForwardingLayout}.
  */
-public abstract class ForwardingListener implements
+public class ForwardingListener implements
         View.OnTouchListener, View.OnAttachStateChangeListener {
     /**
      * Scaled touch slop, used for detecting movement outside bounds.
@@ -45,6 +45,7 @@ public abstract class ForwardingListener implements
      * Source view from which events are forwarded.
      */
     private final View mSrc;
+    private final ForwardingLayout mDst;
 
     /**
      * Runnable used to prevent conflicts with scrolling parents.
@@ -68,7 +69,12 @@ public abstract class ForwardingListener implements
     }
 
     public ForwardingListener(View src, boolean immediately) {
+        this(src, immediately, null);
+    }
+
+    public ForwardingListener(View src, boolean immediately, ForwardingLayout dst) {
         mSrc = src;
+        mDst = dst;
         mImmediately = immediately;
         mScaledTouchSlop = ViewConfiguration.get(src.getContext()).getScaledTouchSlop();
         mTapTimeout = ViewConfiguration.getTapTimeout();
@@ -86,7 +92,9 @@ public abstract class ForwardingListener implements
      *
      * @return the layout to which this listener is forwarding events
      */
-    public abstract ForwardingLayout getForwardingLayout();
+    public ForwardingLayout getForwardingLayout() {
+        return null;
+    }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -96,6 +104,11 @@ public abstract class ForwardingListener implements
             forwarding = onTouchForwarded(event) || !onForwardingStopped();
         } else {
             forwarding = onTouchObserved(event) && onForwardingStarted();
+
+            if (mImmediately && forwarding) {
+                mForwarding = true;
+                onTouch(v, event);
+            }
         }
 
         mForwarding = forwarding;
@@ -150,11 +163,13 @@ public abstract class ForwardingListener implements
         switch (actionMasked) {
             case MotionEvent.ACTION_DOWN:
                 mActivePointerId = srcEvent.getPointerId(0);
-                if (mDisallowIntercept == null) {
-                    mDisallowIntercept = new DisallowIntercept();
+                if (!mImmediately) {
+                    if (mDisallowIntercept == null) {
+                        mDisallowIntercept = new DisallowIntercept();
+                    }
+                    src.postDelayed(mDisallowIntercept, mTapTimeout);
+                    break;
                 }
-                src.postDelayed(mDisallowIntercept, mTapTimeout);
-                break;
             case MotionEvent.ACTION_MOVE:
                 final int activePointerIndex = srcEvent.findPointerIndex(mActivePointerId);
                 if (activePointerIndex >= 0) {
@@ -190,7 +205,7 @@ public abstract class ForwardingListener implements
      */
     private boolean onTouchForwarded(MotionEvent srcEvent) {
         final View src = mSrc;
-        final ForwardingLayout dst = getForwardingLayout();
+        final ForwardingLayout dst = mDst != null ? mDst : getForwardingLayout();
         if (dst == null || !dst.isShown()) {
             return false;
         }

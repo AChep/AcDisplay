@@ -32,7 +32,8 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.animations.CircleViewAnimation;
+import com.achep.acdisplay.animations.CircleRadiusAnimation;
+import com.achep.acdisplay.utils.MathUtils;
 
 /**
  * Created by achep on 19.04.14.
@@ -53,9 +54,11 @@ public class CircleView extends View {
     private float mRadius;
     private Paint mPaint;
 
+    private float mDarkening;
+
     private Drawable mDrawable;
 
-    private CircleViewAnimation mAnimationOut;
+    private CircleRadiusAnimation mAnimationOut;
     private Callback mCallback;
 
     private Handler mHandler;
@@ -92,14 +95,13 @@ public class CircleView extends View {
             }
         };
 
-        mAnimationOut = new CircleViewAnimation(this, 0, 0);
+        mAnimationOut = new CircleRadiusAnimation(this, 0, 0);
         mAnimationOut.setInterpolator(new AccelerateDecelerateInterpolator());
         mAnimationOut.setDuration(res.getInteger(android.R.integer.config_mediumAnimTime));
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.WHITE);
-        mPaint.setStrokeWidth(2);
 
         mRadiusTarget = res.getDimension(R.dimen.circle_radius_target);
         mRadiusDecreaseThreshold = res.getDimension(R.dimen.circle_radius_decrease_threshold);
@@ -120,15 +122,8 @@ public class CircleView extends View {
         float radius;
 
         // Darkening background
-        canvas.drawColor(Color.argb((int) (200 * calculateRatio()), 0, 0, 0));
-
-        if (mRadiusAimed) {
-
-            // Indicate that target radius is aimed.
-            mPaint.setAlpha(35);
-            radius = (float) Math.sqrt(mRadius / 70) * 70;
-            canvas.drawCircle(mPoint[0], mPoint[1], radius, mPaint);
-        }
+        int alpha = (int) (mDarkening * 255);
+        canvas.drawColor(Color.argb(alpha + (int) ((255 - alpha) * ratio * 0.7f), 0, 0, 0));
 
         // Draw unlock circle
         mPaint.setAlpha((int) (255 * Math.pow(ratio, 0.33f)));
@@ -136,14 +131,16 @@ public class CircleView extends View {
         canvas.drawCircle(mPoint[0], mPoint[1], radius, mPaint);
 
         // Draw unlock icon at the center of circle
-        float scale = 0.5f + 0.5f * ratio;
-        canvas.save();
-        canvas.translate(
-                mPoint[0] - mDrawable.getMinimumWidth() / 2 * scale,
-                mPoint[1] - mDrawable.getMinimumHeight() / 2 * scale);
-        canvas.scale(scale, scale);
-        mDrawable.draw(canvas);
-        canvas.restore();
+        if (mRadiusAimed) {
+            float scale = 0.5f + 0.5f * ratio;
+            canvas.save();
+            canvas.translate(
+                    mPoint[0] - mDrawable.getMinimumWidth() / 2 * scale,
+                    mPoint[1] - mDrawable.getMinimumHeight() / 2 * scale);
+            canvas.scale(scale, scale);
+            mDrawable.draw(canvas);
+            canvas.restore();
+        }
     }
 
     @Override
@@ -209,7 +206,7 @@ public class CircleView extends View {
             default:
                 return super.onTouchEvent(event);
         }
-        return false;
+        return true;
     }
 
     private void cancelCircle(boolean unlockAnimation) {
@@ -246,6 +243,15 @@ public class CircleView extends View {
 
     public void setCallback(Callback callback) {
         mCallback = callback;
+    }
+
+    public void setDarkening(float darkening) {
+        mDarkening = MathUtils.range(darkening, 0f, 1f);
+        invalidate();
+    }
+
+    public float getDarkening() {
+        return mDarkening;
     }
 
 }

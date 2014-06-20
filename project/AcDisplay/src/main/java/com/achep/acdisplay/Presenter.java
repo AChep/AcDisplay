@@ -26,7 +26,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.achep.acdisplay.acdisplay.AcDisplayActivity;
-import com.achep.acdisplay.services.KeyguardService;
+import com.achep.acdisplay.activities.KeyguardActivity;
 import com.achep.acdisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
@@ -48,7 +48,6 @@ public class Presenter {
     public boolean stop(Context context) {
         //noinspection SimplifiableIfStatement
         if (mActivity != null
-                && mActivity.isCloseableBySensor()
                 && PowerUtils.isScreenOn(context)) {
             return mActivity.lock();
         }
@@ -76,15 +75,13 @@ public class Presenter {
         Config config = Config.getInstance();
 
         kill();
-        KeyguardService.ignoreCurrentTurningOn();
         context.startActivity(new Intent(Intent.ACTION_MAIN, null)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
                         | Intent.FLAG_ACTIVITY_NO_USER_ACTION
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_FROM_BACKGROUND)
-                .putExtra(AcDisplayActivity.EXTRA_TURN_SCREEN_ON, true)
-                .putExtra(AcDisplayActivity.EXTRA_FINISH_ON_SCREEN_OFF, !config.isKeyguardEnabled())
+                .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true)
+                .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF, !config.isKeyguardEnabled())
                 .setClass(context, AcDisplayActivity.class));
 
         Log.i(TAG, "Launching AcDisplay activity.");

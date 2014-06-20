@@ -26,11 +26,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
+import com.achep.acdisplay.R;
 
 /**
  * Created by Artem on 23.02.14.
@@ -42,13 +45,35 @@ public abstract class KeyguardActivity extends Activity {
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
     public static final String EXTRA_FINISH_ON_SCREEN_OFF = "finish_on_screen_off";
 
-    public static final String INTENT_EAT_HOME_PRESS_START = "com.achep.acdisplay.EAT_HOME_PRESS_START";
-    public static final String INTENT_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
-
     private BroadcastReceiver mScreenOffReceiver;
 
     private boolean mLocking;
     private boolean mUnlocking;
+
+    private long mPendingFinishStartTime;
+    private int mPendingFinishMax;
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (!hasFocus) {
+            long now = SystemClock.elapsedRealtime();
+            long elapsedTime = now - mPendingFinishStartTime;
+            if (elapsedTime < mPendingFinishMax) {
+                if (Build.DEBUG) Log.d(TAG, "Doing pending finish: elapsed_time=" + elapsedTime);
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            mPendingFinishStartTime -= 500;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +95,7 @@ public abstract class KeyguardActivity extends Activity {
 
         mLocking = false;
         mUnlocking = false;
+        mPendingFinishMax = getResources().getInteger(R.integer.config_maxPendingFinishDelayMillis);
 
         if (finishOnScreenOff) {
             IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
@@ -91,19 +117,28 @@ public abstract class KeyguardActivity extends Activity {
         mUnlocking = false;
         mLocking = false;
 
-        // Notifies Xposed module to start ignoring
-        // home button press.
-        Intent intent = new Intent(INTENT_EAT_HOME_PRESS_START);
-        sendBroadcast(intent);
+        overrideHomePress(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        overrideHomePress(false);
+    }
 
-        // Notifies Xposed module to stop ignoring
-        // home button press.
-        Intent intent = new Intent(INTENT_EAT_HOME_PRESS_STOP);
+    /**
+     * Notifies Xposed module to start ignoring home button press.
+     * Please, notice that it will ignore home button click everywhere
+     * until you call {@code overrideHomePress(false)}
+     *
+     * @param override {@code true} to start ignoring, {@code false} to stop.
+     * @see com.achep.acdisplay.xposed.OverrideHomeButton
+     * @see #sendBroadcast(android.content.Intent)
+     */
+    private void overrideHomePress(boolean override) {
+        Intent intent = new Intent(override
+                ? App.ACTION_EAT_HOME_PRESS_START
+                : App.ACTION_EAT_HOME_PRESS_STOP);
         sendBroadcast(intent);
     }
 
@@ -118,7 +153,7 @@ public abstract class KeyguardActivity extends Activity {
     /**
      * Turns screen off.
      *
-     * @return True if successful, False otherwise.
+     * @return {@code true} if successful, {@code false} otherwise.
      */
     public boolean lock() {
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -132,14 +167,27 @@ public abstract class KeyguardActivity extends Activity {
     }
 
     /**
-     * Unlocks device and runs {@link Runnable runnable} when unlocked.
+     * Unlocks keyguard and runs {@link Runnable runnable} when unlocked.
+     */
+    public void unlock(Runnable runnable) {
+        unlock(runnable, true);
+    }
+
+    public void unlockWithPendingFinish(Runnable runnable) {
+        mPendingFinishStartTime = SystemClock.elapsedRealtime();
+        unlock(runnable, false);
+    }
+
+    /**
+     * Unlocks keyguard and runs {@link Runnable runnable} when unlocked.
      *
-     * @param runnable may be null
+     * @param finish {@code true} to finish activity, {@code false} to keep it
+     * @see #unlock(Runnable)
+     * @see #unlockWithPendingFinish(Runnable)
+     * @see #isUnlocking()
      */
     public void unlock(final Runnable runnable, final boolean finish) {
         if (Build.DEBUG) Log.d(TAG, "Unlocking with params: finish=" + finish);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         // If keyguard is disabled no need to make
         // a delay between calling this method and
@@ -147,10 +195,10 @@ public abstract class KeyguardActivity extends Activity {
         // Otherwise we need this delay to get new
         // flags applied.
         KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        int delay = km.isKeyguardLocked() ? 120 : 0;
+        int delay = km.isKeyguardLocked() ? 40 : 0; // TODO: Find the way to get rid of this delay
 
-        mUnlocking = true;
-        new Handler().postDelayed(new Runnable() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (runnable != null) runnable.run();

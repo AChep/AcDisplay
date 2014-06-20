@@ -81,8 +81,8 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
     /**
      * The provider of the diffs between "old" and "new" objects in list.
      *
-     * @see OnSharedListChangedListener#onPut(Object, Object, int)
      * @author Artem Chepurnoy
+     * @see OnSharedListChangedListener#onPut(Object, Object, int)
      */
     public static abstract class Comparator<V> {
 

@@ -20,25 +20,13 @@
     android:id="@+id/scene"
     android:layout_width="264dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="end">
-
-    <!-- Small clock at top & right side of the screen -->
-    <!--
-    <acdisplayplay.widgets.TimeView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        style="?attr/acDisplayClockSmall" />
-        -->
+    android:orientation="vertical">
 
     <include
         layout="@layout/widget_notification"
         android:id="@+id/notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_marginBottom="8dp" />
 
 </LinearLayout>

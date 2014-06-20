@@ -28,7 +28,6 @@
         Вы можете выразить свою благодарность и поддержать разработку через пожертвования:
     ]]></string>
 
-    <string name="donation_item_label">﹩%1$s</string>
     <string name="donation_item_bought">Вы уже пожертвовали за это, спасибо!</string>
 
     <string name="donation_1">Порция десерта</string>

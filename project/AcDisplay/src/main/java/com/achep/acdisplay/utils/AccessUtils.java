@@ -23,33 +23,20 @@ import android.content.ComponentName;
 import android.content.Context;
 
 import com.achep.acdisplay.admin.AdminReceiver;
-import com.achep.acdisplay.notifications.NotificationHandleService;
-
-import java.lang.ref.WeakReference;
+import com.achep.acdisplay.services.MediaService;
 
 /**
  * Created by Artem on 23.01.14.
  */
 public class AccessUtils {
 
-    private static WeakReference<ComponentName> mAdminComponentName;
-
-    public static boolean isDeviceAdminEnabled(Context context) {
-        ComponentName admin;
-        if (mAdminComponentName == null || mAdminComponentName.get() == null) {
-            admin = new ComponentName(context, AdminReceiver.class);
-            mAdminComponentName = new WeakReference<>(admin);
-        } else {
-            admin = mAdminComponentName.get();
-        }
-
-        DevicePolicyManager dpm = (DevicePolicyManager)
-                context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        return dpm.isAdminActive(admin);
+    public static boolean isDeviceAdminAccessGranted(Context context) {
+        DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        return dpm.isAdminActive(new ComponentName(context, AdminReceiver.class));
     }
 
-    public static boolean isNotificationAccessEnabled(Context context) {
-        return NotificationHandleService.isServiceRunning(context);
+    public static boolean isNotificationAccessGranted(Context context) {
+        return MediaService.sService != null;//.isServiceRunning(context);
     }
 
 }

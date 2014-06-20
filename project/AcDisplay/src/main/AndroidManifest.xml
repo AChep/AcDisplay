@@ -20,8 +20,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.acdisplay"
-    android:versionCode="21"
-    android:versionName="2.3">
+    android:versionCode="23"
+    android:versionName="2.4">
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -39,8 +39,9 @@
     <!-- Needed to get the list of running activities. -->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <!-- Not used yet, but may be pretty useful. -->
+    <!-- Needed to download latest FAQ from GitHub if network is available. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- Needed to provide donation via IAB. -->
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -114,7 +115,7 @@
             <meta-data android:name="com.achep.acdisplay.FRAGMENT_CLASS"
                 android:value="com.achep.acdisplay.settings.LockscreenFragment" />
             <meta-data android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/lockscreen_settings" />
+                android:resource="@id/keyguard_settings" />
         </activity>
 
         <activity
@@ -127,18 +128,18 @@
             android:theme="@style/AcDisplayTheme"
             android:exported="false"/>
 
-        <!-- Notification listener service -->
+        <!-- This is needed to access notifications and to control music. -->
         <service
-            android:name=".notifications.NotificationHandleService"
-            android:label="@string/app_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            android:name=".services.MediaService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
+                <action android:name="com.achep.acdisplay.BIND_MEDIA_CONTROL_SERVICE" />
             </intent-filter>
         </service>
 
-        <service android:name=".services.KeyguardService" />
-        <service android:name=".activemode.ActiveModeService" />
+        <!-- Foreground service that may contain both Keyguard and Active mode. -->
+        <service android:name=".services.BathService" android:label="@string/service_bath" />
 
         <!--
             This is transparent activity for handling internal intents.
@@ -152,22 +153,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="acdisplay_internal" />
-            </intent-filter>
-        </activity>
-
-        <!--
-            This is transparent activity for handling intents.
-            You can easily enable / disable AcDisplay via third apps.
-            -->
-        <activity
-            android:name=".receiver.ReceiverActivity"
-            android:theme="@android:style/Theme.Translucent"
-            android:launchMode="singleInstance"
-            android:excludeFromRecents="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="acdisplay" />
             </intent-filter>
         </activity>
@@ -178,14 +163,18 @@
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <!-- AcDisplay -->
+                <action android:name="com.achep.acdisplay.ENABLE"/>
+                <action android:name="com.achep.acdisplay.DISABLE"/>
+                <action android:name="com.achep.acdisplay.TOGGLE"/>
             </intent-filter>
         </receiver>
 
         <!-- Device admin rights. -->
         <receiver
             android:name=".admin.AdminReceiver"
-            android:label="@string/device_admin"
-            android:description="@string/device_admin_description"
+            android:label="@string/access_device_admin_title"
+            android:description="@string/access_device_admin_description"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
@@ -211,13 +200,29 @@
 
         <!-- For sending logs as attachments -->
         <provider
-            android:name=".fragments.FeedbackDialog$LogAttachmentProvider"
+            android:name=".providers.LogAttachmentProvider"
             android:authorities="com.achep.acdisplay.logs"
             android:exported="true"
             tools:ignore="ExportedContentProvider" />
 
         <!--
+            AcDisplay does provide PowerToggles plugin.
+            http://powertoggles.com
+            -->
+        <receiver
+            android:name=".powertoggles.ToggleReceiver"
+            android:label="@string/app_name"
+            android:icon="@drawable/ic_toggle_acdisplay"
+            android:permission="com.painless.pc.permission.CONTROL_PLUGIN"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.painless.pc.ACTION_SET_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <!--
             AcDisplay does provide Xposed module.
+            http://xposed.info
             -->
         <meta-data
             android:name="xposedmodule"

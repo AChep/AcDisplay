@@ -54,7 +54,7 @@ final class Utils {
     static CharSequence mergeLargeMessage(CharSequence[] messages) {
         int length = messages.length;
 
-        boolean highlight = length > 1;
+        boolean highlight = length > 1; // highlight first letters of messages or no?
         int[] trackStart = new int[length];
         int[] trackEnd = new int[length];
 
@@ -88,9 +88,6 @@ final class Utils {
                 textSpannable.setSpan(new UnderlineSpan(),
                         trackStart[i], trackStart[i] + 1,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        /*textSpannable.setSpan(new AbsoluteSizeSpan(19, true),
-                                trackStart[i], trackStart[i] + 1,
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
             }
             text = textSpannable;
         }

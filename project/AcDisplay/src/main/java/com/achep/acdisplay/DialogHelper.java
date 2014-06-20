@@ -132,7 +132,7 @@ public class DialogHelper {
          */
         @Override
         public int hashCode() {
-            return new HashCodeBuilder(201, 32)
+            return new HashCodeBuilder(201, 17)
                     .append(mContext)
                     .append(mIcon)
                     .append(mTitleText)

@@ -25,7 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        android:divider="?android:dividerVertical"
+        android:dividerPadding="12dp"/>
 
     <RelativeLayout
         android:id="@+id/content"
@@ -50,6 +53,7 @@
             android:layout_marginTop="-2dp"
             android:layout_marginBottom="-3dp"
             android:layout_toEndOf="@id/icon"
+            android:textAlignment="viewStart"
             android:minHeight="24dp"
             style="?attr/acDisplayNotificationTitle" />
 
@@ -77,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_below="@id/when"
+            android:textAlignment="viewStart"
             style="?attr/acDisplayNotificationMessage" />
     </RelativeLayout>
 

@@ -20,33 +20,19 @@
 <resources>
 
     <string name="close">Закрыть</string>
-
     <!-- About -->
     <string name="about_action">О программе</string>
     <string name="about_message"><![CDATA[
         Авторское право 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Артём Чепурной</a>. Все права защищены.<br/>
         <br/>
-        Большое спасибо этим открытым библиотекам:
-        <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
-        <a href="http://commons.apache.org/">Apache Commons</a>,
-        <a href="http://www.androidicons.com/">Android icons by Opoloo</a>, а также всем, кто
+        Большое спасибо этим открытым библиотекам: %1$s, а также всем, кто
         <a href="https://crowdin.net/project/acdisplay">помог с переводом приложения</a> или
         <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">пожертвовал на его развитие</a>.
     ]]></string>
 
     <!-- Help -->
     <string name="help">Помощь</string>
-    <string name="help_read_more">Читать дальше</string>
-    <string name="help_message"><![CDATA[
-        <b>Как я могу удалить это приложение?</b><br/>
-        Перейдите в Настройки > Безопасность > <a href="acdisplay_internal://launch_device_admins_activity">Администраторы устройства</a> и отключите AcDisplay.
-        Теперь вы можете <a href="acdisplay_internal://uninstall">удалить</a> AcDisplay как обычное приложение.<br/>
-        <br/>
-        <b>Что такое активный режим?</b><br/>
-        Активный режим использует датчики устройства, чтобы пробудить ваше устройство в нужный момент.
-        Это отлично подходит если вы достали ваше устройство из кармана или сумки, чтобы взглянуть на текущие уведомления.
-        В идеале, вы не должны почуствовать большую разницу в потреблении батареи, но иногда это случается на некоторых устройствах.
-    ]]></string>
+    <string name="help_faq">Часто задаваемые вопросы</string>
 
     <!-- News -->
     <string name="news_message"><![CDATA[

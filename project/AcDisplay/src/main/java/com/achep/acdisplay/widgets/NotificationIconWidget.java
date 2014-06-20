@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationData;
-import com.achep.acdisplay.notifications.OpenStatusBarNotification;
+import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.utils.ViewUtils;
 
 /**
@@ -33,7 +33,7 @@ import com.achep.acdisplay.utils.ViewUtils;
  */
 public class NotificationIconWidget extends FrameLayout implements NotificationView {
 
-    private OpenStatusBarNotification mNotification;
+    private OpenNotification mNotification;
 
     private NotificationIcon mIcon;
     private TextView mNumberTextView;
@@ -51,18 +51,19 @@ public class NotificationIconWidget extends FrameLayout implements NotificationV
     }
 
     @Override
-    public void setNotification(OpenStatusBarNotification notification) {
+    public void setNotification(OpenNotification notification) {
         if (mNotification == notification) return;
         mNotification = notification;
 
         mIcon.setNotification(mNotification);
+
         NotificationData data = mNotification.getNotificationData();
         String tileText = data.number > 0 ? Integer.toString(data.number) : null;
         ViewUtils.safelySetText(mNumberTextView, tileText);
     }
 
     @Override
-    public OpenStatusBarNotification getNotification() {
+    public OpenNotification getNotification() {
         return mNotification;
     }
 }

@@ -19,50 +19,36 @@
 package com.achep.acdisplay.services;
 
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.IBinder;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayActivity;
-import com.achep.acdisplay.settings.Settings;
 import com.achep.acdisplay.utils.PackageUtils;
 import com.achep.acdisplay.utils.PowerUtils;
 
+import java.util.List;
+
 /**
  * Created by Artem on 16.02.14.
+ *
+ * @author Artem Chepurnoy
  */
-public class KeyguardService extends Service {
+public class KeyguardService extends BathService.ChildService {
 
     private static final String TAG = "KeyguardService";
 
     private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
 
     private ActivityMonitorThread mActivityMonitorThread;
-
-    public static long sIgnoreTillTime;
-
-    /**
-     * Prevents launching keyguard on soonest turning screen on.
-     *
-     * @deprecated hopefully the bug with it is fixed now, so no need to use it. Just in case...
-     */
-    @Deprecated
-    public static void ignoreCurrentTurningOn() {
-        sIgnoreTillTime = SystemClock.elapsedRealtime() + 2000;
-    }
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -71,15 +57,15 @@ public class KeyguardService extends Service {
         Intent intent = new Intent(context, KeyguardService.class);
         Config config = Config.getInstance();
 
-        boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
+        boolean onlyWhileChargingOption = !config.isEnabledOnlyWhileCharging()
                 || PowerUtils.isPlugged(context);
 
         if (config.isEnabled()
                 && config.isKeyguardEnabled()
-                && onlyWhileChangingOption) {
-            context.startService(intent);
+                && onlyWhileChargingOption) {
+            BathService.startService(context, KeyguardService.class);
         } else {
-            context.stopService(intent);
+            BathService.stopService(context, KeyguardService.class);
         }
     }
 
@@ -96,21 +82,19 @@ public class KeyguardService extends Service {
                     long activityChangeTime = 0;
                     if (mActivityMonitorThread != null) {
                         mActivityMonitorThread.monitor();
-                        activityName = mActivityMonitorThread.activityName;
-                        activityChangeTime = mActivityMonitorThread.activityChangeTime;
+                        activityName = mActivityMonitorThread.topActivityName;
+                        activityChangeTime = mActivityMonitorThread.topActivityTime;
                     }
 
                     stopMonitoringActivities();
 
                     long now = SystemClock.elapsedRealtime();
-                    boolean becauseOfIgnoringPolicy = now < sIgnoreTillTime;
                     boolean becauseOfActivityLaunch =
                             now - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME
                                     && activityName != null && !activityName.startsWith(
-                                    PackageUtils.getName(KeyguardService.this));
+                                    PackageUtils.getName(getContext()));
 
-                    if (isCall || becauseOfIgnoringPolicy) {
-                        sIgnoreTillTime = 0;
+                    if (isCall) {
                         return;
                     }
 
@@ -136,9 +120,9 @@ public class KeyguardService extends Service {
     };
 
     private void startGui() {
-        startActivity(new Intent(this, AcDisplayActivity.class)
+        Context context = getContext();
+        context.startActivity(new Intent(context, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION));
     }
 
@@ -146,7 +130,8 @@ public class KeyguardService extends Service {
         stopMonitoringActivities();
         if (Build.DEBUG) Log.d(TAG, "Starting to monitor activities.");
 
-        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) getContext()
+                .getSystemService(Context.ACTIVITY_SERVICE);
         mActivityMonitorThread = new ActivityMonitorThread(am);
         mActivityMonitorThread.start();
     }
@@ -157,61 +142,43 @@ public class KeyguardService extends Service {
 
             mActivityMonitorThread.running = false;
             mActivityMonitorThread.interrupt();
+            mActivityMonitorThread = null;
         }
     }
 
     @Override
     public void onCreate() {
-        super.onCreate();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
-        registerReceiver(mReceiver, intentFilter);
-
-        int notificationId = App.ID_NOTIFY_KEYGUARD;
-        Intent intent = new Intent(this, Settings.LockscreenSettingsActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.drawable.stat_lock)
-                .setContentTitle(getString(
-                        R.string.service_lockscreen,
-                        getString(R.string.app_name)))
-                .setContentText(getString(R.string.service_lockscreen_text))
-                .setPriority(Notification.PRIORITY_MIN)
-                .setContentIntent(pendingIntent)
-                .setOngoing(true)
-                .build();
-
-        startForeground(notificationId, notification);
+        getContext().registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mReceiver);
+        getContext().unregisterReceiver(mReceiver);
         stopMonitoringActivities();
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public String getName() {
+        return getContext().getString(R.string.service_bath_keyguard);
     }
 
     /**
      * Thread that monitors current top activity.
-     * This is needed to prevent launching AcDisplay on any other
-     * activity launched with
+     * This is needed to prevent launching AcDisplay above any other
+     * activity which launched with
      * {@link android.view.WindowManager.LayoutParams#FLAG_TURN_SCREEN_ON} flag.
      */
     private static class ActivityMonitorThread extends Thread {
 
-        private static final long MONITORING_PERIOD = 15 * 60 * 1000; // ms.
+        private static final long MONITORING_PERIOD = 15 * 60 * 1000; // 15 min.
 
+        public volatile long topActivityTime;
+        public volatile String topActivityName;
         public volatile boolean running = true;
-        public volatile long activityChangeTime;
-        public volatile String activityName;
 
         private final ActivityManager mActivityManager;
 
@@ -236,24 +203,22 @@ public class KeyguardService extends Service {
          * Checks what activity is the latest.
          */
         public synchronized void monitor() {
-            String latestActivityName;
-            try {
-                ActivityManager.RunningTaskInfo task = mActivityManager.getRunningTasks(1).get(0);
-                latestActivityName = task.topActivity.getClassName();
-            } catch (NullPointerException e) {
-                return; // Not a problem, just too lazy :)
+            List<ActivityManager.RunningTaskInfo> tasks = mActivityManager.getRunningTasks(1);
+            if (tasks == null || tasks.size() == 0) {
+                return;
             }
 
-            assert latestActivityName != null;
+            String topActivity = tasks.get(0).topActivity.getClassName();
+            if (!topActivity.equals(topActivityName)) {
 
-            if (!latestActivityName.equals(activityName)) {
-                if (activityName != null) { // first start
-                    this.activityChangeTime = SystemClock.elapsedRealtime(); // deep sleep
+                // Update time if it's not first try.
+                if (topActivityName != null) {
+                    topActivityTime = SystemClock.elapsedRealtime();
                 }
 
-                activityName = latestActivityName;
+                topActivityName = topActivity;
 
-                if (Build.DEBUG) Log.d(TAG, "Current latest activity is " + activityName);
+                if (Build.DEBUG) Log.d(TAG, "Current latest activity is " + topActivityName);
             }
         }
     }

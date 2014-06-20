@@ -43,8 +43,8 @@ public class AppConfig {
 
     public String packageName;
     public boolean enabled = DEFAULT_ENABLED;
-    public boolean[] restricted = new boolean[] { DEFAULT_RESTRICTED };
-    public boolean[] hidden = new boolean[] { DEFAULT_HIDDEN };
+    public boolean[] restricted = new boolean[]{DEFAULT_RESTRICTED};
+    public boolean[] hidden = new boolean[]{DEFAULT_HIDDEN};
 
     public AppConfig(String packageName) {
         this(packageName, DEFAULT_ENABLED, DEFAULT_RESTRICTED, DEFAULT_HIDDEN);
@@ -71,7 +71,7 @@ public class AppConfig {
      * Copies data of the first config into the second one.
      *
      * @param config origin config
-     * @param clone clone config
+     * @param clone  clone config
      * @return Cloned config
      * @see #reset(AppConfig)
      */

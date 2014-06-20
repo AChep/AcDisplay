@@ -28,8 +28,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
@@ -40,11 +43,12 @@ import com.achep.acdisplay.utils.ToastUtils;
  *
  * @author Artem Chepurnoy
  */
-public class AboutDialog extends DialogFragment {
+public class AboutDialog extends DialogFragment implements View.OnClickListener {
 
     private static final String VERSION_UNAVAILABLE = "N/A";
+    private static final int EASTER_EGGS_CLICK_NUMBER = 5;
 
-    private int mEasterEggClicks;
+    private int mTitleClickNumber;
     private Toast mTimeStampToast;
 
     /**
@@ -75,36 +79,41 @@ public class AboutDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Context context = getActivity();
+        Context context = getActivity();
         assert context != null;
+
+        CharSequence message = Html.fromHtml(getString(
+                R.string.about_message, getString(R.string.about_thanks)));
 
         View view = new DialogHelper.Builder(context)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(getVersionName(context))
-                .setMessage(Html.fromHtml(getString(R.string.about_message)))
+                .setMessage(message)
                 .createCommonView();
-        view.findViewById(R.id.title).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTimeStampToast != null) {
-                    mTimeStampToast.cancel();
-                }
-
-                if (++mEasterEggClicks == 5) {
-                    if (Build.DEBUG) ToastUtils.showShort(getActivity(), "There will be an Easter Egg.");
-
-                    mEasterEggClicks = 0;
-                    // TODO: Put an Easter egg here.
-                } else {
-                    mTimeStampToast = Toast.makeText(context, Build.TIME_STAMP, Toast.LENGTH_LONG);
-                    mTimeStampToast.show();
-                }
-            }
-        });
+        View title = view.findViewById(R.id.title);
+        title.setOnClickListener(this);
 
         return new AlertDialog.Builder(context)
                 .setView(view)
                 .setNeutralButton(R.string.close, null)
                 .create();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mTimeStampToast != null) {
+            // Cancel previous toast to avoid of
+            // continuous spam after.
+            mTimeStampToast.cancel();
+        }
+
+        Context context = getActivity();
+
+        if (++mTitleClickNumber == EASTER_EGGS_CLICK_NUMBER) {
+            App.startEasterEggs(context);
+            mTitleClickNumber = 0;
+        } else {
+            mTimeStampToast = ToastUtils.showLong(context, Build.TIME_STAMP);
+        }
     }
 }

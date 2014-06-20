@@ -23,11 +23,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -35,7 +36,6 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -43,13 +43,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.achep.acdisplay.App;
+import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.acdisplay.AcDisplayActivity;
 import com.achep.acdisplay.admin.AdminReceiver;
 import com.achep.acdisplay.blacklist.activities.BlacklistActivity;
 import com.achep.acdisplay.fragments.AboutDialog;
@@ -57,6 +60,7 @@ import com.achep.acdisplay.iab.DonationFragment;
 import com.achep.acdisplay.settings.Settings;
 import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.acdisplay.utils.PackageUtils;
+import com.achep.acdisplay.utils.ToastUtils;
 import com.achep.acdisplay.utils.ViewUtils;
 
 /**
@@ -66,20 +70,32 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
     private static final String TAG = "MainActivity";
 
-    private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS =
-            "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
-
-    private static final int SLEEP_SEND_NOTIFICATION_DELAY = 3000;
-
     private Switch mSwitch;
     private Config mConfig;
     private boolean mBroadcasting;
 
     private ViewGroup mAccessWarningPanel;
-    private View mAccessAllowNotification;
-    private View mAccessAllowDeviceAdmin;
+    private Button mAccessAllowNotification;
+    private Button mAccessAllowDeviceAdmin;
 
     private MenuItem mSendTestNotificationMenuItem;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Transfer in-app-billing service's events to
+        // its fragment.
+        if (requestCode == DonationFragment.RC_REQUEST) {
+            FragmentManager fm = getFragmentManager();
+            Fragment fragment = fm.findFragmentByTag(DialogHelper.TAG_FRAGMENT_DONATION);
+            if (fragment instanceof DonationFragment) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +103,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         setContentView(R.layout.main);
 
         mConfig = Config.getInstance();
-        mConfig.addOnConfigChangedListener(this);
+        mConfig.registerListener(this);
 
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(R.layout.layout_ab_switch);
@@ -115,11 +131,11 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
         try {
             PackageInfo pi = getPackageManager().getPackageInfo(PackageUtils.getName(this), 0);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            Config.Triggers triggers = mConfig.getTriggers();
 
-            int oldVersionCode = prefs.getInt("previous_version_code", 0);
+            int oldVersionCode = triggers.getPreviousVersion();
             if (oldVersionCode < pi.versionCode) {
-                prefs.edit().putInt("previous_version_code", pi.versionCode).apply();
+                triggers.setPreviousVersion(this, pi.versionCode, null);
 
                 // Show the warning message for Paranoid Android users.
                 if (android.os.Build.DISPLAY.startsWith("pa_") && oldVersionCode == 0) {
@@ -140,36 +156,33 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     }
 
     private void showAlertParanoidAndroidBug() {
-        CharSequence messageText = Html.fromHtml(getString(R.string.pa_message));
-        new DialogHelper.Builder(this)
-                .setIcon(R.drawable.ic_dialog_bug)
-                .setTitle(R.string.pa_title)
-                .setMessage(messageText)
-                .wrap()
-                .setPositiveButton(android.R.string.ok, null)
-                .create()
-                .show();
+        showSimpleDialog(
+                R.drawable.ic_dialog_bug,
+                getString(R.string.pa_title),
+                Html.fromHtml(getString(R.string.pa_message)));
     }
 
     private void showAlertSpeech() {
-        CharSequence messageText = Html.fromHtml(getString(R.string.speech_message));
-        new DialogHelper.Builder(this)
-                .setIcon(R.drawable.ic_dialog_me)
-                .setTitle(R.string.speech_title)
-                .setMessage(messageText)
-                .wrap()
-                .setPositiveButton(android.R.string.ok, null)
-                .create()
-                .show();
+        showSimpleDialog(
+                R.drawable.ic_dialog_me,
+                getString(R.string.speech_title),
+                Html.fromHtml(getString(R.string.speech_message)));
     }
 
     private void showAlertWelcome() {
+        showSimpleDialog(
+                R.mipmap.ic_launcher,
+                AboutDialog.getVersionName(this),
+                Html.fromHtml(getString(R.string.news_message)));
+    }
+
+    private void showSimpleDialog(int iconRes, CharSequence title, CharSequence message) {
         new DialogHelper.Builder(this)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(AboutDialog.getVersionName(this))
-                .setMessage(Html.fromHtml(getString(R.string.news_message)))
+                .setIcon(iconRes)
+                .setTitle(title)
+                .setMessage(message)
                 .wrap()
-                .setPositiveButton(R.string.close, null)
+                .setPositiveButton(android.R.string.ok, null)
                 .create()
                 .show();
     }
@@ -180,31 +193,50 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         updateAccessPanel();
     }
 
+    /**
+     * Inflates access panel's layout and sets it up.
+     *
+     * @see #updateAccessPanel()
+     */
     private void initAccessPanel() {
         mAccessWarningPanel = (ViewGroup) ((ViewStub) findViewById(R.id.access)).inflate();
-        mAccessAllowNotification = mAccessWarningPanel.findViewById(R.id.access_notification);
+        mAccessAllowNotification = (Button) mAccessWarningPanel.findViewById(R.id.access_notification);
         mAccessAllowNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS);
-                startActivity(intent);
+                Context context = MainActivity.this;
+                Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    ToastUtils.showLong(context, R.string.access_notifications_grant_manually);
+                    Log.e(TAG, "Notification listeners activity not found.");
+                }
             }
         });
-        mAccessAllowDeviceAdmin = mAccessWarningPanel.findViewById(R.id.access_device_admin);
+        mAccessAllowDeviceAdmin = (Button) mAccessWarningPanel.findViewById(R.id.access_device_admin);
         mAccessAllowDeviceAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ComponentName admin = new ComponentName(MainActivity.this, AdminReceiver.class);
-                Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                Context context = MainActivity.this;
+                ComponentName admin = new ComponentName(context, AdminReceiver.class);
+                Intent intent = new Intent()
+                        .setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
                         .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
-                startActivity(intent);
+
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    ToastUtils.showLong(context, R.string.access_device_admin_grant_manually);
+                    Log.e(TAG, "Device admins activity not found.");
+                }
             }
         });
     }
 
     private void updateAccessPanel() {
-        boolean showDeviceAdminBtn = !AccessUtils.isDeviceAdminEnabled(this);
-        boolean showNotifiesBtn = !AccessUtils.isNotificationAccessEnabled(this);
+        boolean showDeviceAdminBtn = !AccessUtils.isDeviceAdminAccessGranted(this);
+        boolean showNotifiesBtn = !AccessUtils.isNotificationAccessGranted(this);
 
         if (showDeviceAdminBtn || showNotifiesBtn || mAccessWarningPanel != null) {
             if (mAccessWarningPanel == null) initAccessPanel();
@@ -215,31 +247,34 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         }
 
         mSwitch.setEnabled(!showDeviceAdminBtn && !showNotifiesBtn);
+        mSwitch.setChecked(mSwitch.isEnabled() && mSwitch.isChecked());
         updateSendTestNotificationMenuItem();
     }
 
     private void updateSendTestNotificationMenuItem() {
-        if (mSendTestNotificationMenuItem == null) {
-            return;
+        if (mSendTestNotificationMenuItem != null) {
+            mSendTestNotificationMenuItem.setVisible(mSwitch.isChecked());
         }
-
-        mSendTestNotificationMenuItem.setVisible(mSwitch.isEnabled() && mSwitch.isChecked());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mConfig.removeOnConfigChangedListener(this);
+        mConfig.unregisterListener(this);
     }
 
     @Override
     public void onConfigChanged(Config config, String key, Object value) {
-        if (key.equals(Config.KEY_ENABLED)) {
-            if (!mBroadcasting) {
+        if (mBroadcasting) {
+            return;
+        }
+
+        switch (key) {
+            case Config.KEY_ENABLED:
                 mBroadcasting = true;
                 mSwitch.setChecked((Boolean) value);
                 mBroadcasting = false;
-            }
+                break;
         }
     }
 
@@ -253,23 +288,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        // Transfer in-app-billing service's events to
-        // its fragment.
-        if (requestCode == DonationFragment.RC_REQUEST) {
-            FragmentManager fm = getFragmentManager();
-            Fragment fragment = fm.findFragmentByTag(DialogHelper.TAG_FRAGMENT_DONATION);
-            if (fragment instanceof DonationFragment) {
-                fragment.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -279,37 +297,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 startActivity(new Intent(this, BlacklistActivity.class));
                 break;
             case R.id.action_test:
-                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Test notification.");
-                wakeLock.acquire(SLEEP_SEND_NOTIFICATION_DELAY);
-
-                try {
-                    // Go sleep
-                    DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-                    dpm.lockNow();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Notification.Builder builder = new Notification.Builder(MainActivity.this)
-                                    .setContentTitle(getString(R.string.app_name))
-                                    .setContentText(getString(R.string.test_notification_message))
-                                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                                    .setSmallIcon(R.drawable.stat_test)
-                                    .setAutoCancel(true)
-                                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                            Notification.BigTextStyle builderBigText = new Notification.BigTextStyle(builder)
-                                    .bigText(getString(R.string.test_notification_message_large));
-
-                            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            nm.notify(App.ID_NOTIFY_TEST, builderBigText.build());
-                        }
-                    }, SLEEP_SEND_NOTIFICATION_DELAY);
-                } catch (SecurityException e) {
-                    Log.wtf(TAG, "Failed to turn screen off");
-
-                    wakeLock.release();
-                }
+                startAcDisplayTest(Build.DEBUG);
                 break;
             case R.id.action_donate:
                 DialogHelper.showDonateDialog(this);
@@ -328,4 +316,64 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         }
         return true;
     }
+
+    /**
+     * Turns screen off and sends a test notification.
+     *
+     * @param fake {@code true} if it simply starts {@link AcDisplayActivity},
+     *             {@code false} if it uses notification
+     */
+    private void startAcDisplayTest(boolean fake) {
+        if (fake) {
+            sendTestNotification();
+            startActivity(new Intent(this, AcDisplayActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            return;
+        }
+
+        int delay = getResources().getInteger(R.integer.config_test_notification_delay);
+
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Test notification.");
+        wakeLock.acquire(delay);
+
+        try {
+            // Go sleep
+            DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+            dpm.lockNow();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    sendTestNotification();
+                }
+            }, delay);
+        } catch (SecurityException e) {
+            Log.wtf(TAG, "Failed to turn screen off");
+
+            wakeLock.release();
+        }
+    }
+
+    private void sendTestNotification() {
+        int notificationId = App.ID_NOTIFY_TEST;
+        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this,
+                notificationId, new Intent(MainActivity.this, MainActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.Builder builder = new Notification.Builder(MainActivity.this)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.test_notification_message))
+                .setContentIntent(pendingIntent)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.stat_test)
+                .setAutoCancel(true)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        Notification.BigTextStyle builderBigText = new Notification.BigTextStyle(builder)
+                .bigText(getString(R.string.test_notification_message_large));
+
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(notificationId, builderBigText.build());
+    }
+
 }

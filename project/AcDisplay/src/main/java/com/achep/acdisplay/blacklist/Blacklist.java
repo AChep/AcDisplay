@@ -24,9 +24,9 @@ import android.util.Log;
 /**
  * The blacklist (also known as per-app-features.)
  *
+ * @author Artem Chepurnoy
  * @see #saveAppConfig(android.content.Context, AppConfig, SharedList.OnSharedListChangedListener)
  * @see #getAppConfig(String)
- * @author Artem Chepurnoy
  */
 public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSaver> {
 
@@ -50,7 +50,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSa
          *
          * @param configNew An instance of new app's config.
          * @param configOld An instance of previous app's config (can not be null.)
-         * @param diff The difference between two configs.
+         * @param diff      The difference between two configs.
          */
         public abstract void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff);
 
@@ -64,6 +64,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSa
 
         /**
          * Should never be called.
+         *
          * @see #onBlacklistChanged(AppConfig, AppConfig, int)
          */
         @Override

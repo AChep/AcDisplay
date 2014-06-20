@@ -24,6 +24,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.achep.acdisplay.App;
+import com.achep.acdisplay.activities.KeyguardActivity;
+
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 
@@ -32,44 +35,40 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 public class OverrideHomeButton implements IXposedHookZygoteInit {
 
-    public static final String INTENT_EAT_HOME_PRESS_START = "com.achep.acdisplay.EAT_HOME_PRESS_START";
-    public static final String INTENT_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
-
     private static boolean active = false;
-    
+
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
 
         /**
-        * Register BroadcastReceiver in PhoneWindowManager.init(…) so that we
-        * can enable and disable the home button on demand.
-        */
+         * Register BroadcastReceiver in PhoneWindowManager.init(…) so that we
+         * can enable and disable the home button on demand.
+         */
         findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init",
                 Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs",
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        BroadcastReceiver mAcDisplayReceiver = new BroadcastReceiver() {
+                        BroadcastReceiver receiver = new BroadcastReceiver() {
                             @Override
                             public void onReceive(Context context, Intent intent) {
                                 switch (intent.getAction()) {
-                                    case INTENT_EAT_HOME_PRESS_START:
+                                    case App.ACTION_EAT_HOME_PRESS_START:
                                         active = true;
                                         break;
-                                    case INTENT_EAT_HOME_PRESS_STOP:
+                                    case App.ACTION_EAT_HOME_PRESS_STOP:
                                         active = false;
                                         break;
                                 }
                             }
                         };
                         IntentFilter filter = new IntentFilter();
-                        filter.addAction(INTENT_EAT_HOME_PRESS_START);
-                        filter.addAction(INTENT_EAT_HOME_PRESS_STOP);
+                        filter.addAction(App.ACTION_EAT_HOME_PRESS_START);
+                        filter.addAction(App.ACTION_EAT_HOME_PRESS_STOP);
                         Context context = (Context) getObjectField(param.thisObject, "mContext");
-                        context.registerReceiver(mAcDisplayReceiver, filter);
+                        context.registerReceiver(receiver, filter);
                     }
                 }
-
         );
 
         /**
@@ -83,7 +82,6 @@ public class OverrideHomeButton implements IXposedHookZygoteInit {
                             param.setResult(null);
                     }
                 }
-
         );
     }
 }

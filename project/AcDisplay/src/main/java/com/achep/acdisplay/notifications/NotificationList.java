@@ -28,15 +28,15 @@ import java.util.ArrayList;
  */
 final class NotificationList {
 
-    private ArrayList<OpenStatusBarNotification> mList;
+    private ArrayList<OpenNotification> mList;
     private Callback mCallback;
 
     public interface Callback {
-        public int onNotificationAdded(OpenStatusBarNotification n);
+        public int onNotificationAdded(OpenNotification n);
 
-        public int onNotificationChanged(OpenStatusBarNotification n);
+        public int onNotificationChanged(OpenNotification n, OpenNotification old);
 
-        public int onNotificationRemoved(OpenStatusBarNotification n);
+        public int onNotificationRemoved(OpenNotification n);
     }
 
     public NotificationList(Callback callback) {
@@ -44,7 +44,7 @@ final class NotificationList {
         mList = new ArrayList<>(10);
     }
 
-    public int pushOrRemove(OpenStatusBarNotification n, boolean push, boolean silently) {
+    public int pushOrRemove(OpenNotification n, boolean push, boolean silently) {
         Callback cb = mCallback;
         if (silently) mCallback = null;
         final int callback = push ? push(n) : remove(n);
@@ -55,23 +55,24 @@ final class NotificationList {
     /**
      * Replace or add notification to the list.
      *
-     * @return {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationAdded(com.achep.acdisplay.notifications.OpenStatusBarNotification n)} or
-     * {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationChanged(com.achep.acdisplay.notifications.OpenStatusBarNotification n)}
+     * @return {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationAdded(OpenNotification n)} or
+     * {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationChanged(OpenNotification n)}
      */
-    public int push(OpenStatusBarNotification n) {
+    public int push(OpenNotification n) {
         int index = indexOf(n);
         if (index < 0) {
             mList.add(n);
             if (mCallback != null) return mCallback.onNotificationAdded(n);
         } else {
+            OpenNotification old = mList.get(index);
             mList.remove(index);
             mList.add(index, n);
-            if (mCallback != null) return mCallback.onNotificationChanged(n);
+            if (mCallback != null) return mCallback.onNotificationChanged(n, old);
         }
         return 0;
     }
 
-    public int remove(OpenStatusBarNotification n) {
+    public int remove(OpenNotification n) {
         int index = indexOf(n);
         if (index >= 0) {
             mList.get(index).getNotificationData().stopLoading();
@@ -81,14 +82,14 @@ final class NotificationList {
         return 0;
     }
 
-    public ArrayList<OpenStatusBarNotification> list() {
+    public ArrayList<OpenNotification> list() {
         return mList;
     }
 
-    public int indexOf(OpenStatusBarNotification n) {
+    public int indexOf(OpenNotification n) {
         int size = mList.size();
         for (int i = 0; i < size; i++) {
-            OpenStatusBarNotification o = mList.get(i);
+            OpenNotification o = mList.get(i);
             if (o == null || o.getStatusBarNotification() == null) {
                 throw new RuntimeException("Null-notification found! Notification list is probably corrupted. ");
             } else if (NotificationUtils.equals(n, o)) {

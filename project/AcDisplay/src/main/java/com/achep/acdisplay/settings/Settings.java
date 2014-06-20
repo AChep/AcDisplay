@@ -41,10 +41,8 @@ import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.settings.enablers.ActiveModeEnabler;
-import com.achep.acdisplay.settings.enablers.Enabler;
-import com.achep.acdisplay.settings.enablers.LockscreenEnabler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -164,11 +162,11 @@ public class Settings extends PreferenceActivity {
     }
 
     private static final String[] ENTRY_FRAGMENTS = {
-            LockscreenFragment.class.getName(),
-            ActiveFragment.class.getName(),
-            NotificationFragment.class.getName(),
-            InterfaceFragment.class.getName(),
-            MoreFragment.class.getName()
+            KeyguardSettings.class.getName(),
+            ActiveModeSettings.class.getName(),
+            NotificationSettings.class.getName(),
+            InterfaceSettings.class.getName(),
+            MoreSettings.class.getName()
     };
 
     @Override
@@ -397,7 +395,7 @@ public class Settings extends PreferenceActivity {
         static int getHeaderType(Header header) {
             if (header.fragment == null && header.intent == null) {
                 return HEADER_TYPE_CATEGORY;
-            } else if (header.id == R.id.lockscreen_settings
+            } else if (header.id == R.id.keyguard_settings
                     || header.id == R.id.active_settings) {
                 return HEADER_TYPE_SWITCH;
             } else {
@@ -438,8 +436,8 @@ public class Settings extends PreferenceActivity {
 
             // Temp Switches provided as placeholder until the adapter replaces these with actual
             // Switches inflated from their layouts. Must be done before adapter is set in super
-            mLockscreenEnabler = new LockscreenEnabler(context, new Switch(context));
-            mActiveEnabler = new ActiveModeEnabler(context, new Switch(context));
+            mLockscreenEnabler = new Enabler(context, new Switch(context), Config.KEY_KEYGUARD);
+            mActiveEnabler = new Enabler(context, new Switch(context), Config.KEY_ACTIVE_MODE);
         }
 
         @Override
@@ -490,7 +488,7 @@ public class Settings extends PreferenceActivity {
                     break;
 
                 case HEADER_TYPE_SWITCH:
-                    if (header.id == R.id.lockscreen_settings) {
+                    if (header.id == R.id.keyguard_settings) {
                         mLockscreenEnabler.setSwitch(holder.switch_);
                     } else if (header.id == R.id.active_settings) {
                         mActiveEnabler.setSwitch(holder.switch_);

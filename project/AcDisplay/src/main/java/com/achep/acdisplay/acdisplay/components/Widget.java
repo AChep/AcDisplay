@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.acdisplay.AcDisplayFragment;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -42,9 +43,16 @@ public abstract class Widget {
     private ViewGroup mExpandedViewGroup;
     private View mCollapsedView;
 
+    protected Callback mCallback;
+
     private boolean mShown;
 
-    public Widget(AcDisplayFragment fragment) {
+    public interface Callback {
+        void requestBackgroundUpdate(Widget widget);
+    }
+
+    public Widget(Callback callback, AcDisplayFragment fragment) {
+        mCallback = callback;
         mAcDisplayFragment = fragment;
     }
 
@@ -86,7 +94,7 @@ public abstract class Widget {
 
     /**
      * @return {@code true} if the widget can be dismissed, {@code false} otherwise
-     * @see #onDismissed(boolean)
+     * @see #onDismissed()
      */
     public boolean isDismissible() {
         return false;
@@ -95,26 +103,24 @@ public abstract class Widget {
     /**
      * Called when widget (may be not widget, but its content) has been dismissed.
      *
-     * @param right {@code true} if dismissed by swipe to right, {@code false} otherwise.
      * @see #isDismissible()
      */
-    public void onDismissed(boolean right) { /* reserved for children */ }
+    public void onDismissed() { /* reserved for children */ }
 
     /**
      * @return {@code true} if the widget can be read aloud, {@code false} otherwise
-     * @see #onReadAloud(android.speech.tts.TextToSpeech)
+     * @see #getReadAloudText()
      */
     public boolean isReadable() {
         return false;
     }
 
     /**
-     * Called when widget need to read its content aloud.
-     *
+     * @return Text to be read aloud.
      * @see #isReadable()
      */
-    public void onReadAloud(TextToSpeech tts) {
-        // TODO: Add an ability to read widgets aloud.
+    public String getReadAloudText() {
+        return null;
     }
 
     /**
@@ -123,6 +129,17 @@ public abstract class Widget {
     public Bitmap getBackground() {
         return null;
     }
+
+    /**
+     * @return The mask of widget's background, or {@code 0} to show always.
+     * @see Config#DYNAMIC_BG_ARTWORK_MASK
+     * @see Config#DYNAMIC_BG_NOTIFICATION_MASK
+     */
+    public int getBackgroundMask() {
+        return 0;
+    }
+
+    public void onCreate() { /* empty */ }
 
     public boolean isExpandedViewAttached() {
         return mShown;
@@ -135,6 +152,8 @@ public abstract class Widget {
     public void onExpandedViewDetached() {
         mShown = false;
     }
+
+    public void onDestroy() { /* empty */ }
 
     /**
      * @return {@code true} if the widget contains large view, {@code false} otherwise
@@ -160,9 +179,13 @@ public abstract class Widget {
         return (mExpandedViewGroup = onCreateExpandedView(inflater, container, sceneView));
     }
 
-    protected abstract View onCreateCollapsedView(LayoutInflater inflater, ViewGroup container);
+    protected View onCreateCollapsedView(LayoutInflater inflater, ViewGroup container) {
+        return null;
+    }
 
-    protected abstract ViewGroup onCreateExpandedView(LayoutInflater inflater, ViewGroup container,
-                                                      ViewGroup view);
+    protected ViewGroup onCreateExpandedView(LayoutInflater inflater, ViewGroup container,
+                                             ViewGroup view) {
+        return null;
+    }
 
 }

@@ -31,8 +31,8 @@ import com.achep.acdisplay.R;
  */
 public class AdminReceiver extends android.app.admin.DeviceAdminReceiver {
 
-    public static final String ACTION_DISABLED = "device_admin_action_disabled";
-    public static final String ACTION_ENABLED = "device_admin_action_enabled";
+    public static final String ACTION_DISABLED = "device_admin_disabled";
+    public static final String ACTION_ENABLED = "device_admin_enabled";
 
     @Override
     public void onDisabled(Context context, Intent intent) {

@@ -34,8 +34,12 @@ public class ToastUtils {
      * @param text message to show
      * @see #showLong(android.content.Context, CharSequence)
      */
-    public static void showShort(Context context, CharSequence text) {
-        show(context, text, Toast.LENGTH_SHORT);
+    public static Toast showShort(Context context, CharSequence text) {
+        return show(context, text, Toast.LENGTH_SHORT);
+    }
+
+    public static Toast showShort(Context context, int stringRes) {
+        return showShort(context, context.getString(stringRes));
     }
 
     /**
@@ -44,12 +48,18 @@ public class ToastUtils {
      * @param text message to show
      * @see #showShort(android.content.Context, CharSequence)
      */
-    public static void showLong(Context context, CharSequence text) {
-        show(context, text, Toast.LENGTH_LONG);
+    public static Toast showLong(Context context, CharSequence text) {
+        return show(context, text, Toast.LENGTH_LONG);
     }
 
-    private static void show(Context context, CharSequence text, int duration) {
-        Toast.makeText(context, text, duration).show();
+    public static Toast showLong(Context context, int stringRes) {
+        return showLong(context, context.getString(stringRes));
+    }
+
+    private static Toast show(Context context, CharSequence text, int duration) {
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        return toast;
     }
 
 }

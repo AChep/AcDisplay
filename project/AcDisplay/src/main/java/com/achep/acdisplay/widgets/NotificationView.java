@@ -18,15 +18,15 @@
  */
 package com.achep.acdisplay.widgets;
 
-import com.achep.acdisplay.notifications.OpenStatusBarNotification;
+import com.achep.acdisplay.notifications.OpenNotification;
 
 /**
  * Created by Artem on 02.02.14.
  */
 public interface NotificationView {
 
-    public void setNotification(OpenStatusBarNotification notification);
+    public void setNotification(OpenNotification notification);
 
-    public OpenStatusBarNotification getNotification();
+    public OpenNotification getNotification();
 
 }

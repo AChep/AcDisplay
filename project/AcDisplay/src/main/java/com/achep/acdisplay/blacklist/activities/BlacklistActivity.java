@@ -511,6 +511,7 @@ public class BlacklistActivity extends PreferenceActivity {
             mHeaders = headers;
 
             // Set the default icon till the actual app icon is loaded in async task
+            //noinspection ResourceType
             mDefaultImg = context.getResources().getDrawable(android.R.mipmap.sym_def_app_icon);
 
             mBlacklistEnablers = new HashSet<>();

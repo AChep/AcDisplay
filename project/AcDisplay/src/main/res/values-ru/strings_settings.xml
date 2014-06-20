@@ -50,6 +50,7 @@
     <string name="settings_low_priority_notifications_off">Уведомления, имеющие низкий приоритет, не отображаются.\nПример: погода от Google Now.</string>
 
     <!-- Interface -->
+    <string name="settings_full_screen_title">Полноэкранный режим</string>
     <string name="settings_use_wallpaper_title">Использовать обои</string>
     <string name="settings_use_wallpaper_on">Обои с вашего рабочего стола используются в качестве фона.</string>
     <string name="settings_use_wallpaper_off">Цельный чёрный фон.</string>
@@ -77,8 +78,15 @@
     <string name="settings_timeout_title">Спящий режим</string>
     <string name="settings_timeout_summary">После %1$s / %2$s секунд бездействия.</string>
     <string name="settings_timeout_forever">Экран всегда остается включенным.</string>
+    <string name="settings_icon_size_title">Размер иконок</string>
+    <string name="settings_icon_size_summary">Текущий размер иконок: %1$s dpi.</string>
     <!-- Behavior -->
     <string name="settings_behavior_category">Поведение</string>
+    <string name="settings_lock_on_dismiss_last_notify_title">Выкл. экран после удал. посл. уведомления</string>
+    <string name="settings_lock_on_dismiss_last_notify_on">Экран выключается при удалении последнего уведомления.</string>
+    <string name="settings_lock_on_dismiss_last_notify_off">Экран остается включенным после удаления последнего уведомления.</string>
+    <string name="settings_widget_pinnable_title">Прикрепляемые уведомления</string>
+    <string name="settings_widget_pinnable_on">Уведомление остается развернутым на несколько секунд после касания.</string>
 
     <!-- Preference: Inactive hours -->
     <string name="preference_inactive_hours_enabled">Использовать неактивное время</string>
@@ -94,5 +102,9 @@
     <string name="preference_timeout_short">После касания экрана в неактивном месте</string>
     <string name="preference_timeout_sec">%1$s сек.</string>
     <string name="preference_no_timeout">Экран всегда остается включенным</string>
+
+    <!-- Preference: Icon size -->
+    <string name="preference_icon_size_message">Измените размер иконок уведомлений:</string>
+    <string name="preference_icon_size_dpi">%1$s dpi.</string>
 
 </resources>

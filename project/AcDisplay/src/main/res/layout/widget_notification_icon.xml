@@ -26,9 +26,10 @@
         android:id="@+id/icon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="6dp"
         android:layout_gravity="center"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"
+        android:maxWidth="@dimen/notification_icon_size"
+        android:maxHeight="@dimen/notification_icon_size"/>
 
     <TextView
         android:id="@+id/number"
@@ -41,8 +42,8 @@
         android:background="#6444"
         android:textColor="#fff"
         android:textStyle="bold"
-        android:shadowColor="@android:color/black"
         android:shadowRadius="4"
+        android:shadowColor="@android:color/black"
         android:fontFamily="sans-serif-condensed" />
 
 </com.achep.acdisplay.widgets.NotificationIconWidget>

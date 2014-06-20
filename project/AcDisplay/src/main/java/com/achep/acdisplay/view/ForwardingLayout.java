@@ -40,6 +40,8 @@ public class ForwardingLayout extends LinearLayout {
 
     private OnForwardedEventListener mOnForwardedEventListener;
     private boolean mVibrateOnForwarded;
+    private boolean mForwardAll;
+    private int mForwardDepth;
 
     public ForwardingLayout(Context context) {
         super(context);
@@ -54,7 +56,10 @@ public class ForwardingLayout extends LinearLayout {
     }
 
     public interface OnForwardedEventListener {
+
         public void onForwardedEvent(MotionEvent event, int activePointerId);
+
+        public void onPressedView(MotionEvent event, int activePointerId, View view);
     }
 
     public void setOnForwardedEventListener(OnForwardedEventListener listener) {
@@ -67,6 +72,11 @@ public class ForwardingLayout extends LinearLayout {
      */
     public void setVibrateOnForwardedEventEnabled(boolean enabled) {
         mVibrateOnForwarded = enabled;
+    }
+
+    public void setAllViewsForwardable(boolean enabled, int depth) {
+        mForwardAll = enabled;
+        mForwardDepth = depth;
     }
 
     /**
@@ -87,6 +97,7 @@ public class ForwardingLayout extends LinearLayout {
             case MotionEvent.ACTION_UP:
                 handledEvent = false;
                 // $FALL-THROUGH$
+            case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 final int activeIndex = event.findPointerIndex(activePointerId);
                 if (activeIndex < 0) {
@@ -97,12 +108,16 @@ public class ForwardingLayout extends LinearLayout {
                 final int x = (int) event.getX(activeIndex);
                 final int y = (int) event.getY(activeIndex);
 
-                View pressedView = findViewByCoordinate(this, x, y);
+                View pressedView = findViewByCoordinate(this, x, y, 0);
                 if (mPressedChild != pressedView) {
                     vibrateView = pressedView != null ? pressedView : mPressedChild;
                     if (pressedView != null) pressedView.setPressed(true);
                     if (mPressedChild != null) mPressedChild.setPressed(false);
                     mPressedChild = pressedView;
+
+                    if (mOnForwardedEventListener != null) {
+                        mOnForwardedEventListener.onPressedView(event, activePointerId, mPressedChild);
+                    }
                 }
 
                 if (actionMasked == MotionEvent.ACTION_UP) {
@@ -128,7 +143,7 @@ public class ForwardingLayout extends LinearLayout {
         return handledEvent;
     }
 
-    private View findViewByCoordinate(ViewGroup viewGroup, float x, float y) {
+    private View findViewByCoordinate(ViewGroup viewGroup, float x, float y, int depth) {
         final int childCount = viewGroup.getChildCount();
         for (int i = childCount - 1; i >= 0; i--) {
             final View child = viewGroup.getChildAt(i);
@@ -138,16 +153,16 @@ public class ForwardingLayout extends LinearLayout {
                 continue;
             }
 
-            if (child instanceof ViewGroup) {
+            if (child instanceof ViewGroup && (depth < mForwardDepth || !mForwardAll)) {
                 View view = findViewByCoordinate((ViewGroup) child,
                         x - child.getLeft(),
-                        y - child.getTop());
+                        y - child.getTop(), depth + 1);
                 if (view != null) {
                     return view;
                 }
             }
 
-            if (child.isClickable() && ViewUtils.pointInView(child, x, y, 0)) {
+            if ((child.isClickable() || mForwardAll) && ViewUtils.pointInView(child, x, y, 0)) {
                 return child;
             }
         }
@@ -162,6 +177,7 @@ public class ForwardingLayout extends LinearLayout {
 
         mPressedChild.setPressed(false);
         mPressedChild.refreshDrawableState();
+        mPressedChild = null;
     }
 
     private void clickPressedItem() {

@@ -43,6 +43,15 @@ public class NotificationUtils {
         return null;
     }
 
+    public static Context createContext(Context context, StatusBarNotification n) {
+        try {
+            return context.createPackageContext(n.getPackageName(), Context.CONTEXT_RESTRICTED);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.w(TAG, "Failed to create notification\'s context");
+            return null;
+        }
+    }
+
     public static boolean equals(StatusBarNotification n, StatusBarNotification n2) {
         return n == n2 || n != null && n2 != null && new EqualsBuilder()
                 .append(n.getId(), n2.getId())
@@ -51,18 +60,9 @@ public class NotificationUtils {
                 .isEquals();
     }
 
-    public static boolean equals(OpenStatusBarNotification n, OpenStatusBarNotification n2) {
+    public static boolean equals(OpenNotification n, OpenNotification n2) {
         return n == n2 || n != null && n2 != null && equals(
                 n.getStatusBarNotification(),
                 n2.getStatusBarNotification());
-    }
-
-    public static Context createContext(Context context, StatusBarNotification n) {
-        try {
-            return context.createPackageContext(n.getPackageName(), Context.CONTEXT_RESTRICTED);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.w(TAG, "Failed to create notification\'s context");
-            return null;
-        }
     }
 }

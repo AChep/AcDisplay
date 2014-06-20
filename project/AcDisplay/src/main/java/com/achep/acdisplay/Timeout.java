@@ -201,8 +201,7 @@ public class Timeout {
     }
 
     /**
-     * Updates given {@link com.achep.acdisplay.widgets.ProgressBar}
-     * due to timeout's event.
+     * Displays timeout's events in given {@link com.achep.acdisplay.widgets.ProgressBar}.
      */
     public static class Gui implements Timeout.OnTimeoutEventListener {
 

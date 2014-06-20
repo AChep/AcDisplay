@@ -29,16 +29,16 @@ import android.os.Build;
 public class Device {
 
     /**
-     * @return True if device is running
-     * {@link Build.VERSION_CODES#KITKAT KitKat} or higher, False otherwise.
+     * @return {@code true} if device is running
+     * {@link Build.VERSION_CODES#KITKAT KitKat} or higher, {@code false} otherwise.
      */
     public static boolean hasKitKatApi() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     /**
-     * @return True if device is running
-     * {@link Build.VERSION_CODES#JELLY_BEAN_MR2 Jelly Bean 4.3} or higher, False otherwise.
+     * @return {@code true} if device is running
+     * {@link Build.VERSION_CODES#JELLY_BEAN_MR2 Jelly Bean 4.3} or higher, {@code false} otherwise.
      */
     public static boolean hasJellyBeanMR2Api() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;

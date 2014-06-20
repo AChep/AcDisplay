@@ -25,7 +25,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.achep.acdisplay.notifications.NotificationData;
-import com.achep.acdisplay.notifications.OpenStatusBarNotification;
+import com.achep.acdisplay.notifications.OpenNotification;
 
 /**
  * Created by Artem on 25.03.2014.
@@ -34,7 +34,7 @@ public class NotificationIcon extends ImageView implements NotificationView, Not
 
     private boolean mAttached;
 
-    private OpenStatusBarNotification mNotification;
+    private OpenNotification mNotification;
     private int mIconAlpha;
 
     private boolean mAdjustAlphaEnabled = true;
@@ -85,14 +85,14 @@ public class NotificationIcon extends ImageView implements NotificationView, Not
         NotificationData data = mNotification.getNotificationData();
         handleIconChanged(data.getIcon());
         handleReadStateChanged(data.isRead);
-        data.addOnNotificationDataChangedListener(this);
+        data.registerListener(this);
     }
 
     private void unregisterListener() {
         if (mNotification == null) return;
 
         NotificationData data = mNotification.getNotificationData();
-        data.removeOnNotificationDataChangedListener(this);
+        data.unregisterListener(this);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class NotificationIcon extends ImageView implements NotificationView, Not
     }
 
     @Override
-    public void setNotification(OpenStatusBarNotification notification) {
+    public void setNotification(OpenNotification notification) {
         if (mAttached) {
             unregisterListener();
             mNotification = notification;
@@ -149,7 +149,7 @@ public class NotificationIcon extends ImageView implements NotificationView, Not
     }
 
     @Override
-    public OpenStatusBarNotification getNotification() {
+    public OpenNotification getNotification() {
         return mNotification;
     }
 }

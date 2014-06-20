@@ -22,22 +22,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ContentProvider;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -46,9 +41,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.achep.acdisplay.Build;
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.providers.LogAttachmentProvider;
 import com.achep.acdisplay.utils.FileUtils;
 import com.achep.acdisplay.utils.IntentUtils;
 import com.achep.acdisplay.utils.PackageUtils;
@@ -58,14 +55,12 @@ import com.achep.acdisplay.utils.ViewUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -74,72 +69,71 @@ import java.util.TimeZone;
  * <p/>
  * Provides an UI for sending bugs & suggestions on my email.
  */
-public class FeedbackDialog extends DialogFragment {
+public class FeedbackDialog extends DialogFragment implements Config.OnConfigChangedListener {
 
     private static final String TAG = "FeedbackDialog";
+
+    private View mFaqContainer;
 
     private Spinner mSpinner;
     private EditText mEditText;
     private CheckBox mAttachLogCheckBox;
 
-    private boolean mTriedToSendShortMessage;
+    private AdapterView.OnItemSelectedListener mListener =
+            new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    // Show "Attach log" checkbox only if the type
+                    // of this message is "Bug".
+                    ViewUtils.setVisible(mAttachLogCheckBox, position == 0);
+                }
 
-    private boolean mBroadcasting;
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    ViewUtils.setVisible(mAttachLogCheckBox, false);
+                }
+            };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Config config = Config.getInstance();
+        Config.Triggers triggers = config.getTriggers();
+
+        config.registerListener(this);
+        updateFaqPanel(triggers.isHelpRead());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Config config = Config.getInstance();
+        config.unregisterListener(this);
+    }
+
+    @Override
+    public void onConfigChanged(Config config, String key, Object value) {
+        switch (key) {
+            case Config.KEY_TRIG_HELP_READ:
+                updateFaqPanel((boolean) value);
+                break;
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Activity activity = getActivity();
         assert activity != null;
 
-        LayoutInflater inflater = (LayoutInflater) activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View root = inflater.inflate(R.layout.fragment_dialog_feedback, null);
-        assert root != null;
-
-        mSpinner = (Spinner) root.findViewById(R.id.type);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ViewUtils.setVisible(mAttachLogCheckBox, position == 0);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                ViewUtils.setVisible(mAttachLogCheckBox, false);
-            }
-        });
-        mEditText = (EditText) root.findViewById(R.id.message);
-        mAttachLogCheckBox = (CheckBox) root.findViewById(R.id.checkbox);
-        mAttachLogCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mBroadcasting || !isChecked) {
-                    return;
-                }
-
-                CharSequence messageText = getString(R.string.feedback_attach_log_description);
-                new DialogHelper.Builder(getActivity())
-                        .setMessage(messageText)
-                        .wrap()
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mBroadcasting = true;
-                                mAttachLogCheckBox.setChecked(false);
-                                mBroadcasting = false;
-                            }
-                        })
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create()
-                        .show();
-            }
-        });
-
-        final AlertDialog alertDialog = new DialogHelper.Builder(getActivity())
+        View view = new DialogHelper.Builder(activity)
                 .setIcon(getResources().getDrawable(R.drawable.ic_dialog_mail))
                 .setTitle(getString(R.string.feedback))
-                .setView(root)
-                .wrap()
+                .setView(R.layout.fragment_dialog_feedback)
+                .createSkeletonView();
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity)
+                .setView(view)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(R.string.feedback_send, null)
                 .create();
@@ -159,35 +153,85 @@ public class FeedbackDialog extends DialogFragment {
             }
         });
 
+        mSpinner = (Spinner) view.findViewById(R.id.type);
+        mSpinner.setOnItemSelectedListener(mListener);
+        mEditText = (EditText) view.findViewById(R.id.message);
+        mAttachLogCheckBox = (CheckBox) view.findViewById(R.id.checkbox);
+        mAttachLogCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    return;
+                }
+
+                CharSequence messageText = getString(R.string.feedback_attach_log_description);
+                new DialogHelper.Builder(getActivity())
+                        .setMessage(messageText)
+                        .wrap()
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create()
+                        .show();
+            }
+        });
+
+        // Frequently asked questions panel
+        Config.Triggers triggers = Config.getInstance().getTriggers();
+        if (!triggers.isHelpRead()) initFaqPanel((ViewGroup) view);
+
         return alertDialog;
     }
 
+    /**
+     * Initialize Frequently asked questions panel. This panel is here to reduce
+     * the number of already answered questions.
+     */
+    private void initFaqPanel(ViewGroup root) {
+        mFaqContainer = ((ViewStub) root.findViewById(R.id.faq)).inflate();
+        mFaqContainer.findViewById(R.id.faq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogHelper.showHelpDialog(getActivity());
+            }
+        });
+    }
+
+    /**
+     * Removes Frequently asked questions panel from the view
+     * and sets {@link #mFaqContainer} to null.
+     * After calling this method you no longer able to get panel back.
+     */
+    private void recycleFaqPanel() {
+        ViewGroup viewGroup = (ViewGroup) mFaqContainer.getParent();
+        viewGroup.removeView(mFaqContainer);
+        mFaqContainer = null;
+    }
+
+    /**
+     * {@link #recycleFaqPanel() Recycles} Frequently asked questions panel when it's not needed
+     * anymore.
+     *
+     * @param isHelpRead {@code true} to recycle panel, {@code false} to do nothing.
+     */
+    private void updateFaqPanel(boolean isHelpRead) {
+        if (mFaqContainer != null && isHelpRead) {
+            recycleFaqPanel();
+        }
+    }
+
     private void send() {
-        Activity activity = getActivity();
+        Activity context = getActivity();
         CharSequence message = mEditText.getText();
 
         // Check for message's length
-        int messageMinLength = getResources().getInteger(
-                R.integer.config_feedback_minMessageLength);
-        if (message == null || (message.length() < messageMinLength && !Build.DEBUG)) {
-            String toastText = getString(R.string.feedback_error_msg_too_short, messageMinLength);
-            ToastUtils.showShort(activity, toastText);
-            mTriedToSendShortMessage = true;
+        int msgMinLength = getResources().getInteger(R.integer.config_feedback_minMessageLength);
+        if (message == null || (message.length() < msgMinLength && !Build.DEBUG)) {
+            String toastText = getString(R.string.feedback_error_msg_too_short, msgMinLength);
+            ToastUtils.showShort(context, toastText);
             return;
         }
 
-        PackageInfo pi;
-        try {
-            pi = activity
-                    .getPackageManager()
-                    .getPackageInfo(PackageUtils.getName(activity), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.wtf(TAG, "Failed to find my PackageInfo.");
-            return;
-        }
-
-        CharSequence title = createTitleMessage(activity, mSpinner.getSelectedItemPosition());
-        CharSequence body = createBodyMessage(pi, message);
+        CharSequence title = createTitleMessage(context, mSpinner.getSelectedItemPosition());
+        CharSequence body = createBodyMessage(context, message);
         Intent intent = new Intent()
                 .putExtra(Intent.EXTRA_EMAIL, new String[]{Build.SUPPORT_EMAIL})
                 .putExtra(Intent.EXTRA_SUBJECT, title)
@@ -202,22 +246,32 @@ public class FeedbackDialog extends DialogFragment {
             intent.setData(Uri.parse("mailto:")); // only email apps should handle it
         }
 
-        if (IntentUtils.hasActivityForThat(activity, intent)) {
+        if (IntentUtils.hasActivityForThat(context, intent)) {
             startActivity(intent);
             dismiss();
         } else {
             String toastText = getString(R.string.feedback_error_no_app);
-            ToastUtils.showLong(activity, toastText);
+            ToastUtils.showLong(context, toastText);
         }
     }
 
     private CharSequence createTitleMessage(Context context, int type) {
-        CharSequence osVersion = Device.hasKitKatApi() ? "KK" : Device.hasJellyBeanMR2Api() ? "JB" : "XX";
+        CharSequence osVersion = Device.hasKitKatApi() ? "KK" : Device.hasJellyBeanMR2Api() ? "JB" : "WTF";
         CharSequence[] typeNames = new CharSequence[]{"bug", "suggestion", "other"};
         return AboutDialog.getVersionName(context) + ": " + osVersion + ", " + typeNames[type];
     }
 
-    private CharSequence createBodyMessage(PackageInfo pi, CharSequence msg) {
+    private CharSequence createBodyMessage(Context context, CharSequence msg) {
+        PackageInfo pi;
+        try {
+            pi = context
+                    .getPackageManager()
+                    .getPackageInfo(PackageUtils.getName(context), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.wtf(TAG, "Failed to find my own PackageInfo.");
+            return msg;
+        }
+
         return "" + msg +
                 '\n' +
                 '\n' +
@@ -227,10 +281,10 @@ public class FeedbackDialog extends DialogFragment {
                 "build_display:" + android.os.Build.DISPLAY + '\n' +
                 "build_brand:" + android.os.Build.BRAND + '\n' +
                 "build_model:" + android.os.Build.MODEL + '\n' +
-                "had_short_message:" + mTriedToSendShortMessage + '\n' +
                 "language:" + Locale.getDefault().getLanguage();
     }
 
+    // TODO: If root is available, get normal (system events included) logcat.
     private void attachLog(Intent intent) {
         Context context = getActivity();
         StringBuilder log = new StringBuilder();
@@ -271,91 +325,6 @@ public class FeedbackDialog extends DialogFragment {
             intent.putExtra(Intent.EXTRA_STREAM, uri);
         } catch (IOException e) {
             ToastUtils.showShort(context, getString(R.string.feedback_error_accessing_log));
-        }
-    }
-
-    public static class LogAttachmentProvider extends ContentProvider {
-
-        private static final String TAG = "LogAttachmentProvider";
-
-        static final String AUTHORITY = "com.achep.acdisplay.logs";
-        static final String DIRECTORY = "logs";
-
-        private static final String COLUMN_DATA = "_data";
-
-        @Override
-        public boolean onCreate() {
-            return true;
-        }
-
-        @Override
-        public Cursor query(Uri uri, String[] projection, String selection,
-                            String[] selectionArgs, String orderBy) {
-            List<String> pathSegments = uri.getPathSegments();
-            String fileName = pathSegments.get(0);
-            File logFile = getContext().getCacheDir();
-            if (logFile == null) {
-                Log.e(TAG, "No cache dir.");
-                return null;
-            }
-
-            logFile = new File(new File(logFile, DIRECTORY), fileName);
-            if (!logFile.exists()) {
-                Log.e(TAG, "Requested log file doesn't exist.");
-                return null;
-            }
-
-            if (projection == null) {
-                projection = new String[]{
-                        COLUMN_DATA,
-                        OpenableColumns.DISPLAY_NAME,
-                        OpenableColumns.SIZE,
-                };
-            }
-
-            MatrixCursor matrixCursor = new MatrixCursor(projection, 1);
-            Object[] row = new Object[projection.length];
-            for (int col = 0; col < projection.length; col++) {
-                switch (projection[col]) {
-                    case COLUMN_DATA:
-                        row[col] = logFile.getAbsolutePath();
-                        break;
-                    case OpenableColumns.DISPLAY_NAME:
-                        row[col] = fileName;
-                        break;
-                    case OpenableColumns.SIZE:
-                        row[col] = logFile.length();
-                        break;
-                }
-            }
-            matrixCursor.addRow(row);
-            return matrixCursor;
-        }
-
-        @Override
-        public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-            return openFileHelper(uri, "r");
-        }
-
-        @Override
-        public String getType(Uri uri) {
-            return "text/plain";
-        }
-
-        @Override
-        public Uri insert(Uri uri, ContentValues values) {
-            throw new UnsupportedOperationException("insert not supported");
-        }
-
-        @Override
-        public int delete(Uri uri, String selection, String[] selectionArgs) {
-            throw new UnsupportedOperationException("delete not supported");
-        }
-
-        @Override
-        public int update(Uri uri, ContentValues contentValues, String selection,
-                          String[] selectionArgs) {
-            throw new UnsupportedOperationException("update not supported");
         }
     }
 }

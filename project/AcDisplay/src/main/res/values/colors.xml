@@ -31,4 +31,12 @@
 
     <color name="donation_normal">#b6cc45</color>
     <color name="donation_purchased">#DFED47</color>
+
+    <!-- BatteryMeterView parameters -->
+    <color name="batterymeter_frame_color">#66FFFFFF</color><!-- 40% white -->
+    <color name="batterymeter_charge_color">#FFFFFFFF</color>
+    <color name="batterymeter_bolt_color">#B2000000</color><!-- 70% black -->
+    <color name="batterymeter_critical">#FFFF3300</color>
+    <color name="batterymeter_low">#FFFF3300</color>
+    <color name="batterymeter_full">#FFFFFFFF</color>
 </resources>

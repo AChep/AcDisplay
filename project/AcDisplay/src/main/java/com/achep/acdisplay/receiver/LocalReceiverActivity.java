@@ -19,14 +19,19 @@
 package com.achep.acdisplay.receiver;
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.admin.AdminReceiver;
 import com.achep.acdisplay.utils.IntentUtils;
 import com.achep.acdisplay.utils.PackageUtils;
 import com.achep.acdisplay.utils.ToastUtils;
@@ -39,7 +44,8 @@ public class LocalReceiverActivity extends Activity {
     private static final String TAG = "LocalReceiverActivity";
 
     private static final String HOST_UNINSTALL = "uninstall";
-    private static final String HOST_LAUNCH_DEVICE_ADMINS = "launch_device_admins_activity";
+    private static final String HOST_LAUNCH_APP_INFO = "launch_app_info";
+    private static final String HOST_REMOVE_ADMIN_ACCESS = "remove_admin_access";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +74,34 @@ public class LocalReceiverActivity extends Activity {
         }
 
         switch (host) {
-            case HOST_LAUNCH_DEVICE_ADMINS:
-                Intent launchIntent = new Intent().setComponent(new ComponentName(
-                        "com.android.settings",
-                        "com.android.settings.DeviceAdminSettings"));
-                if (IntentUtils.hasActivityForThat(this, launchIntent)) {
-                    startActivity(launchIntent);
-                } else {
-                    ToastUtils.showShort(this,
-                            getString(R.string.device_admin_could_not_be_started));
+            case HOST_REMOVE_ADMIN_ACCESS:
+                ComponentName admin = new ComponentName(this, AdminReceiver.class);
+                DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+                try {
+                    dpm.removeActiveAdmin(admin);
+                    ToastUtils.showShort(this, R.string.access_device_admin_removed_successful);
+                } catch (SecurityException e) {
+                    Log.i(TAG, "Failed to remove AcDisplay from active device admins.");
                 }
+                Log.i(TAG, "asdasdasd");
                 break;
             case HOST_UNINSTALL:
-                Uri packageUri = Uri.parse("package:" + PackageUtils.getName(this));
-                launchIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-                if (IntentUtils.hasActivityForThat(this, launchIntent)) {
-                    startActivity(launchIntent);
-                } else {
-                    ToastUtils.showShort(this,
-                            getString(R.string.package_could_not_be_uninstalled));
+                try {
+                    startActivity(new Intent(
+                            Intent.ACTION_UNINSTALL_PACKAGE,
+                            Uri.fromParts("package", PackageUtils.getName(this), null)));
+                } catch (ActivityNotFoundException e) {
+                    Log.wtf(TAG, "Failed to start Uninstall activity.");
+                }
+                break;
+            case HOST_LAUNCH_APP_INFO:
+                try {
+                    startActivity(new Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", PackageUtils.getName(this), null)));
+                } catch (ActivityNotFoundException e) {
+                    Log.wtf(TAG, "Failed to start ApplicationDetails activity.");
                 }
                 break;
             default:

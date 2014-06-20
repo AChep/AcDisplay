@@ -21,31 +21,31 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Lock screen -->
-    <header android:fragment="com.achep.acdisplay.settings.LockscreenFragment"
-        android:id="@+id/lockscreen_settings"
+    <header android:fragment="com.achep.acdisplay.settings.KeyguardSettings"
+        android:id="@+id/keyguard_settings"
         android:title="@string/settings_lockscreen_title"
         android:icon="@drawable/ic_settings_lockscreen"/>
 
     <!-- Active mode -->
-    <header android:fragment="com.achep.acdisplay.settings.ActiveFragment"
+    <header android:fragment="com.achep.acdisplay.settings.ActiveModeSettings"
         android:id="@+id/active_settings"
         android:title="@string/settings_active_title"
         android:icon="@drawable/ic_settings_active"/>
 
     <!-- Notifications -->
-    <header android:fragment="com.achep.acdisplay.settings.NotificationFragment"
+    <header android:fragment="com.achep.acdisplay.settings.NotificationSettings"
         android:id="@+id/notification_settings"
         android:title="@string/settings_notification_title"
         android:icon="@drawable/ic_settings_notify"/>
 
     <!-- Interface -->
-    <header android:fragment="com.achep.acdisplay.settings.InterfaceFragment"
+    <header android:fragment="com.achep.acdisplay.settings.InterfaceSettings"
         android:id="@+id/interface_settings"
         android:title="@string/settings_interface_title"
         android:icon="@drawable/ic_settings_interface"/>
 
     <!-- More -->
-    <header android:fragment="com.achep.acdisplay.settings.MoreFragment"
+    <header android:fragment="com.achep.acdisplay.settings.MoreSettings"
         android:id="@+id/more_settings"
         android:title="@string/settings_more_title"/>
 

@@ -30,10 +30,10 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.receiver.ReceiverActivity;
 
 /**
  * Toggle widget provider.
@@ -46,7 +46,6 @@ public class ToggleWidgetProvider extends AppWidgetProvider
     private static final String TAG = "AppWidgetProvider";
 
     private Config mConfig;
-    private Context mContext;
 
     @Override
     public void onEnabled(Context context) {
@@ -70,29 +69,29 @@ public class ToggleWidgetProvider extends AppWidgetProvider
     public void onConfigChanged(Config config, String key, Object value) {
         switch (key) {
             case Config.KEY_ENABLED:
-                updateWidgets(mContext);
+                updateWidgets(config.getContext());
                 break;
         }
     }
 
     private void onEnabledInternal(Context context) {
-        if (mContext != null) {
+        if (mConfig != null) {
             return; // already initialized
         }
 
-        mContext = context;
         mConfig = Config.getInstance();
-        mConfig.addOnConfigChangedListener(this);
+        mConfig.registerListener(this);
 
         if (Build.DEBUG) Log.d(TAG, "Toggle widget enabled");
     }
 
     private void onDisabledInternal(Context context) {
-        if (mContext == null) {
+        if (mConfig == null) {
             return; // not initialized
         }
 
-        mConfig.removeOnConfigChangedListener(this);
+        mConfig.unregisterListener(this);
+        mConfig = null;
 
         if (Build.DEBUG) Log.d(TAG, "Toggle widget disabled");
     }
@@ -106,9 +105,8 @@ public class ToggleWidgetProvider extends AppWidgetProvider
 
             // Create an Intent to launch ReceiverActivity to toggle AcDisplay.
             // Probably doing same using BroadcastReceiver would be better solution.
-            Intent intent = new Intent(context, ReceiverActivity.class)
-                    .setData(Uri.parse("acdisplay://" + ReceiverActivity.HOST_TOGGLE));
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            Intent intent = new Intent(App.ACTION_TOGGLE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             Resources res = context.getResources();
 
             // Get the layout for the App Widget and attach an on-click listener

@@ -22,6 +22,12 @@
     <declare-styleable name="ProgressBar">
         <attr name="mirrored" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="BatteryMeterView">
+        <attr name="battery_height" format="dimension" />
+        <attr name="battery_width" format="dimension" />
+        <attr name="battery_padding" format="dimension" />
+    </declare-styleable>
     
     <declare-styleable name="Theme">
 

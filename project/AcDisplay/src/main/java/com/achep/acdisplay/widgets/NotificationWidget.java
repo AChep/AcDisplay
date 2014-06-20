@@ -41,7 +41,7 @@ import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationData;
 import com.achep.acdisplay.notifications.NotificationUtils;
-import com.achep.acdisplay.notifications.OpenStatusBarNotification;
+import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.utils.ViewUtils;
 
 /**
@@ -60,8 +60,10 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
     private LinearLayout mActionsContainer;
 
     private OnClickListener mOnClickListener;
-    private OpenStatusBarNotification mNotification;
+    private OpenNotification mNotification;
     private ViewGroup mContent;
+
+    private int mActionContainerAlignment = ALIGN_TOP;
 
     /**
      * Interface definition for a callback to be invoked
@@ -81,7 +83,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         /**
          * Called on action button click.
          *
-         * @param v clicked view
+         * @param v      clicked view
          * @param intent action's intent
          */
         void onActionButtonClick(View v, PendingIntent intent);
@@ -104,6 +106,39 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         mOnClickListener = l;
     }
 
+    /**
+     * Sets an alignment of action buttons.
+     *
+     * @param alignment may be {@link #ALIGN_TOP} or {@link #ALIGN_BOTTOM}
+     */
+    public void setActionButtonsAlignment(int alignment) {
+        if (alignment != ALIGN_BOTTOM && alignment != ALIGN_TOP) {
+            throw new IllegalArgumentException("It may be ALIGN_BOTTOM or ALIGN_TOP only!");
+        }
+
+        mActionContainerAlignment = alignment;
+
+        if (mContent != null && mActionsContainer != null) {
+            updateActionButtonsAlignment();
+        }
+    }
+
+    private void updateActionButtonsAlignment() {
+        RelativeLayout.LayoutParams lp = (LayoutParams) mActionsContainer.getLayoutParams();
+        lp.removeRule(RelativeLayout.ABOVE);
+        lp.removeRule(RelativeLayout.BELOW);
+        if (mActionContainerAlignment == ALIGN_BOTTOM)
+            lp.addRule(RelativeLayout.BELOW, mContent.getId());
+        mActionsContainer.setLayoutParams(lp);
+
+        lp = (LayoutParams) mContent.getLayoutParams();
+        lp.removeRule(RelativeLayout.ABOVE);
+        lp.removeRule(RelativeLayout.BELOW);
+        if (mActionContainerAlignment == ALIGN_TOP)
+            lp.addRule(RelativeLayout.BELOW, mActionsContainer.getId());
+        mContent.setLayoutParams(lp);
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -117,13 +152,14 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         mActionsContainer = (LinearLayout) findViewById(R.id.actions);
 
         mIcon.setNotificationIndicateReadStateEnabled(false);
+        updateActionButtonsAlignment();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public OpenStatusBarNotification getNotification() {
+    public OpenNotification getNotification() {
         return mNotification;
     }
 
@@ -131,7 +167,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
      * {@inheritDoc}
      */
     @Override
-    public void setNotification(OpenStatusBarNotification osbn) {
+    public void setNotification(OpenNotification osbn) {
         mNotification = osbn;
         if (osbn == null) {
             // TODO: Hide everything or show a notice to user.
@@ -172,7 +208,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         }
 
         if (Device.hasKitKatApi()) {
-            updateNotificationActions(osbn);
+            updateActionButtons(osbn);
         }
     }
 
@@ -182,7 +218,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
      * or higher Android version.
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void updateNotificationActions(OpenStatusBarNotification osbn) {
+    private void updateActionButtons(OpenNotification osbn) {
         StatusBarNotification sbn = osbn.getStatusBarNotification();
         Notification.Action[] actions = sbn.getNotification().actions;
 

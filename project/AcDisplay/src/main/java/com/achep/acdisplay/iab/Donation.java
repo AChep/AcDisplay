@@ -47,7 +47,7 @@ public class Donation {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(2, 51)
+        return new HashCodeBuilder(9, 51)
                 .append(amount)
                 .append(text)
                 .append(sku)

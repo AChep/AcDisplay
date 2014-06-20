@@ -30,8 +30,8 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/launcher_icon_size"
+        android:layout_height="@dimen/launcher_icon_size"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
@@ -45,7 +45,6 @@
         android:shadowRadius="2.0"
         android:shadowColor="#B0000000"
         android:fontFamily="sans-serif-condensed"
-        android:textColor="?android:textColorPrimary"
-        android:text="@string/app_name"/>
+        android:textColor="?android:textColorPrimary" />
 
 </LinearLayout>

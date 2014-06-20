@@ -20,19 +20,10 @@ package com.achep.acdisplay.acdisplay;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.hardware.SensorManager;
-import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.view.GestureDetector;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -44,109 +35,71 @@ import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
-import com.achep.acdisplay.activemode.ActiveModeSensor;
-import com.achep.acdisplay.activemode.ActiveModeService;
 import com.achep.acdisplay.activities.KeyguardActivity;
-import com.achep.acdisplay.widgets.CircleView;
+import com.achep.acdisplay.services.media.MediaController;
 
 /**
  * Created by Artem on 25.01.14.
  */
 public class AcDisplayActivity extends KeyguardActivity implements
-        Timeout.OnTimeoutEventListener, CircleView.Callback {
+        Timeout.OnTimeoutEventListener {
 
     private static final String TAG = "AcDisplayActivity";
 
-    // pending finish
-    private static final int PENDING_FINISH_MAX_TIME = 1000; // ms.
-    private static final int PENDING_FINISH_DELAY = 600; // ms.
-
-    // timeout
-    private static final int TIMEOUT_PANIC_MIN_TIME = 1000; // ms.
-
-    private CircleView mCircleView;
     private ImageView mBackgroundView;
-
     private boolean mCustomBackgroundShown;
-    private boolean mImmersiveMode, mImmersiveModeToggle;
 
-    private GestureDetector mGestureDetector;
-    private Handler mHandler = new Handler();
-    private Timeout mTimeout = new T();
-    private Config mConfig;
+    private Timeout mTimeout;
+    private Config mConfig = Config.getInstance();
 
-    private ActiveModeSensor[] mSensors;
-    private ActiveModeSensor.Callback mSensorCallback = new ActiveModeSensor.Callback() {
-        @Override
-        public void show(ActiveModeSensor sensor) { /* unused */ }
-
-        @Override
-        public void hide(ActiveModeSensor sensor) {
-            if (isCloseableBySensor()) {
-                lock();
-            }
-        }
-    };
-
-    private long mPendingFinishTime;
-    private Runnable mPendingFinishRunnable = new Runnable() {
-        @Override
-        public void run() {
-            unlock(null, true);
-        }
-    };
-
-    private class T extends Timeout {
-
-        @Override
-        public void setTimeoutDelayed(long delayMillis, boolean resetOld) {
-            // This is a "workaround" solution for the
-            // never time out option.
-            if (mConfig.isTimeoutEnabled()) {
-                super.setTimeoutDelayed(delayMillis, resetOld);
-            }
-        }
-    }
-
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            return lock();
-        }
-    }
+    private MediaController mMediaController;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        handleWindowFocusChanged(hasFocus);
+        populateFlags(hasFocus);
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void handleWindowFocusChanged(boolean hasFocus) {
+    @SuppressLint("NewApi")
+    private void populateFlags(boolean windowHasFocus) {
         Window window = getWindow();
+        View decorView = window.getDecorView();
 
         int windowFlags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-        if (hasFocus) {
-            if (mImmersiveModeToggle) {
-                int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+        if (windowHasFocus) {
+            int visibilityUi = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LOW_PROFILE;
+
+            if (mConfig.isFullScreen()) {
+                // Hide status bar if fullscreen mode is enabled.
+                visibilityUi = visibilityUi
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN;
-                if (mImmersiveMode) visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                window.getDecorView().setSystemUiVisibility(visibility);
             }
+
+            if (Device.hasKitKatApi()) {
+                // Hide navigation bar and flag sticky.
+                visibilityUi = visibilityUi
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            }
+
+            decorView.setSystemUiVisibility(visibilityUi);
             window.addFlags(windowFlags);
 
-            // Start ticking.
             mTimeout.resume();
+            mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
         } else {
+            int visibilityUi = decorView.getSystemUiVisibility();
+            if (Device.hasKitKatApi()) {
+                // Clear immersive sticky flag.
+                // Hopefully it will fix annoying Android feature: IMMERSIVE_PANIC
+                visibilityUi ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            }
+
+            decorView.setSystemUiVisibility(visibilityUi);
             window.clearFlags(windowFlags);
 
             mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
@@ -156,8 +109,14 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mMediaController = new MediaController();
+        mMediaController.onCreate(this);
+
+        mTimeout = new Timeout();
+        mTimeout.registerListener(this);
+
         super.onCreate(savedInstanceState);
-        mConfig = Config.getInstance();
+
         if (mConfig.isWallpaperShown()) {
             if (mConfig.isShadowEnabled()) {
                 setTheme(R.style.AcDisplayTheme_Wallpaper_WithShadow);
@@ -168,16 +127,6 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
         setContentView(R.layout.acdisplay);
         mBackgroundView = (ImageView) findViewById(R.id.background);
-        mCircleView = (CircleView) findViewById(R.id.circle);
-        mCircleView.setCallback(this);
-
-        mImmersiveMode = Device.hasKitKatApi();
-        mImmersiveModeToggle = getConfig().isImmersible();
-        mGestureDetector = new GestureDetector(this, new GestureListener());
-        mSensors = ActiveModeService.buildAvailableSensorsList(this);
-
-        mTimeout.registerListener(this);
-        mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal());
 
         Presenter.getInstance().attachActivity(this);
     }
@@ -185,77 +134,29 @@ public class AcDisplayActivity extends KeyguardActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        handleWindowFocusChanged(true);
-        mHandler.removeCallbacks(mPendingFinishRunnable);
 
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        for (ActiveModeSensor sensor : mSensors) {
-            sensor.registerCallback(mSensorCallback);
-            sensor.onAttached(sensorManager, this);
-        }
+        populateFlags(true);
+        mMediaController.onStart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
-        mTimeout.pause();
 
-        if (SystemClock.elapsedRealtime() - mPendingFinishTime < PENDING_FINISH_MAX_TIME) {
-            mPendingFinishTime = 0;
-            mHandler.postDelayed(
-                    mPendingFinishRunnable,
-                    PENDING_FINISH_DELAY);
-        }
-
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        for (ActiveModeSensor sensor : mSensors) {
-            sensor.onDetached(sensorManager);
-            sensor.unregisterCallback(mSensorCallback);
-        }
+        populateFlags(false);
+        mMediaController.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mMediaController.onDestroy();
+
         mTimeout.unregisterListener(this);
         mTimeout.clear();
+        mTimeout = null;
+
         Presenter.getInstance().detachActivity();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean handled = false;
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                if (Operator.bitAnd(event.getFlags(), KeyEvent.FLAG_LONG_PRESS)) {
-
-                    AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                    if (am.isMusicActive()) {
-                        handled = true;
-
-                        // sendMediaButtonClick(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
-                        //         ? KeyEvent.KEYCODE_MEDIA_NEXT
-                        //         : KeyEvent.KEYCODE_MEDIA_PREVIOUS);
-                        // TODO: Go to previous / next track on long press of volume keys (if music is playing).
-                    }
-                }
-                break;
-            default:
-                return super.onKeyDown(keyCode, event);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // TODO: Skip "Leave immersive mode swipes".
-
-        mCircleView.onTouchEvent2(event);
-        mGestureDetector.onTouchEvent(event);
-
-        return super.onTouchEvent(event);
     }
 
     @Override
@@ -267,53 +168,6 @@ public class AcDisplayActivity extends KeyguardActivity implements
         }
     }
 
-    @Override
-    public void onCircleEvent(float radius, float ratio, int event) {
-        switch (event) {
-            case CircleView.ACTION_START:
-                mTimeout.pause();
-                break;
-            case CircleView.ACTION_UNLOCK:
-                unlock(null, true);
-                break;
-            case CircleView.ACTION_CANCELED:
-                mTimeout.resume();
-
-                // If remaining time is very low - increase
-                // it to provide user a bit more time to fap
-                // on features.
-                if (mTimeout.getRemainingTime() < TIMEOUT_PANIC_MIN_TIME) {
-                    mTimeout.delay(TIMEOUT_PANIC_MIN_TIME);
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void unlock(Runnable runnable, boolean finish) {
-        super.unlock(runnable, finish);
-        if (!finish) {
-            mPendingFinishTime = SystemClock.elapsedRealtime();
-        }
-    }
-
-    /**
-     * Sends media button's click with given key code.
-     *
-     * @param keyCode May be one of media key events.
-     * @see KeyEvent#KEYCODE_MEDIA_NEXT
-     * @see KeyEvent#KEYCODE_MEDIA_PLAY_PAUSE
-     * @see KeyEvent#KEYCODE_MEDIA_PREVIOUS
-     */
-    private void sendMediaButtonClick(int keyCode) {
-        Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        KeyEvent keyDown = new KeyEvent(KeyEvent.ACTION_DOWN, keyCode);
-        KeyEvent keyUp = new KeyEvent(KeyEvent.ACTION_UP, keyCode);
-
-        sendOrderedBroadcast(intent.putExtra(Intent.EXTRA_KEY_EVENT, keyDown), null);
-        sendOrderedBroadcast(intent.putExtra(Intent.EXTRA_KEY_EVENT, keyUp), null);
-    }
-
     /**
      * @return an instance of timeout handler.
      */
@@ -322,26 +176,27 @@ public class AcDisplayActivity extends KeyguardActivity implements
     }
 
     /**
-     * @return an instance of timeout config.
+     * @return an instance of config.
      */
     public Config getConfig() {
         return mConfig;
     }
 
-    /**
-     * @return True is this activity may be closed by
-     * {@link com.achep.acdisplay.activemode.ActiveModeSensor active sensors}.
-     */
-    // TODO: Write something better
-    public boolean isCloseableBySensor() {
-        return !mTimeout.isPaused() && hasWindowFocus();
+    public MediaController getMediaController() {
+        return mMediaController;
     }
 
-    public boolean isBackground(int mask) {
-        return Operator.bitAnd(mConfig.getDynamicBackgroundMode(), mask);
+    public void dispatchClearBackground() {
+        dispatchSetBackground(null);
     }
 
-    public void dispatchSetBackground(Bitmap bitmap) {
+    public void dispatchSetBackground(Bitmap bitmap, int mask) {
+        if (mask == 0 || Operator.bitAnd(mConfig.getDynamicBackgroundMode(), mask)) {
+            dispatchSetBackground(bitmap);
+        }
+    }
+
+    private void dispatchSetBackground(Bitmap bitmap) {
         if (bitmap == null) {
             if (mCustomBackgroundShown) {
                 mBackgroundView.animate().cancel();
@@ -360,6 +215,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
             return;
         }
 
+        // TODO: Crossfade background change animation would be really nice.
         float alphaStart = mBackgroundView.getVisibility() == View.GONE ? 0f : 0.4f;
 
         mCustomBackgroundShown = true;
@@ -370,5 +226,4 @@ public class AcDisplayActivity extends KeyguardActivity implements
         mBackgroundView.animate().cancel();
         mBackgroundView.animate().alpha(0.8f).setListener(null);
     }
-
 }

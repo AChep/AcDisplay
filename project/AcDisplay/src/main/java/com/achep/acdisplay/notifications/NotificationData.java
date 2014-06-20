@@ -122,11 +122,11 @@ public class NotificationData {
         public void onNotificationDataChanged(NotificationData data, int changeId);
     }
 
-    public void addOnNotificationDataChangedListener(OnNotificationDataChangedListener listener) {
+    public void registerListener(OnNotificationDataChangedListener listener) {
         mListeners.add(listener);
     }
 
-    public void removeOnNotificationDataChangedListener(OnNotificationDataChangedListener listener) {
+    public void unregisterListener(OnNotificationDataChangedListener listener) {
         mListeners.remove(listener);
     }
 
@@ -146,11 +146,11 @@ public class NotificationData {
     private BackgroundFactoryThread mBackgroundLoader;
     private BackgroundFactoryThread.Callback mBackgroundLoaderCallback =
             new BackgroundFactoryThread.Callback() {
-        @Override
-        public void onBackgroundCreated(Bitmap bitmap) {
-            setBackground(bitmap);
-        }
-    };
+                @Override
+                public void onBackgroundCreated(Bitmap bitmap) {
+                    setBackground(bitmap);
+                }
+            };
 
     public void markAsRead(boolean value) {
         if (isRead == (isRead = value)) return;
@@ -158,12 +158,12 @@ public class NotificationData {
     }
 
     private void setIcon(Bitmap bitmap) {
-        icon = bitmap;
+        if (icon == (icon = bitmap)) return;
         notifyListeners(ICON);
     }
 
     public void setBackground(Bitmap bitmap) {
-        background = bitmap;
+        if (background == (background = bitmap)) return;
         notifyListeners(BACKGROUND);
     }
 
@@ -270,6 +270,8 @@ public class NotificationData {
         private final WeakReference<StatusBarNotification> mStatusBarNotification;
         private final WeakReference<Context> mContext;
 
+        private volatile long time;
+
         private IconLoaderThread(Context context, StatusBarNotification sbn, NotificationData data) {
             mNotificationData = new WeakReference<>(data);
             mStatusBarNotification = new WeakReference<>(sbn);
@@ -277,9 +279,13 @@ public class NotificationData {
         }
 
         @Override
-        protected Bitmap doInBackground(Void... params) {
-            final long start = SystemClock.elapsedRealtime();
+        protected void onPreExecute() {
+            super.onPreExecute();
+            time = SystemClock.elapsedRealtime();
+        }
 
+        @Override
+        protected Bitmap doInBackground(Void... params) {
             StatusBarNotification sbn = mStatusBarNotification.get();
             Context context = mContext.get();
 
@@ -292,10 +298,7 @@ public class NotificationData {
 
             if (drawable == null) {
                 Log.w(TAG, "No notification icon found.");
-                Bitmap icon = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(icon);
-                canvas.drawColor(0x60000000);
-                return icon;
+                return createEmptyIcon();
             }
 
             Resources res = context.getResources();
@@ -306,19 +309,25 @@ public class NotificationData {
             Canvas canvas = new Canvas(icon);
             drawable.draw(canvas);
 
-            if (Build.DEBUG) {
-                long delta = SystemClock.elapsedRealtime() - start;
-                Log.d(TAG, "Notification icon loaded in " + delta + " millis:"
-                        + " width=" + icon.getWidth()
-                        + " height=" + icon.getHeight());
-            }
+            return icon;
+        }
 
+        private Bitmap createEmptyIcon() {
+            Bitmap icon = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_4444);
+            Canvas canvas = new Canvas(icon);
+            canvas.drawColor(0x60FF0000);
             return icon;
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
+            if (Build.DEBUG) {
+                long delta = SystemClock.elapsedRealtime() - time;
+                Log.d(TAG, "Notification icon loaded in " + delta + " millis:"
+                        + " bitmap=" + bitmap);
+            }
+
             NotificationData data = mNotificationData.get();
             if (bitmap == null || data == null) {
                 return;

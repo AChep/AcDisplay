@@ -71,11 +71,13 @@ public class TimeoutPreference extends DialogPreference implements
         mTitle = getDialogTitle();
         setDialogTitle(null);
 
-        mValueLabel = getContext().getResources().getString(R.string.preference_timeout_sec);
+        mValueLabel = context.getResources().getString(R.string.preference_timeout_sec);
     }
 
     @Override
     protected View onCreateDialogView() {
+        Resources res = getContext().getResources();
+
         LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View root = inflater.inflate(R.layout.preference_dialog_timeout, null);
@@ -92,7 +94,6 @@ public class TimeoutPreference extends DialogPreference implements
                 (TextView) root.findViewById(R.id.short_timeout_value),
                 "setTimeoutShort", "getTimeoutShort");
 
-        Resources res = getContext().getResources();
         final int max = res.getInteger(R.integer.config_timeout_maxDurationMillis) / MULTIPLIER;
         mMin = res.getInteger(R.integer.config_timeout_minDurationMillis) / MULTIPLIER;
         mSoftStoredLabels = new SoftReference[max + 1];

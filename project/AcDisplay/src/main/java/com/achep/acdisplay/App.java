@@ -19,20 +19,30 @@
 package com.achep.acdisplay;
 
 import android.app.Application;
+import android.content.Context;
 
-import com.achep.acdisplay.activemode.ActiveModeService;
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.services.KeyguardService;
+import com.achep.acdisplay.services.activemode.ActiveModeService;
+import com.achep.acdisplay.utils.ToastUtils;
 
 /**
  * Created by Artem on 22.02.14.
  */
 public class App extends Application {
 
-    public static final int ID_NOTIFY_KEYGUARD = 10;
-    public static final int ID_NOTIFY_ACTIVE_MODE = 20;
     public static final int ID_NOTIFY_INIT = 30;
     public static final int ID_NOTIFY_TEST = 40;
+    public static final int ID_NOTIFY_BATH = 50;
+
+    public static final String ACTION_BIND_MEDIA_CONTROL_SERVICE = "com.achep.acdisplay.BIND_MEDIA_CONTROL_SERVICE";
+
+    public static final String ACTION_ENABLE = "com.achep.acdisplay.ENABLE";
+    public static final String ACTION_DISABLE = "com.achep.acdisplay.DISABLE";
+    public static final String ACTION_TOGGLE = "com.achep.acdisplay.TOGGLE";
+
+    public static final String ACTION_EAT_HOME_PRESS_START = "com.achep.acdisplay.EAT_HOME_PRESS_START";
+    public static final String ACTION_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
 
     @Override
     public void onCreate() {
@@ -46,4 +56,13 @@ public class App extends Application {
         KeyguardService.handleState(this);
         ActiveModeService.handleState(this);
     }
+
+    /**
+     * Starts Easter Eggs' activity.
+     */
+    // TODO: Put an Easter egg here.
+    public static void startEasterEggs(Context context) {
+        if (Build.DEBUG) ToastUtils.showShort(context, "There will be an Easter Egg.");
+    }
+
 }

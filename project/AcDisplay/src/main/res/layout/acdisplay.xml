@@ -27,16 +27,9 @@
         android:visibility="gone" />
 
     <fragment
-        android:name="com.achep.acdisplay.acdisplay.AcDisplayFragment"
-        android:id="@+id/acdisplay_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        tools:layout="@layout/acdisplay" />
-
-    <com.achep.acdisplay.widgets.CircleView
-        android:id="@+id/circle"
+        android:name="com.achep.acdisplay.acdisplay.AcDisplayFragment2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_acdisplay" />
 
 </merge>

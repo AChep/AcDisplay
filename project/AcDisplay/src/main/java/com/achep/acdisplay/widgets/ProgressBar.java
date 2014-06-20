@@ -31,6 +31,10 @@ import com.achep.acdisplay.R;
  */
 public class ProgressBar extends android.widget.ProgressBar {
 
+    private boolean mMirrored;
+
+    private OnProgressChangeListener mListener;
+
     /**
      * A callback that notifies clients when the progress/max level has been changed.
      */
@@ -47,29 +51,35 @@ public class ProgressBar extends android.widget.ProgressBar {
         public void onMaxChanged(ProgressBar progressBar, int max);
     }
 
-    private boolean mMirrored;
-    private OnProgressChangeListener mListener;
-
     public ProgressBar(Context context) {
-        this(context, null);
+        super(context);
+        init(null, 0);
     }
 
     public ProgressBar(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init(attrs, 0);
     }
 
     public ProgressBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(attrs, defStyle);
+    }
 
-        if (attrs != null) {
-            final TypedArray attributes = context.obtainStyledAttributes(
-                    attrs, R.styleable.ProgressBar, defStyle, 0);
-
-            assert attributes != null;
-            setMirrored(attributes.getBoolean(R.styleable.ProgressBar_mirrored, mMirrored));
-
-            attributes.recycle();
+    private void init(AttributeSet attrs, int defStyle) {
+        if (attrs == null) {
+            return;
         }
+
+        Context context = getContext();
+        assert context != null;
+
+        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.ProgressBar, defStyle, 0);
+        assert arr != null;
+
+        setMirrored(arr.getBoolean(R.styleable.ProgressBar_mirrored, mMirrored));
+
+        arr.recycle();
     }
 
     @Override
@@ -96,10 +106,10 @@ public class ProgressBar extends android.widget.ProgressBar {
             canvas.save();
             canvas.translate(getWidth() - getPaddingEnd(), getPaddingTop());
             canvas.scale(-1.0f, 1.0f);
-        }
-        super.onDraw(canvas);
-        if (mMirrored) {
+            super.onDraw(canvas);
             canvas.restore();
+        } else {
+            super.onDraw(canvas);
         }
     }
 
@@ -108,7 +118,8 @@ public class ProgressBar extends android.widget.ProgressBar {
     }
 
     /**
-     * Sets a listener to receive notifications of changes to the ProgressBar's progress/max level.
+     * Sets a listener to receive notifications
+     * of changes to the ProgressBar's progress/max level.
      */
     public void setOnProgressChangeListener(OnProgressChangeListener listener) {
         mListener = listener;

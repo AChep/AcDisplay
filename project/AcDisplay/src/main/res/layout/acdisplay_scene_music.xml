@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scene"
+    android:layout_width="236dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:minWidth="236dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/previous"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_media_previous"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/media_prev_description"
+            style="@android:style/Widget.Holo.Button.Borderless.Small" />
+
+        <ImageButton
+            android:id="@+id/play"
+            android:layout_width="96dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_media_play"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/media_play_description"
+            style="@android:style/Widget.Holo.Button.Borderless.Small" />
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_media_next"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/media_next_description"
+            style="@android:style/Widget.Holo.Button.Borderless.Small" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        style="?attr/acDisplayNotificationTitle" />
+
+    <TextView
+        android:id="@+id/artist_album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        style="?attr/acDisplayStatus" />
+
+    <com.achep.acdisplay.widgets.TimeView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/acDisplayStatus" />
+
+</LinearLayout>

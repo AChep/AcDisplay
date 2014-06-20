@@ -27,7 +27,7 @@
         You can show your appreciation and support development by donating:
     ]]></string>
 
-    <string name="donation_item_label">﹩%1$s</string>
+    <string name="donation_item_label" translatable="false">﹩%1$s</string>
     <string name="donation_item_bought">You\'ve donated for this item already.</string>
 
     <string name="donation_1">An ice cream</string>

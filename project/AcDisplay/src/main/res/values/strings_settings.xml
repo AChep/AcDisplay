@@ -50,6 +50,7 @@
     <string name="settings_low_priority_notifications_off">Low-priority notifications such as those from Google Now aren\'t shown.</string>
 
     <!-- Interface -->
+    <string name="settings_full_screen_title">Full screen mode</string>
     <string name="settings_use_wallpaper_title">Use wallpaper</string>
     <string name="settings_use_wallpaper_on">Your home screen\'s wallpaper is used as the background.</string>
     <string name="settings_use_wallpaper_off">Solid black background.</string>
@@ -60,29 +61,32 @@
     <string name="settings_dynamic_background_disabled">Disabled</string>
     <string name="settings_show_date_title">Show date</string>
     <string name="settings_status_battery_always_visible">Keep battery status</string>
-    <string name="settings_mirrored_timeout_progress_bar_title">Mirrored timeout bar</string>
     <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
+    <string name="settings_mirrored_timeout_progress_bar_title">Mirrored timeout bar</string>
     <string name="settings_mirrored_timeout_progress_bar_on">Timeout bar disappears from both sides to center.</string>
     <string name="settings_mirrored_timeout_progress_bar_off">Timeout bar disappears from left to right.</string>
     <string name="settings_notify_circled_icon_title">Circled notification icon</string>
     <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
-    <string name="settings_immersive_mode_kitkat_title">Immersive Mode</string>
-    <string name="settings_mimmersive_mode_kitkat_off">The app wont be shown in full screen.</string>
-    <string name="settings_immersive_mode_kitkat_on">The app will be full screen.</string>
-    <string name="settings_resize_title">Change icon size</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>
-    <string name="settings_only_while_charging_on">AcDisplay is only active while your device is charging. This applies to all features such as the lockscreen or active mode.</string>
-    <string name="settings_only_while_charging_off">AcDisplay is always active.</string>
+    <string name="settings_only_while_charging_on">App is only active while your device is charging. This applies to all features such as the lockscreen or active mode.</string>
+    <string name="settings_only_while_charging_off">App is always active.</string>
     <string name="settings_inactive_hours_title">Inactive hours</string>
     <string name="settings_inactive_hours_disabled">Disabled</string>
     <string name="settings_inactive_hours_enabled">From %1$s to %2$s.</string>
     <string name="settings_timeout_title">Sleep</string>
     <string name="settings_timeout_summary">After %1$s / %2$s seconds of inactivity.</string>
     <string name="settings_timeout_forever">Screen stays on forever.</string>
+    <string name="settings_icon_size_title">Icon size</string>
+    <string name="settings_icon_size_summary">Current size of icons is %1$s dip.</string>
     <!-- Behavior -->
     <string name="settings_behavior_category">Behavior</string>
+    <string name="settings_lock_on_dismiss_last_notify_title">Lock on dismiss last notification</string>
+    <string name="settings_lock_on_dismiss_last_notify_on">Screen turns off after dismissing last present notification.</string>
+    <string name="settings_lock_on_dismiss_last_notify_off">Screen stays on after dismissing last present notification.</string>
+    <string name="settings_widget_pinnable_title">Pinnable notification</string>
+    <string name="settings_widget_pinnable_on">Notification widget stays expanded for some seconds after a touch.</string>
 
     <!-- Preference: Inactive hours -->
     <string name="preference_inactive_hours_enabled">Inactive hours enabled</string>
@@ -99,13 +103,8 @@
     <string name="preference_timeout_sec">%1$s sec.</string>
     <string name="preference_no_timeout">Screen stays on forever</string>
 
-    <!-- Preference: Interface categories -->
-    <string name="ui_backgrounds">Background settings</string>
-    <string name="ui_icons">Icon settings</string>
-    <string name="ui_timeout_bar">Timebar settings</string>
-    <string name="ui_overall">System visual settings</string>
-
-    <!-- Prefence: Resize icons -->
-    <string name="preference_resize_dpi">%1$s dpi.</string>
+    <!-- Preference: Icon size -->
+    <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
+    <string name="preference_icon_size_dpi">%1$s dpi.</string>
 
 </resources>

@@ -31,7 +31,7 @@ import com.achep.acdisplay.R;
 public class DonationItems {
 
     public static Donation[] get(Resources res) {
-        int[] data = new int[] {
+        int[] data = new int[]{
                 1, R.string.donation_1,
                 4, R.string.donation_4,
                 10, R.string.donation_10,

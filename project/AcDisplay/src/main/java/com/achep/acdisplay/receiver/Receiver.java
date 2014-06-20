@@ -23,8 +23,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.achep.acdisplay.activemode.ActiveModeService;
+import com.achep.acdisplay.App;
+import com.achep.acdisplay.Config;
+import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.KeyguardService;
+import com.achep.acdisplay.services.activemode.ActiveModeService;
+import com.achep.acdisplay.utils.ToastUtils;
 
 /**
  * Created by Artem on 11.03.14.
@@ -35,14 +39,33 @@ public class Receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "action=" + intent.getAction() + " intent=" + intent.toString());
-
-        switch (intent.getAction()) {
+        String action = intent.getAction();
+        switch (action) {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_POWER_CONNECTED:
             case Intent.ACTION_POWER_DISCONNECTED:
                 ActiveModeService.handleState(context);
                 KeyguardService.handleState(context);
+                break;
+            case App.ACTION_ENABLE:
+            case App.ACTION_DISABLE:
+            case App.ACTION_TOGGLE:
+                Config config = Config.getInstance();
+                if (action.equals(App.ACTION_ENABLE)) {
+                    Log.i(TAG, "Enabling AcDisplay from broadcast receiver.");
+                    ToastUtils.showLong(context, R.string.remote_enable_acdisplay);
+                    config.setEnabled(context, true, null);
+                } else if (action.equals(App.ACTION_DISABLE)) {
+                    Log.i(TAG, "Disabling AcDisplay from broadcast receiver.");
+                    ToastUtils.showLong(context, R.string.remote_disable_acdisplay);
+                    config.setEnabled(context, false, null);
+                } else {
+                    Log.i(TAG, "Toggling from broadcast receiver.");
+                    config.setEnabled(context, !config.isEnabled(), null);
+                    ToastUtils.showLong(context, config.isEnabled()
+                            ? R.string.remote_enable_acdisplay
+                            : R.string.remote_disable_acdisplay);
+                }
                 break;
         }
     }

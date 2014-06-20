@@ -18,11 +18,23 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scene"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
+    android:layout_gravity="center"
     android:gravity="center_horizontal"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/time_am_pm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-4dp"
+        android:paddingEnd="8dp"
+        android:gravity="end"
+        android:fontFamily="sans-serif-light"
+        android:text="AM"
+        android:visibility="gone"/>
 
     <!--
         IF YOU WANT TO CHANGE TOP/BOTTOM MARGINS:
@@ -35,10 +47,10 @@
         android:layout_height="wrap_content"
         style="?attr/acDisplayClock" />
 
-    <com.achep.acdisplay.widgets.StatusTextView
-        android:id="@+id/status"
+    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?attr/acDisplayStatus" />
+        android:layout_marginTop="2dp"
+        layout="@layout/widget_status"/>
 
 </LinearLayout>

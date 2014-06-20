@@ -19,6 +19,16 @@
 
 package com.achep.acdisplay;
 
+import android.util.Log;
+
+import com.achep.acdisplay.utils.FileUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+
 /**
  * A better {@link com.achep.acdisplay.AsyncTask}.
  *
@@ -40,4 +50,63 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
         cancel(false);
     }
 
+    public static void stop(AsyncTask asyncTask) {
+        if (asyncTask != null && !asyncTask.isFinished()) {
+            asyncTask.cancel();
+        }
+    }
+
+    /**
+     * Downloads text file from internet.
+     *
+     * @author Artem Chepurnoy
+     */
+    public static class DownloadText extends AsyncTask<String, Void, String> {
+
+        private static final String TAG = "DownloadText";
+        private WeakReference<Callback> mCallback;
+
+        /**
+         * Interface definition for a callback to be invoked
+         * when downloading finished or failed.
+         */
+        public interface Callback {
+
+            /**
+             * Called when downloading finished or failed.
+             *
+             * @param text downloaded text, or {@code null} if failed.
+             */
+            void onDownloaded(String text);
+        }
+
+        public DownloadText(Callback callback) {
+            mCallback = new WeakReference<>(callback);
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                URL url = new URL(urls[0]);
+                InputStreamReader isr = new InputStreamReader(url.openStream());
+                BufferedReader br = new BufferedReader(isr);
+                return FileUtils.readTextFromBufferedReader(br);
+            } catch (IOException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            // Notify listener that downloading done.
+            Callback callback = mCallback.get();
+            if (callback != null) {
+                callback.onDownloaded(s);
+            } else {
+                if (Build.DEBUG) Log.w(TAG, "Finished loading text, but callback is null!");
+            }
+        }
+    }
 }

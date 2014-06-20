@@ -21,10 +21,8 @@
 
     <!-- All device dependent modification goes here -->
     <style name="AcDisplayTheme.WallpaperBase" parent="AcDisplayTheme">
-        <!--
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        -->
     </style>
 
 </resources>

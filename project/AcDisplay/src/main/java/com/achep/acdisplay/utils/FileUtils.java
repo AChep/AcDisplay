@@ -18,7 +18,16 @@
  */
 package com.achep.acdisplay.utils;
 
+import android.util.Log;
+
+import com.achep.acdisplay.Build;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  * Helper class with utils related to file system and files.
@@ -27,10 +36,13 @@ import java.io.File;
  */
 public class FileUtils {
 
+    private static final String TAG = "FileUtils";
+
     /**
      * Deletes all files from given directory recursively.
      *
-     * @return True if all files were deleted successfully, False otherwise or if given file is null.
+     * @return {@code true} if all files were deleted successfully,
+     * {@code false} otherwise or if given file is null.
      */
     public static boolean deleteRecursive(File file) {
         if (file != null) {
@@ -51,6 +63,83 @@ public class FileUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * Writes given text to file (deletes original file).
+     *
+     * @param file file to write in
+     * @return {@code true} is succeed, {@code false} if failed (file state is undefined!).
+     */
+    public static boolean writeToFile(File file, String text) {
+        if (file.exists()) {
+            if (!deleteRecursive(file)) {
+                return false;
+            }
+        }
+
+        String errorMessage = "";
+        FileOutputStream fos = null;
+        OutputStreamWriter osw = null;
+        try {
+            fos = new FileOutputStream(file);
+            osw = new OutputStreamWriter(fos);
+            osw.append(text);
+            return true;
+        } catch (IOException e) {
+            errorMessage = "Failed to write to file. ";
+        } finally {
+            try {
+                if (osw != null) {
+                    osw.close();
+                } else if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                errorMessage += "Failed to close the stream.";
+            }
+        }
+        if (Build.DEBUG) Log.e(TAG, errorMessage + " file=" + file);
+        return false;
+    }
+
+    /**
+     * @return Text read from given file, or {@code null}
+     * if file does not exist or reading failed.
+     */
+    public static String readTextFile(File file) {
+        if (!file.exists()) return null;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            return FileUtils.readTextFromBufferedReader(bufferedReader);
+        } catch (IOException e) {
+            if (Build.DEBUG) Log.e(TAG, "Failed to read file=" + file);
+            return null;
+        }
+    }
+
+    /**
+     * Reads text from given {@link BufferedReader} line-by-line.
+     *
+     * @return text from given {@link BufferedReader}.
+     * @throws IOException
+     */
+    public static String readTextFromBufferedReader(BufferedReader bufferedReader) throws IOException {
+
+        // Store all lines to string builder to
+        // reduce memory using.
+        final StringBuilder body = new StringBuilder();
+        String nextLine;
+        try {
+            while ((nextLine = bufferedReader.readLine()) != null) {
+                body.append(nextLine);
+                body.append('\n');
+            }
+        } finally {
+            bufferedReader.close();
+        }
+
+        return body.toString();
     }
 
 }

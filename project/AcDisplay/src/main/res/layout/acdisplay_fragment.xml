@@ -17,61 +17,40 @@
   ~ MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <com.achep.acdisplay.view.ForwardingLayout
-        android:id="@+id/container"
+        android:id="@+id/scene"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.6"
         android:gravity="center_horizontal|bottom"
         android:orientation="vertical" />
 
-    <ViewStub
-        android:id="@+id/progress_bar_stub"
+    <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout="@layout/acdisplay_progress_bar" />
+        android:layout_height="4dp"
+        android:background="?acDisplayDotsDrawable"/>
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.4"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/unlock_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerInside"
-            android:padding="4dp"
-            android:visibility="gone"
-            android:src="@drawable/stat_lock"/>
-
-        <LinearLayout
+        <com.achep.acdisplay.view.ForwardingLayout
             android:id="@+id/list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:padding="8dp" />
-
-        <LinearLayout
-            android:id="@+id/preview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:visibility="gone" />
+            android:orientation="horizontal" />
 
     </FrameLayout>
 
