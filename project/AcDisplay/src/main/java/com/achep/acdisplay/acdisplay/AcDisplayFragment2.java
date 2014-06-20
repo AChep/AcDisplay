@@ -279,15 +279,18 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
      */
     @Override
     protected void onWidgetDismiss(Widget widget) {
+        boolean lock = false;
         if (widget instanceof NotifyWidget) {
             // Screen off on dismiss last notification.
             NotificationPresenter np = NotificationPresenter.getInstance();
-            if (np.getList().size() <= 1 && mActivity.getConfig().isScreenOffAfterLastNotify()) {
-                mActivity.lock();
-            }
+            lock = np.getList().size() <= 1 && mActivity.getConfig().isScreenOffAfterLastNotify();
         }
-        
+
         super.onWidgetDismiss(widget);
+
+        if (lock) {
+            mActivity.lock();
+        }
     }
 
     /**
