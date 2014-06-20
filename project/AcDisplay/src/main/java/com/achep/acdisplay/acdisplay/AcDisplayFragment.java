@@ -220,7 +220,11 @@ public class AcDisplayFragment extends Fragment implements
         }
     }
 
+    @Override
     public void requestBackgroundUpdate(Widget widget) { /* unused */ }
+
+    @Override
+    public void requestTimeoutRestart(Widget widget) { /* unused */ }
 
     public void unlock(Runnable runnable, boolean pendingFinish) {
         if (runnable != null) {
@@ -460,6 +464,8 @@ public class AcDisplayFragment extends Fragment implements
         float height = getSceneView().getHeight();
         float progress = MathUtils.range(y / height, 0f, 1f);
         populateSceneContainerDismissAnimation(progress);
+
+        if (Build.DEBUG) Log.d(TAG, "dismiss_progress=" + progress + " height=" + height);
     }
 
     @SuppressLint("NewApi")

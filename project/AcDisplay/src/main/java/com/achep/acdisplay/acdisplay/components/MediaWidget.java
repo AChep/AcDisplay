@@ -220,6 +220,7 @@ public class MediaWidget extends Widget implements
         }
 
         mMediaController.sendMediaButtonClick(keyCode);
+        mCallback.requestTimeoutRestart(this);
     }
 
     @Override
@@ -229,6 +230,7 @@ public class MediaWidget extends Widget implements
         } else {
             return false;
         }
+        mCallback.requestTimeoutRestart(this);
         return true;
     }
 }

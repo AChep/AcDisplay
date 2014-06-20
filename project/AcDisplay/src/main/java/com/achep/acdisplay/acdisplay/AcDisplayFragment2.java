@@ -250,6 +250,15 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         }
     }
 
+    /**
+     *
+     */
+    public void requestTimeoutRestart(Widget widget) {
+        if (widget == getCurrentWidget()) {
+            mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort(), true);
+        }
+    }
+
     @Override
     protected void showWidget(Widget widget) {
         super.showWidget(widget);

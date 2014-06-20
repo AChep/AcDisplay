@@ -49,6 +49,7 @@ public abstract class Widget {
 
     public interface Callback {
         void requestBackgroundUpdate(Widget widget);
+        void requestTimeoutRestart(Widget widget);
     }
 
     public Widget(Callback callback, AcDisplayFragment fragment) {
