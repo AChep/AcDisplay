@@ -347,7 +347,7 @@ public class AcDisplayFragment extends Fragment implements
                     }
 
                     // Instant dismissing.
-                    mSelectedWidget.onDismissed();
+                    onWidgetDismiss(mSelectedWidget);
                     resetScene();
                 }
 
