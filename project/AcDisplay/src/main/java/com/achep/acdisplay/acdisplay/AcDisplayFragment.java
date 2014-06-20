@@ -285,10 +285,8 @@ public class AcDisplayFragment extends Fragment implements
                     return; // Don't fall down.
                 }
 
-                long elapsedTime = event.getEventTime() - event.getDownTime();
-
                 //noinspection LoopStatementThatDoesntLoop
-                while (isDismissible(mSelectedWidget) && elapsedTime > 20) {
+                while (isDismissible(mSelectedWidget)) {
                     mVelocityTracker.computeCurrentVelocity(1000);
 
                     float velocityX = mVelocityTracker.getXVelocity();
@@ -300,7 +298,10 @@ public class AcDisplayFragment extends Fragment implements
                     float absDeltaY = Math.abs(deltaY);
 
                     int height = getSceneView().getHeight();
-                    if (absDeltaY < height / 2) {
+                    if (height == 0) {
+                        // Scene view is not measured yet.
+                        break; // Exits from loop not from the switch!
+                    } else if (absDeltaY < height / 2) {
                         if (mMinFlingVelocity <= absVelocityY
                                 && absVelocityY <= mMaxFlingVelocity
                                 && absVelocityY > absVelocityX * 2
