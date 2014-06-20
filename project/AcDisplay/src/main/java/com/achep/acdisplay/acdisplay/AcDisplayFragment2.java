@@ -279,8 +279,6 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
      */
     @Override
     protected void onWidgetDismiss(Widget widget) {
-        super.onWidgetDismiss(widget);
-
         if (widget instanceof NotifyWidget) {
             // Screen off on dismiss last notification.
             NotificationPresenter np = NotificationPresenter.getInstance();
@@ -288,6 +286,8 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
                 mActivity.lock();
             }
         }
+        
+        super.onWidgetDismiss(widget);
     }
 
     /**
