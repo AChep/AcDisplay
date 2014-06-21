@@ -74,10 +74,21 @@ public class HelpDialog extends DialogFragment {
         if (NetworkUtils.isOnline(activity)) {
             // Download latest FAQ from the GitHub
             // and store to file if available.
-            // TODO: Fix url to English version of FAQ
-            String url = String.format(FILE_URL, Locale.getDefault().getLanguage());
+            Locale locale = Locale.getDefault();
+
+            String localeSuffix = locale.getLanguage();
+            String localeSuffixRegional = localeSuffix;
+
+            // Try with regional locales if available.
+            String localeCountry = locale.getCountry();
+            if (!TextUtils.isEmpty(localeCountry)) {
+                localeSuffixRegional += "-r" + localeCountry;
+            }
+
             mDownloaderTask = new AsyncTask.DownloadText(mDownloaderCallback);
-            mDownloaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+            mDownloaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+                    String.format(FILE_URL, localeSuffixRegional),
+                    String.format(FILE_URL, localeSuffix));
         } else {
             updateFaq(null);
         }
