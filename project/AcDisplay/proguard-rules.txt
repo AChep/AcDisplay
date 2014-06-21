@@ -73,3 +73,7 @@
 
 # Keep xposed modules
 -keep public class com.achep.acdisplay.xposed.***
+
+# Ignore compartability hacks
+-keep class android.** { *; }
+-dontwarn android.**
