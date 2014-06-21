@@ -207,9 +207,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             mIcon.setNotification(osbn);
         }
 
-        if (Device.hasKitKatApi()) {
-            updateActionButtons(osbn);
-        }
+        updateActionButtons(osbn);
     }
 
     /**
@@ -217,10 +215,9 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
      * from given notification. Actually needs {@link android.os.Build.VERSION_CODES#KITKAT KitKat}
      * or higher Android version.
      */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void updateActionButtons(OpenNotification osbn) {
         StatusBarNotification sbn = osbn.getStatusBarNotification();
-        Notification.Action[] actions = sbn.getNotification().actions;
+        NotificationData.Action[] actions = osbn.getNotificationData().actions;
 
         ViewUtils.setVisible(mActionsContainer, actions != null);
         if (actions != null) {
@@ -245,7 +242,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (int i = 0; i < actionCount; i++) {
-                final Notification.Action action = actions[i];
+                final NotificationData.Action action = actions[i];
 
                 View root = rootViews[i];
                 TextView actionTextView = actionViews[i];
@@ -269,7 +266,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                     @Override
                     public void onClick(View v) {
                         if (mOnClickListener != null) {
-                            mOnClickListener.onActionButtonClick(v, action.actionIntent);
+                            mOnClickListener.onActionButtonClick(v, action.intent);
                         }
                     }
                 });

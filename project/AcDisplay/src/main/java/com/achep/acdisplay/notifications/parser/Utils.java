@@ -33,8 +33,10 @@ final class Utils {
     /**
      * Removes all kinds of multiple spaces from given string.
      */
-    static String removeSpaces(String string) {
-        if (string == null) return null;
+    static String removeSpaces(CharSequence cs) {
+        if (cs == null) return null;
+        String string = cs instanceof String
+                ? (String) cs : cs.toString();
         return string
                 .replaceAll("(\\s+$|^\\s+)", "")
                 .replaceAll("\n+", "\n");
@@ -52,6 +54,7 @@ final class Utils {
     }
 
     static CharSequence mergeLargeMessage(CharSequence[] messages) {
+        if (messages == null) return null;
         int length = messages.length;
 
         boolean highlight = length > 1; // highlight first letters of messages or no?
