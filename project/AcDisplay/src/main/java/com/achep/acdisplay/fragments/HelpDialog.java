@@ -61,8 +61,8 @@ public class HelpDialog extends DialogFragment {
     private AsyncTask.DownloadText.Callback mDownloaderCallback =
             new AsyncTask.DownloadText.Callback() {
                 @Override
-                public void onDownloaded(String text) {
-                    updateFaq(text);
+                public void onDownloaded(String[] texts) {
+                    updateFaq(texts[0]);
                 }
             };
 
