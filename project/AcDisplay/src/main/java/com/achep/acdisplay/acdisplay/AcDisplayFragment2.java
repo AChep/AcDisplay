@@ -40,7 +40,6 @@ import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.services.media.MediaController;
 import com.achep.acdisplay.utils.ViewUtils;
 import com.achep.acdisplay.widgets.CircleView;
-import com.achep.acdisplay.widgets.NotificationWidget;
 import com.achep.acdisplay.widgets.ProgressBar;
 
 /**
@@ -170,7 +169,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         ViewGroup sceneContainer = getSceneContainer();
         mMediaWidget = new MediaWidget(this, this);
         mMediaWidget.onCreate();
-        ViewGroup sceneMainMusic = mMediaWidget.createExpandedView(inflater, sceneContainer, null);
+        ViewGroup sceneMainMusic = mMediaWidget.createView(inflater, sceneContainer, null);
         mSceneMainMedia = new SceneCompat(sceneContainer, sceneMainMusic);
 
         return root;
@@ -239,7 +238,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     }
 
     /**
-     * Updates dynamic background as was requested by widget.
+     * Updates dynamic background as requested by widget.
      */
     @Override
     public void requestBackgroundUpdate(Widget widget) {
@@ -251,7 +250,8 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     }
 
     /**
-     *
+     * Restarts timeout to {@link com.achep.acdisplay.Config#getTimeoutShort()}
+     * as requested by widget.
      */
     public void requestTimeoutRestart(Widget widget) {
         if (widget == getCurrentWidget()) {

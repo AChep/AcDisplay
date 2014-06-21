@@ -39,9 +39,6 @@ import com.achep.acdisplay.services.media.MediaController;
 import com.achep.acdisplay.services.media.Metadata;
 import com.achep.acdisplay.utils.ViewUtils;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 /**
  * Created by Artem on 02.04.2014.
  */
@@ -50,7 +47,7 @@ public class MediaWidget extends Widget implements
         View.OnClickListener,
         View.OnLongClickListener {
 
-    private MediaController mMediaController;
+    private final MediaController mMediaController;
 
     private ImageView mArtwork;
     private TextView mTrack;
@@ -63,7 +60,7 @@ public class MediaWidget extends Widget implements
     private Bitmap mArtworkBlurred;
 
     private BackgroundFactoryThread mBlurThread;
-    private BackgroundFactoryThread.Callback mBlurThreadCallback = new BackgroundFactoryThread.Callback() {
+    private final BackgroundFactoryThread.Callback mBlurThreadCallback = new BackgroundFactoryThread.Callback() {
         @Override
         public void onBackgroundCreated(Bitmap bitmap) {
             mArtworkBlurred = bitmap;
@@ -180,7 +177,7 @@ public class MediaWidget extends Widget implements
     }
 
     @Override
-    protected ViewGroup onCreateExpandedView(LayoutInflater inflater, ViewGroup container, ViewGroup sceneView) {
+    protected ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container, ViewGroup sceneView) {
         boolean initialize = sceneView == null;
         if (initialize) {
             sceneView = (ViewGroup) inflater.inflate(R.layout.acdisplay_scene_music, container, false);

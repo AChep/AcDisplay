@@ -88,7 +88,7 @@ public class NotifyWidget extends Widget implements NotificationView {
     }
 
     @Override
-    public void onDismissed() {
+    public void onDismiss() {
         mNotifyWidget.getNotification().dismiss();
     }
 
@@ -109,7 +109,7 @@ public class NotifyWidget extends Widget implements NotificationView {
     }
 
     @Override
-    protected View onCreateCollapsedView(LayoutInflater inflater, ViewGroup container) {
+    protected View onCreateIconView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.widget_notification_icon, container, false);
         assert view != null;
 
@@ -119,7 +119,7 @@ public class NotifyWidget extends Widget implements NotificationView {
     }
 
     @Override
-    protected ViewGroup onCreateExpandedView(LayoutInflater inflater, ViewGroup container, ViewGroup sceneView) {
+    protected ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container, ViewGroup sceneView) {
         boolean initialize = sceneView == null;
         if (initialize) {
             sceneView = (ViewGroup) inflater.inflate(R.layout.acdisplay_scene_notification, container, false);
@@ -164,7 +164,7 @@ public class NotifyWidget extends Widget implements NotificationView {
     }
 
     @Override
-    public void onExpandedViewAttached() {
+    public void onViewAttached() {
         mNotification.getNotificationData().markAsRead(true);
         mNotifyWidget.setNotification(mNotification);
     }
@@ -176,7 +176,7 @@ public class NotifyWidget extends Widget implements NotificationView {
 
         // Don't update the content of notification widget, because
         // it may be used by any of its relatives.
-        if (isExpandedViewAttached()) {
+        if (isViewAttached()) {
             mNotifyWidget.setNotification(notification);
         }
     }
