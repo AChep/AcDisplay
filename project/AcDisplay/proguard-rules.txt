@@ -65,10 +65,8 @@
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
 
-# Don't change those timeout methods, so i can access it by reflections.
--keepclassmembers public class com.achep.acdisplay.Config {
-   *** *Timeout*(...);
-}
+# Don't change its members, because I want to access it by reflections.
+-keepclassmembers public class com.achep.acdisplay.Config
 
 # Keep settings' fragments to be able to access them from .xml
 -keep public class com.achep.acdisplay.settings.** extends android.app.Fragment
