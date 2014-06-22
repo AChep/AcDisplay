@@ -24,13 +24,8 @@ Clone the project and come in:
 
          $ git clone git://github.com/AChep/AcDisplay.git
          $ cd AcDisplay/project/
-
-If you want to build AcDisplay with additional languges (not only English and Russian), you can download them by running the following line: _by default tranlations will appear only in **Release** build._
-
-         $ python ./AcDisplay/update_translations.py
-         # Downloads latest build of locales from crowdin.net/project/acdisplay
-
-To build debug version:
+         
+To build debug version: (only English and Russian locales included)
 
          $ ./gradlew assembleDebug
          # Builds all the things. Grab compiled application from ./AcDisplay/build/apk/
