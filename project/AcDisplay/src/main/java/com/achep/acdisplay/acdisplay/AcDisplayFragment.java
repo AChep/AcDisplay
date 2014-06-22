@@ -207,9 +207,16 @@ public class AcDisplayFragment extends Fragment implements
                                           OpenNotification osbn,
                                           int event) {
         switch (event) { // don't update on spam-change.
+            case NotificationPresenter.EVENT_REMOVED:
+                // If widget related to removed notification is pinned - unpin it.
+                if (isWidgetPinned() && mSelectedWidget instanceof NotifyWidget) {
+                    NotifyWidget widget = (NotifyWidget) mSelectedWidget;
+                    if (NotificationUtils.equals(widget.getNotification(), osbn)) {
+                        showMainWidget(); // Unpin
+                    }
+                }
             case NotificationPresenter.EVENT_POSTED:
             case NotificationPresenter.EVENT_CHANGED:
-            case NotificationPresenter.EVENT_REMOVED:
             case NotificationPresenter.EVENT_BATH:
                 if (getActivity() != null) {
                     updateNotificationList();
