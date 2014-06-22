@@ -187,7 +187,7 @@ public class NotificationData {
                 }
 
                 try {
-                    Field field = object.getClass().getDeclaredField("intent");
+                    Field field = object.getClass().getDeclaredField("actionIntent");
                     field.setAccessible(true);
                     intent = (PendingIntent) field.get(object);
                 } catch (Exception e) {
