@@ -51,8 +51,8 @@ public class BathService extends Service {
 
     private static final String TAG = "BathService";
 
-    private static final String ACTION_ADD_SERVICE = TAG + "BathService:add_service";
-    private static final String ACTION_REMOVE_SERVICE = TAG + "BathService:remove_service";
+    private static final String ACTION_ADD_SERVICE = TAG + ":add_service";
+    private static final String ACTION_REMOVE_SERVICE = TAG + ":remove_service";
     private static final String EXTRA_SERVICE_CLASS = "class";
 
     public static void startService(Context context, Class<? extends ChildService> clazz) {
