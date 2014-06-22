@@ -19,10 +19,10 @@
 
 package com.achep.acdisplay.powertoggles;
 
+import android.content.Context;
+
 import com.achep.acdisplay.Config;
 import com.painless.pc.PowerTogglesPlugin;
-
-import android.content.Context;
 
 /**
  * AcDisplay toggle plugin for PowerToggles <http://powertoggles.com>

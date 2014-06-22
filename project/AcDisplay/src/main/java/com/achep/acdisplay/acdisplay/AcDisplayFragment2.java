@@ -229,8 +229,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     }
 
     /**
-     * @param runnable
-     * @param pendingFinish
+     *
      */
     @Override
     public void unlock(Runnable runnable, boolean pendingFinish) {

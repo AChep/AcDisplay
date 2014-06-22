@@ -36,7 +36,6 @@ import com.achep.acdisplay.Build;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.activities.MainActivity;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

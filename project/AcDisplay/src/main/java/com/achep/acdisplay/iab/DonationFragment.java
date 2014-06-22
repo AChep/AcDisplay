@@ -71,7 +71,6 @@ public class DonationFragment extends DialogFragment {
 
     private GridView mGridView;
     private ProgressBar mProgressBar;
-    private TextView mInformation;
     private TextView mError;
 
     private IabHelper mHelper;
@@ -99,8 +98,8 @@ public class DonationFragment extends DialogFragment {
                 .setNegativeButton(R.string.close, null);
 
         mError = (TextView) view.findViewById(R.id.error);
-        mInformation = (TextView) view.findViewById(R.id.info);
-        mInformation.setText(Html.fromHtml(getString(R.string.donation_info)));
+        TextView info = (TextView) view.findViewById(R.id.info);
+        info.setText(Html.fromHtml(getString(R.string.donation_info)));
         mProgressBar = (ProgressBar) view.findViewById(android.R.id.progress);
         mGridView = (GridView) view.findViewById(R.id.grid);
         mGridView.setAdapter(new DonationAdapter(getActivity(), mDonationList, mInventorySet));

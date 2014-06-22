@@ -32,7 +32,6 @@ import android.util.Log;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.admin.AdminReceiver;
-import com.achep.acdisplay.utils.IntentUtils;
 import com.achep.acdisplay.utils.PackageUtils;
 import com.achep.acdisplay.utils.ToastUtils;
 

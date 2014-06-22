@@ -68,6 +68,7 @@ public final class Extractor {
                                       StatusBarNotification sbn,
                                       NotificationData data) {
         // Loop is here only to provide useful break; function.
+        //noinspection LoopStatementThatDoesntLoop
         while (true) {
             final Notification n = sbn.getNotification();
             final Bundle extras = getExtras(n);

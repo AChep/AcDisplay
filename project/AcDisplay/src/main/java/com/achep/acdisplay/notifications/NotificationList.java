@@ -56,7 +56,7 @@ final class NotificationList {
      * Replace or add notification to the list.
      *
      * @return {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationAdded(OpenNotification n)} or
-     * {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationChanged(OpenNotification n)}
+     * {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationChanged(OpenNotification n, OpenNotification old)}
      */
     public int push(OpenNotification n) {
         int index = indexOf(n);

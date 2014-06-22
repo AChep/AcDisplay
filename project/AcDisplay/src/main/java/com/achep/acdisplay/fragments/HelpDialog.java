@@ -25,6 +25,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -50,7 +51,7 @@ import java.util.Locale;
 public class HelpDialog extends DialogFragment {
 
     private static final String FILE_NAME = "faq.html";
-    private static final String FILE_URL = Build.Links.REPOSITORY_RAW + "src/main/res/raw-%1$s/faq.html";
+    private static final String FILE_URL = Build.Links.REPOSITORY_RAW + "src/releaseFlavor/res/raw-%1$s/faq.html";
 
     private ProgressBar mProgressBar;
     private TextView mTextView;
@@ -62,7 +63,7 @@ public class HelpDialog extends DialogFragment {
             new AsyncTask.DownloadText.Callback() {
                 @Override
                 public void onDownloaded(String[] texts) {
-                    updateFaq(texts[0]);
+                    updateFaq(texts[0] != null ? texts[0] : texts[1]);
                 }
             };
 

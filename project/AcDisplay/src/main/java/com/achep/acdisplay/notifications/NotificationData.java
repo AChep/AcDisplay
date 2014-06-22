@@ -28,7 +28,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.AsyncTask;
@@ -39,7 +38,6 @@ import com.achep.acdisplay.acdisplay.BackgroundFactoryThread;
 import com.achep.acdisplay.notifications.parser.Extractor;
 import com.achep.acdisplay.utils.BitmapUtils;
 
-import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
