@@ -63,8 +63,8 @@
   <string name="settings_timeout_title">Uśpienie</string>
   <string name="settings_timeout_summary">Po %1$s / %2$s sekundach braku aktywności.</string>
   <string name="settings_timeout_forever">Ekran będzie stale włączony.</string>
-  <string name="settings_icon_size_title">Icon size</string>
-  <string name="settings_icon_size_summary">Current size of icons is %1$s dip.</string>
+  <string name="settings_icon_size_title">Rozmiar ikony</string>
+  <string name="settings_icon_size_summary">Bieżący rozmiar ikon to %1$s dip.</string>
   <string name="settings_behavior_category">Zachowanie</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lock on dismiss last notification</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Screen turns off after dismissing last present notification.</string>
@@ -82,6 +82,6 @@
   <string name="preference_timeout_short">Po dotknięciu nieaktywnego obszaru</string>
   <string name="preference_timeout_sec">%1$s sek.</string>
   <string name="preference_no_timeout">Ekran będzie stale włączony.</string>
-  <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
+  <string name="preference_icon_size_message">Dostosuj rozmiar ikon powiadomień.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

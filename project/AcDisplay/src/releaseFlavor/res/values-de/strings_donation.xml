@@ -19,7 +19,7 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="donation_action">Spende</string>
+  <string name="donation_action">Spenden</string>
   <string name="donation_title">Unterstütze den Entwickler</string>
   <string name="donation_info"><![CDATA[
         AcDisplay ist eine kostenlose <a href="https://www.github.com/AChep/AcDisplay">Open-Source</a> App.

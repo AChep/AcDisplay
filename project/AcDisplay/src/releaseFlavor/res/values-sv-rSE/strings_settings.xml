@@ -42,7 +42,7 @@
   <string name="settings_use_wallpaper_on">Din hemskärms bakgrund används.</string>
   <string name="settings_use_wallpaper_off">Solid svart bakgrund.</string>
   <string name="settings_shadow_toggle_title">Aktivera skuggor</string>
-  <string name="settings_shadow_toggle_on">Show shadow below the elements (disable to improve the performance).</string>
+  <string name="settings_shadow_toggle_on">Visa skugga under elementen (inaktivera om du vill förbättra prestanda).</string>
   <string name="settings_dynamic_background_title">Dynamiska bakgrund</string>
   <string name="settings_dynamic_background_summary">Dessa används som bakgrund: %1$s</string>
   <string name="settings_dynamic_background_disabled">Inaktiverade</string>
@@ -52,8 +52,8 @@
   <string name="settings_mirrored_timeout_progress_bar_title">Speglad timeout skala</string>
   <string name="settings_mirrored_timeout_progress_bar_on">Timeout skalan försvinner från båda sidor mot centrum.</string>
   <string name="settings_mirrored_timeout_progress_bar_off">Timeout skalan försvinner från vänster till höger.</string>
-  <string name="settings_notify_circled_icon_title">Circled notification icon</string>
-  <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
+  <string name="settings_notify_circled_icon_title">Inringad ikon</string>
+  <string name="settings_notify_circled_icon_on">Stor ikon för meddelande visas inuti cirkeln.</string>
   <string name="settings_only_while_charging_title">Endast under laddning</string>
   <string name="settings_only_while_charging_on">AcDisplay är endast aktiv när enheten laddas. Detta gäller för alla funktioner som låsskärm eller aktivt läge.</string>
   <string name="settings_only_while_charging_off">App är aktiv hela tiden.</string>
@@ -66,11 +66,11 @@
   <string name="settings_icon_size_title">Ikonstorlek</string>
   <string name="settings_icon_size_summary">Aktuell storleken på ikoner är %1$s dip.</string>
   <string name="settings_behavior_category">Beteende</string>
-  <string name="settings_lock_on_dismiss_last_notify_title">Lock on dismiss last notification</string>
-  <string name="settings_lock_on_dismiss_last_notify_on">Screen turns off after dismissing last present notification.</string>
-  <string name="settings_lock_on_dismiss_last_notify_off">Screen stays on after dismissing last present notification.</string>
-  <string name="settings_widget_pinnable_title">Pinnable notification</string>
-  <string name="settings_widget_pinnable_on">Notification widget stays expanded for some seconds after a touch.</string>
+  <string name="settings_lock_on_dismiss_last_notify_title">Lås vid avvisande av det sista meddelandet</string>
+  <string name="settings_lock_on_dismiss_last_notify_on">Skärmen stängs av efter avvisande av det sista meddelandet.</string>
+  <string name="settings_lock_on_dismiss_last_notify_off">Skärmen förblir aktiv efter avvisande av det sista meddelandet.</string>
+  <string name="settings_widget_pinnable_title">Låsbart meddelande</string>
+  <string name="settings_widget_pinnable_on">Meddelande-widget förblir expanderad under några sekunder efter en beröring.</string>
   <string name="preference_inactive_hours_enabled">Inaktiva timmar aktiverat</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         from:<br/><b><font color="#ffffff">%1$s</font></b>
@@ -82,6 +82,6 @@
   <string name="preference_timeout_short">Efter beröring av inaktivt område</string>
   <string name="preference_timeout_sec">%1$s SEK.</string>
   <string name="preference_no_timeout">Skärmen förblir aktiverad</string>
-  <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
+  <string name="preference_icon_size_message">Justera storleken på meddelandeikoner.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

@@ -23,7 +23,7 @@
   <string name="blacklist_app_config">App instellingen</string>
   <string name="blacklist_show_system_apps">Systeem apps</string>
   <string name="blacklist_app_hide_title">Verbergen</string>
-  <string name="blacklist_app_hide_summary">De notificaties van deze app zullen niet worden weergegeven.</string>
+  <string name="blacklist_app_hide_summary">De meldingen van deze app zullen niet worden weergegeven.</string>
   <string name="blacklist_app_restricted_title">Stil</string>
-  <string name="blacklist_app_restricted_summary">Niet wakker worden wanneer een notificatie is ontvangen.</string>
+  <string name="blacklist_app_restricted_summary">Niet wakker worden wanneer een melding is ontvangen.</string>
 </resources>

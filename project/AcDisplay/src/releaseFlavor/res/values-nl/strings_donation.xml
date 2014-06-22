@@ -29,9 +29,9 @@
   <string name="donation_1">Een ijsje</string>
   <string name="donation_4">Een kop koffie</string>
   <string name="donation_10">Elektriciteits rekening</string>
-  <string name="donation_20">Het rechter kussen</string>
+  <string name="donation_20">Het goed kussen om op te slapen</string>
   <string name="donation_50">Solid-State harde schijf</string>
   <string name="donation_99">Geluids-systeem</string>
-  <string name="donation_error_iab_setup">Het opzetten van de de service voor in-app-aankopen is mislukt!</string>
+  <string name="donation_error_iab_setup">Het opzetten van de service voor in-app-aankopen is mislukt!</string>
   <string name="donation_no_responsibility">Let er op dat Google niet verantwoordelijk is voor deze betalingsmethodes.</string>
 </resources>

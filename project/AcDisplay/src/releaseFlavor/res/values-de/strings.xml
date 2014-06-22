@@ -40,7 +40,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="access_device_admin_description">Dies wird benötigt, um die Richtlinie der Bildschirmauszeit zu verwalten.</string>
   <string name="access_device_admin_grant_btn">Bildschirm ausschalten</string>
   <string name="access_device_admin_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Geräteadministrator und überprüfe ob AcDisplay aktiviert ist.</string>
-  <string name="access_device_admin_removed_successful">AcDisplay wurde vom Geräteadministartor entfernt.</string>
+  <string name="access_device_admin_removed_successful">AcDisplay wurde von den  Geräteadministratoren entfernt.</string>
   <string name="app_auto_disabled">AcDisplay wurde aufgrund fehlender Administratorrechte beendet.</string>
   <string name="media_prev_description">Vorheriger Titel Taste</string>
   <string name="media_next_description">Nächster Titel Taste</string>

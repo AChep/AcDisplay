@@ -21,7 +21,7 @@
 <resources>
   <string name="close">Sluit</string>
   <string name="about_action">Over</string>
-  <string name="about_message"><![CDATA [Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Artem Chepurnoy</a>. Alle rechten voorbehouden. <br/>         <br/> Veel dank aan deze open source tools: %1$s en aan allen die <a href="https://crowdin.net/project/acdisplay"> geholpen hebben met vertalingen</a> of <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> gedoneerd hebben</a>.     ]]></string>
+  <string name="about_message"><![CDATA [Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Artem Chepurnoy</a>. Alle rechten voorbehouden. <br/>         <br/> Veel dank aan deze open source tools: %1$s en aan allen die op<a href="https://crowdin.net/project/acdisplay"> geholpen hebben met vertalingen</a> of <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> gedoneerd hebben</a>.     ]]></string>
   <string name="help">Help</string>
   <string name="help_faq">Veel gestelde vragen</string>
   <string name="news_message"><![CDATA[
