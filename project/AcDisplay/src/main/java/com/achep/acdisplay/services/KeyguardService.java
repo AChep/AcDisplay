@@ -162,7 +162,7 @@ public class KeyguardService extends BathService.ChildService {
     }
 
     @Override
-    public String getName() {
+    public String getLabel() {
         return getContext().getString(R.string.service_bath_keyguard);
     }
 
