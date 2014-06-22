@@ -190,7 +190,7 @@ public class Config {
                 method.setAccessible(true);
                 return method.invoke(config);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
+                throw new RuntimeException("Failed to access Config." + getterName + " method.");
             }
         }
 
@@ -210,7 +210,7 @@ public class Config {
                 method.setAccessible(true);
                 method.invoke(config, context, newValue, listener);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
+                throw new RuntimeException("Failed to access Config." + setterName + " method.");
             }
         }
 
