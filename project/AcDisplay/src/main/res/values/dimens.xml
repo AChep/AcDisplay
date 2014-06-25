@@ -37,7 +37,7 @@
     <dimen name="circle_radius_decrease_threshold">4dp</dimen>
 
     <!-- Media -->
-    <dimen name="artwork_size">40dp</dimen>
+    <dimen name="artwork_size">120dp</dimen>
 
     <!-- Status bar battery icons dimensions -->
     <dimen name="status_bar_battery_height">16dp</dimen>
