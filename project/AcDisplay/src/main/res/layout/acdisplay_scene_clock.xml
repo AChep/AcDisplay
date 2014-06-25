@@ -22,19 +22,15 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     android:layout_gravity="center"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="end">
 
-    <TextView
-        android:id="@+id/time_am_pm"
-        android:layout_width="match_parent"
+    <include
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-4dp"
-        android:paddingEnd="8dp"
-        android:gravity="end"
-        android:fontFamily="sans-serif-light"
-        android:text="AM"
-        android:visibility="gone"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        layout="@layout/widget_status" />
 
     <!--
         IF YOU WANT TO CHANGE TOP/BOTTOM MARGINS:
@@ -46,11 +42,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="?attr/acDisplayClock" />
-
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        layout="@layout/widget_status"/>
 
 </LinearLayout>
