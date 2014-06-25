@@ -102,7 +102,7 @@ if VALIDATE_LOCALES:
             with open(filepath) as f:
                 bs = BeautifulSoup(f.read())
                 try:
-                    for string in bs.resources.findAll('string'):                   
+                    for string in bs.resources.findAll('string'):       
                         string_name = string['name']
                         string_contents = str(string.string)
                         if string_res_origin[string_name]['count'] != len(re.findall(regex, string_contents)):
@@ -111,12 +111,17 @@ if VALIDATE_LOCALES:
                             print('\tname:\"%s\"' % string_name)
                             print('\torigin:\"%s\"' % string_res_origin[string_name]['contents'])
                             print('\tbroken:\"%s\"' % string_contents)
-
                             successful = False
                 except Exception as e:
                     successful = False
                     print_warning(str(e))
 
+            for line in open(filepath):
+                if re.search(r'(<!|\[CDATA)\s', line):
+                    print_warning('Problematic string resource found!')
+                    print('\tlang:\"%s\"' % re.findall(translations_folder_name + r'\/(\w{2,3}|\w{2,3}\-\w{2,3})\/', filepath)[0])
+                    print('\tproblematic_line:\"%s\"' % line)
+                    successful = False
     if not successful:
         print_warning('Validating failed! Terminating...')
         shutil.rmtree(translations_folder_path)
