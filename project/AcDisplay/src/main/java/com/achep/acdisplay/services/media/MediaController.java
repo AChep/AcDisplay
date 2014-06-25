@@ -320,12 +320,12 @@ public class MediaController {
     }
 
     /**
-     * @return {@code string == null ? null : string.trim()}
+     * @return {@code string == null ? null : TextUtils.isEmpty(string) ? null : string.trim()}
      */
     private String trim(String string) {
-        return string == null ? null : string.trim();
+        return string == null ? null : TextUtils.isEmpty(string) ? null : string.trim();
     }
-
+    
     /**
      * @return {@link com.achep.acdisplay.services.media.Metadata} of playing track,
      * or {@code null} if music is not playing.
