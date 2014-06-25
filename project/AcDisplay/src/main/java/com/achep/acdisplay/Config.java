@@ -185,12 +185,14 @@ public class Config {
          * @throws java.lang.RuntimeException if failed to read given config.
          */
         public Object read(Config config) {
+            Object instance = getConfigInstance(config);
+            Class clazz = instance.getClass();
             try {
-                Method method = Config.class.getDeclaredMethod(getterName);
+                Method method = clazz.getDeclaredMethod(getterName);
                 method.setAccessible(true);
-                return method.invoke(config);
+                return method.invoke(instance);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to access Config." + getterName + " method.");
+                throw new RuntimeException("Failed to access " + clazz.getName() + "." + getterName + " method.");
             }
         }
 
@@ -203,15 +205,21 @@ public class Config {
          * @throws java.lang.RuntimeException if failed to read given config.
          */
         public void write(Config config, Context context, Object newValue, OnConfigChangedListener listener) {
+            Object instance = getConfigInstance(config);
+            Class clazz = instance.getClass();
             try {
-                Method method = Config.class.getDeclaredMethod(setterName,
+                Method method = clazz.getDeclaredMethod(setterName,
                         Context.class, clazz,
                         Config.OnConfigChangedListener.class);
                 method.setAccessible(true);
-                method.invoke(config, context, newValue, listener);
+                method.invoke(instance, context, newValue, listener);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to access Config." + setterName + " method.");
+                throw new RuntimeException("Failed to access " + clazz.getName() + "." + setterName + " method.");
             }
+        }
+
+        protected Object getConfigInstance(Config config) {
+            return config;
         }
 
     }
