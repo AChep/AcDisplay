@@ -72,8 +72,8 @@
   <string name="settings_widget_pinnable_title">Pinnable notification</string>
   <string name="settings_widget_pinnable_on">Notification widget stays expanded for some seconds after a touch.</string>
   <string name="preference_inactive_hours_enabled">Activare ore inactiv</string>
-  <string name="preference_inactive_hours_from"><![CDATA [de la: <br/> <b><font color="#ffffff"> %1$s</font></b>]] ></string>
-  <string name="preference_inactive_hours_to"><![CDATA [către: <br/> <b><font color="#ffffff"> %1$s</font></b>]] ></string>
+  <string name="preference_inactive_hours_from"><![CDATA[de la: <br/> <b><font color="#ffffff"> %1$s</font></b>]]></string>
+  <string name="preference_inactive_hours_to"><![CDATA[către: <br/> <b><font color="#ffffff"> %1$s</font></b>]]></string>
   <string name="preference_timeout_normal">După trezire sau selectarea unei notificari</string>
   <string name="preference_timeout_short">După atingerea unei suprafeţe inactive</string>
   <string name="preference_timeout_sec">%1$s sec.</string>

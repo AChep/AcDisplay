@@ -21,7 +21,7 @@
 <resources>
   <string name="close">Cerrar</string>
   <string name="about_action">Acerca de</string>
-  <string name="about_message"><![CDATA [Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Artem Chepurnoy</a>. Todos los derechos reservados. <br/>         <br/> Muchas gracias a las herramientas de código abierto: %1$s y a todos los que <a href="https://crowdin.net/project/acdisplay"> ayudaron con las traducciones</a> o <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> hicieron alguna donación</a>.     ]]></string>
+  <string name="about_message"><![CDATA[Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Artem Chepurnoy</a>. Todos los derechos reservados. <br/>         <br/> Muchas gracias a las herramientas de código abierto: %1$s y a todos los que <a href="https://crowdin.net/project/acdisplay"> ayudaron con las traducciones</a> o <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> hicieron alguna donación</a>.     ]]></string>
   <string name="help">Ayuda</string>
   <string name="help_faq">Preguntas frecuentes</string>
   <string name="news_message"><![CDATA[

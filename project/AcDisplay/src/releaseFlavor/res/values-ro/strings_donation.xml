@@ -21,7 +21,7 @@
 <resources>
   <string name="donation_action">Donează</string>
   <string name="donation_title">Donează dezvoltatorului</string>
-  <string name="donation_info"><![CDATA [AcDisplay este o aplicaţie gratuită şi cu <a href="https://www.github.com/AChep/AcDisplay"> sursă deschisă</a>.         Vă puteţi arăta aprecierea şi spriniji dezvoltarea ei printr-o donaţie, gen:]] ></string>
+  <string name="donation_info"><![CDATA[AcDisplay este o aplicaţie gratuită şi cu <a href="https://www.github.com/AChep/AcDisplay"> sursă deschisă</a>.         Vă puteţi arăta aprecierea şi spriniji dezvoltarea ei printr-o donaţie, gen:]]></string>
   <string name="donation_item_bought">Ai donat deja pentru acest element.</string>
   <string name="donation_1">O îngheţată</string>
   <string name="donation_4">O ceaşcă de cafea</string>

@@ -21,7 +21,7 @@
 <resources>
   <string name="donation_action">Δωρεά</string>
   <string name="donation_title">Δωρεά στον κατασκευαστή</string>
-  <string name="donation_info"><![CDATA [
+  <string name="donation_info"><![CDATA[
 Η AcDisplay είναι μία δωρεάν και <a href="https://www.github.com/AChep/AcDisplay">ανοικτού κώδικα</a> εφαρμογή.
 Μπορείτε να δείτε την εκτίμησή σας και να υποστηρίξετε την κατασκευή δωρίζοντας:
 ]]></string>

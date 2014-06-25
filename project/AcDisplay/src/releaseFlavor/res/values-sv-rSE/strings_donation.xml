@@ -21,7 +21,7 @@
 <resources>
   <string name="donation_action">Donera</string>
   <string name="donation_title">Donera till utvecklare</string>
-  <string name="donation_info"><![CDATA [AcDisplay är en fri och <a href="https://www.github.com/AChep/AcDisplay"> open source</a> app.         Du kan visa din uppskattning och stödja utvecklingen genom att donera:]] ></string>
+  <string name="donation_info"><![CDATA[AcDisplay är en fri och <a href="https://www.github.com/AChep/AcDisplay"> open source</a> app.         Du kan visa din uppskattning och stödja utvecklingen genom att donera:]]></string>
   <string name="donation_item_bought">Du har donerat för objektet redan.</string>
   <string name="donation_1">En glass</string>
   <string name="donation_4">Kopp kaffe</string>
