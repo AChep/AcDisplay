@@ -185,12 +185,12 @@ public class Config {
          * @throws java.lang.RuntimeException if failed to read given config.
          */
         public Object read(Config config) {
-            Object instance = getConfigInstance(config);
-            Class clazz = instance.getClass();
+            Object configInstance = getConfigInstance(config);
+            Class configClass = configInstance.getClass();
             try {
-                Method method = clazz.getDeclaredMethod(getterName);
+                Method method = configClass.getDeclaredMethod(getterName);
                 method.setAccessible(true);
-                return method.invoke(instance);
+                return method.invoke(configInstance);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException("Failed to access " + clazz.getName() + "." + getterName + " method.");
             }
@@ -205,14 +205,14 @@ public class Config {
          * @throws java.lang.RuntimeException if failed to read given config.
          */
         public void write(Config config, Context context, Object newValue, OnConfigChangedListener listener) {
-            Object instance = getConfigInstance(config);
-            Class clazz = instance.getClass();
+            Object configInstance = getConfigInstance(config);
+            Class configClass = configInstance.getClass();
             try {
-                Method method = clazz.getDeclaredMethod(setterName,
+                Method method = configClass.getDeclaredMethod(setterName,
                         Context.class, clazz,
                         Config.OnConfigChangedListener.class);
                 method.setAccessible(true);
-                method.invoke(instance, context, newValue, listener);
+                method.invoke(configInstance, context, newValue, listener);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException("Failed to access " + clazz.getName() + "." + setterName + " method.");
             }
