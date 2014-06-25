@@ -32,22 +32,27 @@ Bu açık kaynak araçları için çok teşekkürler: %1$s ve bu bütün şahıs
   <string name="help_faq">Sıkça sorulan sorular</string>
   <string name="news_message"><![CDATA[
 AcDisplay yeni sürümüne hoş geldiniz! 
-Bu güncelleştirme, tamamiyle yeni ve eşsiz bir tasarımla beraber yeni özellikler getiriyor. 
-Tasarımı daha işlevsel ve size olabilecek en iyi deneyimi sunması hedeflendi.<br/>
+Bu güncelleştirme, yeni bir çok olasılığa sahip tamamen yeni ve benzersiz bir tasarım getiriyor. 
+Tasarımı daha akıcı ve size mümkün olan en iyi deneyimi veren hedefleniyor!
 <br/>
-<b>Tüm eylemler için tek bir dokunuş.</b><br/>
-Cihazın kilidini açmak, bildirimleri kontrol veya onlarla eylemler gerçekleştirmek için tek bir hareket yeterli.<br/>
 <br/>
-<b>Kilidi açmak için bütün alan kullanılabilir.</b><br/>
+<br/>Tüm eylemler için tek bir dokunuş.</b><br/>
+Cihazın kilidini açmak bildirimleri kontrol veya onlara bir eylemler gerçekleştirmek için tek bir hareket yeterli.<br/>
+<br/>
+<b>Kildi açmak için bütün alan kullanılabilir.</b><br/>
 Kilidini açmak için herhangi bir yerde boş alan üzerine basılı tutun ve kaydırın.
-]]></string>
+]]>
+
+</string>
   <string name="speech_message"><![CDATA[
 Merhaba,<br/>
-Öncelikle bu uygulamayı indirdiğiniz için ve Play Store\'daki yüksek puanlar için teşekkür etmek istiyorum. 
-AcDisplay\'de kaydettiğimiz büyük ilerleme, topluluğumuz olmadan yapılamazdı. İşte bu yüzden AcDisplay<a href="https://www.github.com/AChep/AcDisplay">açık kaynaklı</a> (herkes için geliştirilmeye açık). Ama benim senden biraz yardıma ihtiyacım var.<br/>
-Bu sene benim okulda son yılım ve ben gelecek çalışmalarım için bir dizüstü bilgisayar satın almayı ve dünyaya daha iyi yazılımlar geliştirmek istiyorum. 
-Bu konuda seneden yardım bekliyorum.
-]]></string>
+Öncelikle ben bu uygulamayı indirdiğiniz için ve Play Store yüksek derecelendirme için teşekkür etmek istiyorum. 
+Büyük ilerleme AcDisplay yılında yapılmış ve bu topluluğun olmadan yapmış olamazdı. AcDisplay neden olduğunu<a href="https://www.github.com/AChep/AcDisplay">aç</a> herkes için. Ama benim senden biraz yardıma ihtiyacım var.<br/>
+Bu sene benim okulda son yılım ve ben gelecek çalışmalar için bir dizüstü bilgisayar satın almayı ve dah iyi yazılımlar geliştirmeyi istiyorum. 
+Bu konuda seneden yarım bekliyorum.
+]]>
+
+</string>
   <string name="pa_message"><![CDATA[
 Kullanıcılar Paranoid Android üzerinde AcDisplay kullanırken <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">sorun yaşamayı</a> bekleyebilirler.
  ]]></string>

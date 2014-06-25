@@ -20,19 +20,19 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_description">AcDisplay,  Android\'de bildirimlerin kontrolü için yeni bir yoldur. Bildirimler hakkında bilgilenmenizi ve bildirimlere doğrudan kilit ekranından erişebilmenizi; minimal ve şık bir ekranla sağlar. Ne olup bittiğini benzer şekilde minimal ve hoş bir tarzla öğrenmeniz için telefonunuzu cebinizden çıkarmanız yeterlidir.</string>
-  <string name="xposed_description">AcDisplay\'in Android\'le daha derinden bütünleşmesine yardım eder.</string>
-  <string name="widget_toggle_enabled">Kullanımda</string>
-  <string name="widget_toggle_disabled">Kullanımda değil</string>
+  <string name="xposed_description">AcDisplay\'in Android\'e daha derin entegre olmasına yardım eder.</string>
+  <string name="widget_toggle_enabled">Etkin</string>
+  <string name="widget_toggle_disabled">Etkin değil</string>
   <string name="test_action">Test bildirimi gönder</string>
   <string name="test_notification_message">Bu bir örnek bildirimdir.</string>
-  <string name="test_notification_message_large">Bildirimi kaldırmak için aşağı kaydırın.\nKilidi açmak için herhangi bir yerden kaydırın.</string>
+  <string name="test_notification_message_large">Bildirimi kaldırmak için aşağı kaydırın.\nKilidini açmak için herhangi bir yere dokundurun.</string>
   <string name="init_notification_text">Bu bildirimi göz ardı et.</string>
   <string name="remote_enable_acdisplay">AcDisplay etkin.</string>
   <string name="remote_disable_acdisplay">AcDisplay devre dışı.</string>
   <string name="service_bath">AcDisplay hizmetleri</string>
   <string name="service_bath_keyguard">Kilit ekranı</string>
   <string name="service_bath_active_mode">Aktif Mod</string>
-  <string name="status_date_format">GGG, s AAAA</string>
+  <string name="status_date_format">EEE, d MMMM</string>
   <string name="access_not_granted">Erişim izni yok!</string>
   <string name="access_notifications_grant_btn">Bildirimler</string>
   <string name="access_notifications_grant_manually">Ayarlara gidin &gt; Güvenlik &gt; Bildirimlere erişim ve AcDisplay \'i etkinleştirin.</string>
@@ -40,7 +40,7 @@
   <string name="access_device_admin_grant_btn">Ekranı kapat</string>
   <string name="access_device_admin_grant_manually">Ayarlar gidin &gt; Güvenlik &gt; Cihaz yöneticileri ve AcDisplay \'i etkinleştirin.</string>
   <string name="access_device_admin_removed_successful">AcDisplay Cihaz yöneticilerden kaldırıldı.</string>
-  <string name="app_auto_disabled">Kayıp yönetici hakları yüzünden, AcDisplay kapatıldı.</string>
+  <string name="app_auto_disabled">Kayıp yönetici hakları yüzünden AcDisplay kapatıldı.</string>
   <string name="media_prev_description">Bir önceki parça düğmesi</string>
   <string name="media_next_description">Bir sonraki parça düğmesi</string>
   <string name="media_pause_description">Duraklatma düğmesi</string>
