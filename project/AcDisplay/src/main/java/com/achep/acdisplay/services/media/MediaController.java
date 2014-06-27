@@ -31,6 +31,7 @@ import android.media.RemoteController;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -200,7 +201,9 @@ public class MediaController {
 
         mMetadata.clear();
 
-        if (Device.hasKitKatApi()) {
+        if (Device.hasLemonCakeApi()) {
+            // TODO: Bring media controls to Android L
+        } else if (Device.hasKitKatApi()) {
             Intent intent = new Intent(App.ACTION_BIND_MEDIA_CONTROL_SERVICE);
             mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
@@ -218,7 +221,9 @@ public class MediaController {
         mMetadata.clear();
         mHandler.removeCallbacksAndMessages(null);
 
-        if (Device.hasKitKatApi()) {
+        if (Device.hasLemonCakeApi()) {
+            // TODO: Bring media controls to Android L
+        } else if (Device.hasKitKatApi()) {
             if (mBound) {
                 mService.setClientUpdateListener(null);
                 mService.setRemoteControllerDisabled();
@@ -325,7 +330,7 @@ public class MediaController {
     private String trim(String string) {
         return string == null ? null : TextUtils.isEmpty(string) ? null : string.trim();
     }
-    
+
     /**
      * @return {@link com.achep.acdisplay.services.media.Metadata} of playing track,
      * or {@code null} if music is not playing.
@@ -343,7 +348,9 @@ public class MediaController {
      * @see android.view.KeyEvent#KEYCODE_MEDIA_PREVIOUS
      */
     public void sendMediaButtonClick(int keyCode) {
-        if (Device.hasKitKatApi()) {
+        if (Device.hasLemonCakeApi()) {
+            // TODO: Bring media controls to Android L
+        } else if (Device.hasKitKatApi()) {
             // TODO We should think about sending these up/down events accurately with touch up/down
             // on the buttons, but in the near term this will interfere with the long press behavior.
             // Note from Artem Chepurnoy: This is from Android sources, so check them if this fixed.
