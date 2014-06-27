@@ -17,7 +17,9 @@
  * MA  02110-1301, USA.
  */
 
+
 import groovy.swing.SwingBuilder
+
 import java.text.SimpleDateFormat
 
 buildscript {
@@ -25,7 +27,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 
@@ -37,11 +39,15 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '20.0'
 
     lintOptions {
         checkReleaseBuilds true
         abortOnError false
+    }
+
+    dexOptions {
+        incremental false
     }
 
     defaultConfig {
@@ -62,12 +68,11 @@ android {
         release {
             storeFile file(System.getenv("ACDISPLAY_SIGN_STORE_FILE") + "")
             keyAlias System.getenv("ACDISPLAY_SIGN_KEY_ALIAS") + ""
-
             // These two lines make gradle believe that the signingConfigs
             // section is complete. Without them, tasks like installRelease
             // will not be available!
-            storePassword "empty"
-            keyPassword "empty"
+            storePassword 'empty'
+            keyPassword 'empty'
         }
     }
 
@@ -85,21 +90,17 @@ android {
     buildTypes {
         debug {
             versionNameSuffix '-debug'
-
             buildConfigField "boolean", "MY_DEBUG", "true"
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
-
             // In-App-Billings service compares the signs of apks, so
             // the service won't accept debug build.
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "null"
         }
-
         release {
             zipAlign true
             runProguard true
             proguardFile 'proguard-rules.txt'
             signingConfig signingConfigs.release
-
             buildConfigField "boolean", "MY_DEBUG", "false"
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + playPublicKey + "\""
@@ -113,7 +114,7 @@ android {
 
 dependencies {
     provided files('src/main/libs/XposedBridgeApi-42.jar')
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:21.0.0-rc1'
 }
 
 project.task('askForPasswords') << {
