@@ -97,9 +97,10 @@ public class DonationFragment extends DialogFragment {
                 .setView(view)
                 .setNegativeButton(R.string.close, null);
 
-        mError = (TextView) view.findViewById(R.id.error);
         TextView info = (TextView) view.findViewById(R.id.info);
         info.setText(Html.fromHtml(getString(R.string.donation_info)));
+        
+        mError = (TextView) view.findViewById(R.id.error);
         mProgressBar = (ProgressBar) view.findViewById(android.R.id.progress);
         mGridView = (GridView) view.findViewById(R.id.grid);
         mGridView.setAdapter(new DonationAdapter(getActivity(), mDonationList, mInventorySet));
@@ -127,77 +128,89 @@ public class DonationFragment extends DialogFragment {
             }
         });
 
-        // Alternative payment methods
-        Coin bitcoin = new Bitcoin();
-        final Intent bitcoinIntent = Coin.getPaymentIntent(bitcoin);
-        final Intent paypalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Build.Links.DONATE));
-
+        final AlertDialog alertDialog;
         if (getResources().getBoolean(R.bool.config_alternative_payments)) {
+
+            // Show Bitcoin button if user have Bitcoin client installed. 
+            final Intent bitcoinIntent = Coin.getPaymentIntent(new Bitcoin());
             if (IntentUtils.hasActivityForThat(activity, bitcoinIntent)) {
                 builder.setPositiveButton(bitcoin.getNameResource(), null);
             }
 
+            // Show PayPal button.
+            final Intent paypalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Build.Links.DONATE));
             builder.setNeutralButton(R.string.paypal, null);
-        }
 
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            alertDialog = builder.create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 
-            class Data {
-
-                private final Button button;
-                private final Intent intent;
-                private final int iconResource;
-
-                private Data(Button button, Intent intent, int iconResource) {
-                    this.button = button;
-                    this.intent = intent;
-                    this.iconResource = iconResource;
-                }
-            }
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Data[] datas = new Data[]{
-                        new Data(
-                                alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL),
-                                paypalIntent, R.drawable.ic_action_paypal),
-                        new Data(
-                                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE),
-                                bitcoinIntent, R.drawable.ic_action_bitcoin),
-                };
-
-                ImageSpan span;
-                SpannableString string;
-                for (final Data data : datas) {
-                    final Button btn = data.button;
-                    if (btn != null) {
-                        span = new ImageSpan(getActivity(), data.iconResource);
-
-                        string = new SpannableString(" ");
-                        string.setSpan(span, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                        btn.setText(string);
-                        btn.setLayoutParams(new LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-                        btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startPaymentIntentWithAlertDialog(data.intent);
-                            }
-                        });
+                final class Data {
+    
+                    private final Button button;
+                    private final Intent intent;
+                    private final int iconResource;
+    
+                    private Data(Button button, Intent intent, int iconResource) {
+                        this.button = button;
+                        this.intent = intent;
+                        this.iconResource = iconResource;
                     }
                 }
-            }
-        });
+    
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    Data[] datas = new Data[] {
+                            new Data(
+                                    alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL),
+                                    paypalIntent, R.drawable.ic_action_paypal),
+                            new Data(
+                                    alertDialog.getButton(DialogInterface.BUTTON_POSITIVE),
+                                    bitcoinIntent, R.drawable.ic_action_bitcoin),
+                    };
+    
+                    ImageSpan span;
+                    SpannableString text;
+                    for (final Data data : datas) {
+                        final Button btn = data.button;
+                        if (btn != null) {
+                            span = new ImageSpan(getActivity(), data.iconResource);
+    
+                            // Replace text with an icon. 
+                            // This is a workaround to fix compound button's aligment.
+                            text = new SpannableString(" ");
+                            text.setSpan(span, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            btn.setText(text);
+    
+                            // Eat default weight.
+                            btn.setLayoutParams(new LinearLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT));
+    
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startPaymentIntentWithWarningAlertDialog(data.intent);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        } else {
+            alertDialog = builder.create();
+        }
 
         initBilling();
 
         return alertDialog;
     }
 
-    private void startPaymentIntentWithAlertDialog(final Intent intent) {
+    /**
+     * Shows a warning alert dialog to note, that those methods 
+     * may suck hard and nobody will care about it.<br/>
+     * Starts an intent if user is agree with it.
+     */
+    private void startPaymentIntentWithWarningAlertDialog(final Intent intent) {
         CharSequence messageText = getString(R.string.donation_no_responsibility);
         new DialogHelper.Builder(getActivity())
                 .setMessage(messageText)
@@ -208,7 +221,7 @@ public class DonationFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
                             startActivity(intent);
-                            dismiss();
+                            dismiss(); // Dismiss main fragment
                         } catch (ActivityNotFoundException e) { /* hell no */ }
                     }
                 })
@@ -235,6 +248,9 @@ public class DonationFragment extends DialogFragment {
         } : null);
     }
 
+    /**
+     * Updates GUI to display changes.
+     */
     private void updateUi() {
         DonationAdapter adapter = (DonationAdapter) mGridView.getAdapter();
         adapter.notifyDataSetChanged();
@@ -307,6 +323,11 @@ public class DonationFragment extends DialogFragment {
                 }
             };
 
+    /**
+     * Releases billing service.
+     *
+     * @see #initBilling()
+     */
     private void disposeBilling() {
         if (mHelper != null) {
             mHelper.dispose();
@@ -314,6 +335,11 @@ public class DonationFragment extends DialogFragment {
         }
     }
 
+    /**
+     * <b>Make sure you call {@link #disposeBilling()}!</b>
+     *
+     * @see #disposeBilling()
+     */
     private void initBilling() {
         setWaitScreen(true);
         disposeBilling();
