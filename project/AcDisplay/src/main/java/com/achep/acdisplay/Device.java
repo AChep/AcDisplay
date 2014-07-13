@@ -33,7 +33,7 @@ public class Device {
      * {@link Build.VERSION_CODES#L Lemon Cake} or higher, {@code false} otherwise.
      */
     public static boolean hasLemonCakeApi() {
-        return Build.VERSION.SDK_INT >= 20; // TODO: Change to constant
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.L;
     }
 
     /**
