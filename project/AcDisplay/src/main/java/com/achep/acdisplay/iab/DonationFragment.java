@@ -132,7 +132,8 @@ public class DonationFragment extends DialogFragment {
         if (getResources().getBoolean(R.bool.config_alternative_payments)) {
 
             // Show Bitcoin button if user have Bitcoin client installed. 
-            final Intent bitcoinIntent = Coin.getPaymentIntent(new Bitcoin());
+            final Bitcoin bitcoin = new Bitcoin();
+            final Intent bitcoinIntent = Coin.getPaymentIntent(bitcoin;
             if (IntentUtils.hasActivityForThat(activity, bitcoinIntent)) {
                 builder.setPositiveButton(bitcoin.getNameResource(), null);
             }
