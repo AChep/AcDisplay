@@ -164,7 +164,7 @@ public class DonationFragment extends DialogFragment {
                                 paypalIntent, R.drawable.ic_action_paypal),
                         new Data(
                                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE),
-                                paypalIntent, R.drawable.ic_action_bitcoin),
+                                bitcoinIntent, R.drawable.ic_action_bitcoin),
                 };
 
                 ImageSpan span;
