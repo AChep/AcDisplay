@@ -65,13 +65,21 @@
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
 
-# Don't change those timeout methods, so i can access it by reflections.
--keepclassmembers public class com.achep.acdisplay.Config {
-   *** *Timeout*(...);
-}
+#########
+######### AcDisplay rules
+#########
 
-# Keep settings' fragments to be able to access them from .xml
+# Keep fragments of settings to be able to access them from resources.
 -keep public class com.achep.acdisplay.settings.** extends android.app.Fragment
 
-# Keep xposed modules
--keep public class com.achep.acdisplay.xposed.***
+# Keep Xposed modules, cause they're predefined in /assets/xposed_init
+-keep public class com.achep.acdisplay.xposed.**
+
+# Keep Config methods to be able to access them using reflections.
+-keepclassmembers public class com.achep.acdisplay.Config {
+   public *** *(...);
+}
+
+# Ignore compartability hacks
+-keep class android.** { *; }
+-dontwarn android.**

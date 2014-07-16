@@ -66,10 +66,4 @@
         I would highly appreciate your help with it.
     ]]></string>
 
-    <!-- ParanoidAndroid -->
-    <string name="pa_title" translatable="false">Paranoid Android</string>
-    <string name="pa_message"><![CDATA[
-        Users may <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">expect trouble</a> when using AcDisplay on Paranoid Android.
-    ]]></string>
-
 </resources>

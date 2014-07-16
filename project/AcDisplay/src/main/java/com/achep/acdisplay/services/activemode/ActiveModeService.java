@@ -142,7 +142,7 @@ public class ActiveModeService extends BathService.ChildService implements
     }
 
     @Override
-    public String getName() {
+    public String getLabel() {
         return getContext().getString(R.string.service_bath_active_mode);
     }
 

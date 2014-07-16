@@ -36,7 +36,9 @@ import com.achep.acdisplay.Build;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.activities.MainActivity;
 
-import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -44,6 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Artem Chepurnoy
  */
+// THIS CAN BE NOT SAFE!!!
 public class BathService extends Service {
 
     private static final String TAG = "BathService";
@@ -55,20 +58,20 @@ public class BathService extends Service {
     public static void startService(Context context, Class<? extends ChildService> clazz) {
         synchronized (monitor) {
             if (sCreated) {
+
+                // Send broadcast intent to notify BathService
+                // to start this child.
                 Intent intent = new Intent(ACTION_ADD_SERVICE);
                 intent.putExtra(EXTRA_SERVICE_CLASS, clazz);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             } else if (!sServiceMap.containsKey(clazz)) {
                 try {
-                    // Adding child to parent service.
-                    ChildService child = clazz.newInstance();
-                    sServiceMap.put(clazz, child);
+                    // Put empty child to host service and start host.
+                    sServiceMap.put(clazz, clazz.newInstance());
+                    context.startService(new Intent(context, BathService.class));
                 } catch (InstantiationException | IllegalAccessException e) {
-                    // Should never happen
-                    throw new RuntimeException(e.getMessage());
+                    throw new RuntimeException(e.getMessage()); // Should never happen
                 }
-
-                context.startService(new Intent(context, BathService.class));
             }
         }
     }
@@ -76,12 +79,16 @@ public class BathService extends Service {
     public static void stopService(Context context, Class<? extends ChildService> clazz) {
         synchronized (monitor) {
             if (sCreated) {
+
+                // Send broadcast intent to notify BathService
+                // to stop this child.
                 Intent intent = new Intent(ACTION_REMOVE_SERVICE);
                 intent.putExtra(EXTRA_SERVICE_CLASS, clazz);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            } else if (sServiceMap.containsKey(clazz)) {
-                ChildService child = sServiceMap.remove(clazz);
-                child.onDestroy();
+            } else {
+
+                // Service is not created, so I can handle hash map manually.
+                sServiceMap.remove(clazz);
             }
         }
     }
@@ -90,6 +97,7 @@ public class BathService extends Service {
     private static final Object monitor = new Object();
     private static boolean sCreated;
 
+    private final HashMap<Class, ChildService> mMap = new HashMap<>(2);
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -106,20 +114,19 @@ public class BathService extends Service {
 
             synchronized (monitor) {
                 Class clazz = (Class) intent.getSerializableExtra(EXTRA_SERVICE_CLASS);
-                boolean containsClazz = sServiceMap.containsKey(clazz);
+                boolean containsClazz = mMap.containsKey(clazz);
 
                 if (containsClazz == add) {
-                    if (Build.DEBUG) Log.e(TAG, "Trying to add an existing service.");
                     return;
                 }
 
                 if (add) {
                     try {
-                        // Adding child to parent service.
+                        // Adding child to host service.
                         ChildService child = (ChildService) clazz.newInstance();
                         child.setContext(BathService.this);
                         child.onCreate();
-                        sServiceMap.put(clazz, child);
+                        mMap.put(clazz, child);
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e.getMessage()); // Should never happen
                     }
@@ -128,11 +135,11 @@ public class BathService extends Service {
                 }
 
                 // Removing child from parent service.
-                ChildService child = sServiceMap.remove(clazz);
+                ChildService child = mMap.remove(clazz);
                 child.onDestroy();
 
-                if (sServiceMap.isEmpty()) {
-                    BathService.this.stopSelf();
+                if (mMap.isEmpty()) {
+                    stopSelf();
                 } else {
                     updateNotification();
                 }
@@ -147,20 +154,29 @@ public class BathService extends Service {
         synchronized (monitor) {
             sCreated = true;
 
+            // Register for add / remove service events.
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(ACTION_ADD_SERVICE);
             intentFilter.addAction(ACTION_REMOVE_SERVICE);
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
             mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
-            Enumeration<ChildService> elements = sServiceMap.elements();
-            while (elements.hasMoreElements()) {
-                ChildService child = elements.nextElement();
-                child.setContext(this);
-                child.onCreate();
-            }
+            if (sServiceMap.isEmpty()) {
+                stopSelf();
+            } else {
+                // Init all children
+                Set<Map.Entry<Class, ChildService>> set = sServiceMap.entrySet();
+                for (Map.Entry<Class, ChildService> entry : set) {
+                    ChildService child = entry.getValue();
+                    child.setContext(this);
+                    child.onCreate();
 
-            startForeground(App.ID_NOTIFY_BATH, buildNotification());
+                    mMap.put(entry.getKey(), child);
+                }
+                sServiceMap.clear();
+
+                startForeground(App.ID_NOTIFY_BATH, buildNotification());
+            }
         }
     }
 
@@ -174,12 +190,11 @@ public class BathService extends Service {
             mLocalBroadcastManager.unregisterReceiver(mReceiver);
             mLocalBroadcastManager = null;
 
-            Enumeration<ChildService> elements = sServiceMap.elements();
-            while (elements.hasMoreElements()) {
-                ChildService child = elements.nextElement();
+            // Kill all children
+            for (ChildService child : mMap.values()) {
                 child.onDestroy();
             }
-            sServiceMap.clear();
+            mMap.clear();
         }
     }
 
@@ -188,23 +203,29 @@ public class BathService extends Service {
         nm.notify(App.ID_NOTIFY_BATH, buildNotification());
     }
 
+    /**
+     * <p>NOT SYNCHRONIZED!</p>
+     * Builds fresh notification with all {@link ChildService children services}'s
+     * {@link com.achep.acdisplay.services.BathService.ChildService#getLabel() labels} in.
+     * Content intent starts {@link com.achep.acdisplay.activities.MainActivity}.
+     */
     private Notification buildNotification() {
         boolean empty = true;
 
         StringBuilder builder = new StringBuilder();
         String divider = getString(R.string.settings_multi_list_divider);
-        Enumeration<ChildService> elements = sServiceMap.elements();
-        while (elements.hasMoreElements()) {
+        for (ChildService child : mMap.values()) {
             if (!empty) {
                 builder.append(divider);
             }
-            ChildService child = elements.nextElement();
-            builder.append(child.getName());
+            builder.append(child.getLabel());
             empty = false;
         }
 
         String contentText = builder.toString();
-        contentText = contentText.charAt(0) + contentText.substring(1).toLowerCase();
+        if (contentText.length() > 0) {
+            contentText = contentText.charAt(0) + contentText.substring(1).toLowerCase();
+        }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 App.ID_NOTIFY_BATH, new Intent(this, MainActivity.class),
@@ -224,7 +245,9 @@ public class BathService extends Service {
     }
 
     /**
-     * An implementation of fake service.
+     * Base for fake foreground service hosted in {@link com.achep.acdisplay.services.BathService}.
+     * Call {@link BathService#startService(android.content.Context, Class)} to start this service,
+     * and {@link BathService#stopService(android.content.Context, Class)} to stop.
      *
      * @author Artem Chepurnoy
      */
@@ -233,7 +256,9 @@ public class BathService extends Service {
         private Context mContext;
 
         public ChildService() {
-            if (Build.DEBUG) Log.d(TAG, "Creating child service...");
+            if (Build.DEBUG) {
+                Log.d(TAG, "Creating " + getClass().getSimpleName() + " service...");
+            }
         }
 
         void setContext(Context context) {
@@ -254,7 +279,10 @@ public class BathService extends Service {
          */
         public abstract void onDestroy();
 
-        public abstract String getName();
+        /**
+         * @return The label of this service.
+         */
+        public abstract String getLabel();
 
         public Context getContext() {
             return mContext;

@@ -51,20 +51,24 @@ public class Receiver extends BroadcastReceiver {
             case App.ACTION_DISABLE:
             case App.ACTION_TOGGLE:
                 Config config = Config.getInstance();
-                if (action.equals(App.ACTION_ENABLE)) {
-                    Log.i(TAG, "Enabling AcDisplay from broadcast receiver.");
-                    ToastUtils.showLong(context, R.string.remote_enable_acdisplay);
-                    config.setEnabled(context, true, null);
-                } else if (action.equals(App.ACTION_DISABLE)) {
-                    Log.i(TAG, "Disabling AcDisplay from broadcast receiver.");
-                    ToastUtils.showLong(context, R.string.remote_disable_acdisplay);
-                    config.setEnabled(context, false, null);
-                } else {
-                    Log.i(TAG, "Toggling from broadcast receiver.");
-                    config.setEnabled(context, !config.isEnabled(), null);
-                    ToastUtils.showLong(context, config.isEnabled()
-                            ? R.string.remote_enable_acdisplay
-                            : R.string.remote_disable_acdisplay);
+                switch (action) {
+                    case App.ACTION_ENABLE:
+                        Log.i(TAG, "Enabling AcDisplay from broadcast receiver.");
+                        ToastUtils.showLong(context, R.string.remote_enable_acdisplay);
+                        config.setEnabled(context, true, null);
+                        break;
+                    case App.ACTION_DISABLE:
+                        Log.i(TAG, "Disabling AcDisplay from broadcast receiver.");
+                        ToastUtils.showLong(context, R.string.remote_disable_acdisplay);
+                        config.setEnabled(context, false, null);
+                        break;
+                    default:
+                        Log.i(TAG, "Toggling from broadcast receiver.");
+                        config.setEnabled(context, !config.isEnabled(), null);
+                        ToastUtils.showLong(context, config.isEnabled()
+                                ? R.string.remote_enable_acdisplay
+                                : R.string.remote_disable_acdisplay);
+                        break;
                 }
                 break;
         }

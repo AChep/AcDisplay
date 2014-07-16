@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.activities.KeyguardActivity;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;

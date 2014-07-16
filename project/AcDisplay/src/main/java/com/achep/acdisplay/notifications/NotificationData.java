@@ -18,6 +18,9 @@
  */
 package com.achep.acdisplay.notifications;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -25,7 +28,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.AsyncTask;
@@ -34,12 +36,10 @@ import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.BackgroundFactoryThread;
 import com.achep.acdisplay.notifications.parser.Extractor;
-import com.achep.acdisplay.notifications.parser.NativeExtractor;
-import com.achep.acdisplay.notifications.parser.ViewExtractor;
 import com.achep.acdisplay.utils.BitmapUtils;
 
-import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -59,6 +59,8 @@ public class NotificationData {
     public CharSequence infoText;
     public CharSequence subText;
     public CharSequence summaryText;
+
+    public Action[] actions;
 
     private Bitmap icon;
     private Bitmap circleIcon;
@@ -111,6 +113,94 @@ public class NotificationData {
         stopAsyncTask(mIconLoader);
     }
 
+    /**
+     * Wrapper around {@link android.app.Notification.Action} class that supports both
+     * Jelly Bean (via reflections) and KitKat Android versions.
+     */
+    public static class Action {
+
+        public final int icon;
+        public final CharSequence title;
+        public final PendingIntent intent;
+
+        private Action(int icon, CharSequence title, PendingIntent intent) {
+            this.icon = icon;
+            this.title = title;
+            this.intent = intent;
+        }
+
+        @SuppressLint("NewApi")
+        private static Action[] create(Notification notification) {
+            if (Device.hasKitKatApi()) {
+                Notification.Action[] src = notification.actions;
+
+                if (src == null) {
+                    return null;
+                }
+
+                final int length = src.length;
+                final Action[] dst = new Action[src.length];
+                for (int i = 0; i < length; i++) {
+                    dst[i] = new Action(src[i].icon, src[i].title, src[i].actionIntent);
+                }
+
+                return dst;
+            }
+
+            // Getting actions from stupid Jelly Bean.
+            Object[] src;
+            try {
+                Field field = Notification.class.getDeclaredField("actions");
+                field.setAccessible(true);
+                src = (Object[]) field.get(notification);
+            } catch (Exception e) {
+                Log.w(TAG, "Failed to access actions on Jelly Bean.");
+                return null;
+            }
+
+            if (src == null) {
+                return null;
+            }
+
+            final int length = src.length;
+            final Action[] dst = new Action[src.length];
+            for (int i = 0; i < length; i++) {
+                int icon;
+                CharSequence title;
+                PendingIntent intent;
+
+                Object object = src[i];
+                try {
+                    Field field = object.getClass().getDeclaredField("icon");
+                    field.setAccessible(true);
+                    icon = (int) field.get(object);
+                } catch (Exception e) {
+                    icon = 0;
+                }
+
+                try {
+                    Field field = object.getClass().getDeclaredField("title");
+                    field.setAccessible(true);
+                    title = (CharSequence) field.get(object);
+                } catch (Exception e) {
+                    title = null;
+                }
+
+                try {
+                    Field field = object.getClass().getDeclaredField("actionIntent");
+                    field.setAccessible(true);
+                    intent = (PendingIntent) field.get(object);
+                } catch (Exception e) {
+                    intent = null;
+                }
+
+                dst[i] = new Action(icon, title, intent);
+            }
+
+            return dst;
+        }
+    }
+
     // //////////////////////////////////////////
     // /////////// -- LISTENERS -- //////////////
     // //////////////////////////////////////////
@@ -140,8 +230,7 @@ public class NotificationData {
     // ///////////// -- MAIN -- /////////////////
     // //////////////////////////////////////////
 
-    private static SoftReference<Extractor> sNativeExtractor = new SoftReference<>(null);
-    private static SoftReference<Extractor> sViewExtractor = new SoftReference<>(null);
+    private static final Extractor sExtractor = new Extractor();
     private IconLoaderThread mIconLoader;
     private BackgroundFactoryThread mBackgroundLoader;
     private BackgroundFactoryThread.Callback mBackgroundLoaderCallback =
@@ -223,35 +312,12 @@ public class NotificationData {
     }
 
     public void loadNotification(Context context, StatusBarNotification sbn, boolean isRead) {
-        boolean useViewExtractor = !Device.hasKitKatApi();
-
-        if (!useViewExtractor) {
-            Extractor extractor = sNativeExtractor.get();
-            if (extractor == null) {
-                extractor = new NativeExtractor();
-                sNativeExtractor = new SoftReference<>(extractor);
-            }
-            extractor.loadTexts(context, sbn, this);
-
-            // Developer of that notification thinks that he'll be more awesome
-            // while using truly custom notifications (90% percents of them
-            // sucks a lot).
-            //noinspection PointlessBooleanExpression
-            useViewExtractor = true
-                    && TextUtils.isEmpty(titleText)
-                    && TextUtils.isEmpty(getLargeMessage());
-        }
-        if (useViewExtractor) {
-            Extractor extractor = sViewExtractor.get();
-            if (extractor == null) {
-                extractor = new ViewExtractor();
-                sViewExtractor = new SoftReference<>(extractor);
-            }
-            extractor.loadTexts(context, sbn, this);
-        }
-
-        number = sbn.getNotification().number;
+        Notification notification = sbn.getNotification();
+        actions = Action.create(notification);
+        number = notification.number;
         markAsRead(isRead);
+
+        sExtractor.loadTexts(context, sbn, this);
 
         stopAsyncTask(mIconLoader);
         mIconLoader = new IconLoaderThread(context, sbn, this);

@@ -61,7 +61,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
      *
      * @author Artem Chepurnoy
      */
-    public static class DownloadText extends AsyncTask<String, Void, String> {
+    public static class DownloadText extends AsyncTask<String, Void, String[]> {
 
         private static final String TAG = "DownloadText";
         private WeakReference<Callback> mCallback;
@@ -74,10 +74,8 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
 
             /**
              * Called when downloading finished or failed.
-             *
-             * @param text downloaded text, or {@code null} if failed.
              */
-            void onDownloaded(String text);
+            void onDownloaded(String[] texts);
         }
 
         public DownloadText(Callback callback) {
@@ -85,19 +83,24 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
         }
 
         @Override
-        protected String doInBackground(String... urls) {
-            try {
-                URL url = new URL(urls[0]);
-                InputStreamReader isr = new InputStreamReader(url.openStream());
-                BufferedReader br = new BufferedReader(isr);
-                return FileUtils.readTextFromBufferedReader(br);
-            } catch (IOException e) {
-                return null;
+        protected String[] doInBackground(String... urls) {
+            String[] result = new String[urls.length];
+            for (int i = 0; i < urls.length; i++) {
+                if (Build.DEBUG) Log.d(TAG, "Fetching from " + urls[i]);
+                try {
+                    URL url = new URL(urls[i]);
+                    InputStreamReader isr = new InputStreamReader(url.openStream());
+                    BufferedReader br = new BufferedReader(isr);
+                    result[i] = FileUtils.readTextFromBufferedReader(br);
+                } catch (IOException e) {
+                    result[i] = null;
+                }
             }
+            return result;
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
 
             // Notify listener that downloading done.

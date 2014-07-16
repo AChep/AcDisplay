@@ -32,7 +32,7 @@ import com.achep.acdisplay.utils.BitmapUtils;
 
 /**
  * Factory to prepare your background for
- * {@link com.achep.acdisplay.acdisplay.AcDisplayFragment#dispatchSetBackground(android.graphics.Bitmap)}.
+ * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity#dispatchSetBackground(android.graphics.Bitmap)}.
  */
 public class BackgroundFactoryThread extends AsyncTask<Void, Void, Bitmap> {
 

@@ -23,7 +23,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -224,6 +223,6 @@ public class AcDisplayActivity extends KeyguardActivity implements
         mBackgroundView.setVisibility(View.VISIBLE);
 
         mBackgroundView.animate().cancel();
-        mBackgroundView.animate().alpha(0.8f).setListener(null);
+        mBackgroundView.animate().alpha(1f).setListener(null);
     }
 }

@@ -78,11 +78,11 @@ public class AcDisplayFragment extends Fragment implements
     private ForwardingLayout mIconsContainer;
     private ForwardingListener mSceneForwardingListener;
     private ForwardingListener mIconsForwardingListener;
-    private Handler mTouchHandler = new Handler();
+    private final Handler mTouchHandler = new Handler();
 
     // Pinnable widgets
     private boolean mPinCanReadAloud = false;
-    private Handler mPinHandler = new Handler() {
+    private final Handler mPinHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -101,8 +101,8 @@ public class AcDisplayFragment extends Fragment implements
     private int mMaxFlingVelocity;
     private int mMinFlingVelocity;
 
-    private HashMap<View, Widget> mWidgetsMap = new HashMap<>();
-    private HashMap<String, SceneCompat> mScenesMap = new HashMap<>();
+    private final HashMap<View, Widget> mWidgetsMap = new HashMap<>();
+    private final HashMap<String, SceneCompat> mScenesMap = new HashMap<>();
     private Widget mSelectedWidget;
     private View mPressedIconView;
 
@@ -207,9 +207,16 @@ public class AcDisplayFragment extends Fragment implements
                                           OpenNotification osbn,
                                           int event) {
         switch (event) { // don't update on spam-change.
+            case NotificationPresenter.EVENT_REMOVED:
+                // If widget related to removed notification is pinned - unpin it.
+                if (isWidgetPinned() && mSelectedWidget instanceof NotifyWidget) {
+                    NotifyWidget widget = (NotifyWidget) mSelectedWidget;
+                    if (NotificationUtils.equals(widget.getNotification(), osbn)) {
+                        showMainWidget(); // Unpin
+                    }
+                }
             case NotificationPresenter.EVENT_POSTED:
             case NotificationPresenter.EVENT_CHANGED:
-            case NotificationPresenter.EVENT_REMOVED:
             case NotificationPresenter.EVENT_BATH:
                 if (getActivity() != null) {
                     updateNotificationList();
@@ -220,7 +227,11 @@ public class AcDisplayFragment extends Fragment implements
         }
     }
 
+    @Override
     public void requestBackgroundUpdate(Widget widget) { /* unused */ }
+
+    @Override
+    public void requestTimeoutRestart(Widget widget) { /* unused */ }
 
     public void unlock(Runnable runnable, boolean pendingFinish) {
         if (runnable != null) {
@@ -285,10 +296,8 @@ public class AcDisplayFragment extends Fragment implements
                     return; // Don't fall down.
                 }
 
-                long elapsedTime = event.getEventTime() - event.getDownTime();
-
                 //noinspection LoopStatementThatDoesntLoop
-                while (isDismissible(mSelectedWidget) && elapsedTime > 20) {
+                while (isDismissible(mSelectedWidget)) {
                     mVelocityTracker.computeCurrentVelocity(1000);
 
                     float velocityX = mVelocityTracker.getXVelocity();
@@ -300,7 +309,10 @@ public class AcDisplayFragment extends Fragment implements
                     float absDeltaY = Math.abs(deltaY);
 
                     int height = getSceneView().getHeight();
-                    if (absDeltaY < height / 2) {
+                    if (height == 0) {
+                        // Scene view is not measured yet.
+                        break; // Exits from loop not from the switch!
+                    } else if (absDeltaY < height / 2) {
                         if (mMinFlingVelocity <= absVelocityY
                                 && absVelocityY <= mMaxFlingVelocity
                                 && absVelocityY > absVelocityX * 2
@@ -347,20 +359,20 @@ public class AcDisplayFragment extends Fragment implements
                     }
 
                     // Instant dismissing.
-                    mSelectedWidget.onDismissed();
+                    onWidgetDismiss(mSelectedWidget);
                     resetScene();
                 }
 
                 // Don't not reset scene while dismissing, or if
                 // pinnable.
                 if (!dismiss) {
-                    if (mPressedIconView == null || !isPinnable()){
+                    if (mPressedIconView == null || !isPinnable()) {
                         resetScene();
                     } else {
                         onWidgetPinned(mSelectedWidget);
 
                         // TODO: Detect animation by Android API, not by delay.
-                        elapsedTime = event.getEventTime() - event.getDownTime();
+                        long elapsedTime = event.getEventTime() - event.getDownTime();
                         if (elapsedTime > 150) {
                             mSceneContainerPinAnim.setTarget(getSceneView());
                             mSceneContainerPinAnim.start();
@@ -397,7 +409,7 @@ public class AcDisplayFragment extends Fragment implements
      * Called when widget is going to be dismissed.
      */
     protected void onWidgetDismiss(Widget widget) {
-        widget.onDismissed();
+        widget.onDismiss();
         // TODO: Clear widget from different maps and layouts
     }
 
@@ -459,6 +471,8 @@ public class AcDisplayFragment extends Fragment implements
         float height = getSceneView().getHeight();
         float progress = MathUtils.range(y / height, 0f, 1f);
         populateSceneContainerDismissAnimation(progress);
+
+        if (Build.DEBUG) Log.d(TAG, "dismiss_progress=" + progress + " height=" + height);
     }
 
     @SuppressLint("NewApi")
@@ -471,11 +485,11 @@ public class AcDisplayFragment extends Fragment implements
         mPinHandler.removeMessages(MSG_RESET_SCENE);
 
         if (mSelectedWidget != null) {
-            if (mSelectedWidget.getCollapsedView() != null) {
-                mSelectedWidget.getCollapsedView().setSelected(false);
+            if (mSelectedWidget.getIconView() != null) {
+                mSelectedWidget.getIconView().setSelected(false);
             }
 
-            mSelectedWidget.onExpandedViewDetached();
+            mSelectedWidget.onViewDetached();
         }
 
         if ((mSelectedWidget = widget) == null) {
@@ -490,7 +504,7 @@ public class AcDisplayFragment extends Fragment implements
             } else if (mCurrentScene != scene) {
                 goScene(scene, animate);
             } else if (Device.hasKitKatApi() && animate) {
-                ViewGroup viewGroup = mSelectedWidget.getExpandedView();
+                ViewGroup viewGroup = mSelectedWidget.getView();
                 if (viewGroup != null && viewGroup.isLaidOut()) {
 
                     // Automatically animate content change.
@@ -498,11 +512,11 @@ public class AcDisplayFragment extends Fragment implements
                 }
             }
 
-            mSelectedWidget.onExpandedViewAttached();
+            mSelectedWidget.onViewAttached();
 
-            if (mSelectedWidget.getCollapsedView() != null) {
-                mSelectedWidget.getCollapsedView().setSelected(true);
-                mSelectedWidget.getCollapsedView().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+            if (mSelectedWidget.getIconView() != null) {
+                mSelectedWidget.getIconView().setSelected(true);
+                mSelectedWidget.getIconView().performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         }
     }
@@ -600,7 +614,7 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     protected SceneCompat findSceneByWidget(Widget widget) {
-        if (widget.hasExpandedView()) {
+        if (widget.getView() != null) {
             String className = widget.getClass().getName();
             return mScenesMap.get(className);
         }
@@ -729,7 +743,7 @@ public class AcDisplayFragment extends Fragment implements
             if (notifyUsed[i]) continue;
 
             NotifyWidget fragment = new NotifyWidget(this, this);
-            View view = fragment.createCollapsedView(inflater, container);
+            View view = fragment.createIconView(inflater, container);
             updateIconSize(view, iconSize);
             container.addView(view);
 
@@ -790,7 +804,7 @@ public class AcDisplayFragment extends Fragment implements
                     default:
                         throw new IllegalArgumentException("Unknown acfragment type found!");
                 }
-                View view = fragment.createCollapsedView(inflater, container);
+                View view = fragment.createIconView(inflater, container);
                 container.addView(view, j++);
                 mWidgetsMap.put(view, fragment);
             }
@@ -807,9 +821,9 @@ public class AcDisplayFragment extends Fragment implements
             String type = fragment.getClass().getName();
             SceneCompat scene = map.get(type);
             if (scene != null) {
-                fragment.createExpandedView(null, null, scene.getView());
+                fragment.createView(null, null, scene.getView());
             } else {
-                ViewGroup sceneView = fragment.createExpandedView(inflater, mSceneContainer, null);
+                ViewGroup sceneView = fragment.createView(inflater, mSceneContainer, null);
                 if (sceneView != null) {
                     scene = new SceneCompat(mSceneContainer, sceneView);
                     map.put(type, scene);

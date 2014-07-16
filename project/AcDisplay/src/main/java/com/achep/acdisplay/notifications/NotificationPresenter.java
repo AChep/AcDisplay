@@ -249,7 +249,7 @@ public class NotificationPresenter implements NotificationList.Callback {
     }
 
     /**
-     * Called on {@link NotificationHandleService#onNotificationRemoved(android.service.notification.StatusBarNotification)}
+     * Called on {@link com.achep.acdisplay.services.MediaService#onNotificationRemoved(android.service.notification.StatusBarNotification)}
      */
     public void removeNotification(Context context, StatusBarNotification sbn) {
         logNotification(sbn, "removed");

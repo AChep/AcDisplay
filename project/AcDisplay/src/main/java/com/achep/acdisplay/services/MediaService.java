@@ -19,6 +19,7 @@
 
 package com.achep.acdisplay.services;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -43,7 +44,7 @@ import com.achep.acdisplay.notifications.NotificationPresenter;
  *
  * @author Artem Chepurnoy
  */
-@TargetApi(Build.VERSION_CODES.KITKAT)
+@SuppressLint("NewApi")
 public class MediaService extends NotificationListenerService implements
         RemoteController.OnClientUpdateListener {
 
@@ -72,8 +73,8 @@ public class MediaService extends NotificationListenerService implements
     public IBinder onBind(Intent intent) {
         switch (intent.getAction()) {
             case App.ACTION_BIND_MEDIA_CONTROL_SERVICE:
-                if (!Device.hasKitKatApi()) {
-                    throw new RuntimeException("Required Android API version 19 or more!");
+                if (!Device.hasKitKatApi() && !Device.hasLemonCakeApi()) {
+                    throw new RuntimeException("Required Android API version 19 or 20!");
                 }
                 return mBinder;
             default:
@@ -131,7 +132,7 @@ public class MediaService extends NotificationListenerService implements
 
     @Override
     public void onCreate() {
-        if (Device.hasKitKatApi()) {
+        if (Device.hasKitKatApi() && !Device.hasLemonCakeApi()) {
             mRemoteController = new RemoteController(this, this);
             mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         }
@@ -139,7 +140,7 @@ public class MediaService extends NotificationListenerService implements
 
     @Override
     public void onDestroy() {
-        if (Device.hasKitKatApi()) {
+        if (Device.hasKitKatApi() && !Device.hasLemonCakeApi()) {
             setRemoteControllerDisabled();
         }
     }

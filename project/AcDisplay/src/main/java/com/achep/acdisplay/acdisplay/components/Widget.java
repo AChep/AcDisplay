@@ -20,7 +20,6 @@
 package com.achep.acdisplay.acdisplay.components;
 
 import android.graphics.Bitmap;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,28 +31,46 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * Created by achep on 14.05.14 for AcDisplay.
+ * Base of AcDisplay's widgets.
  *
  * @author Artem Chepurnoy
  */
 public abstract class Widget {
 
-    private AcDisplayFragment mAcDisplayFragment;
+    private final AcDisplayFragment mHostFragment;
+    protected final Callback mCallback;
 
-    private ViewGroup mExpandedViewGroup;
-    private View mCollapsedView;
-
-    protected Callback mCallback;
+    private ViewGroup mView;
+    private View mIconView;
 
     private boolean mShown;
 
+    /**
+     * Interface definition for a callback to host fragment.
+     */
     public interface Callback {
-        void requestBackgroundUpdate(Widget widget);
+
+        /**
+         * Requests fragment to update widget's dynamic background.
+         *
+         * @see #getBackground()
+         * @see #getBackgroundMask()
+         */
+        public void requestBackgroundUpdate(Widget widget);
+
+        /**
+         * Requests fragment to restarts timeout.
+         */
+        public void requestTimeoutRestart(Widget widget);
     }
 
     public Widget(Callback callback, AcDisplayFragment fragment) {
+        if (callback == null || fragment == null) {
+            throw new RuntimeException("Widget can not be initialized without callback or host.");
+        }
+
         mCallback = callback;
-        mAcDisplayFragment = fragment;
+        mHostFragment = fragment;
     }
 
     /**
@@ -62,9 +79,9 @@ public abstract class Widget {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(23, 651)
-                .append(mAcDisplayFragment)
-                .append(mExpandedViewGroup)
-                .append(mCollapsedView)
+                .append(mHostFragment)
+                .append(mView)
+                .append(mIconView)
                 .append(mShown)
                 .toHashCode();
     }
@@ -82,30 +99,35 @@ public abstract class Widget {
         Widget widget = (Widget) o;
         return new EqualsBuilder()
                 .append(mShown, widget.mShown)
-                .append(mAcDisplayFragment, widget.mAcDisplayFragment)
-                .append(mExpandedViewGroup, widget.mExpandedViewGroup)
-                .append(mCollapsedView, widget.mCollapsedView)
+                .append(mHostFragment, widget.mHostFragment)
+                .append(mView, widget.mView)
+                .append(mIconView, widget.mIconView)
                 .isEquals();
     }
 
     public AcDisplayFragment getHostFragment() {
-        return mAcDisplayFragment;
+        return mHostFragment;
     }
+
+    //-- DISMISSING WIDGET ----------------------------------------------------
 
     /**
      * @return {@code true} if the widget can be dismissed, {@code false} otherwise
-     * @see #onDismissed()
+     * @see #onDismiss()
      */
     public boolean isDismissible() {
         return false;
     }
 
     /**
-     * Called when widget (may be not widget, but its content) has been dismissed.
+     * Called when widget is being dismissed. For example, here you need to dismiss
+     * notification from system if it's notification widget.
      *
      * @see #isDismissible()
      */
-    public void onDismissed() { /* reserved for children */ }
+    public void onDismiss() { /* reserved for children */ }
+
+    //-- READING WIDGET -------------------------------------------------------
 
     /**
      * @return {@code true} if the widget can be read aloud, {@code false} otherwise
@@ -123,68 +145,97 @@ public abstract class Widget {
         return null;
     }
 
+    //-- DYNAMIC BACKGROUND ---------------------------------------------------
+
     /**
      * @return The bitmap to be used as background, {@code null} if no background.
+     * @see #getBackgroundMask()
      */
     public Bitmap getBackground() {
         return null;
     }
 
     /**
-     * @return The mask of widget's background, or {@code 0} to show always.
+     * @return The mask of widget's background, or {@code 0} to show background
+     * not depending on any config.
      * @see Config#DYNAMIC_BG_ARTWORK_MASK
      * @see Config#DYNAMIC_BG_NOTIFICATION_MASK
+     * @see #getBackground()
      */
     public int getBackgroundMask() {
         return 0;
     }
 
+    //-- LIFE CYCLE -----------------------------------------------------------
+
     public void onCreate() { /* empty */ }
 
-    public boolean isExpandedViewAttached() {
-        return mShown;
-    }
-
-    public void onExpandedViewAttached() {
+    /**
+     * This is called when the {@link #getView() view} is attached to host fragment.
+     * Here you need to update view's content.
+     *
+     * @see #onViewDetached()
+     * @see #isViewAttached()
+     */
+    public void onViewAttached() {
         mShown = true;
     }
 
-    public void onExpandedViewDetached() {
+    /**
+     * This is called when the {@link #getView() view} is detached from host fragment.
+     *
+     * @see #onViewAttached()
+     * @see #isViewAttached()
+     */
+    public void onViewDetached() {
         mShown = false;
+    }
+
+    public boolean isViewAttached() {
+        return mShown;
     }
 
     public void onDestroy() { /* empty */ }
 
+    //-- VIEWS ----------------------------------------------------------------
+
     /**
-     * @return {@code true} if the widget contains large view, {@code false} otherwise
+     * @return The icon of this widget.
+     * @see #onCreateIconView(android.view.LayoutInflater, android.view.ViewGroup)
      */
-    public boolean hasExpandedView() {
-        return getExpandedView() != null;
+    public View getIconView() {
+        return mIconView;
     }
 
-    public View getCollapsedView() {
-        return mCollapsedView;
+    /**
+     * Returns the view of widget. Please note, that this view can be reused by
+     * other similar widgets.
+     *
+     * @return The main view of this widget.
+     * @see #onViewAttached()
+     * @see #onViewDetached()
+     * @see #isViewAttached()
+     * @see #onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.view.ViewGroup)
+     */
+    public ViewGroup getView() {
+        return mView;
     }
 
-    public ViewGroup getExpandedView() {
-        return mExpandedViewGroup;
+    public View createIconView(LayoutInflater inflater, ViewGroup container) {
+        mIconView = onCreateIconView(inflater, container);
+        return mIconView;
     }
 
-    public View createCollapsedView(LayoutInflater inflater, ViewGroup container) {
-        return (mCollapsedView = onCreateCollapsedView(inflater, container));
+    public ViewGroup createView(LayoutInflater inflater, ViewGroup container, ViewGroup view) {
+        mView = onCreateView(inflater, container, view);
+        return mView;
     }
 
-    public ViewGroup createExpandedView(LayoutInflater inflater, ViewGroup container,
-                                        ViewGroup sceneView) {
-        return (mExpandedViewGroup = onCreateExpandedView(inflater, container, sceneView));
-    }
-
-    protected View onCreateCollapsedView(LayoutInflater inflater, ViewGroup container) {
+    protected View onCreateIconView(LayoutInflater inflater, ViewGroup container) {
         return null;
     }
 
-    protected ViewGroup onCreateExpandedView(LayoutInflater inflater, ViewGroup container,
-                                             ViewGroup view) {
+    protected ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container, ViewGroup view) {
         return null;
     }
 

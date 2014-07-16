@@ -19,13 +19,10 @@
 
 package com.achep.acdisplay.widgets;
 
-import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -37,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationData;
 import com.achep.acdisplay.notifications.NotificationUtils;
@@ -207,9 +203,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             mIcon.setNotification(osbn);
         }
 
-        if (Device.hasKitKatApi()) {
-            updateActionButtons(osbn);
-        }
+        updateActionButtons(osbn);
     }
 
     /**
@@ -217,10 +211,9 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
      * from given notification. Actually needs {@link android.os.Build.VERSION_CODES#KITKAT KitKat}
      * or higher Android version.
      */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void updateActionButtons(OpenNotification osbn) {
         StatusBarNotification sbn = osbn.getStatusBarNotification();
-        Notification.Action[] actions = sbn.getNotification().actions;
+        NotificationData.Action[] actions = osbn.getNotificationData().actions;
 
         ViewUtils.setVisible(mActionsContainer, actions != null);
         if (actions != null) {
@@ -245,7 +238,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (int i = 0; i < actionCount; i++) {
-                final Notification.Action action = actions[i];
+                final NotificationData.Action action = actions[i];
 
                 View root = rootViews[i];
                 TextView actionTextView = actionViews[i];
@@ -269,7 +262,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                     @Override
                     public void onClick(View v) {
                         if (mOnClickListener != null) {
-                            mOnClickListener.onActionButtonClick(v, action.actionIntent);
+                            mOnClickListener.onActionButtonClick(v, action.intent);
                         }
                     }
                 });

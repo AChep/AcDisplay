@@ -19,8 +19,7 @@
 
 package com.achep.acdisplay.compat;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.annotation.SuppressLint;
 import android.transition.Scene;
 import android.view.ViewGroup;
 
@@ -32,13 +31,13 @@ import com.achep.acdisplay.Device;
  *
  * @author Artem Chepurnoy
  */
+@SuppressLint("NewApi")
 public class SceneCompat {
 
     private final ViewGroup mViewGroup;
     private final ViewGroup mView;
     public Scene scene;
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public SceneCompat(ViewGroup viewGroup, ViewGroup view) {
         if (Device.hasKitKatApi()) {
             scene = new Scene(viewGroup, view);
@@ -47,7 +46,6 @@ public class SceneCompat {
         mView = view;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void enter() {
         if (Device.hasKitKatApi()) {
             scene.enter();
