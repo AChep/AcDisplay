@@ -133,7 +133,7 @@ public class DonationFragment extends DialogFragment {
 
             // Show Bitcoin button if user have Bitcoin client installed. 
             final Bitcoin bitcoin = new Bitcoin();
-            final Intent bitcoinIntent = Coin.getPaymentIntent(bitcoin;
+            final Intent bitcoinIntent = Coin.getPaymentIntent(bitcoin);
             if (IntentUtils.hasActivityForThat(activity, bitcoinIntent)) {
                 builder.setPositiveButton(bitcoin.getNameResource(), null);
             }
