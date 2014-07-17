@@ -21,10 +21,10 @@
 
     <!-- All device dependent modification goes here -->
     <style name="AppThemeBase" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
 
         <!-- Dialog -->
         <item name="textAppearanceDialogTitle">@style/TextAppearance.Dialog.Title</item>
