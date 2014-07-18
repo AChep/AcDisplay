@@ -28,7 +28,7 @@ Clone the project and come in:
 To build debug version: (only English and Russian locales included)
 
          $ ./gradlew assembleDebug
-         # Builds all the things. Grab compiled application from ./AcDisplay/build/apk/
+         # Builds all the things. Grab compiled application from ./AcDisplay/build/outputs/apk/
 
 To build release version:
 
@@ -40,6 +40,6 @@ To build release version:
          
          $ ./gradlew assembleRelease
          # You will be asked for passwords in proccess.
-         # Grab compiled application from ./AcDisplay/build/apk/
+         # Grab compiled application from ./AcDisplay/build/outputs/apk/
 
-You may also use the Android Studio to build.
+You may also use the Android Studio graphic interface to build.
