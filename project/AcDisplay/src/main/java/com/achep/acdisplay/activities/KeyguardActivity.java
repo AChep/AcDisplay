@@ -221,7 +221,7 @@ public abstract class KeyguardActivity extends Activity {
                 if (runnable != null) runnable.run();
                 if (finish) {
                     finish();
-                    overridePendingTransition(0, 0);
+                    overridePendingTransition(0, R.anim.activity_unlock);
                 }
             }
         }, delay);
