@@ -11,12 +11,14 @@ import com.achep.acdisplay.widgets.CircleView;
 public class CircleRadiusAnimation extends Animation {
 
     private final CircleView mCircleView;
+    private final boolean mChangeDrawnRadius;
     private float from;
     private float to;
 
-    public CircleRadiusAnimation(CircleView circleView, float from, float to) {
+    public CircleRadiusAnimation(CircleView circleView, float from, float to, boolean real) {
         super();
         mCircleView = circleView;
+        mChangeDrawnRadius = real;
         this.from = from;
         this.to = to;
     }
@@ -26,7 +28,11 @@ public class CircleRadiusAnimation extends Animation {
         super.applyTransformation(interpolatedTime, t);
         float value = (from + (to - from) * interpolatedTime);
 
-        mCircleView.setRadius(value);
+        if (mChangeDrawnRadius) {
+            mCircleView.setRadiusDrawn(value);
+        } else {
+            mCircleView.setRadius(value);
+        }
     }
 
     public void setRange(float from, float to) {
