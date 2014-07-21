@@ -19,19 +19,16 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="donation_action">Donate</string>
-  <string name="donation_title">Donate to developer</string>
-  <string name="donation_info"><![CDATA[
-        AcDisplay is a free and <a href="https://www.github.com/AChep/AcDisplay">open source</a> app.
-        You can show your appreciation and support development by donating:
-    ]]></string>
-  <string name="donation_item_bought">You\'ve donated for this item already.</string>
-  <string name="donation_1">An ice cream</string>
-  <string name="donation_4">Cup of coffee</string>
-  <string name="donation_10">Electricity bills</string>
-  <string name="donation_20">The right pillow</string>
-  <string name="donation_50">Solid-state drive</string>
-  <string name="donation_99">Sound system</string>
-  <string name="donation_error_iab_setup">Failed to setup in-app-billing service!</string>
-  <string name="donation_no_responsibility">Notice that Google is not responsible for that payments method.</string>
+  <string name="donation_action">تبرع</string>
+  <string name="donation_title">التبرع للمطور</string>
+  <string name="donation_info"><![CDATA[أكديسبلاي تطبيق مجاني و <a href="https://www.github.com/AChep/AcDisplay"> مفتوحة المصدر</a>.         يمكنك إظهار التقدير والدعم الخاص بك عن طريق التبرع:]></string>
+  <string name="donation_item_bought">لقد تبرعت مسبقا.</string>
+  <string name="donation_1">الآيس كريم</string>
+  <string name="donation_4">فنجان من القهوة</string>
+  <string name="donation_10">فواتير الكهرباء</string>
+  <string name="donation_20">وسادة مناسبة</string>
+  <string name="donation_50">محرك أقراص SSD</string>
+  <string name="donation_99">نظام صوت</string>
+  <string name="donation_error_iab_setup">فشل الإعداد في تطبيق خدمة الفواتير!</string>
+  <string name="donation_no_responsibility">لاحظ أن Google ليست مسؤولة عن طريقة المدفوعات هذه.</string>
 </resources>

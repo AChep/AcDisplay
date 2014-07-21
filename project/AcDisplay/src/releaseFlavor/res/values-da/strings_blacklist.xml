@@ -23,7 +23,7 @@
   <string name="blacklist_app_config">Appindstillinger</string>
   <string name="blacklist_show_system_apps">Systemapplikationer</string>
   <string name="blacklist_app_hide_title">Skjul</string>
-  <string name="blacklist_app_hide_summary">Ingen notifikationer fra denne applikation vil blive vist.</string>
+  <string name="blacklist_app_hide_summary">Ingen underretninger fra denne applikation vil blive vist.</string>
   <string name="blacklist_app_restricted_title">Lydløs</string>
-  <string name="blacklist_app_restricted_summary">Væk ikke skærmen, når notifikationer bliver vist.</string>
+  <string name="blacklist_app_restricted_summary">Væk ikke skærmen, når der modtages nye underretninger.</string>
 </resources>

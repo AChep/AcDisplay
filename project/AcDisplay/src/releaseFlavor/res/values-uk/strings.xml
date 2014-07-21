@@ -25,26 +25,26 @@
   <string name="widget_toggle_disabled">Вимкнено</string>
   <string name="test_action">Перевірити чи працює</string>
   <string name="test_notification_message">Зразок того, як виглядає повідомлення.</string>
-  <string name="test_notification_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
+  <string name="test_notification_message_large">Проведіть донизу щоб відхилити сповіщення.\nПроведіть будь-де щоб розблокувати.</string>
   <string name="init_notification_text">Просто відхиліть це повідомлення.</string>
   <string name="remote_enable_acdisplay">AcDisplay увімкнено.</string>
   <string name="remote_disable_acdisplay">AcDisplay вимкнуто.</string>
   <string name="service_bath">Сервіси AcDisplay</string>
-  <string name="service_bath_keyguard">Lockscreen</string>
+  <string name="service_bath_keyguard">Екран блокування</string>
   <string name="service_bath_active_mode">Активний режим</string>
   <string name="status_date_format">EEE, d MMMM</string>
   <string name="access_not_granted">Необхідні дозволи!</string>
   <string name="access_notifications_grant_btn">Повідомлення</string>
-  <string name="access_notifications_grant_manually">Go to Settings &gt; Security &gt; Notification access and check AcDisplay on.</string>
+  <string name="access_notifications_grant_manually">Перейдіть в Налаштування &gt; Безпека &gt; Доступ до сповіщень та позначте AcDisplay.</string>
   <string name="access_device_admin_description">Це необхідно для керування власним тайм-аутом вимкнення екрану.</string>
   <string name="access_device_admin_grant_btn">Вимкнути екран</string>
-  <string name="access_device_admin_grant_manually">Go to Settings &gt; Security &gt; Device admins and check AcDisplay on.</string>
-  <string name="access_device_admin_removed_successful">AcDisplay has been removed from Device admins.</string>
+  <string name="access_device_admin_grant_manually">Перейдіть в Налаштування &gt; Безпека &gt; Адміністратори пристрою та позначте AcDisplay.</string>
+  <string name="access_device_admin_removed_successful">AcDisplay було видалено зі списку адміністраторів пристрою.</string>
   <string name="app_auto_disabled">AcDisplay був вимкнений через видалення прав адміністратора.</string>
-  <string name="media_prev_description">Previous track button</string>
-  <string name="media_next_description">Next track button</string>
-  <string name="media_pause_description">Pause button</string>
-  <string name="media_play_description">Play button</string>
-  <string name="media_stop_description">Stop button</string>
-  <string name="accessibility_battery_level">Battery <xliff:g id="number" example="100">%d</xliff:g> percent.</string>
+  <string name="media_prev_description">Кнопка Попередній трек</string>
+  <string name="media_next_description">Кнопка Наступний трек</string>
+  <string name="media_pause_description">Кнопка Пауза</string>
+  <string name="media_play_description">Кнопка Грати</string>
+  <string name="media_stop_description">Кнопка Стоп</string>
+  <string name="accessibility_battery_level">Батарея <xliff:g id="number" наприклад="100">%d</xliff:g> відстоків.</string>
 </resources>

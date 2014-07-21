@@ -32,19 +32,19 @@
   <string name="service_bath">AcDisplay szolgáltatások</string>
   <string name="service_bath_keyguard">Zárképernyő</string>
   <string name="service_bath_active_mode">Aktív üzemmód</string>
-  <string name="status_date_format">EEE, d MMMM</string>
+  <string name="status_date_format">MMMM d, EEE</string>
   <string name="access_not_granted">Hozzáférés nincs megadva!</string>
   <string name="access_notifications_grant_btn">Értesítések</string>
-  <string name="access_notifications_grant_manually">Go to Settings &gt; Security &gt; Notification access and check AcDisplay on.</string>
-  <string name="access_device_admin_description">This is needed to manage the screen timeout policy.</string>
+  <string name="access_notifications_grant_manually">Menj a Beállítások &gt; Biztonság &gt; Értesítések és engedélyezd az AcDisplay-t.</string>
+  <string name="access_device_admin_description">Ez a képernyő időkorlát házirendjének kezelése miatt szükséges.</string>
   <string name="access_device_admin_grant_btn">Képernyő kikapcsolása</string>
-  <string name="access_device_admin_grant_manually">Go to Settings &gt; Security &gt; Device admins and check AcDisplay on.</string>
-  <string name="access_device_admin_removed_successful">AcDisplay has been removed from Device admins.</string>
+  <string name="access_device_admin_grant_manually">Menj a Beállítások &gt; Biztonság &gt; Eszköz Rendszergazdák és engedélyezd az AcDisplay-t.</string>
+  <string name="access_device_admin_removed_successful">AcDisplay el lett távolítva az Eszköz Rendszergazdák közül.</string>
   <string name="app_auto_disabled">AcDisplay ki lett kapcsolva, mert hiányoznak a szükséges admin jogok.</string>
-  <string name="media_prev_description">Previous track button</string>
-  <string name="media_next_description">Next track button</string>
-  <string name="media_pause_description">Pause button</string>
-  <string name="media_play_description">Play button</string>
-  <string name="media_stop_description">Stop button</string>
-  <string name="accessibility_battery_level">Battery <xliff:g id="number" example="100">%d</xliff:g> percent.</string>
+  <string name="media_prev_description">Előző szám gomb</string>
+  <string name="media_next_description">Következő szám gomb</string>
+  <string name="media_pause_description">Szünet gomb</string>
+  <string name="media_play_description">Lejátszás gomb</string>
+  <string name="media_stop_description">Stop gomb</string>
+  <string name="accessibility_battery_level">Akkumulátor <xliff:g id="number" example="100">%d</xliff:g> százalék.</string>
 </resources>

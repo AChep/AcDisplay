@@ -25,7 +25,7 @@
   <string name="widget_toggle_disabled">禁用</string>
   <string name="test_action">发送测试通知</string>
   <string name="test_notification_message">这是一条示例通知</string>
-  <string name="test_notification_message_large">往下滑动来忽略通知\n向其它地方滑动来解锁。</string>
+  <string name="test_notification_message_large">向下滑动可忽略通知\n向其它方向滑动可解锁</string>
   <string name="init_notification_text">只需清除本通知</string>
   <string name="remote_enable_acdisplay">AcDisplay 已启用</string>
   <string name="remote_disable_acdisplay">AcDisplay 已禁用</string>

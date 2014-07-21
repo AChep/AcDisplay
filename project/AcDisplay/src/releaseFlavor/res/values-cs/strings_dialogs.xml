@@ -29,7 +29,7 @@
         <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
     ]]></string>
   <string name="help">Nápověda</string>
-  <string name="help_faq">Frequently asked questions</string>
+  <string name="help_faq">Časté dotazy</string>
   <string name="news_message"><![CDATA[
         Vítejte v nové verzi AcDisplay!
         Aktualizace přináší zcela nový a jedinečný vzhled s velkým množstvím možností.
@@ -47,8 +47,5 @@
         Při vývoji AcDisplay byl za poslední dobu učiněn velký pokrok, který by nemohl být realizován bez komunity. Proto je kód AcDisplay <a href="https://www.github.com/AChep/AcDisplay">otevřen</a> pro všechny. Potřeboval bych ale od vás pomoc.<br/>
         Tohle je můj poslední školní rok a rád bych si tak chtěl pořídit notebook pro budoucí studium, a také proto, abych mohl programovat skvělé aplikace všude tam, kde budu.
         Vysoce bych tak ocenil vaši pomoc.
-    ]]></string>
-  <string name="pa_message"><![CDATA[
-        Uživatelé mohou <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">očekávat potíže</a> při používání AcDisplay na zařízeních s Paranoid Android.
     ]]></string>
 </resources>

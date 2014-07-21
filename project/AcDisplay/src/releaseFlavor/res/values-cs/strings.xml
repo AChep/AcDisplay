@@ -25,18 +25,18 @@
   <string name="widget_toggle_disabled">Zakázáno</string>
   <string name="test_action">Odeslat zkušební oznámení</string>
   <string name="test_notification_message">Toto je zkušební oznámení.</string>
-  <string name="test_notification_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
+  <string name="test_notification_message_large">Přejeďte dolů pro zamítnutí oznámení. \nPřejeďte kdekoli pro odemknutí.</string>
   <string name="init_notification_text">Toto oznámení odmítněte.</string>
   <string name="remote_enable_acdisplay">AcDisplay je povolen.</string>
   <string name="remote_disable_acdisplay">AcDisplay je zakázán.</string>
   <string name="service_bath">AcDisplay services</string>
-  <string name="service_bath_keyguard">Lockscreen</string>
-  <string name="service_bath_active_mode">Active mode</string>
+  <string name="service_bath_keyguard">Zamykací obrazovka</string>
+  <string name="service_bath_active_mode">Aktivní režim</string>
   <string name="status_date_format">EEE, d MMMM</string>
-  <string name="access_not_granted">Access isn\'t granted!</string>
-  <string name="access_notifications_grant_btn">Notifications</string>
+  <string name="access_not_granted">Není udělen přístup!</string>
+  <string name="access_notifications_grant_btn">Oznámení</string>
   <string name="access_notifications_grant_manually">Go to Settings &gt; Security &gt; Notification access and check AcDisplay on.</string>
-  <string name="access_device_admin_description">This is needed to manage the screen timeout policy.</string>
+  <string name="access_device_admin_description">Toto je zapotřebí pro správu časového limitu obrazovky.</string>
   <string name="access_device_admin_grant_btn">Turn screen off</string>
   <string name="access_device_admin_grant_manually">Go to Settings &gt; Security &gt; Device admins and check AcDisplay on.</string>
   <string name="access_device_admin_removed_successful">AcDisplay has been removed from Device admins.</string>
@@ -46,5 +46,5 @@
   <string name="media_pause_description">Pause button</string>
   <string name="media_play_description">Play button</string>
   <string name="media_stop_description">Stop button</string>
-  <string name="accessibility_battery_level">Battery <xliff:g id="number" example="100">%d</xliff:g> percent.</string>
+  <string name="accessibility_battery_level">Baterie <xliff:g id="number" example="100"> %d </xliff:g> procent.</string>
 </resources>

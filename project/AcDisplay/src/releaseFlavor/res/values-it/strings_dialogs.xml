@@ -48,7 +48,4 @@ Molte grazie a questi strumenti open source: %1$s ed a tutti quelli che
         Questo è il mio ultimo anno di scuola e mi piacerebbe comprare un PC portatile per i miei futuri studi e per portare il fantastico mondo software dovunque io sia.
         Apprezzerei davvero tanto il tuo aiuto.
     ]]></string>
-  <string name="pa_message"><![CDATA[
-        Gli utenti possono <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">aspettarsi problemi</a> quando si utilizza AcDisplay su Paranoid Android.
-    ]]></string>
 </resources>

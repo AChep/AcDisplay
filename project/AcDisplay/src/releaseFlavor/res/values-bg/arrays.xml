@@ -19,11 +19,13 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="blacklist">Чорний список</string>
-  <string name="blacklist_app_config">Налаштування програми</string>
-  <string name="blacklist_show_system_apps">Системні програми</string>
-  <string name="blacklist_app_hide_title">Приховати</string>
-  <string name="blacklist_app_hide_summary">Всі сповіщення цієї програми не будуть відображатись.</string>
-  <string name="blacklist_app_restricted_title">Тихий режим</string>
-  <string name="blacklist_app_restricted_summary">Не прокидатись від сповіщень цієї програми.</string>
+  <string-array name="feedback_types">
+    <item>Грешки</item>
+    <item>Предложения</item>
+    <item>Други</item>
+  </string-array>
+  <string-array name="dynamic_background">
+    <item>Фон</item>
+    <item>Икона за известие</item>
+  </string-array>
 </resources>

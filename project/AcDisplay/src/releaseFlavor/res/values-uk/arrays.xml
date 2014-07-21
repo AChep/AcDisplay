@@ -25,7 +25,7 @@
     <item>Інше</item>
   </string-array>
   <string-array name="dynamic_background">
-    <item>Artwork</item>
-    <item>Notification icon</item>
+    <item>Обкладинки</item>
+    <item>Значок сповіщення</item>
   </string-array>
 </resources>

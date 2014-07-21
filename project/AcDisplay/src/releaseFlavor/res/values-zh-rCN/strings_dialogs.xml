@@ -29,7 +29,7 @@ Copyright © 2013-2014 <a href="https://plus.google.com/+АртёмЧепурн�
   <string name="help">帮助</string>
   <string name="help_faq">常见问题</string>
   <string name="news_message"><![CDATA[
-换新使用新版 AcDisplay！
+欢迎使用新版 AcDisplay！
 本次更新带来了全新且独特的设计。
 设计更为精简，旨在为您提供最佳的体验！<br/>
 <br/>
@@ -43,10 +43,7 @@ Copyright © 2013-2014 <a href="https://plus.google.com/+АртёмЧепурн�
 您好<br/>
 首先我要感谢您在 Play 商店中下载并且给予本应用好评。
 AcDisplay 有了质的飞跃，若缺少社群的帮助是走不到今天的。AcDisplay 是一款<a href="https://www.github.com/AChep/AcDisplay">开源应用</a>。但是我需要您的帮助。<br/>
-这是我最后一学年，我希望能够买一钛笔记本以帮助我为来求学及开发更多美好的程序，我非常感谢您的帮助。
+这是我最后一学年，我希望能够买一台笔记本以帮助我为来求学及开发更多美好的程序，我非常感谢您的帮助。
 我将衷心感谢您的帮助。
 ]]></string>
-  <string name="pa_message"><![CDATA[
-        如果您使用的是 Paranoid Android ，那么您很可能会<a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">遇到麻烦</a>。
-    ]]></string>
 </resources>

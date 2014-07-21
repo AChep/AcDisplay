@@ -22,23 +22,23 @@
   <string name="close">Luk</string>
   <string name="about_action">Om</string>
   <string name="about_message"><![CDATA[
-        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
-        <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="https://crowdin.net/project/acdisplay">helped with translations</a> or
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
-    ]]></string>
+Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. Alle rettigheder forbeholdes.<br/>
+<br/>
+Mange tak til alle disse open source værktøjer: %1$s og alle der har
+<a href="https://crowdin.net/project/acdisplay">hjulpet med oversættelser</a> og
+<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">doneret til mig</a>.
+]]></string>
   <string name="help">Hjælp</string>
-  <string name="help_faq">Frequently asked questions</string>
+  <string name="help_faq">Ofte stillede spørgsmål</string>
   <string name="news_message"><![CDATA[
 Velkommen til den nye version af AcDisplay!
 Denne opdatering bringer et komplet nyt og unikt design med sig, samt en masse nye muligheder.
 Designet er mere strømlinet og har til hensigt at give dig den bedst mulige oplevelse!<br/>
 <br/>
 <b>En berøring for alle handlinger.</b><br/>
-Oplåsning af enheden, tjek af notifikationer eller udførelse af en handling på dem kan alt sammen gøres med en enkelt bevægelse.<br/>
+Oplåsning af enheden, tjek af underretninger eller udførelse af en handling på dem kan alt sammen gøres med en enkelt bevægelse.<br/>
 <br/>
-<b>Oplåsningsfeltet er hvor som helst og overalt.</b><br/>
+<b>Oplåsningsfelt på hele skærmen.</b><br/>
 Svirp hvor som helst for at låse op.
 ]]></string>
   <string name="speech_message"><![CDATA[
@@ -47,8 +47,5 @@ Svirp hvor som helst for at låse op.
 Store fremskridt er blevet gjort for AcDisplay, og dette kunne ikke gøres uden fællesskabet. Det er derfor AcDisplay er <a href="https://www.github.com/AChep/AcDisplay">åbent</a> for alle. Men jeg har brug for jeres hjælp.<br/>
         Dette er mit sidste skoleår, og jeg har et ønske om at købe en bærbar computer til senere studier og for at bringe verdenen fantastisk software hvor jeg nu måtte være.
         Jeg vil virkelig værdsætte jeres hjælp til det.
-    ]]></string>
-  <string name="pa_message"><![CDATA[
-        Brugere kan <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">opleve problemer</a>, når AcDisplay bruges sammen med Paranoid Android.
     ]]></string>
 </resources>

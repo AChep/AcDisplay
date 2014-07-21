@@ -42,7 +42,4 @@ Arrastra en cualquier espacio libre para desbloquear.
         Este es mi ultimo año de escuela, y me gustaria comprar una notebook para mis proximos estudios y para llevar al mundo aplicaciones maravillosas sin importar donde este.
         Apreciaria mucho tu ayuda con esto.
     ]]></string>
-  <string name="pa_message"><![CDATA[
-Usuarios pueden <a href="https://paranoidandroid.atlassian.net/browse/AOSPA-201">esperar problemas</a> al usar AcDisplay en Paranoid Android.
-]]></string>
 </resources>
