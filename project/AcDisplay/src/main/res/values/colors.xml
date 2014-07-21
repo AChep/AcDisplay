@@ -39,4 +39,9 @@
     <color name="batterymeter_critical">#FFFF3300</color>
     <color name="batterymeter_low">#FFFF3300</color>
     <color name="batterymeter_full">#FFFFFFFF</color>
+
+    <!-- Material design: Blue Grey -->
+    <color name="primary_color">#607d8b</color>
+    <color name="primary_color_600">#546e7a</color>
+    <color name="primary_color_900">#263238</color>
 </resources>

@@ -20,9 +20,9 @@
 <resources>
 
     <!-- All device dependent modification goes here -->
-    <style name="AcDisplayThemeBase" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+    <style name="AppThemeBase" parent="android:Theme.Material">
+        <item name="android:colorPrimary">@color/primary_color</item>
+        <item name="android:colorPrimaryDark">@color/primary_color_900</item>
     </style>
 
 </resources>

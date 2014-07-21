@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ import android.view.WindowManager;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.R;
+
 
 /**
  * Created by Artem on 23.02.14.
@@ -44,6 +46,8 @@ public abstract class KeyguardActivity extends Activity {
 
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
     public static final String EXTRA_FINISH_ON_SCREEN_OFF = "finish_on_screen_off";
+
+    private static final int UNLOCKING_MAX_TIME = 200;
 
     private BroadcastReceiver mScreenOffReceiver;
 
@@ -189,22 +193,35 @@ public abstract class KeyguardActivity extends Activity {
     public void unlock(final Runnable runnable, final boolean finish) {
         if (Build.DEBUG) Log.d(TAG, "Unlocking with params: finish=" + finish);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
         // If keyguard is disabled no need to make
         // a delay between calling this method and
         // unlocking.
         // Otherwise we need this delay to get new
         // flags applied.
-        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        int delay = km.isKeyguardLocked() ? 40 : 0; // TODO: Find the way to get rid of this delay
+        final KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        final int delay = km.isKeyguardSecure() ? 0 : 16; // TODO: Find the way to get rid of this delay.
+        final long now = SystemClock.elapsedRealtime();
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        getWindow().getDecorView().postDelayed(new Runnable() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
             @Override
             public void run() {
+                // Loop until flag gets applied.
+                // TODO: Use somewhat trigger for detecting unlocking.
+                int delta = (int) (SystemClock.elapsedRealtime() - now);
+                if (km.isKeyguardLocked() && !km.isKeyguardSecure()
+                        && delta < UNLOCKING_MAX_TIME) {
+                    handler.postDelayed(this, 16);
+                    return;
+                }
+
                 if (runnable != null) runnable.run();
                 if (finish) {
                     finish();
-                    overridePendingTransition(0, 0);
+                    overridePendingTransition(0, R.anim.activity_unlock);
                 }
             }
         }, delay);

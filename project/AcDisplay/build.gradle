@@ -27,7 +27,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 
@@ -38,7 +38,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 'android-L'
     buildToolsVersion '20.0'
 
     lintOptions {
@@ -114,7 +114,7 @@ android {
 
 dependencies {
     provided files('src/main/libs/XposedBridgeApi-42.jar')
-    compile 'com.android.support:support-v4:21.0.0-rc1'
+    compile 'com.android.support:support-v4:19.+'
 }
 
 project.task('askForPasswords') << {

@@ -46,23 +46,51 @@ public class CircleView extends View {
 
     private float[] mPoint = new float[2];
 
-    private boolean mCanceled;
-    private boolean mRadiusAimed;
-    private float mRadiusDecreaseThreshold;
+    // Target
+    private boolean mRadiusTargetAimed;
     private float mRadiusTarget;
-    private float mRadiusMax;
-    private float mRadius;
-    private Paint mPaint;
 
+    // Decreasing detection
+    private float mRadiusDecreaseThreshold;
+    private float mRadiusMaxPeak;
+
+    /**
+     * Real radius of the circle, measured by touch.
+     */
+    private float mRadius;
+
+    /**
+     * Radius of the drawn circle.
+     *
+     * @see #setRadiusDrawn(float)
+     */
+    private float mRadiusDrawn;
+
+
+    private boolean mCanceled;
     private float mDarkening;
 
     private Drawable mDrawable;
+    private Paint mPaint;
 
+    private int mAnimationOverDuration;
+    private CircleRadiusAnimation mAnimationOver;
     private CircleRadiusAnimation mAnimationOut;
     private Callback mCallback;
 
-    private Handler mHandler;
-    private Runnable mDelayedCancel;
+    private Handler mHandler = new Handler();
+    private Runnable mDelayedCancel = new Runnable() {
+        @Override
+        public void run() {
+            cancelCircle(false);
+        }
+    };
+    private Runnable mDelayedUnlock = new Runnable() {
+        @Override
+        public void run() {
+            mCallback.onCircleEvent(mRadius, calculateRatio(), ACTION_UNLOCK);
+        }
+    };
 
     public interface Callback {
 
@@ -87,15 +115,12 @@ public class CircleView extends View {
     private void init() {
         Resources res = getContext().getResources();
 
-        mHandler = new Handler();
-        mDelayedCancel = new Runnable() {
-            @Override
-            public void run() {
-                cancelCircle(false);
-            }
-        };
+        mAnimationOverDuration = res.getInteger(android.R.integer.config_shortAnimTime);
+        mAnimationOver = new CircleRadiusAnimation(this, 0, 0, true);
+        mAnimationOver.setInterpolator(new AccelerateDecelerateInterpolator());
+        mAnimationOver.setDuration(mAnimationOverDuration);
 
-        mAnimationOut = new CircleRadiusAnimation(this, 0, 0);
+        mAnimationOut = new CircleRadiusAnimation(this, 0, 0, false);
         mAnimationOut.setInterpolator(new AccelerateDecelerateInterpolator());
         mAnimationOut.setDuration(res.getInteger(android.R.integer.config_mediumAnimTime));
 
@@ -119,19 +144,19 @@ public class CircleView extends View {
         super.onDraw(canvas);
 
         final float ratio = calculateRatio();
-        float radius;
 
         // Darkening background
         int alpha = (int) (mDarkening * 255);
-        canvas.drawColor(Color.argb(alpha + (int) ((255 - alpha) * ratio * 0.7f), 0, 0, 0));
+        alpha += (int) ((255 - alpha) * ratio * 0.7f); // Change alpha dynamically
+        canvas.drawColor(Color.argb(alpha, 0, 0, 0));
 
         // Draw unlock circle
         mPaint.setAlpha((int) (255 * Math.pow(ratio, 0.33f)));
-        radius = (float) Math.sqrt(mRadius / 50) * 50;
-        canvas.drawCircle(mPoint[0], mPoint[1], radius, mPaint);
+        canvas.drawCircle(mPoint[0], mPoint[1], mRadiusDrawn, mPaint);
 
-        // Draw unlock icon at the center of circle
-        if (mRadiusAimed) {
+        if (mRadiusTargetAimed) { // We're ready to unlock
+
+            // Draw unlock icon at the center of circle
             float scale = 0.5f + 0.5f * ratio;
             canvas.save();
             canvas.translate(
@@ -146,6 +171,7 @@ public class CircleView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        mHandler.removeCallbacks(mDelayedUnlock);
         mHandler.removeCallbacks(mDelayedCancel);
     }
 
@@ -167,7 +193,7 @@ public class CircleView extends View {
                 clearAnimation();
 
                 // Initialize circle
-                mRadiusMax = 0;
+                mRadiusMaxPeak = 0;
                 mPoint[0] = x;
                 mPoint[1] = y;
                 mCanceled = false;
@@ -179,29 +205,51 @@ public class CircleView extends View {
                 setRadius((float) Math.hypot(x - mPoint[0], y - mPoint[1]));
 
                 // Cancel the circle if it's decreasing.
-                if (mRadiusMax - mRadius > mRadiusDecreaseThreshold) {
-                    mRadiusAimed = false;
+                if (mRadiusMaxPeak - mRadius > mRadiusDecreaseThreshold) {
+                    mRadiusTargetAimed = false;
                     cancelCircle(false);
                     break;
                 }
 
                 if (calculateRatio() == 1) {
-                    if (!mRadiusAimed) {
-                        mRadiusAimed = true;
+                    if (!mRadiusTargetAimed) {
+                        mRadiusTargetAimed = true;
                         performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                     }
-                } else if (mRadiusAimed) {
-                    mRadiusAimed = false;
+                } else if (mRadiusTargetAimed) {
+                    mRadiusTargetAimed = false;
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (mRadiusAimed) {
-                    mCallback.onCircleEvent(mRadius, calculateRatio(), ACTION_UNLOCK);
+                if (mRadiusTargetAimed) {
+                    // Calculate biggest distance between center of
+                    // the circle and view's corners.
+                    float distance = 0f;
+                    int[] corners = new int[]{
+                            0, 0, // top left
+                            0, getHeight(), // bottom left
+                            getWidth(), getHeight(), // bottom right
+                            getWidth(), 0 // top right
+                    };
+                    for (int i = 0; i < corners.length; i += 2) {
+                        double c = Math.hypot(
+                                mPoint[0] - corners[i],
+                                mPoint[1] - corners[i + 1]);
+                        if (c > distance) distance = (float) c;
+                    }
+                    mAnimationOver.setRange(mRadiusDrawn, distance);
+
+                    // Start Android L-like ripple animation.
+                    startAnimation(mAnimationOver);
+
+                    mHandler.postDelayed(mDelayedUnlock, mAnimationOverDuration);
+                    mHandler.removeCallbacks(mDelayedCancel);
+                    break;
                 }
             case MotionEvent.ACTION_CANCEL:
                 mHandler.removeCallbacks(mDelayedCancel);
-                cancelCircle(mRadiusAimed);
+                cancelCircle(mRadiusTargetAimed);
                 break;
             default:
                 return super.onTouchEvent(event);
@@ -226,13 +274,31 @@ public class CircleView extends View {
         return Math.min(mRadius / mRadiusTarget, 1);
     }
 
+    /**
+     * Sets the radius of fake circle.
+     *
+     * @param radius radius to set
+     */
     public void setRadius(float radius) {
         mRadius = radius;
-        mRadiusMax = Math.max(mRadiusMax, mRadius);
 
+        // Save maximum radius for detecting
+        // decreasing of the circle's size.
+        if (mRadius > mRadiusMaxPeak) {
+            mRadiusMaxPeak = mRadius;
+        }
+
+        // Update unlock icon's transparency.
         float ratio = calculateRatio();
         mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
 
+        // Update the size of the unlock circle.
+        radius = (float) Math.sqrt(mRadius / 50f) * 50f;
+        setRadiusDrawn(radius);
+    }
+
+    public void setRadiusDrawn(float radius) {
+        mRadiusDrawn = radius;
         postInvalidateOnAnimation();
     }
 

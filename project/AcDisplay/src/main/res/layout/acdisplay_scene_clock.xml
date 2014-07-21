@@ -23,14 +23,7 @@
     android:layout_marginBottom="16dp"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:gravity="end">
-
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        layout="@layout/widget_status" />
+    android:gravity="center_horizontal">
 
     <!--
         IF YOU WANT TO CHANGE TOP/BOTTOM MARGINS:
@@ -42,5 +35,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="?attr/acDisplayClock" />
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/widget_status" />
 
 </LinearLayout>

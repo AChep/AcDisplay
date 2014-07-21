@@ -40,8 +40,8 @@ public final class Build {
         public static final String DEVELOPER_PROFILE = "https://plus.google.com/+АртёмЧепурной";
 
         public static final String TRANSLATE = "https://crowdin.net/project/acdisplay";
-        public static final String FAQ = "https://crowdin.net/project/acdisplay";
-        public static final String DONATE = "https://crowdin.net/project/acdisplay";
+        public static final String FAQ = "https://github.com/AChep/AcDisplay/blob/master/FAQ.md";
+        public static final String DONATE = "http://goo.gl/UrecGo";
 
         public static final String LIST_OF_DONATORS = "https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH";
 

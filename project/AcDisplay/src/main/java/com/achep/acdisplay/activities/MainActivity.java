@@ -137,11 +137,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
             if (oldVersionCode < pi.versionCode) {
                 triggers.setPreviousVersion(this, pi.versionCode, null);
 
-                // Show the warning message for Paranoid Android users.
-                if (android.os.Build.DISPLAY.startsWith("pa_") && oldVersionCode == 0) {
-                    showAlertParanoidAndroidBug();
-                }
-
                 if (oldVersionCode < 15 /* v2.0- */) {
                     showAlertSpeech();
                 }
@@ -153,13 +148,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         } catch (PackageManager.NameNotFoundException e) {
             Log.wtf(TAG, "Failed to find my PackageInfo.");
         }
-    }
-
-    private void showAlertParanoidAndroidBug() {
-        showSimpleDialog(
-                R.drawable.ic_dialog_bug,
-                getString(R.string.pa_title),
-                Html.fromHtml(getString(R.string.pa_message)));
     }
 
     private void showAlertSpeech() {
