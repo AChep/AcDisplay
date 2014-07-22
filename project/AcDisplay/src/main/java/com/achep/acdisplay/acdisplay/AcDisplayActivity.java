@@ -21,6 +21,7 @@ package com.achep.acdisplay.acdisplay;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.activities.KeyguardActivity;
+import com.achep.acdisplay.fragments.HotwordFragment;
 import com.achep.acdisplay.services.media.MediaController;
 
 /**
@@ -126,6 +128,10 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
         setContentView(R.layout.acdisplay);
         mBackgroundView = (ImageView) findViewById(R.id.background);
+
+        // Add hotword recognizer
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().add(new HotwordFragment(), HotwordFragment.TAG).commit();
 
         Presenter.getInstance().attachActivity(this);
     }

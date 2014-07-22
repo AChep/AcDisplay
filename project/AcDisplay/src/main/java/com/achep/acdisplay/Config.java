@@ -76,6 +76,9 @@ public class Config {
     public static final String KEY_ACTIVE_MODE = "active_mode";
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
 
+    // hotword
+    public static final String KEY_HOTWORD = "hotword";
+
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
     public static final String KEY_UI_WALLPAPER_SHOWN = "wallpaper_shown";
@@ -105,6 +108,7 @@ public class Config {
     private boolean mKeyguardEnabled;
     private boolean mActiveMode;
     private boolean mActiveModeWithoutNotifies;
+    private boolean mHotword;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mFeelWidgetPinnable;
@@ -275,6 +279,9 @@ public class Config {
         hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new Option(
                 "setActiveModeWithoutNotificationsEnabled",
                 "isActiveModeWithoutNotifiesEnabled", boolean.class));
+        hashMap.put(KEY_HOTWORD, new Option(
+                "setHotwordEnabled",
+                "isHotwordEnabled", boolean.class));
         hashMap.put(KEY_NOTIFY_LOW_PRIORITY, new Option(
                 "setLowPriorityNotificationsAllowed",
                 "isLowPriorityNotificationsAllowed", boolean.class));
@@ -319,6 +326,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
+        mHotword = prefs.getBoolean(KEY_HOTWORD,
+                res.getBoolean(R.bool.config_default_hotword_enabled));
 
         // notifications
         mNotifyLowPriority = prefs.getBoolean(KEY_NOTIFY_LOW_PRIORITY,
@@ -487,6 +496,11 @@ public class Config {
     public void setActiveModeWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
         boolean changed = mActiveModeWithoutNotifies != (mActiveModeWithoutNotifies = enabled);
         saveOption(context, KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
+    }
+
+    public void setHotwordEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mHotword != (mHotword = enabled);
+        saveOption(context, KEY_HOTWORD, enabled, listener, changed);
     }
 
     /**
@@ -705,6 +719,10 @@ public class Config {
 
     public boolean isActiveModeWithoutNotifiesEnabled() {
         return mActiveModeWithoutNotifies;
+    }
+
+    public boolean isHotwordEnabled() {
+        return mHotword;
     }
 
     public boolean isEnabledOnlyWhileCharging() {

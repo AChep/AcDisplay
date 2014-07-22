@@ -32,6 +32,12 @@
         android:title="@string/settings_active_title"
         android:icon="@drawable/ic_settings_active"/>
 
+    <!-- Hotword -->
+    <header android:fragment="com.achep.acdisplay.settings.HotwordSettings"
+        android:id="@+id/hotword_settings"
+        android:title="@string/settings_hotword_title"
+        android:icon="@drawable/ic_settings_hotword" />
+
     <!-- Notifications -->
     <header android:fragment="com.achep.acdisplay.settings.NotificationSettings"
         android:id="@+id/notification_settings"

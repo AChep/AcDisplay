@@ -43,6 +43,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- Needed for hotword recognition. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <!-- Needed to provide donation via IAB. -->
     <uses-permission android:name="com.android.vending.BILLING" />
 

@@ -30,6 +30,7 @@
     <!-- Headers -->
     <string name="settings_lockscreen_title">Lockscreen</string>
     <string name="settings_active_title">Active mode</string>
+    <string name="settings_hotword_title">Hotwords</string>
     <string name="settings_notification_title">Notifications</string>
     <string name="settings_interface_title">Interface</string>
     <string name="settings_more_title">More…</string>
@@ -48,6 +49,9 @@
     <string name="settings_low_priority_notifications_title">Low-priority notifications</string>
     <string name="settings_low_priority_notifications_on">All notifications are shown.</string>
     <string name="settings_low_priority_notifications_off">Low-priority notifications such as those from Google Now aren\'t shown.</string>
+
+    <!-- Hotword -->
+    <string name="settings_hotword_empty">There are no hotwords set.</string>
 
     <!-- Interface -->
     <string name="settings_full_screen_title">Full screen mode</string>

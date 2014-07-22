@@ -24,6 +24,9 @@
 
     <string name="xposed_description">Helps AcDisplay to integrate deeper into Android.</string>
 
+    <string name="add_action">Add</string>
+    <string name="remove_action">Remove</string>
+
     <!-- App widget -->
     <string name="widget_toggle_enabled">Enabled</string>
     <string name="widget_toggle_disabled">Disabled</string>

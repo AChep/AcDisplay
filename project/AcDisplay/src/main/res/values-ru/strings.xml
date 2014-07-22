@@ -23,6 +23,9 @@
 
     <string name="xposed_description">Помогает AcDisplay глубже интегрироваться в систему.</string>
 
+    <string name="add_action">Добавить</string>
+    <string name="remove_action">Удалить</string>
+
     <!-- App widget -->
     <string name="widget_toggle_enabled">Включен</string>
     <string name="widget_toggle_disabled">Отключен</string>

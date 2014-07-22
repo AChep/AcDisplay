@@ -43,6 +43,8 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.fragments.HotwordFragment;
+import com.achep.acdisplay.hotword.HotwordHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -314,6 +316,11 @@ public class Settings extends PreferenceActivity {
     }
 
     private void onBuildStartFragmentIntentHelper(String fragmentName, Intent intent) {
+        // Some fragments want split ActionBar; these should stay in sync with
+        // uiOptions for fragments also defined as activities in manifest.
+        if (HotwordSettings.class.getName().equals(fragmentName)) {
+            intent.putExtra(EXTRA_UI_OPTIONS, ActivityInfo.UIOPTION_SPLIT_ACTION_BAR_WHEN_NARROW);
+        }
         intent.setClass(this, SubSettings.class);
     }
 
@@ -335,6 +342,16 @@ public class Settings extends PreferenceActivity {
             Header header = target.get(i);
             // Ids are integers, so downcasting
             int id = (int) header.id;
+
+            if (id == R.id.hotword_settings) {
+                // Remove Hotword Settings if Hotword is disabled for this device.
+                if (!HotwordHelper.isSupported(this)) {
+                    target.remove(i);
+
+                    // Make sure hotword is disabled
+                    Config.getInstance().setHotwordEnabled(this, false, null);
+                }
+            }
 
             // Increment if the current one wasn't removed by the Utils code.
             if (target.get(i) == header) {
@@ -382,6 +399,7 @@ public class Settings extends PreferenceActivity {
 
         private final Enabler mLockscreenEnabler;
         private final Enabler mActiveEnabler;
+        private final Enabler mHotwordEnabler;
 
         private static class HeaderViewHolder {
             ImageView icon;
@@ -396,7 +414,8 @@ public class Settings extends PreferenceActivity {
             if (header.fragment == null && header.intent == null) {
                 return HEADER_TYPE_CATEGORY;
             } else if (header.id == R.id.keyguard_settings
-                    || header.id == R.id.active_settings) {
+                    || header.id == R.id.active_settings
+                    || header.id == R.id.hotword_settings) {
                 return HEADER_TYPE_SWITCH;
             } else {
                 return HEADER_TYPE_NORMAL;
@@ -438,6 +457,7 @@ public class Settings extends PreferenceActivity {
             // Switches inflated from their layouts. Must be done before adapter is set in super
             mLockscreenEnabler = new Enabler(context, new Switch(context), Config.KEY_KEYGUARD);
             mActiveEnabler = new Enabler(context, new Switch(context), Config.KEY_ACTIVE_MODE);
+            mHotwordEnabler = new Enabler(context, new Switch(context), Config.KEY_HOTWORD);
         }
 
         @Override
@@ -492,6 +512,8 @@ public class Settings extends PreferenceActivity {
                         mLockscreenEnabler.setSwitch(holder.switch_);
                     } else if (header.id == R.id.active_settings) {
                         mActiveEnabler.setSwitch(holder.switch_);
+                    } else if (header.id == R.id.hotword_settings) {
+                        mHotwordEnabler.setSwitch(holder.switch_);
                     }
                 case HEADER_TYPE_NORMAL:
                     holder.icon.setImageResource(header.iconRes);
@@ -513,11 +535,13 @@ public class Settings extends PreferenceActivity {
         public void resume() {
             mLockscreenEnabler.resume();
             mActiveEnabler.resume();
+            mHotwordEnabler.resume();
         }
 
         public void pause() {
             mLockscreenEnabler.pause();
             mActiveEnabler.pause();
+            mHotwordEnabler.pause();
         }
     }
 
