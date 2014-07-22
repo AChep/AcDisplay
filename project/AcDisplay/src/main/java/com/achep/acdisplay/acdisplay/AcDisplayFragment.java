@@ -59,6 +59,7 @@ import com.achep.acdisplay.utils.MathUtils;
 import com.achep.acdisplay.view.ForwardingLayout;
 import com.achep.acdisplay.view.ForwardingListener;
 
+import java.lang.IllegalStateException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -574,7 +575,14 @@ public class AcDisplayFragment extends Fragment implements
                     // This must be a synchronization problem with Android's Scene or TransitionManager, 
                     // but those were declared as final classes, so I have no idea how to fix it.
                     // Blame Google or me for that ;)
-                    TransitionManager.go(sceneCompat.scene, mTransition);
+                    try {
+                        TransitionManager.go(sceneCompat.scene, mTransition);
+                    }  catch (IllegalStateException e) {
+                        Log.e(TAG, "TransitionManager has failed switching scenes.");
+                        
+                        // Pretty please, don't throw it again.
+                        TransitionManager.go(sceneCompat.scene, mTransition);
+                    } 
                 } else {
                     // TODO: Better animation for Jelly Bean users.
                     sceneCompat.enter();
