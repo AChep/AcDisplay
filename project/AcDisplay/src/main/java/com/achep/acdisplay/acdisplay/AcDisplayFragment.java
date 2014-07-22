@@ -570,6 +570,10 @@ public class AcDisplayFragment extends Fragment implements
             mCurrentScene = sceneCompat;
             if (transitions) {
                 if (Device.hasKitKatApi()) {
+                    // TODO: Fix the exception which happens here randomly.
+                    // This must be a synchronization problem with Android's Scene or TransitionManager, 
+                    // but those were declared as final classes, so I have no idea how to fix it.
+                    // Blame Google or me for that ;)
                     TransitionManager.go(sceneCompat.scene, mTransition);
                 } else {
                     // TODO: Better animation for Jelly Bean users.
