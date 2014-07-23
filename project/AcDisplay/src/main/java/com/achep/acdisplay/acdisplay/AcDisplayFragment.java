@@ -27,6 +27,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -60,6 +61,8 @@ import com.achep.acdisplay.view.ForwardingLayout;
 import com.achep.acdisplay.view.ForwardingListener;
 
 import java.lang.IllegalStateException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -571,18 +574,30 @@ public class AcDisplayFragment extends Fragment implements
             mCurrentScene = sceneCompat;
             if (transitions) {
                 if (Device.hasKitKatApi()) {
-                    // TODO: Fix the exception which happens here randomly.
-                    // This must be a synchronization problem with Android's Scene or TransitionManager, 
-                    // but those were declared as final classes, so I have no idea how to fix it.
-                    // Blame Google or me for that ;)
                     try {
+                        // TODO: Fix the exception which happens here randomly.
+                        // This must be a synchronization problem with Android's Scene or TransitionManager,
+                        // but those were declared as final classes, so I have no idea how to fix it.
                         TransitionManager.go(sceneCompat.scene, mTransition);
                     }  catch (IllegalStateException e) {
                         Log.e(TAG, "TransitionManager has failed switching scenes.");
-                        
-                        // Pretty please, don't throw it again.
+
+                        ViewGroup viewGroup = (ViewGroup) sceneCompat.getView().getParent();
+                        viewGroup.removeView(sceneCompat.getView());
+
+                        try {
+                            int id = Resources.getSystem().getIdentifier("current_scene", "id", "android");
+                            Method method = View.class.getMethod("setTagInternal", int.class, Object.class);
+                            method.setAccessible(true);
+                            method.invoke(viewGroup, id, null);
+                        } catch (NoSuchMethodException
+                                | IllegalAccessException
+                                | InvocationTargetException e2) {
+                            throw new RuntimeException(e2);
+                        }
+
                         TransitionManager.go(sceneCompat.scene, mTransition);
-                    } 
+                    }
                 } else {
                     // TODO: Better animation for Jelly Bean users.
                     sceneCompat.enter();
