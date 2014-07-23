@@ -288,7 +288,6 @@ public class AcDisplayFragment extends Fragment implements
         int action = event.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                updateIconsSize();
                 // Track the velocity of movement, so we
                 // can do swipe-to-dismiss.
                 mVelocityTracker = VelocityTracker.obtain();
