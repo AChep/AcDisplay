@@ -38,7 +38,7 @@ import com.achep.acdisplay.R;
 
 
 /**
- * Created by Artem on 23.02.14.
+ * Activity that contains some methods to emulate system keyguard.
  */
 public abstract class KeyguardActivity extends Activity {
 
@@ -51,9 +51,6 @@ public abstract class KeyguardActivity extends Activity {
 
     private BroadcastReceiver mScreenOffReceiver;
 
-    private boolean mLocking;
-    private boolean mUnlocking;
-
     private long mPendingFinishStartTime;
     private int mPendingFinishMax;
 
@@ -65,7 +62,6 @@ public abstract class KeyguardActivity extends Activity {
             long now = SystemClock.elapsedRealtime();
             long elapsedTime = now - mPendingFinishStartTime;
             if (elapsedTime < mPendingFinishMax) {
-                if (Build.DEBUG) Log.d(TAG, "Doing pending finish: elapsed_time=" + elapsedTime);
                 finish();
             }
         }
@@ -82,46 +78,81 @@ public abstract class KeyguardActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean finishOnScreenOff = false;
-        int windowFlags = 0;
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            finishOnScreenOff = intent.getBooleanExtra(EXTRA_FINISH_ON_SCREEN_OFF, false);
-            if (intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false)) {
-                windowFlags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
-            }
+        getWindow().addFlags(0
+                // Show activity above the system keyguard.
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                // Allow ignoring random presses.
+                | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES);
+
+        if (getIntent() != null) {
+            Intent intent = getIntent();
+
+            // Registers a receiver to finish activity when screen goes off. 
+            if (intent.getBooleanExtra(EXTRA_FINISH_ON_SCREEN_OFF, false))
+                registerScreenOffReceiver();
+
+            // Turns screen on.
+            if (intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false))
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         }
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES
-                | windowFlags);
-
-        mLocking = false;
-        mUnlocking = false;
         mPendingFinishMax = getResources().getInteger(R.integer.config_maxPendingFinishDelayMillis);
+    }
 
-        if (finishOnScreenOff) {
-            IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-            intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1);
-            registerReceiver((mScreenOffReceiver = new BroadcastReceiver() {
+    @Override
+    protected void onDestroy() {
+        unregisterScreenOffReceiver();
+        super.onDestroy();
+    }
 
-                @Override
-                public void onReceive(final Context context, Intent intent) {
-                    finish();
-                }
-            }), intentFilter);
-        }
+    /**
+     * Registers a receiver to finish activity when screen goes off. 
+     * You will need to {@link #unregisterScreenOffReceiver() unregister} it
+     * later.
+     *
+     * @see #unregisterScreenOffReceiver()
+     */
+    private void registerScreenOffReceiver() {
+        mScreenOffReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Avoid of blocking this event.
+                // TODO: Double-check that #finish() is always run.
+                new Handler().post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        KeyguardActivity.this.finish();
+                    }
+                });
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // max allowed priority
+        registerReceiver(mScreenOffReceiver, intentFilter);
+    }
+
+    /**
+     * Unregisters screen off receiver if it was registered previuosly.
+     *
+     * @see #registerScreenOffReceiver()
+     */
+    private void unregisterScreenOffReceiver() {
+        if (mScreenOffReceiver != null) {
+            unregisterReceiver(mScreenOffReceiver);
+            mScreenOffReceiver = null;
+        }        
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        mUnlocking = false;
-        mLocking = false;
-
         overrideHomePress(true);
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
     }
 
     @Override
@@ -146,28 +177,21 @@ public abstract class KeyguardActivity extends Activity {
         sendBroadcast(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mScreenOffReceiver != null) {
-            unregisterReceiver(mScreenOffReceiver);
-        }
-    }
-
     /**
-     * Turns screen off.
+     * Locks the device (and turns screen off).
      *
      * @return {@code true} if successful, {@code false} otherwise.
+     * @see DevicePolicyManager#lockNow()
      */
     public boolean lock() {
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         try {
+            // TODO: Respect secure lockscreen timeout settings.
             dpm.lockNow();
-            mLocking = true;
+            return true;
         } catch (SecurityException e) {
-            mLocking = false;
+            return false; // User didn't make us an admin.
         }
-        return mLocking;
     }
 
     /**
@@ -201,11 +225,10 @@ public abstract class KeyguardActivity extends Activity {
         // Otherwise we need this delay to get new
         // flags applied.
         final KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        final int delay = km.isKeyguardSecure() ? 0 : 16; // TODO: Find the way to get rid of this delay.
         final long now = SystemClock.elapsedRealtime();
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        handler.post(new Runnable() {
 
             @Override
             public void run() {
@@ -224,15 +247,7 @@ public abstract class KeyguardActivity extends Activity {
                     overridePendingTransition(0, R.anim.activity_unlock);
                 }
             }
-        }, delay);
-    }
-
-    public final boolean isLocking() {
-        return mLocking;
-    }
-
-    public final boolean isUnlocking() {
-        return mUnlocking;
+        });
     }
 
     @Override
