@@ -252,6 +252,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
      * Restarts timeout to {@link com.achep.acdisplay.Config#getTimeoutShort()}
      * as requested by widget.
      */
+    @Override
     public void requestTimeoutRestart(Widget widget) {
         if (widget == getCurrentWidget()) {
             mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort(), true);
