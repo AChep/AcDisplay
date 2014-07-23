@@ -24,7 +24,7 @@ package com.achep.acdisplay.utils;
 public class MathUtils {
 
     public static float range(float a, float min, float max) {
-        return Math.max(Math.min(a, max), min);
+        return a < min ? min : a > max ? max : a;
     }
 
     public static int charge(float a) {
