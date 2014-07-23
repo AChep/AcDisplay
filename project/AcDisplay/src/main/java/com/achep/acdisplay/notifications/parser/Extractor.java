@@ -116,9 +116,18 @@ public final class Extractor {
             removeClickableViews(textViews);
             removeSubtextViews(context, textViews);
             removeActionViews(data.actions, textViews);
+            
+            // There're no views present.
+            if (textViews.size() == 0)
+                break;
 
             TextView title = findTitleTextView(textViews);
             textViews.remove(title); // no need of title view anymore
+            data.titleText = title.getText();
+            
+            // There're no views present.
+            if (textViews.size() == 0)
+                break;
 
             int length = textViews.size();
             CharSequence[] messages = new CharSequence[length];
@@ -126,7 +135,6 @@ public final class Extractor {
                 messages[i] = textViews.get(i).getText();
             }
 
-            data.titleText = title.getText();
             data.messageText = Utils.mergeLargeMessage(messages);
             break;
         }
