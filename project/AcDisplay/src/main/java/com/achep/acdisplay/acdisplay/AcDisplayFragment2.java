@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
@@ -210,6 +211,12 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
                 }
 
                 mTimeout.pause();
+                break;
+            case CircleView.ACTION_UNLOCK_START:
+                mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+                break;
+            case CircleView.ACTION_UNLOCK_CANCEL:
+                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
                 break;
             case CircleView.ACTION_UNLOCK:
                 mActivity.unlock(null);

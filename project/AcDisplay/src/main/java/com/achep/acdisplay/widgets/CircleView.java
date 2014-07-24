@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -42,7 +43,11 @@ public class CircleView extends View {
 
     public static final int ACTION_START = 0;
     public static final int ACTION_UNLOCK = 1;
-    public static final int ACTION_CANCELED = 2;
+    public static final int ACTION_UNLOCK_START = 2;
+    public static final int ACTION_UNLOCK_CANCEL = 3;
+    public static final int ACTION_CANCELED = 4;
+
+    private static final int MSG_CANCEL = -1;
 
     private float[] mPoint = new float[2];
 
@@ -78,17 +83,25 @@ public class CircleView extends View {
     private CircleRadiusAnimation mAnimationOut;
     private Callback mCallback;
 
-    private Handler mHandler = new Handler();
-    private Runnable mDelayedCancel = new Runnable() {
+    private Handler mHandler = new Handler() {
+
         @Override
-        public void run() {
-            cancelCircle(false);
-        }
-    };
-    private Runnable mDelayedUnlock = new Runnable() {
-        @Override
-        public void run() {
-            mCallback.onCircleEvent(mRadius, calculateRatio(), ACTION_UNLOCK);
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_CANCEL:
+                    cancelCircle();
+                    break;
+                case ACTION_START:
+                case ACTION_UNLOCK:
+                case ACTION_UNLOCK_START:
+                case ACTION_UNLOCK_CANCEL:
+                case ACTION_CANCELED:
+                    if (mCallback != null) {
+                        mCallback.onCircleEvent(mRadius, calculateRatio(), msg.what);
+                    }
+                    break;
+            }
         }
     };
 
@@ -98,13 +111,11 @@ public class CircleView extends View {
     }
 
     public CircleView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public CircleView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -139,6 +150,10 @@ public class CircleView extends View {
         setRadius(0);
     }
 
+    public void setCallback(Callback callback) {
+        mCallback = callback;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -151,11 +166,10 @@ public class CircleView extends View {
         canvas.drawColor(Color.argb(alpha, 0, 0, 0));
 
         // Draw unlock circle
-        mPaint.setAlpha((int) (255 * Math.pow(ratio, 0.33f)));
+        mPaint.setAlpha((int) (255 * Math.pow(ratio, 1f / 3f)));
         canvas.drawCircle(mPoint[0], mPoint[1], mRadiusDrawn, mPaint);
 
-        if (mRadiusTargetAimed) { // We're ready to unlock
-
+        if (ratio >= 0.5f) {
             // Draw unlock icon at the center of circle
             float scale = 0.5f + 0.5f * ratio;
             canvas.save();
@@ -171,24 +185,25 @@ public class CircleView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mHandler.removeCallbacks(mDelayedUnlock);
-        mHandler.removeCallbacks(mDelayedCancel);
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     public boolean onTouchEvent2(MotionEvent event) {
         // Cancel current circle on two-fingers touch (or more.)
         if (event.getPointerCount() > 1) {
-            cancelCircle(false);
+            cancelCircle();
             return false;
         }
 
+        final int action = event.getActionMasked();
+
         // If current circle is canceled then
         // ignore all actions except of touch down (to reset state.)
-        if (mCanceled && event.getActionMasked() != MotionEvent.ACTION_DOWN) return false;
+        if (mCanceled && action != MotionEvent.ACTION_DOWN) return false;
 
         final float x = event.getX();
         final float y = event.getY();
-        switch (event.getActionMasked()) {
+        switch (action) {
             case MotionEvent.ACTION_DOWN:
                 clearAnimation();
 
@@ -198,58 +213,57 @@ public class CircleView extends View {
                 mPoint[1] = y;
                 mCanceled = false;
 
-                mHandler.removeCallbacks(mDelayedCancel);
-                mHandler.postDelayed(mDelayedCancel, 1000);
-                mCallback.onCircleEvent(mRadius, calculateRatio(), ACTION_START);
+                if (mHandler.hasMessages(ACTION_UNLOCK)) {
+                    // Cancel unlocking process.
+                    mHandler.sendEmptyMessage(ACTION_UNLOCK_CANCEL);
+                }
+
+                mHandler.removeCallbacksAndMessages(null);
+                mHandler.sendEmptyMessageDelayed(MSG_CANCEL, 1000);
+                mHandler.sendEmptyMessage(ACTION_START);
             case MotionEvent.ACTION_MOVE:
                 setRadius((float) Math.hypot(x - mPoint[0], y - mPoint[1]));
 
-                // Cancel the circle if it's decreasing.
-                if (mRadiusMaxPeak - mRadius > mRadiusDecreaseThreshold) {
-                    mRadiusTargetAimed = false;
-                    cancelCircle(false);
-                    break;
+                boolean aimed = mRadius >= mRadiusTarget;
+                if (mRadiusTargetAimed != aimed) {
+                    mRadiusTargetAimed = aimed;
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY); // vibrate
                 }
 
-                if (calculateRatio() == 1) {
-                    if (!mRadiusTargetAimed) {
-                        mRadiusTargetAimed = true;
-                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    }
-                } else if (mRadiusTargetAimed) {
-                    mRadiusTargetAimed = false;
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                if (mRadiusMaxPeak - mRadius > mRadiusDecreaseThreshold) {
+                    cancelCircle();
                 }
                 break;
+            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                if (mRadiusTargetAimed) {
-                    // Calculate biggest distance between center of
-                    // the circle and view's corners.
-                    float distance = 0f;
-                    int[] corners = new int[]{
-                            0, 0, // top left
-                            0, getHeight(), // bottom left
-                            getWidth(), getHeight(), // bottom right
-                            getWidth(), 0 // top right
-                    };
-                    for (int i = 0; i < corners.length; i += 2) {
-                        double c = Math.hypot(
-                                mPoint[0] - corners[i],
-                                mPoint[1] - corners[i + 1]);
-                        if (c > distance) distance = (float) c;
-                    }
-                    mAnimationOver.setRange(mRadiusDrawn, distance);
+                mHandler.removeMessages(ACTION_CANCELED);
 
-                    // Start Android L-like ripple animation.
-                    startAnimation(mAnimationOver);
-
-                    mHandler.postDelayed(mDelayedUnlock, mAnimationOverDuration);
-                    mHandler.removeCallbacks(mDelayedCancel);
+                if (!mRadiusTargetAimed || action == MotionEvent.ACTION_CANCEL) {
+                    cancelCircle();
                     break;
                 }
-            case MotionEvent.ACTION_CANCEL:
-                mHandler.removeCallbacks(mDelayedCancel);
-                cancelCircle(mRadiusTargetAimed);
+
+                // Calculate longest distance between center of
+                // the circle and view's corners.
+                float distance = 0f;
+                int[] corners = new int[]{
+                        0, 0, // top left
+                        0, getHeight(), // bottom left
+                        getWidth(), getHeight(), // bottom right
+                        getWidth(), 0 // top right
+                };
+                for (int i = 0; i < corners.length; i += 2) {
+                    double c = Math.hypot(
+                            mPoint[0] - corners[i],
+                            mPoint[1] - corners[i + 1]);
+                    if (c > distance) distance = (float) c;
+                }
+
+                mAnimationOver.setRange(mRadiusDrawn, distance);
+                startAnimation(mAnimationOver);
+
+                mHandler.sendEmptyMessage(ACTION_UNLOCK_START);
+                mHandler.sendEmptyMessageDelayed(ACTION_UNLOCK, mAnimationOverDuration);
                 break;
             default:
                 return super.onTouchEvent(event);
@@ -257,15 +271,14 @@ public class CircleView extends View {
         return true;
     }
 
-    private void cancelCircle(boolean unlockAnimation) {
+    private void cancelCircle() {
         if (mCanceled) {
             return;
         }
 
         mCanceled = true;
-        mCallback.onCircleEvent(mRadius, calculateRatio(), ACTION_CANCELED);
+        mHandler.sendEmptyMessage(ACTION_CANCELED);
 
-        mAnimationOut.setStartOffset(unlockAnimation ? 150 : 0);
         mAnimationOut.setRange(mRadius, 0f);
         startAnimation(mAnimationOut);
     }
@@ -305,10 +318,6 @@ public class CircleView extends View {
     public void setRadiusTarget(float radiusTarget) {
         mRadiusTarget = radiusTarget;
         setRadius(mRadius);
-    }
-
-    public void setCallback(Callback callback) {
-        mCallback = callback;
     }
 
     public void setDarkening(float darkening) {
