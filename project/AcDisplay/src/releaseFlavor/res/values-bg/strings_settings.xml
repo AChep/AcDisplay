@@ -74,10 +74,10 @@
   <string name="preference_inactive_hours_enabled">Неактивни часове - включено</string>
   <string name="preference_inactive_hours_from"><![CDATA[
 от: <br/> <b><font color="#ffffff"> %1$s</font></b>
-]] ></string>
+]]></string>
   <string name="preference_inactive_hours_to"><![CDATA[
 до: <br/> <b><font color="#ffffff"> %1$s</font></b>
-]] ></string>
+]]></string>
   <string name="preference_timeout_normal">След събуждане или избор на известие</string>
   <string name="preference_timeout_short">След докосване на неактивна зона</string>
   <string name="preference_timeout_sec">%1$s сек.</string>
