@@ -57,7 +57,7 @@ public class Presenter {
     public void start(Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (pm.isScreenOn() || ts.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
+        if (PowerUtils.isScreenOn(pm) || ts.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
             return;
         }
 

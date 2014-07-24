@@ -64,7 +64,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
     public static class DownloadText extends AsyncTask<String, Void, String[]> {
 
         private static final String TAG = "DownloadText";
-        private WeakReference<Callback> mCallback;
+        private final WeakReference<Callback> mCallback;
 
         /**
          * Interface definition for a callback to be invoked

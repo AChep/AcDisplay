@@ -24,6 +24,8 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.PowerManager;
 
+import com.achep.acdisplay.Device;
+
 /**
  * Helper class with utils related to power.
  *
@@ -62,7 +64,11 @@ public class PowerUtils {
      */
     public static boolean isScreenOn(Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        return pm.isScreenOn();
+        return isScreenOn(pm);
+    }
+
+    public static boolean isScreenOn(PowerManager pm) {
+        return Device.hasLemonCakeApi() ? pm.isInteractive() : pm.isScreenOn();
     }
 
 }

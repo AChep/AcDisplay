@@ -29,9 +29,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class Donation {
 
-    public int amount;
-    public String sku;
-    public String text;
+    public final int amount;
+    public final String sku;
+    public final String text;
 
     public Donation(int amount, String text) {
         this.amount = amount;

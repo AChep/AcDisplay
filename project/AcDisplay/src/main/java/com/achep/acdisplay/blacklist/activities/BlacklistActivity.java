@@ -194,7 +194,7 @@ public class BlacklistActivity extends PreferenceActivity {
                 mPreferences
                         .edit()
                         .putBoolean(PREF_KEY_SHOW_SYSTEM_APPS, item.isChecked())
-                        .commit();
+                        .apply();
                 invalidateHeaders();
                 break;
             default:

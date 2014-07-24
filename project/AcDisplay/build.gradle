@@ -78,6 +78,7 @@ android {
         }
     }
 
+    //noinspection GroovyAssignabilityCheck
     SimpleDateFormat timeStampFormat = new SimpleDateFormat(
             "EEE MMMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
     String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());

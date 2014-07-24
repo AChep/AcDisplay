@@ -99,7 +99,7 @@ public class BathService extends Service {
 
     private final HashMap<Class, ChildService> mMap = new HashMap<>(2);
     private LocalBroadcastManager mLocalBroadcastManager;
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             boolean add = false;

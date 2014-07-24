@@ -20,13 +20,11 @@
 package com.achep.acdisplay.services;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.RemoteController;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -52,14 +50,14 @@ public class MediaService extends NotificationListenerService implements
 
     public static MediaService sService;
 
-    private IBinder mBinder = new B();
+    private final IBinder mBinder = new B();
     private AudioManager mAudioManager;
 
     private boolean mRegistered;
     private RemoteController mRemoteController;
     private RemoteController.OnClientUpdateListener mExternalListener;
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     public class B extends Binder {
 

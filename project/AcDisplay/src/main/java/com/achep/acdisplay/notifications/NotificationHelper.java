@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;

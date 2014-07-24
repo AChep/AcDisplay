@@ -27,6 +27,7 @@
         android:visibility="gone" />
 
     <fragment
+        android:id="@+id/acdisplay_fragment"
         android:name="com.achep.acdisplay.acdisplay.AcDisplayFragment2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

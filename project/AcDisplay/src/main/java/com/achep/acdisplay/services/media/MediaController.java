@@ -62,7 +62,7 @@ public class MediaController {
 
     private static final int MSG_MEDIA_HIDE = 0;
 
-    private Handler mHandler = new Handler() {
+    private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -76,18 +76,18 @@ public class MediaController {
     };
 
     private Context mContext;
-    protected MediaService mService;
-    protected boolean mBound = false;
+    private MediaService mService;
+    private boolean mBound = false;
 
-    private ArrayList<MediaListener> mListeners = new ArrayList<>();
+    private final ArrayList<MediaListener> mListeners = new ArrayList<>();
     private boolean mStarted;
 
     private int mCurrentPlayState = RemoteControlClient.PLAYSTATE_STOPPED;
     private int mUiState = UISTATE_NORMAL;
 
-    private Metadata mMetadata = new Metadata();
+    private final Metadata mMetadata = new Metadata();
     private RemoteController.MetadataEditor mPopulateMetadataWhenStarted;
-    private RemoteController.OnClientUpdateListener mRCClientUpdateListener =
+    private final RemoteController.OnClientUpdateListener mRCClientUpdateListener =
             new RemoteController.OnClientUpdateListener() {
                 @Override
                 public void onClientChange(boolean clearing) {
@@ -119,7 +119,7 @@ public class MediaController {
                 }
             };
 
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {

@@ -126,7 +126,7 @@ public class Config {
     private boolean mUiBatterySticky;
     private boolean mUiNotifyCircledIcon;
 
-    private Triggers mTriggers;
+    private final Triggers mTriggers;
     private int mTrigPreviousVersion;
     private boolean mTrigHelpRead;
 
@@ -778,7 +778,7 @@ public class Config {
         private boolean mBroadcasting;
         private boolean mStarted;
 
-        private Preference.OnPreferenceChangeListener mPreferenceListener = new Preference.OnPreferenceChangeListener() {
+        private final Preference.OnPreferenceChangeListener mPreferenceListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (mBroadcasting) {
@@ -800,7 +800,7 @@ public class Config {
             }
         };
 
-        private OnConfigChangedListener mConfigListener = new OnConfigChangedListener() {
+        private final OnConfigChangedListener mConfigListener = new OnConfigChangedListener() {
 
             @Override
             public void onConfigChanged(Config config, String key, Object value) {
@@ -840,8 +840,8 @@ public class Config {
          * @author Artem Chepurnoy
          */
         private static class Group {
-            Preference preference;
-            Option option;
+            final Preference preference;
+            final Option option;
 
             public Group(Config config, Preference preference) {
                 this.preference = preference;

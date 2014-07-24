@@ -75,7 +75,7 @@ public class DonationFragment extends DialogFragment {
 
     private IabHelper mHelper;
     private Donation[] mDonationList;
-    private HashSet<String> mInventorySet = new HashSet<>();
+    private final HashSet<String> mInventorySet = new HashSet<>();
 
     @Override
     public void onAttach(Activity activity) {
@@ -272,7 +272,7 @@ public class DonationFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener =
+    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener =
             new IabHelper.OnIabPurchaseFinishedListener() {
                 public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
                     if (mHelper == null) return;
@@ -293,7 +293,7 @@ public class DonationFragment extends DialogFragment {
                 }
             };
 
-    private IabHelper.QueryInventoryFinishedListener mGotInventoryListener =
+    private final IabHelper.QueryInventoryFinishedListener mGotInventoryListener =
             new IabHelper.QueryInventoryFinishedListener() {
                 public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                     if (mHelper == null) return;

@@ -66,7 +66,7 @@ public abstract class PowerTogglesPlugin extends BroadcastReceiver {
      * @param newState
      * @param context
      */
-    public static final void sendStateUpdate(Class<? extends PowerTogglesPlugin> pluginClass,
+    public static void sendStateUpdate(Class<? extends PowerTogglesPlugin> pluginClass,
                                              boolean newState, Context context) {
         context.sendBroadcast(new Intent(ACTION_STATE_CHANGED)
                 .putExtra(EXTRA_VARID, pluginClass.getName())
