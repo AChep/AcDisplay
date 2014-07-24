@@ -23,10 +23,6 @@
     android:versionCode="23"
     android:versionName="2.4">
 
-    <uses-sdk
-        android:minSdkVersion="18"
-        android:targetSdkVersion="L" />
-
     <!-- Needed to show AcDisplay above the keyguard. -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 

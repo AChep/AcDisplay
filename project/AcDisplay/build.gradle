@@ -51,6 +51,8 @@ android {
     }
 
     defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 'L'
     }
 
     compileOptions {
