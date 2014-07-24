@@ -51,10 +51,14 @@ public class NotificationHelper {
     public static void dismissNotification(StatusBarNotification notification) {
         MediaService service = MediaService.sService;
         if (service != null) {
-            service.cancelNotification(
-                    notification.getPackageName(),
-                    notification.getTag(),
-                    notification.getId());
+            if (Device.hasLemonCakeApi()) {
+                service.cancelNotification(notification.getKey());
+            } else {
+                service.cancelNotification(
+                        notification.getPackageName(),
+                        notification.getTag(),
+                        notification.getId());
+            }
             NotificationPresenter.getInstance().removeNotification(service, notification);
         } else {
             Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
