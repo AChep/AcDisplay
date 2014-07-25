@@ -7,7 +7,12 @@ env:
 android:
   components:
     - build-tools-20.0.0
-    - android-L
+    - android-19
+    - sysimg-19
+    - extra-android-support
+  licenses:
+    - android-sdk-license-bcbbd656
+    - '.*intel.+'
 
 before_script:
   # Create and start emulator
