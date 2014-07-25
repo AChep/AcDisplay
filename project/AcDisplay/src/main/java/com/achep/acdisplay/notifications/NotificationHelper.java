@@ -23,7 +23,6 @@ import android.app.PendingIntent;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.achep.acdisplay.Device;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
@@ -52,14 +51,10 @@ public class NotificationHelper {
     public static void dismissNotification(StatusBarNotification notification) {
         MediaService service = MediaService.sService;
         if (service != null) {
-            if (Device.hasLemonCakeApi()) {
-                service.cancelNotification(notification.getKey());
-            } else {
-                service.cancelNotification(
-                        notification.getPackageName(),
-                        notification.getTag(),
-                        notification.getId());
-            }
+            service.cancelNotification(
+                    notification.getPackageName(),
+                    notification.getTag(),
+                    notification.getId());
             NotificationPresenter.getInstance().removeNotification(service, notification);
         } else {
             Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
