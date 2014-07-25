@@ -18,12 +18,10 @@
  */
 package com.achep.acdisplay.services.activemode.sensors;
 
-import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import com.squareup.seismic.ShakeDetector;
 
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
@@ -34,18 +32,25 @@ import java.lang.ref.WeakReference;
  * Basing on results of accelerometer sensor it notifies when
  * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity AcDisplay}
  * should be shown.
+ * <p>
+ *     Uses nice library <a href="https://github.com/square/seismic">seismic</a>
+ *     to detect shake.
+ * </p>
  *
  * @author Artem Chepurnoy
  */
-public final class AccelerometerSensor extends ActiveModeSensor implements
-        SensorEventListener {
+public final class AccelerometerSensor extends ActiveModeSensor.Consuming implements
+        ShakeDetector.Listener {
 
     private static final String TAG = "AccelerometerSensor";
 
     private static WeakReference<AccelerometerSensor> sAccelerometerSensorWeak;
 
+    private ShakeDetector mShakeDetector;
+
     private AccelerometerSensor() {
         super();
+        mShakeDetector = new ShakeDetector(this);
     }
 
     public static AccelerometerSensor getInstance() {
@@ -64,8 +69,8 @@ public final class AccelerometerSensor extends ActiveModeSensor implements
     }
 
     @Override
-    protected boolean isSupported(SensorManager sensorManager, Context context) {
-        return false;
+    public int getRemainingTime() {
+        return 6000; // 6 sec.
     }
 
     @Override
@@ -73,22 +78,20 @@ public final class AccelerometerSensor extends ActiveModeSensor implements
         if (Build.DEBUG) Log.d(TAG, "Starting accelerometer sensor...");
 
         SensorManager sensorManager = getSensorManager();
-        Sensor accelerationSensor = sensorManager.getDefaultSensor(getType());
-        sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mShakeDetector.start(sensorManager);
     }
 
     @Override
     public void onStop() {
         if (Build.DEBUG) Log.d(TAG, "Stopping accelerometer sensor...");
 
-        SensorManager sensorManager = getSensorManager();
-        sensorManager.unregisterListener(this);
+        mShakeDetector.stop();
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) { /* placeholder */ }
+    public void hearShake() {
+        if (Build.DEBUG) Log.d(TAG, "Hearing shake...");
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) { /* unused */ }
-
+        requestWakeUp();
+    }
 }
