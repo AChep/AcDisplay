@@ -316,7 +316,9 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
             sendTestNotification();
             startActivity(new Intent(this, AcDisplayActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                            | Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF,
+                            !mConfig.isKeyguardEnabled()));
             return;
         }
 
