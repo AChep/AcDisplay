@@ -58,6 +58,8 @@ public abstract class ActiveModeHandler {
          */
         public void requestInactive();
 
+        public void pingConsumingSensors();
+
     }
 
     public ActiveModeHandler(Context context, Callback callback) {
@@ -83,6 +85,10 @@ public abstract class ActiveModeHandler {
      */
     protected void requestInactive() {
         getCallback().requestInactive();
+    }
+
+    protected void pingConsumingSensors() {
+        getCallback().pingConsumingSensors();
     }
 
     /**

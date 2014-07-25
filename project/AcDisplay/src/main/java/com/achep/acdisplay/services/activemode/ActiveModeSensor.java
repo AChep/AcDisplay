@@ -210,8 +210,13 @@ public abstract class ActiveModeSensor {
             setup(null, null);
         }
 
-        public void ping() {
+        public void ping(long elapsedRealtime) {
             int remainingTime = getRemainingTime();
+
+            long now = SystemClock.elapsedRealtime();
+            if (elapsedRealtime + remainingTime < now) {
+                return;
+            }
 
             if (mWakeLock != null && mWakeLock.isHeld()) {
                 mWakeLock.release();

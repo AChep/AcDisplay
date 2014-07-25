@@ -21,6 +21,7 @@ package com.achep.acdisplay.services.activemode;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -55,6 +56,7 @@ public class ActiveModeService extends BathService.ChildService implements
     private ActiveModeHandler[] mHandlers;
 
     private boolean mListening;
+    private long mConsumingPingTimestamp;
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -215,13 +217,19 @@ public class ActiveModeService extends BathService.ChildService implements
         for (ActiveModeSensor sensor : mSensors) {
             sensor.registerCallback(this);
             sensor.onAttached(sensorManager, context);
+
+            // Ping consuming sensors
+            if (sensor instanceof ActiveModeSensor.Consuming) {
+                ((ActiveModeSensor.Consuming) sensor).ping(mConsumingPingTimestamp);
+            }
         }
     }
 
-    private void pingConsumingSensors() {
+    public void pingConsumingSensors() {
+        mConsumingPingTimestamp = SystemClock.elapsedRealtime();
         for (ActiveModeSensor sensor : mSensors) {
             if (sensor.isAttached() && sensor instanceof ActiveModeSensor.Consuming) {
-                ((ActiveModeSensor.Consuming) sensor).ping();
+                ((ActiveModeSensor.Consuming) sensor).ping(mConsumingPingTimestamp);
             }
         }
     }

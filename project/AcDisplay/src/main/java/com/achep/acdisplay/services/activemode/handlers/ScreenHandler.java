@@ -47,6 +47,7 @@ public final class ScreenHandler extends ActiveModeHandler {
                     break;
                 case Intent.ACTION_SCREEN_OFF:
                     requestActive();
+                    pingConsumingSensors();
                     break;
             }
         }
