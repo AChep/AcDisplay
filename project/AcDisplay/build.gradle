@@ -116,7 +116,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'src/main/libs', include: ['*.jar'])
+    provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
+    compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
     compile 'com.android.support:support-v4:20.+'
 }
 
