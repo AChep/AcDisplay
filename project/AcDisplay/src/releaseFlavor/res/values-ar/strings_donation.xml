@@ -21,7 +21,7 @@
 <resources>
   <string name="donation_action">تبرع</string>
   <string name="donation_title">التبرع للمطور</string>
-  <string name="donation_info"><![CDATA[أكديسبلاي تطبيق مجاني و <a href="https://www.github.com/AChep/AcDisplay"> مفتوحة المصدر</a>.         يمكنك إظهار التقدير والدعم الخاص بك عن طريق التبرع:]></string>
+  <string name="donation_info"><![CDATA[أكديسبلاي تطبيق مجاني و <a href="https://www.github.com/AChep/AcDisplay"> مفتوحة المصدر</a>.         يمكنك إظهار التقدير والدعم الخاص بك عن طريق التبرع:]]></string>
   <string name="donation_item_bought">لقد تبرعت مسبقا.</string>
   <string name="donation_1">الآيس كريم</string>
   <string name="donation_4">فنجان من القهوة</string>
