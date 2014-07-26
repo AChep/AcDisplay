@@ -157,8 +157,17 @@ project.task('askForPasswords') << {
     } else {
         Console console = System.console();
         console.printf("\n\n\u001B[36m\u001B[1mSigning config\u001B[0m\n")
-        passKeystore = new String(console.readPassword("Please enter store password: "))
-        passKey = new String(console.readPassword("Please enter key password: "))
+
+        if ("true".equals(System.getenv("ACDISPLAY_USE_TEST_KEY") + "") 
+                || "yes".equals(console.readLine("Use default test key [yes/no]: "))) {
+            android.signingConfigs.release.storeFile = file("test-key.keystore")
+            android.signingConfigs.release.keyAlias = "acdisplay-test-build"
+            passKeystore = "FBxBT8KmUPkKnks5"
+            passKey = "KBFvGmGgDGh9HyFx"          
+        } else {
+            passKeystore = new String(console.readPassword("Please enter store password: "))
+            passKey = new String(console.readPassword("Please enter key password: "))
+        }
     }
 
     if (passKeystore.size() <= 0 || passKey.size() <= 0) {
