@@ -31,6 +31,12 @@ To build debug version: (only English and Russian locales included)
          $ ./gradlew assembleDebug
          # Builds all the things. Grab compiled application from ./AcDisplay/build/outputs/apk/
 
+To build release version: (public test key)
+
+         $ ./gradlew assembleRelease
+         # You will need to answer 'yes' later.
+         # Grab compiled application from ./AcDisplay/build/outputs/apk/
+
 To build release version:
 
          # First you need to set the path to your keystore and the alias.
