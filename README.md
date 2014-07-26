@@ -1,5 +1,6 @@
 AcDisplay
 ==========
+[![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay)
 
 <img alt="Download from Google Play" align="right" height="300"
    src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png" />
