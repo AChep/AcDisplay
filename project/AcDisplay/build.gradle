@@ -118,7 +118,7 @@ android {
 dependencies {
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
-    compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:support-v4:19.+'
 }
 
 project.task('askForPasswords') << {
