@@ -38,7 +38,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 19
     buildToolsVersion '20.0'
 
     lintOptions {
@@ -52,7 +52,7 @@ android {
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 20
+        targetSdkVersion 19
     }
 
     compileOptions {
