@@ -168,8 +168,9 @@ public class AcDisplayActivity extends KeyguardActivity implements
                 final boolean locked = lock();
 
                 if (locked) {
-                    Intent intent = new Intent(App.ACTION_INTERNAL_TIMEOUT);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+                    manager.sendBroadcast(new Intent(App.ACTION_INTERNAL_TIMEOUT));
+                    manager.sendBroadcast(new Intent(App.ACTION_INTERNAL_PING_SENSORS));
                 }
                 break;
         }
