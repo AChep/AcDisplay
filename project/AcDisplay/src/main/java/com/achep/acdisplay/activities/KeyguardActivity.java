@@ -34,6 +34,7 @@ import android.view.WindowManager;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 
 
@@ -244,7 +245,12 @@ public abstract class KeyguardActivity extends Activity {
                 if (runnable != null) runnable.run();
                 if (finish) {
                     finish();
-                    overridePendingTransition(0, R.anim.activity_unlock);
+
+                    if (Config.getInstance().isUnlockAnimationEnabled()) {
+                        overridePendingTransition(0, R.anim.activity_unlock);
+                    } else {
+                        overridePendingTransition(0, 0);
+                    }
                 }
             }
         });

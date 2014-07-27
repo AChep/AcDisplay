@@ -89,6 +89,7 @@ public class Config {
     public static final String KEY_UI_ICON_SIZE = "ui_condensed_view_size";
     public static final String ICON_SIZE_PX = "px";
     public static final String ICON_SIZE_DP = "dp";
+    public static final String KEY_UI_UNLOCK_ANIMATION = "unlock_animation";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -125,6 +126,7 @@ public class Config {
     private boolean mUiMirroredTimeoutBar;
     private boolean mUiBatterySticky;
     private boolean mUiNotifyCircledIcon;
+    private boolean mUiUnlockAnimation;
 
     private final Triggers mTriggers;
     private int mTrigPreviousVersion;
@@ -299,6 +301,9 @@ public class Config {
         hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new Option(
                 "setStatusBatterySticky",
                 "isStatusBatterySticky", boolean.class));
+        hashMap.put(KEY_UI_UNLOCK_ANIMATION, new Option(
+                "setUnlockAnimationEnabled",
+                "isUnlockAnimationEnabled", boolean.class));
         hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new Option(
                 "setScreenOffAfterLastNotify",
                 "isScreenOffAfterLastNotify", boolean.class));
@@ -357,6 +362,8 @@ public class Config {
                 res.getBoolean(R.bool.config_default_ui_status_battery_sticky));
         mUiFullScreen = prefs.getBoolean(KEY_UI_FULLSCREEN,
                 res.getBoolean(R.bool.config_default_ui_full_screen));
+        mUiUnlockAnimation = prefs.getBoolean(KEY_UI_UNLOCK_ANIMATION,
+                res.getBoolean(R.bool.config_default_ui_unlock_animation));
         mUiIconSize = prefs.getInt(KEY_UI_ICON_SIZE,
                 res.getInteger(R.integer.config_default_ui_icon_size_dp));
 
@@ -645,6 +652,14 @@ public class Config {
         saveOption(context, KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, enabled, listener, changed);
     }
 
+    /**
+     * Setter to turn the screen off after dismissing the last notification.
+     */
+    public void setUnlockAnimationEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mUiUnlockAnimation != (mUiUnlockAnimation = enabled);
+        saveOption(context, KEY_UI_UNLOCK_ANIMATION, enabled, listener, changed);
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -761,6 +776,10 @@ public class Config {
 
     public boolean isScreenOffAfterLastNotify() {
         return mScreenOffAfterLastNotify;
+    }
+
+    public boolean isUnlockAnimationEnabled() {
+        return mUiUnlockAnimation;
     }
 
     /**

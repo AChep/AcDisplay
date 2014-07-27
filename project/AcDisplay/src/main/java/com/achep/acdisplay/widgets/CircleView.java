@@ -32,6 +32,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.animations.CircleRadiusAnimation;
 import com.achep.acdisplay.utils.MathUtils;
@@ -243,27 +244,33 @@ public class CircleView extends View {
                     break;
                 }
 
-                // Calculate longest distance between center of
-                // the circle and view's corners.
-                float distance = 0f;
-                int[] corners = new int[]{
-                        0, 0, // top left
-                        0, getHeight(), // bottom left
-                        getWidth(), getHeight(), // bottom right
-                        getWidth(), 0 // top right
-                };
-                for (int i = 0; i < corners.length; i += 2) {
-                    double c = Math.hypot(
-                            mPoint[0] - corners[i],
-                            mPoint[1] - corners[i + 1]);
-                    if (c > distance) distance = (float) c;
+                boolean animateUnlocking = Config.getInstance().isUnlockAnimationEnabled();
+
+                if (animateUnlocking) {
+
+                    // Calculate longest distance between center of
+                    // the circle and view's corners.
+                    float distance = 0f;
+                    int[] corners = new int[]{
+                            0, 0, // top left
+                            0, getHeight(), // bottom left
+                            getWidth(), getHeight(), // bottom right
+                            getWidth(), 0 // top right
+                    };
+                    for (int i = 0; i < corners.length; i += 2) {
+                        double c = Math.hypot(
+                                mPoint[0] - corners[i],
+                                mPoint[1] - corners[i + 1]);
+                        if (c > distance) distance = (float) c;
+                    }
+
+                    mAnimationOver.setRange(mRadiusDrawn, distance);
+                    startAnimation(mAnimationOver);
                 }
 
-                mAnimationOver.setRange(mRadiusDrawn, distance);
-                startAnimation(mAnimationOver);
-
                 mHandler.sendEmptyMessage(ACTION_UNLOCK_START);
-                mHandler.sendEmptyMessageDelayed(ACTION_UNLOCK, mAnimationOverDuration);
+                mHandler.sendEmptyMessageDelayed(ACTION_UNLOCK,
+                        animateUnlocking ? mAnimationOverDuration : 0);
                 break;
             default:
                 return super.onTouchEvent(event);

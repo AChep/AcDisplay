@@ -66,6 +66,11 @@
         android:summaryOn="@string/settings_mirrored_timeout_progress_bar_on"
         android:defaultValue="@bool/config_default_ui_mirrored_timeout_bar"/>
 
+    <CheckBoxPreference
+        android:key="unlock_animation"
+        android:title="@string/settings_unlock_animation_title"
+        android:defaultValue="@bool/config_default_ui_unlock_animation"/>
+
     <com.achep.acdisplay.settings.preferences.IconSizePreference
         android:key="icon_size"
         android:dialogIcon="@drawable/ic_action_expand"

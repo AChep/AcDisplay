@@ -67,6 +67,7 @@
     <string name="settings_mirrored_timeout_progress_bar_off">Индикатор времени таймаута уменьшается слева направо.</string>
     <string name="settings_notify_circled_icon_title">Круговая иконка уведомления</string>
     <string name="settings_notify_circled_icon_on">Большая иконка уведомления вписана в круг.</string>
+    <string name="settings_unlock_animation_title">Анимация разблокировки</string>
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Только во время зарядки</string>
