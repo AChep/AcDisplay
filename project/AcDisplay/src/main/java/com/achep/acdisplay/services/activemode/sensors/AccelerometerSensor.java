@@ -69,15 +69,9 @@ public final class AccelerometerSensor extends ActiveModeSensor.Consuming implem
     }
 
     @Override
-    public int getRemainingTime() {
-        return 6000; // 6 sec.
-    }
-
-    @Override
-    public void onStart() {
+    public void onStart(SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting accelerometer sensor...");
 
-        SensorManager sensorManager = getSensorManager();
         mShakeDetector.start(sensorManager);
     }
 

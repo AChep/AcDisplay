@@ -104,7 +104,7 @@ public abstract class ActiveModeSensor {
      */
     public abstract int getType();
 
-    public abstract void onStart();
+    public abstract void onStart(SensorManager sensorManager);
 
     public abstract void onStop();
 
@@ -118,7 +118,7 @@ public abstract class ActiveModeSensor {
         }
 
         setup(sensorManager, context);
-        onStart();
+        onStart(sensorManager);
     }
 
     /**
@@ -160,32 +160,48 @@ public abstract class ActiveModeSensor {
     public abstract static class Consuming extends ActiveModeSensor {
 
         private static final String TAG = "ConsumingSensor";
-        private static final String WAKE_LOCK_TAG = TAG;
+
+        static final int DEFAULT_REMAINING_TIME = 6000; // 6 sec.
 
         private static final int START = 0;
         private static final int STOP = 1;
 
-        private PowerManager.WakeLock mWakeLock;
         private boolean mRunning;
+
         private final Handler mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
+                if (mRunning == (msg.what == START)) return;
                 switch (msg.what) {
                     case START:
                         mRunning = true;
-                        onStart();
+                        onStart(getSensorManager());
                         break;
                     case STOP:
-                        mRunning = false;
                         onStop();
+                        mRunning = false;
                         break;
+                    default:
+                        throw new IllegalArgumentException();
                 }
             }
         };
 
-        public abstract int getRemainingTime();
+        /**
+         * Specifies how long sensor should be active after receiving
+         * a ping.
+         *
+         * @return time in millis.
+         * @see #DEFAULT_REMAINING_TIME
+         */
+        public int getRemainingTime() {
+            return DEFAULT_REMAINING_TIME;
+        }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onAttached(SensorManager sensorManager, Context context) {
             // Register sensors only once.
@@ -196,43 +212,28 @@ public abstract class ActiveModeSensor {
             setup(sensorManager, context);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onDetached() {
             if (--mAttachedNumber > 0) {
                 return;
             }
 
-            if (mRunning) { // Now die
-                mHandler.sendEmptyMessage(STOP);
-                mHandler.removeCallbacksAndMessages(null);
-            }
+            // Now die
+            mHandler.sendEmptyMessage(STOP);
+            mHandler.removeCallbacksAndMessages(null);
 
             setup(null, null);
         }
 
-        public void ping(long elapsedRealtime) {
-            int remainingTime = getRemainingTime();
-
-            long now = SystemClock.elapsedRealtime();
-            if (elapsedRealtime + remainingTime < now) {
-                return;
-            }
-
-            if (mWakeLock != null && mWakeLock.isHeld()) {
-                mWakeLock.release();
-            }
-
-            PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
-            mWakeLock.acquire(remainingTime);
-
-            if (!mRunning) {
-                mHandler.sendEmptyMessage(START);
-            }
-
+        public void ping(int remainingTime) {
+            mHandler.sendEmptyMessage(START);
             mHandler.removeMessages(STOP);
             mHandler.sendEmptyMessageDelayed(STOP, remainingTime);
         }
+
     }
 
 }

@@ -21,6 +21,7 @@ package com.achep.acdisplay.services.activemode;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -51,12 +52,14 @@ public class ActiveModeService extends BathService.ChildService implements
         NotificationPresenter.OnNotificationListChangedListener {
 
     private static final String TAG = "ActiveModeService";
+    private static final String WAKE_LOCK_TAG = "";
 
     private ActiveModeSensor[] mSensors;
     private ActiveModeHandler[] mHandlers;
 
     private boolean mListening;
     private long mConsumingPingTimestamp;
+    private PowerManager.WakeLock mWakeLock;
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -200,6 +203,8 @@ public class ActiveModeService extends BathService.ChildService implements
             sensor.onDetached();
             sensor.unregisterCallback(this);
         }
+
+        releaseWakeLock();
     }
 
     /**
@@ -217,20 +222,61 @@ public class ActiveModeService extends BathService.ChildService implements
         for (ActiveModeSensor sensor : mSensors) {
             sensor.registerCallback(this);
             sensor.onAttached(sensorManager, context);
+        }
 
-            // Ping consuming sensors
-            if (sensor instanceof ActiveModeSensor.Consuming) {
-                ((ActiveModeSensor.Consuming) sensor).ping(mConsumingPingTimestamp);
+        pingConsumingSensorsInternal();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void pingConsumingSensors() {
+        mConsumingPingTimestamp = SystemClock.elapsedRealtime();
+        pingConsumingSensorsInternal();
+    }
+
+    private void pingConsumingSensorsInternal() {
+        // Find maximum remaining time.
+        int remainingTime = -1;
+        for (ActiveModeSensor ams : mSensors) {
+            if (ams.isAttached() && ams instanceof ActiveModeSensor.Consuming) {
+                ActiveModeSensor.Consuming sensor = (ActiveModeSensor.Consuming) ams;
+                remainingTime = Math.max(remainingTime, sensor.getRemainingTime());
+            }
+        }
+
+        long now = SystemClock.elapsedRealtime();
+        int delta = (int) (now - mConsumingPingTimestamp);
+
+        remainingTime -= delta;
+        if (remainingTime < 0) {
+            return; // Too late
+        }
+
+        // Acquire wake lock to be sure that sensors will be fine.
+        releaseWakeLock();
+        PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
+        mWakeLock.acquire(remainingTime);
+
+        // Ping sensors
+        for (ActiveModeSensor ams : mSensors) {
+            if (ams.isAttached() && ams instanceof ActiveModeSensor.Consuming) {
+                ActiveModeSensor.Consuming sensor = (ActiveModeSensor.Consuming) ams;
+
+                int sensorRemainingTime = sensor.getRemainingTime() - delta;
+                if (sensorRemainingTime > 0) {
+                    sensor.ping(sensorRemainingTime);
+                }
             }
         }
     }
 
-    public void pingConsumingSensors() {
-        mConsumingPingTimestamp = SystemClock.elapsedRealtime();
-        for (ActiveModeSensor sensor : mSensors) {
-            if (sensor.isAttached() && sensor instanceof ActiveModeSensor.Consuming) {
-                ((ActiveModeSensor.Consuming) sensor).ping(mConsumingPingTimestamp);
-            }
+    private void releaseWakeLock() {
+        if (mWakeLock != null && mWakeLock.isHeld()) {
+            mWakeLock.release();
+            mWakeLock = null;
         }
     }
 

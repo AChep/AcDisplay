@@ -208,10 +208,9 @@ public final class ProximitySensor extends ActiveModeSensor implements
     }
 
     @Override
-    public void onStart() {
+    public void onStart(SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting proximity sensor...");
 
-        SensorManager sensorManager = getSensorManager();
         Sensor proximitySensor = sensorManager.getDefaultSensor(getType());
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 

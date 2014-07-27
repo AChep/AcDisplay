@@ -65,20 +65,14 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
     }
 
     @Override
-    public int getRemainingTime() {
-        return 10000; // 10 sec.
-    }
-
-    @Override
     protected boolean isSupported(SensorManager sensorManager, Context context) {
         return false;
     }
 
     @Override
-    public void onStart() {
+    public void onStart(SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting gyroscope sensor...");
 
-        SensorManager sensorManager = getSensorManager();
         Sensor accelerationSensor = sensorManager.getDefaultSensor(getType());
         sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_GAME);
     }
