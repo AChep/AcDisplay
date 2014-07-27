@@ -46,5 +46,5 @@
   <string name="media_pause_description">Κουμπί παύσης</string>
   <string name="media_play_description">Κουμπί αναπαραγωγής</string>
   <string name="media_stop_description">Κουμπί διακοπής</string>
-  <string name="accessibility_battery_level">Μπαταρία <xliff:g id="number" example="100">%d</xliff:g>%.</string>
+  <string name="accessibility_battery_level">Μπαταρία <xliff:g id="number" example="100">%d</xliff:g> τοις εκατό.</string>
 </resources>

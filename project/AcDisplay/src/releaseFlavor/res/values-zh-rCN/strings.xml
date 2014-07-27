@@ -46,5 +46,5 @@
   <string name="media_pause_description">暂停按钮</string>
   <string name="media_play_description">播放按钮</string>
   <string name="media_stop_description">停止按钮</string>
-  <string name="accessibility_battery_level">电量剩余 <xliff:g id="number" example="100">%d</xliff:g>%。</string>
+  <string name="accessibility_battery_level">电量剩余 <xliff:g id="number" example="100">%d</xliff:g> 百分之</string>
 </resources>

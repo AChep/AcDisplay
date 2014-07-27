@@ -32,7 +32,7 @@
   <string name="service_bath">AcDisplay tjänster</string>
   <string name="service_bath_keyguard">Låsskärm</string>
   <string name="service_bath_active_mode">Aktivt läge</string>
-  <string name="status_date_format">ÅÅÅ, d, MMMM</string>
+  <string name="status_date_format">EEE, d MMMM</string>
   <string name="access_not_granted">Tillgång beviljas ej!</string>
   <string name="access_notifications_grant_btn">Meddelanden</string>
   <string name="access_notifications_grant_manually">Gå till Inställningar &gt; Säkerhet &gt; Åtkomst till meddelanden och aktivera AcDisplay.</string>
