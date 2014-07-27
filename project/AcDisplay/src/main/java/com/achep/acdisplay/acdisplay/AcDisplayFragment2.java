@@ -210,6 +210,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
                     resetScene();
                 }
 
+                mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort());
                 mTimeout.pause();
                 break;
             case CircleView.ACTION_UNLOCK_START:
