@@ -26,6 +26,8 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
 
+import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
+
 import java.util.ArrayList;
 
 /**
@@ -197,6 +199,16 @@ public abstract class ActiveModeSensor {
          */
         public int getRemainingTime() {
             return DEFAULT_REMAINING_TIME;
+        }
+
+        @Override
+        protected void requestWakeUp() {
+            // Do not allow waking up in your pocket.
+            if (ProximitySensor.isNear()) {
+                return;
+            }
+
+            super.requestWakeUp();
         }
 
         /**
