@@ -18,13 +18,17 @@
  */
 package com.achep.acdisplay.services.activemode;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
@@ -60,6 +64,18 @@ public class ActiveModeService extends BathService.ChildService implements
     private boolean mListening;
     private long mConsumingPingTimestamp;
     private PowerManager.WakeLock mWakeLock;
+
+    private final BroadcastReceiver mLocalReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case App.ACTION_INTERNAL_PING_SENSORS:
+                    pingConsumingSensors();
+                    break;
+            }
+        }
+    };
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -131,6 +147,10 @@ public class ActiveModeService extends BathService.ChildService implements
         }
 
         requestActive();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(App.ACTION_INTERNAL_PING_SENSORS);
+        LocalBroadcastManager.getInstance(context).registerReceiver(mLocalReceiver, filter);
 
         NotificationPresenter.getInstance().registerListener(this);
     }

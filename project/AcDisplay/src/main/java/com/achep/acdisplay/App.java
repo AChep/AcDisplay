@@ -45,6 +45,7 @@ public class App extends Application {
     public static final String ACTION_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
 
     public static final String ACTION_INTERNAL_TIMEOUT = "TIMEOUT";
+    public static final String ACTION_INTERNAL_PING_SENSORS = "PING_SENSORS";
 
     @Override
     public void onCreate() {
