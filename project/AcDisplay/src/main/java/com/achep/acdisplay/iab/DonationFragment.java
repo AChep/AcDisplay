@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class DonationFragment extends DialogFragment {
 
         TextView info = (TextView) view.findViewById(R.id.info);
         info.setText(Html.fromHtml(getString(R.string.donation_info)));
+        info.setMovementMethod(new LinkMovementMethod());
         
         mError = (TextView) view.findViewById(R.id.error);
         mProgressBar = (ProgressBar) view.findViewById(android.R.id.progress);
