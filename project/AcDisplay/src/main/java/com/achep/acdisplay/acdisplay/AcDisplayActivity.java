@@ -21,13 +21,16 @@ package com.achep.acdisplay.acdisplay;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.Operator;
@@ -162,7 +165,12 @@ public class AcDisplayActivity extends KeyguardActivity implements
     public void onTimeoutEvent(Timeout timeout, int event) {
         switch (event) {
             case Timeout.EVENT_TIMEOUT:
-                lock();
+                final boolean locked = lock();
+
+                if (locked) {
+                    Intent intent = new Intent(App.ACTION_INTERNAL_TIMEOUT);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                }
                 break;
         }
     }
