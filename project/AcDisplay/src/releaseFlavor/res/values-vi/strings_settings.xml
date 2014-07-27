@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Thanh thời gian chờ biến mất từ trái sang phải.</string>
   <string name="settings_notify_circled_icon_title">Circled notification icon</string>
   <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
+  <string name="settings_unlock_animation_title">Unlock animation</string>
   <string name="settings_only_while_charging_title">Chỉ trong khi sạc</string>
   <string name="settings_only_while_charging_on">AcDisplay chỉ hoạt động trong khi sạc điện thoại. Điều này áp dụng cho tất cả các tính năng như sử dụng làm màn hình khóa hoặc chế độ Active.</string>
   <string name="settings_only_while_charging_off">AcDisplay luôn luôn hoạt động.</string>

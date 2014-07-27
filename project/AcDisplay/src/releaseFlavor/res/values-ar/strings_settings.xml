@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">يختفي شريط المهلة من اليسار إلى اليمين.</string>
   <string name="settings_notify_circled_icon_title">رمز إعلام دائري</string>
   <string name="settings_notify_circled_icon_on">يتم عرض رمز كبير من الإعلام  داخل الدائرة.</string>
+  <string name="settings_unlock_animation_title">Unlock animation</string>
   <string name="settings_only_while_charging_title">فقط أثناء الشحن</string>
   <string name="settings_only_while_charging_on">التطبيق نشط فقط عند شحن الجهاز. وهذا يشمل كل مزايا التطبيق مثل شاشة القفل أو الوضع النشط.</string>
   <string name="settings_only_while_charging_off">التطبيق نشط طوال الوقت.</string>

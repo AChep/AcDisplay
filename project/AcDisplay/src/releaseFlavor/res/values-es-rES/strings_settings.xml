@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">La barra de espera desaparece de izquierda a derecha.</string>
   <string name="settings_notify_circled_icon_title">Icono de notificación circular</string>
   <string name="settings_notify_circled_icon_on">Dentro del circulo, se mostrará un icono grande de notificación.</string>
+  <string name="settings_unlock_animation_title">Animación de desbloqueo</string>
   <string name="settings_only_while_charging_title">Solo mientras está cargando</string>
   <string name="settings_only_while_charging_on">AcDisplay sólo está activo mientras el dispositivo se está cargando. Esto aplica a todas las funciones tales como la pantalla de bloqueo o el modo activo.</string>
   <string name="settings_only_while_charging_off">La aplicación esta siempre activa.</string>

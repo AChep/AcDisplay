@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Індикатор тайм-аута зменшується зліва направо.</string>
   <string name="settings_notify_circled_icon_title">Круглий значок сповіщень</string>
   <string name="settings_notify_circled_icon_on">Великі піктограми сповіщень відображаються всередині кола.</string>
+  <string name="settings_unlock_animation_title">Анімація розблокування</string>
   <string name="settings_only_while_charging_title">Тільки під час зарядки</string>
   <string name="settings_only_while_charging_on">Програма активна тільки під час зарядки. Це відноситься до всіх функцій, таких як екран блокування або активний режим.</string>
   <string name="settings_only_while_charging_off">Програма активна весь час.</string>

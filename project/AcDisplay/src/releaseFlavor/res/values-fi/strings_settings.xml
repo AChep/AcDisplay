@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Aikapalkki katoaa vasemmalta oikealle.</string>
   <string name="settings_notify_circled_icon_title">Ympäröity ilmoituskuvake</string>
   <string name="settings_notify_circled_icon_on">Iso ilmoituksen kuvake näytetään ympyrän sisällä.</string>
+  <string name="settings_unlock_animation_title">Unlock animation</string>
   <string name="settings_only_while_charging_title">Vain kun laite on latautumassa</string>
   <string name="settings_only_while_charging_on">AcDisplay on käytössä vain kun laitteen akkua ladataan. Tämä koskee toimintoja lukitusnäyttö ja aktiivitila.</string>
   <string name="settings_only_while_charging_off">AcDisplay on aina käytössä.</string>

@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Zaman aşımı çubuğu soldan sağa doğru kaybolur.</string>
   <string name="settings_notify_circled_icon_title">Daire bildirim simgesi</string>
   <string name="settings_notify_circled_icon_on">Bildirimin büyük simgesi dairenin içinde gösterilir.</string>
+  <string name="settings_unlock_animation_title">Unlock animation</string>
   <string name="settings_only_while_charging_title">Sadece şarj ederken</string>
   <string name="settings_only_while_charging_on">AcDisplay yalnızca cihazınız şarj olurken etkin durumda. Bu tüm kilit ekranı ya da etkin mod gibi tüm özelliklere uygulanır.</string>
   <string name="settings_only_while_charging_off">Uygulama her zaman etkin.</string>

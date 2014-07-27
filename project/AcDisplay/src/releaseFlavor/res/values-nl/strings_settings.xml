@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Time-out balk verdwijnt van links naar rechts.</string>
   <string name="settings_notify_circled_icon_title">Omcirkeld meldingicoon</string>
   <string name="settings_notify_circled_icon_on">Groot icoon van de melding wordt weergegeven binnenin de cirkel.</string>
+  <string name="settings_unlock_animation_title">Unlock animation</string>
   <string name="settings_only_while_charging_title">Alleen tijdens het opladen</string>
   <string name="settings_only_while_charging_on">AcDisplay is alleen actief wanneer je toestel wordt opgeladen. Dit geldt voor alle functies zoals het vergrendelscherm of Actieve Modus.</string>
   <string name="settings_only_while_charging_off">App is altijd actief.</string>

@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Barra de tempo desaparece da esquerda para a direita.</string>
   <string name="settings_notify_circled_icon_title">Opção de ícone circular</string>
   <string name="settings_notify_circled_icon_on">Ícone da notificação será mostrado como um círculo.</string>
+  <string name="settings_unlock_animation_title">Unlock animation</string>
   <string name="settings_only_while_charging_title">Apenas enquanto carrega</string>
   <string name="settings_only_while_charging_on">AcDisplay só é ativado, enquanto o dispositivo está carregando. Isso se aplica a todas as funcionalidades tais como o modo ativo ou tela de bloqueio.</string>
   <string name="settings_only_while_charging_off">Aplicativo está sempre ativo.</string>

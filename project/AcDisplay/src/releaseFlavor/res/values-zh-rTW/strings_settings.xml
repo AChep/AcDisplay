@@ -54,6 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">倒數計時條會從左到右消失</string>
   <string name="settings_notify_circled_icon_title">圓形通知圖示</string>
   <string name="settings_notify_circled_icon_on">大型的通知圖示會被裁切後顯示在圓框內。</string>
+  <string name="settings_unlock_animation_title">解鎖動畫</string>
   <string name="settings_only_while_charging_title">僅限充電時</string>
   <string name="settings_only_while_charging_on">僅在充電時開啟 AcDisplay。這會影響所有功能，如螢幕鎖及主動模式。</string>
   <string name="settings_only_while_charging_off">AcDisplay 總是啟動</string>

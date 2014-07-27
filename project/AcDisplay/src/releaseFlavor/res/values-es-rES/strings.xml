@@ -32,7 +32,7 @@
   <string name="service_bath">Servicios de AcDisplay</string>
   <string name="service_bath_keyguard">Pantalla de Bloqueo</string>
   <string name="service_bath_active_mode">Modo activo</string>
-  <string name="status_date_format">AAA, d MMMM</string>
+  <string name="status_date_format">EEE, d MMMM</string>
   <string name="access_not_granted">¡Acceso no concedido!</string>
   <string name="access_notifications_grant_btn">Notificaciones</string>
   <string name="access_notifications_grant_manually">Ir a ajustes &gt; Seguridad &gt; Acceso a notificaciones y comprueba que AcDisplay está seleccionado.</string>
