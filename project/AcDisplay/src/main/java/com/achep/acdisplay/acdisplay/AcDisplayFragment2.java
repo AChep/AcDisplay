@@ -164,7 +164,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         mTimeout.registerListener(mTimeoutGui);
 
         mCircleView = (CircleView) root.findViewById(R.id.circle);
-        mCircleView.setDarkening(1f);
+//        mCircleView.setDarkening(1f);
         mCircleView.setCallback(this);
 
         ViewGroup sceneContainer = getSceneContainer();
@@ -183,10 +183,10 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         Resources res = getResources();
 
         // Smooth turning screen on.
-        CircleDarkeningAnimation anim = new CircleDarkeningAnimation(mCircleView, 1f, 0f);
-        anim.setInterpolator(getActivity(), android.R.interpolator.accelerate_cubic);
-        anim.setDuration(res.getInteger(android.R.integer.config_shortAnimTime));
-        mCircleView.startAnimation(anim);
+//        CircleDarkeningAnimation anim = new CircleDarkeningAnimation(mCircleView, 1f, 0f);
+//        anim.setInterpolator(getActivity(), android.R.interpolator.accelerate_cubic);
+//        anim.setDuration(res.getInteger(android.R.integer.config_shortAnimTime));
+//        mCircleView.startAnimation(anim);
     }
 
     @Override
