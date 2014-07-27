@@ -163,7 +163,7 @@ public abstract class ActiveModeSensor {
 
         private static final String TAG = "ConsumingSensor";
 
-        static final int DEFAULT_REMAINING_TIME = 6000; // 6 sec.
+        static final int DEFAULT_REMAINING_TIME = 3000; // 3 sec.
 
         private static final int START = 0;
         private static final int STOP = 1;
