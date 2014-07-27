@@ -257,7 +257,7 @@ public class MediaController {
                 // time to start playing music.
                 int msg = MSG_MEDIA_HIDE;
                 if (!mHandler.hasMessages(msg)) {
-                    mHandler.sendEmptyMessageDelayed(msg, 3000);
+                    mHandler.sendEmptyMessageDelayed(msg, 6000);
                 }
                 break;
         }
