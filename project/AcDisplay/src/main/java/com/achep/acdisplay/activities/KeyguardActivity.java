@@ -48,7 +48,7 @@ public abstract class KeyguardActivity extends Activity {
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
     public static final String EXTRA_FINISH_ON_SCREEN_OFF = "finish_on_screen_off";
 
-    private static final int UNLOCKING_MAX_TIME = 200;
+    private static final int UNLOCKING_MAX_TIME = 150;
 
     private BroadcastReceiver mScreenOffReceiver;
 
