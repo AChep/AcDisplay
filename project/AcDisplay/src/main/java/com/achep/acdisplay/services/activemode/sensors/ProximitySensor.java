@@ -171,7 +171,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 .build();
 
         mPrograms = new ArrayList<>();
-        mPrograms.add(programWave2Wake);
+        if (Build.DEBUG) mPrograms.add(programWave2Wake);
         mPrograms.add(programPocket);
 
         for (Program program : mPrograms) {
