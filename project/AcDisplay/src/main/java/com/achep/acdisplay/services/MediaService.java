@@ -71,8 +71,8 @@ public class MediaService extends NotificationListenerService implements
     public IBinder onBind(Intent intent) {
         switch (intent.getAction()) {
             case App.ACTION_BIND_MEDIA_CONTROL_SERVICE:
-                if (!Device.hasKitKatApi()) {
-                    throw new RuntimeException("Required Android API version 19 or 20!");
+                if (!Device.hasKitKatApi() && !Device.hasLemonCakeApi()) {
+                    throw new RuntimeException("Required Android API version 19!");
                 }
                 return mBinder;
             default:
@@ -130,7 +130,7 @@ public class MediaService extends NotificationListenerService implements
 
     @Override
     public void onCreate() {
-        if (Device.hasKitKatApi()) {
+        if (Device.hasKitKatApi() && !Device.hasLemonCakeApi()) {
             mRemoteController = new RemoteController(this, this);
             mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         }
@@ -138,7 +138,7 @@ public class MediaService extends NotificationListenerService implements
 
     @Override
     public void onDestroy() {
-        if (Device.hasKitKatApi()) {
+        if (Device.hasKitKatApi() && !Device.hasLemonCakeApi()) {
             setRemoteControllerDisabled();
         }
     }
