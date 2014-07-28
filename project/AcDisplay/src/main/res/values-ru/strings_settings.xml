@@ -102,7 +102,6 @@
     <string name="preference_timeout_normal">При запуске или смене выбраного уведомления</string>
     <string name="preference_timeout_short">После касания экрана в неактивном месте</string>
     <string name="preference_timeout_sec">%1$s сек.</string>
-    <string name="preference_no_timeout">Экран всегда остается включенным</string>
 
     <!-- Preference: Icon size -->
     <string name="preference_icon_size_message">Измените размер иконок уведомлений:</string>

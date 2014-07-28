@@ -102,7 +102,6 @@
     <string name="preference_timeout_normal">After waking up or selecting a notification</string>
     <string name="preference_timeout_short">After touching an inactive area</string>
     <string name="preference_timeout_sec">%1$s sec.</string>
-    <string name="preference_no_timeout">Screen stays on forever</string>
 
     <!-- Preference: Icon size -->
     <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>

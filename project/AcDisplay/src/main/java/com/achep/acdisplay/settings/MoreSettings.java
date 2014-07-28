@@ -75,7 +75,6 @@ public class MoreSettings extends PreferenceFragment implements
                 break;
             case Config.KEY_TIMEOUT_NORMAL:
             case Config.KEY_TIMEOUT_SHORT:
-            case Config.KEY_TIMEOUT_ENABLED:
                 updateTimeoutSummary(config);
                 break;
         }
@@ -94,10 +93,8 @@ public class MoreSettings extends PreferenceFragment implements
     }
 
     private void updateTimeoutSummary(Config config) {
-        mTimeoutPreference.setSummary(config.isTimeoutEnabled()
-                ? getString(R.string.settings_timeout_summary,
+        mTimeoutPreference.setSummary(getString(R.string.settings_timeout_summary,
                 Float.toString(config.getTimeoutNormal() / 1000f),
-                Float.toString(config.getTimeoutShort() / 1000f))
-                : getString(R.string.settings_timeout_forever));
+                Float.toString(config.getTimeoutShort() / 1000f)));
     }
 }

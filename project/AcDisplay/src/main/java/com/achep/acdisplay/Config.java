@@ -65,7 +65,6 @@ public class Config {
     public static final String KEY_INACTIVE_TIME_ENABLED = "inactive_time_enabled";
 
     // timeouts
-    public static final String KEY_TIMEOUT_ENABLED = "timeout_enabled";
     public static final String KEY_TIMEOUT_NORMAL = "timeout_normal";
     public static final String KEY_TIMEOUT_SHORT = "timeout_short";
 
@@ -112,7 +111,6 @@ public class Config {
     private boolean mFeelWidgetReadable;
     private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
-    private boolean mTimeoutEnabled;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
@@ -332,8 +330,6 @@ public class Config {
                 res.getBoolean(R.bool.config_default_notify_wake_up_on));
 
         // timeout
-        mTimeoutEnabled = prefs.getBoolean(KEY_TIMEOUT_ENABLED,
-                res.getBoolean(R.bool.config_default_timeout_enabled));
         mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL,
                 res.getInteger(R.integer.config_default_timeout_normal));
         mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT,
@@ -523,14 +519,6 @@ public class Config {
                                          OnConfigChangedListener listener) {
         boolean changed = mNotifyWakeUpOn != (mNotifyWakeUpOn = enabled);
         saveOption(context, KEY_NOTIFY_WAKE_UP_ON, enabled, listener, changed);
-    }
-
-    /**
-     * Setter to allow the screen to time out or not.
-     */
-    public void setTimeoutEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mTimeoutEnabled != (mTimeoutEnabled = enabled);
-        saveOption(context, KEY_TIMEOUT_ENABLED, enabled, listener, changed);
     }
 
     /**
@@ -764,10 +752,6 @@ public class Config {
 
     public boolean isInactiveTimeEnabled() {
         return mInactiveTimeEnabled;
-    }
-
-    public boolean isTimeoutEnabled() {
-        return mTimeoutEnabled;
     }
 
     public boolean isFullScreen() {

@@ -21,19 +21,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/no_timeout_checkbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/preference_no_timeout"
-        android:padding="4dp"
-        style="?textAppearanceDialogMessage" />
-
     <TextView
         android:id="@+id/normal_timeout_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/no_timeout_checkbox"
         android:layout_marginTop="8dp"
         android:text="@string/preference_timeout_normal"
         style="?textAppearanceDialogMessage" />

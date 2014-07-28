@@ -61,8 +61,6 @@ public class TimeoutPreference extends DialogPreference implements
     private int[] mProgresses = new int[3];
     private int mMin;
 
-    private CheckBox mDisabled;
-
     public TimeoutPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -100,16 +98,6 @@ public class TimeoutPreference extends DialogPreference implements
 
         Config config = Config.getInstance();
 
-        mDisabled = (CheckBox) root.findViewById(R.id.no_timeout_checkbox);
-        mDisabled.setChecked(!config.isTimeoutEnabled());
-        mDisabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (Group group : mGroups) {
-                    group.seekBar.setEnabled(!isChecked);
-                }
-            }
-        });
-
         for (Group group : mGroups) {
             int progress = 0;
             try {
@@ -123,7 +111,6 @@ public class TimeoutPreference extends DialogPreference implements
             group.seekBar.setOnSeekBarChangeListener(this);
             group.seekBar.setMax(max);
             group.seekBar.setProgress(progress / MULTIPLIER);
-            group.seekBar.setEnabled(!mDisabled.isChecked());
         }
 
         // Build custom dialog.
@@ -155,7 +142,6 @@ public class TimeoutPreference extends DialogPreference implements
                 e.printStackTrace();
             }
         }
-        config.setTimeoutEnabled(getContext(), !mDisabled.isChecked(), null);
     }
 
     @Override
