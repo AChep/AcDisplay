@@ -81,7 +81,6 @@ public class ActiveModeService extends BathService.ChildService implements
      * Starts or stops this service as required by settings and device's state.
      */
     public static void handleState(Context context) {
-        Intent intent = new Intent(context, ActiveModeService.class);
         Config config = Config.getInstance();
 
         boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()

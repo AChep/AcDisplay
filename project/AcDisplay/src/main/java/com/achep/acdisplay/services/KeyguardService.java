@@ -54,7 +54,6 @@ public class KeyguardService extends BathService.ChildService {
      * Starts or stops this service as required by settings and device's state.
      */
     public static void handleState(Context context) {
-        Intent intent = new Intent(context, KeyguardService.class);
         Config config = Config.getInstance();
 
         boolean onlyWhileChargingOption = !config.isEnabledOnlyWhileCharging()
