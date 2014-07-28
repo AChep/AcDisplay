@@ -42,6 +42,12 @@
     <!-- Needed to provide donation via IAB. -->
     <uses-permission android:name="com.android.vending.BILLING" />
 
+    <!-- 
+        Needed to fix a bug ing Samsung's shitware. Read more:
+        http://stackoverflow.com/questions/13602190/java-lang-securityexception-requires-vibrate-permission-on-jelly-bean-4-2
+        -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- Needed to be able to get notifications from system. -->
     <permission android:name="android.permission.STATUS_BAR_SERVICE" />
 
