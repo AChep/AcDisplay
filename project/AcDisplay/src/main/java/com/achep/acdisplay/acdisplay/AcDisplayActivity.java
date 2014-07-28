@@ -165,11 +165,13 @@ public class AcDisplayActivity extends KeyguardActivity implements
     public void onTimeoutEvent(Timeout timeout, int event) {
         switch (event) {
             case Timeout.EVENT_TIMEOUT:
-                final boolean locked = lock();
+                final boolean lockedSuccessful = lock();
 
-                if (locked) {
+                if (lockedSuccessful) {
                     LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
                     manager.sendBroadcast(new Intent(App.ACTION_INTERNAL_TIMEOUT));
+
+                    // TODO: Detect if user has really missed this wake-up or no.
                     manager.sendBroadcast(new Intent(App.ACTION_INTERNAL_PING_SENSORS));
                 }
                 break;
@@ -177,33 +179,33 @@ public class AcDisplayActivity extends KeyguardActivity implements
     }
 
     /**
-     * @return an instance of timeout handler.
+     * Clears background.
+     *
+     * @see #dispatchSetBackground(android.graphics.Bitmap, int)
      */
-    public Timeout getTimeout() {
-        return mTimeout;
-    }
-
-    /**
-     * @return an instance of config.
-     */
-    public Config getConfig() {
-        return mConfig;
-    }
-
-    public MediaController getMediaController() {
-        return mMediaController;
-    }
-
     public void dispatchClearBackground() {
         dispatchSetBackground(null);
     }
 
+    /**
+     * Smoothly sets the background. This feature is known as "Dynamic background".
+     *
+     * @param bitmap the bitmap to display, or {@code null} to hide previous background.
+     * @param mask   one of the following:
+     *               {@link Config#DYNAMIC_BG_ARTWORK_MASK},
+     *               {@link Config#DYNAMIC_BG_NOTIFICATION_MASK} or
+     *               {@code 0} to bypass mask checking.
+     * @see #dispatchClearBackground()
+     */
     public void dispatchSetBackground(Bitmap bitmap, int mask) {
         if (mask == 0 || Operator.bitAnd(mConfig.getDynamicBackgroundMode(), mask)) {
             dispatchSetBackground(bitmap);
         }
     }
 
+    /**
+     * Smoothly sets the background.
+     */
     private void dispatchSetBackground(Bitmap bitmap) {
         if (bitmap == null) {
             if (mCustomBackgroundShown) {
@@ -233,5 +235,17 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
         mBackgroundView.animate().cancel();
         mBackgroundView.animate().alpha(1f).setListener(null);
+    }
+
+    public Config getConfig() {
+        return mConfig;
+    }
+
+    public Timeout getTimeout() {
+        return mTimeout;
+    }
+
+    public MediaController getMediaController() {
+        return mMediaController;
     }
 }
