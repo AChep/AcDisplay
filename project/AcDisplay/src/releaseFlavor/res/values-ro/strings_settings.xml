@@ -78,7 +78,6 @@
   <string name="preference_timeout_normal">După trezire sau selectarea unei notificari</string>
   <string name="preference_timeout_short">După atingerea unei suprafeţe inactive</string>
   <string name="preference_timeout_sec">%1$s sec.</string>
-  <string name="preference_no_timeout">Ecranul rămâne deschis tot timpul</string>
   <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

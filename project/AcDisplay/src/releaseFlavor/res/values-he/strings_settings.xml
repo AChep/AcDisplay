@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">לאחר התעוררות המכשיר או בבחירת התראה</string>
   <string name="preference_timeout_short">לאחר נגיעה במקום לא פעיל</string>
   <string name="preference_timeout_sec">%1$s שניות.</string>
-  <string name="preference_no_timeout">המסך נשאר דולק לנצח</string>
   <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

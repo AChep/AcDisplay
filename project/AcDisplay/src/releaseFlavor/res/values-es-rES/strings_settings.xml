@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Después de despertar o seleccionar una notificación</string>
   <string name="preference_timeout_short">Después de tocar una zona inactiva</string>
   <string name="preference_timeout_sec">%1$s seg.</string>
-  <string name="preference_no_timeout">La pantalla permanece encendida para siempre</string>
   <string name="preference_icon_size_message">Ajustar el tamaño de los iconos de notificación.</string>
   <string name="preference_icon_size_dpi">%1$s DPI.</string>
 </resources>

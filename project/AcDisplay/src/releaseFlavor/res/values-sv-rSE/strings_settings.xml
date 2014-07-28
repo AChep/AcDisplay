@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Efter uppvakning eller val av ett meddelande</string>
   <string name="preference_timeout_short">Efter beröring av inaktivt område</string>
   <string name="preference_timeout_sec">%1$s SEK.</string>
-  <string name="preference_no_timeout">Skärmen förblir aktiverad</string>
   <string name="preference_icon_size_message">Justera storleken på meddelandeikoner.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

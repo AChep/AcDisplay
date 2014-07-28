@@ -54,7 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Nedtællings-linjen forsvinder fra venstre mod højre.</string>
   <string name="settings_notify_circled_icon_title">Cirkulært notifikations ikon</string>
   <string name="settings_notify_circled_icon_on">Store ikon for underretningen vises i cirklen.</string>
-  <string name="settings_unlock_animation_title">Unlock animation</string>
+  <string name="settings_unlock_animation_title">Oplåsningsanimation</string>
   <string name="settings_only_while_charging_title">Kun mens enheden oplader</string>
   <string name="settings_only_while_charging_on">Applikationen er aktiv kun, når din enhed lader. Dette er for alle funktioner i applikationen som låseskærmen eller aktiv tilstand.</string>
   <string name="settings_only_while_charging_off">Applikationen er altid aktiv.</string>
@@ -82,7 +82,6 @@ til:<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_normal">Ved start eller ved at vælge en underretning</string>
   <string name="preference_timeout_short">Efter et tryk på et inaktivt område</string>
   <string name="preference_timeout_sec">%1$s sek.</string>
-  <string name="preference_no_timeout">Skærmen forbliver tændt hele tiden</string>
   <string name="preference_icon_size_message">Tilpas størrelsen for underretningsikonerne.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

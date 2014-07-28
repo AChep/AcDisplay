@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">被喚醒或是查看一則通知後，過幾秒回復休眠</string>
   <string name="preference_timeout_short">點擊非操作區域時，過幾秒回復休眠</string>
   <string name="preference_timeout_sec">%1$s 秒</string>
-  <string name="preference_no_timeout">保持裝置不進入休眠狀態</string>
   <string name="preference_icon_size_message">調整通知圖示大小。</string>
   <string name="preference_icon_size_dpi">%1$s dpi。</string>
 </resources>

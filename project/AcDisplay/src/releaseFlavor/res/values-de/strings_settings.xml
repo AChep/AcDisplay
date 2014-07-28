@@ -82,7 +82,6 @@ bis:<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_normal">Nach dem Aufwachen oder der Auswahl einer Benachrichtigung</string>
   <string name="preference_timeout_short">Nach dem Berühren eines inaktiven Bereichs</string>
   <string name="preference_timeout_sec">%1$s Sek.</string>
-  <string name="preference_no_timeout">Bildschirm bleibt immer an</string>
   <string name="preference_icon_size_message">Passen Sie die Größe des Benachrichtigungssymboles an.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

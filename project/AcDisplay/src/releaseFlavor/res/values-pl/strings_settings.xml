@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Po wybudzeniu lub wybraniu powiadomienia</string>
   <string name="preference_timeout_short">Po dotknięciu nieaktywnego obszaru</string>
   <string name="preference_timeout_sec">%1$s sek.</string>
-  <string name="preference_no_timeout">Ekran będzie stale włączony.</string>
   <string name="preference_icon_size_message">Dostosuj rozmiar ikon powiadomień.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

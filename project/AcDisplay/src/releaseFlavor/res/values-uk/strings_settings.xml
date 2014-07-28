@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Після пробудження або вибору сповіщення</string>
   <string name="preference_timeout_short">Після торкання екрана в неактивному місці</string>
   <string name="preference_timeout_sec">%1$s сек.</string>
-  <string name="preference_no_timeout">Екран завжди увімкнений</string>
   <string name="preference_icon_size_message">Налаштувати розмір піктограм сповіщень.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

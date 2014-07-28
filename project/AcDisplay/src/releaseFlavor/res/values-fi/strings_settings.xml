@@ -82,7 +82,6 @@ väriin:<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_normal">Heräämisen tai ilmoituksen valitsemisen jälkeen</string>
   <string name="preference_timeout_short">Koskettaessa aluetta joka ei ole aktiivinen</string>
   <string name="preference_timeout_sec">%1$s sekuntia.</string>
-  <string name="preference_no_timeout">Näyttö päällä aina</string>
   <string name="preference_icon_size_message">Säädä ilmoituskuvakkeiden kokoa.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

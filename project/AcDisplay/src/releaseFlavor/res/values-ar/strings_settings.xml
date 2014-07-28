@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">في البدء أو تحديد الإخطار</string>
   <string name="preference_timeout_short">بعد المس في منطقة غير نشطة</string>
   <string name="preference_timeout_sec">%1$s ثانية.</string>
-  <string name="preference_no_timeout">الشاشة تبقى مضيئة دائما</string>
   <string name="preference_icon_size_message">قم بضبط حجم رموز التنبيه.</string>
   <string name="preference_icon_size_dpi">%1$s نقطة في البوصة.</string>
 </resources>

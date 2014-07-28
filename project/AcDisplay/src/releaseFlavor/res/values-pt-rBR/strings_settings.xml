@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Depois de acordar ou selecionar uma notificação</string>
   <string name="preference_timeout_short">Depois de tocar uma área inativa</string>
   <string name="preference_timeout_sec">%1$s seg.</string>
-  <string name="preference_no_timeout">Tela fica ligada sempre</string>
   <string name="preference_icon_size_message">Ajustar o tamanho dos ícones.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Po probuzení nebo výběru oznámení</string>
   <string name="preference_timeout_short">Po poklepání na neaktivní plochu</string>
   <string name="preference_timeout_sec">%1$s vteřin</string>
-  <string name="preference_no_timeout">Displej zůstane zapnutý napořád</string>
   <string name="preference_icon_size_message">Upravte velikost ikon.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

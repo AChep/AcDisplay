@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">След събуждане или избор на известие</string>
   <string name="preference_timeout_short">След докосване на неактивна зона</string>
   <string name="preference_timeout_sec">%1$s сек.</string>
-  <string name="preference_no_timeout">Екрана остава постоянно включен</string>
   <string name="preference_icon_size_message">Настройка на размера на иконите за известие.</string>
   <string name="preference_icon_size_dpi">%1$s DPI</string>
 </resources>

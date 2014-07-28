@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">ウェイクアップ後、又は通知を選択後</string>
   <string name="preference_timeout_short">何も無いエリアをタップ後</string>
   <string name="preference_timeout_sec">%1$s 秒</string>
-  <string name="preference_no_timeout">ウェイクアップしたままにする</string>
   <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

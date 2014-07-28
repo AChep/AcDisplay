@@ -54,7 +54,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">倒数计时条由左向右渐隐。</string>
   <string name="settings_notify_circled_icon_title">带圆环的通知图标</string>
   <string name="settings_notify_circled_icon_on">通知图标显示在圆环内</string>
-  <string name="settings_unlock_animation_title">Unlock animation</string>
+  <string name="settings_unlock_animation_title">解锁动画</string>
   <string name="settings_only_while_charging_title">仅在充电时</string>
   <string name="settings_only_while_charging_on">AcDisplay 只有在您的设备充电时启用。这将启用所有的功能，例如提示锁屏与主动模式。</string>
   <string name="settings_only_while_charging_off">AcDisplay 总是启用</string>
@@ -65,12 +65,12 @@
   <string name="settings_timeout_summary">在 %1$s 秒的休眠期内 %2$s 秒无操作后恢复到睡眠状态</string>
   <string name="settings_timeout_forever">屏幕常亮</string>
   <string name="settings_icon_size_title">图标尺寸</string>
-  <string name="settings_icon_size_summary">当前的图标的大小是 %1$s 。</string>
+  <string name="settings_icon_size_summary">当前图标大小为 %1$s dip</string>
   <string name="settings_behavior_category">行为</string>
   <string name="settings_lock_on_dismiss_last_notify_title">隐藏最后一条通知后锁定</string>
   <string name="settings_lock_on_dismiss_last_notify_on">在隐藏最后一条通知后锁定屏幕</string>
   <string name="settings_lock_on_dismiss_last_notify_off">在隐藏最后一条通知后不锁定屏幕</string>
-  <string name="settings_widget_pinnable_title">可固定的通知</string>
+  <string name="settings_widget_pinnable_title">固定通知</string>
   <string name="settings_widget_pinnable_on">点击通知小部件维持展开数秒</string>
   <string name="preference_inactive_hours_enabled">启用休眠</string>
   <string name="preference_inactive_hours_from"><![CDATA[
@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">在唤醒或选择一个通知后</string>
   <string name="preference_timeout_short">点触非活动区域后</string>
   <string name="preference_timeout_sec">%1$s 秒</string>
-  <string name="preference_no_timeout">屏幕常亮</string>
   <string name="preference_icon_size_message">调整通知图标大小</string>
   <string name="preference_icon_size_dpi">%1$s dpi</string>
 </resources>

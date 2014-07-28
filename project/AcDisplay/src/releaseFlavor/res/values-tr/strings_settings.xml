@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Uyandıktan ya da bir bildirimi seçtikten sonra</string>
   <string name="preference_timeout_short">Etkin olmayan bir alana dokunduktan sonra</string>
   <string name="preference_timeout_sec">%1$s saniye.</string>
-  <string name="preference_no_timeout">Ekran sonsuza kadar açık kalır</string>
   <string name="preference_icon_size_message">Bildirim simgelerinin boyutunu ayarlayın.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

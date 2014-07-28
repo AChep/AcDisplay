@@ -82,7 +82,6 @@ Jusqu\'à :<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_normal">Après la sortie de veille ou la sélection d\'une application</string>
   <string name="preference_timeout_short">Après avoir touché une zone inactive</string>
   <string name="preference_timeout_sec">%1$s sec.</string>
-  <string name="preference_no_timeout">L\'écran reste allumé indéfiniment</string>
   <string name="preference_icon_size_message">Ajuster la taille des icônes de notifications.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

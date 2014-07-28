@@ -82,7 +82,6 @@
   <string name="preference_timeout_normal">Μετά την αφύπνιση ή επιλέγοντας μια ειδοποίηση</string>
   <string name="preference_timeout_short">Μετά το άγγιγμα σε μη ενεργή περιοχή</string>
   <string name="preference_timeout_sec">%1$s δευτ.</string>
-  <string name="preference_no_timeout">Η οθόνη πάντοτε ανοιχτή</string>
   <string name="preference_icon_size_message">Ρυθμίστε το μέγεθος των εικονιδίων ειδοποιήσεων.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>
