@@ -19,9 +19,7 @@
 
 package com.achep.acdisplay.acdisplay;
 
-import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -45,6 +43,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
@@ -52,6 +52,7 @@ import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.components.NotifyWidget;
 import com.achep.acdisplay.acdisplay.components.Widget;
+import com.achep.acdisplay.animations.AnimationListenerAdapter;
 import com.achep.acdisplay.compat.SceneCompat;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.NotificationUtils;
@@ -99,6 +100,7 @@ public class AcDisplayFragment extends Fragment implements
 
     // Animations
     private AnimatorSet mSceneContainerPinAnim;
+    private DismissAnimation mSceneContainerDismissAnim;
 
     // Swipe to dismiss
     private VelocityTracker mVelocityTracker;
@@ -113,6 +115,42 @@ public class AcDisplayFragment extends Fragment implements
     private SceneCompat mCurrentScene;
     private SceneCompat mSceneMain;
     private Transition mTransition;
+
+    private class DismissAnimation extends Animation {
+
+        private float start;
+        private Widget widget;
+
+        public DismissAnimation() {
+            super();
+            setAnimationListener(new AnimationListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Widget widget = DismissAnimation.this.widget;
+
+                    onWidgetDismiss(widget);
+                    if (mSelectedWidget == widget) {
+                        resetScene();
+                    }
+                }
+            });
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            super.applyTransformation(interpolatedTime, t);
+            float value = (start + (1f - start) * interpolatedTime);
+            populateSceneContainerDismissAnimation(value);
+        }
+
+        public void setup(int duration, float start, Widget widget) {
+            if (!hasEnded()) Log.wtf(TAG, "Setting up running animation!!!");
+            setDuration(duration);
+            this.start = start;
+            this.widget = widget;
+        }
+
+    }
 
     private boolean isPinnable() {
         return Config.getInstance().isWidgetPinnable();
@@ -135,6 +173,7 @@ public class AcDisplayFragment extends Fragment implements
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
 
         mSceneContainerPinAnim = (AnimatorSet) AnimatorInflater.loadAnimator(activity, R.animator.pin);
+        mSceneContainerDismissAnim = new DismissAnimation();;
     }
 
     @TargetApi(android.os.Build.VERSION_CODES.KITKAT)
@@ -189,6 +228,7 @@ public class AcDisplayFragment extends Fragment implements
     public void onStop() {
         mPinHandler.removeCallbacksAndMessages(null);
         mTouchHandler.removeCallbacksAndMessages(null);
+        mSceneContainer.clearAnimation();
 
         NotificationPresenter.getInstance().unregisterListener(this);
 
@@ -335,29 +375,11 @@ public class AcDisplayFragment extends Fragment implements
                         int duration;
                         duration = Math.round(1000f /* ms. */ * (height - absDeltaY) / absVelocityX);
                         duration = Math.min(duration, 300);
-                        float rotation = mSceneContainer.getRotationX() - 30;
 
-                        // TODO: Make animation use #populateSceneContainerDismissAnimation(float) method.
-                        final Widget widget = mSelectedWidget;
-                        mSceneContainer.animate()
-                                .alpha(0)
-                                .rotationX(rotation)
-                                .translationY(height)
-                                .setDuration(duration)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        onAnimationCancel(animation);
-                                        resetScene();
-                                    }
-
-                                    @Override
-                                    public void onAnimationCancel(Animator animation) {
-                                        onWidgetDismiss(widget);
-                                        resetSceneContainerParams();
-                                    }
-                                });
-
+                        mSceneContainerDismissAnim.setup(duration,
+                                MathUtils.range(deltaY / height, 0f, 1f),
+                                mSelectedWidget);
+                        mSceneContainer.startAnimation(mSceneContainerDismissAnim);
                         break; // Exits from loop not from the switch!
                     }
 
@@ -438,6 +460,7 @@ public class AcDisplayFragment extends Fragment implements
      * @see #resetScene()
      */
     private void resetSceneContainerParams() {
+        mSceneContainer.clearAnimation();
         mSceneContainer.setAlpha(1f);
         mSceneContainer.setTranslationY(0);
         mSceneContainer.setRotationX(0);
@@ -495,7 +518,10 @@ public class AcDisplayFragment extends Fragment implements
             mSelectedWidget.onViewDetached();
         }
 
-        if ((mSelectedWidget = widget) == null) {
+        mSelectedWidget = widget;
+        resetSceneContainerParams();
+
+        if (mSelectedWidget == null) {
             goScene(getMainScene(), animate);
         } else {
             SceneCompat scene = findSceneByWidget(mSelectedWidget);
