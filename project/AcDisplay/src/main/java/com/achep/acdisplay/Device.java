@@ -30,6 +30,14 @@ public class Device {
 
     /**
      * @return {@code true} if device is running
+     * {@link Build.VERSION_CODES#L Lemon Cake} or higher, {@code false} otherwise.
+     */
+    public static boolean hasLemonCakeApi() {
+        return Build.VERSION.SDK_INT >= 20; // Build.VERSION_CODES.L;
+    }
+
+    /**
+     * @return {@code true} if device is running
      * {@link Build.VERSION_CODES#KITKAT KitKat} or higher, {@code false} otherwise.
      */
     public static boolean hasKitKatApi() {
