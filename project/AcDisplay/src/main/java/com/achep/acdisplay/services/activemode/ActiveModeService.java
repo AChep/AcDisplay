@@ -56,7 +56,7 @@ public class ActiveModeService extends BathService.ChildService implements
         NotificationPresenter.OnNotificationListChangedListener {
 
     private static final String TAG = "ActiveModeService";
-    private static final String WAKE_LOCK_TAG = "";
+    private static final String WAKE_LOCK_TAG = "Consuming sensors";
 
     private ActiveModeSensor[] mSensors;
     private ActiveModeHandler[] mHandlers;
