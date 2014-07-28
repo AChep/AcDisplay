@@ -162,7 +162,7 @@ public class ActiveModeService extends BathService.ChildService implements
 
         stopListening();
 
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(mLocalReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mLocalReceiver);
         NotificationPresenter.getInstance().unregisterListener(this);
     }
 
