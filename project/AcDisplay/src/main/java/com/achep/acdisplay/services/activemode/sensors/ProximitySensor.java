@@ -160,8 +160,8 @@ public final class ProximitySensor extends ActiveModeSensor implements
     private ProximitySensor() {
         super();
         Program programPocket = new Program.Builder()
-                .begin(true, 4000) /* is near  at least for 4   seconds */
-                .end(500) /* and after: is far at least for 0.5 seconds */
+                .begin(true, 4000) /* is near at least for 4 seconds */
+                .end(0) /* and after: is far  at least for 0 seconds */
                 .build();
         Program programWave2Wake = new Program.Builder()
                 .begin(true, 200) /*        is near at least for 200 millis */
