@@ -209,6 +209,7 @@ public class CircleView extends View {
                 clearAnimation();
 
                 // Initialize circle
+                mRadiusTargetAimed = false;
                 mRadiusMaxPeak = 0;
                 mPoint[0] = x;
                 mPoint[1] = y;
