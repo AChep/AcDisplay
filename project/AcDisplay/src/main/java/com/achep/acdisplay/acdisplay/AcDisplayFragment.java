@@ -634,7 +634,7 @@ public class AcDisplayFragment extends Fragment implements
                         sceneCompat.getView().setTranslationY(10f * density);
                         sceneCompat.getView().animate().alpha(1).rotationX(0).translationY(0);
                     } else {
-                        Log.w(LOG, "Changing scene when fragment is single!");    
+                        Log.w(TAG, "Changing scene when fragment is single!");
                     }
                 }
             } else sceneCompat.enter();
