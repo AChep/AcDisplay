@@ -46,6 +46,7 @@ import java.util.HashMap;
  * @author Artem Chepurnoy
  * @since 21.01.14
  */
+@SuppressWarnings("ConstantConditions")
 public class Config {
 
     private static final String TAG = "Config";

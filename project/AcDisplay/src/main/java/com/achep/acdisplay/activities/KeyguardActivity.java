@@ -213,7 +213,6 @@ public abstract class KeyguardActivity extends Activity {
      * @param finish {@code true} to finish activity, {@code false} to keep it
      * @see #unlock(Runnable)
      * @see #unlockWithPendingFinish(Runnable)
-     * @see #isUnlocking()
      */
     public void unlock(final Runnable runnable, final boolean finish) {
         if (Build.DEBUG) Log.d(TAG, "Unlocking with params: finish=" + finish);

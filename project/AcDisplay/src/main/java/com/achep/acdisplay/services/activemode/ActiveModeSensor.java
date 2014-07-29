@@ -23,7 +23,6 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
 import android.os.SystemClock;
 
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;

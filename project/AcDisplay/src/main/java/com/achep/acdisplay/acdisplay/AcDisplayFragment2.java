@@ -35,7 +35,6 @@ import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.acdisplay.components.MediaWidget;
 import com.achep.acdisplay.acdisplay.components.NotifyWidget;
 import com.achep.acdisplay.acdisplay.components.Widget;
-import com.achep.acdisplay.animations.CircleDarkeningAnimation;
 import com.achep.acdisplay.compat.SceneCompat;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.services.media.MediaController;

@@ -173,7 +173,7 @@ public class AcDisplayFragment extends Fragment implements
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
 
         mSceneContainerPinAnim = (AnimatorSet) AnimatorInflater.loadAnimator(activity, R.animator.pin);
-        mSceneContainerDismissAnim = new DismissAnimation();;
+        mSceneContainerDismissAnim = new DismissAnimation();
     }
 
     @TargetApi(android.os.Build.VERSION_CODES.KITKAT)

@@ -59,7 +59,6 @@
     <string name="settings_dynamic_background_title">Динамический фон</string>
     <string name="settings_dynamic_background_summary">Используется как фон: %1$s</string>
     <string name="settings_dynamic_background_disabled">Отключен</string>
-    <string name="settings_show_date_title">Отображать дату</string>
     <string name="settings_status_battery_always_visible">Прикрепить состояние батареи</string>
     <string name="settings_status_battery_always_visible_off">Состояние батареи показывается при зарядке или низком уровне заряда.</string>
     <string name="settings_mirrored_timeout_progress_bar_title">Зеркальный индикатор таймаута</string>
@@ -78,7 +77,6 @@
     <string name="settings_inactive_hours_enabled">От %1$s до %2$s.</string>
     <string name="settings_timeout_title">Спящий режим</string>
     <string name="settings_timeout_summary">После %1$s / %2$s секунд бездействия.</string>
-    <string name="settings_timeout_forever">Экран всегда остается включенным.</string>
     <string name="settings_icon_size_title">Размер иконок</string>
     <string name="settings_icon_size_summary">Текущий размер иконок: %1$s dpi.</string>
     <!-- Behavior -->

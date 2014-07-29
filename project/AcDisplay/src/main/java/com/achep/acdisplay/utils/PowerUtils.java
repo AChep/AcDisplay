@@ -24,8 +24,6 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.PowerManager;
 
-import com.achep.acdisplay.Device;
-
 /**
  * Helper class with utils related to power.
  *

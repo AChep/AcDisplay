@@ -30,7 +30,6 @@
     <bool name="config_default_ui_show_shadow">true</bool>
     <bool name="config_default_ui_mirrored_timeout_bar">true</bool>
     <bool name="config_default_inactive_time_enabled">false</bool>
-    <bool name="config_default_timeout_enabled">true</bool>
     <bool name="config_default_ui_notify_circled_icon">false</bool>
     <bool name="config_default_ui_status_battery_sticky">false</bool>
     <bool name="config_default_ui_full_screen">true</bool>

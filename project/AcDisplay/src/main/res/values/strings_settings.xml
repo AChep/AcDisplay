@@ -59,7 +59,6 @@
     <string name="settings_dynamic_background_title">Dynamic background</string>
     <string name="settings_dynamic_background_summary">Those are used as background: %1$s</string>
     <string name="settings_dynamic_background_disabled">Disabled</string>
-    <string name="settings_show_date_title">Show date</string>
     <string name="settings_status_battery_always_visible">Keep battery status</string>
     <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
     <string name="settings_mirrored_timeout_progress_bar_title">Mirrored timeout bar</string>
@@ -78,7 +77,6 @@
     <string name="settings_inactive_hours_enabled">From %1$s to %2$s.</string>
     <string name="settings_timeout_title">Sleep</string>
     <string name="settings_timeout_summary">After %1$s / %2$s seconds of inactivity.</string>
-    <string name="settings_timeout_forever">Screen stays on forever.</string>
     <string name="settings_icon_size_title">Icon size</string>
     <string name="settings_icon_size_summary">Current size of icons is %1$s dip.</string>
     <!-- Behavior -->
