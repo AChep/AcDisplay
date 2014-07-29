@@ -627,11 +627,15 @@ public class AcDisplayFragment extends Fragment implements
                     // TODO: Better animation for Jelly Bean users.
                     sceneCompat.enter();
 
-                    float density = getResources().getDisplayMetrics().density;
-                    sceneCompat.getView().setAlpha(0.4f);
-                    sceneCompat.getView().setRotationX(10f);
-                    sceneCompat.getView().setTranslationY(10f * density);
-                    sceneCompat.getView().animate().alpha(1).rotationX(0).translationY(0);
+                    if (getActivity() != null) {
+                        float density = getResources().getDisplayMetrics().density;
+                        sceneCompat.getView().setAlpha(0.4f);
+                        sceneCompat.getView().setRotationX(10f);
+                        sceneCompat.getView().setTranslationY(10f * density);
+                        sceneCompat.getView().animate().alpha(1).rotationX(0).translationY(0);
+                    } else {
+                        Log.w(LOG, "Changing scene when fragment is single!");    
+                    }
                 }
             } else sceneCompat.enter();
         }
