@@ -21,6 +21,8 @@ package com.achep.acdisplay.acdisplay;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,13 +40,15 @@ import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.activities.KeyguardActivity;
+import com.achep.acdisplay.fragments.PocketFragment;
 import com.achep.acdisplay.services.media.MediaController;
 
 /**
  * Created by Artem on 25.01.14.
  */
 public class AcDisplayActivity extends KeyguardActivity implements
-        Timeout.OnTimeoutEventListener {
+        Timeout.OnTimeoutEventListener,
+        PocketFragment.OnSleepRequestListener {
 
     private static final String TAG = "AcDisplayActivity";
 
@@ -130,7 +134,25 @@ public class AcDisplayActivity extends KeyguardActivity implements
         setContentView(R.layout.acdisplay);
         mBackgroundView = (ImageView) findViewById(R.id.background);
 
+        initInternalFragments();
+
         Presenter.getInstance().attachActivity(this);
+    }
+
+    /**
+     * Initializes non-UI fragments such as {@link com.achep.acdisplay.fragments.PocketFragment}.
+     */
+    private void initInternalFragments() {
+        Fragment fragment;
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        // Turns screen off inside of your pocket.
+        if (mConfig.isActiveModeEnabled()) {
+            fragment = new PocketFragment().setListener(this);
+            ft.add(fragment, PocketFragment.TAG);
+        }
+
+        ft.commit();
     }
 
     @Override
@@ -175,6 +197,19 @@ public class AcDisplayActivity extends KeyguardActivity implements
                     manager.sendBroadcast(new Intent(App.ACTION_INTERNAL_PING_SENSORS));
                 }
                 break;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onSleepRequest() {
+        // Probably it's not the best solution, but not worst too.
+        // Check if user does not interact with app before locking.
+        if (!mTimeout.isPaused()) {
+
+            lock();
         }
     }
 
@@ -248,4 +283,5 @@ public class AcDisplayActivity extends KeyguardActivity implements
     public MediaController getMediaController() {
         return mMediaController;
     }
+
 }
