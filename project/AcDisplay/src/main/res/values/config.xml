@@ -36,5 +36,6 @@
     <!-- The delay between turning screen off and sending test notification. -->
     <integer name="config_test_notification_delay">1500</integer>
     <integer name="config_maxHelpUserReadFuckyou">5000</integer>
+    <integer name="config_maxPinTime">4000</integer>
 
 </resources>

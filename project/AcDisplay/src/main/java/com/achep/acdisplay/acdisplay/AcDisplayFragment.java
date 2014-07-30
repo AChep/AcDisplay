@@ -19,8 +19,6 @@
 
 package com.achep.acdisplay.acdisplay;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -61,7 +59,6 @@ import com.achep.acdisplay.utils.MathUtils;
 import com.achep.acdisplay.view.ForwardingLayout;
 import com.achep.acdisplay.view.ForwardingListener;
 
-import java.lang.IllegalStateException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -70,6 +67,7 @@ import java.util.HashMap;
 /**
  * This is main fragment of ActiveDisplay app.
  */
+// TODO: Put main scene inside of widget.
 public class AcDisplayFragment extends Fragment implements
         NotificationPresenter.OnNotificationListChangedListener,
         ForwardingLayout.OnForwardedEventListener, View.OnTouchListener,
@@ -86,17 +84,10 @@ public class AcDisplayFragment extends Fragment implements
     private final Handler mTouchHandler = new Handler();
 
     // Pinnable widgets
-    private boolean mPinCanReadAloud = false;
-    private final Handler mPinHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_RESET_SCENE:
-                    resetScene();
-            }
-        }
-    };
+    private boolean mHasPinnedWidget;
+
+    private int mConfigWidgetPinDuration;
+    private int mConfigWidgetSelectDelay;
 
     // Animations
     private DismissAnimation mSceneContainerDismissAnim;
@@ -115,6 +106,26 @@ public class AcDisplayFragment extends Fragment implements
     private SceneCompat mSceneMain;
     private Transition mTransition;
 
+    /**
+     * Handler to control delayed events.
+     *
+     * @see #MSG_RESET_SCENE
+     */
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_RESET_SCENE:
+                    resetScene();
+                    break;
+            }
+        }
+    };
+
+    /**
+     * Controller of dismiss animation.
+     */
     private class DismissAnimation extends Animation {
 
         private float start;
@@ -152,13 +163,21 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     private boolean isPinnable() {
-        return Config.getInstance().isWidgetPinnable();
+        return getConfig().isWidgetPinnable();
     }
 
     private boolean isReadable() {
-        return Config.getInstance().isWidgetReadable();
+        return getConfig().isWidgetReadable();
     }
 
+    protected Config getConfig() {
+        return Config.getInstance();
+    }
+
+    /**
+     * @return Layout resource to be inflated as fragment's view.
+     * @see #onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     */
     protected int getViewResource() {
         return R.layout.acdisplay_fragment;
     }
@@ -172,6 +191,10 @@ public class AcDisplayFragment extends Fragment implements
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
 
         mSceneContainerDismissAnim = new DismissAnimation();
+
+        Resources res = getResources();
+        mConfigWidgetPinDuration = res.getInteger(R.integer.config_maxPinTime);
+        mConfigWidgetSelectDelay = res.getInteger(R.integer.config_iconSelectDelayMillis);
     }
 
     @TargetApi(android.os.Build.VERSION_CODES.KITKAT)
@@ -224,7 +247,7 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public void onStop() {
-        mPinHandler.removeCallbacksAndMessages(null);
+        mHandler.removeCallbacksAndMessages(null);
         mTouchHandler.removeCallbacksAndMessages(null);
         mSceneContainer.clearAnimation();
 
@@ -251,7 +274,7 @@ public class AcDisplayFragment extends Fragment implements
         switch (event) { // don't update on spam-change.
             case NotificationPresenter.EVENT_REMOVED:
                 // If widget related to removed notification is pinned - unpin it.
-                if (isWidgetPinned() && mSelectedWidget instanceof NotifyWidget) {
+                if (hasPinnedWidget() && mSelectedWidget instanceof NotifyWidget) {
                     NotifyWidget widget = (NotifyWidget) mSelectedWidget;
                     if (NotificationUtils.equals(widget.getNotification(), osbn)) {
                         showMainWidget(); // Unpin
@@ -287,24 +310,15 @@ public class AcDisplayFragment extends Fragment implements
         mPressedIconView = view;
 
         if (view != null) {
-            final boolean isTouchDown = event.getActionMasked() == MotionEvent.ACTION_DOWN;
             final Widget widget = findWidgetByIcon(view);
-            if (mSelectedWidget != widget) { // otherwise redundant
-                int delay = 0;
-                if (!isTouchDown) {
-                    delay = getResources().getInteger(R.integer.config_iconSelectDelayMillis);
-                }
-
-                mPinCanReadAloud = false;
+            if (!isCurrentWidget(widget)) { // otherwise redundant
                 mTouchHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         showWidget(widget);
                     }
-                }, delay);
-            } else if (mSelectedWidget != null) {
-                // Speech engine
-                mPinCanReadAloud = isTouchDown && mSelectedWidget.isReadable();
+                }, event.getActionMasked() == MotionEvent.ACTION_DOWN
+                        ? 0 : mConfigWidgetSelectDelay);
             }
         }
     }
@@ -384,6 +398,7 @@ public class AcDisplayFragment extends Fragment implements
                     // Instant dismissing.
                     onWidgetDismiss(mSelectedWidget);
                     resetScene();
+                    break;
                 }
 
                 // Don't not reset scene while dismissing, or if
@@ -393,11 +408,6 @@ public class AcDisplayFragment extends Fragment implements
                         resetScene();
                     } else {
                         onWidgetPinned(mSelectedWidget);
-
-                        long elapsedTime = event.getEventTime() - event.getDownTime();
-                        if (mPinCanReadAloud && isReadable() && elapsedTime < 150) {
-                            onWidgetReadAloud(mSelectedWidget);
-                        }
                     }
                 }
             case MotionEvent.ACTION_CANCEL:
@@ -412,12 +422,13 @@ public class AcDisplayFragment extends Fragment implements
         }
     }
 
-    protected boolean isWidgetPinned() {
-        return mPinHandler.hasMessages(MSG_RESET_SCENE);
+    protected boolean hasPinnedWidget() {
+        return mHasPinnedWidget;
     }
 
     protected void onWidgetPinned(Widget widget) {
-        mPinHandler.sendEmptyMessageDelayed(MSG_RESET_SCENE, 4000);
+        mHandler.sendEmptyMessageDelayed(MSG_RESET_SCENE, mConfigWidgetPinDuration);
+        mHasPinnedWidget = true;
     }
 
     protected void onWidgetReadAloud(Widget widget) {
@@ -430,10 +441,6 @@ public class AcDisplayFragment extends Fragment implements
     protected void onWidgetDismiss(Widget widget) {
         widget.onDismiss();
         // TODO: Clear widget from different maps and layouts
-    }
-
-    private View getSceneView() {
-        return mSceneContainer.getChildAt(0);
     }
 
     /**
@@ -449,7 +456,7 @@ public class AcDisplayFragment extends Fragment implements
 
     /**
      * Resets {@link #mSceneContainer scene container}'s params, such
-     * as: alpha level, translation, rotation etc.
+     * as: animation, alpha level, translation, rotation etc.
      *
      * @see #resetScene()
      */
@@ -495,14 +502,35 @@ public class AcDisplayFragment extends Fragment implements
         if (Build.DEBUG) Log.d(TAG, "dismiss_progress=" + progress + " height=" + height);
     }
 
-    @SuppressLint("NewApi")
+    /**
+     * Shows main widget.
+     *
+     * @see #showWidget(com.achep.acdisplay.acdisplay.components.Widget)
+     * @see #showWidget(com.achep.acdisplay.acdisplay.components.Widget, boolean)
+     * @see #getCurrentWidget()
+     */
+    public void showMainWidget() {
+        showWidget(null);
+    }
+
+    /**
+     * @see #showMainWidget()
+     * @see #showWidget(com.achep.acdisplay.acdisplay.components.Widget, boolean)
+     * @see #getCurrentWidget()
+     */
     protected void showWidget(Widget widget) {
         showWidget(widget, true);
     }
 
+    /**
+     * @see #showMainWidget()
+     * @see #showWidget(com.achep.acdisplay.acdisplay.components.Widget)
+     * @see #getCurrentWidget()
+     */
     @SuppressLint("NewApi")
     protected void showWidget(Widget widget, boolean animate) {
-        mPinHandler.removeMessages(MSG_RESET_SCENE);
+        mHandler.removeMessages(MSG_RESET_SCENE);
+        mHasPinnedWidget = false;
 
         if (mSelectedWidget != null) {
             if (mSelectedWidget.getIconView() != null) {
@@ -531,7 +559,7 @@ public class AcDisplayFragment extends Fragment implements
                 if (viewGroup != null && viewGroup.isLaidOut()) {
 
                     // Automatically animate content change.
-                    beginDelayedTransition(viewGroup, mTransition);
+                    TransitionManager.beginDelayedTransition(viewGroup, mTransition);
                 }
             }
 
@@ -544,26 +572,6 @@ public class AcDisplayFragment extends Fragment implements
         }
     }
 
-    @TargetApi(android.os.Build.VERSION_CODES.KITKAT)
-    private static void beginDelayedTransition(ViewGroup viewGroup) {
-        beginDelayedTransition(viewGroup, null);
-    }
-
-    @TargetApi(android.os.Build.VERSION_CODES.KITKAT)
-    private static void beginDelayedTransition(ViewGroup viewGroup, Transition transition) {
-        TransitionManager.beginDelayedTransition(viewGroup, transition);
-    }
-
-    /**
-     * Shows main clock widget.<br/>
-     * Same as calling {@code showWidget(null)}.
-     *
-     * @see #showWidget(com.achep.acdisplay.acdisplay.components.Widget)
-     */
-    public void showMainWidget() {
-        showWidget(null);
-    }
-
     /**
      * @return The widget to be shown on create, or {@code null} to
      * show main scene.
@@ -573,12 +581,28 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     /**
-     * @return Currently displayed widget, or {@code null} if on main widget.
+     * @return Currently displayed widget, or {@code null} if main widget is displayed.
      * @see #showWidget(com.achep.acdisplay.acdisplay.components.Widget)
      * @see #showMainWidget()
      */
     protected final Widget getCurrentWidget() {
         return mSelectedWidget;
+    }
+
+    /**
+     * @return {@code true} if current widget equals to given one, {@code false} otherwise.
+     * @see #getCurrentWidget()
+     */
+    protected final boolean isCurrentWidget(Widget widget) {
+        return widget == mSelectedWidget;
+    }
+
+    /**
+     * @return {@code true} if widget is not {@code null} and
+     * {@link Widget#isDismissible() dismissible}, {@code false} otherwise.
+     */
+    public final boolean isDismissible(Widget widget) {
+        return widget != null && widget.isDismissible();
     }
 
     /**
@@ -594,17 +618,17 @@ public class AcDisplayFragment extends Fragment implements
             if (transitions) {
                 if (Device.hasKitKatApi()) {
                     try {
-                        // [ADDED WORKAROUND] Fix the exception which happens here randomly.
                         // This must be a synchronization problem with Android's Scene or TransitionManager,
                         // but those were declared as final classes, so I have no idea how to fix it.
                         TransitionManager.go(sceneCompat.scene, mTransition);
-                    }  catch (IllegalStateException e) {
+                    } catch (IllegalStateException e) {
                         Log.e(TAG, "TransitionManager has failed switching scenes.");
 
-                        ViewGroup viewGroup = (ViewGroup) sceneCompat.getView().getParent();
-                        viewGroup.removeView(sceneCompat.getView());
+                        ViewGroup viewGroup = (ViewGroup) getSceneView().getParent();
+                        viewGroup.removeView(getSceneView());
 
                         try {
+                            // Reset internal scene's tag to make it work again.
                             int id = Resources.getSystem().getIdentifier("current_scene", "id", "android");
                             Method method = View.class.getMethod("setTagInternal", int.class, Object.class);
                             method.setAccessible(true);
@@ -618,15 +642,16 @@ public class AcDisplayFragment extends Fragment implements
                         TransitionManager.go(sceneCompat.scene, mTransition);
                     }
                 } else {
-                    // TODO: Better animation for Jelly Bean users.
                     sceneCompat.enter();
 
+                    // Animate newly applied scene.
                     if (getActivity() != null) {
+                        // TODO: Better animation for Jelly Bean users.
                         float density = getResources().getDisplayMetrics().density;
-                        sceneCompat.getView().setAlpha(0.4f);
-                        sceneCompat.getView().setRotationX(10f);
-                        sceneCompat.getView().setTranslationY(10f * density);
-                        sceneCompat.getView().animate().alpha(1).rotationX(0).translationY(0);
+                        getSceneView().setAlpha(0.4f);
+                        getSceneView().setRotationX(10f);
+                        getSceneView().setTranslationY(10f * density);
+                        getSceneView().animate().alpha(1).rotationX(0).translationY(0);
                     } else {
                         Log.w(TAG, "Changing scene when fragment is single!");
                     }
@@ -647,7 +672,7 @@ public class AcDisplayFragment extends Fragment implements
      * @see #goScene(com.achep.acdisplay.compat.SceneCompat, boolean)
      * @see #getMainScene()
      */
-    protected final SceneCompat getCurrentScene() {
+    protected final SceneCompat getScene() {
         return mCurrentScene;
     }
 
@@ -656,11 +681,12 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     /**
-     * @return {@code true} if widget is not null and
-     * {@link Widget#isDismissible() dismissible}, {@code false} otherwise.
+     * @return The view of the {@link #getScene() current scene}.
+     * @see #getSceneContainer()
+     * @see #getScene()
      */
-    public final boolean isDismissible(Widget widget) {
-        return widget != null && widget.isDismissible();
+    private View getSceneView() {
+        return getScene().getView();
     }
 
     protected SceneCompat findSceneByWidget(Widget widget) {
@@ -705,7 +731,7 @@ public class AcDisplayFragment extends Fragment implements
         final int childCount = container.getChildCount();
 
         if (Device.hasKitKatApi()) {
-            beginDelayedTransition(container);
+            TransitionManager.beginDelayedTransition(container);
         }
 
         // Count the number of non-notification fragments

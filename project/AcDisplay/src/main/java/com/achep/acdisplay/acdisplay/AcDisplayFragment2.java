@@ -20,7 +20,6 @@
 package com.achep.acdisplay.acdisplay;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -163,29 +162,15 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         mTimeout.registerListener(mTimeoutGui);
 
         mCircleView = (CircleView) root.findViewById(R.id.circle);
-//        mCircleView.setDarkening(1f);
         mCircleView.setCallback(this);
 
-        ViewGroup sceneContainer = getSceneContainer();
         mMediaWidget = new MediaWidget(this, this);
         mMediaWidget.onCreate();
+        ViewGroup sceneContainer = getSceneContainer();
         ViewGroup sceneMainMusic = mMediaWidget.createView(inflater, sceneContainer, null);
         mSceneMainMedia = new SceneCompat(sceneContainer, sceneMainMusic);
 
         return root;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Resources res = getResources();
-
-        // Smooth turning screen on.
-//        CircleDarkeningAnimation anim = new CircleDarkeningAnimation(mCircleView, 1f, 0f);
-//        anim.setInterpolator(getActivity(), android.R.interpolator.accelerate_cubic);
-//        anim.setDuration(res.getInteger(android.R.integer.config_shortAnimTime));
-//        mCircleView.startAnimation(anim);
     }
 
     @Override
@@ -205,7 +190,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     public void onCircleEvent(float radius, float ratio, int event) {
         switch (event) {
             case CircleView.ACTION_START:
-                if (isWidgetPinned()) {
+                if (hasPinnedWidget()) {
                     resetScene();
                 }
 
@@ -248,7 +233,8 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
      */
     @Override
     public void requestBackgroundUpdate(Widget widget) {
-        if (widget == getCurrentWidget()) {
+        // Allow changing background to current widget only.
+        if (isCurrentWidget(widget)) {
             mActivity.dispatchSetBackground(
                     widget.getBackground(),
                     widget.getBackgroundMask());
@@ -261,7 +247,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
      */
     @Override
     public void requestTimeoutRestart(Widget widget) {
-        if (widget == getCurrentWidget()) {
+        if (isCurrentWidget(widget)) {
             mTimeout.setTimeoutDelayed(mConfig.getTimeoutShort(), true);
         }
     }
@@ -279,15 +265,14 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
                     widget.getBackgroundMask());
         }
 
+        // Start timeout on main or media widgets, and
+        // pause it otherwise.
         if (widget == null || widget == mMediaWidget) {
             mTimeout.resume();
         } else {
             mTimeout.setTimeoutDelayed(mConfig.getTimeoutNormal(), true);
             mTimeout.pause();
         }
-
-        // boolean smallClock = widget != null && !widget.hasClock() && widget == mMediaWidget;
-        // ViewUtils.setVisible(mClockSmallView, smallClock);
     }
 
     /**
@@ -296,10 +281,11 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     @Override
     protected void onWidgetDismiss(Widget widget) {
         boolean lock = false;
-        if (widget instanceof NotifyWidget) {
-            // Screen off on dismiss last notification.
+
+        // Option: Screen off on dismiss last notification.
+        if (mConfig.isScreenOffAfterLastNotify() && widget instanceof NotifyWidget) {
             NotificationPresenter np = NotificationPresenter.getInstance();
-            lock = np.getList().size() <= 1 && mActivity.getConfig().isScreenOffAfterLastNotify();
+            lock = np.getList().size() <= 1;
         }
 
         super.onWidgetDismiss(widget);
