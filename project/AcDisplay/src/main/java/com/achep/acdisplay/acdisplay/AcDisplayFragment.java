@@ -99,7 +99,6 @@ public class AcDisplayFragment extends Fragment implements
     };
 
     // Animations
-    private AnimatorSet mSceneContainerPinAnim;
     private DismissAnimation mSceneContainerDismissAnim;
 
     // Swipe to dismiss
@@ -172,7 +171,6 @@ public class AcDisplayFragment extends Fragment implements
         mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
 
-        mSceneContainerPinAnim = (AnimatorSet) AnimatorInflater.loadAnimator(activity, R.animator.pin);
         mSceneContainerDismissAnim = new DismissAnimation();
     }
 
@@ -396,12 +394,8 @@ public class AcDisplayFragment extends Fragment implements
                     } else {
                         onWidgetPinned(mSelectedWidget);
 
-                        // TODO: Detect animation by Android API, not by delay.
                         long elapsedTime = event.getEventTime() - event.getDownTime();
-                        if (elapsedTime > 150) {
-                            mSceneContainerPinAnim.setTarget(getSceneView());
-                            mSceneContainerPinAnim.start();
-                        } else if (mPinCanReadAloud && isReadable()) {
+                        if (mPinCanReadAloud && isReadable() && elapsedTime < 150) {
                             onWidgetReadAloud(mSelectedWidget);
                         }
                     }
