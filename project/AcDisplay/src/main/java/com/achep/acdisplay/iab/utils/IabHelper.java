@@ -475,7 +475,7 @@ public class IabHelper {
                 return true;
             }
 
-            Purchase purchase = null;
+            @SuppressWarnings("UnusedAssignment") Purchase purchase = null;
             try {
                 purchase = new Purchase(mPurchasingItemType, purchaseData, dataSignature);
                 String sku = purchase.getSku();

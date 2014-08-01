@@ -25,10 +25,10 @@ import android.util.Log;
  * The blacklist (also known as per-app-features.)
  *
  * @author Artem Chepurnoy
- * @see #saveAppConfig(android.content.Context, AppConfig, SharedList.OnSharedListChangedListener)
+ * @see #saveAppConfig(android.content.Context, AppConfig, com.achep.acdisplay.SharedList.OnSharedListChangedListener)
  * @see #getAppConfig(String)
  */
-public final class Blacklist extends SharedList<AppConfig, AppConfig.AppConfigSaver> {
+public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, AppConfig.AppConfigSaver> {
 
     private static final String TAG = "Blacklist";
 

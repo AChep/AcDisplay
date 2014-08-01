@@ -51,6 +51,8 @@ import java.util.ArrayList;
 public class MediaController {
 
     private static final String TAG = "MediaController";
+
+    @SuppressWarnings("PointlessBooleanExpression")
     private static final boolean DEBUG = false && Build.DEBUG;
 
     public static final int EVENT_METADATA_CHANGED = 1;

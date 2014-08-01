@@ -114,7 +114,7 @@ public class ActiveModeService extends BathService.ChildService implements
         int count = sensors.length;
         boolean[] supportList = new boolean[sensors.length];
         for (int i = 0; i < sensors.length; i++) {
-            supportList[i] = sensors[i].isSupported(sensorManager, context);
+            supportList[i] = sensors[i].isSupported(sensorManager);
             if (!supportList[i]) {
                 count--;
             }

@@ -76,10 +76,11 @@ public class OpenNotification {
      * Performs a click on notification.<br/>
      * To be clear it is not a real click but launching its content intent.
      *
+     * @return {@code true} if succeed, {@code false} otherwise
      * @see NotificationHelper#startContentIntent(StatusBarNotification)
      */
-    public void click() {
-        NotificationHelper.startContentIntent(mStatusBarNotification);
+    public boolean click() {
+        return NotificationHelper.startContentIntent(mStatusBarNotification);
     }
 
 }

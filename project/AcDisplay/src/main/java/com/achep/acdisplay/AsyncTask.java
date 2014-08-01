@@ -95,6 +95,11 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
                 } catch (IOException e) {
                     result[i] = null;
                 }
+
+                // Immediately return the result on task interrupt.
+                if (!running) {
+                    return result;
+                }
             }
             return result;
         }
@@ -102,8 +107,6 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
         @Override
         protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
-
-            // Notify listener that downloading done.
             Callback callback = mCallback.get();
             if (callback != null) {
                 callback.onDownloaded(s);

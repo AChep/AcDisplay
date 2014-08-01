@@ -17,6 +17,7 @@
   ~ MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -35,7 +36,8 @@
             android:layout_height="@android:dimen/app_icon_size"
             android:layout_marginStart="6dip"
             android:layout_marginEnd="6dip"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:layout_width="0dp"

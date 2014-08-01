@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -76,47 +75,53 @@
             android:label="@string/blacklist"
             android:launchMode="singleTask"
             android:icon="@drawable/ic_activity_blacklist"
-            android:parentActivityName=".activities.MainActivity"/>
+            android:parentActivityName=".activities.MainActivity" />
 
         <activity
             android:name=".blacklist.activities.SubBlacklistActivity"
             android:label="@string/blacklist_app_config"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:icon="@drawable/ic_activity_blacklist"
-            android:parentActivityName=".blacklist.activities.BlacklistActivity"/>
+            android:parentActivityName=".blacklist.activities.BlacklistActivity" />
 
         <activity
             android:name=".settings.Settings"
             android:label="@string/settings"
             android:launchMode="singleTask"
             android:icon="@drawable/ic_activity_settings"
-            android:parentActivityName=".activities.MainActivity"/>
+            android:parentActivityName=".activities.MainActivity" />
 
         <activity
             android:name=".settings.SubSettings"
             android:icon="@drawable/ic_activity_settings"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:parentActivityName=".settings.Settings"/>
+            android:parentActivityName=".settings.Settings" />
 
-        <activity android:name=".settings.Settings$ActiveModeSettingsActivity"
+        <activity
+            android:name=".settings.Settings$ActiveModeSettingsActivity"
             android:taskAffinity=""
             android:label="@string/settings_active_title"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true">
-            <meta-data android:name="com.achep.acdisplay.FRAGMENT_CLASS"
+            <meta-data
+                android:name="com.achep.acdisplay.FRAGMENT_CLASS"
                 android:value="com.achep.acdisplay.settings.ActiveFragment" />
-            <meta-data android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
+            <meta-data
+                android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/active_settings" />
         </activity>
 
-        <activity android:name=".settings.Settings$LockscreenSettingsActivity"
+        <activity
+            android:name=".settings.Settings$LockscreenSettingsActivity"
             android:taskAffinity=""
             android:label="@string/settings_lockscreen_title"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true">
-            <meta-data android:name="com.achep.acdisplay.FRAGMENT_CLASS"
+            <meta-data
+                android:name="com.achep.acdisplay.FRAGMENT_CLASS"
                 android:value="com.achep.acdisplay.settings.LockscreenFragment" />
-            <meta-data android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
+            <meta-data
+                android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/keyguard_settings" />
         </activity>
 
@@ -128,12 +133,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:theme="@style/AcDisplayTheme"
-            android:exported="false"/>
+            android:exported="false" />
 
         <!-- This is needed to access notifications and to control music. -->
         <service
             android:name=".services.MediaService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
                 <action android:name="com.achep.acdisplay.BIND_MEDIA_CONTROL_SERVICE" />
@@ -141,7 +146,9 @@
         </service>
 
         <!-- Foreground service that may contain both Keyguard and Active mode. -->
-        <service android:name=".services.BathService" android:label="@string/service_bath" />
+        <service
+            android:name=".services.BathService"
+            android:label="@string/service_bath" />
 
         <!--
             This is transparent activity for handling internal intents.
@@ -164,11 +171,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <!-- AcDisplay -->
-                <action android:name="com.achep.acdisplay.ENABLE"/>
-                <action android:name="com.achep.acdisplay.DISABLE"/>
-                <action android:name="com.achep.acdisplay.TOGGLE"/>
+                <action android:name="com.achep.acdisplay.ENABLE" />
+                <action android:name="com.achep.acdisplay.DISABLE" />
+                <action android:name="com.achep.acdisplay.TOGGLE" />
             </intent-filter>
         </receiver>
 
@@ -187,7 +194,7 @@
         </receiver>
 
         <!-- Receiver for a widget -->
-        <receiver android:name=".providers.ToggleWidgetProvider" >
+        <receiver android:name=".providers.ToggleWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
                 <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
@@ -234,7 +241,7 @@
             android:value="2.0*" />
         <meta-data
             android:name="xposeddescription"
-            android:value="@string/xposed_description"/>
+            android:value="@string/xposed_description" />
 
     </application>
 

@@ -27,7 +27,7 @@ package com.achep.acdisplay;
 public class Operator {
 
     /**
-     * @return {@code (v & target) == target}
+     * @return {@code (v AND target) == target}
      */
     public static boolean bitAnd(int v, int target) {
         return (v & target) == target;

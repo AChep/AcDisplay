@@ -19,7 +19,6 @@
 
 package com.achep.acdisplay.services.activemode.sensors;
 
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -65,7 +64,7 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
     }
 
     @Override
-    protected boolean isSupported(SensorManager sensorManager, Context context) {
+    protected boolean isSupported(SensorManager sensorManager) {
         return false;
     }
 

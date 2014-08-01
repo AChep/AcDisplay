@@ -94,7 +94,7 @@ public abstract class ActiveModeSensor {
      *
      * @return {@code true} if the sensor is supported by device, {@code false} otherwise.
      */
-    protected boolean isSupported(SensorManager sensorManager, Context context) {
+    protected boolean isSupported(SensorManager sensorManager) {
         return sensorManager.getSensorList(getType()).size() > 0;
     }
 

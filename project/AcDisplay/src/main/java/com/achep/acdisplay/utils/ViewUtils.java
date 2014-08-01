@@ -18,9 +18,7 @@
  */
 package com.achep.acdisplay.utils;
 
-import android.annotation.TargetApi;
 import android.graphics.Matrix;
-import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,10 +42,8 @@ public class ViewUtils {
                     ? new MotionEventHandlerReflection()
                     : new MotionEventHandlerCompat();
 
-
-    private static final int[] coordinates = new int[3];
-
     public static boolean isTouchPointInView(View view, float x, float y) {
+        final int[] coordinates = new int[3];
         view.getLocationInWindow(coordinates);
         int left = coordinates[0];
         int top = coordinates[1];
@@ -56,11 +52,13 @@ public class ViewUtils {
     }
 
     public static int getLeft(View view) {
+        final int[] coordinates = new int[3];
         view.getLocationInWindow(coordinates);
         return coordinates[0];
     }
 
     public static int getTop(View view) {
+        final int[] coordinates = new int[3];
         view.getLocationInWindow(coordinates);
         return coordinates[1];
     }

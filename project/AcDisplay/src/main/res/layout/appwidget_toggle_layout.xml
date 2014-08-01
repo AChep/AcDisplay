@@ -32,7 +32,8 @@
         android:id="@+id/icon"
         android:layout_width="@dimen/launcher_icon_size"
         android:layout_height="@dimen/launcher_icon_size"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/title"

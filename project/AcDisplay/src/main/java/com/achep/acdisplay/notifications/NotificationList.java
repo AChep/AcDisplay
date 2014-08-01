@@ -22,80 +22,157 @@ package com.achep.acdisplay.notifications;
 import java.util.ArrayList;
 
 /**
- * Created by Artem on 10.04.2014.
+ * Is a list of {@link OpenNotification notifications} with
+ * an ability to easily add / replace / remove item from the list.
  *
  * @author Artem Chepurnoy
+ * @see NotificationUtils#equals(OpenNotification, OpenNotification)
  */
 final class NotificationList {
 
-    private ArrayList<OpenNotification> mList;
-    private Callback mCallback;
+    /**
+     * Default return value of {@link #push(OpenNotification)}
+     * or {@link #remove(OpenNotification)} methods.
+     */
+    public static final int RESULT_DEFAULT = 0;
 
-    public interface Callback {
+    private static final int EVENT_ADDED = 0;
+    private static final int EVENT_CHANGED = 1;
+    private static final int EVENT_REMOVED = 2;
+
+    private ArrayList<OpenNotification> mList;
+    private OnNotificationListChangedListener mListener;
+
+    /**
+     * Interface definition for a callback to be invoked
+     * when a list of notifications has changed.
+     */
+    public interface OnNotificationListChangedListener {
+
+        /**
+         * Called when new notification was added to list.
+         *
+         * @param n newly added notification
+         */
         public int onNotificationAdded(OpenNotification n);
 
+        /**
+         * Called when old notification was replaced with new one.
+         *
+         * @param n   newly added notification
+         * @param old removed notification
+         */
         public int onNotificationChanged(OpenNotification n, OpenNotification old);
 
+        /**
+         * Called when notification was removed from list.
+         *
+         * @param n removed notification
+         */
         public int onNotificationRemoved(OpenNotification n);
+
     }
 
-    public NotificationList(Callback callback) {
-        mCallback = callback;
+    public NotificationList(OnNotificationListChangedListener callback) {
+        mListener = callback;
         mList = new ArrayList<>(10);
     }
 
     public int pushOrRemove(OpenNotification n, boolean push, boolean silently) {
-        Callback cb = mCallback;
-        if (silently) mCallback = null;
-        final int callback = push ? push(n) : remove(n);
-        if (silently) mCallback = cb;
-        return callback;
+        if (silently) {
+            // Hide listener.
+            OnNotificationListChangedListener l = mListener;
+            mListener = null;
+
+            // Perform action.
+            pushOrRemove(n, push);
+
+            // Restore listener.
+            mListener = l;
+            return RESULT_DEFAULT;
+        }
+        return pushOrRemove(n, push);
+    }
+
+    public int pushOrRemove(OpenNotification n, boolean push) {
+        return push ? push(n) : remove(n);
     }
 
     /**
-     * Replace or add notification to the list.
+     * Adds or replaces existent notification to/of the list.
      *
-     * @return {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationAdded(OpenNotification n)} or
-     * {@link com.achep.acdisplay.notifications.NotificationList.Callback#onNotificationChanged(OpenNotification n, OpenNotification old)}
+     * @return {@link NotificationList.OnNotificationListChangedListener#onNotificationAdded(OpenNotification n)} or
+     * {@link NotificationList.OnNotificationListChangedListener#onNotificationChanged(OpenNotification n, OpenNotification old)}
      */
     public int push(OpenNotification n) {
-        int index = indexOf(n);
-        if (index < 0) {
+        final int index = indexOf(n);
+        if (index == -1) {
+            // Add new notification to the list.
             mList.add(n);
-            if (mCallback != null) return mCallback.onNotificationAdded(n);
+            return notifyListener(EVENT_ADDED, n, null);
         } else {
+            // Replace old notification with new one.
             OpenNotification old = mList.get(index);
             mList.remove(index);
             mList.add(index, n);
-            if (mCallback != null) return mCallback.onNotificationChanged(n, old);
+            return notifyListener(EVENT_CHANGED, n, old);
         }
-        return 0;
     }
 
+    /**
+     * Removes notification from the list.
+     *
+     * @return {@link NotificationList.OnNotificationListChangedListener#onNotificationRemoved(OpenNotification n)}
+     * @see #push(OpenNotification n)
+     */
     public int remove(OpenNotification n) {
-        int index = indexOf(n);
-        if (index >= 0) {
+        final int index = indexOf(n);
+        if (index != -1) {
             mList.get(index).getNotificationData().stopLoading();
             mList.remove(index);
-            if (mCallback != null) return mCallback.onNotificationRemoved(n);
+            return notifyListener(EVENT_REMOVED, n, null);
         }
-        return 0;
+        return RESULT_DEFAULT;
     }
 
+    /**
+     * <b>Do not operate on this list!</b>
+     * Use this only for searching and getting notifications.
+     *
+     * @return link to primitive list of notifications.
+     */
     public ArrayList<OpenNotification> list() {
         return mList;
     }
 
     public int indexOf(OpenNotification n) {
-        int size = mList.size();
+        final int size = mList.size();
         for (int i = 0; i < size; i++) {
-            OpenNotification o = mList.get(i);
-            if (o == null || o.getStatusBarNotification() == null) {
-                throw new RuntimeException("Null-notification found! Notification list is probably corrupted. ");
-            } else if (NotificationUtils.equals(n, o)) {
+            if (NotificationUtils.equals(n, mList.get(i))) {
                 return i;
             }
         }
         return -1;
+    }
+
+    /**
+     * Notifies listener about this event.
+     *
+     * @see #EVENT_ADDED
+     * @see #EVENT_CHANGED
+     * @see #EVENT_REMOVED
+     */
+    private int notifyListener(int event, OpenNotification n, OpenNotification old) {
+        if (mListener == null) return RESULT_DEFAULT;
+        switch (event) {
+            case EVENT_ADDED:
+                return mListener.onNotificationAdded(n);
+            case EVENT_CHANGED:
+                return mListener.onNotificationChanged(n, old);
+            case EVENT_REMOVED:
+                return mListener.onNotificationRemoved(n);
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 }

@@ -116,7 +116,7 @@ public final class Extractor {
             removeClickableViews(textViews);
             removeSubtextViews(context, textViews);
             removeActionViews(data.actions, textViews);
-            
+
             // There're no views present.
             if (textViews.size() == 0)
                 break;
@@ -124,7 +124,7 @@ public final class Extractor {
             TextView title = findTitleTextView(textViews);
             textViews.remove(title); // no need of title view anymore
             data.titleText = title.getText();
-            
+
             // There're no views present.
             if (textViews.size() == 0)
                 break;

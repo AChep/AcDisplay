@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.acdisplay.blacklist;
+package com.achep.acdisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -66,7 +66,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
          *
          * @param objectNew current object
          * @param objectOld old object from the list
-         * @param diff      the difference between old and new objects (provided by {@link com.achep.acdisplay.blacklist.SharedList.Comparator})
+         * @param diff      the difference between old and new objects (provided by {@link SharedList.Comparator})
          */
         public void onPut(V objectNew, V objectOld, int diff);
 

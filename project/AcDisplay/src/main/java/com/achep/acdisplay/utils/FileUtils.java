@@ -87,7 +87,7 @@ public class FileUtils {
             osw.append(text);
             return true;
         } catch (IOException e) {
-            errorMessage = "Failed to write to file. ";
+            errorMessage = "[Failed to write to file]";
         } finally {
             try {
                 if (osw != null) {
@@ -96,7 +96,7 @@ public class FileUtils {
                     fos.close();
                 }
             } catch (IOException e) {
-                errorMessage += "Failed to close the stream.";
+                errorMessage += "[Failed to close the stream]";
             }
         }
         if (Build.DEBUG) Log.e(TAG, errorMessage + " file=" + file);

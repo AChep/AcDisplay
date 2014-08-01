@@ -32,12 +32,12 @@ import android.graphics.Shader;
 public class BitmapUtils {
 
     public static boolean hasTransparentCorners(Bitmap bitmap) {
-        int width = bitmap.getWidth() - 1;
-        int height = bitmap.getHeight() - 1;
+        int right = bitmap.getWidth() - 1;
+        int bottom = bitmap.getHeight() - 1;
         return bitmap.getPixel(0, 0) == Color.TRANSPARENT
-                || bitmap.getPixel(width, 0) == Color.TRANSPARENT
-                || bitmap.getPixel(0, height) == Color.TRANSPARENT
-                || bitmap.getPixel(width, height) == Color.TRANSPARENT;
+                || bitmap.getPixel(right, 0) == Color.TRANSPARENT
+                || bitmap.getPixel(0, bottom) == Color.TRANSPARENT
+                || bitmap.getPixel(right, bottom) == Color.TRANSPARENT;
     }
 
     /**

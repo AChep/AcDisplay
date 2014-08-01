@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:visibility="gone"
-        tools:isImportantForAccessibility="false" />
+        tools:ignore="ContentDescription" />
 
     <fragment
         android:id="@+id/acdisplay_fragment"

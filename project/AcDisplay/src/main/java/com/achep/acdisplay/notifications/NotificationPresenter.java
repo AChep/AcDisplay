@@ -44,10 +44,12 @@ import com.achep.acdisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
 
+import static com.achep.acdisplay.notifications.NotificationList.RESULT_DEFAULT;
+
 /**
  * Created by Artem on 27.12.13.
  */
-public class NotificationPresenter implements NotificationList.Callback {
+public class NotificationPresenter implements NotificationList.OnNotificationListChangedListener {
 
     private static final String TAG = "NotificationPresenter";
 
@@ -56,6 +58,8 @@ public class NotificationPresenter implements NotificationList.Callback {
     public static final int EVENT_CHANGED = 2;
     public static final int EVENT_CHANGED_SPAM = 3;
     public static final int EVENT_REMOVED = 4;
+
+    private static final int RESULT_SPAM = -1;
 
     private static final int INITIALIZING_PROCESS_NONE = 0;
     private static final int INITIALIZING_PROCESS_STARTED = 1;
@@ -243,7 +247,7 @@ public class NotificationPresenter implements NotificationList.Callback {
         mGList.pushOrRemove(n, globalValid, silently);
         int result = mLList.pushOrRemove(n, localValid, silently);
 
-        if (localValid && !silently && result != -1) {
+        if (localValid && !silently && result != RESULT_SPAM) {
             tryStartGui(context, n);
         }
     }
@@ -284,7 +288,7 @@ public class NotificationPresenter implements NotificationList.Callback {
     @Override
     public int onNotificationAdded(OpenNotification n) {
         notifyListeners(n, EVENT_POSTED);
-        return 0;
+        return RESULT_DEFAULT;
     }
 
     @Override
@@ -307,17 +311,17 @@ public class NotificationPresenter implements NotificationList.Callback {
             n.getNotificationData().markAsRead(old.getNotificationData().isRead);
 
             notifyListeners(n, EVENT_CHANGED_SPAM);
-            return -1; // Don't wake up.
+            return RESULT_SPAM; // Don't wake up.
         }
 
         notifyListeners(n, EVENT_CHANGED);
-        return 0;
+        return RESULT_DEFAULT;
     }
 
     @Override
     public int onNotificationRemoved(OpenNotification n) {
         notifyListeners(n, EVENT_REMOVED);
-        return 0;
+        return RESULT_DEFAULT;
     }
 
     // //////////////////////////////////////////

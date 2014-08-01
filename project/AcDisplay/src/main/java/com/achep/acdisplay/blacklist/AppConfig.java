@@ -154,6 +154,7 @@ public class AppConfig {
      * @see AppConfig#DEFAULT_RESTRICTED
      * @see AppConfig#DEFAULT_HIDDEN
      */
+    @SuppressWarnings("PointlessBooleanExpression")
     boolean isEmpty() {
         return isEnabled() == AppConfig.DEFAULT_ENABLED
                 && isRestricted() == AppConfig.DEFAULT_RESTRICTED
@@ -165,7 +166,7 @@ public class AppConfig {
      *
      * @author Artem Chepurnoy
      */
-    static final class AppConfigSaver extends SharedList.Saver<AppConfig> {
+    static final class AppConfigSaver extends com.achep.acdisplay.SharedList.Saver<AppConfig> {
 
         private static final String KEY_PACKAGE = "package_name_";
         private static final String KEY_ENABLED = "enabled_";
@@ -202,7 +203,7 @@ public class AppConfig {
      *
      * @author Artem Chepurnoy
      */
-    static final class AppConfigComparator extends SharedList.Comparator<AppConfig> {
+    static final class AppConfigComparator extends com.achep.acdisplay.SharedList.Comparator<AppConfig> {
 
         /**
          * {@inheritDoc}

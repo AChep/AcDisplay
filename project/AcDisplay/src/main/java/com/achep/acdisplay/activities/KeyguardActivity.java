@@ -80,11 +80,11 @@ public abstract class KeyguardActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().addFlags(0
+        getWindow().addFlags(
                 // Show activity above the system keyguard.
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 // Allow ignoring random presses.
-                | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES);
+                WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES);
 
         if (getIntent() != null) {
             Intent intent = getIntent();
