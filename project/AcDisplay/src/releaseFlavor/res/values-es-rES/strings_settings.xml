@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Fondo dinámico</string>
   <string name="settings_dynamic_background_summary">Seran usados como fondo : %1$s</string>
   <string name="settings_dynamic_background_disabled">Desactivado</string>
-  <string name="settings_show_date_title">Mostrar fecha</string>
   <string name="settings_status_battery_always_visible">Mantener estado de bateria</string>
   <string name="settings_status_battery_always_visible_off">El estado de la bateria se muestra cuando la carga es baja o cuando se está cargando.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Barra de espera espejada</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">Desde %1$s a %2$s.</string>
   <string name="settings_timeout_title">Dormir</string>
   <string name="settings_timeout_summary">Después de %1$s / %2$s segundos de inactividad.</string>
-  <string name="settings_timeout_forever">La pantalla permanece encendida para siempre.</string>
   <string name="settings_icon_size_title">Tamaño del icono</string>
   <string name="settings_icon_size_summary">El tamaño actual de los iconos es de %1$s dip.</string>
   <string name="settings_behavior_category">Comportamiento</string>

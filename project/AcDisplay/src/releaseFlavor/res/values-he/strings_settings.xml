@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">רקע דינמי</string>
   <string name="settings_dynamic_background_summary">אלה משמשים כרקע: %1$s</string>
   <string name="settings_dynamic_background_disabled">מבוטל</string>
-  <string name="settings_show_date_title">הצגת תאריך</string>
   <string name="settings_status_battery_always_visible">Keep battery status</string>
   <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">timeout bar הפוך</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">מ-%1$s עד %2$s.</string>
   <string name="settings_timeout_title">שינה</string>
   <string name="settings_timeout_summary">לאחר %1$s / %2$s שניות של אי פעילות.</string>
-  <string name="settings_timeout_forever">המסך נשאר דולק לנצח.</string>
   <string name="settings_icon_size_title">Icon size</string>
   <string name="settings_icon_size_summary">Current size of icons is %1$s dip.</string>
   <string name="settings_behavior_category">התנהגות</string>

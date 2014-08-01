@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">动态背景</string>
   <string name="settings_dynamic_background_summary">这些将作为背景使用：%1$s</string>
   <string name="settings_dynamic_background_disabled">禁用</string>
-  <string name="settings_show_date_title">显示日期</string>
   <string name="settings_status_battery_always_visible">保留电池状态</string>
   <string name="settings_status_battery_always_visible_off">在低电量或插入电源时显示电池状态</string>
   <string name="settings_mirrored_timeout_progress_bar_title">镜像倒数计时条</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">从 %1$s 到 %2$s</string>
   <string name="settings_timeout_title">睡眠</string>
   <string name="settings_timeout_summary">在 %1$s 秒的休眠期内 %2$s 秒无操作后恢复到睡眠状态</string>
-  <string name="settings_timeout_forever">屏幕常亮</string>
   <string name="settings_icon_size_title">图标尺寸</string>
   <string name="settings_icon_size_summary">当前图标大小为 %1$s dip</string>
   <string name="settings_behavior_category">行为</string>

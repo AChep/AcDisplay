@@ -36,7 +36,7 @@
   <string name="access_not_granted">尚未授予访问权限 ！</string>
   <string name="access_notifications_grant_btn">通知</string>
   <string name="access_notifications_grant_manually">在设置 &gt; 安全 &gt; 通知访问 中将AcDisplay选中。</string>
-  <string name="access_device_admin_description">这是管理屏幕超时所需的。</string>
+  <string name="access_device_admin_description">可以对屏幕超时进行管理</string>
   <string name="access_device_admin_grant_btn">锁定屏幕</string>
   <string name="access_device_admin_grant_manually">在设置 &gt; 安全 &gt; 通知访问 中将AcDisplay选中。</string>
   <string name="access_device_admin_removed_successful">AcDisplay 已从设备管理员被删除。</string>

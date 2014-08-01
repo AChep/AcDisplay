@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Dynamiczne tło</string>
   <string name="settings_dynamic_background_summary">Te są używane jako tło: %1$s</string>
   <string name="settings_dynamic_background_disabled">Wyłączone</string>
-  <string name="settings_show_date_title">Pokaż datę</string>
   <string name="settings_status_battery_always_visible">Wyświetlaj stan baterii</string>
   <string name="settings_status_battery_always_visible_off">Stan baterii wyświetli się przy niskim poziomie naładowania baterii lub jeśli telefon jest podłączony do ładowarki.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Lustrzany pasek odliczania</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">Od %1$s do %2$s.</string>
   <string name="settings_timeout_title">Uśpienie</string>
   <string name="settings_timeout_summary">Po %1$s / %2$s sekundach braku aktywności.</string>
-  <string name="settings_timeout_forever">Ekran będzie stale włączony.</string>
   <string name="settings_icon_size_title">Rozmiar ikony</string>
   <string name="settings_icon_size_summary">Bieżący rozmiar ikon to %1$s dip.</string>
   <string name="settings_behavior_category">Zachowanie</string>

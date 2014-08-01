@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Динамичен фон</string>
   <string name="settings_dynamic_background_summary">Тези се използват като фон: %1$s</string>
   <string name="settings_dynamic_background_disabled">Изключено</string>
-  <string name="settings_show_date_title">Покажи дата</string>
   <string name="settings_status_battery_always_visible">Запази статуса на батерията</string>
   <string name="settings_status_battery_always_visible_off">Състоянието на батерията се показва при малко батерия или когато телефона се зарежда.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Поле за изчакване</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">От %1$s до %2$s.</string>
   <string name="settings_timeout_title">Спящ режим</string>
   <string name="settings_timeout_summary">След %1$s / %2$s секунди бездействие.</string>
-  <string name="settings_timeout_forever">Екрана остава постоянно включен.</string>
   <string name="settings_icon_size_title">Размер на икони</string>
   <string name="settings_icon_size_summary">Текущ размер на иконите е %1$s DPI.</string>
   <string name="settings_behavior_category">Поведение</string>

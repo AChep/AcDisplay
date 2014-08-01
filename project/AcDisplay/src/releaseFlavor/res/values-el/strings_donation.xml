@@ -20,14 +20,14 @@
   -->
 <resources>
   <string name="donation_action">Δωρεά</string>
-  <string name="donation_title">Δωρεά στον κατασκευαστή</string>
+  <string name="donation_title">Δωρεά στον προγραμματιστή</string>
   <string name="donation_info"><![CDATA[
-Η AcDisplay είναι μία δωρεάν και <a href="https://www.github.com/AChep/AcDisplay">ανοικτού κώδικα</a> εφαρμογή.
-Μπορείτε να δείτε την εκτίμησή σας και να υποστηρίξετε την κατασκευή δωρίζοντας:
+Το AcDisplay είναι μια δωρεάν και <a href="https://www.github.com/AChep/AcDisplay">ανοικτού κώδικα</a> εφαρμογή.
+Μπορείτε να δείξετε την εκτίμησή σας και να υποστηρίξετε τον προγραμματιστή κάνοντας δωρεά:
 ]]></string>
-  <string name="donation_item_bought">Έχετε δωρίσει ήδη για το αντικείμεο αυτό.</string>
+  <string name="donation_item_bought">Έχετε δωρίσει ήδη για το αντικείμενο αυτό.</string>
   <string name="donation_1">Ένα παγωτό</string>
-  <string name="donation_4">Κούπα καφέ</string>
+  <string name="donation_4">Έναν καφέ</string>
   <string name="donation_10">Λογαριασμούς του ρεύματος</string>
   <string name="donation_20">Το σωστό μαξιλάρι</string>
   <string name="donation_50">Σκληρός δίσκος SSD</string>

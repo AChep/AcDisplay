@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Fundo dinâmico</string>
   <string name="settings_dynamic_background_summary">Estas são usadas como imagem de fundo: %1$s</string>
   <string name="settings_dynamic_background_disabled">Desativado</string>
-  <string name="settings_show_date_title">Mostrar data</string>
   <string name="settings_status_battery_always_visible">Sempre mostrar o status da bateria</string>
   <string name="settings_status_battery_always_visible_off">Status da bateria só será mostrado quando com pouca ou carregando.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Barra de tempo espelhada</string>
@@ -54,7 +53,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Barra de tempo desaparece da esquerda para a direita.</string>
   <string name="settings_notify_circled_icon_title">Opção de ícone circular</string>
   <string name="settings_notify_circled_icon_on">Ícone da notificação será mostrado como um círculo.</string>
-  <string name="settings_unlock_animation_title">Unlock animation</string>
+  <string name="settings_unlock_animation_title">Animação de Desbloqueio</string>
   <string name="settings_only_while_charging_title">Apenas enquanto carrega</string>
   <string name="settings_only_while_charging_on">AcDisplay só é ativado, enquanto o dispositivo está carregando. Isso se aplica a todas as funcionalidades tais como o modo ativo ou tela de bloqueio.</string>
   <string name="settings_only_while_charging_off">Aplicativo está sempre ativo.</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">De %1$s a %2$s.</string>
   <string name="settings_timeout_title">Dormir</string>
   <string name="settings_timeout_summary">Depois de %1$s / %2$s segundos de inatividade.</string>
-  <string name="settings_timeout_forever">Tela fica ligada sempre.</string>
   <string name="settings_icon_size_title">Tamanho do ícone</string>
   <string name="settings_icon_size_summary">O tamanho dos ícones está em %1$s dpi.</string>
   <string name="settings_behavior_category">Comportamento</string>

@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Dinamikus háttér</string>
   <string name="settings_dynamic_background_summary">Háttérként a következők használata: %1$s</string>
   <string name="settings_dynamic_background_disabled">Letiltva</string>
-  <string name="settings_show_date_title">Dátum megjelenítése</string>
   <string name="settings_status_battery_always_visible">Akkumulátor állapot megtartása</string>
   <string name="settings_status_battery_always_visible_off">Akkumulátor állapot megjelenítése alacsony töltöttség, vagy csatlakoztatás esetén.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Időkorlát sáv tükrözése</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">%1$s-tól %2$s-ig.</string>
   <string name="settings_timeout_title">Alvás</string>
   <string name="settings_timeout_summary">%1$s / %2$s másodperc tétlenség után.</string>
-  <string name="settings_timeout_forever">Képernyő örökké bekapcsolva tartása.</string>
   <string name="settings_icon_size_title">Ikon méret</string>
   <string name="settings_icon_size_summary">Ikonok jelenlegi mérete %1$s dip.</string>
   <string name="settings_behavior_category">Viselkedés</string>

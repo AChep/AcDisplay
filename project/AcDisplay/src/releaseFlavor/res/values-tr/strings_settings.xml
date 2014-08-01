@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Devingen arka plan</string>
   <string name="settings_dynamic_background_summary">Bunlar arka plan olarak kullanılır: %1$s</string>
   <string name="settings_dynamic_background_disabled">Etkin değil</string>
-  <string name="settings_show_date_title">Tarihi göster</string>
   <string name="settings_status_battery_always_visible">Pil durumunu göster</string>
   <string name="settings_status_battery_always_visible_off">Pil durumu düşük seviye durumunda veya prize takılı olduğu zaman gösterilir.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Yansıtılmış zaman aşımı çubuğu</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">%1$s \'den %2$s \'ye.</string>
   <string name="settings_timeout_title">Uyku</string>
   <string name="settings_timeout_summary">%1$s / %2$s saniyelik hareketsizlikten sonra.</string>
-  <string name="settings_timeout_forever">Ekran sonsuza kadar açık kalır.</string>
   <string name="settings_icon_size_title">Simge Boyutu</string>
   <string name="settings_icon_size_summary">Simgelerin şimdiki boyutu %1$s.</string>
   <string name="settings_behavior_category">Davranış</string>

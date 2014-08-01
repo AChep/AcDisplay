@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Dynamische achtergrond</string>
   <string name="settings_dynamic_background_summary">Die worden gebruikt als achtergrond: %1$s</string>
   <string name="settings_dynamic_background_disabled">Uitgeschakeld</string>
-  <string name="settings_show_date_title">Datum weergeven</string>
   <string name="settings_status_battery_always_visible">Batterij percentage altijd tonen</string>
   <string name="settings_status_battery_always_visible_off">Status van de batterij wordt weergegeven wanneer deze bijna leeg is of wanneer het apparaat opgeladen wordt.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Gespiegelde time-out balk</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">Van %1$s tot %2$s.</string>
   <string name="settings_timeout_title">Slaap</string>
   <string name="settings_timeout_summary">Na %1$s / %2$s seconden inactiviteit.</string>
-  <string name="settings_timeout_forever">Scherm blijft altijd aan.</string>
   <string name="settings_icon_size_title">Icoon grootte</string>
   <string name="settings_icon_size_summary">Huidige grootte van icoontjes is %1$s dip.</string>
   <string name="settings_behavior_category">Gedrag</string>

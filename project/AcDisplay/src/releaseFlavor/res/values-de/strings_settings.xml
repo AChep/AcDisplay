@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Dynamischer Hintergrund</string>
   <string name="settings_dynamic_background_summary">Das wird als Hintergrund verwendet: %1$s</string>
   <string name="settings_dynamic_background_disabled">Deaktiviert</string>
-  <string name="settings_show_date_title">Datum anzeigen</string>
   <string name="settings_status_battery_always_visible">Ladezustand immer anzeigen</string>
   <string name="settings_status_battery_always_visible_off">Ladezustand der Batterie während des Ladens oder bei niedrigem Akkustand anzeigen.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Gespiegelte Anzeige des Zeitlimits</string>
@@ -54,7 +53,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">Das Zeitlimit wird von links nach rechts angezeigt.</string>
   <string name="settings_notify_circled_icon_title">Kreisförmiges Benachrichtigungssymbol</string>
   <string name="settings_notify_circled_icon_on">Großes Symbol der Benachrichtigung innerhalb des Kreises anzeigen.</string>
-  <string name="settings_unlock_animation_title">Unlock animation</string>
+  <string name="settings_unlock_animation_title">Entsperranimation</string>
   <string name="settings_only_while_charging_title">Nur während des Ladens</string>
   <string name="settings_only_while_charging_on">AcDisplay ist nur während des Ladens aktiv. Dies gilt für alle Funktionen wie den Sperrbildschirm oder den Aktivmodus.</string>
   <string name="settings_only_while_charging_off">App ist immer aktiv.</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">Von %1$s bis %2$s.</string>
   <string name="settings_timeout_title">Schlafen</string>
   <string name="settings_timeout_summary">Nach %1$s / %2$s Sekunden Inaktivität.</string>
-  <string name="settings_timeout_forever">Bildschirm bleibt immer an.</string>
   <string name="settings_icon_size_title">Symbolgröße</string>
   <string name="settings_icon_size_summary">Aktuelle Größe der Symbole ist %1$s dip.</string>
   <string name="settings_behavior_category">Verhalten</string>

@@ -22,11 +22,11 @@
   <string name="close">Schließen</string>
   <string name="about_action">Über</string>
   <string name="about_message"><![CDATA[
-Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. Alle Rechte vorbehalten.<br/>
 <br/>
-Vielen Dank für diese Open Source Tools: %1$s and to all who
-<a href="https://crowdin.net/project/acdisplay">mit der Übersetzung geholfen</a> or
-<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">gespendet für mich</a>.
+Vielen Dank für diese Open Source Tools: %1$s und an alle die
+<a href="https://crowdin.net/project/acdisplay">mit der Übersetzung geholfen</a> oder
+<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">an mich gespendet haben</a>.
 ]]></string>
   <string name="help">Hilfe</string>
   <string name="help_faq">Häufig gestellte Fragen</string>

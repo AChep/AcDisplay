@@ -25,7 +25,7 @@
     <item>Outro</item>
   </string-array>
   <string-array name="dynamic_background">
-    <item>Arte da música que está rodando como plano de fundo</item>
+    <item>Capa do álbum</item>
     <item>Ícone de notificação</item>
   </string-array>
 </resources>

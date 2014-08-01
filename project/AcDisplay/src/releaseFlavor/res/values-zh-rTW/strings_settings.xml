@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">動態背景</string>
   <string name="settings_dynamic_background_summary">使用以下圖示作為背景: %1$s</string>
   <string name="settings_dynamic_background_disabled">關閉</string>
-  <string name="settings_show_date_title">顯示日期</string>
   <string name="settings_status_battery_always_visible">永遠顯示電池狀態</string>
   <string name="settings_status_battery_always_visible_off">僅在低電量或充電時才顯示電池狀態。</string>
   <string name="settings_mirrored_timeout_progress_bar_title">鏡射倒數計時條</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">從%1$s到%2$s</string>
   <string name="settings_timeout_title">休眠</string>
   <string name="settings_timeout_summary">%1$s 秒/熟睡期內 %2$s 秒無操作後自動回復休眠狀態</string>
-  <string name="settings_timeout_forever">保持裝置不進入休眠狀態。</string>
   <string name="settings_icon_size_title">圖示大小</string>
   <string name="settings_icon_size_summary">當前圖示大小是 %1$s dpi。</string>
   <string name="settings_behavior_category">行為</string>

@@ -46,7 +46,6 @@
   <string name="settings_dynamic_background_title">Fond d\'écran dynamique</string>
   <string name="settings_dynamic_background_summary">Ces paramètres ont été choisi comme fond d\'écran : %1$s</string>
   <string name="settings_dynamic_background_disabled">Désactivé</string>
-  <string name="settings_show_date_title">Afficher la date</string>
   <string name="settings_status_battery_always_visible">État de la batterie toujours visible</string>
   <string name="settings_status_battery_always_visible_off">L\'état de la batterie ne s\'affiche qu\'avec le niveau de batterie faible ou en charge.</string>
   <string name="settings_mirrored_timeout_progress_bar_title">Effet miroir sur la barre de temps</string>
@@ -54,7 +53,7 @@
   <string name="settings_mirrored_timeout_progress_bar_off">La barre de temps disparait par la gauche.</string>
   <string name="settings_notify_circled_icon_title">Icône de notification encerclé.</string>
   <string name="settings_notify_circled_icon_on">La grande icône de notification apparaît à l\'intérieur du cercle.</string>
-  <string name="settings_unlock_animation_title">Unlock animation</string>
+  <string name="settings_unlock_animation_title">Animation de déverrouillage</string>
   <string name="settings_only_while_charging_title">Seulement pendant la charge</string>
   <string name="settings_only_while_charging_on">AcDisplay n\'est actif que lorsque votre appareil est en charge. Cela implique toutes les fonctionnalités telles que l\'écran de verrouillage ou le mode actif.</string>
   <string name="settings_only_while_charging_off">L\'application est tout le temps active.</string>
@@ -63,7 +62,6 @@
   <string name="settings_inactive_hours_enabled">De %1$s à %2$s.</string>
   <string name="settings_timeout_title">Veille</string>
   <string name="settings_timeout_summary">Après %1$s / %2$s secondes d\'inactivité.</string>
-  <string name="settings_timeout_forever">L\'écran reste allumé indéfiniment.</string>
   <string name="settings_icon_size_title">Taille d\'icônes</string>
   <string name="settings_icon_size_summary">La taille actuelle des icônes est de %1$s dpi.</string>
   <string name="settings_behavior_category">Comportement</string>
@@ -71,7 +69,7 @@
   <string name="settings_lock_on_dismiss_last_notify_on">L\'écran s\'éteint après le rejet de la dernière notification.</string>
   <string name="settings_lock_on_dismiss_last_notify_off">L\'écran reste allumé après le rejet de la dernière notification.</string>
   <string name="settings_widget_pinnable_title">Notification persistante</string>
-  <string name="settings_widget_pinnable_on">Le widget-notification reste étendu quelques secondes après avoir touché l\'écran.</string>
+  <string name="settings_widget_pinnable_on">Le détail de la notification reste afficher quelques secondes après avoir touché l\'écran.</string>
   <string name="preference_inactive_hours_enabled">Horaires d\'inactivité activés</string>
   <string name="preference_inactive_hours_from"><![CDATA[
 A partir de :<br/><b><font color="#ffffff">%1$s</font></b>

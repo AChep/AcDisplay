@@ -30,7 +30,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="init_notification_text">Diese Benachrichtigung einfach entfernen.</string>
   <string name="remote_enable_acdisplay">AcDisplay ist aktiv.</string>
   <string name="remote_disable_acdisplay">AcDisplay ist inaktiv.</string>
-  <string name="service_bath">AcDisplay Dienstleistungen</string>
+  <string name="service_bath">AcDisplay Dienste</string>
   <string name="service_bath_keyguard">Sperrbildschirm</string>
   <string name="service_bath_active_mode">Aktiv Modus</string>
   <string name="status_date_format">EEE, d MMMM</string>
@@ -40,7 +40,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="access_device_admin_description">Dies wird benötigt, um die Richtlinie der Bildschirmauszeit zu verwalten.</string>
   <string name="access_device_admin_grant_btn">Bildschirm ausschalten</string>
   <string name="access_device_admin_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Geräteadministrator und überprüfe ob AcDisplay aktiviert ist.</string>
-  <string name="access_device_admin_removed_successful">AcDisplay wurde von den  Geräteadministratoren entfernt.</string>
+  <string name="access_device_admin_removed_successful">AcDisplay wurde aus der \"Geräteadministratoren-Liste\" entfernt.</string>
   <string name="app_auto_disabled">AcDisplay wurde aufgrund fehlender Administratorrechte beendet.</string>
   <string name="media_prev_description">Vorheriger Titel Taste</string>
   <string name="media_next_description">Nächster Titel Taste</string>
