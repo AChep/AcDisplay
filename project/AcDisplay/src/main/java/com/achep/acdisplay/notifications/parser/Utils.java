@@ -22,13 +22,19 @@ package com.achep.acdisplay.notifications.parser;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
+
+import com.achep.acdisplay.Build;
 
 /**
  * Created by Artem on 29.03.2014.
  */
 final class Utils {
+
+    private static final String TAG = "NotificationParser.Utils";
 
     /**
      * Removes all kinds of multiple spaces from given string.
@@ -63,6 +69,11 @@ final class Utils {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
+            if (TextUtils.isEmpty(messages[i])) {
+                if (Build.DEBUG) Log.w(TAG, "One of text lines was null!");
+                continue;
+            }
+
             CharSequence line = Utils.removeSpaces(messages[i].toString());
 
             if (highlight) {
