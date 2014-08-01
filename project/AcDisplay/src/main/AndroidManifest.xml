@@ -19,8 +19,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.acdisplay"
-    android:versionCode="26"
-    android:versionName="2.4.2">
+    android:versionCode="27"
+    android:versionName="2.4.3">
 
     <!-- Needed to show AcDisplay above the keyguard. -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
