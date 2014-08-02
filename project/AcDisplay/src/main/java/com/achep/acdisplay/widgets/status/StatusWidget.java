@@ -61,8 +61,10 @@ public class StatusWidget extends LinearLayout implements
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        Config config = Config.getInstance();
-        config.registerListener(this);
+        if (!isInEditMode()) {
+            Config config = Config.getInstance();
+            config.registerListener(this);
+        }
         updateBatteryVisibility();
     }
 
@@ -70,8 +72,10 @@ public class StatusWidget extends LinearLayout implements
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        Config config = Config.getInstance();
-        config.unregisterListener(this);
+        if (!isInEditMode()) {
+            Config config = Config.getInstance();
+            config.unregisterListener(this);
+        }
     }
 
     @Override

@@ -183,17 +183,25 @@ public class BatteryMeterView extends TextView {
         setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
 
         final Resources res = context.getResources();
-        TypedArray levels = res.obtainTypedArray(R.array.batterymeter_color_levels);
-        TypedArray colors = res.obtainTypedArray(R.array.batterymeter_color_values);
+        if (!isInEditMode()) {
+            TypedArray levels = res.obtainTypedArray(R.array.batterymeter_color_levels);
+            TypedArray colors = res.obtainTypedArray(R.array.batterymeter_color_values);
 
-        final int n = levels.length();
-        mColors = new int[2 * n];
-        for (int i = 0; i < n; i++) {
-            mColors[2 * i] = levels.getInt(i, 0);
-            mColors[2 * i + 1] = colors.getColor(i, 0);
+            final int n = levels.length();
+            mColors = new int[2 * n];
+            for (int i = 0; i < n; i++) {
+                mColors[2 * i] = levels.getInt(i, 0);
+                mColors[2 * i + 1] = colors.getColor(i, 0);
+            }
+            levels.recycle();
+            colors.recycle();
+        } else {
+            mColors = new int[] {
+                    4, res.getColor(R.color.batterymeter_critical),
+                    15, res.getColor(R.color.batterymeter_low),
+                    100, res.getColor(R.color.batterymeter_full),
+            };
         }
-        levels.recycle();
-        colors.recycle();
 
         mChargeColor = getResources().getColor(R.color.batterymeter_charge_color);
         mBatteryFormat = getResources().getString(R.string.batterymeter_precise);
@@ -455,18 +463,22 @@ public class BatteryMeterView extends TextView {
         }
 
         private float[] loadBoltPoints(Resources res) {
-            final int[] pts = res.getIntArray(getBoltPointsArrayResource());
-            int maxX = 0, maxY = 0;
-            for (int i = 0; i < pts.length; i += 2) {
-                maxX = Math.max(maxX, pts[i]);
-                maxY = Math.max(maxY, pts[i + 1]);
+            if (!isInEditMode()) {
+                final int[] pts = res.getIntArray(getBoltPointsArrayResource());
+                int maxX = 0, maxY = 0;
+                for (int i = 0; i < pts.length; i += 2) {
+                    maxX = Math.max(maxX, pts[i]);
+                    maxY = Math.max(maxY, pts[i + 1]);
+                }
+                final float[] ptsF = new float[pts.length];
+                for (int i = 0; i < pts.length; i += 2) {
+                    ptsF[i] = (float) pts[i] / maxX;
+                    ptsF[i + 1] = (float) pts[i + 1] / maxY;
+                }
+                return ptsF;
+            } else {
+                return new float[] {0, 0, 1, 1};
             }
-            final float[] ptsF = new float[pts.length];
-            for (int i = 0; i < pts.length; i += 2) {
-                ptsF[i] = (float) pts[i] / maxX;
-                ptsF[i + 1] = (float) pts[i + 1] / maxY;
-            }
-            return ptsF;
         }
 
         protected int getBoltPointsArrayResource() {
