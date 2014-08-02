@@ -54,23 +54,31 @@ public class Receiver extends BroadcastReceiver {
                 switch (action) {
                     case App.ACTION_ENABLE:
                         Log.i(TAG, "Enabling AcDisplay from broadcast receiver.");
-                        ToastUtils.showLong(context, R.string.remote_enable_acdisplay);
-                        config.setEnabled(context, true, null);
+                        setAcDisplayEnabled(context, config, true);
                         break;
                     case App.ACTION_DISABLE:
                         Log.i(TAG, "Disabling AcDisplay from broadcast receiver.");
-                        ToastUtils.showLong(context, R.string.remote_disable_acdisplay);
-                        config.setEnabled(context, false, null);
+                        setAcDisplayEnabled(context, config, false);
                         break;
                     default:
                         Log.i(TAG, "Toggling from broadcast receiver.");
-                        config.setEnabled(context, !config.isEnabled(), null);
-                        ToastUtils.showLong(context, config.isEnabled()
-                                ? R.string.remote_enable_acdisplay
-                                : R.string.remote_disable_acdisplay);
+                        setAcDisplayEnabled(context, config, !config.isEnabled());
                         break;
                 }
                 break;
         }
+    }
+
+    /**
+     * Tries to {@link Config#setEnabled(Context, boolean, Config.OnConfigChangedListener) enable / disable }
+     * AcDisplay and shows toast message about the result.
+     *
+     * @param enable {@code true} to enable AcDisplay, {@code false} to disable.
+     */
+    private void setAcDisplayEnabled(Context context, Config config, boolean enable) {
+        config.setEnabled(context, enable, null);
+        ToastUtils.showLong(context, config.isEnabled()
+                ? R.string.remote_enable_acdisplay
+                : R.string.remote_disable_acdisplay);
     }
 }
