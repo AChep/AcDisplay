@@ -51,6 +51,8 @@ public class PocketFragment extends Fragment implements SensorEventListener {
     private SensorManager mSensorManager;
     private Sensor mProximitySensor;
 
+    private boolean mProximityAvailable;
+
     private boolean mNear;
     private boolean mFirstChange;
     private float mMaximumRange;
@@ -97,23 +99,28 @@ public class PocketFragment extends Fragment implements SensorEventListener {
         super.onAttach(activity);
         mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        mMaximumRange = mProximitySensor.getMaximumRange();
+        mProximityAvailable = mProximitySensor != null;
+
+        if (mProximityAvailable) {
+            mMaximumRange = mProximitySensor.getMaximumRange();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManager.registerListener(this, mProximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        mFirstChange = true;
-        mNear = false;
+        if (mProximityAvailable) {
+            mSensorManager.registerListener(this, mProximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mFirstChange = true;
+            mNear = false;
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mSensorManager.unregisterListener(this);
         mHandler.removeCallbacksAndMessages(null);
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
