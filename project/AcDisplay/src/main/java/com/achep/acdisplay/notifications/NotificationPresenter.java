@@ -224,7 +224,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         OpenNotification n = new OpenNotification(sbn);
 
         boolean globalValid = isValidForGlobal(sbn);
-        boolean localValid = globalValid && isValidForLocal(sbn);
+        boolean localValid = false;
 
         // If notification will not be added to the
         // list there's no point of loading its data.
@@ -242,6 +242,8 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                     config.getDynamicBackgroundMode(),
                     Config.DYNAMIC_BG_NOTIFICATION_MASK))
                 data.loadBackground(context, sbn);
+
+            localValid = isValidForLocal(n);
         }
 
         mGList.pushOrRemove(n, globalValid, silently);
@@ -269,7 +271,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         list.clear();
 
         for (OpenNotification n : mGList.list()) {
-            if (isValidForLocal(n.getStatusBarNotification())) {
+            if (isValidForLocal(n)) {
                 list.add(n);
             }
         }
@@ -338,14 +340,21 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
      * Returns {@code false} if the notification doesn't fit
      * the requirements (such as not ongoing and clearable).
      */
-    private boolean isValidForLocal(StatusBarNotification sbn) {
+    private boolean isValidForLocal(OpenNotification o) {
+        StatusBarNotification sbn = o.getStatusBarNotification();
         AppConfig config = mBlacklist.getAppConfig(sbn.getPackageName());
 
         boolean hidden = config.isHiddenReal();
         boolean priorityNormal = sbn.getNotification().priority >= Notification.PRIORITY_LOW;
         boolean lowPriorPassed = priorityNormal || mConfig.isLowPriorityNotificationsAllowed();
 
-        return lowPriorPassed && !hidden;
+        // Do not allow notifications without any content.
+        NotificationData data = o.getNotificationData();
+        boolean empty = TextUtils.isEmpty(data.titleText)
+                && TextUtils.isEmpty(data.getLargeMessage())
+                && TextUtils.isEmpty(data.infoText);
+
+        return lowPriorPassed && !hidden && !empty;
     }
 
     private boolean isValidForGlobal(StatusBarNotification sbn) {
@@ -358,8 +367,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 + " user_id=" + sbn.getUserId()
                 + " tag=" + sbn.getTag()
                 + " post_time=" + sbn.getPostTime()
-                + " is_valid_global=" + isValidForGlobal(sbn)
-                + " is_valid_local=" + isValidForLocal(sbn));
+                + " is_valid_global=" + isValidForGlobal(sbn));
     }
 
     // //////////////////////////////////////////
