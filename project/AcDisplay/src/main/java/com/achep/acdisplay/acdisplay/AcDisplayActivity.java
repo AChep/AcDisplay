@@ -22,6 +22,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -59,6 +60,8 @@ public class AcDisplayActivity extends KeyguardActivity implements
     private Config mConfig = Config.getInstance();
 
     private MediaController mMediaController;
+
+    private PocketFragment mPocketFragment;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -134,7 +137,21 @@ public class AcDisplayActivity extends KeyguardActivity implements
         setContentView(R.layout.acdisplay);
         mBackgroundView = (ImageView) findViewById(R.id.background);
 
-        initInternalFragments();
+        // Initialize non-UI fragments.
+        if (savedInstanceState == null) {
+            initInternalFragments();
+        } else {
+
+            // Find fragments.
+            FragmentManager fm = getFragmentManager();
+            mPocketFragment = (PocketFragment) fm.findFragmentByTag(PocketFragment.TAG);
+            // TODO: Maybe remove PocketFragment if active mode is disabled?
+        }
+
+        // Setup fragments.
+        if (mPocketFragment != null) {
+            mPocketFragment.setListener(this);
+        }
 
         Presenter.getInstance().attachActivity(this);
     }
@@ -143,13 +160,12 @@ public class AcDisplayActivity extends KeyguardActivity implements
      * Initializes non-UI fragments such as {@link com.achep.acdisplay.fragments.PocketFragment}.
      */
     private void initInternalFragments() {
-        Fragment fragment;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         // Turns screen off inside of your pocket.
         if (mConfig.isActiveModeEnabled()) {
-            fragment = new PocketFragment().setListener(this);
-            ft.add(fragment, PocketFragment.TAG);
+            mPocketFragment = PocketFragment.newInstance();
+            ft.add(mPocketFragment, PocketFragment.TAG);
         }
 
         ft.commit();

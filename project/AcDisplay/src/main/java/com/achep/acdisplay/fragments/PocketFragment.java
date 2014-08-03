@@ -63,7 +63,9 @@ public class PocketFragment extends Fragment implements SensorEventListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_SLEEP:
-                    mListener.onSleepRequest();
+                    if (mListener != null) {
+                        mListener.onSleepRequest();
+                    }
                     break;
             }
         }
@@ -85,6 +87,10 @@ public class PocketFragment extends Fragment implements SensorEventListener {
 
     }
 
+    public static PocketFragment newInstance() {
+        return new PocketFragment();
+    }
+
     public PocketFragment setListener(OnSleepRequestListener listener) {
         mListener = listener;
         return this;
@@ -92,10 +98,6 @@ public class PocketFragment extends Fragment implements SensorEventListener {
 
     @Override
     public void onAttach(Activity activity) {
-        if (mListener == null) {
-            throw new NullPointerException("You must set listener for the fragment!");
-        }
-
         super.onAttach(activity);
         mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
