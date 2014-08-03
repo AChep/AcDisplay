@@ -36,7 +36,7 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="?acDisplayDotsDrawable"/>
+        android:background="?acDisplayDotsDrawable" />
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -46,11 +46,22 @@
         android:orientation="vertical">
 
         <com.achep.acdisplay.view.ForwardingLayout
-            android:id="@+id/list"
+            android:id="@+id/forwarding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal" />
+            android:orientation="horizontal">
+
+            <GridLayout
+                android:id="@+id/grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:columnCount="@integer/icons_columns_count"
+                android:orientation="horizontal"
+                android:stretchMode="columnWidth"/>
+
+        </com.achep.acdisplay.view.ForwardingLayout>
 
     </FrameLayout>
 

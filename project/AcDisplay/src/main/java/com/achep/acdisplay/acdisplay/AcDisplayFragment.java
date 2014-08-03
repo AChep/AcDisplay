@@ -43,6 +43,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.GridLayout;
+import android.widget.GridView;
 
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
@@ -78,7 +80,8 @@ public class AcDisplayFragment extends Fragment implements
     private static final int MSG_RESET_SCENE = 0;
 
     private ForwardingLayout mSceneContainer;
-    private ForwardingLayout mIconsContainer;
+    private ForwardingLayout mIconsForwarder;
+    private GridLayout mIconsContainer;
     private ForwardingListener mSceneForwardingListener;
     private ForwardingListener mIconsForwardingListener;
     private final Handler mTouchHandler = new Handler();
@@ -204,13 +207,14 @@ public class AcDisplayFragment extends Fragment implements
         assert root != null;
 
         mSceneContainer = (ForwardingLayout) root.findViewById(R.id.scene);
-        mIconsContainer = (ForwardingLayout) root.findViewById(R.id.list);
-        mIconsContainer.setOnForwardedEventListener(this);
-        mIconsContainer.setAllViewsForwardable(true, 0);
-        mIconsContainer.setOnTouchListener(this);
+        mIconsForwarder = (ForwardingLayout) root.findViewById(R.id.forwarding);
+        mIconsContainer = (GridLayout) root.findViewById(R.id.grid);
+        mIconsForwarder.setOnForwardedEventListener(this);
+        mIconsForwarder.setAllViewsForwardable(true, 1);
+        mIconsForwarder.setOnTouchListener(this);
 
-        mSceneForwardingListener = new ForwardingListener(mIconsContainer, false, mSceneContainer);
-        mIconsForwardingListener = new ForwardingListener(mIconsContainer, true, mIconsContainer);
+        mSceneForwardingListener = new ForwardingListener(mIconsForwarder, false, mSceneContainer);
+        mIconsForwardingListener = new ForwardingListener(mIconsForwarder, true, mIconsForwarder);
 
         ViewGroup sceneMain = (ViewGroup) inflater.inflate(R.layout.acdisplay_scene_clock, mSceneContainer, false);
         mSceneMain = new SceneCompat(mSceneContainer, sceneMain);
@@ -325,7 +329,7 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (v == mIconsContainer) {
+        if (v == mIconsForwarder) {
             mSceneForwardingListener.onTouch(v, event);
             mIconsForwardingListener.onTouch(v, event);
             return true;
