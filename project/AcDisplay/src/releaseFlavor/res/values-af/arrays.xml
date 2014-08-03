@@ -20,12 +20,12 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Bug</item>
-    <item>Suggestion</item>
-    <item>Other</item>
+    <item>Fout</item>
+    <item>Voorstel</item>
+    <item>Ander</item>
   </string-array>
   <string-array name="dynamic_background">
-    <item>Artwork</item>
-    <item>Notification icon</item>
+    <item>Kunswerk</item>
+    <item>Kennisgewing ikoon</item>
   </string-array>
 </resources>
