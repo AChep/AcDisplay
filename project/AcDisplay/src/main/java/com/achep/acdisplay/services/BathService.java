@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
@@ -97,52 +98,30 @@ public class BathService extends Service {
     private static final Object monitor = new Object();
     private static boolean sCreated;
 
-    private final HashMap<Class, ChildService> mMap = new HashMap<>(2);
     private LocalBroadcastManager mLocalBroadcastManager;
+    private NotificationManager mNotificationManager;
+    private String mLanguage;
+
+    private final HashMap<Class, ChildService> mMap = new HashMap<>(2);
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean add = false;
-            switch (intent.getAction()) {
+            final String action = intent.getAction();
+            switch (action) {
                 case ACTION_ADD_SERVICE:
-                    add = true;
                 case ACTION_REMOVE_SERVICE:
+                    Class clazz = (Class) intent.getSerializableExtra(EXTRA_SERVICE_CLASS);
+                    fireService(clazz, action.equals(ACTION_ADD_SERVICE));
                     break;
-                default:
-                    return;
-            }
+                case Intent.ACTION_CONFIGURATION_CHANGED:
+                    String lang = getResources().getConfiguration().locale.getLanguage();
+                    if (!TextUtils.equals(mLanguage, lang)) {
+                        mLanguage = lang;
 
-            synchronized (monitor) {
-                Class clazz = (Class) intent.getSerializableExtra(EXTRA_SERVICE_CLASS);
-                boolean containsClazz = mMap.containsKey(clazz);
-
-                if (containsClazz == add) {
-                    return;
-                }
-
-                if (add) {
-                    try {
-                        // Adding child to host service.
-                        ChildService child = (ChildService) clazz.newInstance();
-                        child.setContext(BathService.this);
-                        child.onCreate();
-                        mMap.put(clazz, child);
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        throw new RuntimeException(e.getMessage()); // Should never happen
+                        // Update the notification with new language set.
+                        updateNotification();
                     }
-                    updateNotification();
-                    return;
-                }
-
-                // Removing child from parent service.
-                ChildService child = mMap.remove(clazz);
-                child.onDestroy();
-
-                if (mMap.isEmpty()) {
-                    stopSelf();
-                } else {
-                    updateNotification();
-                }
+                    break;
             }
         }
     };
@@ -151,11 +130,20 @@ public class BathService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mLanguage = getResources().getConfiguration().locale.getLanguage();
+
+        // Listen for the config changes to update notification just
+        // once locale has changed.
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+        registerReceiver(mReceiver, intentFilter);
+
         synchronized (monitor) {
             sCreated = true;
 
             // Register for add / remove service events.
-            IntentFilter intentFilter = new IntentFilter();
+            intentFilter = new IntentFilter();
             intentFilter.addAction(ACTION_ADD_SERVICE);
             intentFilter.addAction(ACTION_REMOVE_SERVICE);
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
@@ -184,6 +172,8 @@ public class BathService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
+        unregisterReceiver(mReceiver);
+
         synchronized (monitor) {
             sCreated = false;
 
@@ -196,11 +186,13 @@ public class BathService extends Service {
             }
             mMap.clear();
         }
+
+        // Make sure that notification does not exists.
+        mNotificationManager.cancel(App.ID_NOTIFY_BATH);
     }
 
     private void updateNotification() {
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(App.ID_NOTIFY_BATH, buildNotification());
+        mNotificationManager.notify(App.ID_NOTIFY_BATH, buildNotification());
     }
 
     /**
@@ -242,6 +234,40 @@ public class BathService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private void fireService(Class clazz, boolean add) {
+        synchronized (monitor) {
+            boolean containsClazz = mMap.containsKey(clazz);
+
+            if (containsClazz == add) {
+                return;
+            }
+
+            if (add) {
+                try {
+                    // Adding child to host service.
+                    ChildService child = (ChildService) clazz.newInstance();
+                    child.setContext(BathService.this);
+                    child.onCreate();
+                    mMap.put(clazz, child);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException(e.getMessage()); // Should never happen
+                }
+                updateNotification();
+                return;
+            }
+
+            // Removing child from parent service.
+            ChildService child = mMap.remove(clazz);
+            child.onDestroy();
+
+            if (mMap.isEmpty()) {
+                stopSelf();
+            } else {
+                updateNotification();
+            }
+        }
     }
 
     /**
