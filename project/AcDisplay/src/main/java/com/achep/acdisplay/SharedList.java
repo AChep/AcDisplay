@@ -40,6 +40,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
      * Key's prefix for SharedList's internal usage.
      */
     public static final String KEY_PREFIX = "__";
+
     public static final String KEY_NUMBER = KEY_PREFIX + "n";
     public static final String KEY_USED_ITEM = KEY_PREFIX + "used_";
 
@@ -160,13 +161,17 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
             throw new NullPointerException("The saver of SharedList may not be null!");
         }
 
+        // Restore previously saved list.
         SharedPreferences prefs = getSharedPreferences(context);
-        final int n = prefs.getInt(KEY_NUMBER, 0) + 1;
+        final int n = prefs.getInt(KEY_NUMBER, 0);
         for (int i = 0; i < n; i++) {
-            boolean used = prefs.getBoolean(KEY_USED_ITEM + i, false);
-            if (used) {
-                mList.put(mSaver.get(prefs, i), i);
+            if (prefs.getBoolean(KEY_USED_ITEM + i, false)) {
+                // Create previously saved object.
+                V object = mSaver.get(prefs, i);
+                mList.put(object, i);
             } else {
+                // This is an empty place which we can re-use
+                // later.
                 mPlaceholder.add(i);
             }
         }
@@ -221,25 +226,21 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
             return;
         }
 
-        V objectRemoved = null;
-        for (V o : mList.keySet()) {
-            if (o.equals(object)) {
-                objectRemoved = o;
-                break;
-            }
-        }
+        V objectRemoved = find(object);
+        int pos = mList.remove(object);
 
-        Integer value = mList.remove(object);
-
+        // Put the position of newly removed object
+        // to sorted list (keeping it sorted).
         int i = 0;
-        int length = mPlaceholder.size();
-        for (; i < length; i++)
-            if (mPlaceholder.get(i) > value)
+        final int size = mPlaceholder.size();
+        for (; i < size; i++)
+            if (mPlaceholder.get(i) > pos)
                 break;
-        mPlaceholder.add(i, value);
+        mPlaceholder.add(i, pos);
 
+        // Mark this item as unused, so we can restore placeholders too.
         getSharedPreferences(context).edit()
-                .putBoolean(KEY_USED_ITEM + value, false)
+                .putBoolean(KEY_USED_ITEM + pos, false)
                 .apply();
 
         notifyOnRemoved(objectRemoved, l);
@@ -250,40 +251,62 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
     }
 
     public V put(Context context, V object, OnSharedListChangedListener l) {
+        // Check for correct arguments.
         if (object == null) {
-            throw new IllegalArgumentException();
+            if (Build.DEBUG) {
+                throw new IllegalArgumentException("Argument must be not null!");
+            }
+
+            Log.w(TAG, "Tried to put null to shared list.");
+            return null;
         }
 
-        boolean growUp = mPlaceholder.size() == 0;
-        int value = growUp ? mList.size() : mPlaceholder.get(0);
+        // Increase the size of the list if there no 
+        // empty place, that we can use.
+        final boolean growUp = mPlaceholder.size() == 0;
+        final int size = mList.size();
+
+        // Get where-to-save this object.
+        int pos = growUp ? size : mPlaceholder.get(0);
 
         V old = null;
         if (mList.containsKey(object)) {
+            // This is completely useless if equality-checking
+            // method had been implemented correctly (content truly equals).
             if (!isOverwriteAllowed(object)) {
-                Log.w(TAG, "Trying to put an existing object to the list.");
-                return null;
+                if (Build.DEBUG) Log.w(TAG, "Trying to put an existing object to the shared list.");
+                return null; // Do nothing.
             }
 
-            for (V o : mList.keySet()) {
-                if (o.equals(object)) {
-                    old = o;
-                    break;
-                }
-            }
-            value = mList.get(object);
-            mList.remove(object);
+            // Search for an old object...
+            old = find(object);
+
+            // Remember the position of old object
+            // and pop it out.
+            pos = mList.get(old);
+            mList.remove(old);
         }
 
-        mList.put(object, value);
+        mList.put(object, pos);
 
+        // Save object to internal memory.
         SharedPreferences.Editor editor = mSaver
-                .put(object, getSharedPreferences(context).edit(), value)
-                .putBoolean(KEY_USED_ITEM + value, true);
-        if (growUp) editor.putInt(KEY_NUMBER, value);
+                .put(object, getSharedPreferences(context).edit(), pos)
+                .putBoolean(KEY_USED_ITEM + pos, true);
+        if (growUp) editor.putInt(KEY_NUMBER, size);
         editor.apply();
 
         notifyOnPut(object, old, l);
         return old;
+    }
+
+    private V find(V object) {
+        for (V o : mList.keySet()) {
+            if (o.equals(object)) {
+                return o;
+            }
+        }
+        return null;
     }
 
     /**
