@@ -62,7 +62,7 @@ public class BackgroundFactoryThread extends AsyncTask<Void, Void, Bitmap> {
         Bitmap origin = mBitmapOriginal;
         Bitmap bitmap = BitmapUtils.doBlur(origin, 3, false);
 
-        if (!running) {
+        if (isCancelled()) {
             return null;
         }
 

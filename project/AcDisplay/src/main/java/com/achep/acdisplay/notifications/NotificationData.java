@@ -355,7 +355,7 @@ public class NotificationData {
             StatusBarNotification sbn = mStatusBarNotification.get();
             Context context = mContext.get();
 
-            if (context == null || sbn == null || !running) {
+            if (context == null || sbn == null || isCancelled()) {
                 return null;
             }
 
