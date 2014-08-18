@@ -27,11 +27,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.12.+'
         classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'robolectric'
 
 repositories {
     mavenCentral()
@@ -115,10 +117,33 @@ android {
     }
 }
 
+robolectric {
+    ignoreFailures true
+}
+
 dependencies {
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
     compile 'com.android.support:support-v4:19.+'
+
+    androidTestCompile('junit:junit:4.11')
+    androidTestCompile('org.robolectric:robolectric:2.3') {
+        exclude module: 'classworlds'
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+        exclude module: 'maven-artifact'
+        exclude module: 'maven-artifact-manager'
+        exclude module: 'maven-error-diagnostics'
+        exclude module: 'maven-model'
+        exclude module: 'maven-project'
+        exclude module: 'maven-settings'
+        exclude module: 'plexus-container-default'
+        exclude module: 'plexus-interpolation'
+        exclude module: 'plexus-utils'
+        exclude module: 'wagon-file'
+        exclude module: 'wagon-http-lightweight'
+        exclude module: 'wagon-provider-api'
+    }
 }
 
 project.task('askForPasswords') << {
