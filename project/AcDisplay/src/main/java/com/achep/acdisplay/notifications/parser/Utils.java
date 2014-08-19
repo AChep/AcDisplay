@@ -19,8 +19,7 @@
 
 package com.achep.acdisplay.notifications.parser;
 
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -64,48 +63,30 @@ final class Utils {
         int length = messages.length;
 
         boolean highlight = length > 1; // highlight first letters of messages or no?
-        int[] trackStart = new int[length];
-        int[] trackEnd = new int[length];
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            if (TextUtils.isEmpty(messages[i])) {
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        for (CharSequence message : messages) {
+            if (TextUtils.isEmpty(message)) {
                 if (Build.DEBUG) Log.w(TAG, "One of text lines was null!");
                 continue;
             }
 
-            CharSequence line = Utils.removeSpaces(messages[i].toString());
+            int start = sb.length();
 
-            if (highlight) {
-                int offset = sb.length();
-                int end = Utils.indexOf(line, ' ');
-
-                if (end != -1) {
-                    trackStart[i] = offset;
-                    trackEnd[i] = offset + end;
-                }
-            }
-
+            CharSequence line = Utils.removeSpaces(message);
             sb.append(line);
             sb.append('\n');
-        }
 
-        CharSequence text = Utils.removeSpaces(sb.toString());
-        if (highlight) {
-            Spannable textSpannable = new SpannableString(text);
-            for (int i = 0; i < length; i++) {
-                if (trackEnd[i] == 0) continue;
-
-                textSpannable.setSpan(new ForegroundColorSpan(0xaaFFFFFF),
-                        trackStart[i], trackStart[i] + 1,
+            if (highlight) {
+                sb.setSpan(new ForegroundColorSpan(0xaaFFFFFF),
+                        start, start + 1,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                textSpannable.setSpan(new UnderlineSpan(),
-                        trackStart[i], trackStart[i] + 1,
+                sb.setSpan(new UnderlineSpan(),
+                        start, start + 1,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            text = textSpannable;
         }
 
-        return text;
+        return Utils.removeSpaces(sb);
     }
 }
