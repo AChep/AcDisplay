@@ -311,6 +311,7 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onPressedView(MotionEvent event, int activePointerId, View view) {
         mTouchHandler.removeCallbacksAndMessages(null);
+        mHandler.removeMessages(MSG_RESET_SCENE);
         mPressedIconView = view;
 
         if (view != null) {
