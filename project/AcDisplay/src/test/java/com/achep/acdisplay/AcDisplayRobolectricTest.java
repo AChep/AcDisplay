@@ -19,11 +19,21 @@
 package com.achep.acdisplay;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.achep.acdisplay.SharedList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.lang.Double;
+import java.lang.Override;
+import java.lang.String;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
@@ -35,4 +45,97 @@ public class AcDisplayRobolectricTest {
     public void testSomething() {
         // Placeholder
     }
+
+    @Test
+    public void testSharedList() {
+        // Create strings data
+        final int initialSize = 200;
+        ArrayList<String> list = new ArrayList<>(initialSize);
+        for (int i = 0; i < initialSize; i++) list.add(Double.toString(Math.random() + i));
+
+        // Initializate the list
+        Context context = Robolectric.application;
+        SharedListString origin = new SharedListString(context);
+        for (String str : list) origin.put(context, str);
+        for (int i = 0, j = 0; i * 4 < initialSize; i++) {
+            j = (int) (Math.random() * list.size());
+            origin.remove(context, list.get(j));
+            list.remove(j);
+        }
+
+        // Testing placeholders
+        list.add("Cute kitten :3");
+        origin.put(context, list.get(list.size() - 1));
+
+        // Testing overwriting
+        list.add(list.get(0) + "");
+        origin.put(context, list.get(list.size() - 1));
+
+        // Check equality
+        SharedListString restored = new SharedListString(context);
+        for (String str : list) assertTrue(restored.contains(str));
+    }
+
+    /**
+     * Saver for {@link String string}.
+     */
+    private static class StringSaver extends SharedList.Saver<String> {
+
+        private static final String KEY_STR = "str_";
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public SharedPreferences.Editor put(String string, SharedPreferences.Editor editor, int position) {
+            editor.putString(KEY_STR + position, string);
+            return editor;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String get(SharedPreferences prefs, int position) {
+            return prefs.getString(KEY_STR + position, null);
+        }
+
+    }
+
+    /**
+     * The most simple implementation of {@link com.achep.acdisplay.SharedList shared list}.
+     */
+    private static class SharedListString extends SharedList<String, StringSaver> {
+
+        public static final String PREF_NAME = "test_shared_list";
+
+        protected SharedListString(Context context) {
+            super(context);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected String getPreferencesFileName() {
+            return PREF_NAME;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected StringSaver onCreateSaver() {
+            return new StringSaver();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected boolean isOverwriteAllowed(String str) {
+            return true;
+        }
+    }
+
 }
