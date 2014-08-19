@@ -261,16 +261,12 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
             return null;
         }
 
-        // Increase the size of the list if there no 
-        // empty place, that we can use.
-        final boolean growUp = mPlaceholder.size() == 0;
-        final int size = mList.size();
-
-        // Get where-to-save this object.
-        int pos = growUp ? size : mPlaceholder.get(0);
+        boolean growUp = false;
+        int pos;
+        int n = 0;
 
         V old = null;
-        if (mList.containsKey(object)) {
+        if (contains(object)) {
             // This is completely useless if equality-checking
             // method had been implemented correctly (content truly equals).
             if (!isOverwriteAllowed(object)) {
@@ -285,6 +281,14 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
             // and pop it out.
             pos = mList.get(old);
             mList.remove(old);
+        } else {
+
+            // Increase the size of the list if there no
+            // empty place, that we can use.
+            growUp = mPlaceholder.size() == 0;
+
+            // Get where-to-save this object.
+            pos = growUp ? mList.size() : mPlaceholder.get(0);
         }
 
         mList.put(object, pos);
@@ -293,7 +297,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         SharedPreferences.Editor editor = mSaver
                 .put(object, getSharedPreferences(context).edit(), pos)
                 .putBoolean(KEY_USED_ITEM + pos, true);
-        if (growUp) editor.putInt(KEY_NUMBER, size);
+        if (growUp) editor.putInt(KEY_NUMBER, mList.size());
         editor.apply();
 
         notifyOnPut(object, old, l);
