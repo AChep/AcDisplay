@@ -47,10 +47,13 @@ final class Utils {
                 .replaceAll("\n+", "\n");
     }
 
-    static int indexOf(CharSequence charSequence, char c) {
-        int length = charSequence.length();
+    /**
+     * @return the position of given char, or {@code -1} if not found.
+     */ 
+    static int indexOf(CharSequence cs, char c) {
+        int length = cs.length();
         for (int i = 0; i < length; i++) {
-            char letter = charSequence.charAt(i);
+            char letter = cs.charAt(i);
             if (letter == c) {
                 return i;
             }
@@ -62,20 +65,24 @@ final class Utils {
         if (messages == null) return null;
         int length = messages.length;
 
+        boolean isFirstMessage = true;
         boolean highlight = length > 1; // highlight first letters of messages or no?
 
         SpannableStringBuilder sb = new SpannableStringBuilder();
         for (CharSequence message : messages) {
-            if (TextUtils.isEmpty(message)) {
+            CharSequence line = Utils.removeSpaces(message);
+            if (TextUtils.isEmpty(line)) {
                 if (Build.DEBUG) Log.w(TAG, "One of text lines was null!");
                 continue;
             }
+            
+            // Start every new message from new line
+            if (!isFirstMessage & !(isFirstMessage = false)) {
+                sb.append('\n');
+            }
 
             int start = sb.length();
-
-            CharSequence line = Utils.removeSpaces(message);
             sb.append(line);
-            sb.append('\n');
 
             if (highlight) {
                 sb.setSpan(new ForegroundColorSpan(0xaaFFFFFF),
@@ -87,6 +94,6 @@ final class Utils {
             }
         }
 
-        return Utils.removeSpaces(sb);
+        return sb;
     }
 }
