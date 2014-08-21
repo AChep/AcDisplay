@@ -20,6 +20,8 @@ package com.achep.acdisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -69,14 +71,14 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
          * @param objectOld old object from the list
          * @param diff      the difference between old and new objects (provided by {@link SharedList.Comparator})
          */
-        public void onPut(V objectNew, V objectOld, int diff);
+        public void onPut(@NonNull V objectNew, @Nullable V objectOld, int diff);
 
         /**
          * Called on object removed from the list.
          *
          * @param objectRemoved removed object from the list
          */
-        public void onRemoved(V objectRemoved);
+        public void onRemoved(@NonNull V objectRemoved);
     }
 
     /**
@@ -92,7 +94,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
          *
          * @return The difference between old and new objects.
          */
-        public abstract int compare(V object, V old);
+        public abstract int compare(@NonNull V object, @Nullable V old);
     }
 
     /**
@@ -112,7 +114,9 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
          * @param position position of given object in list
          * @see #get(android.content.SharedPreferences, int)
          */
-        public abstract SharedPreferences.Editor put(V object, SharedPreferences.Editor editor, int position);
+        public abstract SharedPreferences.Editor put(@NonNull V object,
+                                                     @NonNull SharedPreferences.Editor editor,
+                                                     int position);
 
         /**
          * Restores previously save Object from shared preferences.
@@ -120,7 +124,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
          * @param position position of given object in list
          * @see #put(Object, android.content.SharedPreferences.Editor, int)
          */
-        public abstract V get(SharedPreferences prefs, int position);
+        public abstract V get(@NonNull SharedPreferences prefs, int position);
 
     }
 
@@ -130,7 +134,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
      * @see #unregisterListener(SharedList.OnSharedListChangedListener)
      * @see SharedList.OnSharedListChangedListener
      */
-    public void registerListener(OnSharedListChangedListener<V> listener) {
+    public void registerListener(@NonNull OnSharedListChangedListener<V> listener) {
         mListeners.add(listener);
     }
 
@@ -140,13 +144,13 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
      * @see #registerListener(SharedList.OnSharedListChangedListener)
      * @see SharedList.OnSharedListChangedListener
      */
-    public void unregisterListener(OnSharedListChangedListener<V> listener) {
+    public void unregisterListener(@NonNull OnSharedListChangedListener<V> listener) {
         mListeners.remove(listener);
     }
 
     protected SharedList() { /* You must call #init(Context) later! */ }
 
-    protected SharedList(Context context) {
+    protected SharedList(@NonNull Context context) {
         init(context);
     }
 
@@ -177,7 +181,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         }
     }
 
-    private SharedPreferences getSharedPreferences(Context context) {
+    private SharedPreferences getSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences(getPreferencesFileName(), Context.MODE_PRIVATE);
     }
 
@@ -200,6 +204,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
      * @see #put(android.content.Context, Object, OnSharedListChangedListener)
      * @see #getComparator()
      */
+    @Nullable
     protected Comparator<V> onCreateComparator() {
         return null;
     }
@@ -208,6 +213,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
      * @return Previously created comparator.
      * @see #onCreateComparator()
      */
+    @Nullable
     public Comparator<V> getComparator() {
         return mComparator;
     }
@@ -216,11 +222,11 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         return false;
     }
 
-    public void remove(Context context, V object) {
+    public void remove(@NonNull Context context, V object) {
         remove(context, object, null);
     }
 
-    public void remove(Context context, V object, OnSharedListChangedListener l) {
+    public void remove(@NonNull Context context, V object, @Nullable OnSharedListChangedListener l) {
         if (!mList.containsKey(object)) {
             Log.w(TAG, "Tried to remove non-existing object from the list.");
             return;
@@ -246,11 +252,13 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         notifyOnRemoved(objectRemoved, l);
     }
 
-    public V put(Context context, V object) {
+    @Nullable
+    public V put(@NonNull Context context, V object) {
         return put(context, object, null);
     }
 
-    public V put(Context context, V object, OnSharedListChangedListener l) {
+    @Nullable
+    public V put(@NonNull Context context, V object, @Nullable OnSharedListChangedListener l) {
         // Check for correct arguments.
         if (object == null) {
             if (Build.DEBUG) {
@@ -352,6 +360,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         return mList.containsKey(object);
     }
 
+    @NonNull
     public Set<V> valuesSet() {
         return mList.keySet();
     }
