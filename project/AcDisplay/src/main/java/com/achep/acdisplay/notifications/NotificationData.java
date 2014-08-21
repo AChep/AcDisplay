@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
@@ -324,13 +325,18 @@ public class NotificationData {
         mIconLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    /**
+     * Task to load an icon from {@link StatusBarNotification notification}.
+     * 
+     * @author Artem Chepurnoy
+     */ 
     private static class IconLoaderThread extends AsyncTask<Void, Void, Bitmap> {
 
         private final WeakReference<NotificationData> mNotificationData;
         private final WeakReference<StatusBarNotification> mStatusBarNotification;
         private final WeakReference<Context> mContext;
 
-        private volatile long time;
+        private volatile long startTime;
 
         private IconLoaderThread(Context context, StatusBarNotification sbn, NotificationData data) {
             mNotificationData = new WeakReference<>(data);
@@ -341,7 +347,7 @@ public class NotificationData {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            time = SystemClock.elapsedRealtime();
+            startTime = elapsedRealtime(); // to get elapsed time
         }
 
         @Override
@@ -353,29 +359,45 @@ public class NotificationData {
                 return null;
             }
 
-            Drawable drawable = NotificationUtils.getDrawable(
-                    context, sbn, sbn.getNotification().icon);
+            Resources res = context.getResources();
+            Drawable drawable = NotificationUtils
+                    .getDrawable(context, sbn, sbn.getNotification().icon)
+                    .mutate();
 
-            if (drawable == null) {
-                Log.w(TAG, "No notification icon found.");
-                return createEmptyIcon();
+            if (isCancelled()) {
+                return null;
             }
 
-            Resources res = context.getResources();
-            int iconSize = res.getDimensionPixelSize(R.dimen.notification_icon_size);
-            drawable.setBounds(0, 0, iconSize, iconSize);
+            final int size = res.getDimensionPixelSize(R.dimen.notification_icon_size);
+            return drawable == null ? createEmptyIcon(res, size) : createIcon(drawable, size);
+        }
 
-            Bitmap icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_4444);
+        // TODO: Automatically scale the icon.
+        private Bitmap createIcon(Drawable drawable, int size) {
+            Bitmap icon = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
             Canvas canvas = new Canvas(icon);
+
+            drawable.setBounds(0, 0, size, size);
             drawable.draw(canvas);
 
             return icon;
         }
 
-        private Bitmap createEmptyIcon() {
-            Bitmap icon = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_4444);
+        private Bitmap createEmptyIcon(Resources res, int size) {
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setColor(0xDDCCCCCC); // white gray
+
+            final float radius = size / 2f;
+
+            Bitmap icon = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
             Canvas canvas = new Canvas(icon);
-            canvas.drawColor(0x60FF0000);
+            canvas.drawCircle(radius, radius, radius, paint);
+
+            Drawable drawable = res.getDrawable(R.drawable.ic_dialog_bug);
+            drawable.setBounds(0, 0, size, size);
+            drawable.draw(canvas);
+
             return icon;
         }
 
@@ -383,18 +405,20 @@ public class NotificationData {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             if (Build.DEBUG) {
-                long delta = SystemClock.elapsedRealtime() - time;
-                Log.d(TAG, "Notification icon loaded in " + delta + " millis:"
-                        + " bitmap=" + bitmap);
+                long delta = elapsedRealtime() - startTime;
+                Log.d(TAG, "Notification icon loaded in " + delta + " millis:" + " bitmap=" + bitmap);
             }
 
             NotificationData data = mNotificationData.get();
-            if (bitmap == null || data == null) {
-                return;
+            if (bitmap != null && data != null) {
+                data.setIcon(bitmap);
             }
-
-            data.setIcon(bitmap);
         }
+
+        private long elapsedRealtime() {
+            return SystemClock.elapsedRealtime();
+        }
+
     }
 
 }
