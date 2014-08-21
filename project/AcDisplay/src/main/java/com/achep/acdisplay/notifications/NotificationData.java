@@ -109,8 +109,8 @@ public class NotificationData {
      * Stops running threads.
      */
     public void stopLoading() {
-        stopAsyncTask(mBackgroundLoader);
-        stopAsyncTask(mIconLoader);
+        AsyncTask.stop(mBackgroundLoader);
+        AsyncTask.stop(mIconLoader);
     }
 
     /**
@@ -265,7 +265,7 @@ public class NotificationData {
     public void loadBackground(Context context, StatusBarNotification sbn) {
         // Stop previous thread if it is still
         // running.
-        stopAsyncTask(mBackgroundLoader);
+        AsyncTask.stop(mBackgroundLoader);
 
         Bitmap bitmapIcon = sbn.getNotification().largeIcon;
         if (bitmapIcon != null && !BitmapUtils.hasTransparentCorners(bitmapIcon)) {
@@ -319,15 +319,9 @@ public class NotificationData {
 
         sExtractor.loadTexts(context, sbn, this);
 
-        stopAsyncTask(mIconLoader);
+        AsyncTask.stop(mIconLoader);
         mIconLoader = new IconLoaderThread(context, sbn, this);
         mIconLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private void stopAsyncTask(AsyncTask asyncTask) {
-        if (asyncTask != null && !asyncTask.isFinished()) {
-            asyncTask.cancel();
-        }
     }
 
     private static class IconLoaderThread extends AsyncTask<Void, Void, Bitmap> {
