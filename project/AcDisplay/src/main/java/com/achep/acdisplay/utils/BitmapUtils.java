@@ -31,6 +31,13 @@ import android.graphics.Shader;
  */
 public class BitmapUtils {
 
+    /**
+     * Recycles given bitmap, if it's not {@code null}.
+     */
+    public static void safelyRecycle(Bitmap bitmap) {
+        if (bitmap != null) bitmap.recycle();
+    }
+
     public static boolean hasTransparentCorners(Bitmap bitmap) {
         int right = bitmap.getWidth() - 1;
         int bottom = bitmap.getHeight() - 1;

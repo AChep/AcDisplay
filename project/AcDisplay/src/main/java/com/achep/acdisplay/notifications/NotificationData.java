@@ -106,12 +106,14 @@ public class NotificationData {
         return background;
     }
 
-    /**
-     * Stops running threads.
-     */
-    public void stopLoading() {
+    public void recycle() {
         AsyncTask.stop(mBackgroundLoader);
         AsyncTask.stop(mIconLoader);
+
+        // All those bitmaps can be displayed at this moment.
+        // BitmapUtils.safelyRecycle(background);
+        // BitmapUtils.safelyRecycle(circleIcon);
+        // BitmapUtils.safelyRecycle(icon);
     }
 
     /**
@@ -327,9 +329,9 @@ public class NotificationData {
 
     /**
      * Task to load an icon from {@link StatusBarNotification notification}.
-     * 
+     *
      * @author Artem Chepurnoy
-     */ 
+     */
     private static class IconLoaderThread extends AsyncTask<Void, Void, Bitmap> {
 
         private final WeakReference<NotificationData> mNotificationData;

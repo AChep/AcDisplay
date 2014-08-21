@@ -83,4 +83,11 @@ public class OpenNotification {
         return NotificationHelper.startContentIntent(mStatusBarNotification);
     }
 
+    /**
+     * Clears all notification's resources.
+     */
+    public void recycle() {
+        mNotificationData.recycle();
+    }
+
 }

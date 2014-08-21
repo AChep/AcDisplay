@@ -128,7 +128,6 @@ final class NotificationList {
     public int remove(OpenNotification n) {
         final int index = indexOf(n);
         if (index != -1) {
-            mList.get(index).getNotificationData().stopLoading();
             mList.remove(index);
             return notifyListener(EVENT_REMOVED, n, null);
         }

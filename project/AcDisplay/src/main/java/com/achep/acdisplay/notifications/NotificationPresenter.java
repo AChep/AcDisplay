@@ -322,6 +322,9 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
 
     @Override
     public int onNotificationRemoved(OpenNotification n) {
+        // Free all resources
+        n.recycle();
+
         notifyListeners(n, EVENT_REMOVED);
         return RESULT_DEFAULT;
     }
