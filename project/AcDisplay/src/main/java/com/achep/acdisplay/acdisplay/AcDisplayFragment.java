@@ -44,7 +44,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.GridLayout;
-import android.widget.GridView;
 
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;

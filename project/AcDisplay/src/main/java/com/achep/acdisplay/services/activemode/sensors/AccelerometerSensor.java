@@ -21,10 +21,10 @@ package com.achep.acdisplay.services.activemode.sensors;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.util.Log;
-import com.squareup.seismic.ShakeDetector;
 
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
+import com.squareup.seismic.ShakeDetector;
 
 import java.lang.ref.WeakReference;
 
