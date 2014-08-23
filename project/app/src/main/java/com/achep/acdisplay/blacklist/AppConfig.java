@@ -149,13 +149,14 @@ public class AppConfig {
     }
 
     /**
-     * @return True if all options are equals to defaults, False otherwise.
+     * @return {@code true} if all options are set to default, {@code false} otherwise.
      * @see AppConfig#DEFAULT_ENABLED
      * @see AppConfig#DEFAULT_RESTRICTED
      * @see AppConfig#DEFAULT_HIDDEN
+     * @see #reset(AppConfig)
      */
     @SuppressWarnings("PointlessBooleanExpression")
-    boolean isEmpty() {
+    boolean equalsToDefault() {
         return isEnabled() == AppConfig.DEFAULT_ENABLED
                 && isRestricted() == AppConfig.DEFAULT_RESTRICTED
                 && isHidden() == AppConfig.DEFAULT_HIDDEN;
@@ -166,7 +167,7 @@ public class AppConfig {
      *
      * @author Artem Chepurnoy
      */
-    static final class AppConfigSaver extends com.achep.acdisplay.SharedList.Saver<AppConfig> {
+    static final class Saver extends com.achep.acdisplay.SharedList.Saver<AppConfig> {
 
         private static final String KEY_PACKAGE = "package_name_";
         private static final String KEY_ENABLED = "enabled_";
@@ -203,7 +204,7 @@ public class AppConfig {
      *
      * @author Artem Chepurnoy
      */
-    static final class AppConfigComparator extends com.achep.acdisplay.SharedList.Comparator<AppConfig> {
+    static final class Comparator extends com.achep.acdisplay.SharedList.Comparator<AppConfig> {
 
         /**
          * {@inheritDoc}

@@ -19,16 +19,20 @@
 package com.achep.acdisplay.blacklist;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.achep.acdisplay.SharedList;
 
 /**
  * The blacklist (also known as per-app-features.)
  *
  * @author Artem Chepurnoy
- * @see #saveAppConfig(android.content.Context, AppConfig, com.achep.acdisplay.SharedList.OnSharedListChangedListener)
+ * @see #saveAppConfig(android.content.Context, AppConfig, SharedList.OnSharedListChangedListener)
  * @see #getAppConfig(String)
  */
-public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, AppConfig.AppConfigSaver> {
+public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
 
     private static final String TAG = "Blacklist";
 
@@ -52,13 +56,15 @@ public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, A
          * @param configOld An instance of previous app's config (can not be null.)
          * @param diff      The difference between two configs.
          */
-        public abstract void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff);
+        public abstract void onBlacklistChanged(
+                @NonNull AppConfig configNew,
+                @NonNull AppConfig configOld, int diff);
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public final void onPut(AppConfig objectNew, AppConfig objectOld, int diff) {
+        public final void onPut(@NonNull AppConfig objectNew, AppConfig objectOld, int diff) {
             onBlacklistChanged(objectNew, objectOld, diff);
         }
 
@@ -68,7 +74,7 @@ public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, A
          * @see #onBlacklistChanged(AppConfig, AppConfig, int)
          */
         @Override
-        public final void onRemoved(AppConfig objectRemoved) {
+        public final void onRemoved(@NonNull AppConfig objectRemoved) {
             Log.wtf(TAG, "Notified about removing an item from blacklist.");
         }
     }
@@ -86,67 +92,60 @@ public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, A
 
     /**
      * This is called on {@link com.achep.acdisplay.App#onCreate() App create}.
+     *
+     * @see com.achep.acdisplay.SharedList#init(android.content.Context)
      */
+    @Override
     public void init(Context context) {
         super.init(context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getPreferencesFileName() {
         return PREF_NAME;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected AppConfig.AppConfigSaver onCreateSaver() {
-        return new AppConfig.AppConfigSaver();
+    protected AppConfig.Saver onCreateSaver() {
+        return new AppConfig.Saver();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected Comparator<AppConfig> onCreateComparator() {
-        return new AppConfig.AppConfigComparator();
+    protected Comparator onCreateComparator() {
+        return new AppConfig.Comparator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean isOverwriteAllowed(AppConfig object) {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    // Change remove-event to event about putting
-    // empty config to the list.
-    protected final void notifyOnRemoved(AppConfig object, OnSharedListChangedListener l) {
-        AppConfig emptyConfig = new AppConfig(object.packageName);
-        super.notifyOnPut(emptyConfig, object, l);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    // Do not allow nulls.
-    protected final void notifyOnPut(AppConfig object, AppConfig old, OnSharedListChangedListener l) {
-        if (old == null) old = new AppConfig(object.packageName);
-        super.notifyOnPut(object, old, l);
-    }
+    //-- MANAGING APP CONFIG --------------------------------------------------
 
     public void saveAppConfig(Context context, AppConfig config,
                               OnSharedListChangedListener listener) {
-        if (config.isEmpty()) {
+        if (config.equalsToDefault()) {
 
-            // The config is empty. We can remove it from list
-            // without any cares about losing its data.
-            remove(context, config, listener);
+            // We need to remove defaults to save blacklist's size.
+            super.remove(context, config, listener);
             return;
         }
 
-        // Put new config to the list.
-        // Note that overwriting is enabled.
         AppConfig clone = new AppConfig(config.packageName);
         AppConfig.copy(config, clone);
-        put(context, clone, listener);
+        super.put(context, clone, listener); // overwriting is enabled.
     }
 
     /**
@@ -157,11 +156,13 @@ public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, A
      * @return New instance of app's config filled with present data.
      * @see #fill(AppConfig)
      */
-    public AppConfig getAppConfig(String packageName) {
+    @NonNull
+    public AppConfig getAppConfig(@NonNull String packageName) {
         return fill(new AppConfig(packageName));
     }
 
-    public AppConfig fill(AppConfig config) {
+    @NonNull
+    public AppConfig fill(@NonNull AppConfig config) {
         for (AppConfig c : valuesSet()) {
             if (c.equals(config)) {
                 AppConfig.copy(c, config);
@@ -172,5 +173,54 @@ public final class Blacklist extends com.achep.acdisplay.SharedList<AppConfig, A
         return config;
     }
 
+    //-- BULL SHIT PROTECTION -------------------------------------------------
+
+    /**
+     * This will throw an exception! Please, use
+     * {@link #saveAppConfig(Context, AppConfig, SharedList.OnSharedListChangedListener)} instead.
+     */
+    @Nullable
+    @Override
+    public AppConfig put(@NonNull Context context, AppConfig object,
+                         @Nullable OnSharedListChangedListener l) {
+        throw new RuntimeException();
+    }
+
+    /**
+     * This will throw an exception! Please, use
+     * {@link #saveAppConfig(Context, AppConfig, SharedList.OnSharedListChangedListener)} instead.
+     */
+    @Override
+    public void remove(@NonNull Context context, AppConfig object,
+                       @Nullable OnSharedListChangedListener l) {
+        throw new RuntimeException();
+    }
+
+    //-- DISMISSING WIDGET ----------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final void notifyOnRemoved(AppConfig object, OnSharedListChangedListener l) {
+
+        // Change remove-event to event about putting
+        // empty config to the list.
+        notifyOnPut(new AppConfig(object.packageName), object, l);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final void notifyOnPut(AppConfig object, AppConfig old, OnSharedListChangedListener l) {
+        if (old == null) {
+            // Do not allow nulls.
+            old = new AppConfig(object.packageName);
+        }
+
+        // Notify all listeners
+        super.notifyOnPut(object, old, l);
+    }
 }
 
