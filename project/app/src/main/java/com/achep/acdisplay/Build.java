@@ -34,13 +34,9 @@ public final class Build {
      */
     public static class Links {
 
-        public static final String REPOSITORY_RAW = "https://raw.githubusercontent.com/AChep/AcDisplay/master/project/app/";
-        public static final String REPOSITORY = "https://www.github.com/AChep/AcDisplay";
-
         public static final String DEVELOPER_PROFILE = "https://plus.google.com/+АртёмЧепурной";
 
         public static final String TRANSLATE = "https://crowdin.net/project/acdisplay";
-        public static final String FAQ = "https://github.com/AChep/AcDisplay/blob/master/FAQ.md";
         public static final String DONATE = "http://goo.gl/UrecGo";
 
         public static final String LIST_OF_DONATORS = "https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH";

@@ -38,6 +38,7 @@ import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.RepositoryUrlBuilder;
 import com.achep.acdisplay.utils.FileUtils;
 import com.achep.acdisplay.utils.NetworkUtils;
 import com.achep.acdisplay.utils.RawReader;
@@ -53,7 +54,12 @@ import java.util.Locale;
 public class HelpDialog extends DialogFragment implements AsyncTask.DownloadText.Callback {
 
     private static final String FILE_NAME = "faq-%1$s.html";
-    private static final String FILE_URL = Build.Links.REPOSITORY_RAW + "src/releaseFlavor/res/raw-%1$s/faq.html";
+    private static final String FILE_URL = new RepositoryUrlBuilder()
+            .setRawAccess(true)
+            .addPath(RepositoryUrlBuilder.ACDISPLAY_PROJECT_NAME).addPath("/")
+            .addPath(RepositoryUrlBuilder.ACDISPLAY_MODULE_NAME)
+            .addPath("/src/releaseFlavor/res/raw-%1$s/faq.html")
+            .build();
 
     private ProgressBar mProgressBar;
     private TextView mTextView;
