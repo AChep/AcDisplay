@@ -24,6 +24,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -48,51 +50,47 @@ import java.util.Locale;
  *
  * @author Artem Chepurnoy
  */
-public class HelpDialog extends DialogFragment {
+public class HelpDialog extends DialogFragment implements AsyncTask.DownloadText.Callback {
 
-    private static final String FILE_NAME = "faq.html";
+    private static final String FILE_NAME = "faq-%1$s.html";
     private static final String FILE_URL = Build.Links.REPOSITORY_RAW + "src/releaseFlavor/res/raw-%1$s/faq.html";
 
     private ProgressBar mProgressBar;
     private TextView mTextView;
 
+    private CharSequence mFaqLocaleSuffix;
     private CharSequence mFaqMessage;
-
     private AsyncTask.DownloadText mDownloaderTask;
-    private AsyncTask.DownloadText.Callback mDownloaderCallback =
-            new AsyncTask.DownloadText.Callback() {
-                @Override
-                public void onDownloaded(String[] texts) {
-                    updateFaq(texts[0] != null ? texts[0] : texts[1]);
-                }
-            };
 
     private long mResumedAtTime;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (NetworkUtils.isOnline(activity)) {
-            // Download latest FAQ from the GitHub
-            // and store to file if available.
-            Locale locale = Locale.getDefault();
 
-            String localeSuffix = locale.getLanguage();
-            String localeSuffixRegional = localeSuffix;
+        Locale locale = Locale.getDefault();
+        mFaqLocaleSuffix = locale.getLanguage();
 
-            // Try with regional locales if available.
-            String localeCountry = locale.getCountry();
-            if (!TextUtils.isEmpty(localeCountry)) {
-                localeSuffixRegional += "-r" + localeCountry;
-            }
-
-            mDownloaderTask = new AsyncTask.DownloadText(mDownloaderCallback);
-            mDownloaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-                    String.format(FILE_URL, localeSuffixRegional),
-                    String.format(FILE_URL, localeSuffix));
-        } else {
-            updateFaq(null);
+        if (!NetworkUtils.isOnline(activity)) {
+            setFaq(null);
+            return;
         }
+
+        // Download latest FAQ from the GitHub
+        // and store to file if available.
+
+        String localeSuffixRegional = mFaqLocaleSuffix.toString();
+
+        // Try with regional locales if available.
+        String localeCountry = locale.getCountry();
+        if (!TextUtils.isEmpty(localeCountry)) {
+            localeSuffixRegional += "-r" + localeCountry;
+        }
+
+        mDownloaderTask = new AsyncTask.DownloadText(this);
+        mDownloaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+                String.format(FILE_URL, localeSuffixRegional),
+                String.format(FILE_URL, mFaqLocaleSuffix));
     }
 
     @Override
@@ -143,21 +141,27 @@ public class HelpDialog extends DialogFragment {
                 .create();
     }
 
+    @Override
+    public void onDownloaded(@NonNull String[] texts) {
+        final String faqHtml = texts[0] != null ? texts[0] : texts[1];
+        if (faqHtml != null) {
+
+            // Save text to file on internal storage
+            // to keep latest FAQ offline.
+            writeToFile(faqHtml);
+        }
+
+        setFaq(faqHtml);
+    }
+
     /**
      * @param text latest FAQ to update from, or {@code null} to keep old.
      */
-    private void updateFaq(String text) {
-        if (text != null) {
-            // Save text to file on internal storage
-            // to keep latest FAQ offline.
-            FileUtils.writeToFile(getFile(), text);
-        } else {
-            text = readFromFile();
-            if (text == null) text = readFromRaw();
-        }
-
+    private void setFaq(@Nullable String text) {
+        if (text == null) text = readFromFile();
+        if (text == null) text = readFromRaw();
         mFaqMessage = Html.fromHtml(text);
-        populateFaq();
+        populateFaq(); // update views
     }
 
     /**
@@ -173,23 +177,40 @@ public class HelpDialog extends DialogFragment {
     }
 
     /**
-     * @return Built-in FAQ, that may be not up-to-date.
+     * @return Built-in FAQ
      * @see #readFromFile()
      */
+    @Nullable
     private String readFromRaw() {
         return RawReader.readTextFileFromRawResource(getActivity(), R.raw.faq);
     }
 
     /**
-     * @return Previously downloaded FAQ, that may be not up-to-date.
+     * @return Previously saved FAQ, that may be not up-to-date.
      * @see #readFromRaw()
+     * @see #writeToFile(String)
+     * @see #mFaqLocaleSuffix
      */
+    @Nullable
     private String readFromFile() {
-        return FileUtils.readTextFile(getFile());
+        return FileUtils.readTextFile(getFile(mFaqLocaleSuffix));
     }
 
-    private File getFile() {
-        return new File(getActivity().getFilesDir(), FILE_NAME);
+    /**
+     * Saves FAQ to the {@link #getFile(CharSequence) file} on internal storage.
+     *
+     * @param faqHtml text to save.
+     * @see #readFromFile()
+     * @see #mFaqLocaleSuffix
+     */
+    private void writeToFile(@NonNull String faqHtml) {
+        FileUtils.writeToFile(getFile(mFaqLocaleSuffix), faqHtml);
+    }
+
+    @NonNull
+    private File getFile(@NonNull CharSequence suffix) {
+        String filename = String.format(FILE_NAME, suffix);
+        return new File(getActivity().getFilesDir(), filename);
     }
 
 }
