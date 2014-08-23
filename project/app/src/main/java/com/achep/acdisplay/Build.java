@@ -34,7 +34,7 @@ public final class Build {
      */
     public static class Links {
 
-        public static final String REPOSITORY_RAW = "https://raw.githubusercontent.com/AChep/AcDisplay/master/project/AcDisplay/";
+        public static final String REPOSITORY_RAW = "https://raw.githubusercontent.com/AChep/AcDisplay/master/project/app/";
         public static final String REPOSITORY = "https://www.github.com/AChep/AcDisplay";
 
         public static final String DEVELOPER_PROFILE = "https://plus.google.com/+АртёмЧепурной";
