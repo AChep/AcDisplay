@@ -44,6 +44,12 @@
         android:title="@string/settings_interface_title"
         android:icon="@drawable/ic_settings_interface"/>
 
+    <!-- Development -->
+    <header android:fragment="com.achep.acdisplay.settings.DevSettings"
+        android:id="@+id/dev_settings"
+        android:title="@string/settings_dev_title"
+        android:icon="@drawable/ic_settings_development"/>
+
     <!-- More -->
     <header android:fragment="com.achep.acdisplay.settings.MoreSettings"
         android:id="@+id/more_settings"

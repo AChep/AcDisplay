@@ -33,6 +33,7 @@
     <string name="settings_notification_title">Уведомления</string>
     <string name="settings_interface_title">Интерфейс</string>
     <string name="settings_more_title">Ещё…</string>
+    <string name="settings_dev_title">Для разработчиков</string>
 
     <!-- Lockscreen -->
     <string name="settings_lockscreen_description">Изменить стандартный экран блокировки на приложение AcDisplay. Эта функция может работать нестабильно.</string>

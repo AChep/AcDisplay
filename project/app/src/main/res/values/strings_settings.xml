@@ -33,6 +33,7 @@
     <string name="settings_notification_title">Notifications</string>
     <string name="settings_interface_title">Interface</string>
     <string name="settings_more_title">More…</string>
+    <string name="settings_dev_title">Development</string>
 
     <!-- Lockscreen -->
     <string name="settings_lockscreen_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>

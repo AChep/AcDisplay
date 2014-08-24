@@ -41,6 +41,7 @@ import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 
@@ -335,6 +336,12 @@ public class Settings extends PreferenceActivity {
             Header header = target.get(i);
             // Ids are integers, so downcasting
             int id = (int) header.id;
+
+            if (id == R.id.dev_settings) {
+                if (!Build.DEBUG) {
+                    target.remove(i);
+                }
+            }
 
             // Increment if the current one wasn't removed by the Utils code.
             if (target.get(i) == header) {
