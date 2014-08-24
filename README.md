@@ -9,7 +9,7 @@ AcDisplay
 
 *AcDisplay is a new way of handling notifications in Android.*
 
-It will let you know about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what's going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
+It will inform you about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what's going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
 
 **[Join app's community on Google+](https://plus.google.com/u/0/communities/102085470313050914854)**
 **[Join app's dev channel on freenode](http://webchat.freenode.net?channels=acdisplay)**
@@ -20,7 +20,7 @@ It will let you know about new notifications by showing a minimal, beautiful scr
 </a>
 
 Download & Build
-================
+----------------
 Clone the project and come in:
 
          $ git clone git://github.com/AChep/AcDisplay.git
@@ -50,3 +50,11 @@ To build release version:
          # Grab compiled application from ./app/build/outputs/apk/
 
 You may also use the Android Studio graphic interface to build.
+
+Import to Android Studio
+----------------
+- Make sure JDK-7 or later is installed.
+- Make sure latest Android Studio is installed.
+- Launch Android Studio.
+- Select: File -> Import project; and choose ./AcDisplay/project directory.
+- Wait until it done.
