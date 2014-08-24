@@ -21,9 +21,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_dev_title">
 
+    <CheckBoxPreference
+        android:key="dev_sensors_dump"
+        android:title="@string/settings_dev_sensors_dump_title"
+        android:summaryOn="@string/settings_dev_sensors_dump_on"
+        android:defaultValue="@bool/config_default_dev_sensors_dump" />
+
     <Preference
-        android:enabled="false"
-        android:title="@string/settings_placeholder_title"
-        android:summary="@string/settings_placeholder_summary" />
+        android:key="dev_sensors_dump_send"
+        android:title="@string/settings_dev_sensors_dump_send_title"
+        android:layout="?android:attr/preferenceLayoutChild" />
 
 </PreferenceScreen>

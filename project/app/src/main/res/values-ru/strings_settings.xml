@@ -69,6 +69,11 @@
     <string name="settings_notify_circled_icon_on">Большая иконка уведомления вписана в круг.</string>
     <string name="settings_unlock_animation_title">Анимация разблокировки</string>
 
+    <!-- Development -->
+    <string name="settings_dev_sensors_dump_title">Сохранять данные с сенсоров</string>
+    <string name="settings_dev_sensors_dump_on">Непрерывно сохраняет состояние устройства и данные с сенсоров в файл.</string>
+    <string name="settings_dev_sensors_dump_send_title">Отправить сохраненные данные</string>
+
     <!-- More… -->
     <string name="settings_only_while_charging_title">Только во время зарядки</string>
     <string name="settings_only_while_charging_on">Приложение активно только во врямя зарядки. Это также относится к таким функциям, как экран блокировки или активный режим.</string>

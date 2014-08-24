@@ -43,6 +43,7 @@
     <string name="service_bath">Сервисы AcDisplay</string>
     <string name="service_bath_keyguard">Экран блокировки</string>
     <string name="service_bath_active_mode">Активный режим</string>
+    <string name="service_bath_active_mode_dump">Дампер сенсоров</string>
 
     <!-- Example: Mon, 7 April -->
     <string name="status_date_format">EEE, d MMMM</string>

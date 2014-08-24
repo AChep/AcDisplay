@@ -20,7 +20,9 @@
 package com.achep.acdisplay.settings;
 
 import android.os.Bundle;
+import android.preference.Preference;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 
 /**
@@ -28,12 +30,27 @@ import com.achep.acdisplay.R;
  *
  * @author Artem Chepurnoy
  */
-public class DevSettings extends PreferenceFragment {
+public class DevSettings extends PreferenceFragment implements
+        Preference.OnPreferenceClickListener {
+
+    private Preference mSensorsDumpSendPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.dev_settings);
+        syncPreference(Config.KEY_DEV_SENSORS_DUMP);
+
+        mSensorsDumpSendPreference = findPreference("dev_sensors_dump_send");
+        mSensorsDumpSendPreference.setOnPreferenceClickListener(this);
     }
 
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        if (preference == mSensorsDumpSendPreference) {
+
+        } else
+            return false;
+        return true;
+    }
 }

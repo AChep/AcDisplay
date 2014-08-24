@@ -69,6 +69,11 @@
     <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
     <string name="settings_unlock_animation_title">Unlock animation</string>
 
+    <!-- Development -->
+    <string name="settings_dev_sensors_dump_title">Dump data from sensors</string>
+    <string name="settings_dev_sensors_dump_on">Continuously saves state of device and data from sensors to file on storage.</string>
+    <string name="settings_dev_sensors_dump_send_title">Send saved data</string>
+
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>
     <string name="settings_only_while_charging_on">App is only active while your device is charging. This applies to all features such as the lockscreen or active mode.</string>

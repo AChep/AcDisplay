@@ -29,6 +29,7 @@ import android.util.TypedValue;
 
 import com.achep.acdisplay.powertoggles.ToggleReceiver;
 import com.achep.acdisplay.services.KeyguardService;
+import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
 import com.achep.acdisplay.utils.AccessUtils;
 
@@ -96,6 +97,9 @@ public class Config {
     public static final String KEY_FEEL_WIDGET_PINNABLE = "feel_widget_pinnable";
     public static final String KEY_FEEL_WIDGET_READABLE = "feel_widget_readable";
 
+    // development
+    public static final String KEY_DEV_SENSORS_DUMP = "dev_sensors_dump";
+
     // triggers
     public static final String KEY_TRIG_PREVIOUS_VERSION = "trigger_previous_version";
     public static final String KEY_TRIG_HELP_READ = "trigger_help_read";
@@ -126,6 +130,8 @@ public class Config {
     private boolean mUiBatterySticky;
     private boolean mUiNotifyCircledIcon;
     private boolean mUiUnlockAnimation;
+
+    private boolean mDevSensorsDump;
 
     private final Triggers mTriggers;
     private int mTrigPreviousVersion;
@@ -312,6 +318,9 @@ public class Config {
         hashMap.put(KEY_FEEL_WIDGET_READABLE, new Option(
                 "setWidgetReadable",
                 "isWidgetReadable", boolean.class));
+        hashMap.put(KEY_DEV_SENSORS_DUMP, new Option(
+                "setDevSensorsDumpEnabled",
+                "isDevSensorsDumpEnabled", boolean.class));
 
         Resources res = context.getResources();
         SharedPreferences prefs = getSharedPreferences(context);
@@ -363,6 +372,10 @@ public class Config {
                 res.getBoolean(R.bool.config_default_ui_unlock_animation));
         mUiIconSize = prefs.getInt(KEY_UI_ICON_SIZE,
                 res.getInteger(R.integer.config_default_ui_icon_size_dp));
+
+        // development
+        mDevSensorsDump = prefs.getBoolean(KEY_DEV_SENSORS_DUMP,
+                res.getBoolean(R.bool.config_default_dev_sensors_dump));
 
         // other
         mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
@@ -649,6 +662,15 @@ public class Config {
         saveOption(context, KEY_UI_UNLOCK_ANIMATION, enabled, listener, changed);
     }
 
+    public void setDevSensorsDumpEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mDevSensorsDump != (mDevSensorsDump = enabled);
+        saveOption(context, KEY_DEV_SENSORS_DUMP, enabled, listener, changed);
+
+        if (changed) {
+            SensorsDumpService.handleState(context);
+        }
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -765,6 +787,10 @@ public class Config {
 
     public boolean isUnlockAnimationEnabled() {
         return mUiUnlockAnimation;
+    }
+
+    public boolean isDevSensorsDumpEnabled() {
+        return mDevSensorsDump;
     }
 
     /**
