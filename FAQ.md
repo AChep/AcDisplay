@@ -34,7 +34,7 @@ To do so, just use the feedback option and check «Attach a log» and the log wi
 >«Hide» completely ignores the notification. «Silent» won't wake your device, but the notification will still be displayed if AcDisplay is shown somehow (lockscreen or another notifications).
 
 ##### Q: I can see a typo / mistake in the translation!
->You can easily help out with that. Join the app's [page][tranalate] on crowdin and suggest a better translation. Thanks!
+>You can easily help out with that. Join the app's [page][translate] on crowdin and suggest a better translation. Thanks!
 
 ##### Q: I am using the beta, why is setting X blacked out?
 >Even though it is a beta, stability is still important. This is done because some features are just not ready to be made public yet. To not completely remove them, they are disabled.
@@ -48,5 +48,5 @@ To do so, just use the feedback option and check «Attach a log» and the log wi
 [community]:https://plus.google.com/u/0/communities/102085470313050914854
 [testing]:https://play.google.com/apps/testing/com.achep.activedisplay
 [repo]:http://repo.acdisplay.org
-[tranalate]:http://translate.acdisplay.org
+[translate]:http://translate.acdisplay.org
 [PayPal]:http://goo.gl/UrecGo
