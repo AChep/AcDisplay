@@ -20,9 +20,9 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>버그 리포팅</item>
-    <item>건의 사항</item>
-    <item>기타 질문</item>
+    <item>버그</item>
+    <item>제안 사항</item>
+    <item>기타</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>아트워크</item>

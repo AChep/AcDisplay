@@ -20,10 +20,10 @@
   -->
 <resources>
   <string name="blacklist">블랙리스트</string>
-  <string name="blacklist_app_config">어플 설정</string>
-  <string name="blacklist_show_system_apps">시스템 어플</string>
+  <string name="blacklist_app_config">앱 설정</string>
+  <string name="blacklist_show_system_apps">시스템 앱</string>
   <string name="blacklist_app_hide_title">숨기기</string>
-  <string name="blacklist_app_hide_summary">이 어플은 더 이상 보이지 않습니다.</string>
+  <string name="blacklist_app_hide_summary">이 앱의 알림은 더 이상 표시되지 않습니다.</string>
   <string name="blacklist_app_restricted_title">조용히</string>
-  <string name="blacklist_app_restricted_summary">알림이 도착하더라도 이 어플에 대한 알림 만큼은 나타나지 않습니다.</string>
+  <string name="blacklist_app_restricted_summary">이 앱의 알림이 표시되어도 화면이 켜지지 않습니다.</string>
 </resources>

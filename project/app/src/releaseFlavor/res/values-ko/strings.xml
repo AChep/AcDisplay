@@ -19,32 +19,32 @@
   ~ MA  02110-1301, USA.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="app_description">AcDisplay는 안드로이드에서 알림을 다루는 새로운 방법을 보여줍니다. 잠금화면에서 바로 조그마하면서도 아름다운 화면을 통해 새로운 알림을 알려줍니다. 그리고 지금 현재 어떻게 되어가고 있는지 궁금하시다면 편안하고 간단하게 주머니에서 휴대폰을 꺼내서 알림을 보면 됩니다. </string>
-  <string name="xposed_description">안드로이드에 더욱 더 깊이 AcDisplay를 통합하는데 도움을 줍니다.</string>
-  <string name="widget_toggle_enabled">켜기</string>
-  <string name="widget_toggle_disabled">끄기</string>
-  <string name="test_action">테스트용 알림 보내기</string>
-  <string name="test_notification_message">이것은 테스트용 알림입니다.</string>
-  <string name="test_notification_message_large">이 알림을 무시하려면 아래로 내려주세요.\n아무데나 잡고 끌면 잠금해제 할 수 있습니다.</string>
-  <string name="init_notification_text">이 알림을 무시 해주세요.</string>
-  <string name="remote_enable_acdisplay">AcDisplay가 켜져 있습니다.</string>
-  <string name="remote_disable_acdisplay">AcDisplay가 꺼져 있습니다.</string>
+  <string name="app_description">AcDisplay는 안드로이드에서 알림을 볼 수 있는 새로운 방식입니다. 미니멀하고 아름다운 화면을 통해 알림을 보여주고 잠금화면에서 그 알림을 바로 실행할 수 있게 해줄 것입니다. 그리고 지금 무슨 일이 일어나는지 알고 싶다면, 마찬가지로 편안하고 미니멀한 방법으로 스마트폰을 주머니에서 꺼내서 모든 최근 알림을 보기만 하면 됩니다.</string>
+  <string name="xposed_description">AcDisplay가 안드로이드에 제대로 통합되도록 도와줍니다.</string>
+  <string name="widget_toggle_enabled">활성화</string>
+  <string name="widget_toggle_disabled">비활성화</string>
+  <string name="test_action">테스트 알림 보내기</string>
+  <string name="test_notification_message">이것은 샘플 알림입니다.</string>
+  <string name="test_notification_message_large">알림을 지우려면 아래로 내리세요.\n잠금을 해제하려면 화면의 아무 곳이나 미세요.</string>
+  <string name="init_notification_text">이 알림을 무시하세요.</string>
+  <string name="remote_enable_acdisplay">AcDisplay가 활성화되어 있습니다.</string>
+  <string name="remote_disable_acdisplay">AcDisplay가 비활성화되어 있습니다.</string>
   <string name="service_bath">AcDisplay 서비스</string>
-  <string name="service_bath_keyguard">잠금 화면</string>
+  <string name="service_bath_keyguard">잠금화면</string>
   <string name="service_bath_active_mode">액티브 모드</string>
-  <string name="status_date_format">EEE, d MMMM</string>
-  <string name="access_not_granted">접근이 거부되었습니다!</string>
+  <string name="status_date_format">MMMM d EEE</string>
+  <string name="access_not_granted">접근이 허가되지 않았습니다!</string>
   <string name="access_notifications_grant_btn">알림</string>
-  <string name="access_notifications_grant_manually">설정 &gt; 에 들어가서 보안&gt;에 들어갑니다 디바이스 관리자에서 알림 접근을 위해 AcDispaly를 켜주세요.</string>
-  <string name="access_device_admin_description">스크린 유지 시간 정책을 이용하기 위해서는 이것이 필요합니다.</string>
+  <string name="access_notifications_grant_manually">설정 &gt; 보안 &gt; 알림에 들어가서 AcDisplay를 설정해주세요.</string>
+  <string name="access_device_admin_description">화면 꺼짐 시간을 설정하기 위해 필요합니다.</string>
   <string name="access_device_admin_grant_btn">화면을 끕니다</string>
-  <string name="access_device_admin_grant_manually">설정 &gt; 에 들어가서 보안&gt;에 들어갑니다 디바이스 관리자에서 AcDispaly를 켜주세요.</string>
-  <string name="access_device_admin_removed_successful">디바이스 관리자에서 AcDisplay가 지워졌습니다.</string>
-  <string name="app_auto_disabled">디바이스 관리자에서 제대로 되어있지 않아 AcDisplay가 꺼졌습니다.</string>
+  <string name="access_device_admin_grant_manually">설정 &gt; 보안 &gt; 장치 관리자에 들어가서 AcDisplay를 설정해주세요.</string>
+  <string name="access_device_admin_removed_successful">장치 관리자에서 AcDisplay가 제거되었습니다.</string>
+  <string name="app_auto_disabled">AcDisplay가 장치 관리자로 지정되어 있지 않아 앱이 비활성화 되었습니다.</string>
   <string name="media_prev_description">이전 트랙 버튼</string>
   <string name="media_next_description">다음 트랙 버튼</string>
   <string name="media_pause_description">일시정지 버튼</string>
   <string name="media_play_description">재생 버튼</string>
   <string name="media_stop_description">정지 버튼</string>
-  <string name="accessibility_battery_level">배터리 <xliff:g id="number" example="100">%d</xliff:g>퍼센트</string>
+  <string name="accessibility_battery_level">배터리 <xliff:g id="number" example="100">%d</xliff:g> 퍼센트.</string>
 </resources>

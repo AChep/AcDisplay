@@ -20,12 +20,12 @@
   -->
 <resources>
   <string name="feedback">피드백</string>
-  <string name="feedback_type_label">제목을 선택해주세요:</string>
-  <string name="feedback_msg_hint">보낼 메시지입니다. 기기의 스펙 정보가 자동으로 포함되어서 보내질 것입니다.</string>
+  <string name="feedback_type_label">메시지의 주제를 선택해주세요:</string>
+  <string name="feedback_msg_hint">당신의 메시지입니다. 기기의 사양이 자동으로 포함됩니다.</string>
   <string name="feedback_send">보내기</string>
-  <string name="feedback_error_no_app">이메일 어플이 아무것도 설치되어 있지 않습니다.</string>
-  <string name="feedback_error_msg_too_short">메시지는 적어도 %1$d글자는 있어야 합니다.</string>
+  <string name="feedback_error_no_app">설치된 이메일 앱이 없습니다.</string>
+  <string name="feedback_error_msg_too_short">메시지에 최소 %1$d개의 글자가 포함되어야 합니다.</string>
   <string name="feedback_attach_log">로그 파일 첨부하기</string>
-  <string name="feedback_attach_log_description">다양한 어플이나 시스템으로부터 수집한 로그 파일은 도움 되는 귀중한 자료입니다. 로그 파일이 문제 해결에 큰 도움을 줄 것입니다.</string>
-  <string name="feedback_error_accessing_log">어플 로그 접근에 문제가 발생했습니다.</string>
+  <string name="feedback_attach_log_description">로그 파일은 다양한 앱이나 시스템으로부터 수집된 디버그 자료를 포함합니다. 이는 문제를 해결하는데 도움을 줄 것입니다.</string>
+  <string name="feedback_error_accessing_log">앱의 로그 파일에 접근하는데 실패했습니다.</string>
 </resources>
