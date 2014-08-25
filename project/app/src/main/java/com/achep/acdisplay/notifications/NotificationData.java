@@ -363,8 +363,7 @@ public class NotificationData {
 
             Resources res = context.getResources();
             Drawable drawable = NotificationUtils
-                    .getDrawable(context, sbn, sbn.getNotification().icon)
-                    .mutate();
+                    .getDrawable(context, sbn, sbn.getNotification().icon);
 
             if (isCancelled()) {
                 return null;
@@ -379,6 +378,7 @@ public class NotificationData {
             Bitmap icon = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
             Canvas canvas = new Canvas(icon);
 
+            drawable = drawable.mutate();
             drawable.setBounds(0, 0, size, size);
             drawable.draw(canvas);
 
