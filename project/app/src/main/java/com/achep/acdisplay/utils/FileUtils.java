@@ -71,7 +71,7 @@ public class FileUtils {
      * @param file file to write in
      * @return {@code true} is succeed, {@code false} if failed (file state is undefined!).
      */
-    public static boolean writeToFile(File file, String text) {
+    public static boolean writeToFile(File file, CharSequence text) {
         if (file.exists()) {
             if (!deleteRecursive(file)) {
                 return false;

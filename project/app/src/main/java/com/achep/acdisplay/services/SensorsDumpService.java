@@ -19,17 +19,83 @@
 
 package com.achep.acdisplay.services;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.utils.FileUtils;
 import com.achep.acdisplay.utils.PowerUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by achep on 24.08.14.
  */
-public class SensorsDumpService extends BathService.ChildService {
+public class SensorsDumpService extends BathService.ChildService implements
+        SensorEventListener {
+
+    private static final String TAG = "SensorsDumpService";
+
+    private static final char DIVIDER = ';';
+    private static final char NEW_LINE = '\n';
+
+    private static final int MAX_SIZE = 2500;
+
+    private SensorManager mSensorManager;
+    private final int[] mSensorTypes = new int[] {
+        Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ACCELEROMETER,
+    };
+
+    private final LinkedList<Event> mEventList = new LinkedList<>();
+    private static class Event {
+        long timestamp;
+        float[] values;
+        int sensor;
+    }
+
+    private Handler mHandler = new Handler();
+    private Receiver mReceiver = new Receiver();
+
+    private class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_SCREEN_ON:
+                    startListening();
+
+                    // Stop listening after some minutes to keep battery.
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (mEventList) {
+                                stopListening();
+                                mEventList.clear();
+                            }
+                        }
+                    }, 120 * 1000);
+                    break;
+                case Intent.ACTION_SCREEN_OFF:
+                    stopListening();
+                    dropToStorage();
+                    break;
+            }
+        }
+    }
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -51,16 +117,83 @@ public class SensorsDumpService extends BathService.ChildService {
 
     @Override
     public void onCreate() {
+        Context context = getContext();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1);
+        context.registerReceiver(mReceiver, intentFilter);
 
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     }
 
     @Override
     public void onDestroy() {
-
+        getContext().unregisterReceiver(mReceiver);
+        stopListening();
     }
 
     @Override
     public String getLabel() {
         return getContext().getString(R.string.service_bath_active_mode_dump);
     }
+
+    private void startListening() {
+        for (int type : mSensorTypes) {
+            Sensor sensor = mSensorManager.getDefaultSensor(type);
+            if (sensor != null) {
+                if (Build.DEBUG) Log.d(TAG, "Listening to " + sensor.getName() + " sensor...");
+                mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_GAME);
+            }
+        }
+    }
+
+    private void stopListening() {
+        if (Build.DEBUG) Log.d(TAG, "Stopping listening...");
+        mSensorManager.unregisterListener(this);
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+    private void dropToStorage() {
+        synchronized (mEventList) {
+            if (Build.DEBUG) Log.d(TAG, "Dumping sensors data to file...");
+            if (mEventList.size() == 0) {
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (Event event : mEventList) {
+                sb.append(event.timestamp).append(DIVIDER);
+                sb.append(event.sensor).append(DIVIDER);
+                for (float f : event.values) sb.append(f).append(DIVIDER);
+                sb.append(NEW_LINE);
+            }
+
+            String filename = "dump_sensors_" + SystemClock.elapsedRealtime() + ".txt";
+            File file = new File(getContext().getFilesDir(), filename);
+            FileUtils.writeToFile(file, sb);
+
+            mEventList.clear();
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        synchronized (mEventList) {
+            Event event = new Event();
+            event.timestamp = SystemClock.elapsedRealtime();
+            event.values = sensorEvent.values.clone();
+            event.sensor = sensorEvent.sensor.getType();
+            mEventList.add(event);
+
+            int size = mEventList.size();
+            if (size > MAX_SIZE) {
+                mEventList.remove(0);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) { /* unused */ }
+
 }
