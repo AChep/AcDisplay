@@ -1,11 +1,11 @@
 AcDisplay
 ==========
-[![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/acdisplay/localized.png)](http://translate.acdisplay.org/project/acdisplay)
+[![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/acdisplay/localized.png)](http://translate.acdisplay.orgproject/acdisplay)
 
 <img alt="Download from Google Play" align="right" height="300"
-   src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png" />
+   src="http://repo.acdisplay.org/raw/master/screenshots/screenshot2.png" />
 <img alt="Download from Google Play" align="right" height="300"
-   src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot1.png" />
+   src="http://repo.acdisplay.org/raw/master/screenshots/screenshot1.png" />
 
 *AcDisplay is a new way of handling notifications in Android.*
 
@@ -16,7 +16,7 @@ It will inform you about new notifications by showing a minimal, beautiful scree
 
 <a href="http://get.acdisplay.artemchep.com">
   <img alt="Get AcDisplay on Google Play" vspace="20"
-       src="https://github.com/AChep/AcDisplay/raw/master/art/google_play.png" />
+       src="http://repo.acdisplay.org/raw/master/art/google_play.png" />
 </a>
 
 Download & Build

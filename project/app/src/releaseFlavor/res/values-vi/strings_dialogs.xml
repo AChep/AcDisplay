@@ -21,7 +21,7 @@
 <resources>
   <string name="close">Đóng</string>
   <string name="about_action">Thông tin</string>
-  <string name="about_message"><![CDATA[         Bản quyền năm 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> của Artem Chepurnoy</a>. Tất cả các quyền được bảo hộ. <br/>         <br/> Cảm ơn mã nguồn của các công cụ sau: %1$s và tất cả những ai <a href="https://crowdin.net/project/acdisplay"> đã giúp với bản dịch</a> hoặc <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> tặng cho tôi</a>.     
+  <string name="about_message"><![CDATA[         Bản quyền năm 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> của Artem Chepurnoy</a>. Tất cả các quyền được bảo hộ. <br/>         <br/> Cảm ơn mã nguồn của các công cụ sau: %1$s và tất cả những ai <a href="http://translate.acdisplay.org"> đã giúp với bản dịch</a> hoặc <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> tặng cho tôi</a>.     
 ]]></string>
   <string name="help">Trợ giúp</string>
   <string name="help_faq">Các câu hỏi thường gặp</string>

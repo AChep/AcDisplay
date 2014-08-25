@@ -47,6 +47,6 @@ To do so, just use the feedback option and check «Attach a log» and the log wi
 
 [community]:https://plus.google.com/u/0/communities/102085470313050914854
 [testing]:https://play.google.com/apps/testing/com.achep.activedisplay
-[repo]:https://github.com/AChep/AcDisplay
-[tranalate]:https://crowdin.net/project/acdisplay
+[repo]:http://repo.acdisplay.org
+[tranalate]:http://translate.acdisplay.org
 [PayPal]:http://goo.gl/UrecGo
