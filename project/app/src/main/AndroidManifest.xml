@@ -19,8 +19,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.acdisplay"
-    android:versionCode="29"
-    android:versionName="2.4.5">
+    android:versionCode="30"
+    android:versionName="2.4.6">
 
     <!--
         Normally replaced by build script, but needed to
