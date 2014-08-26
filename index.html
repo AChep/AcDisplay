@@ -22,14 +22,15 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="With AcDisplay - Android app, your notifications are living." />
+    <meta name="description" content="AcDisplay is a new way of handling notifications in Android." />
     <meta name="viewport" content="width=690" />
 
     <script src="scripts/jquery.min.js"></script>
 
     <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="canonical" href="http://acdisplay.artemchep.com" />
+    <link rel="canonical" href="http://acdisplay.org" />
     <link href='http://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 
     <title>AcDisplay - Android app</title>
   </head>
@@ -232,10 +233,20 @@
     }
 
     #layer-clock {
-      top: 200px;
+      top: 225px;
       font-size: 80px;
       font-family: 'Roboto', sans-serif;
       text-align: center;
+    }
+
+    #layer-date {
+      top: 318px;
+      left: -30px;
+      font-size: 15px;
+      font-family: 'Roboto Condensed', sans-serif;
+      text-align: center;
+      color: #eeeeee;
+      opacity: 0.6;
     }
 
     </style>
@@ -248,8 +259,8 @@
         </p>
       </div>
   
-      <a id="playlink" href="http://get.acdisplay.artemchep.com">&nbsp;</a>
-      <a id="github" class="icon" href="https://github.com/AChep/AcDisplay">&nbsp;</a>
+      <a id="playlink" href="http://get.acdisplay.org">&nbsp;</a>
+      <a id="github" class="icon" href="http://repo.acdisplay.org">&nbsp;</a>
       <a id="bitcoin" class="icon" href="bitcoin:1GYj49ZnMByKj2f6p7r4f92GQi5pR6BSMz?amount=0.005">&nbsp;</a>
       <a id="paypal" class="icon" href="http://goo.gl/UrecGo">&nbsp;</a>
   
@@ -258,13 +269,20 @@
           <div id="layer-wallpaper" class="fullscreenlayer"></div>
           <div id="layer-content" class="fullscreenlayer"></div>
           <div id="layer-clock" class="fullscreenlayer">0:00</div>
+          <div id="layer-date" class="fullscreenlayer">Tue, 26 August</div>
         </div>
       </div>
     </div>
 
   </body>
 
-  <script>   
+  <script>
+    function tickTime() {
+        displayTime();
+        displayDate();
+        setTimeout(tickTime, 5000);             
+    }
+
     function displayTime() {
         var elt = document.getElementById("layer-clock"); 
         var now = new Date();
@@ -273,7 +291,13 @@
         setTimeout(displayTime, 5000);             
     }
 
-    window.onload = displayTime;
+    function displayDate() {
+        var elt = document.getElementById("layer-date");
+        var date = new Date().format("EEE, dd MMMM");
+        elt.innerHTML = "" + date;         
+    }
+
+    window.onload = tickTime;
 
     // Use background from Muzei's featured art.
     $.ajax({
