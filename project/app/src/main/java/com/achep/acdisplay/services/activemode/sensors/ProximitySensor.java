@@ -53,6 +53,8 @@ public final class ProximitySensor extends ActiveModeSensor implements
     private float mMaximumRange;
     private boolean mFirstChange;
 
+    private final Object monitor = new Object();
+
     private final ArrayList<Program> mPrograms;
     private final ArrayList<Event> mHistory;
     private final Handler mHandler;
@@ -211,13 +213,13 @@ public final class ProximitySensor extends ActiveModeSensor implements
     public void onStart(SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting proximity sensor...");
 
+        mHistory.clear();
+        mHistory.add(new Event(false, getTimeNow()));
+
         Sensor proximitySensor = sensorManager.getDefaultSensor(getType());
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         mMaximumRange = proximitySensor.getMaximumRange();
-        mHistory.clear();
-        mHistory.add(new Event(false, getTimeNow()));
-
         sAttached = true;
         mFirstChange = true;
     }
@@ -237,46 +239,50 @@ public final class ProximitySensor extends ActiveModeSensor implements
         final boolean isNear = distance < mMaximumRange || distance < 1.0f;
         final boolean changed = sNear != (sNear = isNear) || mFirstChange;
 
-        long now = getTimeNow();
-        if (Build.DEBUG) {
-            int historySize = mHistory.size();
-            String delta = (historySize > 0
-                    ? " delta=" + (now - mHistory.get(historySize - 1).time)
-                    : " first_event");
-            Log.d(TAG + ":SensorEvent", "distance=" + distance
-                    + " is_near=" + isNear
-                    + " changed=" + changed
-                    + delta);
-        }
-
-        if (!changed) {
-            // Well just in cause if proximity sensor is NOT always eventual.
-            // This should not happen, but who knows... I found maximum
-            // range buggy enough.
-            return;
-        }
-
-        if (mHistory.size() >= mHistoryMaximumSize)
-            mHistory.remove(0);
-
-        mHandler.removeCallbacksAndMessages(null);
-        mHistory.add(new Event(isNear, now));
-        for (Program program : mPrograms) {
-            int delay = program.fits(mHistory);
-            if (delay >= 0) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.removeCallbacksAndMessages(null);
-                        mHistory.clear();
-                        requestWakeUp();
-                    }
-                }, delay);
+        synchronized (monitor) {
+            long now = getTimeNow();
+            if (Build.DEBUG) {
+                int historySize = mHistory.size();
+                String delta = (historySize > 0
+                        ? " delta=" + (now - mHistory.get(historySize - 1).time)
+                        : " first_event");
+                Log.d(TAG + ":SensorEvent", "distance=" + distance
+                        + " is_near=" + isNear
+                        + " changed=" + changed
+                        + delta);
             }
-        }
 
-        sLastEventTime = now;
-        mFirstChange = false;
+            if (!changed) {
+                // Well just in cause if proximity sensor is NOT always eventual.
+                // This should not happen, but who knows... I found maximum
+                // range buggy enough.
+                return;
+            }
+
+            if (mHistory.size() >= mHistoryMaximumSize)
+                mHistory.remove(0);
+
+            mHandler.removeCallbacksAndMessages(null);
+            mHistory.add(new Event(isNear, now));
+            for (Program program : mPrograms) {
+                int delay = program.fits(mHistory);
+                if (delay >= 0) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (monitor) {
+                                mHandler.removeCallbacksAndMessages(null);
+                                mHistory.clear();
+                                requestWakeUp();
+                            }
+                        }
+                    }, delay);
+                }
+            }
+
+            sLastEventTime = now;
+            mFirstChange = false;
+        }
     }
 
     @Override
