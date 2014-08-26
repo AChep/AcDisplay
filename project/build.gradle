@@ -5,6 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        //noinspection GradleDynamicVersion
         classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }

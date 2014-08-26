@@ -34,7 +34,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.achep.acdisplay.AsyncTask;
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;

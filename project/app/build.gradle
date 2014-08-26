@@ -27,7 +27,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        //noinspection GradleDynamicVersion
         classpath 'org.robolectric:robolectric-gradle-plugin:0.12.+'
+        //noinspection GradleDynamicVersion
         classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
@@ -54,6 +56,7 @@ android {
 
     defaultConfig {
         minSdkVersion 18
+        //noinspection OldTargetApi
         targetSdkVersion 19
     }
 
@@ -124,6 +127,7 @@ robolectric {
 dependencies {
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
+    //noinspection GradleDependency,GradleDynamicVersion
     compile 'com.android.support:support-v4:19.+'
 
     androidTestCompile('junit:junit:4.11')

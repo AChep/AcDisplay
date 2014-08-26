@@ -39,7 +39,6 @@ import com.achep.acdisplay.utils.FileUtils;
 import com.achep.acdisplay.utils.PowerUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**

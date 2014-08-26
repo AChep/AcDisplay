@@ -29,7 +29,8 @@
         Robolectric DOES NOT support SDK 19!!! Read source:
         https://github.com/robolectric/robolectric/blob/master/src/main/java/org/robolectric/SdkConfig.java#L13
         -->
-    <uses-sdk android:targetSdkVersion="18" />
+    <uses-sdk android:targetSdkVersion="18"
+        tools:ignore="GradleOverrides,OldTargetApi" />
 
     <!-- Needed to show AcDisplay above the keyguard. -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />

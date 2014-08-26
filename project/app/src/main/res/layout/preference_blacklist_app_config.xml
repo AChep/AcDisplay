@@ -23,7 +23,8 @@
     android:minHeight="48dp"
     android:gravity="center_vertical"
     android:paddingEnd="?android:attr/scrollbarSize"
-    android:background="?android:attr/listChoiceBackgroundIndicator">
+    android:background="?android:attr/listChoiceBackgroundIndicator"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
         android:id="@+id/icon"
