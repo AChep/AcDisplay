@@ -19,6 +19,7 @@
 package com.achep.acdisplay.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
 /**
@@ -34,7 +35,8 @@ public class DateUtils {
      *
      * @return Formatted string time
      */
-    public static String formatTime(Context context, int h, int m) {
+    @NonNull
+    public static String formatTime(@NonNull Context context, int h, int m) {
         if (!DateFormat.is24HourFormat(context)) { // 24h formatting
             if (h == 0) h = 12;
             else if (h >= 13) h -= 12;

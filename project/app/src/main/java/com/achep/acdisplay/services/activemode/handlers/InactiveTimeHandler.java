@@ -21,6 +21,7 @@ package com.achep.acdisplay.services.activemode.handlers;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -47,7 +48,7 @@ public final class InactiveTimeHandler extends ActiveModeHandler implements
     private Config mConfig;
     private Timer mTimer;
 
-    public InactiveTimeHandler(Context context, Callback callback) {
+    public InactiveTimeHandler(@NonNull Context context, @NonNull Callback callback) {
         super(context, callback);
     }
 

@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -80,7 +81,7 @@ public class ActiveModeService extends BathService.ChildService implements
     /**
      * Starts or stops this service as required by settings and device's state.
      */
-    public static void handleState(Context context) {
+    public static void handleState(@NonNull Context context) {
         Config config = Config.getInstance();
 
         boolean onlyWhileChangingOption = !config.isEnabledOnlyWhileCharging()
@@ -101,7 +102,8 @@ public class ActiveModeService extends BathService.ChildService implements
      * @return The array of supported {@link ActiveModeSensor sensors}.
      * @see ActiveModeSensor
      */
-    public static ActiveModeSensor[] buildAvailableSensorsList(Context context) {
+    @NonNull
+    public static ActiveModeSensor[] buildAvailableSensorsList(@NonNull Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         ActiveModeSensor[] sensors = new ActiveModeSensor[]{ // all available sensors
                 AccelerometerSensor.getInstance(),
@@ -301,7 +303,7 @@ public class ActiveModeService extends BathService.ChildService implements
     }
 
     @Override
-    public void onWakeRequested(ActiveModeSensor sensor) {
+    public void onWakeRequested(@NonNull ActiveModeSensor sensor) {
         Presenter.getInstance().start(getContext());
     }
 }

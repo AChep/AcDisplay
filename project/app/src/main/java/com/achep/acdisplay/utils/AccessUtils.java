@@ -21,6 +21,7 @@ package com.achep.acdisplay.utils;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.admin.AdminReceiver;
 import com.achep.acdisplay.services.MediaService;
@@ -30,7 +31,7 @@ import com.achep.acdisplay.services.MediaService;
  */
 public class AccessUtils {
 
-    public static boolean isDeviceAdminAccessGranted(Context context) {
+    public static boolean isDeviceAdminAccessGranted(@NonNull Context context) {
         DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         return dpm.isAdminActive(new ComponentName(context, AdminReceiver.class));
     }

@@ -23,6 +23,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Helper class with utils related to power.
@@ -35,7 +37,7 @@ public class PowerUtils {
      * @return true is device is plugged at this moment, false otherwise.
      * @see #isPlugged(android.content.Intent)
      */
-    public static boolean isPlugged(Context context) {
+    public static boolean isPlugged(@NonNull Context context) {
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         return isPlugged(context.registerReceiver(null, intentFilter));
     }
@@ -44,7 +46,7 @@ public class PowerUtils {
      * @return true is device is plugged at this moment, false otherwise.
      * @see #isPlugged(android.content.Context)
      */
-    public static boolean isPlugged(Intent intent) {
+    public static boolean isPlugged(@Nullable Intent intent) {
         if (intent == null) {
             return false;
         }
@@ -60,12 +62,12 @@ public class PowerUtils {
      *
      * @return True if screen is on atm, False otherwise.
      */
-    public static boolean isScreenOn(Context context) {
+    public static boolean isScreenOn(@NonNull Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         return isScreenOn(pm);
     }
 
-    public static boolean isScreenOn(PowerManager pm) {
+    public static boolean isScreenOn(@NonNull PowerManager pm) {
         return pm.isScreenOn();
     }
 

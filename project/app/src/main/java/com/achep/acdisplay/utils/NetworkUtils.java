@@ -21,6 +21,7 @@ package com.achep.acdisplay.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.support.annotation.NonNull;
 
 /**
  * Helper class with utils related to internet and networking.
@@ -32,7 +33,7 @@ public class NetworkUtils {
     /**
      * @return {@code true} if device is connected to internet, {@code false} otherwise.
      */
-    public static boolean isOnline(Context context) {
+    public static boolean isOnline(@NonNull Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }

@@ -24,6 +24,8 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
 
@@ -53,7 +55,7 @@ public abstract class ActiveModeSensor {
         /**
          * Requests to show the AcDisplay.
          */
-        public void onWakeRequested(ActiveModeSensor sensor);
+        public void onWakeRequested(@NonNull ActiveModeSensor sensor);
 
     }
 
@@ -68,7 +70,7 @@ public abstract class ActiveModeSensor {
      *
      * @see #unregisterCallback(ActiveModeSensor.Callback)
      */
-    public void registerCallback(Callback callback) {
+    public void registerCallback(@NonNull Callback callback) {
         mCallbacks.add(callback);
     }
 
@@ -77,7 +79,7 @@ public abstract class ActiveModeSensor {
      *
      * @see #registerCallback(ActiveModeSensor.Callback)
      */
-    public void unregisterCallback(Callback callback) {
+    public void unregisterCallback(@NonNull Callback callback) {
         mCallbacks.remove(callback);
     }
 
@@ -94,7 +96,7 @@ public abstract class ActiveModeSensor {
      *
      * @return {@code true} if the sensor is supported by device, {@code false} otherwise.
      */
-    protected boolean isSupported(SensorManager sensorManager) {
+    protected boolean isSupported(@NonNull SensorManager sensorManager) {
         return sensorManager.getSensorList(getType()).size() > 0;
     }
 
@@ -105,14 +107,14 @@ public abstract class ActiveModeSensor {
      */
     public abstract int getType();
 
-    public abstract void onStart(SensorManager sensorManager);
+    public abstract void onStart(@NonNull SensorManager sensorManager);
 
     public abstract void onStop();
 
     /**
      * Called when the sensor is attached to main class.
      */
-    public void onAttached(SensorManager sensorManager, Context context) {
+    public void onAttached(@NonNull SensorManager sensorManager, @NonNull Context context) {
         // Register sensors only once.
         if (mAttachedNumber++ > 0) {
             return;
@@ -134,7 +136,7 @@ public abstract class ActiveModeSensor {
         setup(null, null);
     }
 
-    void setup(SensorManager sensorManager, Context context) {
+    void setup(@Nullable SensorManager sensorManager, @Nullable Context context) {
         mContext = context;
         mSensorManager = sensorManager;
     }
@@ -143,10 +145,12 @@ public abstract class ActiveModeSensor {
         return mAttachedNumber > 0;
     }
 
+    @NonNull
     public Context getContext() {
         return mContext;
     }
 
+    @NonNull
     public SensorManager getSensorManager() {
         return mSensorManager;
     }
@@ -214,7 +218,7 @@ public abstract class ActiveModeSensor {
          * {@inheritDoc}
          */
         @Override
-        public void onAttached(SensorManager sensorManager, Context context) {
+        public void onAttached(@NonNull SensorManager sensorManager, @NonNull Context context) {
             // Register sensors only once.
             if (mAttachedNumber++ > 0) {
                 return;

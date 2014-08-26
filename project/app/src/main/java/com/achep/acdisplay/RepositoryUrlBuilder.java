@@ -19,6 +19,9 @@
 
 package com.achep.acdisplay;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 /**
  * Builder of the links to remote repository.
  *
@@ -37,17 +40,20 @@ public class RepositoryUrlBuilder {
     private StringBuilder mPathBuilder;
     private boolean mRawAccess = false;
 
-    public RepositoryUrlBuilder setBranch(String branch) {
+    @NonNull
+    public RepositoryUrlBuilder setBranch(@Nullable String branch) {
         mBranch = branch;
         return this;
     }
 
+    @NonNull
     public RepositoryUrlBuilder setRawAccess(boolean rawAccess) {
         mRawAccess = rawAccess;
         return this;
     }
 
-    public RepositoryUrlBuilder addPath(String path) {
+    @NonNull
+    public RepositoryUrlBuilder addPath(@NonNull String path) {
         if (mPathBuilder == null) {
             mPathBuilder = new StringBuilder();
         }
@@ -55,6 +61,7 @@ public class RepositoryUrlBuilder {
         return this;
     }
 
+    @NonNull
     public String build() {
         if (mBranch == null) mBranch = "master";
 

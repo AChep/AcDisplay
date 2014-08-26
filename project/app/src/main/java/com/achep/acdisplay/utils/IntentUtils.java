@@ -21,13 +21,14 @@ package com.achep.acdisplay.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 
 /**
  * Created by Artem on 16.03.14.
  */
 public class IntentUtils {
 
-    public static boolean hasActivityForThat(Context context, Intent intent) {
+    public static boolean hasActivityForThat(@NonNull Context context, Intent intent) {
         PackageManager pm = context.getPackageManager();
         return pm != null && intent.resolveActivity(pm) != null;
     }

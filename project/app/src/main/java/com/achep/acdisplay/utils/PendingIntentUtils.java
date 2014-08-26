@@ -19,13 +19,14 @@
 package com.achep.acdisplay.utils;
 
 import android.app.PendingIntent;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Artem on 02.01.14.
  */
 public class PendingIntentUtils {
 
-    public static boolean sendPendingIntent(PendingIntent contentIntent) {
+    public static boolean sendPendingIntent(@Nullable PendingIntent contentIntent) {
         if (contentIntent != null)
             try {
                 contentIntent.send();

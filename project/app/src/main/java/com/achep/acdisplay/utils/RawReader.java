@@ -20,6 +20,8 @@
 package com.achep.acdisplay.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -34,7 +36,8 @@ public final class RawReader {
 
     private static final String TAG = "RawReader";
 
-    public static String readTextFileFromRawResource(Context context, int rawRes) {
+    @Nullable
+    public static String readTextFileFromRawResource(@NonNull Context context, int rawRes) {
         final InputStream inputStream = context.getResources().openRawResource(rawRes);
         final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         final BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

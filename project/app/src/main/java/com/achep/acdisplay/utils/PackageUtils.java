@@ -20,6 +20,7 @@
 package com.achep.acdisplay.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 /**
  * Created by achep on 12.05.14 for AcDisplay.
@@ -28,7 +29,7 @@ import android.content.Context;
  */
 public class PackageUtils {
 
-    public static String getName(Context context) {
+    public static String getName(@NonNull Context context) {
         return context.getApplicationInfo().packageName;
     }
 

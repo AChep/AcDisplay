@@ -18,6 +18,8 @@
  */
 package com.achep.acdisplay.utils;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -44,7 +46,7 @@ public class FileUtils {
      * @return {@code true} if all files were deleted successfully,
      * {@code false} otherwise or if given file is null.
      */
-    public static boolean deleteRecursive(File file) {
+    public static boolean deleteRecursive(@Nullable File file) {
         if (file != null) {
             File[] children;
             if (file.isDirectory() && (children = file.listFiles()) != null && children.length > 0) {
@@ -71,7 +73,7 @@ public class FileUtils {
      * @param file file to write in
      * @return {@code true} is succeed, {@code false} if failed (file state is undefined!).
      */
-    public static boolean writeToFile(File file, CharSequence text) {
+    public static boolean writeToFile(@NonNull File file, @NonNull CharSequence text) {
         if (file.exists()) {
             if (!deleteRecursive(file)) {
                 return false;
@@ -107,7 +109,8 @@ public class FileUtils {
      * @return Text read from given file, or {@code null}
      * if file does not exist or reading failed.
      */
-    public static String readTextFile(File file) {
+    @Nullable
+    public static String readTextFile(@NonNull File file) {
         if (!file.exists()) return null;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -124,7 +127,7 @@ public class FileUtils {
      * @return text from given {@link BufferedReader}.
      * @throws IOException
      */
-    public static String readTextFromBufferedReader(BufferedReader bufferedReader) throws IOException {
+    public static String readTextFromBufferedReader(@NonNull BufferedReader bufferedReader) throws IOException {
 
         // Store all lines to string builder to
         // reduce memory using.

@@ -20,6 +20,7 @@
 package com.achep.acdisplay.services.activemode;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 /**
  * Provides a callback when active mode should be started or stopped
@@ -62,7 +63,7 @@ public abstract class ActiveModeHandler {
 
     }
 
-    public ActiveModeHandler(Context context, Callback callback) {
+    public ActiveModeHandler(@NonNull Context context, @NonNull Callback callback) {
         mContext = context;
         mCallback = callback;
     }
@@ -96,6 +97,7 @@ public abstract class ActiveModeHandler {
      * @see com.achep.acdisplay.services.activemode.ActiveModeHandler.Callback#requestActive()
      * @see com.achep.acdisplay.services.activemode.ActiveModeHandler.Callback#requestInactive()
      */
+    @NonNull
     public Callback getCallback() {
         return mCallback;
     }
@@ -103,6 +105,7 @@ public abstract class ActiveModeHandler {
     /**
      * @return {@link ActiveModeService Service}'s context.
      */
+    @NonNull
     public Context getContext() {
         return mContext;
     }

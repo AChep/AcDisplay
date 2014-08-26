@@ -20,6 +20,7 @@
 package com.achep.acdisplay.services.activemode.handlers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.notifications.NotificationPresenter;
@@ -40,7 +41,7 @@ public final class WithoutNotifiesHandler extends ActiveModeHandler implements
     private Config mConfig;
     private NotificationPresenter mNotificationPresenter;
 
-    public WithoutNotifiesHandler(Context context, Callback callback) {
+    public WithoutNotifiesHandler(@NonNull Context context, @NonNull Callback callback) {
         super(context, callback);
     }
 

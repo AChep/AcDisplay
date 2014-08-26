@@ -23,6 +23,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -48,6 +49,7 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
         super();
     }
 
+    @NonNull
     public static GyroscopeSensor getInstance() {
         GyroscopeSensor sensor = sGyroscopeSensorWeak != null
                 ? sGyroscopeSensorWeak.get() : null;
@@ -64,12 +66,12 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
     }
 
     @Override
-    protected boolean isSupported(SensorManager sensorManager) {
+    protected boolean isSupported(@NonNull SensorManager sensorManager) {
         return false;
     }
 
     @Override
-    public void onStart(SensorManager sensorManager) {
+    public void onStart(@NonNull SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting gyroscope sensor...");
 
         Sensor accelerationSensor = sensorManager.getDefaultSensor(getType());

@@ -20,6 +20,7 @@ package com.achep.acdisplay.services.activemode.sensors;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -53,6 +54,7 @@ public final class AccelerometerSensor extends ActiveModeSensor.Consuming implem
         mShakeDetector = new ShakeDetector(this);
     }
 
+    @NonNull
     public static AccelerometerSensor getInstance() {
         AccelerometerSensor sensor = sAccelerometerSensorWeak != null
                 ? sAccelerometerSensorWeak.get() : null;
@@ -69,7 +71,7 @@ public final class AccelerometerSensor extends ActiveModeSensor.Consuming implem
     }
 
     @Override
-    public void onStart(SensorManager sensorManager) {
+    public void onStart(@NonNull SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting accelerometer sensor...");
 
         mShakeDetector.start(sensorManager);

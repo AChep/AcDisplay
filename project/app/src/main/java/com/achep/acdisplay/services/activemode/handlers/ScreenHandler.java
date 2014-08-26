@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.services.activemode.ActiveModeHandler;
 import com.achep.acdisplay.utils.PowerUtils;
@@ -53,7 +54,7 @@ public final class ScreenHandler extends ActiveModeHandler {
 
     }
 
-    public ScreenHandler(Context context, Callback callback) {
+    public ScreenHandler(@NonNull Context context, @NonNull Callback callback) {
         super(context, callback);
     }
 

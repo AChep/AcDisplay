@@ -23,6 +23,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -191,7 +193,8 @@ public class Config {
          * @param config a config to read from.
          * @throws java.lang.RuntimeException if failed to read given config.
          */
-        public Object read(Config config) {
+        @NonNull
+        public Object read(@NonNull Config config) {
             Object configInstance = getConfigInstance(config);
             Class configClass = configInstance.getClass();
             try {
@@ -211,7 +214,8 @@ public class Config {
          * @param config a config to write to.
          * @throws java.lang.RuntimeException if failed to read given config.
          */
-        public void write(Config config, Context context, Object newValue, OnConfigChangedListener listener) {
+        public void write(@NonNull Config config, @NonNull Context context,
+                          @NonNull Object newValue, @Nullable OnConfigChangedListener listener) {
             Object configInstance = getConfigInstance(config);
             Class configClass = configInstance.getClass();
             try {
@@ -225,6 +229,7 @@ public class Config {
             }
         }
 
+        @NonNull
         protected Object getConfigInstance(Config config) {
             return config;
         }
@@ -239,14 +244,17 @@ public class Config {
     // //////////////////////////////////////////
 
     public interface OnConfigChangedListener {
-        public void onConfigChanged(Config config, String key, Object value);
+        public void onConfigChanged(
+                @NonNull Config config,
+                @NonNull String key,
+                @NonNull Object value);
     }
 
-    public void registerListener(OnConfigChangedListener listener) {
+    public void registerListener(@NonNull OnConfigChangedListener listener) {
         mListeners.add(listener);
     }
 
-    public void unregisterListener(OnConfigChangedListener listener) {
+    public void unregisterListener(@NonNull OnConfigChangedListener listener) {
         mListeners.remove(listener);
     }
 
@@ -254,6 +262,7 @@ public class Config {
     // ///////////// -- INIT -- /////////////////
     // //////////////////////////////////////////
 
+    @NonNull
     public static synchronized Config getInstance() {
         if (sConfig == null) {
             sConfig = new Config();
@@ -269,7 +278,7 @@ public class Config {
      * Loads saved values from shared preferences.
      * This is called on {@link App app's} create.
      */
-    void init(Context context) {
+    void init(@NonNull Context context) {
         mListeners = new ArrayList<>(6);
 
         hashMap = new HashMap<>();
@@ -404,6 +413,7 @@ public class Config {
         return mContext;
     }
 
+    @NonNull
     public HashMap<String, Option> getHashMap() {
         return hashMap;
     }
@@ -411,6 +421,7 @@ public class Config {
     /**
      * Separated group of different internal triggers.
      */
+    @NonNull
     public Triggers getTriggers() {
         return mTriggers;
     }
@@ -833,7 +844,8 @@ public class Config {
         private final OnConfigChangedListener mConfigListener = new OnConfigChangedListener() {
 
             @Override
-            public void onConfigChanged(Config config, String key, Object value) {
+            public void onConfigChanged(@NonNull Config config, @NonNull String key,
+                                        @NonNull Object value) {
                 Group group = null;
                 for (Group c : mGroups) {
                     if (key.equals(c.preference.getKey())) {
@@ -851,7 +863,7 @@ public class Config {
 
         };
 
-        private void setPreferenceValue(Group group, Object value) {
+        private void setPreferenceValue(@NonNull Group group, @NonNull Object value) {
             mBroadcasting = true;
 
             Option option = group.option;
@@ -873,19 +885,20 @@ public class Config {
             final Preference preference;
             final Option option;
 
-            public Group(Config config, Preference preference) {
+            public Group(@NonNull Config config, @NonNull Preference preference) {
                 this.preference = preference;
                 this.option = config.getHashMap().get(preference.getKey());
             }
         }
 
-        public Syncer(Context context, Config config) {
+        public Syncer(@NonNull Context context, @NonNull Config config) {
             mGroups = new ArrayList<>(10);
             mContext = context;
             mConfig = config;
         }
 
-        public Syncer addPreference(Preference preference) {
+        @NonNull
+        public Syncer addPreference(@NonNull Preference preference) {
             if (preference instanceof CheckBoxPreference) {
                 Group group = new Group(mConfig, preference);
                 mGroups.add(group);
@@ -910,7 +923,7 @@ public class Config {
             }
         }
 
-        private void startListeningGroup(Group group) {
+        private void startListeningGroup(@NonNull Group group) {
             group.preference.setOnPreferenceChangeListener(mPreferenceListener);
             setPreferenceValue(group, group.option.read(mConfig));
         }

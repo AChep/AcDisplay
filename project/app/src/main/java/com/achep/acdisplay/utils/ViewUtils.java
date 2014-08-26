@@ -19,6 +19,8 @@
 package com.achep.acdisplay.utils;
 
 import android.graphics.Matrix;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,11 +40,12 @@ public class ViewUtils {
 
     private static final String TAG = "ViewUtils";
 
+    @NonNull
     private static final MotionEventHandler MOTION_EVENT_HANDLER = Device.hasKitKatApi()
                     ? new MotionEventHandlerReflection()
                     : new MotionEventHandlerCompat();
 
-    public static boolean isTouchPointInView(View view, float x, float y) {
+    public static boolean isTouchPointInView(@NonNull View view, float x, float y) {
         final int[] coordinates = new int[3];
         view.getLocationInWindow(coordinates);
         int left = coordinates[0];
@@ -51,19 +54,19 @@ public class ViewUtils {
                 y >= top && y <= top + view.getHeight();
     }
 
-    public static int getLeft(View view) {
+    public static int getLeft(@NonNull View view) {
         final int[] coordinates = new int[3];
         view.getLocationInWindow(coordinates);
         return coordinates[0];
     }
 
-    public static int getTop(View view) {
+    public static int getTop(@NonNull View view) {
         final int[] coordinates = new int[3];
         view.getLocationInWindow(coordinates);
         return coordinates[1];
     }
 
-    public static int getBottom(View view) {
+    public static int getBottom(@NonNull View view) {
         return getTop(view) + view.getHeight();
     }
 
@@ -71,11 +74,11 @@ public class ViewUtils {
     // //////////// -- VISIBILITY -- ////////////
     // //////////////////////////////////////////
 
-    public static void setVisible(View view, boolean visible) {
+    public static void setVisible(@NonNull View view, boolean visible) {
         setVisible(view, visible, View.GONE);
     }
 
-    public static void setVisible(View view, boolean visible, int invisibleFlag) {
+    public static void setVisible(@NonNull View view, boolean visible, int invisibleFlag) {
         int visibility = view.getVisibility();
         int visibilityNew = visible ? View.VISIBLE : invisibleFlag;
 
@@ -84,7 +87,7 @@ public class ViewUtils {
         }
     }
 
-    public static void safelySetText(TextView textView, CharSequence text) {
+    public static void safelySetText(@NonNull TextView textView, @Nullable CharSequence text) {
         final boolean visible = text != null;
         if (visible) textView.setText(text);
         ViewUtils.setVisible(textView, visible);
@@ -94,7 +97,7 @@ public class ViewUtils {
     // /////////// -- TOUCH EVENTS -- ///////////
     // //////////////////////////////////////////
 
-    public static boolean pointInView(View view, float localX, float localY, float slop) {
+    public static boolean pointInView(@NonNull View view, float localX, float localY, float slop) {
         return localX >= view.getLeft() - slop
                 && localX < view.getRight() + slop
                 && localY >= view.getTop() - slop
@@ -108,7 +111,7 @@ public class ViewUtils {
      * @param ev the view-local motion event
      * @return false if the transformation could not be applied
      */
-    public static boolean toGlobalMotionEvent(View view, MotionEvent ev) {
+    public static boolean toGlobalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
         return MOTION_EVENT_HANDLER.toGlobalMotionEvent(view, ev);
     }
 
@@ -119,7 +122,7 @@ public class ViewUtils {
      * @param ev the on-screen motion event
      * @return false if the transformation could not be applied
      */
-    public static boolean toLocalMotionEvent(View view, MotionEvent ev) {
+    public static boolean toLocalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
         return MOTION_EVENT_HANDLER.toLocalMotionEvent(view, ev);
     }
 
@@ -132,7 +135,7 @@ public class ViewUtils {
          * @param ev the view-local motion event
          * @return false if the transformation could not be applied
          */
-        abstract boolean toGlobalMotionEvent(View view, MotionEvent ev);
+        abstract boolean toGlobalMotionEvent(@NonNull View view, @NonNull MotionEvent ev);
 
         /**
          * Transforms a motion event from on-screen coordinates to view-local
@@ -141,19 +144,19 @@ public class ViewUtils {
          * @param ev the on-screen motion event
          * @return false if the transformation could not be applied
          */
-        abstract boolean toLocalMotionEvent(View view, MotionEvent ev);
+        abstract boolean toLocalMotionEvent(@NonNull View view, @NonNull MotionEvent ev);
 
     }
 
     private static final class MotionEventHandlerReflection extends MotionEventHandler {
 
         @Override
-        boolean toGlobalMotionEvent(View view, MotionEvent ev) {
+        boolean toGlobalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
             return toMotionEvent(view, ev, "toGlobalMotionEvent");
         }
 
         @Override
-        boolean toLocalMotionEvent(View view, MotionEvent ev) {
+        boolean toLocalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
             return toMotionEvent(view, ev, "toLocalMotionEvent");
         }
 
@@ -177,7 +180,7 @@ public class ViewUtils {
     private static final class MotionEventHandlerCompat extends MotionEventHandler {
 
         @Override
-        boolean toGlobalMotionEvent(View view, MotionEvent ev) {
+        boolean toGlobalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
             final int[] windowPosition = getWindowPosition(view);
             if (windowPosition == null) {
                 return false;
@@ -189,7 +192,7 @@ public class ViewUtils {
         }
 
         @Override
-        boolean toLocalMotionEvent(View view, MotionEvent ev) {
+        boolean toLocalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
             final int[] windowPosition = getWindowPosition(view);
             if (windowPosition == null) {
                 return false;
@@ -200,7 +203,8 @@ public class ViewUtils {
             return true;
         }
 
-        private static int[] getWindowPosition(View view) {
+        @Nullable
+        private static int[] getWindowPosition(@NonNull View view) {
             Object info;
             try {
                 Field field = View.class.getDeclaredField("mAttachInfo");
@@ -240,7 +244,7 @@ public class ViewUtils {
          *
          * @param ev the on-screen motion event
          */
-        private static void transformMotionEventToLocal(View view, MotionEvent ev) {
+        private static void transformMotionEventToLocal(@NonNull View view, @NonNull MotionEvent ev) {
             final ViewParent parent = view.getParent();
             if (parent instanceof View) {
                 final View vp = (View) parent;
@@ -265,7 +269,7 @@ public class ViewUtils {
          *
          * @param ev the on-screen motion event
          */
-        private static void transformMotionEventToGlobal(View view, MotionEvent ev) {
+        private static void transformMotionEventToGlobal(@NonNull View view, @NonNull MotionEvent ev) {
             Matrix matrix = view.getMatrix();
             if (matrix != null) {
                 ev.transform(matrix);

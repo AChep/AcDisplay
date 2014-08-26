@@ -25,6 +25,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Artem on 24.03.2014.
@@ -34,11 +36,11 @@ public class BitmapUtils {
     /**
      * Recycles given bitmap, if it's not {@code null}.
      */
-    public static void safelyRecycle(Bitmap bitmap) {
+    public static void safelyRecycle(@Nullable Bitmap bitmap) {
         if (bitmap != null) bitmap.recycle();
     }
 
-    public static boolean hasTransparentCorners(Bitmap bitmap) {
+    public static boolean hasTransparentCorners(@NonNull Bitmap bitmap) {
         int right = bitmap.getWidth() - 1;
         int bottom = bitmap.getHeight() - 1;
         return bitmap.getPixel(0, 0) == Color.TRANSPARENT
@@ -54,7 +56,8 @@ public class BitmapUtils {
      * @param bitmap Original Bitmap
      * @return Circled bitmap
      */
-    public static Bitmap createCircleBitmap(Bitmap bitmap) {
+    @NonNull
+    public static Bitmap createCircleBitmap(@NonNull Bitmap bitmap) {
         final int width = bitmap.getWidth();
         final int height = bitmap.getHeight();
 
@@ -72,7 +75,8 @@ public class BitmapUtils {
         return output;
     }
 
-    public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
+    @NonNull
+    public static Bitmap doBlur(@NonNull Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
 
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html

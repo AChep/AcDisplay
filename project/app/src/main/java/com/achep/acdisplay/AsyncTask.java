@@ -19,6 +19,8 @@
 
 package com.achep.acdisplay;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.achep.acdisplay.utils.FileUtils;
@@ -40,7 +42,7 @@ import java.util.List;
  */
 public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
 
-    public static void stop(AsyncTask asyncTask) {
+    public static void stop(@Nullable AsyncTask asyncTask) {
         if (asyncTask != null && !asyncTask.isFinished()) {
             asyncTask.cancel();
         }
@@ -85,7 +87,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
             /**
              * Called when downloading finished or failed.
              */
-            void onDownloaded(String[] texts);
+            void onDownloaded(@NonNull String[] texts);
         }
 
         private static class LoaderThread extends Thread {
@@ -134,7 +136,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
             }
         }
 
-        public DownloadText(Callback callback) {
+        public DownloadText(@NonNull Callback callback) {
             mCallback = new WeakReference<>(callback);
 
             int initialCapacity = Math.min(MAX_THREAD_NUM, 5);
@@ -198,7 +200,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
          *
          * @param thread thread to be joined
          */
-        private void joinThread(LoaderThread thread) {
+        private void joinThread(@NonNull LoaderThread thread) {
             if (thread.isAlive()) {
                 while (true) {
                     try {
@@ -220,7 +222,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
         }
 
         @Override
-        protected void onPostExecute(String[] s) {
+        protected void onPostExecute(@NonNull String[] s) {
             super.onPostExecute(s);
             Callback callback = mCallback.get();
             if (callback != null) {

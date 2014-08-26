@@ -23,6 +23,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -76,7 +77,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
             }
         }
 
-        private Program(Data[] datas) {
+        private Program(@NonNull Data[] datas) {
             mDatas = datas;
         }
 
@@ -118,18 +119,22 @@ public final class ProximitySensor extends ActiveModeSensor implements
             private final ArrayList<Data> mProgram = new ArrayList<>(10);
             private boolean mLastNear;
 
+            @NonNull
             public Builder begin(boolean isNear, int timeMin) {
                 return add(isNear, timeMin, Long.MAX_VALUE);
             }
 
+            @NonNull
             public Builder add(int timeMin, long timeMax) {
                 return add(!mLastNear, timeMin, timeMax);
             }
 
+            @NonNull
             public Builder end(int timeMin) {
                 return add(timeMin, 0);
             }
 
+            @NonNull
             private Builder add(boolean isNear, int timeMin, long timeMax) {
                 Data data = new Data(isNear, timeMin, timeMax);
                 mProgram.add(data);
@@ -137,6 +142,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 return this;
             }
 
+            @NonNull
             public Program build() {
                 return new Program(mProgram.toArray(new Data[mProgram.size()]));
             }
@@ -187,6 +193,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
         mHandler = new Handler();
     }
 
+    @NonNull
     public static ProximitySensor getInstance() {
         ProximitySensor sensor = sProximitySensorWeak != null
                 ? sProximitySensorWeak.get() : null;
@@ -210,7 +217,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
     }
 
     @Override
-    public void onStart(SensorManager sensorManager) {
+    public void onStart(@NonNull SensorManager sensorManager) {
         if (Build.DEBUG) Log.d(TAG, "Starting proximity sensor...");
 
         mHistory.clear();

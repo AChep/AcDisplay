@@ -19,6 +19,7 @@
 package com.achep.acdisplay.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 /**
@@ -34,11 +35,13 @@ public class ToastUtils {
      * @param text message to show
      * @see #showLong(android.content.Context, CharSequence)
      */
-    public static Toast showShort(Context context, CharSequence text) {
+    @NonNull
+    public static Toast showShort(@NonNull Context context, @NonNull CharSequence text) {
         return show(context, text, Toast.LENGTH_SHORT);
     }
 
-    public static Toast showShort(Context context, int stringRes) {
+    @NonNull
+    public static Toast showShort(@NonNull Context context, int stringRes) {
         return showShort(context, context.getString(stringRes));
     }
 
@@ -48,15 +51,18 @@ public class ToastUtils {
      * @param text message to show
      * @see #showShort(android.content.Context, CharSequence)
      */
-    public static Toast showLong(Context context, CharSequence text) {
+    @NonNull
+    public static Toast showLong(@NonNull Context context, @NonNull CharSequence text) {
         return show(context, text, Toast.LENGTH_LONG);
     }
 
-    public static Toast showLong(Context context, int stringRes) {
+    @NonNull
+    public static Toast showLong(@NonNull Context context, int stringRes) {
         return showLong(context, context.getString(stringRes));
     }
 
-    private static Toast show(Context context, CharSequence text, int duration) {
+    @NonNull
+    private static Toast show(@NonNull Context context, CharSequence text, int duration) {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         return toast;
