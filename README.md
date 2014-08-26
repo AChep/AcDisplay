@@ -16,7 +16,7 @@ It will inform you about new notifications by showing a minimal, beautiful scree
 
 <a href="http://get.acdisplay.org">
   <img alt="Get AcDisplay on Google Play" vspace="20"
-       src="https://github.com/AChep/AcDisplay/raw/master/art/google_play.png" />
+       src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
 
 Download & Build
