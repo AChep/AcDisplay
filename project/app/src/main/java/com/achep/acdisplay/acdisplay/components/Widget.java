@@ -20,6 +20,8 @@
 package com.achep.acdisplay.acdisplay.components;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public abstract class Widget {
 
+    @NonNull
     private final AcDisplayFragment mHostFragment;
+
+    @NonNull
     protected final Callback mCallback;
 
     private ViewGroup mView;
@@ -56,19 +61,15 @@ public abstract class Widget {
          * @see #getBackground()
          * @see #getBackgroundMask()
          */
-        public void requestBackgroundUpdate(Widget widget);
+        public void requestBackgroundUpdate(@NonNull Widget widget);
 
         /**
          * Requests fragment to restarts timeout.
          */
-        public void requestTimeoutRestart(Widget widget);
+        public void requestTimeoutRestart(@NonNull Widget widget);
     }
 
-    public Widget(Callback callback, AcDisplayFragment fragment) {
-        if (callback == null || fragment == null) {
-            throw new RuntimeException("Widget can not be initialized without callback or host.");
-        }
-
+    public Widget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
         mCallback = callback;
         mHostFragment = fragment;
     }
@@ -105,6 +106,7 @@ public abstract class Widget {
                 .isEquals();
     }
 
+    @NonNull
     public AcDisplayFragment getHostFragment() {
         return mHostFragment;
     }
@@ -141,6 +143,7 @@ public abstract class Widget {
      * @return Text to be read aloud.
      * @see #isReadable()
      */
+    @Nullable
     public String getReadAloudText() {
         return null;
     }
@@ -151,6 +154,7 @@ public abstract class Widget {
      * @return The bitmap to be used as background, {@code null} if no background.
      * @see #getBackgroundMask()
      */
+    @Nullable
     public Bitmap getBackground() {
         return null;
     }
@@ -231,11 +235,16 @@ public abstract class Widget {
         return mView;
     }
 
-    protected View onCreateIconView(LayoutInflater inflater, ViewGroup container) {
+    protected View onCreateIconView(
+            @NonNull LayoutInflater inflater,
+            @NonNull ViewGroup container) {
         return null;
     }
 
-    protected ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container, ViewGroup view) {
+    protected ViewGroup onCreateView(
+            @NonNull LayoutInflater inflater,
+            @NonNull ViewGroup container,
+            @Nullable ViewGroup view) {
         return null;
     }
 

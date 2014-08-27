@@ -22,6 +22,9 @@ package com.achep.acdisplay.acdisplay.components;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.RemoteControlClient;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +71,7 @@ public class MediaWidget extends Widget implements
         }
     };
 
-    public MediaWidget(Callback callback, AcDisplayFragment2 fragment) {
+    public MediaWidget(@NonNull Callback callback, @NonNull AcDisplayFragment2 fragment) {
         super(callback, fragment);
         mMediaController = fragment.getMediaController();
     }
@@ -86,7 +89,7 @@ public class MediaWidget extends Widget implements
     }
 
     @Override
-    public void onMediaChanged(MediaController controller, int event) {
+    public void onMediaChanged(@NonNull MediaController controller, int event) {
         switch (event) {
             case MediaController.EVENT_METADATA_CHANGED:
                 updateMetadata(controller.getMetadata());
@@ -97,7 +100,7 @@ public class MediaWidget extends Widget implements
         }
     }
 
-    private void updateMetadata(Metadata metadata) {
+    private void updateMetadata(@NonNull Metadata metadata) {
         if (mArtworkOrigin == null || !mArtworkOrigin.sameAs(metadata.bitmap)) {
             mArtworkOrigin = metadata.bitmap;
 
@@ -166,6 +169,7 @@ public class MediaWidget extends Widget implements
         mCallback.requestBackgroundUpdate(this);
     }
 
+    @Nullable
     @Override
     public Bitmap getBackground() {
         return mArtworkBlurred;
@@ -177,7 +181,10 @@ public class MediaWidget extends Widget implements
     }
 
     @Override
-    protected ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container, ViewGroup sceneView) {
+    protected ViewGroup onCreateView(
+            @NonNull LayoutInflater inflater,
+            @NonNull ViewGroup container,
+            @Nullable ViewGroup sceneView) {
         boolean initialize = sceneView == null;
         if (initialize) {
             sceneView = (ViewGroup) inflater.inflate(R.layout.acdisplay_scene_music, container, false);
@@ -204,7 +211,7 @@ public class MediaWidget extends Widget implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(@NonNull View v) {
         int keyCode;
         if (v == mButtonPrevious) {
             keyCode = KeyEvent.KEYCODE_MEDIA_PREVIOUS;
@@ -221,7 +228,7 @@ public class MediaWidget extends Widget implements
     }
 
     @Override
-    public boolean onLongClick(View v) {
+    public boolean onLongClick(@NonNull View v) {
         if (v == mButtonPlayPause) {
             mMediaController.sendMediaButtonClick(KeyEvent.KEYCODE_MEDIA_STOP);
         } else {
