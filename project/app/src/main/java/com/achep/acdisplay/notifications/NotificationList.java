@@ -19,6 +19,9 @@
 
 package com.achep.acdisplay.notifications;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 
 /**
@@ -40,7 +43,10 @@ final class NotificationList {
     private static final int EVENT_CHANGED = 1;
     private static final int EVENT_REMOVED = 2;
 
+    @NonNull
     private ArrayList<OpenNotification> mList;
+
+    @Nullable
     private OnNotificationListChangedListener mListener;
 
     /**
@@ -54,7 +60,7 @@ final class NotificationList {
          *
          * @param n newly added notification
          */
-        public int onNotificationAdded(OpenNotification n);
+        public int onNotificationAdded(@NonNull OpenNotification n);
 
         /**
          * Called when old notification was replaced with new one.
@@ -62,19 +68,25 @@ final class NotificationList {
          * @param n   newly added notification
          * @param old removed notification
          */
-        public int onNotificationChanged(OpenNotification n, OpenNotification old);
+        public int onNotificationChanged(@NonNull OpenNotification n, @NonNull OpenNotification old);
 
         /**
          * Called when notification was removed from list.
          *
          * @param n removed notification
          */
-        public int onNotificationRemoved(OpenNotification n);
+        public int onNotificationRemoved(@NonNull OpenNotification n);
 
     }
 
-    public NotificationList(OnNotificationListChangedListener callback) {
-        mListener = callback;
+    /**
+     * Creates new {@link com.achep.acdisplay.notifications.NotificationList} with initial capacity
+     * equals to {@code 10}.
+     *
+     * @param listener Listener to which all events will be send.
+     */
+    public NotificationList(@Nullable OnNotificationListChangedListener listener) {
+        mListener = listener;
         mList = new ArrayList<>(10);
     }
 
@@ -141,11 +153,16 @@ final class NotificationList {
      *
      * @return link to primitive list of notifications.
      */
+    @NonNull
     public ArrayList<OpenNotification> list() {
         return mList;
     }
 
-    public int indexOf(OpenNotification n) {
+    /**
+     * @return the position of given {@link OpenNotification} in
+     * {@link #mList list}, or {@code -1} if not found.
+     */
+    public int indexOf(@NonNull OpenNotification n) {
         final int size = mList.size();
         for (int i = 0; i < size; i++) {
             if (NotificationUtils.equals(n, mList.get(i))) {
@@ -162,7 +179,7 @@ final class NotificationList {
      * @see #EVENT_CHANGED
      * @see #EVENT_REMOVED
      */
-    private int notifyListener(int event, OpenNotification n, OpenNotification old) {
+    private int notifyListener(int event, @NonNull OpenNotification n, OpenNotification old) {
         if (mListener == null) return RESULT_DEFAULT;
         switch (event) {
             case EVENT_ADDED:
