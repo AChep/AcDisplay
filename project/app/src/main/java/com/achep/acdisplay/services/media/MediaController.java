@@ -330,7 +330,7 @@ public class MediaController {
      * @return {@code string == null ? null : TextUtils.isEmpty(string) ? null : string.trim()}
      */
     private String trim(String string) {
-        return string == null ? null : TextUtils.isEmpty(string) ? null : string.trim();
+        return string == null ? null : TextUtils.isEmpty(string = string.trim()) ? null : string;
     }
 
     /**
