@@ -65,6 +65,7 @@ public class App extends Application {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+        Config.getInstance().onLowMemory();
         Blacklist.getInstance().onLowMemory();
     }
 

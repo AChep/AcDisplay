@@ -29,6 +29,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 
+import com.achep.acdisplay.interfaces.IOnLowMemory;
 import com.achep.acdisplay.powertoggles.ToggleReceiver;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
@@ -38,6 +39,7 @@ import com.achep.acdisplay.utils.AccessUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ import java.util.HashMap;
  * @since 21.01.14
  */
 @SuppressWarnings("ConstantConditions")
-public class Config {
+public class Config implements IOnLowMemory {
 
     private static final String TAG = "Config";
 
@@ -139,7 +141,8 @@ public class Config {
     private int mTrigPreviousVersion;
     private boolean mTrigHelpRead;
 
-    HashMap<String, Option> hashMap;
+    @NonNull
+    private SoftReference<HashMap<String, Option>> mHashMapRef = new SoftReference<>(null);
 
     public static class Option {
         private final String setterName;
@@ -274,62 +277,18 @@ public class Config {
         mTriggers = new Triggers();
     }
 
+    @Override
+    public void onLowMemory() {
+        // Clear hash-map; it will be recreated on #getHashMap().
+        mHashMapRef.clear();
+    }
+
     /**
      * Loads saved values from shared preferences.
      * This is called on {@link App app's} create.
      */
     void init(@NonNull Context context) {
         mListeners = new ArrayList<>(6);
-
-        hashMap = new HashMap<>();
-        hashMap.put(KEY_ENABLED, new Option(
-                "setEnabled", "isEnabled", boolean.class));
-        hashMap.put(KEY_KEYGUARD, new Option(
-                "setKeyguardEnabled", "isKeyguardEnabled", boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE, new Option(
-                "setActiveModeEnabled", "isActiveModeEnabled", boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new Option(
-                "setActiveModeWithoutNotificationsEnabled",
-                "isActiveModeWithoutNotifiesEnabled", boolean.class));
-        hashMap.put(KEY_NOTIFY_LOW_PRIORITY, new Option(
-                "setLowPriorityNotificationsAllowed",
-                "isLowPriorityNotificationsAllowed", boolean.class));
-        hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new Option(
-                "setWakeUpOnNotifyEnabled",
-                "isNotifyWakingUp", boolean.class));
-        hashMap.put(KEY_ONLY_WHILE_CHARGING, new Option(
-                "setEnabledOnlyWhileCharging",
-                "isEnabledOnlyWhileCharging", boolean.class));
-        hashMap.put(KEY_UI_FULLSCREEN, new Option(
-                "setFullScreen", "isFullScreen", boolean.class));
-        hashMap.put(KEY_UI_WALLPAPER_SHOWN, new Option(
-                "setWallpaperShown", "isWallpaperShown", boolean.class));
-        hashMap.put(KEY_UI_SHADOW_TOGGLE, new Option(
-                "setShadowEnabled", "isShadowEnabled", boolean.class));
-        hashMap.put(KEY_UI_MIRRORED_TIMEOUT_BAR, new Option(
-                "setMirroredTimeoutProgressBarEnabled",
-                "isMirroredTimeoutProgressBarEnabled", boolean.class));
-        hashMap.put(KEY_UI_NOTIFY_CIRCLED_ICON, new Option(
-                "setCircledLargeIconEnabled",
-                "isCircledLargeIconEnabled", boolean.class));
-        hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new Option(
-                "setStatusBatterySticky",
-                "isStatusBatterySticky", boolean.class));
-        hashMap.put(KEY_UI_UNLOCK_ANIMATION, new Option(
-                "setUnlockAnimationEnabled",
-                "isUnlockAnimationEnabled", boolean.class));
-        hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new Option(
-                "setScreenOffAfterLastNotify",
-                "isScreenOffAfterLastNotify", boolean.class));
-        hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new Option(
-                "setWidgetPinnable",
-                "isWidgetPinnable", boolean.class));
-        hashMap.put(KEY_FEEL_WIDGET_READABLE, new Option(
-                "setWidgetReadable",
-                "isWidgetReadable", boolean.class));
-        hashMap.put(KEY_DEV_SENSORS_DUMP, new Option(
-                "setDevSensorsDumpEnabled",
-                "isDevSensorsDumpEnabled", boolean.class));
 
         Resources res = context.getResources();
         SharedPreferences prefs = getSharedPreferences(context);
@@ -415,6 +374,60 @@ public class Config {
 
     @NonNull
     public HashMap<String, Option> getHashMap() {
+        HashMap<String, Option> hashMap = mHashMapRef.get();
+        if (hashMap == null) {
+            hashMap = new HashMap<>();
+            hashMap.put(KEY_ENABLED, new Option(
+                    "setEnabled", "isEnabled", boolean.class));
+            hashMap.put(KEY_KEYGUARD, new Option(
+                    "setKeyguardEnabled", "isKeyguardEnabled", boolean.class));
+            hashMap.put(KEY_ACTIVE_MODE, new Option(
+                    "setActiveModeEnabled", "isActiveModeEnabled", boolean.class));
+            hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new Option(
+                    "setActiveModeWithoutNotificationsEnabled",
+                    "isActiveModeWithoutNotifiesEnabled", boolean.class));
+            hashMap.put(KEY_NOTIFY_LOW_PRIORITY, new Option(
+                    "setLowPriorityNotificationsAllowed",
+                    "isLowPriorityNotificationsAllowed", boolean.class));
+            hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new Option(
+                    "setWakeUpOnNotifyEnabled",
+                    "isNotifyWakingUp", boolean.class));
+            hashMap.put(KEY_ONLY_WHILE_CHARGING, new Option(
+                    "setEnabledOnlyWhileCharging",
+                    "isEnabledOnlyWhileCharging", boolean.class));
+            hashMap.put(KEY_UI_FULLSCREEN, new Option(
+                    "setFullScreen", "isFullScreen", boolean.class));
+            hashMap.put(KEY_UI_WALLPAPER_SHOWN, new Option(
+                    "setWallpaperShown", "isWallpaperShown", boolean.class));
+            hashMap.put(KEY_UI_SHADOW_TOGGLE, new Option(
+                    "setShadowEnabled", "isShadowEnabled", boolean.class));
+            hashMap.put(KEY_UI_MIRRORED_TIMEOUT_BAR, new Option(
+                    "setMirroredTimeoutProgressBarEnabled",
+                    "isMirroredTimeoutProgressBarEnabled", boolean.class));
+            hashMap.put(KEY_UI_NOTIFY_CIRCLED_ICON, new Option(
+                    "setCircledLargeIconEnabled",
+                    "isCircledLargeIconEnabled", boolean.class));
+            hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new Option(
+                    "setStatusBatterySticky",
+                    "isStatusBatterySticky", boolean.class));
+            hashMap.put(KEY_UI_UNLOCK_ANIMATION, new Option(
+                    "setUnlockAnimationEnabled",
+                    "isUnlockAnimationEnabled", boolean.class));
+            hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new Option(
+                    "setScreenOffAfterLastNotify",
+                    "isScreenOffAfterLastNotify", boolean.class));
+            hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new Option(
+                    "setWidgetPinnable",
+                    "isWidgetPinnable", boolean.class));
+            hashMap.put(KEY_FEEL_WIDGET_READABLE, new Option(
+                    "setWidgetReadable",
+                    "isWidgetReadable", boolean.class));
+            hashMap.put(KEY_DEV_SENSORS_DUMP, new Option(
+                    "setDevSensorsDumpEnabled",
+                    "isDevSensorsDumpEnabled", boolean.class));
+
+            mHashMapRef = new SoftReference<>(hashMap);
+        }
         return hashMap;
     }
 
