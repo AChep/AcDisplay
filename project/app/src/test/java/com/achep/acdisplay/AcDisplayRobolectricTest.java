@@ -31,6 +31,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.File;
 import java.lang.Double;
 import java.lang.Override;
 import java.lang.String;
