@@ -62,6 +62,12 @@ public class App extends Application {
         SensorsDumpService.handleState(this);
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Blacklist.getInstance().onLowMemory();
+    }
+
     /**
      * Starts Easter Eggs' activity.
      */

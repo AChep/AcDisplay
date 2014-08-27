@@ -48,10 +48,12 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
     private HashMap<V, Integer> mList;
     private ArrayList<Integer> mPlaceholder;
-    private Comparator<V> mComparator;
-    private T mSaver;
 
     private ArrayList<OnSharedListChangedListener<V>> mListeners;
+
+    private boolean mRecyclableCreated;
+    private Comparator<V> mComparator;
+    private T mSaver;
 
     /**
      * Interface definition for a callback to be invoked
@@ -158,12 +160,8 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         mList = new HashMap<>();
         mPlaceholder = new ArrayList<>(3);
         mListeners = new ArrayList<>(6);
-        mComparator = onCreateComparator();
-        mSaver = onCreateSaver();
 
-        if (mSaver == null) {
-            throw new NullPointerException("The saver of SharedList may not be null!");
-        }
+        createRecyclableFields();
 
         // Restore previously saved list.
         SharedPreferences prefs = getSharedPreferences(context);
@@ -220,6 +218,20 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
 
     protected boolean isOverwriteAllowed(V object) {
         return false;
+    }
+
+    public void onLowMemory() {
+        mRecyclableCreated = false;
+        // This probably won't free a lot, but
+        // we are free to do it.
+        mComparator = null;
+        mSaver = null;
+    }
+
+    private void createRecyclableFields() {
+        if (mRecyclableCreated & (mRecyclableCreated = true)) return;
+        mComparator = onCreateComparator();
+        mSaver = onCreateSaver();
     }
 
     public void remove(@NonNull Context context, V object) {
@@ -300,6 +312,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         }
 
         mList.put(object, pos);
+        createRecyclableFields();
 
         // Save object to internal memory.
         SharedPreferences.Editor editor = mSaver
@@ -344,6 +357,8 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
      * @param l      Listener that will be ignored while notifying.
      */
     protected void notifyOnPut(V object, V old, OnSharedListChangedListener l) {
+        createRecyclableFields();
+
         int diff = mComparator != null ? mComparator.compare(object, old) : 0;
         for (OnSharedListChangedListener<V> listener : mListeners) {
             if (listener == l) continue;
