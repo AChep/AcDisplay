@@ -32,7 +32,7 @@ import com.achep.acdisplay.services.activemode.ActiveModeSensor;
 import java.lang.ref.WeakReference;
 
 /**
- * Basing on results of accelerometer sensor it notifies when
+ * Basing on results of gyroscope sensor it notifies when
  * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity AcDisplay}
  * should be shown.
  *
