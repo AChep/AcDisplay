@@ -24,6 +24,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.achep.acdisplay.interfaces.IOnLowMemory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -34,7 +36,7 @@ import java.util.Set;
  *
  * @author Artem Chepurnoy
  */
-public abstract class SharedList<V, T extends SharedList.Saver<V>> {
+public abstract class SharedList<V, T extends SharedList.Saver<V>> implements IOnLowMemory {
 
     private static final String TAG = "SharedList";
 
@@ -220,6 +222,10 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void onLowMemory() {
         mRecyclableCreated = false;
         // This probably won't free a lot, but

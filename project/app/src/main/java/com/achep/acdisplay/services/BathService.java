@@ -36,6 +36,7 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.activities.MainActivity;
+import com.achep.acdisplay.interfaces.IOnLowMemory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -287,7 +288,7 @@ public class BathService extends Service {
      *
      * @author Artem Chepurnoy
      */
-    public abstract static class ChildService {
+    public abstract static class ChildService implements IOnLowMemory {
 
         private Context mContext;
 
@@ -316,8 +317,9 @@ public class BathService extends Service {
         public abstract void onDestroy();
 
         /**
-         *
+         * {@inheritDoc}
          */
+        @Override
         public void onLowMemory() { /* placeholder */ }
 
         /**
