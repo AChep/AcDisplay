@@ -46,6 +46,9 @@ public final class ProximitySensor extends ActiveModeSensor implements
 
     private static final int LAST_EVENT_MAX_TIME = 1000; // ms.
 
+    // pocket program
+    private static final int POCKET_START_TIME = 4000; // ms.
+
     private static WeakReference<ProximitySensor> sProximitySensorWeak;
     private static long sLastEventTime;
     private static boolean sAttached;
@@ -61,14 +64,16 @@ public final class ProximitySensor extends ActiveModeSensor implements
     private final Handler mHandler;
     private int mHistoryMaximumSize;
 
+    private Program mPocketProgram;
+
     private static class Program {
 
-        final Data[] mDatas;
+        final Data[] datas;
 
         private static class Data {
             final boolean isNear;
-            final int timeMin;
-            final long timeMax;
+            int timeMin;
+            long timeMax;
 
             public Data(boolean isNear, int timeMin, long timeMax) {
                 this.isNear = isNear;
@@ -78,12 +83,12 @@ public final class ProximitySensor extends ActiveModeSensor implements
         }
 
         private Program(@NonNull Data[] datas) {
-            mDatas = datas;
+            this.datas = datas;
         }
 
         public int fits(ArrayList<Event> history) {
             int historySize = history.size();
-            int programSize = mDatas.length;
+            int programSize = datas.length;
             if (historySize < programSize) {
                 return -1;
             }
@@ -92,7 +97,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
             Event eventPrevious = history.get(historyOffset);
 
             for (int i = 1; i < programSize; i++) {
-                Data data = mDatas[i - 1];
+                Data data = datas[i - 1];
                 Event eventFuture = history.get(historyOffset + i);
 
                 final long delta = eventFuture.time - eventPrevious.time;
@@ -106,7 +111,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 eventPrevious = eventFuture;
             }
 
-            Data data = mDatas[programSize - 1];
+            Data data = datas[programSize - 1];
             if (eventPrevious.isNear == data.isNear) {
                 return data.timeMin;
             }
@@ -167,8 +172,8 @@ public final class ProximitySensor extends ActiveModeSensor implements
 
     private ProximitySensor() {
         super();
-        Program programPocket = new Program.Builder()
-                .begin(true, 4000) /* is near at least for 4 seconds */
+        mPocketProgram = new Program.Builder()
+                .begin(true, POCKET_START_TIME) /* is near at least for some seconds */
                 .end(0) /* and after: is far  at least for 0 seconds */
                 .build();
         Program programWave2Wake = new Program.Builder()
@@ -180,10 +185,10 @@ public final class ProximitySensor extends ActiveModeSensor implements
 
         mPrograms = new ArrayList<>();
         if (Build.DEBUG) mPrograms.add(programWave2Wake);
-        mPrograms.add(programPocket);
+        mPrograms.add(mPocketProgram);
 
         for (Program program : mPrograms) {
-            int size = program.mDatas.length;
+            int size = program.datas.length;
             if (size > mHistoryMaximumSize) {
                 mHistoryMaximumSize = size;
             }
@@ -223,12 +228,16 @@ public final class ProximitySensor extends ActiveModeSensor implements
         mHistory.clear();
         mHistory.add(new Event(false, getTimeNow()));
 
+        // Ignore pocket program's start delay,
+        // so app can act just after it has started.
+        mFirstChange = true;
+        mPocketProgram.datas[0].timeMin = 0;
+
         Sensor proximitySensor = sensorManager.getDefaultSensor(getType());
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         mMaximumRange = proximitySensor.getMaximumRange();
         sAttached = true;
-        mFirstChange = true;
     }
 
     @Override
@@ -285,6 +294,11 @@ public final class ProximitySensor extends ActiveModeSensor implements
                         }
                     }, delay);
                 }
+            }
+
+            if (mFirstChange) {
+                // Change pocket program back to defaults.
+                mPocketProgram.datas[0].timeMin = POCKET_START_TIME;
             }
 
             sLastEventTime = now;
