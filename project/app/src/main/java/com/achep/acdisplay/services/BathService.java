@@ -236,6 +236,16 @@ public class BathService extends Service {
         return null;
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        synchronized (monitor) {
+            for (ChildService child : mMap.values()) {
+                child.onLowMemory();
+            }
+        }
+    }
+
     private void fireService(Class clazz, boolean add) {
         synchronized (monitor) {
             boolean containsClazz = mMap.containsKey(clazz);
@@ -304,6 +314,11 @@ public class BathService extends Service {
          * @see android.app.Service#onDestroy()
          */
         public abstract void onDestroy();
+
+        /**
+         *
+         */
+        public void onLowMemory() { /* placeholder */ }
 
         /**
          * @return The label of this service.
