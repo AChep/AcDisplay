@@ -138,6 +138,10 @@ public class FileUtils {
                 body.append(nextLine);
                 body.append('\n');
             }
+            int pos = body.length() - 1;
+            if (pos >= 0) {
+                body.deleteCharAt(pos);
+            }
         } finally {
             bufferedReader.close();
         }
