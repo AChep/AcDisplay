@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.achep.acdisplay.SharedList;
+import com.achep.acdisplay.utils.FileUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,9 @@ import org.robolectric.annotation.Config;
 import java.lang.Double;
 import java.lang.Override;
 import java.lang.String;
+import java.lang.StringBuilder;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 
@@ -44,6 +47,29 @@ public class AcDisplayRobolectricTest {
     @Test
     public void testSomething() {
         // Placeholder
+    }
+
+    @Test
+    public void testFileUtils() {
+        Context context = Robolectric.application;
+        File file = new File(context.getFilesDir(), "test_file_utils.txt");
+
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 5000; i++) {
+            sb.append(random.nextInt(10));
+        }
+        String text = sb.toString();
+
+        // Test writing to file.
+        assertTrue(FileUtils.writeToFile(file, text));
+
+        // Test reading from file.
+        assertTrue(text.equals(FileUtils.readTextFile(file)));
+
+        // Test removing file.
+        assertTrue(FileUtils.deleteRecursive(file));
+        assertTrue(!file.exists());
     }
 
     @Test
