@@ -247,6 +247,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
         SensorManager sensorManager = getSensorManager();
         sensorManager.unregisterListener(this);
         mHandler.removeCallbacksAndMessages(null);
+        mHistory.clear();
     }
 
     @Override
