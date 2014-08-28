@@ -37,6 +37,7 @@ public class RepositoryUrlBuilder {
     private static final String FORMATTER = "https://%1$s/%2$s/%3$s/%4$s/";
 
     private String mBranch;
+    private String mFileName;
     private StringBuilder mPathBuilder;
     private boolean mRawAccess = false;
 
@@ -53,11 +54,17 @@ public class RepositoryUrlBuilder {
     }
 
     @NonNull
-    public RepositoryUrlBuilder addPath(@NonNull String path) {
+    public RepositoryUrlBuilder setFile(String fileName) {
+        mFileName = fileName;
+        return this;
+    }
+
+    @NonNull
+    public RepositoryUrlBuilder changeDirectory(@NonNull String dir) {
         if (mPathBuilder == null) {
             mPathBuilder = new StringBuilder();
         }
-        mPathBuilder.append(path);
+        mPathBuilder.append(dir).append('/');
         return this;
     }
 
@@ -69,13 +76,22 @@ public class RepositoryUrlBuilder {
         String domain;
         String path = mPathBuilder == null ? "" : mPathBuilder.toString();
 
-        if (mRawAccess) {
-            domain = "raw.githubusercontent.com";
-            branch = "";
-        } else {
+        do {
+            if (mFileName != null) {
+                path += mFileName;
+                if (mRawAccess) {
+                    domain = "raw.githubusercontent.com";
+                    branch = "";
+                    break;
+                } else {
+                    branch = "blob/";
+                }
+            } else {
+                branch = "tree/";
+            }
+
             domain = "www.github.com";
-            branch = "blob/";
-        }
+        } while (false);
 
         branch += mBranch;
 
