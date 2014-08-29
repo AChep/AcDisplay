@@ -51,6 +51,7 @@ public class Action {
     /**
      * @return Instance of action factory.
      */
+    @NonNull
     public static Factory getFactory() {
         Factory factory = sFactoryRef.get();
         if (factory == null) {
