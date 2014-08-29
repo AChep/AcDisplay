@@ -281,9 +281,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
             case R.id.action_settings:
                 startActivity(new Intent(this, Settings.class));
                 break;
-            case R.id.action_blacklist:
-                startActivity(new Intent(this, BlacklistActivity.class));
-                break;
             case R.id.action_test:
                 startAcDisplayTest(Build.DEBUG);
                 break;
