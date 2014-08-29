@@ -30,6 +30,7 @@
     <!-- Headers -->
     <string name="settings_lockscreen_title">Lockscreen</string>
     <string name="settings_active_title">Active mode</string>
+    <string name="settings_app_settings_title">Apps</string>
     <string name="settings_notification_title">Notifications</string>
     <string name="settings_interface_title">Interface</string>
     <string name="settings_more_title">More…</string>

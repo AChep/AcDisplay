@@ -50,6 +50,16 @@
         android:title="@string/settings_dev_title"
         android:icon="@drawable/ic_settings_development"/>
 
+    <!-- App settings -->
+    <header
+        android:id="@+id/app_settings"
+        android:title="@string/settings_app_settings_title"
+        android:icon="@drawable/ic_settings_applications">
+        <intent
+            android:targetPackage="com.achep.acdisplay"
+            android:targetClass="com.achep.acdisplay.blacklist.activities.BlacklistActivity" />
+    </header>
+
     <!-- More -->
     <header android:fragment="com.achep.acdisplay.settings.MoreSettings"
         android:id="@+id/more_settings"
