@@ -84,9 +84,12 @@ public class NotifyWidget extends Widget implements NotificationView {
                 .isEquals();
     }
 
+    /**
+     * @return {@code true} if notification can be dismissed by user, {@code false} otherwise.
+     */
     @Override
     public boolean isDismissible() {
-        return true;
+        return mNotification.isClearable();
     }
 
     @Override

@@ -36,9 +36,11 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
+import com.achep.acdisplay.blacklist.options.NonClearableOption;
 import com.achep.acdisplay.blacklist.options.HideOption;
 import com.achep.acdisplay.blacklist.options.Option;
 import com.achep.acdisplay.blacklist.options.RestrictOption;
+import com.achep.acdisplay.utils.ViewUtils;
 
 /**
  * Created by Artem on 09.02.14.
@@ -90,7 +92,8 @@ public class BlacklistAppFragment extends Fragment {
         mEnabler = new BlacklistEnabler(activity, switch_, packageName);
         mOptions = new Option[]{
                 new HideOption(activity, new CheckBox(activity), mEnabler),
-                new RestrictOption(activity, new CheckBox(activity), mEnabler)
+                new RestrictOption(activity, new CheckBox(activity), mEnabler),
+                new NonClearableOption(activity, new CheckBox(activity), mEnabler)
         };
     }
 
@@ -164,8 +167,8 @@ public class BlacklistAppFragment extends Fragment {
             TextView summary = (TextView) view.findViewById(android.R.id.summary);
 
             icon.setImageDrawable(option.icon);
-            title.setText(option.title);
-            summary.setText(option.summary);
+            ViewUtils.safelySetText(title, option.title);
+            ViewUtils.safelySetText(summary, option.summary);
 
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
             option.setCompoundButton(checkBox);

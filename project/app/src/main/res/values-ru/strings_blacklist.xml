@@ -31,4 +31,8 @@
     <string name="blacklist_app_restricted_title">Сонный режим</string>
     <string name="blacklist_app_restricted_summary">Показывать, но не просыпаться от уведомлений этого приложения.</string>
 
+    <!-- Show non-clearable notifications -->
+    <string name="blacklist_app_non_clearable_title">Неочищаемые уведомления</string>
+    <string name="blacklist_app_non_clearable_summary">Показывать неочищаемые приложения, такие как уведомления от сервисов.</string>
+ы
 </resources>

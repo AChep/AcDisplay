@@ -31,4 +31,8 @@
     <string name="blacklist_app_restricted_title">Silent</string>
     <string name="blacklist_app_restricted_summary">Don\'t wake up on its notification posted.</string>
 
+    <!-- Show non-clearable notifications -->
+    <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+    <string name="blacklist_app_non_clearable_summary">Show non-clearable notifications, such as those from services.</string>
+
 </resources>

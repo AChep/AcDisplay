@@ -36,26 +36,33 @@ public class AppConfig {
     public static final int DIFF_ENABLED = 1;
     public static final int DIFF_RESTRICTED = 2;
     public static final int DIFF_HIDDEN = 4;
+    public static final int DIFF_NON_CLEARABLE = 8;
 
     static final boolean DEFAULT_ENABLED = false;
     static final boolean DEFAULT_RESTRICTED = false;
     static final boolean DEFAULT_HIDDEN = false;
+    static final boolean DEFAULT_NON_CLEARABLE = false;
 
     public String packageName;
     public boolean enabled = DEFAULT_ENABLED;
     public boolean[] restricted = new boolean[]{DEFAULT_RESTRICTED};
     public boolean[] hidden = new boolean[]{DEFAULT_HIDDEN};
+    public boolean[] nonClearable = new boolean[]{DEFAULT_NON_CLEARABLE};
 
     public AppConfig(String packageName) {
-        this(packageName, DEFAULT_ENABLED, DEFAULT_RESTRICTED, DEFAULT_HIDDEN);
+        this(packageName,
+                DEFAULT_ENABLED, DEFAULT_RESTRICTED,
+                DEFAULT_HIDDEN, DEFAULT_NON_CLEARABLE);
     }
 
     public AppConfig(String packageName, boolean enabled,
-                     boolean restricted, boolean hidden) {
+                     boolean restricted, boolean hidden,
+                     boolean nonClearable) {
         this.enabled = enabled;
         this.packageName = packageName;
-        this.restricted[0] = restricted;
-        this.hidden[0] = hidden;
+        setRestricted(restricted);
+        setHidden(hidden);
+        setNonClearableEnabled(nonClearable);
     }
 
     /**
@@ -65,6 +72,7 @@ public class AppConfig {
         config.enabled = DEFAULT_ENABLED;
         config.setRestricted(DEFAULT_RESTRICTED);
         config.setHidden(DEFAULT_HIDDEN);
+        config.setNonClearableEnabled(DEFAULT_NON_CLEARABLE);
     }
 
     /**
@@ -80,6 +88,7 @@ public class AppConfig {
         clone.enabled = config.enabled;
         clone.setRestricted(config.isRestricted());
         clone.setHidden(config.isHidden());
+        clone.setNonClearableEnabled(config.isNonClearableEnabled());
         return clone;
     }
 
@@ -90,6 +99,7 @@ public class AppConfig {
         Log.d(tag, "enabled=" + config.enabled
                 + " restricted=" + config.isRestricted()
                 + " hidden=" + config.isHidden()
+                + " non-clearable=" + config.isNonClearableEnabled()
                 + " pkg=" + config.packageName);
     }
 
@@ -120,6 +130,17 @@ public class AppConfig {
                 .isEquals();
     }
 
+    /**
+     * Adds global switch settings to given option
+     * (boolean argument)
+     *
+     * @param bool the value of an option
+     * @return {@code bool && isEnabled()}
+     */
+    public boolean forReal(boolean bool) {
+        return isEnabled() && bool;
+    }
+
     public void setRestricted(boolean restricted) {
         this.restricted[0] = restricted;
     }
@@ -128,20 +149,28 @@ public class AppConfig {
         this.hidden[0] = hidden;
     }
 
-    public boolean isRestricted() {
-        return restricted[0];
+    public void setNonClearableEnabled(boolean enabled) {
+        this.nonClearable[0] = enabled;
     }
 
-    public boolean isRestrictedReal() {
-        return restricted[0] && enabled;
+    public boolean isRestricted() {
+        return restricted[0];
     }
 
     public boolean isHidden() {
         return hidden[0];
     }
 
-    public boolean isHiddenReal() {
-        return hidden[0] && enabled;
+    /**
+     * @return {@code true} if showing non-clearable notifications is allowed for
+     * this app, {@code false} otherwise.
+     *
+     * @see #setNonClearableEnabled(boolean)
+     * @see #DEFAULT_NON_CLEARABLE
+     * @see #DIFF_NON_CLEARABLE
+     */
+    public boolean isNonClearableEnabled() {
+        return nonClearable[0];
     }
 
     public boolean isEnabled() {
@@ -153,13 +182,15 @@ public class AppConfig {
      * @see AppConfig#DEFAULT_ENABLED
      * @see AppConfig#DEFAULT_RESTRICTED
      * @see AppConfig#DEFAULT_HIDDEN
+     * @see AppConfig#DEFAULT_NON_CLEARABLE
      * @see #reset(AppConfig)
      */
     @SuppressWarnings("PointlessBooleanExpression")
     boolean equalsToDefault() {
         return isEnabled() == AppConfig.DEFAULT_ENABLED
                 && isRestricted() == AppConfig.DEFAULT_RESTRICTED
-                && isHidden() == AppConfig.DEFAULT_HIDDEN;
+                && isHidden() == AppConfig.DEFAULT_HIDDEN
+                && isNonClearableEnabled() == AppConfig.DEFAULT_NON_CLEARABLE;
     }
 
     /**
@@ -173,6 +204,7 @@ public class AppConfig {
         private static final String KEY_ENABLED = "enabled_";
         private static final String KEY_RESTRICTED = "restricted_";
         private static final String KEY_HIDDEN = "hidden_";
+        private static final String KEY_NON_CLEARABLE = "non-clearable_";
 
         /**
          * {@inheritDoc}
@@ -183,6 +215,7 @@ public class AppConfig {
             editor.putBoolean(KEY_ENABLED + position, ps.enabled);
             editor.putBoolean(KEY_RESTRICTED + position, ps.isRestricted());
             editor.putBoolean(KEY_HIDDEN + position, ps.isHidden());
+            editor.putBoolean(KEY_NON_CLEARABLE + position, ps.isNonClearableEnabled());
             return editor;
         }
 
@@ -195,7 +228,8 @@ public class AppConfig {
             boolean enabled = prefs.getBoolean(KEY_ENABLED + position, DEFAULT_ENABLED);
             boolean restricted = prefs.getBoolean(KEY_RESTRICTED + position, DEFAULT_RESTRICTED);
             boolean hidden = prefs.getBoolean(KEY_HIDDEN + position, DEFAULT_HIDDEN);
-            return new AppConfig(pkg, enabled, restricted, hidden);
+            boolean ongoing = prefs.getBoolean(KEY_NON_CLEARABLE + position, DEFAULT_NON_CLEARABLE);
+            return new AppConfig(pkg, enabled, restricted, hidden, ongoing);
         }
     }
 
@@ -213,7 +247,8 @@ public class AppConfig {
         public int compare(AppConfig object, AppConfig old) {
             return orZero(DIFF_ENABLED, object.enabled, old.enabled)
                     | orZero(DIFF_HIDDEN, object.isHidden(), old.isHidden())
-                    | orZero(DIFF_RESTRICTED, object.isRestricted(), old.isRestricted());
+                    | orZero(DIFF_RESTRICTED, object.isRestricted(), old.isRestricted())
+                    | orZero(DIFF_NON_CLEARABLE, object.isNonClearableEnabled(), old.isNonClearableEnabled());
         }
 
         private int orZero(int value, boolean a, boolean b) {

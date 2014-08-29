@@ -90,4 +90,11 @@ public class OpenNotification {
         mNotificationData.recycle();
     }
 
+    /**
+     * @return {@code true} if notification can be dismissed by user, {@code false} otherwise.
+     */
+    public boolean isClearable() {
+        return mStatusBarNotification.isClearable();
+    }
+
 }

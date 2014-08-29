@@ -42,6 +42,6 @@
         android:layout_alignStart="@android:id/title"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:ellipsize="end"
-        android:maxLines="2" />
+        android:maxLines="4" />
 
 </RelativeLayout>

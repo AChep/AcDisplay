@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -131,8 +132,16 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     private class BlacklistListener extends Blacklist.OnBlacklistChangedListener {
 
         @Override
-        public void onBlacklistChanged(final AppConfig configNew, AppConfig configOld, int diff) {
-            if (configNew.isHiddenReal() != configOld.isHiddenReal()) {
+        public void onBlacklistChanged(
+                @NonNull AppConfig configNew,
+                @NonNull AppConfig configOld, int diff) {
+            boolean hiddenNew = configNew.forReal(configNew.isHidden());
+            boolean hiddenOld = configOld.forReal(configOld.isHidden());
+            boolean nonClearableEnabledNew = configNew.forReal(configNew.isNonClearableEnabled());
+            boolean nonClearableEnabledOld = configOld.forReal(configOld.isNonClearableEnabled());
+
+            // Check if something important has changed.
+            if (hiddenNew != hiddenOld || nonClearableEnabledNew != nonClearableEnabledOld) {
                 handlePackageVisibilityChanged(configNew.packageName);
             }
         }
@@ -345,21 +354,31 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         StatusBarNotification sbn = o.getStatusBarNotification();
         AppConfig config = mBlacklist.getAppConfig(sbn.getPackageName());
 
-        boolean hidden = config.isHiddenReal();
-        boolean priorityNormal = sbn.getNotification().priority >= Notification.PRIORITY_LOW;
-        boolean lowPriorPassed = priorityNormal || mConfig.isLowPriorityNotificationsAllowed();
+        if (config.forReal(config.isHidden())) {
+            // Do not display any notifications from this app.
+            return false;
+        }
+
+        if (!sbn.isClearable() && !config.forReal(config.isNonClearableEnabled())) {
+            // Do not display non-clearable notification.
+            return false;
+        }
+
+        if (sbn.getNotification().priority <= Notification.PRIORITY_LOW
+                && !mConfig.isLowPriorityNotificationsAllowed()) {
+            // Do not display low-priority notification.
+            return false;
+        }
 
         // Do not allow notifications without any content.
         NotificationData data = o.getNotificationData();
-        boolean empty = TextUtils.isEmpty(data.titleText)
+        return !(TextUtils.isEmpty(data.titleText)
                 && TextUtils.isEmpty(data.getLargeMessage())
-                && TextUtils.isEmpty(data.infoText);
-
-        return lowPriorPassed && !hidden && !empty;
+                && TextUtils.isEmpty(data.infoText));
     }
 
     private boolean isValidForGlobal(StatusBarNotification sbn) {
-        return !sbn.isOngoing() && sbn.isClearable();
+        return true;
     }
 
     private void logNotification(StatusBarNotification sbn, String action) {
@@ -387,16 +406,28 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
      */
     private boolean tryStartGui(Context context, OpenNotification n) {
         if (!isTestNotification(context, n)) { // force test notification to be shown
-            String packageName = n.getStatusBarNotification().getPackageName();
-            if (ProximitySensor.isNear()
-                    || mConfig.isEnabled() == false
-                    || mConfig.isNotifyWakingUp() == false
-                    || mConfig.isEnabledOnlyWhileCharging() /* show only      */
-                    && !PowerUtils.isPlugged(context)       /* while charging */
-                    || mBlacklist.getAppConfig(packageName).isRestrictedReal()
-                    || mConfig.isInactiveTimeEnabled()            /* inactive */
-                    && InactiveTimeHelper.isInactiveTime(mConfig) /* time     */)
+            if (!mConfig.isEnabled() || !mConfig.isNotifyWakingUp()
+                    // Inactive time
+                    || mConfig.isInactiveTimeEnabled()
+                    && InactiveTimeHelper.isInactiveTime(mConfig)
+                    // Only while charging
+                    || mConfig.isEnabledOnlyWhileCharging()
+                    && !PowerUtils.isPlugged(context)) {
+                // Don't turn screen on due to user settings.
                 return false;
+            }
+
+            if (ProximitySensor.isNear()) {
+                // Don't display while device is face down.
+                return false;
+            }
+
+            String packageName = n.getStatusBarNotification().getPackageName();
+            AppConfig config = mBlacklist.getAppConfig(packageName);
+            if (config.forReal(config.isRestricted())) {
+                // Don't display due to app settings.
+                return false;
+            }
         }
 
         Presenter.getInstance().start(context);
