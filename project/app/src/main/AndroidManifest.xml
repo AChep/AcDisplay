@@ -38,6 +38,9 @@
     <!-- Needed to wake up the device to show AcDisplay. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- Needed to change system screen off timeout settings. -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <!-- Needed to launch all services after the boot. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 

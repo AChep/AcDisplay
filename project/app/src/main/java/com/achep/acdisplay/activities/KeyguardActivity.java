@@ -28,6 +28,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.WindowManager;
@@ -54,6 +55,9 @@ public abstract class KeyguardActivity extends Activity {
 
     private long mPendingFinishStartTime;
     private int mPendingFinishMax;
+
+    private int mSystemScreenOffTimeout;
+    private boolean mSystemScreenOffTimeoutChanged;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -153,6 +157,16 @@ public abstract class KeyguardActivity extends Activity {
         super.onResume();
         overrideHomePress(true);
 
+        // Read system screen off timeout setting.
+        try {
+            mSystemScreenOffTimeout = Settings.System.getInt(
+                    getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT);
+        } catch (Settings.SettingNotFoundException e) {
+            mSystemScreenOffTimeout = -1;
+        }
+        if (Build.DEBUG) Log.d(TAG, "system_screen_off_timeout=" + mSystemScreenOffTimeout);
+
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
     }
 
@@ -160,6 +174,14 @@ public abstract class KeyguardActivity extends Activity {
     protected void onPause() {
         super.onPause();
         overrideHomePress(false);
+
+        // Put previously read timeout setting.
+//        if (mSystemScreenOffTimeout != -1 && mSystemScreenOffTimeoutChanged) {
+//            Settings.System.putInt(
+//                    getContentResolver(),
+//                    Settings.System.SCREEN_OFF_TIMEOUT,
+//                    mSystemScreenOffTimeout);
+//        }
     }
 
     /**
@@ -189,6 +211,13 @@ public abstract class KeyguardActivity extends Activity {
         try {
             // TODO: Respect secure lockscreen timeout settings.
             dpm.lockNow();
+
+            // Experimental
+//            mSystemScreenOffTimeoutChanged = true;
+//            Settings.System.putInt(
+//                    getContentResolver(),
+//                    Settings.System.SCREEN_OFF_TIMEOUT,
+//                    1000);
             return true;
         } catch (SecurityException e) {
             return false; // User didn't make us an admin.
