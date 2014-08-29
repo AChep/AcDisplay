@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.notifications.Action;
 import com.achep.acdisplay.notifications.NotificationData;
 import com.achep.acdisplay.notifications.NotificationUtils;
 
@@ -154,12 +155,12 @@ public final class Extractor {
         return biggest;
     }
 
-    private void removeActionViews(NotificationData.Action[] actions, ArrayList<TextView> textViews) {
+    private void removeActionViews(Action[] actions, ArrayList<TextView> textViews) {
         if (actions == null) {
             return;
         }
 
-        for (NotificationData.Action action : actions) {
+        for (Action action : actions) {
             for (int i = textViews.size() - 1; i >= 0; i--) {
                 CharSequence text = textViews.get(i).getText();
                 if (text != null && text.equals(action.title)) {

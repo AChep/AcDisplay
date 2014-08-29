@@ -18,9 +18,7 @@
  */
 package com.achep.acdisplay.notifications;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -33,14 +31,12 @@ import android.util.Log;
 
 import com.achep.acdisplay.AsyncTask;
 import com.achep.acdisplay.Build;
-import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.BackgroundFactoryThread;
 import com.achep.acdisplay.notifications.parser.Extractor;
 import com.achep.acdisplay.utils.BitmapUtils;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -114,94 +110,6 @@ public class NotificationData {
         // BitmapUtils.safelyRecycle(background);
         // BitmapUtils.safelyRecycle(circleIcon);
         // BitmapUtils.safelyRecycle(icon);
-    }
-
-    /**
-     * Wrapper around {@link android.app.Notification.Action} class that supports both
-     * Jelly Bean (via reflections) and KitKat Android versions.
-     */
-    public static class Action {
-
-        public final int icon;
-        public final CharSequence title;
-        public final PendingIntent intent;
-
-        private Action(int icon, CharSequence title, PendingIntent intent) {
-            this.icon = icon;
-            this.title = title;
-            this.intent = intent;
-        }
-
-        @SuppressLint("NewApi")
-        private static Action[] create(Notification notification) {
-            if (Device.hasKitKatApi()) {
-                Notification.Action[] src = notification.actions;
-
-                if (src == null) {
-                    return null;
-                }
-
-                final int length = src.length;
-                final Action[] dst = new Action[src.length];
-                for (int i = 0; i < length; i++) {
-                    dst[i] = new Action(src[i].icon, src[i].title, src[i].actionIntent);
-                }
-
-                return dst;
-            }
-
-            // Getting actions from stupid Jelly Bean.
-            Object[] src;
-            try {
-                Field field = Notification.class.getDeclaredField("actions");
-                field.setAccessible(true);
-                src = (Object[]) field.get(notification);
-            } catch (Exception e) {
-                Log.w(TAG, "Failed to access actions on Jelly Bean.");
-                return null;
-            }
-
-            if (src == null) {
-                return null;
-            }
-
-            final int length = src.length;
-            final Action[] dst = new Action[src.length];
-            for (int i = 0; i < length; i++) {
-                int icon;
-                CharSequence title;
-                PendingIntent intent;
-
-                Object object = src[i];
-                try {
-                    Field field = object.getClass().getDeclaredField("icon");
-                    field.setAccessible(true);
-                    icon = (int) field.get(object);
-                } catch (Exception e) {
-                    icon = 0;
-                }
-
-                try {
-                    Field field = object.getClass().getDeclaredField("title");
-                    field.setAccessible(true);
-                    title = (CharSequence) field.get(object);
-                } catch (Exception e) {
-                    title = null;
-                }
-
-                try {
-                    Field field = object.getClass().getDeclaredField("actionIntent");
-                    field.setAccessible(true);
-                    intent = (PendingIntent) field.get(object);
-                } catch (Exception e) {
-                    intent = null;
-                }
-
-                dst[i] = new Action(icon, title, intent);
-            }
-
-            return dst;
-        }
     }
 
     // //////////////////////////////////////////
@@ -316,7 +224,7 @@ public class NotificationData {
 
     public void loadNotification(Context context, StatusBarNotification sbn, boolean isRead) {
         Notification notification = sbn.getNotification();
-        actions = Action.create(notification);
+        actions = Action.getFactory().create(notification);
         number = notification.number;
         markAsRead(isRead);
 

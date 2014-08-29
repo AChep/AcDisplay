@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.notifications.Action;
 import com.achep.acdisplay.notifications.NotificationData;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
@@ -213,7 +214,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
      * or higher Android version.
      */
     private void updateActionButtons(OpenNotification osbn) {
-        NotificationData.Action[] actions = osbn.getNotificationData().actions;
+        Action[] actions = osbn.getNotificationData().actions;
 
         ViewUtils.setVisible(mActionsContainer, actions != null);
         if (actions != null) {
@@ -239,7 +240,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (int i = 0; i < actionCount; i++) {
-                final NotificationData.Action action = actions[i];
+                final Action action = actions[i];
 
                 View root = rootViews[i];
                 TextView actionTextView = actionViews[i];
