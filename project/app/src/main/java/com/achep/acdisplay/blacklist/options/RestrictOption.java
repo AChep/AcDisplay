@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
+import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
 
 /**
@@ -31,20 +32,27 @@ import com.achep.acdisplay.blacklist.BlacklistEnabler;
  */
 public class RestrictOption extends Option {
 
-    public RestrictOption(Context context, CompoundButton cb, BlacklistEnabler enabler) {
-        super(context, cb, enabler,
+    public RestrictOption(Context context, CompoundButton cb,
+                          Blacklist blacklist, BlacklistEnabler enabler) {
+        super(context, cb, blacklist, enabler,
                 context.getResources().getDrawable(R.drawable.ic_settings_sleep_mode),
                 context.getResources().getString(R.string.blacklist_app_restricted_title),
                 context.getResources().getString(R.string.blacklist_app_restricted_summary));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean[] extractVariable(AppConfig config) {
+    public boolean[] getValue(AppConfig config) {
         return config.restricted;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean isChanged(int diff) {
-        return Operator.bitAnd(diff, AppConfig.DIFF_RESTRICTED);
+    public int getDiffMask() {
+        return AppConfig.DIFF_RESTRICTED;
     }
 }

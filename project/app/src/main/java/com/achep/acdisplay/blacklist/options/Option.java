@@ -20,8 +20,10 @@ package com.achep.acdisplay.blacklist.options;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.widget.CompoundButton;
 
+import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
@@ -38,14 +40,14 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
 
     private CompoundButton mCompoundButton;
     private boolean mBroadcasting;
-    private boolean mResumed;
 
     // ui
     public Drawable icon;
     public CharSequence title;
     public CharSequence summary;
 
-    public Option(Context context, CompoundButton cb, BlacklistEnabler enabler,
+    public Option(Context context, CompoundButton cb,
+                  Blacklist blacklist, BlacklistEnabler enabler,
                   Drawable icon,
                   CharSequence title,
                   CharSequence summary) {
@@ -55,35 +57,34 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
 
         mContext = context;
         mCompoundButton = cb;
-        mBlacklist = Blacklist.getInstance();
+        mBlacklist = blacklist;
         mBlacklistEnabler = enabler;
     }
 
-    public abstract boolean[] extractVariable(AppConfig config);
+    public abstract boolean[] getValue(AppConfig config);
 
-    public abstract boolean isChanged(int diff);
+    /**
+     * @return diff mask of current option.
+     * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_ENABLED
+     * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_HIDDEN
+     * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_RESTRICTED
+     * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_NON_CLEARABLE
+     */
+    public abstract int getDiffMask();
 
     /**
      * Sets up listeners and updates the current state.
      * Make sure that you'll call {@link #pause()} later!
      */
     public void resume() {
-        if (mResumed) {
-            return;
-        }
-
-        mResumed = true;
         mBlacklistEnabler.addOnAppConfigChangedListener(this);
         mCompoundButton.setOnCheckedChangeListener(this);
-        onBlacklistChanged(mBlacklistEnabler.getAppConfig(), null, -1);
+
+        AppConfig config = mBlacklistEnabler.getAppConfig();
+        setChecked(getValue(config)[0]);
     }
 
     public void pause() {
-        if (!mResumed) {
-            return;
-        }
-
-        mResumed = false;
         mBlacklistEnabler.removeOnAppConfigChangedListener(this);
         mCompoundButton.setOnCheckedChangeListener(null);
     }
@@ -114,7 +115,7 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
         }
 
         AppConfig config = mBlacklistEnabler.getAppConfig();
-        extractVariable(config)[0] = isChecked;
+        getValue(config)[0] = isChecked;
 
         // Clone current state cause it can be changed after.
         mBlacklist.saveAppConfig(mContext, config, mBlacklistEnabler);
@@ -125,9 +126,11 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
     // //////////////////////////////////////////
 
     @Override
-    public void onBlacklistChanged(AppConfig configNew, AppConfig configOld, int diff) {
-        if (diff == -1 || isChanged(diff)) {
-            setChecked(extractVariable(configNew)[0]);
+    public void onBlacklistChanged(
+            @NonNull AppConfig configNew,
+            @NonNull AppConfig configOld, int diff) {
+        if (Operator.bitAnd(diff, getDiffMask())) {
+            setChecked(getValue(configNew)[0]);
         }
     }
 }

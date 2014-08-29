@@ -35,6 +35,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
 import com.achep.acdisplay.blacklist.options.NonClearableOption;
 import com.achep.acdisplay.blacklist.options.HideOption;
@@ -85,15 +86,16 @@ public class BlacklistAppFragment extends Fragment {
         String packageName = extractPackageName(getArguments(), savedInstanceState);
         Activity activity = getActivity();
         ActionBar actionBar = activity.getActionBar();
+        Blacklist blacklist = Blacklist.getInstance();
 
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.layout_ab_switch);
         Switch switch_ = (Switch) actionBar.getCustomView().findViewById(R.id.switch_);
         mEnabler = new BlacklistEnabler(activity, switch_, packageName);
-        mOptions = new Option[]{
-                new HideOption(activity, new CheckBox(activity), mEnabler),
-                new RestrictOption(activity, new CheckBox(activity), mEnabler),
-                new NonClearableOption(activity, new CheckBox(activity), mEnabler)
+        mOptions = new Option[] {
+                new HideOption(activity, new CheckBox(activity), blacklist, mEnabler),
+                new RestrictOption(activity, new CheckBox(activity), blacklist, mEnabler),
+                new NonClearableOption(activity, new CheckBox(activity), blacklist, mEnabler)
         };
     }
 

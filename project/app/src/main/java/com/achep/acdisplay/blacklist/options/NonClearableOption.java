@@ -21,9 +21,11 @@ package com.achep.acdisplay.blacklist.options;
 import android.content.Context;
 import android.widget.CompoundButton;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
+import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.blacklist.BlacklistEnabler;
 
 /**
@@ -34,20 +36,27 @@ import com.achep.acdisplay.blacklist.BlacklistEnabler;
  */
 public class NonClearableOption extends Option {
 
-    public NonClearableOption(Context context, CompoundButton cb, BlacklistEnabler enabler) {
-        super(context, cb, enabler,
+    public NonClearableOption(Context context, CompoundButton cb,
+                              Blacklist blacklist, BlacklistEnabler enabler) {
+        super(context, cb, blacklist, enabler,
                 context.getResources().getDrawable(R.drawable.ic_settings_non_clearable_notifies),
                 context.getResources().getString(R.string.blacklist_app_non_clearable_title),
                 context.getResources().getString(R.string.blacklist_app_non_clearable_summary));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean[] extractVariable(AppConfig config) {
+    public boolean[] getValue(AppConfig config) {
         return config.nonClearable;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean isChanged(int diff) {
-        return Operator.bitAnd(diff, AppConfig.DIFF_NON_CLEARABLE);
+    public int getDiffMask() {
+        return AppConfig.DIFF_NON_CLEARABLE;
     }
 }
