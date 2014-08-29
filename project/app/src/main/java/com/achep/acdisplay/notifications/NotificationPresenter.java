@@ -122,8 +122,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
             rebuildLocalList(new Comparator() {
                 @Override
                 public boolean needsRebuild(OpenNotification osbn) {
-                    StatusBarNotification sbn = osbn.getStatusBarNotification();
-                    return sbn.getNotification().priority <= Notification.PRIORITY_LOW;
+                    return osbn.getNotification().priority <= Notification.PRIORITY_LOW;
                 }
             });
         }

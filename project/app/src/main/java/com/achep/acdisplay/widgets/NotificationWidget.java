@@ -19,6 +19,7 @@
 
 package com.achep.acdisplay.widgets;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -170,13 +171,13 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             return;
         }
 
-        StatusBarNotification sbn = osbn.getStatusBarNotification();
+        Notification n = osbn.getNotification();
         NotificationData data = osbn.getNotificationData();
 
         CharSequence message = data.getLargeMessage();
         CharSequence subText = data.infoText == null ? data.subText : data.infoText;
         CharSequence whenText = DateUtils.formatDateTime(getContext(),
-                sbn.getPostTime(), DateUtils.FORMAT_SHOW_TIME);
+                n.when, DateUtils.FORMAT_SHOW_TIME);
 
         // If message is empty hide the view to free space
         // taken by margins.
@@ -192,7 +193,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         mWhenTextView.setText(whenText);
 
         Bitmap bitmap = data.getCircleIcon();
-        if (bitmap == null) bitmap = sbn.getNotification().largeIcon;
+        if (bitmap == null) bitmap = n.largeIcon;
         if (bitmap != null) {
 
             // Disable tracking notification's icon
@@ -212,11 +213,11 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
      * or higher Android version.
      */
     private void updateActionButtons(OpenNotification osbn) {
-        StatusBarNotification sbn = osbn.getStatusBarNotification();
         NotificationData.Action[] actions = osbn.getNotificationData().actions;
 
         ViewUtils.setVisible(mActionsContainer, actions != null);
         if (actions != null) {
+            StatusBarNotification sbn = osbn.getStatusBarNotification();
             int actionCount = actions.length;
 
             View[] rootViews = new View[actionCount];

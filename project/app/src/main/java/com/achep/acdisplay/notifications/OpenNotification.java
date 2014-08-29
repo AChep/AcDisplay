@@ -18,6 +18,7 @@
  */
 package com.achep.acdisplay.notifications;
 
+import android.app.Notification;
 import android.content.Context;
 import android.service.notification.StatusBarNotification;
 
@@ -40,6 +41,10 @@ public class OpenNotification {
 
     public StatusBarNotification getStatusBarNotification() {
         return mStatusBarNotification;
+    }
+
+    public Notification getNotification() {
+        return mStatusBarNotification.getNotification();
     }
 
     public NotificationData getNotificationData() {
