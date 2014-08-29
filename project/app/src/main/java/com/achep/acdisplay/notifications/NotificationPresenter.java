@@ -149,8 +149,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
             rebuildLocalList(new Comparator() {
                 @Override
                 public boolean needsRebuild(OpenNotification osbn) {
-                    StatusBarNotification sbn = osbn.getStatusBarNotification();
-                    return sbn.getPackageName().equals(packageName);
+                    return osbn.getPackageName().equals(packageName);
                 }
             });
         }
@@ -350,20 +349,19 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
      * the requirements (such as not ongoing and clearable).
      */
     private boolean isValidForLocal(OpenNotification o) {
-        StatusBarNotification sbn = o.getStatusBarNotification();
-        AppConfig config = mBlacklist.getAppConfig(sbn.getPackageName());
+        AppConfig config = mBlacklist.getAppConfig(o.getPackageName());
 
         if (config.forReal(config.isHidden())) {
             // Do not display any notifications from this app.
             return false;
         }
 
-        if (!sbn.isClearable() && !config.forReal(config.isNonClearableEnabled())) {
+        if (!o.isClearable() && !config.forReal(config.isNonClearableEnabled())) {
             // Do not display non-clearable notification.
             return false;
         }
 
-        if (sbn.getNotification().priority <= Notification.PRIORITY_LOW
+        if (o.getNotification().priority <= Notification.PRIORITY_LOW
                 && !mConfig.isLowPriorityNotificationsAllowed()) {
             // Do not display low-priority notification.
             return false;
@@ -396,7 +394,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     private boolean isTestNotification(Context context, OpenNotification n) {
         StatusBarNotification sbn = n.getStatusBarNotification();
         return sbn.getId() == App.ID_NOTIFY_INIT
-                && sbn.getPackageName().equals(PackageUtils.getName(context));
+                && n.getPackageName().equals(PackageUtils.getName(context));
     }
 
     /**
@@ -421,7 +419,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 return false;
             }
 
-            String packageName = n.getStatusBarNotification().getPackageName();
+            String packageName = n.getPackageName();
             AppConfig config = mBlacklist.getAppConfig(packageName);
             if (config.forReal(config.isRestricted())) {
                 // Don't display due to app settings.

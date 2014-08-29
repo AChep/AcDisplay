@@ -21,6 +21,7 @@ package com.achep.acdisplay.notifications;
 import android.app.Notification;
 import android.content.Context;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.NonNull;
 
 /**
  * Created by Artem on 23.01.14.
@@ -100,6 +101,14 @@ public class OpenNotification {
      */
     public boolean isClearable() {
         return mStatusBarNotification.isClearable();
+    }
+
+    /**
+     * @return the package name of notification's parent.
+     */
+    @NonNull
+    public String getPackageName() {
+        return mStatusBarNotification.getPackageName();
     }
 
 }
