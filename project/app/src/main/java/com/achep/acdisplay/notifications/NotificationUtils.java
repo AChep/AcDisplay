@@ -52,17 +52,10 @@ public class NotificationUtils {
         }
     }
 
-    public static boolean equals(StatusBarNotification n, StatusBarNotification n2) {
-        return n == n2 || n != null && n2 != null && new EqualsBuilder()
-                .append(n.getId(), n2.getId())
-                .append(n.getPackageName(), n2.getPackageName())
-                .append(n.getTag(), n2.getTag())
-                .isEquals();
-    }
-
-    public static boolean equals(OpenNotification n, OpenNotification n2) {
-        return n == n2 || n != null && n2 != null && equals(
-                n.getStatusBarNotification(),
-                n2.getStatusBarNotification());
+    /**
+     * @see com.achep.acdisplay.notifications.OpenNotification#hasIdenticalIds(OpenNotification)
+     */
+    public static boolean hasIdenticalIds(OpenNotification n, OpenNotification n2) {
+        return n == n2 || n != null && n.hasIdenticalIds(n2);
     }
 }

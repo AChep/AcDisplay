@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * an ability to easily add / replace / remove item from the list.
  *
  * @author Artem Chepurnoy
- * @see NotificationUtils#equals(OpenNotification, OpenNotification)
+ * @see NotificationUtils#hasIdenticalIds(OpenNotification, OpenNotification)
  */
 final class NotificationList {
 
@@ -165,7 +165,7 @@ final class NotificationList {
     public int indexOf(@NonNull OpenNotification n) {
         final int size = mList.size();
         for (int i = 0; i < size; i++) {
-            if (NotificationUtils.equals(n, mList.get(i))) {
+            if (NotificationUtils.hasIdenticalIds(n, mList.get(i))) {
                 return i;
             }
         }

@@ -23,6 +23,8 @@ import android.content.Context;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 /**
  * Created by Artem on 23.01.14.
  */
@@ -67,6 +69,22 @@ public class OpenNotification {
     @Override
     public boolean equals(Object o) {
         return mStatusBarNotification.equals(o);
+    }
+
+    /**
+     * Note, that method is not equals with {@link #equals(Object)} method.
+     *
+     * @param n notification to compare with.
+     * @return {@code true} if notifications are from the same source and will
+     * be handled by system as same notifications, {@code false} otherwise.
+     */
+    public boolean hasIdenticalIds(OpenNotification n) {
+        if (n == null) return false;
+        return new EqualsBuilder()
+                .append(getStatusBarNotification().getId(), n.getStatusBarNotification().getId())
+                .append(getPackageName(), n.getPackageName())
+                .append(getStatusBarNotification().getTag(), n.getStatusBarNotification().getTag())
+                .isEquals();
     }
 
     /**

@@ -279,7 +279,7 @@ public class AcDisplayFragment extends Fragment implements
                 // If widget related to removed notification is pinned - unpin it.
                 if (hasPinnedWidget() && mSelectedWidget instanceof NotifyWidget) {
                     NotifyWidget widget = (NotifyWidget) mSelectedWidget;
-                    if (NotificationUtils.equals(widget.getNotification(), osbn)) {
+                    if (NotificationUtils.hasIdenticalIds(widget.getNotification(), osbn)) {
                         showMainWidget(); // Unpin
                     }
                 }
@@ -773,7 +773,7 @@ public class AcDisplayFragment extends Fragment implements
             // id, tag and package name as in present.
             for (int j = 0; j < notifyCount; j++) {
                 OpenNotification n = list.get(j);
-                if (NotificationUtils.equals(target, n)) {
+                if (NotificationUtils.hasIdenticalIds(target, n)) {
 
                     notifyUsed[j] = true;
                     childUsed[i] = true;
