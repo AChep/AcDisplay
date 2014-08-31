@@ -52,6 +52,7 @@ public class Action {
      * @return Instance of action factory.
      */
     @NonNull
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static Factory getFactory() {
         Factory factory = sFactoryRef.get();
         if (factory == null) {
@@ -107,6 +108,7 @@ public class Action {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private static class FactoryReflective extends Factory {
 
         /**
