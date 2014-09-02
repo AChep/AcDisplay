@@ -319,8 +319,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
             // of dumb developer. Mark notification as read, if old one was.
             n.getNotificationData().markAsRead(old.getNotificationData().isRead);
 
-            notifyListeners(n, EVENT_CHANGED_SPAM);
-            return RESULT_SPAM; // Don't wake up.
+            if (!n.isMine()) {
+                notifyListeners(n, EVENT_CHANGED_SPAM);
+                return RESULT_SPAM; // Don't wake up.
+            }
         }
 
         notifyListeners(n, EVENT_CHANGED);

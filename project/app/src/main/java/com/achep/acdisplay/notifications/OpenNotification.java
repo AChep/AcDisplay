@@ -22,6 +22,9 @@ import android.app.Notification;
 import android.content.Context;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import com.achep.acdisplay.utils.PackageUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
@@ -33,6 +36,8 @@ public class OpenNotification {
     private StatusBarNotification mStatusBarNotification;
     private NotificationData mNotificationData;
 
+    private boolean mMine;
+
     public OpenNotification(StatusBarNotification notification) {
         mStatusBarNotification = notification;
     }
@@ -40,6 +45,7 @@ public class OpenNotification {
     public void loadData(Context context) {
         mNotificationData = new NotificationData();
         mNotificationData.loadNotification(context, mStatusBarNotification, false);
+        mMine = TextUtils.equals(getPackageName(), PackageUtils.getName(context));
     }
 
     public StatusBarNotification getStatusBarNotification() {
@@ -112,6 +118,14 @@ public class OpenNotification {
      */
     public void recycle() {
         mNotificationData.recycle();
+    }
+
+    /**
+     * @return {@code true} if notification has been posted from my own application,
+     * {@code false} otherwise.
+     */
+    public boolean isMine() {
+        return mMine;
     }
 
     /**
