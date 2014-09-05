@@ -96,11 +96,7 @@ public class AppConfig {
      * Logs given config with a debug output level.
      */
     public static void log(String tag, AppConfig config) {
-        Log.d(tag, "enabled=" + config.enabled
-                + " restricted=" + config.isRestricted()
-                + " hidden=" + config.isHidden()
-                + " non-clearable=" + config.isNonClearableEnabled()
-                + " pkg=" + config.packageName);
+        Log.d(tag, config.toString());
     }
 
     /**
@@ -128,6 +124,20 @@ public class AppConfig {
         return new EqualsBuilder()
                 .append(packageName, ps.packageName)
                 .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "AppConfig ["
+                + "enabled=" + enabled
+                + " restricted=" + isRestricted()
+                + " hidden=" + isHidden()
+                + " non-clearable=" + isNonClearableEnabled()
+                + " pkg=" + packageName
+                + "]";
     }
 
     /**
