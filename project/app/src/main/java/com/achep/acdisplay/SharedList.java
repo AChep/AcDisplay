@@ -314,7 +314,12 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> implements IO
             growUp = mPlaceholder.size() == 0;
 
             // Get where-to-save this object.
-            pos = growUp ? mList.size() : mPlaceholder.get(0);
+            if (!growUp) {
+                pos = mPlaceholder.get(0);
+                mPlaceholder.remove(0);
+            } else {
+                pos = mList.size();
+            }
         }
 
         mList.put(object, pos);
