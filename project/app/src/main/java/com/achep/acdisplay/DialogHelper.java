@@ -52,7 +52,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class DialogHelper {
 
     public static final String TAG_FRAGMENT_ABOUT = "dialog_about";
-    public static final String TAG_FRAGMENT_ACCESS = "dialog_access";
+    public static final String TAG_FRAGMENT_SETUP_PERMISSIONS = "dialog_setup_permissions";
     public static final String TAG_FRAGMENT_HELP = "dialog_help";
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
     public static final String TAG_FRAGMENT_FEEDBACK = "dialog_feedback";
@@ -62,7 +62,7 @@ public class DialogHelper {
     }
 
     public static void showSetupPermissionsDialog(Activity activity) {
-        showDialog(activity, SetupPermissionsDialog.class, TAG_FRAGMENT_ACCESS);
+        showDialog(activity, SetupPermissionsDialog.class, TAG_FRAGMENT_SETUP_PERMISSIONS);
     }
 
     public static void showHelpDialog(Activity activity) {
