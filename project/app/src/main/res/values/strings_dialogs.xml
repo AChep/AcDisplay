@@ -20,6 +20,7 @@
 <resources>
 
     <string name="close">Close</string>
+    <string name="later">Later</string>
 
     <!-- About -->
     <string name="about_action">About</string>

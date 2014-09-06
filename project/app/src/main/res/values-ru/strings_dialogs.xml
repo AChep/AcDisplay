@@ -20,6 +20,8 @@
 <resources>
 
     <string name="close">Закрыть</string>
+    <string name="later">Позже</string>
+
     <!-- About -->
     <string name="about_action">О программе</string>
     <string name="about_message"><![CDATA[

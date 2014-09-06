@@ -52,14 +52,16 @@
         Device admin / notification access
          -->
 
-    <string name="access_not_granted">Необходимые разрешения:</string>
-    <string name="access_notifications_grant_btn">Уведомления</string>
+    <string name="access_title">Необходимые разрешения:</string>
+    <string name="access_setup">Настроить разрешения</string>
+    <string name="access_device_admin">Администратор устройства</string>
+    <!-- Shows as a toast, when clicking a button failed. -->
+    <string name="access_device_admin_description">Необходимо, чтобы управлять собственной задержкой выключения экрана.</string>
+    <string name="access_notifications">Уведомления</string>
+    <string name="access_notifications_description">Необходимо, чтобы иметь доступ к уведомлениям.</string>
     <!-- Shows as a toast, when clicking a button failed. -->
     <string name="access_notifications_grant_manually">Перейдите в Настройки > Безопасность > Доступ к уведомлениям и включите AcDisplay.</string>
-    <string name="access_device_admin_description">Это необходимо для того, что бы управлять собственной задержкой выключения экрана.</string>
-    <string name="access_device_admin_grant_btn">Выключить экран</string>
-    <!-- Shows as a toast, when clicking a button failed. -->
-    <string name="access_device_admin_grant_manually">Перейдите в Настройки > Безопасность > Администраторы устройства и включите AcDisplay</string>
+
     <string name="access_device_admin_removed_successful">AcDisplay был удален из списка администраторов устройства.</string>
     <string name="app_auto_disabled">AcDisplay был отключен из-за удаления прав администратора.</string>
 

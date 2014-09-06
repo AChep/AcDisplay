@@ -25,8 +25,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -38,30 +36,26 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.Device;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayActivity;
-import com.achep.acdisplay.admin.AdminReceiver;
-import com.achep.acdisplay.blacklist.activities.BlacklistActivity;
 import com.achep.acdisplay.fragments.AboutDialog;
 import com.achep.acdisplay.iab.DonationFragment;
 import com.achep.acdisplay.settings.Settings;
 import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.acdisplay.utils.PackageUtils;
-import com.achep.acdisplay.utils.ToastUtils;
 import com.achep.acdisplay.utils.ViewUtils;
 
 /**
@@ -71,15 +65,15 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
     private static final String TAG = "MainActivity";
 
+    private static final boolean DEBUG_DIALOGS = Build.DEBUG && true;
+
     private Switch mSwitch;
     private Config mConfig;
     private boolean mBroadcasting;
 
-    private ViewGroup mAccessWarningPanel;
-    private Button mAccessAllowNotification;
-    private Button mAccessAllowDeviceAdmin;
-
     private MenuItem mSendTestNotificationMenuItem;
+
+    private View mSwitchOverlay;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -107,7 +101,14 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         mConfig.registerListener(this);
 
         getActionBar().setDisplayShowCustomEnabled(true);
-        getActionBar().setCustomView(R.layout.layout_ab_switch);
+        getActionBar().setCustomView(R.layout.layout_ab_switch2);
+        mSwitchOverlay = getActionBar().getCustomView().findViewById(R.id.overlay);
+        mSwitchOverlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogHelper.showSetupPermissionsDialog(MainActivity.this);
+            }
+        });
         mSwitch = (Switch) getActionBar().getCustomView().findViewById(R.id.switch_);
         mSwitch.setChecked(mConfig.isEnabled());
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -135,14 +136,14 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
             Config.Triggers triggers = mConfig.getTriggers();
 
             int oldVersionCode = triggers.getPreviousVersion();
-            if (oldVersionCode < pi.versionCode) {
+            if (oldVersionCode < pi.versionCode || DEBUG_DIALOGS) {
                 triggers.setPreviousVersion(this, pi.versionCode, null);
 
-                if (oldVersionCode < 15 /* v2.0- */) {
+                if (oldVersionCode < 15 /* v2.0- */ || DEBUG_DIALOGS) {
                     showAlertSpeech();
                 }
 
-                if (oldVersionCode < 20 /* v2.2.1- */) {
+                if (oldVersionCode < 20 /* v2.2.1- */ || DEBUG_DIALOGS) {
                     showAlertWelcome();
                 }
             }
@@ -179,82 +180,10 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     @Override
     protected void onResume() {
         super.onResume();
-        updateAccessPanel();
-    }
 
-    /**
-     * Inflates access panel's layout and sets it up.
-     *
-     * @see #updateAccessPanel()
-     */
-    private void initAccessPanel() {
-        mAccessWarningPanel = (ViewGroup) ((ViewStub) findViewById(R.id.access)).inflate();
-        mAccessAllowNotification = (Button) mAccessWarningPanel.findViewById(R.id.access_notification);
-        mAccessAllowNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Device.hasJellyBeanMR2Api()) {
-                    launchNotificationSettings();
-                } else {
-                    launchAccessibilitySettings();
-                }
-            }
-
-            private void launchNotificationSettings() {
-                Context context = MainActivity.this;
-                Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    ToastUtils.showLong(context, R.string.access_notifications_grant_manually);
-                    Log.e(TAG, "Notification listeners activity not found.");
-                }
-            }
-
-            private void launchAccessibilitySettings() {
-                Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    Log.wtf(TAG, "Accessibility settings not found!");
-                }
-            }
-        });
-        mAccessAllowDeviceAdmin = (Button) mAccessWarningPanel.findViewById(R.id.access_device_admin);
-        mAccessAllowDeviceAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = MainActivity.this;
-                ComponentName admin = new ComponentName(context, AdminReceiver.class);
-                Intent intent = new Intent()
-                        .setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-                        .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
-
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    ToastUtils.showLong(context, R.string.access_device_admin_grant_manually);
-                    Log.e(TAG, "Device admins activity not found.");
-                }
-            }
-        });
-    }
-
-    private void updateAccessPanel() {
-        boolean showDeviceAdminBtn = !AccessUtils.isDeviceAdminAccessGranted(this);
-        boolean showNotifiesBtn = !AccessUtils.isNotificationAccessGranted(this);
-
-        if (showDeviceAdminBtn || showNotifiesBtn || mAccessWarningPanel != null) {
-            if (mAccessWarningPanel == null) initAccessPanel();
-
-            ViewUtils.setVisible(mAccessAllowDeviceAdmin, showDeviceAdminBtn);
-            ViewUtils.setVisible(mAccessAllowNotification, showNotifiesBtn);
-            ViewUtils.setVisible(mAccessWarningPanel, showDeviceAdminBtn || showNotifiesBtn);
-        }
-
-        mSwitch.setEnabled(!showDeviceAdminBtn && !showNotifiesBtn);
-        mSwitch.setChecked(mSwitch.isEnabled() && mSwitch.isChecked());
-        updateSendTestNotificationMenuItem();
+        mSwitch.setEnabled(AccessUtils.hasAllRights(this));
+        mSwitch.setChecked(mSwitch.isChecked() && mSwitch.isEnabled());
+        ViewUtils.setVisible(mSwitchOverlay, !mSwitch.isEnabled());
     }
 
     private void updateSendTestNotificationMenuItem() {

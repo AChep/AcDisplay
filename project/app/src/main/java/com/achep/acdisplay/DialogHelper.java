@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.achep.acdisplay.fragments.AboutDialog;
+import com.achep.acdisplay.fragments.SetupPermissionsDialog;
 import com.achep.acdisplay.fragments.FeedbackDialog;
 import com.achep.acdisplay.fragments.HelpDialog;
 import com.achep.acdisplay.iab.DonationFragment;
@@ -51,12 +52,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class DialogHelper {
 
     public static final String TAG_FRAGMENT_ABOUT = "dialog_about";
+    public static final String TAG_FRAGMENT_ACCESS = "dialog_access";
     public static final String TAG_FRAGMENT_HELP = "dialog_help";
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
     public static final String TAG_FRAGMENT_FEEDBACK = "dialog_feedback";
 
     public static void showAboutDialog(Activity activity) {
         showDialog(activity, AboutDialog.class, TAG_FRAGMENT_ABOUT);
+    }
+
+    public static void showSetupPermissionsDialog(Activity activity) {
+        showDialog(activity, SetupPermissionsDialog.class, TAG_FRAGMENT_ACCESS);
     }
 
     public static void showHelpDialog(Activity activity) {

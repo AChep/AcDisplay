@@ -53,15 +53,18 @@
         Device admin / notification access
          -->
 
-    <string name="access_not_granted">Access isn\'t granted!</string>
-    <string name="access_notifications_grant_btn">Notifications</string>
-    <!-- Shows as a toast, when clicking a button failed. -->
-    <string name="access_notifications_grant_manually">Go to Settings > Security > Notification access and check AcDisplay on.</string>
+    <string name="access_title">Required permissions:</string>
+    <string name="access_setup">Setup permissions</string>
+    <string name="access_device_admin">Device admin</string>
     <string name="access_device_admin_title" translatable="false">@string/app_name</string>
-    <string name="access_device_admin_description">This is needed to manage the screen timeout policy.</string>
-    <string name="access_device_admin_grant_btn">Turn screen off</string>
+    <string name="access_device_admin_description">Needed to manage the screen timeout policy.</string>
     <!-- Shows as a toast, when clicking a button failed. -->
     <string name="access_device_admin_grant_manually">Go to Settings > Security > Device admins and check AcDisplay on.</string>
+    <string name="access_notifications">Notifications</string>
+    <string name="access_notifications_description">Needed to get access to notifications.</string>
+    <!-- Shows as a toast, when clicking a button failed. -->
+    <string name="access_notifications_grant_manually">Go to Settings > Security > Notification access and check AcDisplay on.</string>
+
     <string name="access_device_admin_removed_successful">AcDisplay has been removed from Device admins.</string>
     <string name="app_auto_disabled">AcDisplay has been turned off because it\'s missing admin rights.</string>
 
