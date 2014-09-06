@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
     private static final String TAG = "MainActivity";
 
-    private static final boolean DEBUG_DIALOGS = Build.DEBUG && true;
+    private static final boolean DEBUG_DIALOGS = Build.DEBUG && false;
 
     private Switch mSwitch;
     private Config mConfig;
