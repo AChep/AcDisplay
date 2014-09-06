@@ -24,6 +24,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.admin.AdminReceiver;
+import com.achep.acdisplay.services.AccessibilityService;
 import com.achep.acdisplay.services.MediaService;
 
 /**
@@ -37,7 +38,7 @@ public class AccessUtils {
     }
 
     public static boolean isNotificationAccessGranted(Context context) {
-        return MediaService.sService != null;//.isServiceRunning(context);
+        return MediaService.sService != null || AccessibilityService.isRunning;//.isServiceRunning(context);
     }
 
 }

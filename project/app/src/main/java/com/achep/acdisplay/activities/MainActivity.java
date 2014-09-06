@@ -50,6 +50,7 @@ import android.widget.Switch;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayActivity;
@@ -192,6 +193,14 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
         mAccessAllowNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (Device.hasJellyBeanMR2Api()) {
+                    launchNotificationSettings();
+                } else {
+                    launchAccessibilitySettings();
+                }
+            }
+
+            private void launchNotificationSettings() {
                 Context context = MainActivity.this;
                 Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
                 try {
@@ -199,6 +208,15 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 } catch (ActivityNotFoundException e) {
                     ToastUtils.showLong(context, R.string.access_notifications_grant_manually);
                     Log.e(TAG, "Notification listeners activity not found.");
+                }
+            }
+
+            private void launchAccessibilitySettings() {
+                Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Log.wtf(TAG, "Accessibility settings not found!");
                 }
             }
         });
