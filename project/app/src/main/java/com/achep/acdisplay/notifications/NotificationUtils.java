@@ -18,12 +18,19 @@
  */
 package com.achep.acdisplay.notifications;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.achep.acdisplay.Operator;
+import com.achep.acdisplay.services.MediaService;
+import com.achep.acdisplay.utils.PendingIntentUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
@@ -34,7 +41,44 @@ public class NotificationUtils {
 
     private static final String TAG = "NotificationUtils";
 
-    public static Drawable getDrawable(Context context, StatusBarNotification n, int iconRes) {
+    /**
+     * Imitates a click on given notification: launches content intent and
+     * dismisses notification from app and system.
+     *
+     * @return {@code true} if launched successfully, {@code false} otherwise.
+     */
+    public static boolean startContentIntent(@NonNull OpenNotification n) {
+        PendingIntent pi = n.getNotification().contentIntent;
+        boolean successful = PendingIntentUtils.sendPendingIntent(pi);
+        if (successful && Operator.bitAnd(
+                n.getNotification().flags,
+                Notification.FLAG_AUTO_CANCEL)) {
+            dismissNotification(n);
+        }
+        return successful;
+    }
+
+    /**
+     * Dismisses given notification from system and app.
+     */
+    public static void dismissNotification(@NonNull OpenNotification n) {
+        NotificationPresenter.getInstance().removeNotification(n);
+
+        MediaService service = MediaService.sService;
+        StatusBarNotification sbn = n.getStatusBarNotification();
+        if (sbn != null) {
+            if (service != null) {
+                service.cancelNotification(
+                        sbn.getPackageName(),
+                        sbn.getTag(),
+                        sbn.getId());
+            } else {
+                Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
+            }
+        }
+    }
+
+    public static Drawable getDrawable(Context context, OpenNotification n, int iconRes) {
         Context pkgContext = createContext(context, n);
         if (pkgContext != null)
             try {
@@ -43,7 +87,7 @@ public class NotificationUtils {
         return null;
     }
 
-    public static Context createContext(Context context, StatusBarNotification n) {
+    public static Context createContext(Context context, OpenNotification n) {
         try {
             return context.createPackageContext(n.getPackageName(), Context.CONTEXT_RESTRICTED);
         } catch (PackageManager.NameNotFoundException e) {

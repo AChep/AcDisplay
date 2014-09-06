@@ -170,15 +170,15 @@ public class NotificationData {
     /**
      * Asynchronously loads the background of notification.
      *
-     * @param sbn Notification to load from.
+     * @param n Notification to load from.
      * @see #clearBackground()
      */
-    public void loadBackground(Context context, StatusBarNotification sbn) {
+    public void loadBackground(Context context, OpenNotification n) {
         // Stop previous thread if it is still
         // running.
         AsyncTask.stop(mBackgroundLoader);
 
-        Bitmap bitmapIcon = sbn.getNotification().largeIcon;
+        Bitmap bitmapIcon = n.getNotification().largeIcon;
         if (bitmapIcon != null && !BitmapUtils.hasTransparentCorners(bitmapIcon)) {
             mBackgroundLoader = new BackgroundFactoryThread(
                     context, bitmapIcon, mBackgroundLoaderCallback);
@@ -189,7 +189,7 @@ public class NotificationData {
     /**
      * Frees the background of this notification.
      *
-     * @see #loadBackground(Context, StatusBarNotification)
+     * @see #loadBackground(Context, OpenNotification)
      */
     public void clearBackground() {
         if (background != null) {
@@ -203,8 +203,8 @@ public class NotificationData {
      *
      * @see #clearCircleIcon()
      */
-    public void loadCircleIcon(StatusBarNotification sbn) {
-        Bitmap bitmapIcon = sbn.getNotification().largeIcon;
+    public void loadCircleIcon(OpenNotification n) {
+        Bitmap bitmapIcon = n.getNotification().largeIcon;
         if (bitmapIcon != null && !BitmapUtils.hasTransparentCorners(bitmapIcon)) {
             circleIcon = BitmapUtils.createCircleBitmap(bitmapIcon);
         }
@@ -213,7 +213,7 @@ public class NotificationData {
     /**
      * Frees the circle icon of this notification.
      *
-     * @see #loadBackground(Context, StatusBarNotification)
+     * @see #loadBackground(Context, com.achep.acdisplay.notifications.OpenNotification)
      */
     public void clearCircleIcon() {
         if (circleIcon != null) {
@@ -222,7 +222,7 @@ public class NotificationData {
         }
     }
 
-    public void loadNotification(Context context, StatusBarNotification sbn, boolean isRead) {
+    public void loadNotification(Context context, OpenNotification sbn, boolean isRead) {
         Notification notification = sbn.getNotification();
         actions = Action.getFactory().create(notification);
         number = notification.number;
@@ -231,7 +231,7 @@ public class NotificationData {
         sExtractor.loadTexts(context, sbn, this);
 
         AsyncTask.stop(mIconLoader);
-        mIconLoader = new IconLoaderThread(context, sbn, this);
+        mIconLoader = new IconLoaderThread(context, sbn);
         mIconLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -242,15 +242,13 @@ public class NotificationData {
      */
     private static class IconLoaderThread extends AsyncTask<Void, Void, Bitmap> {
 
-        private final WeakReference<NotificationData> mNotificationData;
-        private final WeakReference<StatusBarNotification> mStatusBarNotification;
+        private final WeakReference<OpenNotification> mOpenNotification;
         private final WeakReference<Context> mContext;
 
         private volatile long startTime;
 
-        private IconLoaderThread(Context context, StatusBarNotification sbn, NotificationData data) {
-            mNotificationData = new WeakReference<>(data);
-            mStatusBarNotification = new WeakReference<>(sbn);
+        private IconLoaderThread(Context context, OpenNotification sbn) {
+            mOpenNotification = new WeakReference<>(sbn);
             mContext = new WeakReference<>(context);
         }
 
@@ -262,16 +260,16 @@ public class NotificationData {
 
         @Override
         protected Bitmap doInBackground(Void... params) {
-            StatusBarNotification sbn = mStatusBarNotification.get();
+            OpenNotification openNotification = mOpenNotification.get();
             Context context = mContext.get();
 
-            if (context == null || sbn == null || isCancelled()) {
+            if (context == null || openNotification == null || isCancelled()) {
                 return null;
             }
 
             Resources res = context.getResources();
             Drawable drawable = NotificationUtils
-                    .getDrawable(context, sbn, sbn.getNotification().icon);
+                    .getDrawable(context, openNotification, openNotification.getNotification().icon);
 
             if (isCancelled()) {
                 return null;
@@ -319,9 +317,9 @@ public class NotificationData {
                 Log.d(TAG, "Notification icon loaded in " + delta + " millis:" + " bitmap=" + bitmap);
             }
 
-            NotificationData data = mNotificationData.get();
+            OpenNotification data = mOpenNotification.get();
             if (bitmap != null && data != null) {
-                data.setIcon(bitmap);
+                data.getNotificationData().setIcon(bitmap);
             }
         }
 

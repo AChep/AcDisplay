@@ -89,7 +89,7 @@ public class NotifyWidget extends Widget implements NotificationView {
      */
     @Override
     public boolean isDismissible() {
-        return mNotification.isClearable();
+        return mNotification.isDismissible();
     }
 
     @Override

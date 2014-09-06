@@ -26,11 +26,11 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.InactiveTimeHelper;
 import com.achep.acdisplay.Operator;
@@ -45,8 +45,6 @@ import com.achep.acdisplay.utils.PowerUtils;
 
 import java.util.ArrayList;
 
-import static com.achep.acdisplay.notifications.NotificationList.RESULT_DEFAULT;
-
 /**
  * Created by Artem on 27.12.13.
  */
@@ -60,11 +58,15 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     public static final int EVENT_CHANGED_SPAM = 3;
     public static final int EVENT_REMOVED = 4;
 
+    private static final int RESULT_SUCCESS = 1;
     private static final int RESULT_SPAM = -1;
 
     private static final int INITIALIZING_PROCESS_NONE = 0;
     private static final int INITIALIZING_PROCESS_STARTED = 1;
     private static final int INITIALIZING_PROCESS_DONE = 2;
+
+    private static final int FLAG_DONT_NOTIFY_FOLLOWERS = 1;
+    private static final int FLAG_DONT_WAKE_UP = 2;
 
     private static NotificationPresenter sNotificationPresenter;
 
@@ -92,11 +94,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
                     enabled = Operator.bitAnd((int) value, Config.DYNAMIC_BG_NOTIFICATION_MASK);
                     for (OpenNotification n : mGList.list()) {
-                        StatusBarNotification sbn = n.getStatusBarNotification();
                         NotificationData data = n.getNotificationData();
 
                         if (enabled) {
-                            data.loadBackground(config.getContext(), sbn);
+                            data.loadBackground(config.getContext(), n);
                         } else {
                             data.clearBackground();
                         }
@@ -105,11 +106,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 case Config.KEY_UI_NOTIFY_CIRCLED_ICON:
                     enabled = (boolean) value;
                     for (OpenNotification n : mGList.list()) {
-                        StatusBarNotification sbn = n.getStatusBarNotification();
                         NotificationData data = n.getNotificationData();
 
                         if (enabled) {
-                            data.loadCircleIcon(sbn);
+                            data.loadCircleIcon(n);
                         } else {
                             data.clearCircleIcon();
                         }
@@ -180,10 +180,11 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
          * @param osbn  an instance of notification.
          * @param event event type:
          *              {@link #EVENT_BATH}, {@link #EVENT_POSTED},
-         *              {@link #EVENT_CHANGED}, {@link #EVENT_REMOVED}
+         *              {@link #EVENT_CHANGED}, {@link #EVENT_CHANGED_SPAM},
+         *              {@link #EVENT_REMOVED}
          */
-        public void onNotificationListChanged(NotificationPresenter np,
-                                              OpenNotification osbn, int event);
+        public void onNotificationListChanged(@NonNull NotificationPresenter np,
+                                              @Nullable OpenNotification osbn, int event);
 
     }
 
@@ -214,23 +215,24 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         return sNotificationPresenter;
     }
 
-    public void postOrRemoveNotification(Context context, StatusBarNotification n, boolean post) {
-        if (post) {
-            postNotification(context, n);
-        } else {
-            removeNotification(context, n);
-        }
-    }
-
-    public void postNotification(Context context, StatusBarNotification n) {
-        postNotification(context, n, false);
-    }
-
-    public void postNotification(Context context, StatusBarNotification sbn, boolean silently) {
-        logNotification(sbn, "posted");
-        OpenNotification n = new OpenNotification(sbn);
-
-        boolean globalValid = isValidForGlobal(sbn);
+    /**
+     * Posts notification to global list, notifies every follower
+     * about this change, and tries to launch
+     * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity}.
+     * <p><i>
+     *     To create {@link OpenNotification}, use
+     *     {@link OpenNotification#newInstance(StatusBarNotification)} or
+     *     {@link OpenNotification#newInstance(android.app.Notification)}
+     *     method.
+     * </i></p>
+     *
+     * @see #FLAG_DONT_NOTIFY_FOLLOWERS
+     * @see #FLAG_DONT_WAKE_UP
+     */
+    public void postNotification(
+            @NonNull Context context,
+            @NonNull OpenNotification n, int flags) {
+        boolean globalValid = isValidForGlobal(n);
         boolean localValid = false;
 
         // If notification will not be added to the
@@ -244,46 +246,71 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
             // Selective load exactly what we need and nothing more.
             // This will reduce RAM consumption for a bit (1% or so.)
             if (config.isCircledLargeIconEnabled())
-                data.loadCircleIcon(sbn);
+                data.loadCircleIcon(n);
             if (Operator.bitAnd(
                     config.getDynamicBackgroundMode(),
                     Config.DYNAMIC_BG_NOTIFICATION_MASK))
-                data.loadBackground(context, sbn);
+                data.loadBackground(context, n);
 
             localValid = isValidForLocal(n);
         }
 
-        mGList.pushOrRemove(n, globalValid, silently);
-        int result = mLList.pushOrRemove(n, localValid, silently);
+        // Extract flags.
+        boolean flagIgnoreFollowers = Operator.bitAnd(
+                flags, FLAG_DONT_NOTIFY_FOLLOWERS);
+        boolean flagWakeUp = Operator.bitAnd(
+                flags, FLAG_DONT_WAKE_UP);
 
-        if (localValid && !silently && result != RESULT_SPAM) {
+        mGList.pushOrRemove(n, globalValid, flagIgnoreFollowers);
+        int result = mLList.pushOrRemove(n, localValid, flagIgnoreFollowers);
+
+        if (flagWakeUp && result == RESULT_SUCCESS) {
             tryStartGui(context, n);
         }
     }
 
     /**
-     * Called on {@link com.achep.acdisplay.services.MediaService#onNotificationRemoved(android.service.notification.StatusBarNotification)}
+     * Removes notification from the presenter and sends
+     * this event to followers. Calling his method will not
+     * remove notification from system!
      */
-    public void removeNotification(Context context, StatusBarNotification sbn) {
-        logNotification(sbn, "removed");
-        OpenNotification n = new OpenNotification(sbn);
+    public void removeNotification(@NonNull OpenNotification n) {
         mGList.remove(n);
         mLList.remove(n);
     }
 
+    /**
+     * Re-validates all notifications from {@link #mGList global list}
+     * and sends {@link #EVENT_BATH bath} event after.
+     *
+     * @see #isValidForLocal(OpenNotification)
+     * @see #isValidForGlobal(OpenNotification)
+     */
     private void rebuildLocalList() {
-        if (Build.DEBUG) Log.d(TAG, "Rebuilding local list of notifications.");
+        boolean changed = false;
 
+        // Remove not valid notifications
+        // from local list.
         ArrayList<OpenNotification> list = mLList.list();
-        list.clear();
+        for (int i = 0; i < list.size(); i++) {
+            OpenNotification n = list.get(i);
+            if (!isValidForLocal(n)) {
+                changed = true;
+                list.remove(i--);
+            }
+        }
 
+        // Add newly valid notifications to local list.
         for (OpenNotification n : mGList.list()) {
-            if (isValidForLocal(n)) {
+            if (isValidForLocal(n) && mLList.indexOf(n) == -1) {
+                changed = true;
                 list.add(n);
             }
         }
 
-        notifyListeners(null, EVENT_BATH);
+        if (changed) {
+            notifyListeners(null, EVENT_BATH);
+        }
     }
 
     public ArrayList<OpenNotification> getList() {
@@ -295,13 +322,13 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     // //////////////////////////////////////////
 
     @Override
-    public int onNotificationAdded(OpenNotification n) {
+    public int onNotificationAdded(@NonNull OpenNotification n) {
         notifyListeners(n, EVENT_POSTED);
-        return RESULT_DEFAULT;
+        return RESULT_SUCCESS;
     }
 
     @Override
-    public int onNotificationChanged(OpenNotification n, OpenNotification old) {
+    public int onNotificationChanged(@NonNull OpenNotification n, @NonNull OpenNotification old) {
         // Prevent god damn notification spam by
         // checking texts' equality.
 
@@ -326,21 +353,21 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         }
 
         notifyListeners(n, EVENT_CHANGED);
-        return RESULT_DEFAULT;
+        return RESULT_SUCCESS;
     }
 
     @Override
-    public int onNotificationRemoved(OpenNotification n) {
+    public int onNotificationRemoved(@NonNull OpenNotification n) {
         notifyListeners(n, EVENT_REMOVED);
         n.recycle(); // Free all resources
-        return RESULT_DEFAULT;
+        return RESULT_SUCCESS;
     }
 
     // //////////////////////////////////////////
     // //////// -- NOTIFICATION UTILS -- ////////
     // //////////////////////////////////////////
 
-    private void notifyListeners(OpenNotification n, int event) {
+    private void notifyListeners(@Nullable OpenNotification n, int event) {
         for (OnNotificationListChangedListener listener : mListeners) {
             listener.onNotificationListChanged(this, n, event);
         }
@@ -350,7 +377,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
      * Returns {@code false} if the notification doesn't fit
      * the requirements (such as not ongoing and clearable).
      */
-    private boolean isValidForLocal(OpenNotification o) {
+    private boolean isValidForLocal(@NonNull OpenNotification o) {
         AppConfig config = mBlacklist.getAppConfig(o.getPackageName());
 
         if (config.forReal(config.isHidden())) {
@@ -376,17 +403,8 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 && TextUtils.isEmpty(data.infoText));
     }
 
-    private boolean isValidForGlobal(StatusBarNotification sbn) {
+    private boolean isValidForGlobal(@NonNull OpenNotification n) {
         return true;
-    }
-
-    private void logNotification(StatusBarNotification sbn, String action) {
-        Log.d(TAG, "Notification " + action + ": package=" + sbn.getPackageName()
-                + " id=" + sbn.getId()
-                + " user_id=" + sbn.getUserId()
-                + " tag=" + sbn.getTag()
-                + " post_time=" + sbn.getPostTime()
-                + " is_valid_global=" + isValidForGlobal(sbn));
     }
 
     // //////////////////////////////////////////
@@ -395,7 +413,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
 
     private boolean isTestNotification(Context context, OpenNotification n) {
         StatusBarNotification sbn = n.getStatusBarNotification();
-        return sbn.getId() == App.ID_NOTIFY_INIT
+        return sbn!=null &&sbn.getId() == App.ID_NOTIFY_INIT
                 && n.getPackageName().equals(PackageUtils.getName(context));
     }
 
@@ -488,7 +506,8 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
 
         if (activeNotifications != null) {
             for (StatusBarNotification notification : activeNotifications) {
-                postNotification(service, notification, true);
+                OpenNotification n1 = OpenNotification.newInstance(notification);
+                postNotification(service, n1, FLAG_DONT_NOTIFY_FOLLOWERS | FLAG_DONT_WAKE_UP);
             }
             notifyListeners(null, EVENT_BATH);
         }
@@ -496,7 +515,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                NotificationHelper.dismissNotification(n);
+                NotificationUtils.dismissNotification(OpenNotification.newInstance(n));
             }
         }, 500);
     }

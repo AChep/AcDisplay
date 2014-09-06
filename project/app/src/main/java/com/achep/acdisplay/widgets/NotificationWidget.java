@@ -255,7 +255,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                 }
 
                 // Setup content.
-                Drawable icon = NotificationUtils.getDrawable(getContext(), sbn, action.icon);
+                Drawable icon = null;//NotificationUtils.getDrawable(getContext(), sbn, action.icon);
                 actionTextView.setText(action.title);
                 actionTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
 

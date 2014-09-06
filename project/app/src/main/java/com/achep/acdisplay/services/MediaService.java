@@ -36,6 +36,7 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationPresenter;
+import com.achep.acdisplay.notifications.OpenNotification;
 
 /**
  * Created by achep on 07.06.14.
@@ -117,8 +118,15 @@ public class MediaService extends NotificationListenerService implements
         runOnMainLooper(new Runnable() {
             @Override
             public void run() {
+                OpenNotification n = OpenNotification.newInstance(sbn);
                 NotificationPresenter np = NotificationPresenter.getInstance();
-                np.postOrRemoveNotification(MediaService.this, sbn, post);
+
+                if (post) {
+                    np.postNotification(MediaService.this, n, 0);
+                } else {
+                    np.removeNotification(n);
+                }
+
                 np.tryInit(MediaService.this, sbn, activeNotifies);
             }
         });

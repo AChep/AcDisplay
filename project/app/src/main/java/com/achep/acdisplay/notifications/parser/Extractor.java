@@ -36,6 +36,7 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.Action;
 import com.achep.acdisplay.notifications.NotificationData;
 import com.achep.acdisplay.notifications.NotificationUtils;
+import com.achep.acdisplay.notifications.OpenNotification;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -66,12 +67,12 @@ public final class Extractor {
 
     @SuppressLint("InlinedApi")
     public NotificationData loadTexts(Context context,
-                                      StatusBarNotification sbn,
+                                      OpenNotification openNotification,
                                       NotificationData data) {
         // Loop is here only to provide useful break; function.
         //noinspection LoopStatementThatDoesntLoop
         while (true) {
-            final Notification n = sbn.getNotification();
+            final Notification n = openNotification.getNotification();
             final Bundle extras = getExtras(n);
 
             // If extras are available - try to load data from it.
@@ -91,9 +92,10 @@ public final class Extractor {
                     break;
                 }
             }
+
             // Parse views to get title and message text.
 
-            final Context contextNotify = NotificationUtils.createContext(context, sbn);
+            final Context contextNotify = NotificationUtils.createContext(context, openNotification);
             final RemoteViews rvs = n.bigContentView == null ? n.contentView : n.bigContentView;
 
             if (rvs == null) {
