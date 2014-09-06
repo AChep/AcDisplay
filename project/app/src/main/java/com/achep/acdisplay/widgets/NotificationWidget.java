@@ -218,7 +218,6 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
 
         ViewUtils.setVisible(mActionsContainer, actions != null);
         if (actions != null) {
-            StatusBarNotification sbn = osbn.getStatusBarNotification();
             int actionCount = actions.length;
 
             View[] rootViews = new View[actionCount];
@@ -255,7 +254,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
                 }
 
                 // Setup content.
-                Drawable icon = null;//NotificationUtils.getDrawable(getContext(), sbn, action.icon);
+                Drawable icon = NotificationUtils.getDrawable(getContext(), osbn, action.icon);
                 actionTextView.setText(action.title);
                 actionTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
 
