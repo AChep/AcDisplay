@@ -19,6 +19,7 @@
 package com.achep.acdisplay.activities;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Notification;
@@ -30,6 +31,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.achep.acdisplay.App;
@@ -68,12 +71,12 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     private static final boolean DEBUG_DIALOGS = Build.DEBUG && false;
 
     private Switch mSwitch;
+    private ImageView mSwitchAlertView;
+
     private Config mConfig;
     private boolean mBroadcasting;
 
     private MenuItem mSendTestNotificationMenuItem;
-
-    private View mSwitchOverlay;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -102,13 +105,8 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(R.layout.layout_ab_switch2);
-        mSwitchOverlay = getActionBar().getCustomView().findViewById(R.id.overlay);
-        mSwitchOverlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogHelper.showSetupPermissionsDialog(MainActivity.this);
-            }
-        });
+        mSwitchAlertView = (ImageView) getActionBar().getCustomView().findViewById(R.id.icon);
+        mSwitchAlertView.setImageResource(R.drawable.ic_action_warning);
         mSwitch = (Switch) getActionBar().getCustomView().findViewById(R.id.switch_);
         mSwitch.setChecked(mConfig.isEnabled());
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -120,8 +118,17 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                     return;
                 }
 
-                boolean successfully = mConfig.setEnabled(
-                        MainActivity.this, b, MainActivity.this);
+                Activity activity = MainActivity.this;
+
+                if (b && !AccessUtils.hasAllRights(activity)) {
+                    // Do not set broadcasting to true to
+                    // edit config too.
+                    compoundButton.setChecked(false);
+                    DialogHelper.showSetupPermissionsDialog(activity);
+                    return;
+                }
+
+                boolean successfully = mConfig.setEnabled(activity, b, MainActivity.this);
 
                 if (!successfully) {
                     mBroadcasting = true;
@@ -181,9 +188,9 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     protected void onResume() {
         super.onResume();
 
-        mSwitch.setEnabled(AccessUtils.hasAllRights(this));
-        mSwitch.setChecked(mSwitch.isChecked() && mSwitch.isEnabled());
-        ViewUtils.setVisible(mSwitchOverlay, !mSwitch.isEnabled());
+        boolean hasAllRights = AccessUtils.hasAllRights(this);
+        mSwitch.setChecked(mSwitch.isChecked() && hasAllRights);
+        ViewUtils.setVisible(mSwitchAlertView, !hasAllRights);
     }
 
     private void updateSendTestNotificationMenuItem() {
