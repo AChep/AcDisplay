@@ -19,7 +19,6 @@
 package com.achep.acdisplay.activities;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Notification;
@@ -31,26 +30,25 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.media.Image;
+import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.AcDisplayActivity;
@@ -59,6 +57,7 @@ import com.achep.acdisplay.iab.DonationFragment;
 import com.achep.acdisplay.settings.Settings;
 import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.acdisplay.utils.PackageUtils;
+import com.achep.acdisplay.utils.ToastUtils;
 import com.achep.acdisplay.utils.ViewUtils;
 
 /**
@@ -69,6 +68,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     private static final String TAG = "MainActivity";
 
     private static final boolean DEBUG_DIALOGS = Build.DEBUG && false;
+    private static final boolean DEBUG_COMPAT_TOAST = Build.DEBUG && false;
 
     private Switch mSwitch;
     private ImageView mSwitchAlertView;
@@ -136,6 +136,24 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                         // sync switch with config.
                         compoundButton.setChecked(mConfig.isEnabled());
                         updateSendTestNotificationMenuItem();
+                    } else if (b) {
+                        String formatter = getString(R.string.compat_formatter);
+
+                        SpannableStringBuilder builder = new SpannableStringBuilder();
+                        builder.append(getString(R.string.compat_title));
+                        builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(), 0);
+                        builder.append('\n');
+
+                        if (!Device.hasJellyBeanMR2Api() || DEBUG_COMPAT_TOAST) {
+                            builder.append(String.format(formatter, getString(R.string.compat_notifications)));
+                        }
+
+                        if (!Device.hasKitKatApi() || DEBUG_COMPAT_TOAST) {
+                            builder.append(String.format(formatter, getString(R.string.compat_immersive_mode)));
+                        }
+
+                        builder.delete(builder.length() - 1, builder.length());
+                        ToastUtils.showLong(activity, builder);
                     }
                 }
             }

@@ -49,6 +49,14 @@
     <string name="status_date_format">EEE, d MMMM</string>
 
     <!--
+        Compatibility mode
+         -->
+
+    <string name="compat_title">AcDisplay работает в режиме совместимости:</string>
+    <string name="compat_notifications">Уведомления не могут быть отклонены из системы или сгрупированы в одно</string>
+    <string name="compat_immersive_mode">Панель навигации показывается</string>
+
+    <!--
         Device admin / notification access
          -->
 
