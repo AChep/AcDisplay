@@ -136,7 +136,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                         // sync switch with config.
                         compoundButton.setChecked(mConfig.isEnabled());
                         updateSendTestNotificationMenuItem();
-                    } else if (b && (Device.hasKitKatApi() || DEBUG_COMPAT_TOAST)) {
+                    } else if (b && (!Device.hasKitKatApi() || DEBUG_COMPAT_TOAST)) {
                         String formatter = getString(R.string.compat_formatter);
 
                         SpannableStringBuilder builder = new SpannableStringBuilder();
