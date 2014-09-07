@@ -29,6 +29,7 @@ import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
@@ -66,9 +67,9 @@ public class NotificationUtils {
     public static void dismissNotification(@NonNull OpenNotification n) {
         NotificationPresenter.getInstance().removeNotification(n);
 
-        MediaService service = MediaService.sService;
         StatusBarNotification sbn = n.getStatusBarNotification();
-        if (sbn != null) {
+        if (sbn != null && Device.hasJellyBeanMR2Api()) {
+            MediaService service = MediaService.sService;
             if (service != null) {
                 service.cancelNotification(
                         sbn.getPackageName(),
