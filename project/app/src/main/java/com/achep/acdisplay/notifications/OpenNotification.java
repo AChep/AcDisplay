@@ -18,8 +18,11 @@
  */
 package com.achep.acdisplay.notifications;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
+import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,6 +47,7 @@ public class OpenNotification {
     /**
      * Creates empty notification instance.
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static OpenNotification newInstance(@NonNull StatusBarNotification sbn) {
         return new OpenNotification(sbn, sbn.getNotification());
     }
@@ -120,6 +124,7 @@ public class OpenNotification {
      * @return {@code true} if notifications are from the same source and will
      * be handled by system as same notifications, {@code false} otherwise.
      */
+    @SuppressLint("NewApi")
     @SuppressWarnings("ConstantConditions")
     public boolean hasIdenticalIds(@Nullable OpenNotification n) {
         if (n == null) return false;
@@ -189,6 +194,7 @@ public class OpenNotification {
     /**
      * @return the package name of notification's parent.
      */
+    @SuppressLint("NewApi")
     @NonNull
     public String getPackageName() {
         return mStatusBarNotification.getPackageName();

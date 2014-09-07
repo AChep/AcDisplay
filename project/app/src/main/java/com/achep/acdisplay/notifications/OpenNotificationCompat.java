@@ -24,12 +24,12 @@ public class OpenNotificationCompat extends OpenNotification {
 
     @Override
     public void loadData(Context context) {
-        super.loadData(context);
-
         RemoteViews rvs = getNotification().contentView;
         if (rvs == null) rvs = getNotification().bigContentView;
         if (rvs == null) rvs = getNotification().tickerView;
         mPackageName = rvs != null ? rvs.getPackage() : "!2#$%^&*()";
+
+        super.loadData(context);
     }
 
     //-- COMPARING INSTANCES --------------------------------------------------

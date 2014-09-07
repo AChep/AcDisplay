@@ -52,4 +52,12 @@ public class Device {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
     }
 
+    /**
+     * @return {@code true} if device is running
+     * {@link Build.VERSION_CODES#JELLY_BEAN_MR1 Jelly Bean 4.2} or higher, {@code false} otherwise.
+     */
+    public static boolean hasJellyBeanMR1Api() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    }
+
 }

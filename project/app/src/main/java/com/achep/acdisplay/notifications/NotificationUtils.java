@@ -18,6 +18,7 @@
  */
 package com.achep.acdisplay.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -61,6 +62,7 @@ public class NotificationUtils {
     /**
      * Dismisses given notification from system and app.
      */
+    @SuppressLint("NewApi")
     public static void dismissNotification(@NonNull OpenNotification n) {
         NotificationPresenter.getInstance().removeNotification(n);
 

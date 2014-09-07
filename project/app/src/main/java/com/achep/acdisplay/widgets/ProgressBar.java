@@ -24,6 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 
 /**
@@ -101,8 +102,12 @@ public class ProgressBar extends android.widget.ProgressBar {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         if (mMirrored) {
+            int paddingEnd = Device.hasJellyBeanMR1Api()
+                    ? getPaddingEnd()
+                    : getPaddingRight();
+
             canvas.save();
-            canvas.translate(getWidth() - getPaddingEnd(), getPaddingTop());
+            canvas.translate(getWidth() - paddingEnd, getPaddingTop());
             canvas.scale(-1.0f, 1.0f);
             super.onDraw(canvas);
             canvas.restore();

@@ -19,6 +19,7 @@
 
 package com.achep.acdisplay.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -411,9 +412,11 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     // ///////// -- USER INTERFACE -- ///////////
     // //////////////////////////////////////////
 
+    @SuppressLint("NewApi")
     private boolean isTestNotification(Context context, OpenNotification n) {
         StatusBarNotification sbn = n.getStatusBarNotification();
-        return sbn!=null &&sbn.getId() == App.ID_NOTIFY_INIT
+        return sbn != null
+                && sbn.getId() == App.ID_NOTIFY_INIT
                 && n.getPackageName().equals(PackageUtils.getName(context));
     }
 
