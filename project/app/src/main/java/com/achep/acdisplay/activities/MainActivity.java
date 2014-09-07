@@ -121,19 +121,22 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 Activity activity = MainActivity.this;
 
                 if (b && !AccessUtils.hasAllRights(activity)) {
-                    // Do not set broadcasting to true to
-                    // edit config too.
+                    // Reset compound button and update
+                    // testing menu item.
                     compoundButton.setChecked(false);
+                    updateSendTestNotificationMenuItem();
+
+                    // Show permission dialog.
                     DialogHelper.showSetupPermissionsDialog(activity);
-                    return;
-                }
+                } else {
+                    boolean successfully = mConfig.setEnabled(activity, b, MainActivity.this);
+                    if (!successfully) {
 
-                boolean successfully = mConfig.setEnabled(activity, b, MainActivity.this);
-
-                if (!successfully) {
-                    mBroadcasting = true;
-                    compoundButton.setChecked(!b);
-                    mBroadcasting = false;
+                        // Setting option failed, so we need to
+                        // sync switch with config.
+                        compoundButton.setChecked(mConfig.isEnabled());
+                        updateSendTestNotificationMenuItem();
+                    }
                 }
             }
         });
