@@ -47,20 +47,6 @@ final class Utils {
                 .replaceAll("\n+", "\n");
     }
 
-    /**
-     * @return the position of given char, or {@code -1} if not found.
-     */ 
-    static int indexOf(CharSequence cs, char c) {
-        int length = cs.length();
-        for (int i = 0; i < length; i++) {
-            char letter = cs.charAt(i);
-            if (letter == c) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     static CharSequence mergeLargeMessage(CharSequence[] messages) {
         if (messages == null) return null;
         int length = messages.length;

@@ -289,7 +289,6 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> implements IO
 
         boolean growUp = false;
         int pos;
-        int n = 0;
 
         V old = null;
         if (contains(object)) {
