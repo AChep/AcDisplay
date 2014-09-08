@@ -145,12 +145,15 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                         builder.append('\n');
 
                         if (!Device.hasJellyBeanMR2Api() || DEBUG_COMPAT_TOAST) {
-                            builder.append(String.format(formatter, getString(R.string.compat_notifications)));
+                            builder.append(String.format(formatter,
+                                    getString(R.string.compat_notifications)));
                         }
 
                         if (!Device.hasKitKatApi() || DEBUG_COMPAT_TOAST) {
-                            builder.append(String.format(formatter, getString(R.string.compat_immersive_mode)));
-                            builder.append(String.format(formatter, getString(R.string.compat_music_widget)));
+                            builder.append(String.format(formatter,
+                                    getString(R.string.compat_immersive_mode)));
+                            builder.append(String.format(formatter,
+                                    getString(R.string.compat_music_widget)));
                         }
 
                         builder.delete(builder.length() - 1, builder.length());
