@@ -57,6 +57,7 @@
     <string name="compat_formatter" translatable="false">- %s;\n</string>
     <string name="compat_notifications">Notifications can not be dismissed from system nor grouped into one</string>
     <string name="compat_immersive_mode">Navigation bar is shown</string>
+    <string name="compat_music_widget">No music widget available</string>
 
     <!--
         Device admin / notification access
