@@ -217,7 +217,7 @@ public class BatteryMeterView extends TextView {
     public void setPadding(int left, int top, int right, int bottom) {
         // Apply additional padding to leave free space
         // for battery meter drawing.
-        final int leftExtended = (left += mBatteryPadding) + mBatteryWidth + mBatteryPadding;
+        final int leftExtended = (left += mBatteryPadding - mPaddingLeft) + mBatteryWidth + mBatteryPadding;
         super.setPadding(leftExtended, top, right, bottom);
         mPaddingLeft = left;
     }

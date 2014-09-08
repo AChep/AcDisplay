@@ -40,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:fontFamily="sans-serif-condensed"
         android:textAllCaps="true"
         android:textSize="12sp"

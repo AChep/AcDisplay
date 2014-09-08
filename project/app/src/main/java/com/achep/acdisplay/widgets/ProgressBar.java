@@ -19,6 +19,7 @@
 
 package com.achep.acdisplay.widgets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -99,6 +100,7 @@ public class ProgressBar extends android.widget.ProgressBar {
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         if (mMirrored) {

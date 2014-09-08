@@ -27,12 +27,10 @@
     android:gravity="bottom">
 
     <!-- TODO: Write normal Date widget. -->
-    <TextClock
+    <com.achep.acdisplay.widgets.DateView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:format12Hour="@string/status_date_format"
-        android:format24Hour="@string/status_date_format"
         style="?attr/acDisplayStatus"/>
 
     <com.achep.acdisplay.widgets.status.BatteryMeterView
@@ -41,6 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/date"
         android:layout_marginStart="16dp"
+        android:layout_toRightOf="@id/date"
+        android:layout_marginLeft="16dp"
         app:battery_width="@dimen/status_bar_battery_width"
         app:battery_height="@dimen/status_bar_battery_height"
         app:battery_padding="4dp"

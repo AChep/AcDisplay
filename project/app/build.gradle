@@ -55,7 +55,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 16
         //noinspection OldTargetApi
         targetSdkVersion 19
     }

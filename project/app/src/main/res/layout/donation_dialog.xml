@@ -31,6 +31,8 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         style="?textAppearanceDialogMessage"/>
 
     <FrameLayout
@@ -46,6 +48,8 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_gravity="center"
             android:maxWidth="200dp"
             android:background="?android:listChoiceBackgroundIndicator"
@@ -64,6 +68,8 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_gravity="center"
             android:padding="8dp" />
 
@@ -73,6 +79,8 @@
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
             android:scrollbarStyle="outsideOverlay"
             android:stretchMode="columnWidth"
             android:numColumns="auto_fit" />

@@ -44,6 +44,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
             android:scaleType="centerInside" />
 
         <TextView
@@ -53,6 +54,7 @@
             android:layout_marginTop="-2dp"
             android:layout_marginBottom="-3dp"
             android:layout_toEndOf="@id/icon"
+            android:layout_toRightOf="@id/icon"
             android:textAlignment="viewStart"
             android:minHeight="24dp"
             style="?attr/acDisplayNotificationTitle" />
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_toEndOf="@id/icon"
+            android:layout_toRightOf="@id/icon"
             android:minHeight="24dp"
             style="?attr/acDisplayNotificationSubtext" />
 
@@ -73,6 +76,8 @@
             android:layout_below="@id/title"
             android:layout_toEndOf="@id/when"
             android:layout_marginStart="8dp"
+            android:layout_toRightOf="@id/when"
+            android:layout_marginLeft="8dp"
             style="?attr/acDisplayNotificationSubtext" />
 
         <TextView

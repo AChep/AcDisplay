@@ -30,7 +30,7 @@
 
     <!-- Notification widget -->
     <dimen name="notification_icon_size">24dp</dimen>
-    <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen>
+    <dimen name="notification_subtext_size">12sp</dimen>
 
     <!-- AcDisplay -->
     <dimen name="circle_radius_target">140dp</dimen>

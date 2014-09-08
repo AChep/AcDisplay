@@ -19,6 +19,7 @@
 
 package com.achep.acdisplay.widgets;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.Action;
 import com.achep.acdisplay.notifications.NotificationData;
@@ -121,7 +123,12 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
         }
     }
 
+    @SuppressLint("NewApi")
     private void updateActionButtonsAlignment() {
+        if (!Device.hasJellyBeanMR1Api()) {
+            return;
+        }
+
         RelativeLayout.LayoutParams lp = (LayoutParams) mActionsContainer.getLayoutParams();
         lp.removeRule(RelativeLayout.ABOVE);
         lp.removeRule(RelativeLayout.BELOW);

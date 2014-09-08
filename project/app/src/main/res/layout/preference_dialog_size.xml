@@ -44,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/message"
         android:minHeight="32dp"
         android:minWidth="55sp"
@@ -56,6 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/message"
-        android:layout_toStartOf="@id/info" />
+        android:layout_toStartOf="@id/info"
+        android:layout_toLeftOf="@id/info" />
 
 </RelativeLayout>

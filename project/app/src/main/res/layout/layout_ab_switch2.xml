@@ -23,6 +23,8 @@
     android:layout_gravity="end|center_vertical"
     android:paddingEnd="@dimen/activity_horizontal_margin"
     android:paddingStart="8dp"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="8dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -31,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         tools:ignore="ContentDescription" />
 
     <Switch

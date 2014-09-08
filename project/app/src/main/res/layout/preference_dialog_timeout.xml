@@ -34,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/normal_timeout_title"
         android:minHeight="32dp"
         android:minWidth="55sp"
@@ -46,7 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/normal_timeout_title"
-        android:layout_toStartOf="@id/normal_timeout_value" />
+        android:layout_toStartOf="@id/normal_timeout_value"
+        android:layout_toLeftOf="@id/normal_timeout_value" />
 
     <TextView
         android:id="@+id/short_timeout_title"
@@ -62,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/short_timeout_title"
         android:minHeight="32dp"
         android:minWidth="55sp"
@@ -74,6 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/short_timeout_title"
-        android:layout_toStartOf="@id/short_timeout_value" />
+        android:layout_toStartOf="@id/short_timeout_value"
+        android:layout_toLeftOf="@id/short_timeout_value" />
 
 </RelativeLayout>
