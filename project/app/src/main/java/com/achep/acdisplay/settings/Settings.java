@@ -343,6 +343,12 @@ public class Settings extends PreferenceActivity {
                 }
             }
 
+            if (id == R.id.headsup_settings) {
+                if (!Build.DEBUG) {
+                    target.remove(i);
+                }
+            }
+
             // Increment if the current one wasn't removed by the Utils code.
             if (target.get(i) == header) {
                 // Hold on to the first header, when we need to reset to the top-level
@@ -389,6 +395,7 @@ public class Settings extends PreferenceActivity {
 
         private final Enabler mLockscreenEnabler;
         private final Enabler mActiveEnabler;
+        private final Enabler mHeadsUpEnabler;
 
         private static class HeaderViewHolder {
             ImageView icon;
@@ -403,7 +410,8 @@ public class Settings extends PreferenceActivity {
             if (header.fragment == null && header.intent == null) {
                 return HEADER_TYPE_CATEGORY;
             } else if (header.id == R.id.keyguard_settings
-                    || header.id == R.id.active_settings) {
+                    || header.id == R.id.active_settings
+                    || header.id == R.id.headsup_settings) {
                 return HEADER_TYPE_SWITCH;
             } else {
                 return HEADER_TYPE_NORMAL;
@@ -445,6 +453,7 @@ public class Settings extends PreferenceActivity {
             // Switches inflated from their layouts. Must be done before adapter is set in super
             mLockscreenEnabler = new Enabler(context, new Switch(context), Config.KEY_KEYGUARD);
             mActiveEnabler = new Enabler(context, new Switch(context), Config.KEY_ACTIVE_MODE);
+            mHeadsUpEnabler = new Enabler(context, new Switch(context), Config.KEY_HEADSUP);
         }
 
         @Override
@@ -499,6 +508,8 @@ public class Settings extends PreferenceActivity {
                         mLockscreenEnabler.setSwitch(holder.switch_);
                     } else if (header.id == R.id.active_settings) {
                         mActiveEnabler.setSwitch(holder.switch_);
+                    } else if (header.id == R.id.headsup_settings) {
+                        mHeadsUpEnabler.setSwitch(holder.switch_);
                     }
                 case HEADER_TYPE_NORMAL:
                     holder.icon.setImageResource(header.iconRes);
