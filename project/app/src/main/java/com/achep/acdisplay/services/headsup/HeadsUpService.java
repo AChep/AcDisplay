@@ -65,6 +65,6 @@ public class HeadsUpService extends BathService.ChildService {
 
     @Override
     public String getLabel() {
-        return getContext().getString(R.string.service_bath_active_mode_dump);
+        return getContext().getString(R.string.service_bath_headsup);
     }
 }
