@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -35,6 +36,9 @@ import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by Artem on 30.12.13.
@@ -71,10 +75,32 @@ public class NotificationUtils {
         if (sbn != null && Device.hasJellyBeanMR2Api()) {
             MediaService service = MediaService.sService;
             if (service != null) {
-                service.cancelNotification(
-                        sbn.getPackageName(),
-                        sbn.getTag(),
-                        sbn.getId());
+                if (Device.hasLemonCakeApi()) {
+                    // FIXME: Android L reflections.
+                    // service.cancelNotification(notification.getKey());
+                    try {
+                        // Get notification's key.
+                        Method method = sbn.getClass().getMethod("getKey");
+                        method.setAccessible(true);
+                        String key = (String) method.invoke(sbn);
+
+                        // Cancel notification.
+                        method = service.getClass().getMethod(
+                                "cancelNotification", String.class);
+                        method.setAccessible(true);
+                        method.invoke(service, key);
+                    } catch (NoSuchMethodException
+                            | InvocationTargetException
+                            | IllegalAccessException e) {
+                        Log.wtf(TAG, "Failed to cancel notification:");
+                        e.printStackTrace();
+                    }
+                } else {
+                    service.cancelNotification(
+                            sbn.getPackageName(),
+                            sbn.getTag(),
+                            sbn.getId());
+                }
             } else {
                 Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
             }
