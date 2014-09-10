@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.achep.acdisplay.App;
@@ -41,6 +43,8 @@ public class HeadsUpManager implements
      * Represents how long notification will be shown.
      */
     private static final long DURATION = 5000; // ms.
+
+    private final Animation mUpdateAnimation;
 
     private View mRootView;
     private ViewGroup mContainer;
@@ -91,6 +95,9 @@ public class HeadsUpManager implements
         mRunnableMap = new HashMap<>();
         mHandler = new Handler();
 
+        // Load animations.
+        mUpdateAnimation = AnimationUtils.loadAnimation(context, R.anim.heads_up_update);
+
         // Create root layouts.
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -139,6 +146,7 @@ public class HeadsUpManager implements
                     mHandler.removeCallbacks(runnable);
                     mHandler.postDelayed(runnable, DURATION);
 
+                    widget.startAnimation(mUpdateAnimation);
                     // TODO: Notify user about this change via animation.
                 }
                 break;
