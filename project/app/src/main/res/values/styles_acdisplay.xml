@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <style name="AcDisplay" />
 
@@ -25,7 +25,7 @@
         SCENE: Clock
     -->
 
-    <style name="AcDisplay.Clock" parent="AcDisplay">
+    <style name="AcDisplay.Clock" parent="AcDisplay" >
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">85sp</item>
@@ -35,6 +35,10 @@
         <!-- This is needed to compensate font margins -->
         <item name="android:layout_marginTop">-14sp</item>
         <item name="android:layout_marginBottom">-14sp</item>
+
+        <!-- Compatibility -->
+        <item name="font">roboto_thin</item>
+        <item name="font_sdk">20</item>
     </style>
 
     <style name="AcDisplay.Clock.Small" parent="AcDisplay.Clock">

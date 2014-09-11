@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.format.Time;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.achep.acdisplay.utils.DateUtils;
 

@@ -28,6 +28,11 @@
         <attr name="battery_width" format="dimension" />
         <attr name="battery_padding" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="TextView">
+        <attr name="font" format="string" />
+        <attr name="font_sdk" format="integer" />
+    </declare-styleable>
     
     <declare-styleable name="Theme">
 
