@@ -57,6 +57,7 @@ import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.utils.MathUtils;
+import com.achep.acdisplay.utils.ViewUtils;
 import com.achep.acdisplay.view.ForwardingLayout;
 import com.achep.acdisplay.view.ForwardingListener;
 
@@ -78,6 +79,7 @@ public class AcDisplayFragment extends Fragment implements
 
     private static final int MSG_RESET_SCENE = 0;
 
+    private View mDividerView;
     private ForwardingLayout mSceneContainer;
     private ForwardingLayout mIconsForwarder;
     private GridLayout mIconsContainer;
@@ -176,6 +178,10 @@ public class AcDisplayFragment extends Fragment implements
         return Config.getInstance();
     }
 
+    public View getDividerView() {
+        return mDividerView;
+    }
+
     /**
      * @return Layout resource to be inflated as fragment's view.
      * @see #onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -205,6 +211,7 @@ public class AcDisplayFragment extends Fragment implements
         View root = inflater.inflate(getViewResource(), container, false);
         assert root != null;
 
+        mDividerView = root.findViewById(R.id.divider);
         mSceneContainer = (ForwardingLayout) root.findViewById(R.id.scene);
         mIconsForwarder = (ForwardingLayout) root.findViewById(R.id.forwarding);
         mIconsContainer = (GridLayout) root.findViewById(R.id.grid);
@@ -725,6 +732,14 @@ public class AcDisplayFragment extends Fragment implements
         view.setLayoutParams(lp);
     }
 
+    /**
+     * Updates the visibility of divider between
+     * scenes and icons.
+     */
+    private void updateDividerVisibility() {
+        ViewUtils.setVisible(getDividerView(), mIconsContainer.getChildCount() > 0);
+    }
+
     // TODO: Optimize it
     // Spent hours on optimizing with no result: 0h
     private void updateNotificationList() {
@@ -918,5 +933,7 @@ public class AcDisplayFragment extends Fragment implements
             long delta = SystemClock.elapsedRealtime() - now;
             Log.d(TAG, "Fragment list updated in " + delta + "ms.");
         }
+
+        updateDividerVisibility();
     }
 }

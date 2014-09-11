@@ -53,6 +53,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     private Timeout mTimeout;
     private Timeout.Gui mTimeoutGui;
 
+    private View mDividerView;
     private CircleView mCircleView;
 
     // Media widget
@@ -70,6 +71,11 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
 
         mConfig = mActivity.getConfig();
         mTimeout = mActivity.getTimeout();
+    }
+
+    @Override
+    public View getDividerView() {
+        return mDividerView;
     }
 
     @Override
@@ -134,12 +140,12 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         }
 
         boolean mirrored = mConfig.isMirroredTimeoutProgressBarEnabled();
-        View pb = inflater.inflate(mirrored
+        mDividerView = inflater.inflate(mirrored
                 ? R.layout.acdisplay_progress_bar_mirrored
                 : R.layout.acdisplay_progress_bar, vg, false);
         vg.removeViewAt(position);
-        vg.addView(pb, position);
-        ProgressBar progressBar = (ProgressBar) pb.findViewById(R.id.progress_bar);
+        vg.addView(mDividerView, position);
+        ProgressBar progressBar = (ProgressBar) mDividerView.findViewById(R.id.progress_bar);
         if (mirrored) {
             // Redirect all changes from the main progress bar
             // to mirrored one.
