@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -153,13 +154,21 @@ public class Config implements IOnLowMemory {
         private final String setterName;
         private final String getterName;
         private final Class clazz;
+        private final int minSdkVersion;
 
         public Option(String setterName,
                       String getterName,
                       Class clazz) {
+            this(setterName, getterName, clazz, 0);
+        }
+
+        public Option(String setterName,
+                      String getterName,
+                      Class clazz, int minSdkVersion) {
             this.setterName = setterName;
             this.getterName = getterName;
             this.clazz = clazz;
+            this.minSdkVersion = minSdkVersion;
         }
 
         /**
@@ -934,18 +943,31 @@ public class Config implements IOnLowMemory {
         }
 
         @NonNull
-        public Syncer addPreference(@NonNull Preference preference) {
+        public Syncer addPreference(@Nullable PreferenceScreen preferenceScreen,
+                                    @NonNull Preference preference) {
+            Group group;
             if (preference instanceof CheckBoxPreference) {
-                Group group = new Group(mConfig, preference);
-                mGroups.add(group);
-
-                if (mStarted) {
-                    startListeningGroup(group);
-                }
-                return this;
+                group = new Group(mConfig, preference);
+            } else {
+                throw new IllegalArgumentException("Syncer only supports some kinds of Preferences");
             }
 
-            throw new IllegalArgumentException("Syncer only supports some kinds of Preferences");
+            // Remove preference from preference screen
+            // if needed.
+            if (preferenceScreen != null) {
+                if (!Device.hasTargetApi(group.option.minSdkVersion)) {
+                    preferenceScreen.removePreference(preference);
+                    return this;
+                }
+            }
+
+            mGroups.add(group);
+
+            if (mStarted) {
+                startListeningGroup(group);
+            }
+
+            return this;
         }
 
         /**

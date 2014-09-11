@@ -29,6 +29,14 @@ import android.os.Build;
 public class Device {
 
     /**
+     * @return {@code true} if device is device supports given API version,
+     * {@code false} otherwise.
+     */
+    public static boolean hasTargetApi(int api) {
+        return Build.VERSION.SDK_INT >= api;
+    }
+
+    /**
      * @return {@code true} if device is running
      * {@link Build.VERSION_CODES#L Lemon Cake} or higher, {@code false} otherwise.
      */

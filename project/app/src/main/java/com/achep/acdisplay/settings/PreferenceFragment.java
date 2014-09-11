@@ -21,6 +21,7 @@ package com.achep.acdisplay.settings;
 
 import android.app.Activity;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.util.Log;
 
 import com.achep.acdisplay.Build;
@@ -61,8 +62,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
     protected void syncPreference(String key) {
         Preference preference = findPreference(key);
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
         if (preference != null) {
-            mSyncer.addPreference(preference);
+            mSyncer.addPreference(preferenceScreen, preference);
         } else if (Build.DEBUG) {
             Log.d(TAG, "Tried to sync non-existent preference with config.");
         }
