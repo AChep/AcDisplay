@@ -34,7 +34,7 @@
 
         <!-- This is needed to compensate font margins -->
         <item name="android:layout_marginTop">-14sp</item>
-        <item name="android:layout_marginBottom">-14sp</item>
+        <item name="android:layout_marginBottom">-10sp</item>
 
         <!-- Compatibility -->
         <item name="font">roboto_thin</item>
