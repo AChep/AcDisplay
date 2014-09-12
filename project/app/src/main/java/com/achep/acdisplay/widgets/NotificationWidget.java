@@ -53,6 +53,7 @@ import com.achep.acdisplay.utils.ViewUtils;
 public class NotificationWidget extends RelativeLayout implements NotificationView {
 
     private NotificationIcon mIcon;
+    private NotificationIcon mSmallIcon;
     private TextView mTitleTextView;
     private TextView mMessageTextView;
     private TextView mWhenTextView;
@@ -150,6 +151,7 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
 
         mContent = (ViewGroup) findViewById(R.id.content);
         mIcon = (NotificationIcon) findViewById(R.id.icon);
+        mSmallIcon = (NotificationIcon) findViewById(R.id.icon_small);
         mTitleTextView = (TextView) findViewById(R.id.title);
         mMessageTextView = (TextView) findViewById(R.id.message);
         mWhenTextView = (TextView) findViewById(R.id.when);
@@ -208,8 +210,17 @@ public class NotificationWidget extends RelativeLayout implements NotificationVi
             // and set large icon.
             mIcon.setNotification(null);
             mIcon.setImageBitmap(bitmap);
+            if (mSmallIcon != null) {
+                mSmallIcon.setNotificationIndicateReadStateEnabled(false);
+                mSmallIcon.setNotification(osbn);
+                mSmallIcon.setVisibility(View.VISIBLE);
+            }
         } else {
             mIcon.setNotification(osbn);
+            if (mSmallIcon != null) {
+                mSmallIcon.setNotification(null);
+                mSmallIcon.setVisibility(View.GONE);
+            }
         }
 
         updateActionButtons(osbn);
