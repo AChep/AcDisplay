@@ -237,8 +237,8 @@ public abstract class ActiveModeSensor {
             }
 
             // Now die
-            mHandler.sendEmptyMessage(STOP);
             mHandler.removeCallbacksAndMessages(null);
+            mHandler.sendEmptyMessage(STOP);
 
             setup(null, null);
         }
