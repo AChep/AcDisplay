@@ -259,7 +259,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         // Extract flags.
         boolean flagIgnoreFollowers = Operator.bitAnd(
                 flags, FLAG_DONT_NOTIFY_FOLLOWERS);
-        boolean flagWakeUp = Operator.bitAnd(
+        boolean flagWakeUp = !Operator.bitAnd(
                 flags, FLAG_DONT_WAKE_UP);
 
         mGList.pushOrRemove(n, globalValid, flagIgnoreFollowers);
