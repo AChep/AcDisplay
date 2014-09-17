@@ -52,5 +52,7 @@ public class TextView extends android.widget.TextView {
             if (!font.contains(".")) font += ".ttf"; // Add default font's extension.
             setTypeface(Typeface.createFromAsset(context.getAssets(), font));
         }
+        
+        a.recycle();
     }
 }
