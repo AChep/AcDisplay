@@ -453,7 +453,7 @@ public class Settings extends PreferenceActivity {
             // Switches inflated from their layouts. Must be done before adapter is set in super
             mLockscreenEnabler = new Enabler(context, new Switch(context), Config.KEY_KEYGUARD);
             mActiveEnabler = new Enabler(context, new Switch(context), Config.KEY_ACTIVE_MODE);
-            mHeadsUpEnabler = new Enabler(context, new Switch(context), Config.KEY_HEADSUP);
+            mHeadsUpEnabler = new Enabler(context, new Switch(context), Config.KEY_HEADS_UP);
         }
 
         @Override

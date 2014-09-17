@@ -30,6 +30,7 @@
 
     <!-- Notification widget -->
     <dimen name="notification_icon_size">24dp</dimen>
+    <dimen name="notification_action_icon_size">20dp</dimen>
     <dimen name="notification_subtext_size">12sp</dimen>
 
     <!-- AcDisplay -->
@@ -42,4 +43,16 @@
     <!-- Status bar battery icons dimensions -->
     <dimen name="status_bar_battery_height">16dp</dimen>
     <dimen name="status_bar_battery_width">10.5dp</dimen>
+
+    <!-- Height of a small notification in the status bar plus glow, padding, etc -->
+    <dimen name="notification_row_min_height">72dp</dimen>
+    <!-- Height of a large notification in the status bar plus glow, padding, etc -->
+    <dimen name="notification_row_max_height">260dp</dimen>
+
+    <!-- half the distance between notifications in the panel -->
+    <dimen name="notification_divider_height">3dp</dimen>
+    <dimen name="blinds_pop_threshold">32dp</dimen>
+
+    <!-- The size of the gesture span needed to activate the "pull" notification expansion -->
+    <dimen name="pull_span_min">25dp</dimen>
 </resources>

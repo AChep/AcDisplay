@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Light theme -->
+    <style name="HeadsUp_Theme" parent="android:Theme.Holo.Light">
+        <item name="headsUpNotificationLayout">@layout/heads_up_notification</item>
+        <item name="headsUpNotificationRippleColor">#bbb</item>
+        <item name="headsUpNotificationBackground">@drawable/bg_heads_up_notification_light</item>
+        <item name="headsUpNotificationSmallIconBackground">@drawable/bg_heads_up_icon_light</item>
+
+        <item name="headsUpNotificationTitle">@style/HeadsUp_Notification_Title</item>
+        <item name="headsUpNotificationMessage">@style/HeadsUp_Notification_Message</item>
+        <item name="headsUpNotificationSubtext">@style/HeadsUp_Notification_Subtext</item>
+        <item name="headsUpNotificationAction">@style/HeadsUp_Notification_Action</item>
+
+        <!--
+            Material design.
+            -->
+        <item name="android:textColorPrimary">@color/material_light_primary_text</item>
+        <item name="android:textColorSecondary">@color/material_light_secondary_text</item>
+        <item name="android:textColorHint">@color/material_light_hint_text</item>
+    </style>
+
+    <!-- Dark theme -->
+    <style name="HeadsUp_Theme_Dark" parent="android:Theme.Holo">
+        <item name="headsUpNotificationLayout">@layout/heads_up_notification</item>
+        <item name="headsUpNotificationRippleColor">#777</item>
+        <item name="headsUpNotificationBackground">@drawable/bg_heads_up_notification_dark</item>
+        <item name="headsUpNotificationSmallIconBackground">@drawable/bg_heads_up_icon_dark</item>
+
+        <item name="headsUpNotificationTitle">@style/HeadsUp_Notification_Title</item>
+        <item name="headsUpNotificationMessage">@style/HeadsUp_Notification_Message</item>
+        <item name="headsUpNotificationSubtext">@style/HeadsUp_Notification_Subtext</item>
+        <item name="headsUpNotificationAction">@style/HeadsUp_Notification_Action</item>
+
+        <!--
+            Material design.
+            -->
+        <item name="android:textColorPrimary">@color/material_dark_primary_text</item>
+        <item name="android:textColorSecondary">@color/material_dark_secondary_text</item>
+        <item name="android:textColorHint">@color/material_dark_hint_text</item>
+    </style>
+
+    <!--
+        Styles
+        -->
+
+    <style name="HeadsUp_Notification_Title">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="HeadsUp_Notification_Subtext">
+        <item name="android:textColor">?android:textColorHint</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="HeadsUp_Notification_Message">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="HeadsUp_Notification_Action">
+        <item name="android:background">?android:listChoiceBackgroundIndicator</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+
+        <!-- Use custom font on Android KitKat or lower. -->
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="font">roboto_medium</item>
+        <item name="font_sdk">20</item>
+    </style>
+
+</resources>

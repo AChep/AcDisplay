@@ -36,6 +36,16 @@
         <item>2</item>
     </string-array>
 
+    <!-- Heads up styling -->
+    <string-array name="heads_up_styles">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="heads_up_styles_entries" translatable="false">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
     <!-- BatteryMeterView parameters -->
     <array name="batterymeter_color_levels" translatable="false">
         <item>4</item>

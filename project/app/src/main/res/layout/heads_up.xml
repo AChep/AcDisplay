@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.achep.acdisplay.services.headsup.HeadsUpView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,4 +19,4 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical"/>
 
-</FrameLayout>
+</com.achep.acdisplay.services.headsup.HeadsUpView>

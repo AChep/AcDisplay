@@ -142,4 +142,18 @@ public class Presenter {
         return mActivity;
     }
 
+    public void launchAcDisplay(Context context) {
+        if (mActivity != null) {
+        }
+
+        context.startActivity(new Intent(Intent.ACTION_MAIN, null)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_NO_USER_ACTION
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION
+                        | Intent.FLAG_FROM_BACKGROUND)
+                .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true)
+                .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF, true)
+                .setClass(context, AcDisplayActivity.class));
+    }
+
 }

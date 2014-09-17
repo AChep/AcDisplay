@@ -21,7 +21,6 @@ package com.achep.acdisplay.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.util.AttributeSet;
 
 import com.achep.acdisplay.Device;

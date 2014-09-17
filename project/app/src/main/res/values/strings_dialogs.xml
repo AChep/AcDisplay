@@ -31,7 +31,8 @@
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
         <a href="http://commons.apache.org/">Apache Commons</a>,
         <a href="http://www.androidicons.com/">Android icons by Opoloo</a>,
-        <a href="https://github.com/square/seismic">seismic by Square</a>
+        <a href="https://github.com/square/seismic">seismic by Square</a>,
+        <a href="https://github.com/03uk/RippleDrawable">RippleDrawable by 03uk</a>
     ]]></string>
     <string name="about_message"><![CDATA[
         Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>

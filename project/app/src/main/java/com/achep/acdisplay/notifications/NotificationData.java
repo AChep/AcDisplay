@@ -20,6 +20,7 @@ package com.achep.acdisplay.notifications;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -27,6 +28,12 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 
 import com.achep.acdisplay.AsyncTask;
@@ -35,6 +42,7 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.acdisplay.BackgroundFactoryThread;
 import com.achep.acdisplay.notifications.parser.Extractor;
 import com.achep.acdisplay.utils.BitmapUtils;
+import com.achep.acdisplay.utils.StringUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -52,7 +60,7 @@ public class NotificationData {
 
     public CharSequence titleText;
     public CharSequence messageText;
-    public CharSequence messageTextLarge;
+    public CharSequence[] messageTextLines;
     public CharSequence infoText;
     public CharSequence subText;
     public CharSequence summaryText;
@@ -62,6 +70,30 @@ public class NotificationData {
     private Bitmap icon;
     private Bitmap circleIcon;
     private Bitmap background;
+
+    public int dominantColor;
+
+    public CharSequence getMergedMessage() {
+        if (messageTextLines == null) {
+            return messageText;
+        } else {
+            CharSequence[] messages = messageTextLines;
+
+            boolean isFirstMessage = true;
+
+            StringBuilder sb = new StringBuilder();
+            for (CharSequence message : messages) {
+                // Start every new message from new line
+                if (!isFirstMessage & !(isFirstMessage = false)) {
+                    sb.append('\n');
+                }
+
+                sb.append(message);
+            }
+
+            return sb;
+        }
+    }
 
     /**
      * The number of events that this notification represents. For example, in a new mail
@@ -77,14 +109,6 @@ public class NotificationData {
      */
     public int number;
     public boolean isRead;
-
-    /**
-     * @return {@link #messageTextLarge large message} if not null,
-     * otherwise returns {@link #messageText short message}.
-     */
-    public CharSequence getLargeMessage() {
-        return messageTextLarge == null ? messageText : messageTextLarge;
-    }
 
     /**
      * @return small notification icon with corrected size and color.
@@ -227,6 +251,19 @@ public class NotificationData {
         actions = Action.getFactory().create(notification);
         number = notification.number;
         markAsRead(isRead);
+
+        try {
+            String packageName = sbn.getPackageName();
+            Drawable appIcon = context.getPackageManager().getApplicationIcon(packageName);
+
+            Bitmap bitmap = Bitmap.createBitmap(
+                    appIcon.getMinimumWidth(),
+                    appIcon.getMinimumHeight(),
+                    Bitmap.Config.ARGB_4444);
+            appIcon.draw(new Canvas(bitmap));
+            dominantColor = BitmapUtils.getDominantColor(bitmap);
+            bitmap.recycle();
+        } catch (PackageManager.NameNotFoundException e) { /* do nothing */ }
 
         sExtractor.loadTexts(context, sbn, this);
 

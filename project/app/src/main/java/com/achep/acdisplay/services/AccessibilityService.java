@@ -5,7 +5,6 @@ import android.app.Notification;
 import android.os.Parcelable;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;

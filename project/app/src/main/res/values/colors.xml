@@ -46,12 +46,10 @@
     <color name="primary_color_900">#263238</color>
 
     <!-- Material design: text colors -->
-    <color name="material_primary_text_color_dark">#DD000000</color>
-    <color name="material_secondary_text_color_dark">#89000000</color>
-    <color name="material_hint_text_color_dark">#42000000</color>
-
-    <!-- Heads-up -->
-    <color name="heads_up_primary_text_color">@color/material_primary_text_color_dark</color>
-    <color name="heads_up_secondary_text_color">@color/material_primary_text_color_dark</color>
-    <color name="heads_up_third_text_color">@color/material_secondary_text_color_dark</color>
+    <color name="material_dark_primary_text">#DDFFFFFF</color>
+    <color name="material_dark_secondary_text">#89FFFFFF</color>
+    <color name="material_dark_hint_text">#42FFFFFF</color>
+    <color name="material_light_primary_text">#DD000000</color>
+    <color name="material_light_secondary_text">#89000000</color>
+    <color name="material_light_hint_text">#42000000</color>
 </resources>

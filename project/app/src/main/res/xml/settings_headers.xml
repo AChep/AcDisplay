@@ -35,7 +35,7 @@
     <!-- Heads up -->
     <header android:fragment="com.achep.acdisplay.settings.HeadsUpSettings"
         android:id="@+id/headsup_settings"
-        android:title="@string/settings_headsup_title"
+        android:title="@string/settings_heads_up_title"
         android:icon="@drawable/ic_action_balloon"/>
 
     <!-- Notifications -->

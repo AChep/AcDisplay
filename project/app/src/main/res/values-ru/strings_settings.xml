@@ -22,6 +22,7 @@
     <!-- Settings -->
     <string name="settings">Настройки</string>
     <string name="settings_multi_list_divider">,&#160;</string>
+    <string name="settings_unknown_value">Неизвестное значение</string>
 
     <!-- Placeholder -->
     <string name="settings_placeholder_title">Заглушка</string>
@@ -30,7 +31,7 @@
     <!-- Headers -->
     <string name="settings_lockscreen_title">Экран блокировки</string>
     <string name="settings_active_title">Активный режим</string>
-    <string name="settings_headsup_title">Всплывающие уведомления</string>
+    <string name="settings_heads_up_title">Всплывающие уведомления</string>
     <string name="settings_app_settings_title">Приложения</string>
     <string name="settings_notification_title">Уведомления</string>
     <string name="settings_interface_title">Интерфейс</string>
@@ -47,7 +48,9 @@
     <string name="settings_active_enabled_when_notification_list_empty_off">Активный режим временно отключается, пока текущий список уведомлений пуст.</string>
 
     <!-- Heads up -->
-    <string name="settings_headsup_description">Показывает новые уведомления в виде всплывающих окон.</string>
+    <string name="settings_heads_up_description">Показывает новые уведомления в виде всплывающих окон.</string>
+    <string name="settings_heads_up_style_title">Тема</string>
+    <string name="settings_heads_up_style_summary">Текущая тема: %1$s</string>
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>

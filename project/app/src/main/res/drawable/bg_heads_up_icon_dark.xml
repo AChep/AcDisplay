@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
@@ -17,25 +18,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
 
-    <!-- Feedback -->
-    <string-array name="feedback_types">
-        <item>Ошибка</item>
-        <item>Пожелание</item>
-        <item>Другое</item>
-    </string-array>
-
-    <!-- Dynamic background -->
-    <string-array name="dynamic_background">
-        <item>Обложка трека</item>
-        <item>Иконка уведомления</item>
-    </string-array>
-
-    <!-- Heads up styling -->
-    <string-array name="heads_up_styles">
-        <item>Светлый</item>
-        <item>Тёмный</item>
-    </string-array>
-
-</resources>
+    <solid android:color="#444" />
+</shape>

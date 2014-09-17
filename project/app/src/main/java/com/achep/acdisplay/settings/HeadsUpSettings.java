@@ -20,8 +20,10 @@ package com.achep.acdisplay.settings;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.widget.Switch;
 
 import com.achep.acdisplay.Config;
@@ -30,9 +32,15 @@ import com.achep.acdisplay.R;
 /**
  * Created by Artem on 09.02.14.
  */
-public class HeadsUpSettings extends PreferenceFragment {
+public class HeadsUpSettings extends PreferenceFragment implements
+        Preference.OnPreferenceChangeListener,
+        Config.OnConfigChangedListener {
 
     private Enabler mHeadsUpEnabler;
+
+    private ListPreference mStylePreference;
+
+    private boolean mBroadcasting;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,18 +54,81 @@ public class HeadsUpSettings extends PreferenceFragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.layout_ab_switch);
         Switch switch_ = (Switch) actionBar.getCustomView().findViewById(R.id.switch_);
-        mHeadsUpEnabler = new Enabler(activity, switch_, Config.KEY_HEADSUP);
+        mHeadsUpEnabler = new Enabler(activity, switch_, Config.KEY_HEADS_UP);
+
+        mStylePreference = (ListPreference) findPreference(
+                Config.KEY_HEADS_UP_STYLE);
+        mStylePreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mHeadsUpEnabler.resume();
+        Config config = getConfig();
+        config.registerListener(this);
+
+        updateStylePreferenceSummary(config);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mHeadsUpEnabler.pause();
+        Config config = getConfig();
+        config.unregisterListener(this);
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (mBroadcasting) {
+            return true;
+        }
+
+        Context context = getActivity();
+        Config config = Config.getInstance();
+        if (preference == mStylePreference) {
+            String style = (String) newValue;
+
+            config.setHeadsUpStyle(context, style, this);
+            updateStylePreferenceSummary(config);
+        } else
+            return false;
+        return true;
+    }
+
+    @Override
+    public void onConfigChanged(Config config, String key, Object value) {
+        switch (key) {
+            case Config.KEY_HEADS_UP_STYLE:
+                updateStylePreference(config);
+                break;
+        }
+    }
+
+    private void updateStylePreference(Config config) {
+        mBroadcasting = true;
+
+        mStylePreference.setValue(config.getHeadsUpStyle());
+
+        mBroadcasting = false;
+        updateStylePreferenceSummary(config);
+    }
+
+    private void updateStylePreferenceSummary(Config config) {
+        int index = -1, i = 0;
+
+        String style = config.getHeadsUpStyle();
+        for (CharSequence cs : mStylePreference.getEntryValues()) {
+            if (cs.equals(style)) {
+                index = i;
+            } else {
+                i++;
+            }
+        }
+
+        mStylePreference.setSummary(getString(R.string.settings_heads_up_style_summary, index != -1
+                ? mStylePreference.getEntries()[index]
+                : getString(R.string.settings_unknown_value)));
     }
 }

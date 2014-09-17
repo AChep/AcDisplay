@@ -34,28 +34,4 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
-    <!--
-         HeadsUp
-      -->
-
-    <style name="HeadsUp_Notification_Title">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textAppearance">?android:textAppearanceLarge</item>
-        <item name="android:textColor">@color/heads_up_primary_text_color</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="HeadsUp_Notification_Subtext">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textColor">@color/heads_up_third_text_color</item>
-        <item name="android:maxLines">1</item>
-    </style>
-
-    <style name="HeadsUp_Notification_Message">
-        <item name="android:textColor">@color/heads_up_secondary_text_color</item>
-        <item name="android:maxLines">4</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
 </resources>

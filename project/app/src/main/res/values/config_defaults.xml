@@ -47,4 +47,5 @@
 
     <!-- -->
     <integer name="config_default_ui_icon_size_dp">48</integer>
+    <string name="config_default_heads_up_style" translatable="false">light</string>
 </resources>

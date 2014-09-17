@@ -1,13 +1,17 @@
 package com.achep.acdisplay.services.headsup;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +19,17 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
 
 import com.achep.acdisplay.App;
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.compat.TransitionManager;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.receiver.Receiver;
+import com.achep.acdisplay.utils.PendingIntentUtils;
+import com.achep.acdisplay.utils.PowerUtils;
 import com.achep.acdisplay.widgets.NotificationWidget;
 
 import java.util.ArrayList;
@@ -44,9 +51,16 @@ public class HeadsUpManager implements
      */
     private static final long DURATION = 5000; // ms.
 
-    private final Animation mUpdateAnimation;
+    private static final int STATE_ADDED = 1;
+    private static final int STATE_EXIT_ANIM = 2;
+    private static final int STATE_REMOVED = 3;
 
-    private View mRootView;
+    private int mWindowState = STATE_REMOVED;
+
+    private final Animation mUpdateAnimation;
+    private final Animation mExitAnimation;
+
+    private HeadsUpView mRootView;
     private ViewGroup mContainer;
 
     private ArrayList<NotificationWidget> mNotificationWidget;
@@ -97,11 +111,13 @@ public class HeadsUpManager implements
 
         // Load animations.
         mUpdateAnimation = AnimationUtils.loadAnimation(context, R.anim.heads_up_update);
+        mExitAnimation = AnimationUtils.loadAnimation(context, R.anim.heads_up_exit);
 
         // Create root layouts.
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mRootView = inflater.inflate(R.layout.heads_up, null, false);
+        mRootView = (HeadsUpView) inflater.inflate(R.layout.heads_up, null, false);
+        mRootView.setHeadsUpManager(this);
         mContainer = (ViewGroup) mRootView.findViewById(R.id.content);
     }
 
@@ -123,12 +139,29 @@ public class HeadsUpManager implements
     public void onNotificationListChanged(
             @NonNull NotificationPresenter np,
             @NonNull OpenNotification osbn, int event) {
-        if (mIgnoreShowing) {
-            // Something important is showing.
+        if (mIgnoreShowing || !PowerUtils.isScreenOn(mContext)) {
             return;
         }
 
+        switch (event) {
+            case NotificationPresenter.EVENT_POSTED:
+            case NotificationPresenter.EVENT_CHANGED:
+            case NotificationPresenter.EVENT_CHANGED_SPAM:
+                if (osbn.getNotification().priority < Notification.PRIORITY_HIGH) {
+                    // As said in Android documentation:
+                    // < https://developer.android.com/preview/notifications.html >
+
+                    // Use high priority notifications primarily for important communication,
+                    // such as message or chat events with content that is particularly
+                    // interesting for the user. High priority notifications will get
+                    // the Heads-Up Notification display starting in L.
+                   // return;
+                }
+                break;
+        }
+
         NotificationWidget widget;
+
         switch (event) {
             case NotificationPresenter.EVENT_POSTED:
                 postNotification(osbn);
@@ -138,6 +171,8 @@ public class HeadsUpManager implements
                 if (i == -1) {
                     postNotification(osbn);
                 } else {
+                    TransitionManager.beginDelayedTransition(mContainer);
+
                     widget = mNotificationWidget.get(i);
                     widget.setNotification(osbn);
 
@@ -146,7 +181,7 @@ public class HeadsUpManager implements
                     mHandler.removeCallbacks(runnable);
                     mHandler.postDelayed(runnable, DURATION);
 
-                    widget.startAnimation(mUpdateAnimation);
+                    // widget.startAnimation(mUpdateAnimation);
                     // TODO: Notify user about this change via animation.
                 }
                 break;
@@ -194,18 +229,44 @@ public class HeadsUpManager implements
      * @param n the notification to show
      */
     private void postNotification(@NonNull OpenNotification n) {
+
+        String style = Config.getInstance().getHeadsUpStyle();
+        int styleRes = style.equals("dark")
+                ? R.style.HeadsUp_Theme_Dark
+                : R.style.HeadsUp_Theme;
+
+        Context themedContext = new ContextThemeWrapper(mContext, styleRes);
+        TypedArray typedArray = themedContext.obtainStyledAttributes(new int[]{
+                R.styleable.Theme_headsUpNotificationLayout,
+        });
+        final int layoutRes = typedArray.getInt(0, R.layout.heads_up_notification);
+        typedArray.recycle();
+
         // Inflate notification widget.
-        LayoutInflater inflater = (LayoutInflater) mContext.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final NotificationWidget widget = (NotificationWidget) inflater
-                .inflate(R.layout.heads_up_notification, mContainer, false);
+        LayoutInflater inflater = (LayoutInflater) themedContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final HeadsUpNotificationView widget = (HeadsUpNotificationView) inflater
+                .inflate(layoutRes, mContainer, false);
 
         // Fill widget and add to container.
+        widget.setHeadsUpManager(this);
         widget.setNotification(n);
-        widget.setActionButtonsAlignment(RelativeLayout.ALIGN_BOTTOM);
+        widget.setActionButtonsAlignTop(false);
         widget.setAlpha(0);
         widget.setRotationX(-15);
         widget.animate().alpha(1).rotationX(0).setDuration(300);
+        widget.setOnClickListener(new NotificationWidget.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                widget.getNotification().click();
+            }
+
+            @Override
+            public void onActionButtonClick(View v, PendingIntent intent) {
+                PendingIntentUtils.sendPendingIntent(intent);
+                widget.getNotification().dismiss();
+            }
+        });
         mNotificationWidget.add(widget);
         mContainer.addView(widget);
 
@@ -245,8 +306,7 @@ public class HeadsUpManager implements
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
         lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
@@ -265,5 +325,27 @@ public class HeadsUpManager implements
         mContainer.removeAllViews();
         mNotificationWidget.clear();
         mRunnableMap.clear();
+    }
+
+    public void hideHeadsUp() {
+        detach();
+    }
+
+    public void resetHeadsUpDecayTimer(HeadsUpNotificationView widget) {
+
+        // Delay dismissing this notification.
+        Runnable runnable = mRunnableMap.get(widget);
+        mHandler.removeCallbacks(runnable);
+        mHandler.postDelayed(runnable, DURATION);
+    }
+
+    /**
+     * Dismisses given {@link NotificationWidget notification widget} and its notification.
+     *
+     * @param widget a widget to be dismissed.
+     * @see OpenNotification#dismiss()
+     */
+    public void dismiss(NotificationWidget widget) {
+        widget.getNotification().dismiss();
     }
 }

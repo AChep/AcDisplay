@@ -17,25 +17,22 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<resources>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Feedback -->
-    <string-array name="feedback_types">
-        <item>Ошибка</item>
-        <item>Пожелание</item>
-        <item>Другое</item>
-    </string-array>
+    <scale
+        android:fromXScale="1"
+        android:fromYScale="1"
+        android:toXScale="0.9"
+        android:toYScale="0.9"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="1000"
+        android:interpolator="@android:interpolator/accelerate_quad" />
 
-    <!-- Dynamic background -->
-    <string-array name="dynamic_background">
-        <item>Обложка трека</item>
-        <item>Иконка уведомления</item>
-    </string-array>
+    <alpha
+        android:fromAlpha="1"
+        android:toAlpha="0"
+        android:duration="1000"
+        android:interpolator="@android:interpolator/accelerate_quad" />
 
-    <!-- Heads up styling -->
-    <string-array name="heads_up_styles">
-        <item>Светлый</item>
-        <item>Тёмный</item>
-    </string-array>
-
-</resources>
+</set>

@@ -29,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.os.Bundle;
@@ -290,12 +289,12 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     private void startAcDisplayTest(boolean fake) {
         if (fake) {
             sendTestNotification();
-            startActivity(new Intent(this, AcDisplayActivity.class)
+          /*  startActivity(new Intent(this, AcDisplayActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF,
                             !mConfig.isKeyguardEnabled()));
-            return;
+            */return;
         }
 
         int delay = getResources().getInteger(R.integer.config_test_notification_delay);
@@ -331,15 +330,24 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.test_notification_message))
                 .setContentIntent(pendingIntent)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+           //     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.stat_test)
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setAutoCancel(true)
+                .addAction(R.drawable.stat_notify, "Notify", null)
+                .addAction(R.drawable.stat_acdisplay, "Launch AcDisplay", null)
+                .setStyle(new Notification.InboxStyle()
+                        .setBigContentTitle("Heads-up notifications")
+                        .setSummaryText("artemchep@gmail.com")
+                        .addLine("You have the option to provide more details on notifications.")
+                        .addLine("Android has supported optional actions that are displayed at the bottom of the notification, as far back as Jelly Bean. ")
+                        .addLine("Your notification's main icon will still be shown, so the user can associate it with the icon visible in the status bar."))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        Notification.BigTextStyle builderBigText = new Notification.BigTextStyle(builder)
-                .bigText(getString(R.string.test_notification_message_large));
+//        Notification.BigTextStyle builderBigText = new Notification.BigTextStyle(builder)
+//                .bigText(getString(R.string.test_notification_message_large));
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(notificationId, builderBigText.build());
+        nm.notify(notificationId, builder.build());
     }
 
 }

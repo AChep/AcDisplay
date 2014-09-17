@@ -45,7 +45,7 @@
     <string name="service_bath_keyguard">Lockscreen</string>
     <string name="service_bath_active_mode">Active mode</string>
     <string name="service_bath_active_mode_dump">Sensors dumper</string>
-    <string name="service_bath_headsup" translatable="false">@string/settings_headsup_title</string>
+    <string name="service_bath_headsup" translatable="false">@string/settings_heads_up_title</string>
 
     <!-- Example: Mon, 7 April -->
     <string name="status_date_format">EEE, d MMMM</string>

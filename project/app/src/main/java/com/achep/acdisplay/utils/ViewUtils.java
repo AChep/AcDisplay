@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.TextView;
 
@@ -68,6 +69,19 @@ public class ViewUtils {
 
     public static int getBottom(@NonNull View view) {
         return getTop(view) + view.getHeight();
+    }
+
+    public static int indexOf(@NonNull ViewGroup container, @NonNull View view) {
+        int length = container.getChildCount();
+        for (int i = 0; i < length; i++) {
+            View child = container.getChildAt(i);
+            assert child != null;
+
+            if (child.equals(view)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     // //////////////////////////////////////////

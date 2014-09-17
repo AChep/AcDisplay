@@ -23,7 +23,10 @@ import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,11 +89,23 @@ public final class Extractor {
                 data.subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT);
                 data.summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT);
                 data.messageText = Utils.removeSpaces(extras.getCharSequence(Notification.EXTRA_TEXT));
-                data.messageTextLarge = Utils.mergeLargeMessage(extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES));
 
-                if (!TextUtils.isEmpty(data.titleText) || !TextUtils.isEmpty(data.getLargeMessage())) {
-                    break;
+                CharSequence[] messageTextLines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
+                if (messageTextLines != null) {
+                    ArrayList<CharSequence> messageTextList = new ArrayList<>();
+                    for (CharSequence msg : messageTextLines) {
+                        msg = Utils.removeSpaces(msg);
+                        if (!TextUtils.isEmpty(msg)) {
+                            messageTextList.add(msg);
+                        }
+                    }
+                    messageTextLines = messageTextList.toArray(new CharSequence[messageTextList.size()]);
+                    data.messageTextLines = messageTextLines;
                 }
+
+              /*  if (!TextUtils.isEmpty(data.titleText) || !TextUtils.isEmpty(data.getLargeMessage())) {
+                    break;
+                }*/
             }
 
             // Parse views to get title and message text.

@@ -18,18 +18,20 @@
   ~ MA  02110-1301, USA.
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/settings_headsup_title">
+    android:title="@string/settings_heads_up_title">
 
     <Preference
         android:enabled="false"
-        android:summary="@string/settings_headsup_description" />
+        android:summary="@string/settings_heads_up_description" />
 
     <PreferenceCategory
         android:title="@string/settings"/>
 
-    <Preference
-        android:enabled="false"
-        android:title="@string/settings_placeholder_title"
-        android:summary="@string/settings_placeholder_summary" />
+    <ListPreference
+        android:key="heads_up_style"
+        android:title="@string/settings_heads_up_style_title"
+        android:entries="@array/heads_up_styles"
+        android:entryValues="@array/heads_up_styles_entries"
+        android:defaultValue="@string/config_default_heads_up_style" />
 
 </PreferenceScreen>

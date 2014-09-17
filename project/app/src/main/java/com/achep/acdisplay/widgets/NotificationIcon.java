@@ -30,7 +30,9 @@ import com.achep.acdisplay.notifications.OpenNotification;
 /**
  * Created by Artem on 25.03.2014.
  */
-public class NotificationIcon extends ImageView implements NotificationView, NotificationData.OnNotificationDataChangedListener {
+public class NotificationIcon extends ImageView implements
+        NotificationView,
+        NotificationData.OnNotificationDataChangedListener {
 
     private boolean mAttached;
 

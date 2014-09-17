@@ -84,7 +84,8 @@ public class Config implements IOnLowMemory {
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
 
     // heads up
-    public static final String KEY_HEADSUP = "headsup";
+    public static final String KEY_HEADS_UP = "heads_up";
+    public static final String KEY_HEADS_UP_STYLE = "heads_up_style";
 
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
@@ -126,6 +127,7 @@ public class Config implements IOnLowMemory {
     private boolean mFeelWidgetReadable;
     private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
+    private String mHeadsUpStyle;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
@@ -314,8 +316,10 @@ public class Config implements IOnLowMemory {
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
-        mHeadsUpEnabled = prefs.getBoolean(KEY_HEADSUP,
+        mHeadsUpEnabled = prefs.getBoolean(KEY_HEADS_UP,
                 res.getBoolean(R.bool.config_default_headsup_enabled));
+        mHeadsUpStyle = prefs.getString(KEY_HEADS_UP_STYLE,
+                res.getString(R.string.config_default_heads_up_style));
 
         // notifications
         mNotifyLowPriority = prefs.getBoolean(KEY_NOTIFY_LOW_PRIORITY,
@@ -402,7 +406,7 @@ public class Config implements IOnLowMemory {
             hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new Option(
                     "setActiveModeWithoutNotificationsEnabled",
                     "isActiveModeWithoutNotifiesEnabled", boolean.class));
-            hashMap.put(KEY_HEADSUP, new Option(
+            hashMap.put(KEY_HEADS_UP, new Option(
                     "setHeadsUpEnabled",
                     "isHeadsUpEnabled", boolean.class));
             hashMap.put(KEY_NOTIFY_LOW_PRIORITY, new Option(
@@ -481,6 +485,8 @@ public class Config implements IOnLowMemory {
             editor.putInt(key, (Integer) value);
         } else if (value instanceof Float) {
             editor.putFloat(key, (Float) value);
+        } else if (value instanceof String) {
+            editor.putString(key, (String) value);
         } else throw new IllegalArgumentException("Unknown option type.");
         editor.apply();
 
@@ -546,11 +552,16 @@ public class Config implements IOnLowMemory {
 
     public void setHeadsUpEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
         boolean changed = mHeadsUpEnabled != (mHeadsUpEnabled = enabled);
-        saveOption(context, KEY_HEADSUP, enabled, listener, changed);
+        saveOption(context, KEY_HEADS_UP, enabled, listener, changed);
 
         if (changed) {
             HeadsUpService.handleState(context);
         }
+    }
+
+    public void setHeadsUpStyle(Context context, String style, OnConfigChangedListener listener) {
+        boolean changed = !mHeadsUpStyle.equals(mHeadsUpStyle = style);
+        saveOption(context, KEY_HEADS_UP_STYLE, style, listener, changed);
     }
 
     public void setActiveModeWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
@@ -741,6 +752,10 @@ public class Config implements IOnLowMemory {
 
     public int getDynamicBackgroundMode() {
         return mUiDynamicBackground;
+    }
+
+    public String getHeadsUpStyle() {
+        return mHeadsUpStyle;
     }
 
     /**

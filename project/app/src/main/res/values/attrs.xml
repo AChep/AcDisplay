@@ -33,6 +33,18 @@
         <attr name="font" format="string" />
         <attr name="font_sdk" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="NotificationWidget">
+        <attr name="messageItemLayout" format="reference" />
+        <attr name="messageMaxLines" format="integer" />
+        <attr name="actionItemLayout" format="reference" />
+        <attr name="actionItemShowIcon" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="HeadsUpNotificationView">
+        <attr name="rippleColor" format="color" />
+        <attr name="ripple" format="boolean" />
+    </declare-styleable>
     
     <declare-styleable name="Theme">
 
@@ -50,5 +62,25 @@
         <attr name="acDisplayNotificationSubtext" format="reference"/>
         <attr name="acDisplayTimeoutProgressDrawable" format="reference"/>
         <attr name="acDisplayDotsDrawable" format="reference"/>
+
+        <!--
+            HeadsUp
+            -->
+        <!-- The layout to be used for as notification. -->
+        <attr name="headsUpNotificationLayout"  format="integer" />
+        <!-- The style of notification's title text. -->
+        <attr name="headsUpNotificationTitle"   format="reference" />
+        <!-- The style of notification's message text. -->
+        <attr name="headsUpNotificationMessage" format="reference" />
+        <!-- The style of notification's subtext text. -->
+        <attr name="headsUpNotificationSubtext" format="reference" />
+        <!-- The style of notification's action button. -->
+        <attr name="headsUpNotificationAction" format="reference" />
+        <!-- The background of notification. -->
+        <attr name="headsUpNotificationBackground" format="reference|color" />
+        <!-- The color of ripple effect. -->
+        <attr name="headsUpNotificationRippleColor" format="color" />
+        <!-- The background of small icon of notification. -->
+        <attr name="headsUpNotificationSmallIconBackground"  format="reference|color" />
     </declare-styleable>
 </resources>

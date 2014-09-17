@@ -242,12 +242,11 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
             n.loadData(context);
 
             NotificationData data = n.getNotificationData();
+            data.loadCircleIcon(n);
             Config config = Config.getInstance();
 
             // Selective load exactly what we need and nothing more.
             // This will reduce RAM consumption for a bit (1% or so.)
-            if (config.isCircledLargeIconEnabled())
-                data.loadCircleIcon(n);
             if (Operator.bitAnd(
                     config.getDynamicBackgroundMode(),
                     Config.DYNAMIC_BG_NOTIFICATION_MASK))
@@ -341,7 +340,6 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         if (dataNew.number == dataOld.number
                 && TextUtils.equals(dataNew.titleText, dataOld.titleText)
                 && TextUtils.equals(dataNew.messageText, dataOld.messageText)
-                && TextUtils.equals(dataNew.messageTextLarge, dataOld.messageTextLarge)
                 && TextUtils.equals(dataNew.infoText, dataOld.infoText)) {
             // Technically notification was changed, but it was a fault
             // of dumb developer. Mark notification as read, if old one was.
@@ -400,7 +398,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         // Do not allow notifications without any content.
         NotificationData data = o.getNotificationData();
         return !(TextUtils.isEmpty(data.titleText)
-                && TextUtils.isEmpty(data.getLargeMessage())
+                && TextUtils.isEmpty(data.getMergedMessage())
                 && TextUtils.isEmpty(data.infoText));
     }
 

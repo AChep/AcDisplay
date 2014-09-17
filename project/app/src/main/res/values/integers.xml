@@ -20,4 +20,11 @@
 
 <resources>
     <integer name="icons_columns_count">5</integer>
+    <integer name="blinds_pop_duration_ms">10</integer>
+
+    <!-- Milliseconds before the heads up notification auto-dismisses. -->
+    <integer name="heads_up_notification_decay">3700</integer>
+
+    <!-- Milliseconds before the heads up notification accepts touches. -->
+    <integer name="heads_up_sensitivity_delay">700</integer>
 </resources>

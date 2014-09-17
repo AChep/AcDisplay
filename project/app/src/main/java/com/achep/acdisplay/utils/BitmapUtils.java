@@ -40,6 +40,13 @@ public class BitmapUtils {
         if (bitmap != null) bitmap.recycle();
     }
 
+    public static int getDominantColor(@NonNull Bitmap bitmap) {
+        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
+        int color = onePixelBitmap.getPixel(0,0);
+        onePixelBitmap.recycle();
+        return color;
+    }
+
     public static boolean hasTransparentCorners(@NonNull Bitmap bitmap) {
         int right = bitmap.getWidth() - 1;
         int bottom = bitmap.getHeight() - 1;

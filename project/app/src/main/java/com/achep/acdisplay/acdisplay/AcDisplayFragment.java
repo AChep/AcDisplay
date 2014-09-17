@@ -568,7 +568,6 @@ public class AcDisplayFragment extends Fragment implements
             } else if (Device.hasKitKatApi() && animate) {
                 ViewGroup viewGroup = mSelectedWidget.getView();
                 if (viewGroup != null && viewGroup.isLaidOut()) {
-
                     // Automatically animate content change.
                     TransitionManager.beginDelayedTransition(viewGroup, mTransition);
                 }
