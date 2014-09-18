@@ -54,8 +54,8 @@ public class HelpDialog extends DialogFragment implements AsyncTask.DownloadText
 
     private static final String FILE_NAME = "faq-%1$s.html";
     private static final String FILE_URL = new RepositoryUrlBuilder()
-            .changeDirectory(RepositoryUrlBuilder.ACDISPLAY_PROJECT_NAME)
-            .changeDirectory(RepositoryUrlBuilder.ACDISPLAY_MODULE_NAME)
+            .changeDirectory(RepositoryUrlBuilder.PROJECT_NAME)
+            .changeDirectory(RepositoryUrlBuilder.MODULE_NAME)
             .changeDirectory("src")
             .changeDirectory("releaseFlavor")
             .changeDirectory("res")

@@ -29,8 +29,8 @@ import android.support.annotation.Nullable;
  */
 public class RepositoryUrlBuilder {
 
-    public static final String ACDISPLAY_PROJECT_NAME = "project";
-    public static final String ACDISPLAY_MODULE_NAME = "app";
+    public static final String PROJECT_NAME = "project";
+    public static final String MODULE_NAME = "app";
 
     private static final String USERNAME = "AChep";
     private static final String PROJECT = "AcDisplay";
