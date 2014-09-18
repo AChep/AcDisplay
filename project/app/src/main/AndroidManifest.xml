@@ -32,40 +32,30 @@
     <uses-sdk android:targetSdkVersion="18"
         tools:ignore="GradleOverrides,OldTargetApi" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <!-- Needed to show AcDisplay above the keyguard. -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
-    <!-- Needed to wake up the device to show AcDisplay. -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <!-- Needed to change system screen off timeout settings. -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
-    <!-- Needed to launch all services after the boot. -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    
     <!-- Needed to get the list of running activities. -->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- Needed to be able to show a popup above all notifications. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!-- Needed to download latest FAQ from GitHub if network is available. -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <!-- Needed to be able to get notifications from system. -->
+    <permission android:name="android.permission.STATUS_BAR_SERVICE" />
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
 
     <!-- Needed to provide donation via IAB. -->
     <uses-permission android:name="com.android.vending.BILLING" />
-
-    <!-- 
-        Needed to fix a bug ing Samsung's shitware. Read more:
-        http://stackoverflow.com/questions/13602190/java-lang-securityexception-requires-vibrate-permission-on-jelly-bean-4-2
-        -->
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!-- Needed to be able to get notifications from system. -->
-    <permission android:name="android.permission.STATUS_BAR_SERVICE" />
 
     <application
         android:name=".App"
