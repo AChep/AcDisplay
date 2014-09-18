@@ -25,6 +25,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
@@ -169,6 +171,13 @@ public class SetupPermissionsDialog extends DialogFragment {
                 .setView(view)
                 .setNeutralButton(R.string.later, null)
                 .create();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+        Config.getInstance().setEnabled(getActivity(), true, null);
     }
 
     @Override
