@@ -24,7 +24,6 @@ import android.widget.CompoundButton;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.acdisplay.blacklist.BlacklistEnabler;
 
 /**
  * Created by Artem on 28.02.14.
@@ -32,8 +31,8 @@ import com.achep.acdisplay.blacklist.BlacklistEnabler;
 public class RestrictOption extends Option {
 
     public RestrictOption(Context context, CompoundButton cb,
-                          Blacklist blacklist, BlacklistEnabler enabler) {
-        super(context, cb, blacklist, enabler,
+                          Blacklist blacklist, String packageName) {
+        super(context, cb, blacklist, packageName,
                 context.getResources().getDrawable(R.drawable.ic_settings_sleep_mode),
                 context.getResources().getString(R.string.blacklist_app_restricted_title),
                 context.getResources().getString(R.string.blacklist_app_restricted_summary));

@@ -21,12 +21,9 @@ package com.achep.acdisplay.blacklist.options;
 import android.content.Context;
 import android.widget.CompoundButton;
 
-import com.achep.acdisplay.App;
-import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.acdisplay.blacklist.BlacklistEnabler;
 
 /**
  * An option for {@link com.achep.acdisplay.blacklist.fragments.BlacklistAppFragment app settings}
@@ -37,8 +34,8 @@ import com.achep.acdisplay.blacklist.BlacklistEnabler;
 public class NonClearableOption extends Option {
 
     public NonClearableOption(Context context, CompoundButton cb,
-                              Blacklist blacklist, BlacklistEnabler enabler) {
-        super(context, cb, blacklist, enabler,
+                              Blacklist blacklist, String packageName) {
+        super(context, cb, blacklist, packageName,
                 context.getResources().getDrawable(R.drawable.ic_settings_non_clearable_notifies),
                 context.getResources().getString(R.string.blacklist_app_non_clearable_title),
                 context.getResources().getString(R.string.blacklist_app_non_clearable_summary));

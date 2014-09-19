@@ -46,13 +46,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.acdisplay.blacklist.BlacklistEnabler;
 import com.achep.acdisplay.blacklist.fragments.BlacklistAppFragment;
 import com.achep.acdisplay.utils.MathUtils;
 
@@ -61,7 +59,6 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
@@ -163,20 +160,7 @@ public class BlacklistActivity extends PreferenceActivity {
     @Override
     public void onResume() {
         super.onResume();
-        ListAdapter listAdapter = getListAdapter();
-        if (listAdapter instanceof HeaderAdapter) {
-            ((HeaderAdapter) listAdapter).resume();
-        }
         invalidateHeaders();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        ListAdapter listAdapter = getListAdapter();
-        if (listAdapter instanceof HeaderAdapter) {
-            ((HeaderAdapter) listAdapter).pause();
-        }
     }
 
     @Override
@@ -454,7 +438,8 @@ public class BlacklistActivity extends PreferenceActivity {
     private static class HeaderAdapter extends ArrayAdapter<Header> {
 
         static final int HEADER_TYPE_CATEGORY = 0;
-        static final int HEADER_TYPE_SWITCH = 1;
+        static final int HEADER_TYPE_NORMAL = 1;
+
         private static final int HEADER_TYPE_COUNT = 2;
 
         private final Context mContext;
@@ -466,13 +451,12 @@ public class BlacklistActivity extends PreferenceActivity {
         private LoadIconsTask mLoadIconsTask;
 
         private final ConcurrentHashMap<String, Drawable> mIcons;
-        private final HashSet<BlacklistEnabler> mBlacklistEnablers;
 
         static int getHeaderType(Header header) {
             if (header.fragment == null && header.intent == null) {
                 return HEADER_TYPE_CATEGORY;
             } else {
-                return HEADER_TYPE_SWITCH;
+                return HEADER_TYPE_NORMAL;
             }
         }
 
@@ -514,7 +498,6 @@ public class BlacklistActivity extends PreferenceActivity {
             //noinspection ResourceType
             mDefaultImg = context.getResources().getDrawable(android.R.mipmap.sym_def_app_icon);
 
-            mBlacklistEnablers = new HashSet<>();
             mIcons = new ConcurrentHashMap<>();
 
             loadIcons();
@@ -524,9 +507,6 @@ public class BlacklistActivity extends PreferenceActivity {
             ImageView icon;
             TextView title;
             TextView summary;
-            Switch switch_;
-
-            BlacklistEnabler enabler;
         }
 
         @Override
@@ -545,20 +525,13 @@ public class BlacklistActivity extends PreferenceActivity {
                         holder.title = (TextView) view;
                         break;
 
-                    case HEADER_TYPE_SWITCH:
+                    case HEADER_TYPE_NORMAL:
                         view = mInflater.inflate(
-                                R.layout.preference_header_switch_item, parent,
+                                R.layout.preference_header_item, parent,
                                 false);
                         holder.icon = (ImageView) view.findViewById(R.id.icon);
                         holder.title = (TextView) view.findViewById(android.R.id.title);
                         holder.summary = (TextView) view.findViewById(android.R.id.summary);
-                        holder.switch_ = (Switch) view.findViewById(R.id.switch_);
-
-                        // Set up one more listener.
-                        String packageName = "" + header.summary;
-                        holder.enabler = new BlacklistEnabler(mContext, holder.switch_, packageName);
-                        holder.enabler.resume();
-                        mBlacklistEnablers.add(holder.enabler);
                         break;
                 }
                 view.setTag(holder);
@@ -575,13 +548,9 @@ public class BlacklistActivity extends PreferenceActivity {
                     holder.title.setText(header.getTitle(getContext().getResources()));
                     break;
 
-                case HEADER_TYPE_SWITCH:
+                case HEADER_TYPE_NORMAL:
                     String packageName = "" + header.summary;
-
-                    // Track current app.
-                    holder.enabler.setSwitch(holder.switch_);
-                    holder.enabler.setPackageName(packageName);
-                    AppConfig config = holder.enabler.getAppConfig();
+                    AppConfig config = Blacklist.getInstance().getAppConfig(packageName);
 
                     // Show checked options in summary.
                     // TODO: Find the way to optimize it.
@@ -650,18 +619,6 @@ public class BlacklistActivity extends PreferenceActivity {
             }
             mLoadIconsTask = new LoadIconsTask();
             mLoadIconsTask.execute(mHeaders.toArray(new Header[mHeaders.size()]));
-        }
-
-        public void resume() {
-            for (BlacklistEnabler enabler : mBlacklistEnablers) {
-                enabler.resume();
-            }
-        }
-
-        public void pause() {
-            for (BlacklistEnabler enabler : mBlacklistEnablers) {
-                enabler.pause();
-            }
         }
 
         /**

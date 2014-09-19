@@ -18,7 +18,6 @@
  */
 package com.achep.acdisplay.blacklist.fragments;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.pm.ApplicationInfo;
@@ -31,12 +30,10 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.acdisplay.blacklist.BlacklistEnabler;
 import com.achep.acdisplay.blacklist.options.NonClearableOption;
 import com.achep.acdisplay.blacklist.options.HideOption;
 import com.achep.acdisplay.blacklist.options.Option;
@@ -54,8 +51,8 @@ public class BlacklistAppFragment extends Fragment {
     private static final String SAVE_KEY_SCROLL_VIEW_X = "scroll_view_x";
     private static final String SAVE_KEY_SCROLL_VIEW_Y = "scroll_view_y";
 
-    private BlacklistEnabler mEnabler;
     private Option[] mOptions;
+    private String mPackageName;
 
     // header
     private ImageView mAppIcon;
@@ -83,26 +80,20 @@ public class BlacklistAppFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String packageName = extractPackageName(getArguments(), savedInstanceState);
         Activity activity = getActivity();
-        ActionBar actionBar = activity.getActionBar();
         Blacklist blacklist = Blacklist.getInstance();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.layout_ab_switch);
-        Switch switch_ = (Switch) actionBar.getCustomView().findViewById(R.id.switch_);
-        mEnabler = new BlacklistEnabler(activity, switch_, packageName);
+        mPackageName = extractPackageName(getArguments(), savedInstanceState);
         mOptions = new Option[] {
-                new HideOption(activity, new CheckBox(activity), blacklist, mEnabler),
-                new RestrictOption(activity, new CheckBox(activity), blacklist, mEnabler),
-                new NonClearableOption(activity, new CheckBox(activity), blacklist, mEnabler)
+                new HideOption(activity, new CheckBox(activity), blacklist, mPackageName),
+                new RestrictOption(activity, new CheckBox(activity), blacklist, mPackageName),
+                new NonClearableOption(activity, new CheckBox(activity), blacklist, mPackageName)
         };
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(SAVE_KEY_PACKAGE_NAME, mEnabler.getAppConfig().packageName);
+        outState.putString(SAVE_KEY_PACKAGE_NAME, mPackageName);
         outState.putInt(SAVE_KEY_SCROLL_VIEW_X, mScrollView.getScrollX());
         outState.putInt(SAVE_KEY_SCROLL_VIEW_Y, mScrollView.getScrollY());
     }
@@ -110,7 +101,6 @@ public class BlacklistAppFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mEnabler.resume();
         for (Option option : mOptions) {
             option.resume();
         }
@@ -119,7 +109,6 @@ public class BlacklistAppFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mEnabler.pause();
         for (Option option : mOptions) {
             option.pause();
         }
@@ -153,7 +142,7 @@ public class BlacklistAppFragment extends Fragment {
             });
         }
 
-        displayApp(mEnabler.getAppConfig().packageName);
+        displayApp();
         return view;
     }
 
@@ -185,18 +174,17 @@ public class BlacklistAppFragment extends Fragment {
         }
     }
 
-    public void displayApp(String packageName) {
-        mEnabler.setPackageName(packageName);
+    private void displayApp() {
         mScrollView.scrollTo(0, 0);
 
         // Update header
         final PackageManager pm = getActivity().getPackageManager();
         try {
-            ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
+            ApplicationInfo ai = pm.getApplicationInfo(mPackageName, 0);
 
             mAppIcon.setImageDrawable(pm.getApplicationIcon(ai));
             mAppName.setText(pm.getApplicationLabel(ai));
-            mAppPackageName.setText(packageName);
+            mAppPackageName.setText(mPackageName);
         } catch (PackageManager.NameNotFoundException e) {
             mAppName.setText("Name not found");
         }

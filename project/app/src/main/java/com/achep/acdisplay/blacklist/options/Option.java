@@ -26,7 +26,6 @@ import android.widget.CompoundButton;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.acdisplay.blacklist.BlacklistEnabler;
 
 /**
  * Created by Artem on 27.02.14.
@@ -36,7 +35,7 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
 
     private final Context mContext;
     private final Blacklist mBlacklist;
-    private final BlacklistEnabler mBlacklistEnabler;
+    private final AppConfig mAppConfig;
 
     private CompoundButton mCompoundButton;
     private boolean mBroadcasting;
@@ -47,7 +46,7 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
     public CharSequence summary;
 
     public Option(Context context, CompoundButton cb,
-                  Blacklist blacklist, BlacklistEnabler enabler,
+                  Blacklist blacklist, String packageName,
                   Drawable icon,
                   CharSequence title,
                   CharSequence summary) {
@@ -58,14 +57,13 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
         mContext = context;
         mCompoundButton = cb;
         mBlacklist = blacklist;
-        mBlacklistEnabler = enabler;
+        mAppConfig = mBlacklist.getAppConfig(packageName);
     }
 
     public abstract boolean[] getValue(AppConfig config);
 
     /**
      * @return diff mask of current option.
-     * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_ENABLED
      * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_HIDDEN
      * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_RESTRICTED
      * @see com.achep.acdisplay.blacklist.AppConfig#DIFF_NON_CLEARABLE
@@ -77,15 +75,14 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
      * Make sure that you'll call {@link #pause()} later!
      */
     public void resume() {
-        mBlacklistEnabler.addOnAppConfigChangedListener(this);
+        mBlacklist.registerListener(this);
         mCompoundButton.setOnCheckedChangeListener(this);
 
-        AppConfig config = mBlacklistEnabler.getAppConfig();
-        setChecked(getValue(config)[0]);
+        setChecked(getValue(mAppConfig)[0]);
     }
 
     public void pause() {
-        mBlacklistEnabler.removeOnAppConfigChangedListener(this);
+        mBlacklist.registerListener(this);
         mCompoundButton.setOnCheckedChangeListener(null);
     }
 
@@ -114,11 +111,10 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
             return;
         }
 
-        AppConfig config = mBlacklistEnabler.getAppConfig();
-        getValue(config)[0] = isChecked;
+        getValue(mAppConfig)[0] = isChecked;
 
         // Clone current state cause it can be changed after.
-        mBlacklist.saveAppConfig(mContext, config, mBlacklistEnabler);
+        mBlacklist.saveAppConfig(mContext, mAppConfig, this);
     }
 
     // //////////////////////////////////////////
