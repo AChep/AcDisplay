@@ -452,7 +452,9 @@ public class NotificationWidget extends LinearLayout implements NotificationView
                     // Not a profile icon.
                     && BitmapUtils.hasTransparentCorners(bitmap)
                     // Icon has white color.
-                    && getAverageRgb(BitmapUtils.getDominantColor(bitmap)) > 127
+                    && Color.red(data.dominantColor) > 127
+                    && Color.blue(data.dominantColor) > 127
+                    && Color.green(data.dominantColor) > 127
                     // Title text is dark.
                     && hasDarkTextColor(mTitleTextView)) {
                 // The icon is PROBABLY not a profile icon,
