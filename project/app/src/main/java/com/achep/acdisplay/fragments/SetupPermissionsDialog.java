@@ -174,18 +174,12 @@ public class SetupPermissionsDialog extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-
-        Config.getInstance().setEnabled(getActivity(), true, null);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
         Item[] items = buildItems();
         if (items.length == 0) {
+            Config.getInstance().setEnabled(getActivity(), true, null);
             dismiss();
         } else {
             Adapter adapter = new Adapter(getActivity(), items);
