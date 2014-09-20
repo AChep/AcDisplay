@@ -367,6 +367,8 @@ public class NotificationWidget extends LinearLayout implements NotificationView
             mMessageContainer.removeViewAt(i);
         }
 
+        boolean highlightFirstLetter = count > 1;
+
         LayoutInflater inflater = null;
         for (int i = 0; i < count; i++) {
             View root = views[i];
@@ -389,8 +391,15 @@ public class NotificationWidget extends LinearLayout implements NotificationView
                 mMessageContainer.addView(root);
             }
 
-            SpannableString text = new SpannableString(lines[i]);
-            text.setSpan(new UnderlineSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            CharSequence text;
+
+            if (highlightFirstLetter) {
+                SpannableString spannable = new SpannableString(lines[i]);
+                spannable.setSpan(new UnderlineSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text = spannable;
+            } else {
+                text = lines[i];
+            }
 
             // Get message view and apply the content.
             TextView textView = root instanceof TextView
