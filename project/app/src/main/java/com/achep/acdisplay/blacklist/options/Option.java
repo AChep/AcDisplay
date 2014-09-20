@@ -35,7 +35,7 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
 
     private final Context mContext;
     private final Blacklist mBlacklist;
-    private final AppConfig mAppConfig;
+    private AppConfig mAppConfig;
 
     private CompoundButton mCompoundButton;
     private boolean mBroadcasting;
@@ -125,8 +125,11 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
     public void onBlacklistChanged(
             @NonNull AppConfig configNew,
             @NonNull AppConfig configOld, int diff) {
-        if (Operator.bitAnd(diff, getDiffMask())) {
-            setChecked(getValue(configNew)[0]);
+        if (configOld.equals(mAppConfig)) {
+            mAppConfig = configNew;
+            if (Operator.bitAnd(diff, getDiffMask())) {
+                setChecked(getValue(configNew)[0]);
+            }
         }
     }
 }
