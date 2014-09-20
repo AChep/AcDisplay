@@ -50,6 +50,11 @@ final class NotificationList {
     private OnNotificationListChangedListener mListener;
 
     /**
+     * @see #setMaximumSize(int)
+     */
+    private int mMaximumSize = Integer.MAX_VALUE;
+
+    /**
      * Interface definition for a callback to be invoked
      * when a list of notifications has changed.
      */
@@ -90,6 +95,19 @@ final class NotificationList {
         mList = new ArrayList<>(10);
     }
 
+    /**
+     * Sets the maximum size of this list.
+     *
+     * @param maxSize the maximum size.
+     */
+    public void setMaximumSize(int maxSize) {
+        if (maxSize <= 0) {
+            throw new IllegalArgumentException("Maximum size must be greater than zero!");
+        }
+
+        mMaximumSize = maxSize;
+    }
+
     public int pushOrRemove(OpenNotification n, boolean push, boolean silently) {
         if (silently) {
             // Hide listener.
@@ -119,6 +137,10 @@ final class NotificationList {
     public int push(OpenNotification n) {
         final int index = indexOf(n);
         if (index == -1) {
+            if (mList.size() > mMaximumSize) {
+                remove(mList.get(0));
+            }
+
             // Add new notification to the list.
             mList.add(n);
             return notifyListener(EVENT_ADDED, n, null);
