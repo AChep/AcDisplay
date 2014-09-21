@@ -339,6 +339,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
 
         if (dataNew.number == dataOld.number
                 && TextUtils.equals(dataNew.titleText, dataOld.titleText)
+                && TextUtils.equals(dataNew.titleBigText, dataOld.titleBigText)
                 && TextUtils.equals(dataNew.messageText, dataOld.messageText)
                 && TextUtils.equals(dataNew.infoText, dataOld.infoText)) {
             // Technically notification was changed, but it was a fault
@@ -398,8 +399,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         // Do not allow notifications without any content.
         NotificationData data = o.getNotificationData();
         return !(TextUtils.isEmpty(data.titleText)
-                && TextUtils.isEmpty(data.getMergedMessage())
-                && TextUtils.isEmpty(data.infoText));
+                && TextUtils.isEmpty(data.titleBigText)
+                && TextUtils.isEmpty(data.messageText)
+                && TextUtils.isEmpty(data.infoText)
+                && data.messageTextLines == null);
     }
 
     private boolean isValidForGlobal(@NonNull OpenNotification n) {

@@ -58,6 +58,7 @@ public class NotificationData {
     public static final int READ = 2;
     public static final int BACKGROUND = 3;
 
+    public CharSequence titleBigText;
     public CharSequence titleText;
     public CharSequence messageText;
     public CharSequence[] messageTextLines;
@@ -72,28 +73,6 @@ public class NotificationData {
     private Bitmap background;
 
     public int dominantColor;
-
-    public CharSequence getMergedMessage() {
-        if (messageTextLines == null) {
-            return messageText;
-        } else {
-            CharSequence[] messages = messageTextLines;
-
-            boolean isFirstMessage = true;
-
-            StringBuilder sb = new StringBuilder();
-            for (CharSequence message : messages) {
-                // Start every new message from new line
-                if (!isFirstMessage & !(isFirstMessage = false)) {
-                    sb.append('\n');
-                }
-
-                sb.append(message);
-            }
-
-            return sb;
-        }
-    }
 
     /**
      * The number of events that this notification represents. For example, in a new mail

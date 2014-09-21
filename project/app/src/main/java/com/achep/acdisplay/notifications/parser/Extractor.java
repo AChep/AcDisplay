@@ -22,11 +22,9 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
-import android.text.SpannableString;
-import android.text.Spanned;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +49,10 @@ public final class Extractor {
 
     private static final String TAG = "Extractor";
 
+    /**
+     * Gets a bundle with additional data from notification.
+     */
+    @Nullable
     @SuppressLint("NewApi")
     private Bundle getExtras(Notification notification) {
         if (Device.hasKitKatApi()) {
@@ -59,7 +61,7 @@ public final class Extractor {
 
         // Access extras using reflections.
         try {
-            Field field = Notification.class.getDeclaredField("extras");
+            Field field = notification.getClass().getDeclaredField("extras");
             field.setAccessible(true);
             return (Bundle) field.get(notification);
         } catch (Exception e) {
@@ -72,92 +74,97 @@ public final class Extractor {
     public NotificationData loadTexts(Context context,
                                       OpenNotification openNotification,
                                       NotificationData data) {
-        // Loop is here only to provide useful break; function.
-        //noinspection LoopStatementThatDoesntLoop
-        while (true) {
-            final Notification n = openNotification.getNotification();
-            final Bundle extras = getExtras(n);
+        final Notification n = openNotification.getNotification();
+        final Bundle extras = getExtras(n);
 
-            // If extras are available - try to load data from it.
-            if (extras != null) {
-                data.titleText = extras.getCharSequence(Notification.EXTRA_TITLE_BIG);
-                if (data.titleText == null) {
-                    data.titleText = extras.getCharSequence(Notification.EXTRA_TITLE);
+        if (extras != null) loadFromExtras(data, extras);
+        if (TextUtils.isEmpty(data.titleText)
+                && TextUtils.isEmpty(data.titleBigText)
+                && TextUtils.isEmpty(data.messageText)
+                && data.messageTextLines == null) {
+            loadFromView(data, context, openNotification);
+        }
+        return data;
+    }
+
+    //-- LOADING FROM EXTRAS --------------------------------------------------
+
+    /**
+     * Loads all possible texts from given {@link Notification#extras extras} to
+     * {@link com.achep.acdisplay.notifications.NotificationData}.
+     *
+     * @param extras extras to load from
+     */
+    private void loadFromExtras(@NonNull NotificationData data, @NonNull Bundle extras) {
+        data.titleBigText = extras.getCharSequence(Notification.EXTRA_TITLE_BIG);
+        data.titleText = extras.getCharSequence(Notification.EXTRA_TITLE);
+        data.infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT);
+        data.subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT);
+        data.summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT);
+        data.messageText = extras.getCharSequence(Notification.EXTRA_TEXT);
+
+        CharSequence[] lines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
+        if (lines != null) {
+            // Ignore empty lines.
+            ArrayList<CharSequence> list = new ArrayList<>();
+            for (CharSequence msg : lines) {
+                msg = Utils.removeSpaces(msg);
+                if (!TextUtils.isEmpty(msg)) {
+                    list.add(msg);
                 }
-
-                data.infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT);
-                data.subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT);
-                data.summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT);
-                data.messageText = Utils.removeSpaces(extras.getCharSequence(Notification.EXTRA_TEXT));
-
-                CharSequence[] messageTextLines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
-                if (messageTextLines != null) {
-                    ArrayList<CharSequence> messageTextList = new ArrayList<>();
-                    for (CharSequence msg : messageTextLines) {
-                        msg = Utils.removeSpaces(msg);
-                        if (!TextUtils.isEmpty(msg)) {
-                            messageTextList.add(msg);
-                        }
-                    }
-                    messageTextLines = messageTextList.toArray(new CharSequence[messageTextList.size()]);
-                    data.messageTextLines = messageTextLines;
-                }
-
-              /*  if (!TextUtils.isEmpty(data.titleText) || !TextUtils.isEmpty(data.getLargeMessage())) {
-                    break;
-                }*/
             }
 
-            // Parse views to get title and message text.
+            // Create new array.
+            if (list.size() > 0) {
+                lines = list.toArray(new CharSequence[list.size()]);
+                data.messageTextLines = lines;
+            }
+        }
+    }
 
-            final Context contextNotify = NotificationUtils.createContext(context, openNotification);
+    //-- LOADING FROM VIES ----------------------------------------------------
+
+    private void loadFromView(@NonNull NotificationData data,
+                              @NonNull Context context,
+                              @NonNull OpenNotification openNotification) {
+        ViewGroup view;
+        try {
+            final Notification n = openNotification.getNotification();
             final RemoteViews rvs = n.bigContentView == null ? n.contentView : n.bigContentView;
 
-            if (rvs == null) {
-                break;
-            }
-
+            // Try to load view from remote views.
+            Context contextNotify = NotificationUtils.createContext(context, openNotification);
             LayoutInflater inflater = (LayoutInflater) contextNotify.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            ViewGroup view = (ViewGroup) inflater.inflate(rvs.getLayoutId(), null);
-
-            if (view == null) {
-                break;
-            }
-
-            try {
-                rvs.reapply(contextNotify, view);
-            } catch (Exception e) {
-                break;
-            }
-
-            ArrayList<TextView> textViews = new RecursiveFinder<>(TextView.class).expand(view);
-            removeClickableViews(textViews);
-            removeSubtextViews(context, textViews);
-            removeActionViews(data.actions, textViews);
-
-            // There're no views present.
-            if (textViews.size() == 0)
-                break;
-
-            TextView title = findTitleTextView(textViews);
-            textViews.remove(title); // no need of title view anymore
-            data.titleText = title.getText();
-
-            // There're no views present.
-            if (textViews.size() == 0)
-                break;
-
-            int length = textViews.size();
-            CharSequence[] messages = new CharSequence[length];
-            for (int i = 0; i < length; i++) {
-                messages[i] = textViews.get(i).getText();
-            }
-
-            data.messageText = Utils.mergeLargeMessage(messages);
-            break;
+            view = (ViewGroup) inflater.inflate(rvs.getLayoutId(), null);
+            rvs.reapply(contextNotify, view);
+        } catch (Exception e) {
+            return;
         }
 
-        return data;
+        ArrayList<TextView> textViews = new RecursiveFinder<>(TextView.class).expand(view);
+        removeClickableViews(textViews);
+        removeSubtextViews(context, textViews);
+        removeActionViews(data.actions, textViews);
+
+        // There're no views present.
+        if (textViews.size() == 0)
+            return;
+
+        TextView title = findTitleTextView(textViews);
+        textViews.remove(title); // no need of title view anymore
+        data.titleText = title.getText();
+
+        // There're no views present.
+        if (textViews.size() == 0)
+            return;
+
+        int length = textViews.size();
+        CharSequence[] messages = new CharSequence[length];
+        for (int i = 0; i < length; i++) {
+            messages[i] = textViews.get(i).getText();
+        }
+
+        data.messageText = Utils.mergeLargeMessage(messages);
     }
 
     private TextView findTitleTextView(ArrayList<TextView> textViews) {

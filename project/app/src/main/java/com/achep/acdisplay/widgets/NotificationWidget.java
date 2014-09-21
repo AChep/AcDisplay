@@ -479,7 +479,9 @@ public class NotificationWidget extends LinearLayout implements NotificationView
             setSmallIcon(null);
         }
 
-        mTitleTextView.setText(data.titleText);
+        mTitleTextView.setText(data.titleBigText == null
+                ? data.titleText
+                : data.titleBigText);
         mSubtextTextView.setText(data.infoText == null
                 ? data.subText
                 : data.infoText);
