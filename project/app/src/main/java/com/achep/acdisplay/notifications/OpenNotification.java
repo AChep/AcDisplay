@@ -27,10 +27,15 @@ import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.utils.PackageUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by Artem on 23.01.14.
@@ -130,6 +135,22 @@ public class OpenNotification {
         if (n == null) return false;
         StatusBarNotification sbn = getStatusBarNotification();
         StatusBarNotification sbn2 = n.getStatusBarNotification();
+        if (Device.hasLemonCakeApi()) {
+            // FIXME: Android L reflections.
+            // service.cancelNotification(notification.getKey());
+            try {
+                Method method = sbn.getClass().getMethod("getKey");
+                method.setAccessible(true);
+                String key = (String) method.invoke(sbn);
+                String key2 = (String) method.invoke(sbn2);
+
+                return new EqualsBuilder()
+                        .append(key, key2)
+                        .isEquals();
+            } catch (NoSuchMethodException
+                    | InvocationTargetException
+                    | IllegalAccessException e) { /* sad, but true */ }
+        }
         return new EqualsBuilder()
                 .append(sbn.getId(), sbn2.getId())
                 .append(getPackageName(), n.getPackageName())
