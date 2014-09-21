@@ -86,7 +86,7 @@ if VALIDATE_LOCALES:
             if not re.match(string_res_validating, filename):
                 continue
 
-            with open(os.path.join(path, filename)) as f:
+            with open(os.path.join(path, filename), encoding="utf8") as f:
                 bs = BeautifulSoup(f.read())
                 for string in bs.resources.findAll('string'):
                     string_contents = str(string.string)
@@ -99,7 +99,7 @@ if VALIDATE_LOCALES:
                 continue
 
             filepath = os.path.join(path, filename)
-            with open(filepath) as f:
+            with open(filepath, encoding="utf8") as f:
                 bs = BeautifulSoup(f.read())
                 try:
                     for string in bs.resources.findAll('string'):       
@@ -116,7 +116,7 @@ if VALIDATE_LOCALES:
                     successful = False
                     print_warning(str(e))
 
-            for line in open(filepath):
+            for line in open(filepath, encoding="utf8"):
                 if re.search(r'(<!|\[CDATA)\s', line):
                     print_warning('Problematic string resource found!')
                     print('\tlang:\"%s\"' % re.findall(translations_folder_name + r'\/(\w{2,3}|\w{2,3}\-\w{2,3})\/', filepath)[0])
