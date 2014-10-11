@@ -23,7 +23,7 @@
     <string name="donation_action">Donate</string>
     <string name="donation_title">Donate to developer</string>
     <string name="donation_info"><![CDATA[
-        AcDisplay is a free and <a href="https://www.github.com/AChep/AcDisplay">open source</a> app.
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
         You can show your appreciation and support development by donating:
     ]]></string>
 

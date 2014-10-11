@@ -24,7 +24,7 @@
     <string name="donation_action">Пожертвовать</string>
     <string name="donation_title">Пожертвовать</string>
     <string name="donation_info"><![CDATA[
-        AcDisplay – это бесплатное приложение с <a href="https://www.github.com/AChep/AcDisplay">открытым исходным кодом</a>.
+        AcDisplay – это бесплатное приложение с <a href="http://repo.acdisplay.org">открытым исходным кодом</a>.
         Вы можете выразить свою благодарность и поддержать разработку через пожертвования:
     ]]></string>
 
