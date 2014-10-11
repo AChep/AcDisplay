@@ -174,6 +174,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
     protected void onResume() {
         super.onResume();
 
+        hideHeadsUpApp(true);
         populateFlags(true);
         mMediaController.onStart();
     }
@@ -182,8 +183,23 @@ public class AcDisplayActivity extends KeyguardActivity implements
     protected void onPause() {
         super.onPause();
 
+        hideHeadsUpApp(false);
         populateFlags(false);
         mMediaController.onStop();
+    }
+
+    /**
+     * Asks HeadsUp (https://play.google.com/store/apps/details?id=com.achep.headsup) to
+     * pause or continue showing its floating notifications.
+     *
+     * @param hideHeadsUp {@code true} to disallow showing floating notifications,
+     *                    {@code false} to allow.
+     */
+    private void hideHeadsUpApp(boolean hideHeadsUp) {
+        Intent intent = new Intent(hideHeadsUp
+                ? "com.achep.headsup.ACTION_DISALLOW_HEADSUP"
+                : "com.achep.headsup.ACTION_ALLOW_HEADSUP");
+        sendBroadcast(intent);
     }
 
     @Override
