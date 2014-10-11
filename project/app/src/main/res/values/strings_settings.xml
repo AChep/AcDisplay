@@ -31,7 +31,6 @@
     <!-- Headers -->
     <string name="settings_lockscreen_title">Lockscreen</string>
     <string name="settings_active_title">Active mode</string>
-    <string name="settings_heads_up_title">Heads up</string>
     <string name="settings_app_settings_title">Apps</string>
     <string name="settings_notification_title">Notifications</string>
     <string name="settings_interface_title">Interface</string>
@@ -46,11 +45,6 @@
     <string name="settings_active_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
     <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled when there are no notifications.</string>
-
-    <!-- Heads up -->
-    <string name="settings_heads_up_description">Displays new notifications as a floating popup.</string>
-    <string name="settings_heads_up_style_title">Theme</string>
-    <string name="settings_heads_up_style_summary">Current theme is: %1$s</string>
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Wake up on notification</string>

@@ -32,12 +32,6 @@
         android:title="@string/settings_active_title"
         android:icon="@drawable/ic_settings_active"/>
 
-    <!-- Heads up -->
-    <header android:fragment="com.achep.acdisplay.settings.HeadsUpSettings"
-        android:id="@+id/headsup_settings"
-        android:title="@string/settings_heads_up_title"
-        android:icon="@drawable/ic_action_balloon"/>
-
     <!-- Notifications -->
     <header android:fragment="com.achep.acdisplay.settings.NotificationSettings"
         android:id="@+id/notification_settings"

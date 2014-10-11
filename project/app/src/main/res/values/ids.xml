@@ -20,4 +20,5 @@
 
 <resources>
     <item type="id" name="artwork" />
+    <item type="id" name="icon_small" />
 </resources>

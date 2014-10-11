@@ -35,7 +35,6 @@ import com.achep.acdisplay.powertoggles.ToggleReceiver;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.acdisplay.services.headsup.HeadsUpService;
 import com.achep.acdisplay.utils.AccessUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -83,10 +82,6 @@ public class Config implements IOnLowMemory {
     public static final String KEY_ACTIVE_MODE = "active_mode";
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
 
-    // heads up
-    public static final String KEY_HEADS_UP = "heads_up";
-    public static final String KEY_HEADS_UP_STYLE = "heads_up_style";
-
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
     public static final String KEY_UI_WALLPAPER_SHOWN = "wallpaper_shown";
@@ -121,14 +116,12 @@ public class Config implements IOnLowMemory {
     private boolean mKeyguardEnabled;
     private boolean mActiveMode;
     private boolean mActiveModeWithoutNotifies;
-    private boolean mHeadsUpEnabled;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mFeelWidgetPinnable;
     private boolean mFeelWidgetReadable;
     private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
-    private String mHeadsUpStyle;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
@@ -318,10 +311,6 @@ public class Config implements IOnLowMemory {
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
-        mHeadsUpEnabled = prefs.getBoolean(KEY_HEADS_UP,
-                res.getBoolean(R.bool.config_default_headsup_enabled));
-        mHeadsUpStyle = prefs.getString(KEY_HEADS_UP_STYLE,
-                res.getString(R.string.config_default_heads_up_style));
 
         // notifications
         mNotifyLowPriority = prefs.getBoolean(KEY_NOTIFY_LOW_PRIORITY,
@@ -409,9 +398,6 @@ public class Config implements IOnLowMemory {
             hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new Option(
                     "setActiveModeWithoutNotificationsEnabled",
                     "isActiveModeWithoutNotifiesEnabled", boolean.class));
-            hashMap.put(KEY_HEADS_UP, new Option(
-                    "setHeadsUpEnabled",
-                    "isHeadsUpEnabled", boolean.class));
             hashMap.put(KEY_NOTIFY_LOW_PRIORITY, new Option(
                     "setLowPriorityNotificationsAllowed",
                     "isLowPriorityNotificationsAllowed", boolean.class));
@@ -551,20 +537,6 @@ public class Config implements IOnLowMemory {
         if (changed) {
             ActiveModeService.handleState(context);
         }
-    }
-
-    public void setHeadsUpEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mHeadsUpEnabled != (mHeadsUpEnabled = enabled);
-        saveOption(context, KEY_HEADS_UP, enabled, listener, changed);
-
-        if (changed) {
-            HeadsUpService.handleState(context);
-        }
-    }
-
-    public void setHeadsUpStyle(Context context, String style, OnConfigChangedListener listener) {
-        boolean changed = !mHeadsUpStyle.equals(mHeadsUpStyle = style);
-        saveOption(context, KEY_HEADS_UP_STYLE, style, listener, changed);
     }
 
     public void setActiveModeWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
@@ -757,10 +729,6 @@ public class Config implements IOnLowMemory {
         return mUiDynamicBackground;
     }
 
-    public String getHeadsUpStyle() {
-        return mHeadsUpStyle;
-    }
-
     /**
      * @return the size (or height only) of collapsed views in pixels.
      * @see #getIconSize(String)
@@ -797,10 +765,6 @@ public class Config implements IOnLowMemory {
 
     public boolean isActiveModeEnabled() {
         return mActiveMode;
-    }
-
-    public boolean isHeadsUpEnabled() {
-        return mHeadsUpEnabled;
     }
 
     public boolean isActiveModeWithoutNotifiesEnabled() {

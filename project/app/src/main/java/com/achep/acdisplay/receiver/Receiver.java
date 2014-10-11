@@ -29,7 +29,6 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.acdisplay.services.headsup.HeadsUpService;
 import com.achep.acdisplay.utils.ToastUtils;
 
 /**
@@ -48,7 +47,6 @@ public class Receiver extends BroadcastReceiver {
             case Intent.ACTION_POWER_DISCONNECTED:
                 ActiveModeService.handleState(context);
                 KeyguardService.handleState(context);
-                HeadsUpService.handleState(context);
                 SensorsDumpService.handleState(context);
                 break;
             case App.ACTION_ENABLE:

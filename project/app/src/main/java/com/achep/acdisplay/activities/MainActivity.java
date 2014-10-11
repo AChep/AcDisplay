@@ -69,7 +69,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
 
     private static final boolean DEBUG_DIALOGS = Build.DEBUG && false;
     private static final boolean DEBUG_COMPAT_TOAST = Build.DEBUG && false;
-    private static final boolean DEBUG_HEADS_UP = Build.DEBUG && false;
 
     private Switch mSwitch;
     private ImageView mSwitchAlertView;
@@ -291,14 +290,6 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
     private void startAcDisplayTest(boolean fake) {
         if (fake) {
             sendTestNotification();
-            if (!DEBUG_HEADS_UP) {
-                startActivity(new Intent(this, AcDisplayActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF,
-                                !mConfig.isKeyguardEnabled()));
-
-            }
             return;
         }
 

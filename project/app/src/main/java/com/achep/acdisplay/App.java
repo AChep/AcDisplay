@@ -25,7 +25,6 @@ import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.acdisplay.services.headsup.HeadsUpService;
 import com.achep.acdisplay.utils.ToastUtils;
 
 /**
@@ -60,7 +59,6 @@ public class App extends Application {
         // app launch.
         KeyguardService.handleState(this);
         ActiveModeService.handleState(this);
-        HeadsUpService.handleState(this);
         SensorsDumpService.handleState(this);
     }
 
