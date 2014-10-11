@@ -257,12 +257,12 @@ public class HeadsUpManager implements
         widget.animate().alpha(1).rotationX(0).setDuration(300);
         widget.setOnClickListener(new NotificationWidget.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(NotificationWidget widget, View v) {
                 widget.getNotification().click();
             }
 
             @Override
-            public void onActionButtonClick(View v, PendingIntent intent) {
+            public void onActionButtonClick(NotificationWidget widget, View v, PendingIntent intent) {
                 PendingIntentUtils.sendPendingIntent(intent);
                 widget.getNotification().dismiss();
             }

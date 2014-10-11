@@ -86,7 +86,7 @@ public class NotificationWidget extends LinearLayout implements NotificationView
      * Interface definition for a callback to be invoked
      * when a notification's views are clicked.
      */
-    public interface OnClickListener extends View.OnClickListener {
+    public interface OnClickListener {
 
         /**
          * Called on content view click.
@@ -94,8 +94,7 @@ public class NotificationWidget extends LinearLayout implements NotificationView
          * @param v clicked view
          * @see NotificationWidget#getNotification()
          */
-        @Override
-        public void onClick(View v);
+        public void onClick(NotificationWidget widget, View v);
 
         /**
          * Called on action button click.
@@ -103,7 +102,7 @@ public class NotificationWidget extends LinearLayout implements NotificationView
          * @param v      clicked view
          * @param intent action's intent
          */
-        void onActionButtonClick(View v, PendingIntent intent);
+        void onActionButtonClick(NotificationWidget widget, View v, PendingIntent intent);
     }
 
     public NotificationWidget(Context context, AttributeSet attrs) {
@@ -125,7 +124,7 @@ public class NotificationWidget extends LinearLayout implements NotificationView
         a.recycle();
 
         float[] colorMatrix = {
-        		// Change everychannel's color (except alpha).
+                // Change everychannel's color (except alpha).
                 -0.8f, 0, 0, 0, 0,
                 0, -0.8f, 0, 0, 0,
                 0, 0, -0.8f, 0, 0,
@@ -139,8 +138,20 @@ public class NotificationWidget extends LinearLayout implements NotificationView
      * If some of them are not clickable, they becomes clickable.
      */
     public void setOnClickListener(OnClickListener l) {
-        mContent.setOnClickListener(l);
+        View.OnClickListener listener = l == null
+                ? null
+                : new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickListener != null) {
+                    NotificationWidget widget = NotificationWidget.this;
+                    mOnClickListener.onClick(widget, v);
+                }
+            }
+        };
+
         mOnClickListener = l;
+        mContent.setOnClickListener(listener);
     }
 
     /**
@@ -256,7 +267,8 @@ public class NotificationWidget extends LinearLayout implements NotificationView
                 @Override
                 public void onClick(View v) {
                     if (mOnClickListener != null) {
-                        mOnClickListener.onActionButtonClick(v, action.intent);
+                        NotificationWidget widget = NotificationWidget.this;
+                        mOnClickListener.onActionButtonClick(widget, v, action.intent);
                     }
                 }
             });
@@ -410,12 +422,12 @@ public class NotificationWidget extends LinearLayout implements NotificationView
         }
     }
 
-	/**
-	 * Sets {@link #mSmallIcon icon} to track notification's small icon or
-	 * hides it if you pass {@code null} as parameter.
-	 *
-	 * @param notification a notification to load icon from, or {@code null} to hide view.
-	 */
+    /**
+     * Sets {@link #mSmallIcon icon} to track notification's small icon or
+     * hides it if you pass {@code null} as parameter.
+     *
+     * @param notification a notification to load icon from, or {@code null} to hide view.
+     */
     private void setSmallIcon(@Nullable OpenNotification notification) {
         if (mSmallIcon != null) {
             mSmallIcon.setNotification(notification);
@@ -486,12 +498,12 @@ public class NotificationWidget extends LinearLayout implements NotificationView
                 ? data.subText
                 : data.infoText);
         mWhenTextView.setText(DateUtils.formatDateTime(
-                getContext(),  n.when, DateUtils.FORMAT_SHOW_TIME));
+                getContext(), n.when, DateUtils.FORMAT_SHOW_TIME));
 
         setActions(osbn);
         setMessageLines(data.messageTextLines == null
                 ? data.messageText == null
-                ? null : new CharSequence[] {data.messageText}
+                ? null : new CharSequence[]{data.messageText}
                 : data.messageTextLines);
     }
 

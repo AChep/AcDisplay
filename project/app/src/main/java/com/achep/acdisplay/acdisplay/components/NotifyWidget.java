@@ -147,8 +147,8 @@ public class NotifyWidget extends Widget implements NotificationView {
         mNotifyWidget.setOnClickListener(new NotificationWidget.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                final OpenNotification osbn = mNotifyWidget.getNotification();
+            public void onClick(NotificationWidget widget, View v) {
+                final OpenNotification osbn = widget.getNotification();
                 if (osbn != null) {
                     getHostFragment().unlock(new Runnable() {
                         @Override
@@ -160,7 +160,7 @@ public class NotifyWidget extends Widget implements NotificationView {
             }
 
             @Override
-            public void onActionButtonClick(View v, final PendingIntent pendingIntent) {
+            public void onActionButtonClick(NotificationWidget widget, View v, final PendingIntent pendingIntent) {
                 getHostFragment().unlock(new Runnable() {
                     @Override
                     public void run() {
