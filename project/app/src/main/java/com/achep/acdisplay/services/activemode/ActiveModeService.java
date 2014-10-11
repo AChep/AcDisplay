@@ -30,6 +30,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
+import com.achep.acdisplay.Atomic;
 import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
@@ -54,7 +55,8 @@ import com.achep.acdisplay.utils.PowerUtils;
  */
 public class ActiveModeService extends BathService.ChildService implements
         ActiveModeSensor.Callback, ActiveModeHandler.Callback,
-        NotificationPresenter.OnNotificationListChangedListener {
+        NotificationPresenter.OnNotificationListChangedListener,
+Atomic.Callback {
 
     private static final String TAG = "ActiveModeService";
     private static final String WAKE_LOCK_TAG = "Consuming sensors";
@@ -62,9 +64,9 @@ public class ActiveModeService extends BathService.ChildService implements
     private ActiveModeSensor[] mSensors;
     private ActiveModeHandler[] mHandlers;
 
-    private boolean mListening;
     private long mConsumingPingTimestamp;
     private PowerManager.WakeLock mWakeLock;
+    private Atomic mListeningAtom;
 
     private final BroadcastReceiver mLocalReceiver = new BroadcastReceiver() {
 
@@ -136,6 +138,7 @@ public class ActiveModeService extends BathService.ChildService implements
     @Override
     public void onCreate() {
         Context context = getContext();
+        mListeningAtom = new Atomic(this, TAG);
         mSensors = buildAvailableSensorsList(context);
         mHandlers = new ActiveModeHandler[]{
                 new ScreenHandler(context, this),
@@ -192,7 +195,7 @@ public class ActiveModeService extends BathService.ChildService implements
 
     @Override
     public void requestActive() {
-        if (mListening) {
+        if (mListeningAtom.isRunning()) {
             return; // Already listening, no need to check all handlers.
         }
 
@@ -218,15 +221,7 @@ public class ActiveModeService extends BathService.ChildService implements
      * @see #startListening()
      */
     private void stopListening() {
-        if (!mListening & !(mListening = false)) return;
-        if (Build.DEBUG) Log.d(TAG, "Stopping listening to sensors.");
-
-        for (ActiveModeSensor sensor : mSensors) {
-            sensor.onDetached();
-            sensor.unregisterCallback(this);
-        }
-
-        releaseWakeLock();
+        mListeningAtom.stop();
     }
 
     /**
@@ -236,7 +231,11 @@ public class ActiveModeService extends BathService.ChildService implements
      * @see #stopListening()
      */
     private void startListening() {
-        if (mListening & (mListening = true)) return;
+        mListeningAtom.start();
+    }
+
+    @Override
+    public void onStart(Object... objects) {
         if (Build.DEBUG) Log.d(TAG, "Starting listening to sensors.");
 
         Context context = getContext();
@@ -247,6 +246,18 @@ public class ActiveModeService extends BathService.ChildService implements
         }
 
         pingConsumingSensorsInternal();
+    }
+
+    @Override
+    public void onStop(Object... objects) {
+        if (Build.DEBUG) Log.d(TAG, "Stopping listening to sensors.");
+
+        for (ActiveModeSensor sensor : mSensors) {
+            sensor.onDetached();
+            sensor.unregisterCallback(this);
+        }
+
+        releaseWakeLock();
     }
 
     /**
@@ -306,4 +317,5 @@ public class ActiveModeService extends BathService.ChildService implements
     public void onWakeRequested(@NonNull ActiveModeSensor sensor) {
         Presenter.getInstance().start(getContext());
     }
+
 }
