@@ -113,6 +113,7 @@ public class Config implements IOnLowMemory {
     // triggers
     public static final String KEY_TRIG_PREVIOUS_VERSION = "trigger_previous_version";
     public static final String KEY_TRIG_HELP_READ = "trigger_help_read";
+    public static final String KEY_TRIG_TRANSLATED = "trigger_translated";
 
     private static Config sConfig;
 
@@ -147,6 +148,7 @@ public class Config implements IOnLowMemory {
 
     private final Triggers mTriggers;
     private int mTrigPreviousVersion;
+    private boolean mTrigTranslated;
     private boolean mTrigHelpRead;
 
     @NonNull
@@ -377,6 +379,7 @@ public class Config implements IOnLowMemory {
 
         // triggers
         mTrigHelpRead = prefs.getBoolean(KEY_TRIG_HELP_READ, false);
+        mTrigTranslated = prefs.getBoolean(KEY_TRIG_TRANSLATED, false);
         mTrigPreviousVersion = prefs.getInt(KEY_TRIG_PREVIOUS_VERSION, 0);
     }
 
@@ -1034,6 +1037,11 @@ public class Config implements IOnLowMemory {
             saveOption(context, KEY_TRIG_HELP_READ, isRead, listener, changed);
         }
 
+        public void setTranslated(Context context, boolean translated, OnConfigChangedListener listener) {
+            boolean changed = mTrigTranslated != (mTrigTranslated = translated);
+            saveOption(context, KEY_TRIG_TRANSLATED, translated, listener, changed);
+        }
+
         /**
          * As set by {@link com.achep.acdisplay.activities.MainActivity}, it returns version
          * code of previously installed AcDisplay, {@code 0} if first install.
@@ -1051,6 +1059,14 @@ public class Config implements IOnLowMemory {
          */
         public boolean isHelpRead() {
             return mTrigHelpRead;
+        }
+
+        /**
+         * @return {@code true} if the app is fully translated to currently used locale,
+         * {@code false} otherwise.
+         */
+        public boolean isTranslated() {
+            return mTrigTranslated;
         }
 
     }
