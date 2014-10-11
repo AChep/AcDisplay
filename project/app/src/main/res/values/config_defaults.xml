@@ -33,7 +33,7 @@
     <bool name="config_default_ui_notify_circled_icon">false</bool>
     <bool name="config_default_ui_status_battery_sticky">false</bool>
     <bool name="config_default_ui_full_screen">true</bool>
-    <bool name="config_default_feel_widget_pinnable">false</bool>
+    <bool name="config_default_feel_widget_pinnable">true</bool>
     <bool name="config_default_feel_widget_readable">false</bool>
     <bool name="config_default_feel_screen_off_after_last_notify">false</bool>
     <bool name="config_default_ui_unlock_animation">true</bool>
