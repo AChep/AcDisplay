@@ -25,6 +25,7 @@
     <!-- About -->
     <string name="about_action">О программе</string>
     <string name="about_message"><![CDATA[
+        AcDisplay — это бесплатное приложение с <a href="http://repo.acdisplay.org">открытым исходным кодом</a>.
         Авторское право 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Артём Чепурной</a>. Все права защищены.<br/>
         <br/>
         Большое спасибо этим открытым библиотекам: %1$s, а также всем, кто
