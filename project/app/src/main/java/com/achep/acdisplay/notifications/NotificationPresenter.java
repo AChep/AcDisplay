@@ -242,7 +242,6 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
             n.loadData(context);
 
             NotificationData data = n.getNotificationData();
-            data.loadCircleIcon(n);
             Config config = Config.getInstance();
 
             // Selective load exactly what we need and nothing more.
@@ -251,6 +250,8 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                     config.getDynamicBackgroundMode(),
                     Config.DYNAMIC_BG_NOTIFICATION_MASK))
                 data.loadBackground(context, n);
+            if (config.isCircledLargeIconEnabled())
+                data.loadCircleIcon(n);
 
             localValid = isValidForLocal(n);
         }
