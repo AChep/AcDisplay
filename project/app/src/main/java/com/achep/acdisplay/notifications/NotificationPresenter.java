@@ -33,6 +33,7 @@ import android.util.Log;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
+import com.achep.acdisplay.Device;
 import com.achep.acdisplay.InactiveTimeHelper;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.Presenter;
@@ -201,6 +202,11 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         mListeners = new ArrayList<>();
         mGList = new NotificationList(null);
         mLList = new NotificationList(this);
+
+        if (!Device.hasJellyBeanMR2Api()) {
+            mGList.setMaximumSize(7);
+            mLList.setMaximumSize(7);
+        }
 
         mConfig = Config.getInstance();
         mConfig.registerListener(new ConfigListener());
