@@ -23,4 +23,6 @@
     android:layout_height="wrap_content"
     android:gravity="start"
     android:textAlignment="viewStart"
+    android:textColor="?android:textColorPrimary"
+    android:ellipsize="end"
     tools:ignore="UnusedAttribute" />

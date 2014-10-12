@@ -17,14 +17,21 @@
   ~ MA  02110-1301, USA.
   -->
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/title"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="48dp"
     android:layout_weight="1"
-    android:drawablePadding="8dp"
+    android:gravity="start|center_vertical"
     android:padding="8dp"
+    android:drawablePadding="8dp"
+    android:alpha="0.7"
+    android:background="?android:listChoiceBackgroundIndicator"
+    android:textColor="?android:textColorPrimary"
     android:textSize="14sp"
     android:textAllCaps="true"
-    android:fontFamily="sans-serif-condensed"
     android:maxLines="1"
-    android:background="?android:listChoiceBackgroundIndicator" />
+    android:ellipsize="end"
+    android:fontFamily="sans-serif-medium"
+    app:font="roboto_medium"
+    app:font_sdk="20" />
