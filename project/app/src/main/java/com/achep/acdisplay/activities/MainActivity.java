@@ -289,6 +289,7 @@ public class MainActivity extends Activity implements Config.OnConfigChangedList
      */
     private void startAcDisplayTest(boolean fake) {
         if (fake) {
+            startActivity(new Intent(this, AcDisplayActivity.class));
             sendTestNotification();
             return;
         }
