@@ -38,9 +38,9 @@ public class Device {
 
     /**
      * @return {@code true} if device is running
-     * {@link Build.VERSION_CODES#L Lemon Cake} or higher, {@code false} otherwise.
+     * {@link Build.VERSION_CODES#L Lollipop} or higher, {@code false} otherwise.
      */
-    public static boolean hasLemonCakeApi() {
+    public static boolean hasLollipopApi() {
         return Build.VERSION.SDK_INT >= 20; // Build.VERSION_CODES.L;
     }
 
