@@ -43,7 +43,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1'
+    buildToolsVersion '21'
 
     lintOptions {
         checkReleaseBuilds true
