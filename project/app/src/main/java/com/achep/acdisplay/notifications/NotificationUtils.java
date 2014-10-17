@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -34,8 +33,6 @@ import com.achep.acdisplay.Device;
 import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -75,7 +72,7 @@ public class NotificationUtils {
         if (sbn != null && Device.hasJellyBeanMR2Api()) {
             MediaService service = MediaService.sService;
             if (service != null) {
-                if (Device.hasLemonCakeApi()) {
+                if (Device.hasLollipopApi()) {
                     // FIXME: Android L reflections.
                     // service.cancelNotification(notification.getKey());
                     try {

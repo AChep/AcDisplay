@@ -27,7 +27,6 @@ import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.achep.acdisplay.Device;
 import com.achep.acdisplay.utils.PackageUtils;
@@ -135,7 +134,7 @@ public class OpenNotification {
         if (n == null) return false;
         StatusBarNotification sbn = getStatusBarNotification();
         StatusBarNotification sbn2 = n.getStatusBarNotification();
-        if (Device.hasLemonCakeApi()) {
+        if (Device.hasLollipopApi()) {
             // FIXME: Android L reflections.
             // service.cancelNotification(notification.getKey());
             try {

@@ -203,7 +203,7 @@ public class MediaController {
 
         mMetadata.clear();
 
-        if (Device.hasLemonCakeApi()) {
+        if (Device.hasLollipopApi()) {
             // TODO: Bring media controls to Android L
         } else if (Device.hasKitKatApi()) {
             Intent intent = new Intent(App.ACTION_BIND_MEDIA_CONTROL_SERVICE);
@@ -223,7 +223,7 @@ public class MediaController {
         mMetadata.clear();
         mHandler.removeCallbacksAndMessages(null);
 
-        if (Device.hasLemonCakeApi()) {
+        if (Device.hasLollipopApi()) {
             // TODO: Bring media controls to Android L
         } else if (Device.hasKitKatApi()) {
             if (mBound) {
@@ -350,7 +350,7 @@ public class MediaController {
      * @see android.view.KeyEvent#KEYCODE_MEDIA_PREVIOUS
      */
     public void sendMediaButtonClick(int keyCode) {
-        if (Device.hasLemonCakeApi()) {
+        if (Device.hasLollipopApi()) {
             // TODO: Bring media controls to Android L
         } else if (Device.hasKitKatApi()) {
             // TODO We should think about sending these up/down events accurately with touch up/down
