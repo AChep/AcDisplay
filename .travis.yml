@@ -6,7 +6,7 @@ env:
 
 android:
   components:
-    - build-tools-19.1.0
+    - build-tools-21
     - android-19
 
 before_script:
