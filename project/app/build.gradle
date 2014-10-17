@@ -128,7 +128,9 @@ dependencies {
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
     //noinspection GradleDependency,GradleDynamicVersion
-    compile 'com.android.support:support-v4:21.+'
+    compile('com.android.support:support-v4:21.+') {
+        exclude module: 'support-annotations'
+    }
 
     androidTestCompile('junit:junit:4.11')
     androidTestCompile('org.robolectric:robolectric:2.3') {
