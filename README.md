@@ -23,31 +23,39 @@ Download & Build
 ----------------
 Clone the project and come in:
 
-         $ git clone git://github.com/AChep/AcDisplay.git
-         $ cd AcDisplay/project/
-         
+``` bash
+$ git clone git://github.com/AChep/AcDisplay.git
+$ cd AcDisplay/project/
+```
+
 To build debug version: (only English and Russian locales included)
 
-         $ ./gradlew assembleDebug
-         # Builds all the things. Grab compiled application from ./app/build/outputs/apk/
+``` bash
+$ ./gradlew assembleDebug
+# Builds all the things. Grab compiled application from ./app/build/outputs/apk/
+```
 
 To build release version: (public test key)
 
-         $ ./gradlew assembleRelease
-         # You will need to answer 'yes' later.
-         # Grab compiled application from ./app/build/outputs/apk/
+``` bash
+$ ./gradlew assembleRelease
+# You will need to answer 'yes' later.
+# Grab compiled application from ./app/build/outputs/apk/
+```
 
 To build release version:
 
-         # First you need to set the path to your keystore and the alias.
-         # You may want to put those to your ~/.bashrc file to save them
-         # for future bash sessions.
-         $ export ACDISPLAY_SIGN_STORE_FILE=path_to_your_keystore
-         $ export ACDISPLAY_SIGN_KEY_ALIAS=key_alias
-         
-         $ ./gradlew assembleRelease
-         # You will be asked for passwords in proccess.
-         # Grab compiled application from ./app/build/outputs/apk/
+``` bash
+# First you need to set the path to your keystore and the alias.
+# You may want to put those to your ~/.bashrc file to save them
+# for future bash sessions.
+$ export ACDISPLAY_SIGN_STORE_FILE=path_to_your_keystore
+$ export ACDISPLAY_SIGN_KEY_ALIAS=key_alias
+
+$ ./gradlew assembleRelease
+# You will be asked for passwords in proccess.
+# Grab compiled application from ./app/build/outputs/apk/
+```
 
 You may also use the Android Studio graphic interface to build.
 
