@@ -64,6 +64,7 @@ public class NotificationUtils {
     /**
      * Dismisses given notification from system and app.
      */
+    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     public static void dismissNotification(@NonNull OpenNotification n) {
         NotificationPresenter.getInstance().removeNotification(n);
@@ -73,25 +74,7 @@ public class NotificationUtils {
             MediaService service = MediaService.sService;
             if (service != null) {
                 if (Device.hasLollipopApi()) {
-                    // FIXME: Android L reflections.
-                    // service.cancelNotification(notification.getKey());
-                    try {
-                        // Get notification's key.
-                        Method method = sbn.getClass().getMethod("getKey");
-                        method.setAccessible(true);
-                        String key = (String) method.invoke(sbn);
-
-                        // Cancel notification.
-                        method = service.getClass().getMethod(
-                                "cancelNotification", String.class);
-                        method.setAccessible(true);
-                        method.invoke(service, key);
-                    } catch (NoSuchMethodException
-                            | InvocationTargetException
-                            | IllegalAccessException e) {
-                        Log.wtf(TAG, "Failed to cancel notification:");
-                        e.printStackTrace();
-                    }
+                    service.cancelNotification(sbn.getKey());
                 } else {
                     service.cancelNotification(
                             sbn.getPackageName(),
