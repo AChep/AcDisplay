@@ -66,7 +66,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         super.onAttach(activity);
         mActivity = (AcDisplayActivity) activity;
 
-        mMediaController = mActivity.getMediaController();
+        mMediaController = mActivity.getCustomMediaController();
         mMediaController.registerListener(this);
 
         mConfig = mActivity.getConfig();
@@ -222,8 +222,8 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
         }
     }
 
-    public MediaController getMediaController() {
-        return mActivity.getMediaController();
+    public MediaController getCustomMediaController() {
+        return mActivity.getCustomMediaController();
     }
 
     /**

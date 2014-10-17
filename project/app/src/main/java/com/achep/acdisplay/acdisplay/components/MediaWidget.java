@@ -72,7 +72,7 @@ public class MediaWidget extends Widget implements
 
     public MediaWidget(@NonNull Callback callback, @NonNull AcDisplayFragment2 fragment) {
         super(callback, fragment);
-        mMediaController = fragment.getMediaController();
+        mMediaController = fragment.getCustomMediaController();
     }
 
     @Override

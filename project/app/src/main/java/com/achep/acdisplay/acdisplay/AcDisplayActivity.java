@@ -311,7 +311,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         return mTimeout;
     }
 
-    public MediaController getMediaController() {
+    public MediaController getCustomMediaController() {
         return mMediaController;
     }
 
