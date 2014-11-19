@@ -70,6 +70,9 @@
     <string name="settings_notify_circled_icon_title">Circled notification icon</string>
     <string name="settings_notify_circled_icon_on">Large icon of notification is shown inside of the circle.</string>
     <string name="settings_unlock_animation_title">Unlock animation</string>
+    <string name="settings_pulsing_notification_animation_title">Pulsing notification animation</string>
+    <string name="settings_pulsing_notification_animation_off">Notification screen brightness is not pulsing</string>
+    <string name="settings_pulsing_notification_animation_on">Notification screen brightness is pulsing until touched</string>
 
     <!-- Development -->
     <string name="settings_dev_sensors_dump_title">Dump data from sensors</string>

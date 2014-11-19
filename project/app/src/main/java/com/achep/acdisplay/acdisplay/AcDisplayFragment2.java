@@ -56,6 +56,8 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
     private View mDividerView;
     private CircleView mCircleView;
 
+    private PulsingThread pulsingThread;
+
     // Media widget
     private MediaController mMediaController;
     private MediaWidget mMediaWidget;
@@ -71,6 +73,12 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
 
         mConfig = mActivity.getConfig();
         mTimeout = mActivity.getTimeout();
+
+        pulsingThread = new PulsingThread(activity.getContentResolver());
+        if (Config.getInstance().isPulsingNotificationAnimationEnabled()) {
+            pulsingThread.start();
+        }
+
     }
 
     @Override
@@ -181,6 +189,7 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
 
     @Override
     public void onDestroyView() {
+        pulsingThread.requestStop();
         mMediaWidget.onDestroy();
         mTimeout.unregisterListener(mTimeoutGui);
         super.onDestroyView();
@@ -194,6 +203,9 @@ public class AcDisplayFragment2 extends AcDisplayFragment implements
 
     @Override
     public void onCircleEvent(float radius, float ratio, int event) {
+        // if user touches display, stop pulsing
+        pulsingThread.requestStop();
+
         switch (event) {
             case CircleView.ACTION_START:
                 if (hasPinnedWidget()) {

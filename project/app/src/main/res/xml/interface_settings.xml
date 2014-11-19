@@ -67,6 +67,13 @@
         android:defaultValue="@bool/config_default_ui_mirrored_timeout_bar"/>
 
     <CheckBoxPreference
+        android:defaultValue="@bool/config_default_ui_pulsing_notification_animation"
+        android:key="pulsing_notification_animation"
+        android:summaryOff="@string/settings_pulsing_notification_animation_off"
+        android:summaryOn="@string/settings_pulsing_notification_animation_on"
+        android:title="@string/settings_pulsing_notification_animation_title" />
+
+    <CheckBoxPreference
         android:key="unlock_animation"
         android:title="@string/settings_unlock_animation_title"
         android:defaultValue="@bool/config_default_ui_unlock_animation"/>

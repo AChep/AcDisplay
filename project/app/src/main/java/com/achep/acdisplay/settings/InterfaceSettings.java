@@ -56,6 +56,7 @@ public class InterfaceSettings extends PreferenceFragment implements
         syncPreference(Config.KEY_UI_STATUS_BATTERY_STICKY);
         syncPreference(Config.KEY_UI_FULLSCREEN);
         syncPreference(Config.KEY_UI_UNLOCK_ANIMATION);
+        syncPreference(Config.KEY_UI_PULSING_NOTIFICATION_ANIMATION);
 
         mDynamicBackground = (MultiSelectListPreference) findPreference(
                 Config.KEY_UI_DYNAMIC_BACKGROUND_MODE);
