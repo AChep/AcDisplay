@@ -19,33 +19,34 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Zatvori</string>
-  <string name="about_action">O</string>
-  <string name="about_message"><![CDATA[
-        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+  <string name="about_dialog_message"><![CDATA[        AcDisplay је бесплатана и <a href="http://repo.acdisplay.org"> отвореног кода</a>апликација.
+        Copyright 2013-%2$s<a href="http://artemchep.com">Artem Chepurnoy</a>.
+Сва права задржаха.<br/>
         <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
+        Захваљујемо се следећим алатима отвореног кода:%1$s и свима онима
+        <a href="http://translate.acdisplay.org">који су помогли са преводима</a> или донирали.
     ]]></string>
-  <string name="help">Help</string>
-  <string name="help_faq">Frequently asked questions</string>
-  <string name="news_message"><![CDATA[
-        Welcome to the new version of AcDisplay!
-        This update brings a completely new and unique design with a lot of new possibilities.
-        The design is more streamlined and is aimed at giving you the best possible experience!<br/>
-        <br/>
-        <b>One touch for all actions.</b><br/>
-        Unlocking the device, checking the notifications or performing an actions on them can be done with a single motion.<br/>
-        <br/>
-        <b>Unlock field is anywhere and everywhere.</b><br/>
-        Swipe anywhere on free space to unlock.
-    ]]></string>
-  <string name="speech_message"><![CDATA[
-        Hello,<br/>
-        First of all I want to thank you for the amount of downloads and high ratings on Play Store.
-        Huge progress has been made in AcDisplay and a this could not have been done without the community. That is why AcDisplay is <a href="https://www.github.com/AChep/AcDisplay">open</a> for everyone. But I need some help from you.<br/>
-        This is my last school year and I would like to buy a notebook for future studies and to bring the world awesome software wherever I may be.
-        I would highly appreciate your help with it.
-    ]]></string>
+  <string name="donate_dialog_title">Донитај програмерима</string>
+  <string name="donate_dialog_message">AcDisplay је апликација која је бесплатна и отвореног кода. Можете показати  своју подршку и захвалност тиме што ћете донирати:</string>
+  <string name="donate_alert_no_responsibility">Oбратите пажњу да Google није одговоран за ову врсту плаћања.</string>
+  <string name="donate_billing_not_supported">Куповине у самој апликацији нису подржане на уређају.</string>
+  <string name="donate_thanks">Хвала вам пуно!</string>
+  <string name="donation_1">Сладолед</string>
+  <string name="donation_4">Шољица кафе</string>
+  <string name="donation_10">Рачун за струју</string>
+  <string name="donation_20">Одговарајући јастук</string>
+  <string name="donation_50">Solid-state drive</string>
+  <string name="donation_99">Озвучење</string>
+  <string name="cry_dialog_title">Подршка развоју</string>
+  <string name="cry_dialog_message"><![CDATA[        AcDisplay је бесплатна и <a href="http://repo.acdisplay.org">отвореног кода</a>апликација и трошимо
+        пуно времена и средстава за развој. Молимо вас, размотрите да донирате као вашу
+        захвалност и подршку даљем развоју.]]></string>
+  <string name="help_dialog_title">Помоћ</string>
+  <string name="feedback_dialog_title">Повратна информација</string>
+  <string name="feedback_dialog_message_hint">Твоја порука. Спецификације уређаја биће аутоматски урачунате.</string>
+  <string name="feedback_dialog_attach_log">Приложи log</string>
+  <string name="feedback_dialog_read_help">Најчешће постављена питања</string>
+  <string name="feedback_error_no_app">Инсталитај било коју апликацију за електричну пошту.</string>
+  <string name="feedback_error_msg_too_short">Порука мора да садржи најмање %1$d симбола.</string>
+  <string name="feedback_error_accessing_log">Грешка при приступу log апликације. Грешка је: %1$s</string>
 </resources>

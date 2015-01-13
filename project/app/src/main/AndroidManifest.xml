@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -15,36 +16,37 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
-  -->
+  --><!-- Welcome to Hell. Take care of your mind. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.acdisplay"
-    android:versionCode="31"
-    android:versionName="2.4.7">
+    android:versionCode="32"
+    android:versionName="3.0">
 
     <!--
-        Normally replaced by build script, but needed to
-        make test runner work.
-
-        Robolectric DOES NOT support SDK 19!!! Read source:
-        https://github.com/robolectric/robolectric/blob/master/src/main/java/org/robolectric/SdkConfig.java#L13
+        Normally replaced by build script. Required by
+        Robolectric.
+        https://github.com/robolectric/robolectric/blob/master/robolectric/src/main/java/org/robolectric/SdkConfig.java#L13
         -->
-    <uses-sdk android:targetSdkVersion="18"
-        tools:ignore="GradleOverrides,OldTargetApi" />
+    <uses-sdk
+        android:targetSdkVersion="21"
+        tools:ignore="GradleOverrides" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <!-- Needed to show AcDisplay above the keyguard. -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <!-- Needed to change system screen off timeout settings. -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    
-    <!-- Needed to get the list of running activities. -->
+
+    <!-- Needed to get currently running activity. -->
+    <!--suppress DeprecatedClassUsageInspection -->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <!-- Needed to be able to show a popup above all notifications. -->
@@ -61,16 +63,16 @@
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:isGame="false"
         android:label="@string/app_name"
-        android:hardwareAccelerated="true"
-        android:taskAffinity="com.achep.acdisplay"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MaterialTheme"
+        tools:ignore="UnusedAttribute">
+
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -78,69 +80,45 @@
         </activity>
 
         <activity
-            android:name=".blacklist.activities.BlacklistActivity"
+            android:name="com.achep.snake.MainActivity"
+            android:immersive="true"
+            android:isGame="true"
+            android:label="@string/snake_app_name"
+            android:theme="@style/MaterialTheme.Snake" />
+
+        <activity
+            android:name=".ui.activities.BlacklistActivity"
             android:label="@string/blacklist"
             android:launchMode="singleTask"
-            android:icon="@drawable/ic_activity_blacklist"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity" />
 
         <activity
-            android:name=".blacklist.activities.SubBlacklistActivity"
-            android:label="@string/blacklist_app_config"
+            android:name=".ui.activities.SubBlacklistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:icon="@drawable/ic_activity_blacklist"
-            android:parentActivityName=".blacklist.activities.BlacklistActivity" />
+            android:label="@string/blacklist_app_config"
+            android:parentActivityName=".ui.activities.BlacklistActivity" />
 
         <activity
-            android:name=".settings.Settings"
+            android:name=".ui.activities.Settings2"
             android:label="@string/settings"
             android:launchMode="singleTask"
-            android:icon="@drawable/ic_activity_settings"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/MaterialTheme.Dashboard" />
 
         <activity
-            android:name=".settings.SubSettings"
-            android:icon="@drawable/ic_activity_settings"
+            android:name="com.achep.base.ui.activities.SubSettings"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:parentActivityName=".settings.Settings" />
+            android:parentActivityName=".ui.activities.Settings2" />
 
         <activity
-            android:name=".settings.Settings$ActiveModeSettingsActivity"
-            android:taskAffinity=""
-            android:label="@string/settings_active_title"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true">
-            <meta-data
-                android:name="com.achep.acdisplay.FRAGMENT_CLASS"
-                android:value="com.achep.acdisplay.settings.ActiveFragment" />
-            <meta-data
-                android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/active_settings" />
-        </activity>
-
-        <activity
-            android:name=".settings.Settings$LockscreenSettingsActivity"
-            android:taskAffinity=""
-            android:label="@string/settings_lockscreen_title"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true">
-            <meta-data
-                android:name="com.achep.acdisplay.FRAGMENT_CLASS"
-                android:value="com.achep.acdisplay.settings.LockscreenFragment" />
-            <meta-data
-                android:name="com.achep.acdisplay.TOP_LEVEL_HEADER_ID"
-                android:resource="@id/keyguard_settings" />
-        </activity>
-
-        <activity
-            android:name=".acdisplay.AcDisplayActivity"
+            android:name=".ui.activities.AcDisplayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="false"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="nosensor"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:theme="@style/AcDisplayTheme"
-            android:exported="false" />
+            android:theme="@style/MaterialTheme.AcDisplay" />
 
         <!-- This is needed to access notifications and to control music. -->
         <service
@@ -160,7 +138,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config" />
+                android:resource="@xml/extras_accessibility_config" />
         </service>
 
         <!-- Foreground service that may contain both Keyguard and Active mode. -->
@@ -173,10 +151,10 @@
             -->
         <activity
             android:name=".receiver.LocalReceiverActivity"
-            android:theme="@android:style/Theme.Translucent"
-            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
-            android:exported="false">
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -185,27 +163,23 @@
         </activity>
 
         <!-- A receiver to start some services. -->
-        <receiver android:name=".receiver.Receiver">
+        <receiver android:name=".receiver.ReceiverSystem">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <!-- AcDisplay -->
-                <action android:name="com.achep.acdisplay.ENABLE" />
-                <action android:name="com.achep.acdisplay.DISABLE" />
-                <action android:name="com.achep.acdisplay.TOGGLE" />
             </intent-filter>
         </receiver>
 
         <!-- Device admin rights. -->
         <receiver
-            android:name=".admin.AdminReceiver"
-            android:label="@string/access_device_admin_title"
-            android:description="@string/access_device_admin_description"
+            android:name=".receiver.AdminReceiver"
+            android:description="@string/permissions_device_admin_description"
+            android:label="@string/permissions_device_admin_title"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin" />
+                android:resource="@xml/extras_device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
@@ -222,7 +196,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/appwidget_toggle_info" />
+                android:resource="@xml/extras_appwidget_toggle_config" />
         </receiver>
 
         <!-- For sending logs as attachments -->
@@ -233,22 +207,41 @@
             tools:ignore="ExportedContentProvider" />
 
         <!--
-            AcDisplay does provide PowerToggles plugin.
+            //////////////////////////// Public ////////////////////////////
+            -->
+
+        <receiver
+            android:name=".receiver.ReceiverPublic"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.achep.acdisplay.ENABLE" />
+                <action android:name="com.achep.acdisplay.DISABLE" />
+                <action android:name="com.achep.acdisplay.TOGGLE" />
+            </intent-filter>
+        </receiver>
+
+        <!--
+            /////////////////////// Plugins & Modules //////////////////////
+            -->
+
+        <!--
+            PowerToggles plugin.
             http://powertoggles.com
             -->
         <receiver
-            android:name=".powertoggles.ToggleReceiver"
-            android:label="@string/app_name"
+            android:name=".plugins.powertoggles.ToggleReceiver"
+            android:exported="true"
             android:icon="@drawable/ic_toggle_acdisplay"
-            android:permission="com.painless.pc.permission.CONTROL_PLUGIN"
-            android:exported="true">
+            android:label="@string/app_name"
+            android:permission="com.painless.pc.permission.CONTROL_PLUGIN">
             <intent-filter>
                 <action android:name="com.painless.pc.ACTION_SET_STATE" />
             </intent-filter>
         </receiver>
 
         <!--
-            AcDisplay does provide Xposed module.
+            Xposed module.
             http://xposed.info
             -->
         <meta-data
@@ -259,7 +252,7 @@
             android:value="2.0*" />
         <meta-data
             android:name="xposeddescription"
-            android:value="@string/xposed_description" />
+            android:value="@string/plugin_xposed_description" />
 
     </application>
 

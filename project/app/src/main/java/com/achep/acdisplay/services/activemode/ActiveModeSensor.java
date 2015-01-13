@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services.activemode;
 
 import android.content.Context;
@@ -32,7 +31,7 @@ import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
 import java.util.ArrayList;
 
 /**
- * Provides a callback when {@link com.achep.acdisplay.acdisplay.AcDisplayActivity}
+ * Provides a callback when {@link com.achep.acdisplay.ui.activities.AcDisplayActivity}
  * should be started and stopped.
  *
  * @author Artem Chepurnoy
@@ -96,7 +95,7 @@ public abstract class ActiveModeSensor {
      *
      * @return {@code true} if the sensor is supported by device, {@code false} otherwise.
      */
-    protected boolean isSupported(@NonNull SensorManager sensorManager) {
+    public boolean isSupported(@NonNull SensorManager sensorManager) {
         return sensorManager.getSensorList(getType()).size() > 0;
     }
 

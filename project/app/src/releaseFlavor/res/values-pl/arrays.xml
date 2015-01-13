@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Błąd</item>
+    <item>Problem</item>
     <item>Sugestia</item>
     <item>Inne</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Grafika</item>
     <item>Ikona powiadomienia</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Krytyczne i pilne (nieodebrane połączenia, wskazówki, komunikaty alarmowe)</item>
+    <item>Ważne (komunikacja, ważne wiadomości)</item>
+    <item>Normalne (+ powiadomienia od starych aplikacji)</item>
+    <item>Nieważne (aktualizacje oprogramowania, spam)</item>
+    <item>Informacje kontekstowe (pogoda, zakończone wydarzenia, sugestie)</item>
   </string-array>
 </resources>

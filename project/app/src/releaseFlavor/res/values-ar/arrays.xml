@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>خطأ</item>
+    <item>مشكلة</item>
     <item>اقتراح</item>
     <item>آخر</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>العمل الفني</item>
     <item>ايقونة التنبيه</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>مهمة وعاجلة (مكالمة فائتة،توجيهات، وتنبيهات الطوارئ)</item>
+    <item>هام (الاتصالات والمراسلات الهامة)</item>
+    <item>عادي (+ الإخطارات من التطبيقات القديمة)</item>
+    <item>غير مهم (تحديثات البرامج، والبريد العشوائي)</item>
+    <item>معلومات سياقية وخلفية (معلومات الطقس، احداث منتهية الصلاحية، واقتراحات)</item>
   </string-array>
 </resources>

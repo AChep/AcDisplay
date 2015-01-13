@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/padding_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.achep.snake.GameView
+        android:id="@+id/game_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/score_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.achep.base.ui.widgets.TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:shadowColor="#8000"
+            android:shadowDy="4"
+            android:shadowRadius="16"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textSize="32sp" />
+
+    </LinearLayout>
+
+    <com.achep.snake.ControllerView
+        android:id="@+id/game_controller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:columnCount="3"
+        android:rowCount="3">
+
+        <ImageButton
+            android:id="@+id/up"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_column="1"
+            android:layout_row="0" />
+
+        <ImageButton
+            android:id="@+id/down"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_column="1"
+            android:layout_row="2" />
+
+        <ImageButton
+            android:id="@+id/left"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_column="0"
+            android:layout_row="1" />
+
+        <ImageButton
+            android:id="@+id/right"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_column="2"
+            android:layout_row="1" />
+
+    </com.achep.snake.ControllerView>
+
+</RelativeLayout>

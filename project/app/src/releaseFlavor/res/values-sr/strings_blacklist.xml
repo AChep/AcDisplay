@@ -19,11 +19,12 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="blacklist">Blacklist</string>
-  <string name="blacklist_app_config">App settings</string>
-  <string name="blacklist_show_system_apps">System apps</string>
-  <string name="blacklist_app_hide_title">Hide</string>
-  <string name="blacklist_app_hide_summary">This app\'s notifications won\'t be displayed.</string>
-  <string name="blacklist_app_restricted_title">Silent</string>
-  <string name="blacklist_app_restricted_summary">Don\'t wake up on its notification posted.</string>
+  <string name="blacklist">Црна листа</string>
+  <string name="blacklist_app_config">Подешавања апликације</string>
+  <string name="blacklist_app_hide_title">Сакриј</string>
+  <string name="blacklist_app_hide_summary">Обавештења ове апликације неће бити приказана.</string>
+  <string name="blacklist_app_restricted_title">Тишина</string>
+  <string name="blacklist_app_restricted_summary">Немој да се пробудиш када се добије обавештење.</string>
+  <string name="blacklist_app_non_clearable_title">Обавештење које не може да се откаже</string>
+  <string name="blacklist_app_non_clearable_summary">Прикажи обавештења која не могу да се откажу, као што су сервисна обавештења.</string>
 </resources>

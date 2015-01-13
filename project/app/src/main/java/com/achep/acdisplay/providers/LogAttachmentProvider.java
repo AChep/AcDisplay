@@ -16,106 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.providers;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
-import android.util.Log;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
+import com.achep.base.providers.LogsProviderBase;
 
 /**
  * Created by achep on 16.06.14.
  */
-public class LogAttachmentProvider extends ContentProvider {
-
-    private static final String TAG = "LogAttachmentProvider";
+public class LogAttachmentProvider extends LogsProviderBase {
 
     public static final String AUTHORITY = "com.achep.acdisplay.logs";
-    public static final String DIRECTORY = "logs";
 
-    private static final String COLUMN_DATA = "_data";
-
-    @Override
-    public boolean onCreate() {
-        return true;
-    }
-
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
-                        String[] selectionArgs, String orderBy) {
-        List<String> pathSegments = uri.getPathSegments();
-        String fileName = pathSegments.get(0);
-        File logFile = getContext().getCacheDir();
-        if (logFile == null) {
-            Log.e(TAG, "No cache dir.");
-            return null;
-        }
-
-        logFile = new File(new File(logFile, DIRECTORY), fileName);
-        if (!logFile.exists()) {
-            Log.e(TAG, "Requested log file doesn't exist.");
-            return null;
-        }
-
-        if (projection == null) {
-            projection = new String[]{
-                    COLUMN_DATA,
-                    OpenableColumns.DISPLAY_NAME,
-                    OpenableColumns.SIZE,
-            };
-        }
-
-        MatrixCursor matrixCursor = new MatrixCursor(projection, 1);
-        Object[] row = new Object[projection.length];
-        for (int col = 0; col < projection.length; col++) {
-            switch (projection[col]) {
-                case COLUMN_DATA:
-                    row[col] = logFile.getAbsolutePath();
-                    break;
-                case OpenableColumns.DISPLAY_NAME:
-                    row[col] = fileName;
-                    break;
-                case OpenableColumns.SIZE:
-                    row[col] = logFile.length();
-                    break;
-            }
-        }
-        matrixCursor.addRow(row);
-        return matrixCursor;
-    }
-
-    @Override
-    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        return openFileHelper(uri, "r");
-    }
-
-    @Override
-    public String getType(Uri uri) {
-        return "text/plain";
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        throw new UnsupportedOperationException("insert not supported");
-    }
-
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        throw new UnsupportedOperationException("delete not supported");
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues contentValues, String selection,
-                      String[] selectionArgs) {
-        throw new UnsupportedOperationException("update not supported");
-    }
 }

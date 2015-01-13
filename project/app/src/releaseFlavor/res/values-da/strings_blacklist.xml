@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Sortliste</string>
   <string name="blacklist_app_config">Appindstillinger</string>
-  <string name="blacklist_show_system_apps">Systemapplikationer</string>
   <string name="blacklist_app_hide_title">Skjul</string>
   <string name="blacklist_app_hide_summary">Ingen underretninger fra denne applikation vil blive vist.</string>
   <string name="blacklist_app_restricted_title">Lydløs</string>
   <string name="blacklist_app_restricted_summary">Væk ikke skærmen, når der modtages nye underretninger.</string>
+  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 </resources>

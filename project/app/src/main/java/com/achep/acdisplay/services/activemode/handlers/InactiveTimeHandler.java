@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services.activemode.handlers;
 
 import android.content.Context;
@@ -24,10 +23,11 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.InactiveTimeHelper;
 import com.achep.acdisplay.services.activemode.ActiveModeHandler;
+import com.achep.base.Build;
+import com.achep.base.content.ConfigBase;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,11 +37,11 @@ import java.util.TimerTask;
  * sensors on inactive time (if corresponding option is enabled.)
  *
  * @author Artem Chepurnoy
- * @see com.achep.acdisplay.settings.MoreSettings
+ * @see com.achep.acdisplay.ui.fragments.settings.MoreSettings
  */
 // TODO: Implement event based inactive time handling.
 public final class InactiveTimeHandler extends ActiveModeHandler implements
-        Config.OnConfigChangedListener {
+        ConfigBase.OnConfigChangedListener {
 
     private static final int INACTIVE_HOURS_CHECK_PERIOD = 1000 * 60 * 5; // ms.
 
@@ -120,7 +120,10 @@ public final class InactiveTimeHandler extends ActiveModeHandler implements
     }
 
     @Override
-    public void onConfigChanged(Config config, String key, Object value) {
+    public void onConfigChanged(@NonNull ConfigBase configBase,
+                                @NonNull String key,
+                                @NonNull Object value) {
+        Config config = (Config) configBase;
         boolean enabled = config.isInactiveTimeEnabled();
         switch (key) {
             case Config.KEY_INACTIVE_TIME_FROM:

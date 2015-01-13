@@ -21,29 +21,17 @@ package com.achep.acdisplay;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 
-import com.achep.acdisplay.interfaces.IOnLowMemory;
-import com.achep.acdisplay.powertoggles.ToggleReceiver;
+import com.achep.acdisplay.plugins.powertoggles.ToggleReceiver;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
 import com.achep.acdisplay.utils.AccessUtils;
+import com.achep.base.content.ConfigBase;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
-import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -53,17 +41,16 @@ import java.util.HashMap;
  * @since 21.01.14
  */
 @SuppressWarnings("ConstantConditions")
-public class Config implements IOnLowMemory {
+public final class Config extends ConfigBase {
 
     private static final String TAG = "Config";
-
-    private static final String PREFERENCES_FILE_NAME = "config";
 
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_ONLY_WHILE_CHARGING = "only_while_charging";
 
     // notifications
-    public static final String KEY_NOTIFY_LOW_PRIORITY = "notify_low_priority";
+    public static final String KEY_NOTIFY_MIN_PRIORITY = "notify_min_priority";
+    public static final String KEY_NOTIFY_MAX_PRIORITY = "notify_max_priority";
     public static final String KEY_NOTIFY_WAKE_UP_ON = "notify_wake_up_on";
 
     // inactive time
@@ -77,6 +64,7 @@ public class Config implements IOnLowMemory {
 
     // keyguard
     public static final String KEY_KEYGUARD = "keyguard";
+    public static final String KEY_KEYGUARD_WITHOUT_NOTIFICATIONS = "keyguard_without_notifications";
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
@@ -85,17 +73,16 @@ public class Config implements IOnLowMemory {
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
     public static final String KEY_UI_WALLPAPER_SHOWN = "wallpaper_shown";
-    public static final String KEY_UI_SHADOW_TOGGLE = "shadow_toggle";
     public static final String KEY_UI_DYNAMIC_BACKGROUND_MODE = "dynamic_background_mode";
     public static final int DYNAMIC_BG_ARTWORK_MASK = 1;
     public static final int DYNAMIC_BG_NOTIFICATION_MASK = 2;
-    public static final String KEY_UI_MIRRORED_TIMEOUT_BAR = "mirrored_timeout_progress_bar";
-    public static final String KEY_UI_NOTIFY_CIRCLED_ICON = "notify_circled_icon";
     public static final String KEY_UI_STATUS_BATTERY_STICKY = "ui_status_battery_sticky";
     public static final String KEY_UI_ICON_SIZE = "ui_condensed_view_size";
     public static final String ICON_SIZE_PX = "px";
     public static final String ICON_SIZE_DP = "dp";
     public static final String KEY_UI_UNLOCK_ANIMATION = "unlock_animation";
+    public static final String KEY_UI_CIRCLE_COLOR_INNER = "ui_circle_color_inner";
+    public static final String KEY_UI_CIRCLE_COLOR_OUTER = "ui_circle_color_outer";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -107,174 +94,47 @@ public class Config implements IOnLowMemory {
 
     // triggers
     public static final String KEY_TRIG_PREVIOUS_VERSION = "trigger_previous_version";
-    public static final String KEY_TRIG_HELP_READ = "trigger_help_read";
+    public static final String KEY_TRIG_HELP_READ = "trigger_dialog_help";
     public static final String KEY_TRIG_TRANSLATED = "trigger_translated";
+    public static final String KEY_TRIG_LAUNCH_COUNT = "trigger_launch_count";
+    public static final String KEY_TRIG_DONATION_ASKED = "trigger_donation_asked";
 
     private static Config sConfig;
 
     private boolean mAcDisplayEnabled;
     private boolean mKeyguardEnabled;
+    private boolean mKeyguardWithoutNotifies;
     private boolean mActiveMode;
     private boolean mActiveModeWithoutNotifies;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mFeelWidgetPinnable;
     private boolean mFeelWidgetReadable;
-    private boolean mNotifyLowPriority;
     private boolean mNotifyWakeUpOn;
+    private int mNotifyMinPriority;
+    private int mNotifyMaxPriority;
     private int mTimeoutNormal;
     private int mTimeoutShort;
     private int mInactiveTimeFrom;
     private int mInactiveTimeTo;
     private int mUiDynamicBackground;
     private int mUiIconSize; // dp.
+    private int mUiCircleColorInner;
+    private int mUiCircleColorOuter;
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
     private boolean mUiWallpaper;
-    private boolean mUiWallpaperShadow;
-    private boolean mUiMirroredTimeoutBar;
     private boolean mUiBatterySticky;
-    private boolean mUiNotifyCircledIcon;
     private boolean mUiUnlockAnimation;
 
     private boolean mDevSensorsDump;
 
     private final Triggers mTriggers;
     private int mTrigPreviousVersion;
+    private int mTrigLaunchCount;
     private boolean mTrigTranslated;
     private boolean mTrigHelpRead;
-
-    @NonNull
-    private SoftReference<HashMap<String, Option>> mHashMapRef = new SoftReference<>(null);
-
-    public static class Option {
-        private final String setterName;
-        private final String getterName;
-        private final Class clazz;
-        private final int minSdkVersion;
-
-        public Option(String setterName,
-                      String getterName,
-                      Class clazz) {
-            this(setterName, getterName, clazz, 0);
-        }
-
-        public Option(String setterName,
-                      String getterName,
-                      Class clazz, int minSdkVersion) {
-            this.setterName = setterName;
-            this.getterName = getterName;
-            this.clazz = clazz;
-            this.minSdkVersion = minSdkVersion;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int hashCode() {
-            return new HashCodeBuilder(11, 31)
-                    .append(setterName)
-                    .append(getterName)
-                    .append(clazz)
-                    .toHashCode();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean equals(Object o) {
-            if (o == null)
-                return false;
-            if (o == this)
-                return true;
-            if (!(o instanceof Option))
-                return false;
-
-            Option option = (Option) o;
-            return new EqualsBuilder()
-                    .append(setterName, option.setterName)
-                    .append(getterName, option.getterName)
-                    .append(clazz, option.clazz)
-                    .isEquals();
-        }
-
-        /**
-         * Reads an option from given config instance.</br>
-         * Reading is done using reflections!
-         *
-         * @param config a config to read from.
-         * @throws java.lang.RuntimeException if failed to read given config.
-         */
-        @NonNull
-        public Object read(@NonNull Config config) {
-            Object configInstance = getConfigInstance(config);
-            Class configClass = configInstance.getClass();
-            try {
-                Method method = configClass.getDeclaredMethod(getterName);
-                method.setAccessible(true);
-                return method.invoke(configInstance);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to access " + clazz.getName() + "." + getterName + " method.");
-            }
-        }
-
-
-        /**
-         * Writes new value to the option to given config instance.</br>
-         * Writing is done using reflections!
-         *
-         * @param config a config to write to.
-         * @throws java.lang.RuntimeException if failed to read given config.
-         */
-        public void write(@NonNull Config config, @NonNull Context context,
-                          @NonNull Object newValue, @Nullable OnConfigChangedListener listener) {
-            Object configInstance = getConfigInstance(config);
-            Class configClass = configInstance.getClass();
-            try {
-                Method method = configClass.getDeclaredMethod(setterName,
-                        Context.class, clazz,
-                        Config.OnConfigChangedListener.class);
-                method.setAccessible(true);
-                method.invoke(configInstance, context, newValue, listener);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to access " + clazz.getName() + "." + setterName + " method.");
-            }
-        }
-
-        @NonNull
-        protected Object getConfigInstance(Config config) {
-            return config;
-        }
-
-    }
-
-    private ArrayList<OnConfigChangedListener> mListeners;
-    private Context mContext;
-
-    // //////////////////////////////////////////
-    // /////////// -- LISTENERS -- //////////////
-    // //////////////////////////////////////////
-
-    public interface OnConfigChangedListener {
-        public void onConfigChanged(
-                @NonNull Config config,
-                @NonNull String key,
-                @NonNull Object value);
-    }
-
-    public void registerListener(@NonNull OnConfigChangedListener listener) {
-        mListeners.add(listener);
-    }
-
-    public void unregisterListener(@NonNull OnConfigChangedListener listener) {
-        mListeners.remove(listener);
-    }
-
-    // //////////////////////////////////////////
-    // ///////////// -- INIT -- /////////////////
-    // //////////////////////////////////////////
+    private boolean mTrigDonationAsked;
 
     @NonNull
     public static synchronized Config getInstance() {
@@ -288,33 +148,29 @@ public class Config implements IOnLowMemory {
         mTriggers = new Triggers();
     }
 
-    @Override
-    public void onLowMemory() {
-        // Clear hash-map; it will be recreated on #getHashMap().
-        mHashMapRef.clear();
-    }
-
     /**
      * Loads saved values from shared preferences.
      * This is called on {@link App app's} create.
      */
     void init(@NonNull Context context) {
-        mListeners = new ArrayList<>(6);
-
         Resources res = context.getResources();
         SharedPreferences prefs = getSharedPreferences(context);
         mAcDisplayEnabled = prefs.getBoolean(KEY_ENABLED,
                 res.getBoolean(R.bool.config_default_enabled));
         mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
                 res.getBoolean(R.bool.config_default_keyguard_enabled));
+        mKeyguardWithoutNotifies = prefs.getBoolean(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS,
+                res.getBoolean(R.bool.config_default_keyguard_without_notifies_enabled));
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
 
         // notifications
-        mNotifyLowPriority = prefs.getBoolean(KEY_NOTIFY_LOW_PRIORITY,
-                res.getBoolean(R.bool.config_default_notify_low_priority));
+        mNotifyMinPriority = prefs.getInt(KEY_NOTIFY_MIN_PRIORITY,
+                res.getInteger(R.integer.config_default_notify_min_priority));
+        mNotifyMaxPriority = prefs.getInt(KEY_NOTIFY_MAX_PRIORITY,
+                res.getInteger(R.integer.config_default_notify_max_priority));
         mNotifyWakeUpOn = prefs.getBoolean(KEY_NOTIFY_WAKE_UP_ON,
                 res.getBoolean(R.bool.config_default_notify_wake_up_on));
 
@@ -335,14 +191,8 @@ public class Config implements IOnLowMemory {
         // interface
         mUiWallpaper = prefs.getBoolean(KEY_UI_WALLPAPER_SHOWN,
                 res.getBoolean(R.bool.config_default_ui_show_wallpaper));
-        mUiWallpaperShadow = prefs.getBoolean(KEY_UI_SHADOW_TOGGLE,
-                res.getBoolean(R.bool.config_default_ui_show_shadow));
         mUiDynamicBackground = prefs.getInt(KEY_UI_DYNAMIC_BACKGROUND_MODE,
                 res.getInteger(R.integer.config_default_ui_show_shadow_dynamic_bg));
-        mUiMirroredTimeoutBar = prefs.getBoolean(KEY_UI_MIRRORED_TIMEOUT_BAR,
-                res.getBoolean(R.bool.config_default_ui_mirrored_timeout_bar));
-        mUiNotifyCircledIcon = prefs.getBoolean(KEY_UI_NOTIFY_CIRCLED_ICON,
-                res.getBoolean(R.bool.config_default_ui_notify_circled_icon));
         mUiBatterySticky = prefs.getBoolean(KEY_UI_STATUS_BATTERY_STICKY,
                 res.getBoolean(R.bool.config_default_ui_status_battery_sticky));
         mUiFullScreen = prefs.getBoolean(KEY_UI_FULLSCREEN,
@@ -351,6 +201,8 @@ public class Config implements IOnLowMemory {
                 res.getBoolean(R.bool.config_default_ui_unlock_animation));
         mUiIconSize = prefs.getInt(KEY_UI_ICON_SIZE,
                 res.getInteger(R.integer.config_default_ui_icon_size_dp));
+        mUiCircleColorInner = prefs.getInt(KEY_UI_CIRCLE_COLOR_INNER, 0xFFF0F0F0);
+        mUiCircleColorOuter = prefs.getInt(KEY_UI_CIRCLE_COLOR_OUTER, 0xFF303030);
 
         // development
         mDevSensorsDump = prefs.getBoolean(KEY_DEV_SENSORS_DUMP,
@@ -370,77 +222,67 @@ public class Config implements IOnLowMemory {
         mTrigHelpRead = prefs.getBoolean(KEY_TRIG_HELP_READ, false);
         mTrigTranslated = prefs.getBoolean(KEY_TRIG_TRANSLATED, false);
         mTrigPreviousVersion = prefs.getInt(KEY_TRIG_PREVIOUS_VERSION, 0);
+        mTrigLaunchCount = prefs.getInt(KEY_TRIG_LAUNCH_COUNT, 0);
+        mTrigDonationAsked = prefs.getBoolean(KEY_TRIG_TRANSLATED, false);
     }
 
-    static SharedPreferences getSharedPreferences(Context context) {
-        return context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-    }
-
-    /**
-     * You may get a context from here only on
-     * {@link Config.OnConfigChangedListener#onConfigChanged(Config, String, Object) config change}.
-     */
-    public Context getContext() {
-        return mContext;
-    }
-
-    @NonNull
-    public HashMap<String, Option> getHashMap() {
-        HashMap<String, Option> hashMap = mHashMapRef.get();
-        if (hashMap == null) {
-            hashMap = new HashMap<>();
-            hashMap.put(KEY_ENABLED, new Option(
-                    "setEnabled", "isEnabled", boolean.class));
-            hashMap.put(KEY_KEYGUARD, new Option(
-                    "setKeyguardEnabled", "isKeyguardEnabled", boolean.class));
-            hashMap.put(KEY_ACTIVE_MODE, new Option(
-                    "setActiveModeEnabled", "isActiveModeEnabled", boolean.class));
-            hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new Option(
-                    "setActiveModeWithoutNotificationsEnabled",
-                    "isActiveModeWithoutNotifiesEnabled", boolean.class));
-            hashMap.put(KEY_NOTIFY_LOW_PRIORITY, new Option(
-                    "setLowPriorityNotificationsAllowed",
-                    "isLowPriorityNotificationsAllowed", boolean.class));
-            hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new Option(
-                    "setWakeUpOnNotifyEnabled",
-                    "isNotifyWakingUp", boolean.class));
-            hashMap.put(KEY_ONLY_WHILE_CHARGING, new Option(
-                    "setEnabledOnlyWhileCharging",
-                    "isEnabledOnlyWhileCharging", boolean.class));
-            hashMap.put(KEY_UI_FULLSCREEN, new Option(
-                    "setFullScreen", "isFullScreen", boolean.class));
-            hashMap.put(KEY_UI_WALLPAPER_SHOWN, new Option(
-                    "setWallpaperShown", "isWallpaperShown", boolean.class));
-            hashMap.put(KEY_UI_SHADOW_TOGGLE, new Option(
-                    "setShadowEnabled", "isShadowEnabled", boolean.class));
-            hashMap.put(KEY_UI_MIRRORED_TIMEOUT_BAR, new Option(
-                    "setMirroredTimeoutProgressBarEnabled",
-                    "isMirroredTimeoutProgressBarEnabled", boolean.class));
-            hashMap.put(KEY_UI_NOTIFY_CIRCLED_ICON, new Option(
-                    "setCircledLargeIconEnabled",
-                    "isCircledLargeIconEnabled", boolean.class));
-            hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new Option(
-                    "setStatusBatterySticky",
-                    "isStatusBatterySticky", boolean.class));
-            hashMap.put(KEY_UI_UNLOCK_ANIMATION, new Option(
-                    "setUnlockAnimationEnabled",
-                    "isUnlockAnimationEnabled", boolean.class));
-            hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new Option(
-                    "setScreenOffAfterLastNotify",
-                    "isScreenOffAfterLastNotify", boolean.class));
-            hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new Option(
-                    "setWidgetPinnable",
-                    "isWidgetPinnable", boolean.class));
-            hashMap.put(KEY_FEEL_WIDGET_READABLE, new Option(
-                    "setWidgetReadable",
-                    "isWidgetReadable", boolean.class));
-            hashMap.put(KEY_DEV_SENSORS_DUMP, new Option(
-                    "setDevSensorsDumpEnabled",
-                    "isDevSensorsDumpEnabled", boolean.class));
-
-            mHashMapRef = new SoftReference<>(hashMap);
-        }
-        return hashMap;
+    @Override
+    protected void onCreateHashMap(@NonNull HashMap<String, ConfigBase.Option> hashMap) {
+        hashMap.put(KEY_ENABLED, new ConfigBase.Option(
+                "setEnabled", "isEnabled", boolean.class));
+        hashMap.put(KEY_KEYGUARD, new ConfigBase.Option(
+                "setKeyguardEnabled", "isKeyguardEnabled", boolean.class));
+        hashMap.put(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
+                "setKeyguardWithoutNotificationsEnabled",
+                "isKeyguardWithoutNotifiesEnabled", boolean.class));
+        hashMap.put(KEY_ACTIVE_MODE, new ConfigBase.Option(
+                "setActiveModeEnabled", "isActiveModeEnabled", boolean.class));
+        hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
+                "setActiveModeWithoutNotificationsEnabled",
+                "isActiveModeWithoutNotifiesEnabled", boolean.class));
+        hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
+                "setWakeUpOnNotifyEnabled",
+                "isNotifyWakingUp", boolean.class));
+        hashMap.put(KEY_NOTIFY_MIN_PRIORITY, new ConfigBase.Option(
+                "setNotifyMinPriority",
+                "getNotifyMinPriority", int.class));
+        hashMap.put(KEY_NOTIFY_MAX_PRIORITY, new ConfigBase.Option(
+                "setNotifyMaxPriority",
+                "getNotifyMaxPriority", int.class));
+        hashMap.put(KEY_ONLY_WHILE_CHARGING, new ConfigBase.Option(
+                "setEnabledOnlyWhileCharging",
+                "isEnabledOnlyWhileCharging", boolean.class));
+        hashMap.put(KEY_UI_FULLSCREEN, new ConfigBase.Option(
+                "setFullScreen", "isFullScreen", boolean.class));
+        hashMap.put(KEY_UI_WALLPAPER_SHOWN, new ConfigBase.Option(
+                "setWallpaperShown", "isWallpaperShown", boolean.class));
+        hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new ConfigBase.Option(
+                "setStatusBatterySticky",
+                "isStatusBatterySticky", boolean.class));
+        hashMap.put(KEY_UI_DYNAMIC_BACKGROUND_MODE, new ConfigBase.Option(
+                "setDynamicBackgroundMode",
+                "getDynamicBackgroundMode", int.class));
+        hashMap.put(KEY_UI_CIRCLE_COLOR_INNER, new ConfigBase.Option(
+                "setCircleInnerColor",
+                "getCircleInnerColor", int.class));
+        hashMap.put(KEY_UI_CIRCLE_COLOR_OUTER, new ConfigBase.Option(
+                "setCircleOuterColor",
+                "getCircleOuterColor", int.class));
+        hashMap.put(KEY_UI_UNLOCK_ANIMATION, new ConfigBase.Option(
+                "setUnlockAnimationEnabled",
+                "isUnlockAnimationEnabled", boolean.class));
+        hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new ConfigBase.Option(
+                "setScreenOffAfterLastNotify",
+                "isScreenOffAfterLastNotify", boolean.class));
+        hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new ConfigBase.Option(
+                "setWidgetPinnable",
+                "isWidgetPinnable", boolean.class));
+        hashMap.put(KEY_FEEL_WIDGET_READABLE, new ConfigBase.Option(
+                "setWidgetReadable",
+                "isWidgetReadable", boolean.class));
+        hashMap.put(KEY_DEV_SENSORS_DUMP, new ConfigBase.Option(
+                "setDevSensorsDumpEnabled",
+                "isDevSensorsDumpEnabled", boolean.class));
     }
 
     /**
@@ -449,39 +291,6 @@ public class Config implements IOnLowMemory {
     @NonNull
     public Triggers getTriggers() {
         return mTriggers;
-    }
-
-    private void notifyConfigChanged(String key, Object value, OnConfigChangedListener listener) {
-        for (OnConfigChangedListener l : mListeners) {
-            if (l == listener) continue;
-            l.onConfigChanged(this, key, value);
-        }
-    }
-
-    private void saveOption(Context context, String key, Object value,
-                            OnConfigChangedListener listener, boolean changed) {
-        if (!changed) {
-            // Don't update preferences if this change is a lie.
-            return;
-        }
-
-        if (Build.DEBUG) Log.d(TAG, "Writing \"" + key + "=" + value + "\" to config.");
-
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        if (value instanceof Boolean) {
-            editor.putBoolean(key, (Boolean) value);
-        } else if (value instanceof Integer) {
-            editor.putInt(key, (Integer) value);
-        } else if (value instanceof Float) {
-            editor.putFloat(key, (Float) value);
-        } else if (value instanceof String) {
-            editor.putString(key, (String) value);
-        } else throw new IllegalArgumentException("Unknown option type.");
-        editor.apply();
-
-        mContext = context;
-        notifyConfigChanged(key, value, listener);
-        mContext = null;
     }
 
     // //////////////////////////////////////////
@@ -527,6 +336,11 @@ public class Config implements IOnLowMemory {
         }
     }
 
+    public void setKeyguardWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mKeyguardWithoutNotifies != (mKeyguardWithoutNotifies = enabled);
+        saveOption(context, KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
+    }
+
     /**
      * Setter to enable the active mode.
      */
@@ -556,15 +370,6 @@ public class Config implements IOnLowMemory {
             ActiveModeService.handleState(context);
             KeyguardService.handleState(context);
         }
-    }
-
-    /**
-     * Setter to allow notifications with a lower priority like Google Now.
-     */
-    public void setLowPriorityNotificationsAllowed(Context context, boolean enabled,
-                                                   OnConfigChangedListener listener) {
-        boolean changed = mNotifyLowPriority != (mNotifyLowPriority = enabled);
-        saveOption(context, KEY_NOTIFY_LOW_PRIORITY, enabled, listener, changed);
     }
 
     public void setWakeUpOnNotifyEnabled(Context context, boolean enabled,
@@ -623,30 +428,12 @@ public class Config implements IOnLowMemory {
         saveOption(context, KEY_UI_WALLPAPER_SHOWN, shown, listener, changed);
     }
 
-    public void setShadowEnabled(Context context, boolean shown, OnConfigChangedListener listener) {
-        boolean changed = mUiWallpaperShadow != (mUiWallpaperShadow = shown);
-        saveOption(context, KEY_UI_SHADOW_TOGGLE, shown, listener, changed);
-    }
-
     /**
      * Allow the background to change based on the notification.
      */
     public void setDynamicBackgroundMode(Context context, int mode, OnConfigChangedListener listener) {
         boolean changed = mUiDynamicBackground != (mUiDynamicBackground = mode);
         saveOption(context, KEY_UI_DYNAMIC_BACKGROUND_MODE, mode, listener, changed);
-    }
-
-    /**
-     * Allow the timeout bar to move in from both sides.
-     */
-    public void setMirroredTimeoutProgressBarEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mUiMirroredTimeoutBar != (mUiMirroredTimeoutBar = enabled);
-        saveOption(context, KEY_UI_MIRRORED_TIMEOUT_BAR, enabled, listener, changed);
-    }
-
-    public void setCircledLargeIconEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mUiNotifyCircledIcon != (mUiNotifyCircledIcon = enabled);
-        saveOption(context, KEY_UI_NOTIFY_CIRCLED_ICON, enabled, listener, changed);
     }
 
     public void setStatusBatterySticky(Context context, boolean visible, OnConfigChangedListener listener) {
@@ -709,6 +496,70 @@ public class Config implements IOnLowMemory {
         }
     }
 
+    public void setCircleInnerColor(Context context, int color, OnConfigChangedListener listener) {
+        boolean changed = mUiCircleColorInner != (mUiCircleColorInner = color);
+        saveOption(context, KEY_UI_CIRCLE_COLOR_INNER, color, listener, changed);
+    }
+
+    public void setCircleOuterColor(Context context, int color, OnConfigChangedListener listener) {
+        boolean changed = mUiCircleColorOuter != (mUiCircleColorOuter = color);
+        saveOption(context, KEY_UI_CIRCLE_COLOR_OUTER, color, listener, changed);
+    }
+
+    /**
+     * Sets the minimum notification's priority to be shown.
+     *
+     * @param priority minimum notification's priority to be shown.
+     * @see #getNotifyMinPriority()
+     * @see #setNotifyMaxPriority(Context, int, OnConfigChangedListener)
+     * @see android.app.Notification#priority
+     */
+    public void setNotifyMinPriority(Context context, int priority, OnConfigChangedListener listener) {
+        boolean changed = mNotifyMinPriority != (mNotifyMinPriority = priority);
+        saveOption(context, KEY_NOTIFY_MIN_PRIORITY, priority, listener, changed);
+    }
+
+    /**
+     * Sets the maximum notification's priority to be shown.
+     *
+     * @param priority maximum notification's priority to be shown.
+     * @see #getNotifyMaxPriority()
+     * @see #setNotifyMinPriority(Context, int, OnConfigChangedListener)
+     * @see android.app.Notification#priority
+     */
+    public void setNotifyMaxPriority(Context context, int priority, OnConfigChangedListener listener) {
+        boolean changed = mNotifyMaxPriority != (mNotifyMaxPriority = priority);
+        saveOption(context, KEY_NOTIFY_MAX_PRIORITY, priority, listener, changed);
+    }
+
+    /**
+     * @return minimal {@link android.app.Notification#priority} of notification to be shown.
+     * @see #setNotifyMinPriority(Context, int, OnConfigChangedListener)
+     * @see #getNotifyMaxPriority()
+     * @see android.app.Notification#priority
+     */
+    public int getNotifyMinPriority() {
+        return mNotifyMinPriority;
+    }
+
+    /**
+     * @return maximum {@link android.app.Notification#priority} of notification to be shown.
+     * @see #setNotifyMaxPriority(Context, int, OnConfigChangedListener)
+     * @see #getNotifyMinPriority()
+     * @see android.app.Notification#priority
+     */
+    public int getNotifyMaxPriority() {
+        return mNotifyMaxPriority;
+    }
+
+    public int getCircleInnerColor() {
+        return mUiCircleColorInner;
+    }
+
+    public int getCircleOuterColor() {
+        return mUiCircleColorOuter;
+    }
+
     public int getTimeoutNormal() {
         return mTimeoutNormal;
     }
@@ -763,6 +614,10 @@ public class Config implements IOnLowMemory {
         return mKeyguardEnabled;
     }
 
+    public boolean isKeyguardWithoutNotifiesEnabled() {
+        return mKeyguardWithoutNotifies;
+    }
+
     public boolean isActiveModeEnabled() {
         return mActiveMode;
     }
@@ -779,20 +634,8 @@ public class Config implements IOnLowMemory {
         return mNotifyWakeUpOn;
     }
 
-    public boolean isLowPriorityNotificationsAllowed() {
-        return mNotifyLowPriority;
-    }
-
     public boolean isWallpaperShown() {
         return mUiWallpaper;
-    }
-
-    public boolean isShadowEnabled() {
-        return mUiWallpaperShadow;
-    }
-
-    public boolean isCircledLargeIconEnabled() {
-        return mUiNotifyCircledIcon;
     }
 
     public boolean isStatusBatterySticky() {
@@ -805,10 +648,6 @@ public class Config implements IOnLowMemory {
 
     public boolean isWidgetReadable() {
         return mFeelWidgetReadable;
-    }
-
-    public boolean isMirroredTimeoutProgressBarEnabled() {
-        return mUiMirroredTimeoutBar;
     }
 
     public boolean isInactiveTimeEnabled() {
@@ -829,155 +668,6 @@ public class Config implements IOnLowMemory {
 
     public boolean isDevSensorsDumpEnabled() {
         return mDevSensorsDump;
-    }
-
-    /**
-     * A class that syncs {@link android.preference.Preference} with its
-     * value in config.
-     *
-     * @author Artem Chepurnoy
-     */
-    public static class Syncer {
-
-        private final ArrayList<Group> mGroups;
-        private final Context mContext;
-        private final Config mConfig;
-
-        private boolean mBroadcasting;
-        private boolean mStarted;
-
-        private final Preference.OnPreferenceChangeListener mPreferenceListener = new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (mBroadcasting) {
-                    return true;
-                }
-
-                Group group = null;
-                for (Group c : mGroups) {
-                    if (preference == c.preference) {
-                        group = c;
-                        break;
-                    }
-                }
-
-                assert group != null;
-
-                group.option.write(mConfig, mContext, newValue, mConfigListener);
-                return true;
-            }
-        };
-
-        private final OnConfigChangedListener mConfigListener = new OnConfigChangedListener() {
-
-            @Override
-            public void onConfigChanged(@NonNull Config config, @NonNull String key,
-                                        @NonNull Object value) {
-                Group group = null;
-                for (Group c : mGroups) {
-                    if (key.equals(c.preference.getKey())) {
-                        group = c;
-                        break;
-                    }
-                }
-
-                if (group == null) {
-                    return;
-                }
-
-                setPreferenceValue(group, value);
-            }
-
-        };
-
-        private void setPreferenceValue(@NonNull Group group, @NonNull Object value) {
-            mBroadcasting = true;
-
-            Option option = group.option;
-            if (option.clazz.equals(boolean.class)) {
-                CheckBoxPreference preference = (CheckBoxPreference) group.preference;
-                preference.setChecked((boolean) value);
-            }
-
-            mBroadcasting = false;
-        }
-
-        /**
-         * A class-merge of {@link android.preference.Preference}
-         * and its {@link com.achep.acdisplay.Config.Option}.
-         *
-         * @author Artem Chepurnoy
-         */
-        private static class Group {
-            final Preference preference;
-            final Option option;
-
-            public Group(@NonNull Config config, @NonNull Preference preference) {
-                this.preference = preference;
-                this.option = config.getHashMap().get(preference.getKey());
-            }
-        }
-
-        public Syncer(@NonNull Context context, @NonNull Config config) {
-            mGroups = new ArrayList<>(10);
-            mContext = context;
-            mConfig = config;
-        }
-
-        @NonNull
-        public Syncer addPreference(@Nullable PreferenceScreen preferenceScreen,
-                                    @NonNull Preference preference) {
-            Group group;
-            if (preference instanceof CheckBoxPreference) {
-                group = new Group(mConfig, preference);
-            } else {
-                throw new IllegalArgumentException("Syncer only supports some kinds of Preferences");
-            }
-
-            // Remove preference from preference screen
-            // if needed.
-            if (preferenceScreen != null) {
-                if (!Device.hasTargetApi(group.option.minSdkVersion)) {
-                    preferenceScreen.removePreference(preference);
-                    return this;
-                }
-            }
-
-            mGroups.add(group);
-
-            if (mStarted) {
-                startListeningGroup(group);
-            }
-
-            return this;
-        }
-
-        /**
-         * Updates all preferences and starts to listen to the changes.
-         */
-        public void start() {
-            mStarted = true;
-            mConfig.registerListener(mConfigListener);
-            for (Group group : mGroups) {
-                startListeningGroup(group);
-            }
-        }
-
-        private void startListeningGroup(@NonNull Group group) {
-            group.preference.setOnPreferenceChangeListener(mPreferenceListener);
-            setPreferenceValue(group, group.option.read(mConfig));
-        }
-
-        /**
-         * Stops to listen to the changes.
-         */
-        public void stop() {
-            mStarted = false;
-            mConfig.unregisterListener(mConfigListener);
-            for (Group group : mGroups) {
-                group.preference.setOnPreferenceChangeListener(null);
-            }
-        }
     }
 
     // //////////////////////////////////////////
@@ -1001,16 +691,43 @@ public class Config implements IOnLowMemory {
             saveOption(context, KEY_TRIG_HELP_READ, isRead, listener, changed);
         }
 
+        public void setDonationAsked(Context context, boolean isAsked, OnConfigChangedListener listener) {
+            boolean changed = mTrigDonationAsked != (mTrigDonationAsked = isAsked);
+            saveOption(context, KEY_TRIG_DONATION_ASKED, isAsked, listener, changed);
+        }
+
         public void setTranslated(Context context, boolean translated, OnConfigChangedListener listener) {
             boolean changed = mTrigTranslated != (mTrigTranslated = translated);
             saveOption(context, KEY_TRIG_TRANSLATED, translated, listener, changed);
         }
 
         /**
-         * As set by {@link com.achep.acdisplay.activities.MainActivity}, it returns version
+         * @param context
+         * @param listener
+         * @see #setLaunchCount(android.content.Context, int, com.achep.base.content.ConfigBase.OnConfigChangedListener)
+         * @see #getLaunchCount()
+         */
+        public void incrementLaunchCount(Context context, OnConfigChangedListener listener) {
+            setLaunchCount(context, getLaunchCount() + 1, listener);
+        }
+
+        /**
+         * @param context
+         * @param launchCount
+         * @param listener
+         * @see #incrementLaunchCount(android.content.Context, com.achep.base.content.ConfigBase.OnConfigChangedListener)
+         * @see #getLaunchCount()
+         */
+        public void setLaunchCount(Context context, int launchCount, OnConfigChangedListener listener) {
+            boolean changed = mTrigLaunchCount != (mTrigLaunchCount = launchCount);
+            saveOption(context, KEY_TRIG_LAUNCH_COUNT, launchCount, listener, changed);
+        }
+
+        /**
+         * As set by {@link com.achep.acdisplay.ui.activities.MainActivity}, it returns version
          * code of previously installed AcDisplay, {@code 0} if first install.
          *
-         * @return version code of previously installed AcDisplay, {@code 0} if first install.
+         * @return version code of previously installed AcDisplay, {@code 0} on first installation.
          * @see #setPreviousVersion(android.content.Context, int, Config.OnConfigChangedListener)
          */
         public int getPreviousVersion() {
@@ -1018,7 +735,17 @@ public class Config implements IOnLowMemory {
         }
 
         /**
-         * @return {@code true} if {@link com.achep.acdisplay.fragments.HelpDialog} been read, {@code false} otherwise
+         * @return the number of {@link com.achep.acdisplay.ui.activities.AcDisplayActivity}'s creations.
+         * @see #incrementLaunchCount(android.content.Context, com.achep.base.content.ConfigBase.OnConfigChangedListener)
+         * @see #setLaunchCount(android.content.Context, int, com.achep.base.content.ConfigBase.OnConfigChangedListener)
+         */
+        public int getLaunchCount() {
+            return mTrigLaunchCount;
+        }
+
+        /**
+         * @return {@code true} if {@link com.achep.base.ui.fragments.dialogs.HelpDialog} been read,
+         * {@code false} otherwise
          * @see #setHelpRead(android.content.Context, boolean, Config.OnConfigChangedListener)
          */
         public boolean isHelpRead() {
@@ -1028,9 +755,14 @@ public class Config implements IOnLowMemory {
         /**
          * @return {@code true} if the app is fully translated to currently used locale,
          * {@code false} otherwise.
+         * @see #setDonationAsked(android.content.Context, boolean, com.achep.base.content.ConfigBase.OnConfigChangedListener)
          */
         public boolean isTranslated() {
             return mTrigTranslated;
+        }
+
+        public boolean isDonationAsked() {
+            return mTrigDonationAsked;
         }
 
     }

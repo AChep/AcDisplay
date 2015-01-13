@@ -18,24 +18,18 @@
  */
 package com.achep.acdisplay;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.achep.acdisplay.SharedList;
-import com.achep.acdisplay.utils.FileUtils;
+import com.achep.base.content.SharedList;
+import com.achep.base.utils.FileUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.io.File;
-import java.lang.Double;
-import java.lang.Override;
-import java.lang.String;
-import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -130,7 +124,7 @@ public class AcDisplayRobolectricTest {
     }
 
     /**
-     * The most simple implementation of {@link com.achep.acdisplay.SharedList shared list}.
+     * The most simple implementation of {@link com.achep.base.content.SharedList shared list}.
      */
     private static class SharedListString extends SharedList<String, StringSaver> {
 

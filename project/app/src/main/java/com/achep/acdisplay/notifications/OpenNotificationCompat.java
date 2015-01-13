@@ -1,18 +1,34 @@
+/*
+ * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
+ */
 package com.achep.acdisplay.notifications;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
-* Created by Artem Chepurnoy on 05.09.2014.
-*/
+ * Created by Artem Chepurnoy on 05.09.2014.
+ */
 // TODO: Find the way to get notification's ID and TAG.
 public class OpenNotificationCompat extends OpenNotification {
 
@@ -23,13 +39,14 @@ public class OpenNotificationCompat extends OpenNotification {
     }
 
     @Override
-    public void loadData(Context context) {
+    public void load(@NonNull Context context) {
         RemoteViews rvs = getNotification().contentView;
         if (rvs == null) rvs = getNotification().bigContentView;
-        if (rvs == null) rvs = getNotification().tickerView;
+        if (rvs == null) //noinspection deprecation
+            rvs = getNotification().tickerView;
         mPackageName = rvs != null ? rvs.getPackage() : "!2#$%^&*()";
 
-        super.loadData(context);
+        super.load(context);
     }
 
     //-- COMPARING INSTANCES --------------------------------------------------
@@ -71,7 +88,7 @@ public class OpenNotificationCompat extends OpenNotification {
         return builder
                 .append(getNotification().ledARGB, n.getNotification().ledARGB)
                 .append(getPackageName(), n.getPackageName())
-                .append(getNotificationData().titleText, n.getNotificationData().titleText)
+                .append(titleText, n.titleText)
                 .isEquals();
 
     }
@@ -86,4 +103,5 @@ public class OpenNotificationCompat extends OpenNotification {
     public String getPackageName() {
         return mPackageName;
     }
+
 }

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -16,22 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<merge xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        tools:ignore="ContentDescription" />
-
-    <fragment
-        android:id="@+id/acdisplay_fragment"
-        android:name="com.achep.acdisplay.acdisplay.AcDisplayFragment2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_acdisplay" />
-
-</merge>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/acdisplay_fragment"
+    android:name="com.achep.acdisplay.ui.fragments.AcDisplayFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

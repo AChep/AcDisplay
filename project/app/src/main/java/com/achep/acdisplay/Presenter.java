@@ -18,18 +18,21 @@
  */
 package com.achep.acdisplay;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.achep.acdisplay.acdisplay.AcDisplayActivity;
-import com.achep.acdisplay.activities.KeyguardActivity;
-import com.achep.acdisplay.utils.PowerUtils;
-
-import java.util.ArrayList;
+import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.acdisplay.notifications.NotificationPresenter;
+import com.achep.acdisplay.notifications.OpenNotification;
+import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
+import com.achep.acdisplay.ui.activities.AcDisplayActivity;
+import com.achep.acdisplay.ui.activities.KeyguardActivity;
+import com.achep.base.utils.power.PowerUtils;
 
 /**
  * Created by Artem on 07.03.14.
@@ -39,26 +42,70 @@ public class Presenter {
     private static final String TAG = "AcDisplayPresenter";
     private static final String WAKE_LOCK_TAG = "AcDisplay launcher.";
 
-    /**
-     * Requests to lock screen from AcDisplay activity.
-     *
-     * @return true if locked, false otherwise
-     */
-    @Deprecated
-    public boolean stop(Context context) {
-        //noinspection SimplifiableIfStatement
-        if (mActivity != null
-                && PowerUtils.isScreenOn(context)) {
-            return mActivity.lock();
+    private static Presenter sPresenter;
+
+    @Nullable
+    private AcDisplayActivity mActivity;
+
+    public static synchronized Presenter getInstance() {
+        if (sPresenter == null) {
+            sPresenter = new Presenter();
         }
-        return false;
+        return sPresenter;
     }
 
-    public void start(Context context) {
+    public void attachActivity(@Nullable AcDisplayActivity activity) {
+        mActivity = activity;
+    }
+
+    public void detachActivity() {
+        attachActivity(null);
+    }
+
+    public void kill() {
+        if (mActivity != null) mActivity.finish();
+    }
+
+    //-- START-UP -------------------------------------------------------------
+
+    public boolean tryStartGuiCauseNotification(@NonNull Context context,
+                                                @NonNull OpenNotification n) {
+        NotificationPresenter np = NotificationPresenter.getInstance();
+        if (!np.isTestNotification(context, n)) { // force test notification to be shown
+            Config config = Config.getInstance();
+            if (!config.isEnabled() || !config.isNotifyWakingUp()
+                    // Inactive time
+                    || config.isInactiveTimeEnabled()
+                    && InactiveTimeHelper.isInactiveTime(config)
+                    // Only while charging
+                    || config.isEnabledOnlyWhileCharging()
+                    && !PowerUtils.isPlugged(context)) {
+                // Don't turn screen on due to user settings.
+                return false;
+            }
+
+            if (ProximitySensor.isNear()) {
+                // Don't display while device is face down.
+                return false;
+            }
+
+            String packageName = n.getPackageName();
+            Blacklist blacklist = Blacklist.getInstance();
+            if (blacklist.getAppConfig(packageName).isRestricted()) {
+                // Don't display due to app settings.
+                return false;
+            }
+        }
+
+        return tryStartGuiCauseSensor(context);
+    }
+
+    public boolean tryStartGuiCauseSensor(@NonNull Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (PowerUtils.isScreenOn(pm) || ts.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
-            return;
+            // Screen is on || phone call.
+            return false;
         }
 
         // Wake up from possible deep sleep.
@@ -72,88 +119,23 @@ public class Presenter {
         //      `---------'
         pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG).acquire(1000);
 
-        Config config = Config.getInstance();
-
         kill();
-        context.startActivity(new Intent(Intent.ACTION_MAIN, null)
+        context.startActivity(new Intent(context, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_NO_USER_ACTION
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_FROM_BACKGROUND)
-                .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true)
-                .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF, !config.isKeyguardEnabled())
-                .setClass(context, AcDisplayActivity.class));
+                .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true));
 
         Log.i(TAG, "Launching AcDisplay activity.");
+        return true;
     }
 
-    public void kill() {
-        if (mActivity != null) mActivity.finish();
-    }
-
-    /**
-     * Listener to ActiveDisplayPresenter state.
-     */
-    public interface OnActiveDisplayStateChangedListener {
-        public void OnActiveDisplayStateChanged(Activity activity);
-    }
-
-    private static Presenter sPresenter;
-
-    private ArrayList<OnActiveDisplayStateChangedListener> mListeners;
-    private AcDisplayActivity mActivity;
-
-    public static synchronized Presenter getInstance() {
-        if (sPresenter == null) {
-            sPresenter = new Presenter();
-        }
-        return sPresenter;
-    }
-
-    private Presenter() {
-        mListeners = new ArrayList<>(4);
-    }
-
-    public void registerListener(OnActiveDisplayStateChangedListener listener) {
-        mListeners.add(listener);
-    }
-
-    public void unregisterListener(OnActiveDisplayStateChangedListener listener) {
-        mListeners.remove(listener);
-    }
-
-    public void attachActivity(AcDisplayActivity activity) {
-        mActivity = activity;
-
-        for (OnActiveDisplayStateChangedListener listener : mListeners) {
-            listener.OnActiveDisplayStateChanged(mActivity);
-        }
-    }
-
-    public void detachActivity() {
-        attachActivity(null);
-    }
-
-    public boolean isActivityAttached() {
-        return mActivity != null;
-    }
-
-    public AcDisplayActivity getActivity() {
-        return mActivity;
-    }
-
-    public void launchAcDisplay(Context context) {
-        if (mActivity != null) {
-        }
-
-        context.startActivity(new Intent(Intent.ACTION_MAIN, null)
+    public boolean tryStartGuiCauseKeyguard(@NonNull Context context) {
+        context.startActivity(new Intent(context, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_NO_USER_ACTION
-                        | Intent.FLAG_ACTIVITY_NO_ANIMATION
-                        | Intent.FLAG_FROM_BACKGROUND)
-                .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true)
-                .putExtra(KeyguardActivity.EXTRA_FINISH_ON_SCREEN_OFF, true)
-                .setClass(context, AcDisplayActivity.class));
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        return true;
     }
 
 }

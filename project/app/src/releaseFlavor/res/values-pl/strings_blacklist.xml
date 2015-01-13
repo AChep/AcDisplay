@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Czarna lista</string>
   <string name="blacklist_app_config">Ustawienia aplikacji</string>
-  <string name="blacklist_show_system_apps">Aplikacje systemowe</string>
   <string name="blacklist_app_hide_title">Ukryj</string>
   <string name="blacklist_app_hide_summary">Powiadomienia tej aplikacji nie będą wyświetlane.</string>
   <string name="blacklist_app_restricted_title">Tryb cichy</string>
   <string name="blacklist_app_restricted_summary">Nie budź urządzenia, gdy wysłano powiadomienie.</string>
+  <string name="blacklist_app_non_clearable_title">Brak usuwalnych powiadomień</string>
+  <string name="blacklist_app_non_clearable_summary">Pokaż nieusuwalne powiadomienia, takie jak te z usług.</string>
 </resources>

@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Swartlys</string>
   <string name="blacklist_app_config">App instellings</string>
-  <string name="blacklist_show_system_apps">Stelsel apps</string>
   <string name="blacklist_app_hide_title">Verberg</string>
   <string name="blacklist_app_hide_summary">Die app se kennisgewings word nie vertoon.</string>
   <string name="blacklist_app_restricted_title">Stil</string>
   <string name="blacklist_app_restricted_summary">Word nie wakker by hierdie kennisgewing.</string>
+  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 </resources>

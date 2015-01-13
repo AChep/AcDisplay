@@ -19,7 +19,10 @@
 package com.achep.acdisplay.blacklist;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.achep.base.content.SharedList;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -158,7 +161,6 @@ public class AppConfig {
     /**
      * @return {@code true} if showing non-clearable notifications is allowed for
      * this app, {@code false} otherwise.
-     *
      * @see #setNonClearableEnabled(boolean)
      * @see #DEFAULT_NON_CLEARABLE
      * @see #DIFF_NON_CLEARABLE
@@ -186,7 +188,7 @@ public class AppConfig {
      *
      * @author Artem Chepurnoy
      */
-    static final class Saver extends com.achep.acdisplay.SharedList.Saver<AppConfig> {
+    static final class Saver extends SharedList.Saver<AppConfig> {
 
         private static final String KEY_PACKAGE = "package_name_";
         private static final String KEY_RESTRICTED = "restricted_";
@@ -196,8 +198,11 @@ public class AppConfig {
         /**
          * {@inheritDoc}
          */
+        @NonNull
         @Override
-        public SharedPreferences.Editor put(AppConfig ps, SharedPreferences.Editor editor, int position) {
+        public SharedPreferences.Editor put(@NonNull AppConfig ps,
+                                            @NonNull SharedPreferences.Editor editor,
+                                            int position) {
             editor.putString(KEY_PACKAGE + position, ps.packageName);
             editor.putBoolean(KEY_RESTRICTED + position, ps.isRestricted());
             editor.putBoolean(KEY_HIDDEN + position, ps.isHidden());
@@ -209,7 +214,7 @@ public class AppConfig {
          * {@inheritDoc}
          */
         @Override
-        public AppConfig get(SharedPreferences prefs, int position) {
+        public AppConfig get(@NonNull SharedPreferences prefs, int position) {
             String pkg = prefs.getString(KEY_PACKAGE + position, null);
             boolean restricted = prefs.getBoolean(KEY_RESTRICTED + position, DEFAULT_RESTRICTED);
             boolean hidden = prefs.getBoolean(KEY_HIDDEN + position, DEFAULT_HIDDEN);
@@ -223,7 +228,7 @@ public class AppConfig {
      *
      * @author Artem Chepurnoy
      */
-    static final class Comparator extends com.achep.acdisplay.SharedList.Comparator<AppConfig> {
+    static final class Comparator extends SharedList.Comparator<AppConfig> {
 
         /**
          * {@inheritDoc}

@@ -23,10 +23,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.achep.acdisplay.Device;
-import com.achep.acdisplay.admin.AdminReceiver;
+import com.achep.acdisplay.receiver.AdminReceiver;
 import com.achep.acdisplay.services.AccessibilityService;
 import com.achep.acdisplay.services.MediaService;
+import com.achep.base.Device;
 
 /**
  * Created by Artem on 23.01.14.

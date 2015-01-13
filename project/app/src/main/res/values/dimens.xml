@@ -37,22 +37,71 @@
     <dimen name="circle_radius_target">140dp</dimen>
     <dimen name="circle_radius_decrease_threshold">4dp</dimen>
 
-    <!-- Media -->
-    <dimen name="artwork_size">120dp</dimen>
+    <!-- AcDisplay -->
+    <dimen name="scene_max_width">256dp</dimen>
+
+    <!--
+        Snake
+        -->
+
+    <!-- The size of divider between snake's "pixels" -->
+    <dimen name="snake_divider_size">1dp</dimen>
+
+    <!--
+        Media
+        -->
+
+    <!-- Desirable size of artwork -->
+    <dimen name="media_artwork_size">120dp</dimen>
+    <!-- The size of media buttons -->
+    <dimen name="media_btn_size">48dp</dimen>
+    <!-- The size of media buttons (excluding padding) -->
+    <dimen name="media_btn_actual_size">18dp</dimen>
+    <!-- The size of padding of media buttons -->
+    <dimen name="media_btn_padding">15dp</dimen>
+    <!-- The width of media widget -->
+    <dimen name="media_scene_width">236dp</dimen>
 
     <!-- Status bar battery icons dimensions -->
     <dimen name="status_bar_battery_height">16dp</dimen>
     <dimen name="status_bar_battery_width">10.5dp</dimen>
 
-    <!-- Height of a small notification in the status bar plus glow, padding, etc -->
-    <dimen name="notification_row_min_height">72dp</dimen>
-    <!-- Height of a large notification in the status bar plus glow, padding, etc -->
-    <dimen name="notification_row_max_height">260dp</dimen>
+    <!-- Preference fragment padding, bottom -->
+    <dimen name="preference_fragment_padding_bottom">0dp</dimen>
+    <!-- Preference fragment padding, sides -->
+    <dimen name="preference_fragment_padding_side">16dp</dimen>
 
-    <!-- half the distance between notifications in the panel -->
-    <dimen name="notification_divider_height">3dp</dimen>
-    <dimen name="blinds_pop_threshold">32dp</dimen>
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer> <!-- outsideOverlay -->
 
-    <!-- The size of the gesture span needed to activate the "pull" notification expansion -->
-    <dimen name="pull_span_min">25dp</dimen>
+    <!--
+        Dashboard
+        -->
+
+    <!-- Dashboard margins between each tiles within the layout -->
+    <dimen name="dashboard_cell_gap_x">0dp</dimen>
+    <dimen name="dashboard_cell_gap_y">0dp</dimen>
+    <!-- Dashboard padding in its container -->
+    <dimen name="dashboard_padding_start">0dp</dimen>
+    <dimen name="dashboard_padding_end">0dp</dimen>
+    <dimen name="dashboard_padding_top">0dp</dimen>
+    <dimen name="dashboard_padding_bottom">0dp</dimen>
+    <!-- Dashboard category padding start / end -->
+    <dimen name="dashboard_category_padding_start">0dp</dimen>
+    <dimen name="dashboard_category_padding_end">0dp</dimen>
+    <!-- Dashboard category margin bottom -->
+    <dimen name="dashboard_category_margin_bottom">0dp</dimen>
+    <!-- Dashboard category panel elevation -->
+    <dimen name="dashboard_category_elevation">4dp</dimen>
+    <!-- Dashboard category title layout height -->
+    <dimen name="dashboard_category_title_height">48dp</dimen>
+    <!-- Dashboard category title margin start -->
+    <dimen name="dashboard_category_title_margin_start">16dp</dimen>
+    <!-- Dashboard tile minimum height -->
+    <dimen name="dashboard_tile_minimum_height">72dp</dimen>
+    <!-- Dashboard image tile size -->
+    <dimen name="dashboard_tile_image_size">24dp</dimen>
+    <!-- Dashboard tile image margin start / end -->
+    <dimen name="dashboard_tile_image_margin_start">16dp</dimen>
+    <dimen name="dashboard_tile_image_margin_end">32dp</dimen>
+
 </resources>

@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Μαύρη λίστα</string>
   <string name="blacklist_app_config">Ρυθμίσεις εφαρμογής</string>
-  <string name="blacklist_show_system_apps">Εφαρμογές συστήματος</string>
   <string name="blacklist_app_hide_title">Απόκρυψη</string>
   <string name="blacklist_app_hide_summary">Οι ειδοποιήσεις αυτής της εφαρμογής δεν θα προβάλλονται.</string>
   <string name="blacklist_app_restricted_title">Σίγαση</string>
   <string name="blacklist_app_restricted_summary">Χωρίς αφύπνιση οθόνης με λήψη μιας ειδοποίησης.</string>
+  <string name="blacklist_app_non_clearable_title">Μη-καθαριζόμενες ειδοποιήσεις</string>
+  <string name="blacklist_app_non_clearable_summary">Να εμφανίζονται μη-καθαριζόμενες ειδοποιήσεις, όπως αυτές των υπηρεσιών.</string>
 </resources>

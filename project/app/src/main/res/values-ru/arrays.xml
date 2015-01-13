@@ -21,7 +21,7 @@
 
     <!-- Feedback -->
     <string-array name="feedback_types">
-        <item>Ошибка</item>
+        <item>Проблема</item>
         <item>Пожелание</item>
         <item>Другое</item>
     </string-array>
@@ -32,10 +32,13 @@
         <item>Иконка уведомления</item>
     </string-array>
 
-    <!-- Heads up styling -->
-    <string-array name="heads_up_styles">
-        <item>Светлый</item>
-        <item>Тёмный</item>
+    <!-- Notifies' priority -->
+    <string-array name="notify_priorities">
+        <item>Важные и неотложные (текущие вызовы, указания, аварийные оповещения)</item>
+        <item>Важные (контакты, важные письма)</item>
+        <item>Нормальные (+уведомления от старых приложений)</item>
+        <item>Не важные (обновления ПО, нежелательная почта)</item>
+        <item>Контекстная и фоновая информация (погода, старые события, советы)</item>
     </string-array>
 
 </resources>

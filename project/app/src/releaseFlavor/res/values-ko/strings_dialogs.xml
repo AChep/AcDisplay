@@ -19,33 +19,36 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">닫기</string>
-  <string name="about_action">자세히</string>
-  <string name="about_message"><![CDATA[
-        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
         <br/>
-        오픈 소스툴을 제공해준 분들과: %1$s to all who
-        <a href="http://translate.acdisplay.org">번역에 도움을 주신 분들과</a> or
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">저에게 후원해 주신 분들에게</a> 감사의 인사를 드립니다.
+        Many thanks to those open source tools: %1$s and to all who
+        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
     ]]></string>
-  <string name="help">도움말</string>
-  <string name="help_faq">FAQ</string>
-  <string name="news_message"><![CDATA[
-        새로워진 AcDisplay에 오신 것을 환영합니다!
-        이 업데이트는 수많은 가능성을 가진 완전히 새롭고 독특한 디자인을 선보입니다.
-        디자인은 더욱 능률적이며 여러분에게 최고의 경험을 선사하기 위해 만들어졌습니다.<br/>
-        <br/>
-        <b>모든 것을 단 한번의 터지로.</b><br/>
-        잠금을 해제하기, 알림을 확인하기 등의 모든 작업이 한번의 동작으로 해결됩니다.<br/>
-        <br/>
-        <b>어디서든 잠금 해제.</b><br/>
-        화면의 아무 곳이나 밀어서 잠금을 해제하세요.
+  <string name="donate_dialog_title">Donate to developers</string>
+  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
+  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
+  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+  <string name="donate_thanks">Thank you very much!</string>
+  <string name="donation_1">An ice cream</string>
+  <string name="donation_4">A cup of coffee</string>
+  <string name="donation_10">Electricity bills</string>
+  <string name="donation_20">The right pillow</string>
+  <string name="donation_50">Solid-state drive</string>
+  <string name="donation_99">Sound system</string>
+  <string name="cry_dialog_title">Support development</string>
+  <string name="cry_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
+        a lot of time and resources on keeping it with time. Please, consider a donation to show your
+        appreciation and to support further development.
     ]]></string>
-  <string name="speech_message"><![CDATA[
-        안녕하세요,<br/>
-        먼저 Play Store에서의 수많은 다운로드와 높은 별점에 감사를 드립니다.
-        AcDisplay의 이러한 발전은 도움을 주신 분들이 없었다면 불가능했을 것입니다. 그것이 AcDisplay가 여러분 모두에게 <a href="https://www.github.com/AChep/AcDisplay">열려있는</a> 이유입니다. 하지만 여러분의 도움이 필요합니다.<br/>
-        지금은 제 학교에서의 마지막 학년이며 앞으로의 공부를 위해 그리고 언제든지 새로운 놀라운 소프트웨어로 세상을 놀라게 하기 위해서 새로운 노트북을 사려고 합니다.
-        여러분이 도움을 주신다면 정말로 감사하겠습니다.
-    ]]></string>
+  <string name="help_dialog_title">도움말</string>
+  <string name="feedback_dialog_title">피드백</string>
+  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
+  <string name="feedback_dialog_attach_log">Attach a log</string>
+  <string name="feedback_dialog_read_help">Frequently asked questions</string>
+  <string name="feedback_error_no_app">Install any of email apps.</string>
+  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
+  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
 </resources>

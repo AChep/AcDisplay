@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services;
 
 import android.annotation.SuppressLint;
@@ -25,25 +24,26 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.RemoteController;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.Device;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
+import com.achep.base.Device;
 
 /**
  * Created by achep on 07.06.14.
  *
  * @author Artem Chepurnoy
  */
-@SuppressLint("NewApi")
+@SuppressWarnings("deprecation") // RemoteController is completely outdated.
+@SuppressLint("NewApi") // RemoteController is a new thing.
 public class MediaService extends NotificationListenerService implements
         RemoteController.OnClientUpdateListener {
 
@@ -58,8 +58,6 @@ public class MediaService extends NotificationListenerService implements
     private RemoteController mRemoteController;
     private RemoteController.OnClientUpdateListener mExternalListener;
 
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
-
     public class B extends Binder {
 
         public MediaService getService() {
@@ -68,12 +66,17 @@ public class MediaService extends NotificationListenerService implements
 
     }
 
+    private static boolean isRemoteControllerSupported() {
+        return Device.hasKitKatApi() && !Device.hasLollipopApi();
+    }
+
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(@NonNull Intent intent) {
         switch (intent.getAction()) {
             case App.ACTION_BIND_MEDIA_CONTROL_SERVICE:
-                if (!Device.hasKitKatApi() && !Device.hasLollipopApi()) {
-                    throw new RuntimeException("Required Android API version 19!");
+                if (!isRemoteControllerSupported()) {
+                    // Should never happen normally.
+                    throw new RuntimeException("Not supported Android version!");
                 }
                 return mBinder;
             default:
@@ -92,7 +95,7 @@ public class MediaService extends NotificationListenerService implements
     }
 
     @Override
-    public boolean onUnbind(Intent intent) {
+    public boolean onUnbind(@NonNull Intent intent) {
         switch (intent.getAction()) {
             case App.ACTION_BIND_MEDIA_CONTROL_SERVICE:
                 break;
@@ -103,42 +106,40 @@ public class MediaService extends NotificationListenerService implements
         return super.onUnbind(intent);
     }
 
-    @Override
-    public void onNotificationPosted(StatusBarNotification notification) {
-        rockNotification(notification, true);
-    }
+    //-- HANDLING NOTIFICATIONS -----------------------------------------------
 
     @Override
-    public void onNotificationRemoved(final StatusBarNotification notification) {
-        rockNotification(notification, false);
+    public void onNotificationPosted(@NonNull StatusBarNotification notification) {
+        NotificationPresenter np = NotificationPresenter.getInstance();
+        if (np.isInitialized()) {
+            OpenNotification n = OpenNotification.newInstance(notification);
+            np.postNotificationFromMain(this, n, 0);
+        } else {
+            rockNotification(np);
+        }
     }
 
-    private void rockNotification(final StatusBarNotification sbn, final boolean post) {
-        final StatusBarNotification[] activeNotifies = getActiveNotifications();
-        runOnMainLooper(new Runnable() {
-            @Override
-            public void run() {
-                OpenNotification n = OpenNotification.newInstance(sbn);
-                NotificationPresenter np = NotificationPresenter.getInstance();
-
-                if (post) {
-                    np.postNotification(MediaService.this, n, 0);
-                } else {
-                    np.removeNotification(n);
-                }
-
-                np.tryInit(MediaService.this, sbn, activeNotifies);
-            }
-        });
+    @Override
+    public void onNotificationRemoved(@NonNull StatusBarNotification notification) {
+        NotificationPresenter np = NotificationPresenter.getInstance();
+        if (np.isInitialized()) {
+            OpenNotification n = OpenNotification.newInstance(notification);
+            np.removeNotificationFromMain(n);
+        } else {
+            rockNotification(np);
+        }
     }
 
-    private void runOnMainLooper(Runnable runnable) {
-        mHandler.post(runnable);
+    private void rockNotification(@NonNull NotificationPresenter np) {
+        StatusBarNotification[] activeNotifies = getActiveNotifications();
+        np.tryInit(MediaService.this, activeNotifies);
     }
+
+    //-- REMOTE CONTROLLER ----------------------------------------------------
 
     @Override
     public void onCreate() {
-        if (Device.hasKitKatApi() && !Device.hasLollipopApi()) {
+        if (isRemoteControllerSupported()) {
             mRemoteController = new RemoteController(this, this);
             mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         }
@@ -146,7 +147,7 @@ public class MediaService extends NotificationListenerService implements
 
     @Override
     public void onDestroy() {
-        if (Device.hasKitKatApi() && !Device.hasLollipopApi()) {
+        if (isRemoteControllerSupported()) {
             setRemoteControllerDisabled();
         }
     }
@@ -159,7 +160,7 @@ public class MediaService extends NotificationListenerService implements
         mRegistered = mAudioManager.registerRemoteController(mRemoteController);
 
         if (mRegistered) {
-            final int size = getResources().getDimensionPixelSize(R.dimen.artwork_size);
+            final int size = getResources().getDimensionPixelSize(R.dimen.media_artwork_size);
             mRemoteController.setArtworkConfiguration(size, size);
             //setSynchronizationMode(mRemoteController, RemoteController.POSITION_SYNCHRONIZATION_CHECK);
         } else {
@@ -183,7 +184,7 @@ public class MediaService extends NotificationListenerService implements
     /**
      * Sets up external callback for client update events.
      */
-    public void setClientUpdateListener(RemoteController.OnClientUpdateListener listener) {
+    public void setClientUpdateListener(@Nullable RemoteController.OnClientUpdateListener listener) {
         mExternalListener = listener;
     }
 
@@ -221,4 +222,5 @@ public class MediaService extends NotificationListenerService implements
             mExternalListener.onClientMetadataUpdate(metadataEditor);
         }
     }
+
 }

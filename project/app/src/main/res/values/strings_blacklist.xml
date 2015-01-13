@@ -21,7 +21,6 @@
 
     <string name="blacklist">Blacklist</string>
     <string name="blacklist_app_config">App settings</string>
-    <string name="blacklist_show_system_apps">System apps</string>
 
     <!-- Hide from AcDisplay -->
     <string name="blacklist_app_hide_title">Hide</string>
@@ -29,10 +28,10 @@
 
     <!-- Do not turn on -->
     <string name="blacklist_app_restricted_title">Silent</string>
-    <string name="blacklist_app_restricted_summary">Don\'t wake up on its notification posted.</string>
+    <string name="blacklist_app_restricted_summary">Notifications from this application will not wake up AcDisplay.</string>
 
     <!-- Show non-clearable notifications -->
     <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-    <string name="blacklist_app_non_clearable_summary">Show non-clearable notifications, such as those from services.</string>
+    <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 
 </resources>

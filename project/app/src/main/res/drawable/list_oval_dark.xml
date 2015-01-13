@@ -17,17 +17,6 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:exitFadeDuration="@android:integer/config_shortAnimTime">
-
-    <item android:state_window_focused="false" android:drawable="@android:color/transparent" />
-    <item android:state_selected="true" android:drawable="@drawable/list_oval_selected_dark" />
-
-    <!-- Even though these two point to the same resource, have two states so the drawable will invalidate itself when coming out of pressed state. -->
-    <item android:state_focused="true"  android:state_enabled="false" android:state_pressed="true" android:drawable="@drawable/list_oval_disabled_dark" />
-    <item android:state_focused="true"  android:state_enabled="false"                              android:drawable="@drawable/list_oval_disabled_dark" />
-    <item android:state_focused="true"                                android:state_pressed="true" android:drawable="@drawable/list_oval_transition_dark" />
-    <item android:state_focused="false"                               android:state_pressed="true" android:drawable="@drawable/list_oval_transition_dark" />
-    <item android:state_focused="true"                                                             android:drawable="@drawable/list_oval_focused_dark" />
-
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/list_oval_dark_selector" />
 </selector>

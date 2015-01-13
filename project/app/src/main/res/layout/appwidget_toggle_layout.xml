@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
@@ -18,7 +17,6 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -40,12 +38,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
         android:ellipsize="marquee"
-        android:shadowRadius="2.0"
-        android:shadowColor="#B0000000"
         android:fontFamily="sans-serif-condensed"
+        android:gravity="center_horizontal"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="2.0"
+        android:singleLine="true"
         android:textColor="?android:textColorPrimary" />
 
 </LinearLayout>

@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services;
 
 import android.app.Notification;
@@ -33,10 +32,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.activities.MainActivity;
-import com.achep.acdisplay.interfaces.IOnLowMemory;
+import com.achep.acdisplay.ui.activities.MainActivity;
+import com.achep.base.Build;
+import com.achep.base.interfaces.IOnLowMemory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -200,7 +199,7 @@ public class BathService extends Service {
      * <p>NOT SYNCHRONIZED!</p>
      * Builds fresh notification with all {@link ChildService children services}'s
      * {@link com.achep.acdisplay.services.BathService.ChildService#getLabel() labels} in.
-     * Content intent starts {@link com.achep.acdisplay.activities.MainActivity}.
+     * Content intent starts {@link com.achep.acdisplay.ui.activities.MainActivity}.
      */
     private Notification buildNotification() {
         boolean empty = true;

@@ -26,15 +26,15 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
+import com.achep.base.Build;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
  * Basing on results of proximity sensor it notifies when
- * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity AcDisplay}
+ * {@link com.achep.acdisplay.ui.activities.AcDisplayActivity AcDisplay}
  * should be shown.
  *
  * @author Artem Chepurnoy

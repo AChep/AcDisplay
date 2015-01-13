@@ -20,9 +20,16 @@
 <resources>
 
     <!-- All device dependent modification goes here -->
-    <style name="AcDisplayThemeBase" parent="AppTheme">
+    <style name="Base.MaterialTheme.Fullscreen" parent="MaterialTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="Base.MaterialTheme.AcDisplay" parent="MaterialTheme.Fullscreen" >
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>

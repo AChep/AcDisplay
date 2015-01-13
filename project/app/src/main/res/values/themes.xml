@@ -19,64 +19,76 @@
   -->
 <resources>
 
-    <!-- All device dependent modification goes here -->
-    <style name="AppThemeBase" parent="android:Theme.Holo">
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar.Solid</item>
+    <style name="Base.MaterialTheme" parent="Theme.AppCompat" >
+        <item name="android:windowContentOverlay">@drawable/bg_window_overlay_dark</item>
     </style>
 
-    <style name="AppTheme" parent="AppThemeBase">
-
+    <style name="MaterialTheme" parent="Base.MaterialTheme">
+        <item name="colorAccent">@color/accent_color</item>
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
+        <item name="colorSecondary">@color/secondary_color</item>
+        
         <!-- Dialog -->
-        <item name="textAppearanceDialogTitle">@style/TextAppearance.Dialog.Title</item>
-        <item name="textAppearanceDialogMessage">@style/TextAppearance.Dialog.Message</item>
-        <item name="textAppearanceDialogInfo">@style/TextAppearance.Dialog.Info</item>
+        <item name="dialogTitleStyle">@style/MaterialDialog.Title</item>
+        <item name="dialogMessageStyle">@style/MaterialDialog.Message</item>
 
-        <!-- AcDisplay -->
-        <item name="acDisplayClock">@style/AcDisplay.Clock</item>
-        <item name="acDisplayClockSmall">@style/AcDisplay.Clock.Small</item>
-        <item name="acDisplayStatus">@style/AcDisplay.Status</item>
-        <item name="acDisplayNotificationTitle">@style/AcDisplay.Notification.Title</item>
-        <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message</item>
-        <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext</item>
-        <item name="acDisplayTimeoutProgressDrawable">@style/AcDisplayTimeoutProgressBar</item>
-        <item name="acDisplayDotsDrawable">@drawable/progress_bar_dash_bg</item>
+        <!-- Main styles -->
+        <item name="acDisplayTitle">@style/MaterialAcDisplay.Title</item>
+        <item name="acDisplaySubtitle">@style/MaterialAcDisplay.Subtitle</item>
+        <item name="acDisplayMessage">@style/MaterialAcDisplay.Message</item>
+        <item name="acDisplayAction">@style/MaterialAcDisplay.Action</item>
+        <item name="acDisplayLargeClock">@style/MaterialAcDisplay.LargeClock</item>
+        <item name="acDisplaySmallClock">@style/MaterialAcDisplay.SmallClock</item>
     </style>
 
-    <!-- All device dependent modification goes here -->
-    <style name="AcDisplayThemeBase" parent="AppTheme"/>
+    <style name="Base.MaterialTheme.Fullscreen" parent="MaterialTheme" />
 
-    <style name="AcDisplayTheme" parent="AcDisplayThemeBase">
-        <item name="android:inAnimation">@null</item>
-        <item name="android:outAnimation">@null</item>
-
-        <!-- Keyguard background -->
-        <item name="android:windowBackground">@color/keyguard_background</item>
-        <item name="android:colorBackground">@color/keyguard_background</item>
-
+    <style name="MaterialTheme.Fullscreen" parent="Base.MaterialTheme.Fullscreen">
         <!-- Theme.Holo.NoActionBar.Fullscreen -->
+        <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <!-- All device dependent modification goes here -->
-    <style name="AcDisplayTheme.WallpaperBase" parent="AcDisplayTheme"/>
+    <!--
+        AcDisplay
+        -->
 
-    <style name="AcDisplayTheme.Wallpaper" parent="AcDisplayTheme.WallpaperBase">
+    <style name="Base.MaterialTheme.AcDisplay" parent="MaterialTheme.Fullscreen" />
+
+    <style name="MaterialTheme.AcDisplay" parent="Base.MaterialTheme.AcDisplay">
+        <item name="android:inAnimation">@null</item>
+        <item name="android:outAnimation">@null</item>
+
+        <item name="android:windowBackground">@color/keyguard_background</item>
+        <item name="android:colorBackground">@color/keyguard_background</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+    </style>
+
+    <style name="MaterialTheme.AcDisplay.Wallpaper" parent="MaterialTheme.AcDisplay">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowBackground">@color/keyguard_background_semi</item>
         <item name="android:windowShowWallpaper">true</item>
     </style>
 
-    <style name="AcDisplayTheme.Wallpaper.WithShadow" parent="AcDisplayTheme.Wallpaper">
-        <item name="acDisplayClock">@style/AcDisplay.Clock.WithShadow</item>
-        <item name="acDisplayClockSmall">@style/AcDisplay.Clock.Small.WithShadow</item>
-        <item name="acDisplayStatus">@style/AcDisplay.Status.WithShadow</item>
-        <item name="acDisplayNotificationTitle">@style/AcDisplay.Notification.Title.WithShadow</item>
-        <item name="acDisplayNotificationMessage">@style/AcDisplay.Notification.Message.WithShadow</item>
-        <item name="acDisplayNotificationSubtext">@style/AcDisplay.Notification.Subtext.WithShadow</item>
-        <item name="acDisplayTimeoutProgressDrawable">@style/AcDisplayTimeoutProgressBar.WithShadow</item>
-        <item name="acDisplayDotsDrawable">@drawable/progress_bar_dash_withshadow_bg</item>
+    <!--
+        Dashboard
+        -->
+
+    <style name="MaterialTheme.Dashboard" parent="MaterialTheme">
+        <item name="android:windowBackground">?colorSecondary</item>
+        <item name="dashboardCategoryTitle">@style/MaterialDashboard.Category_title</item>
+        <item name="dashboardCategoryBackground">@drawable/bg_dashboard_category_dark</item>
+    </style>
+
+    <!--
+        Snake
+        -->
+
+    <style name="MaterialTheme.Snake" parent="MaterialTheme.Fullscreen">
     </style>
 
 </resources>

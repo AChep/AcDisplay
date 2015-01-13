@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.notifications;
 
 import android.support.annotation.NonNull;
@@ -44,7 +43,7 @@ final class NotificationList {
     private static final int EVENT_REMOVED = 2;
 
     @NonNull
-    private ArrayList<OpenNotification> mList;
+    private final ArrayList<OpenNotification> mList;
 
     @Nullable
     private OnNotificationListChangedListener mListener;

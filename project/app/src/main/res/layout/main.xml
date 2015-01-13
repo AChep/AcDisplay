@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -18,7 +19,17 @@
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Description and preview of AcDisplay fragment. -->
-    <include layout="@layout/main_content" />
+    <!-- Description and preview of AcDisplay -->
+    <include
+        layout="@layout/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize" />
+
+    <!-- Material switch panel -->
+    <include
+        layout="@layout/widget_switchbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize" />
 
 </merge>

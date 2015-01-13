@@ -19,33 +19,36 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Zavrieť</string>
-  <string name="about_action">O aplikácii</string>
-  <string name="about_message"><![CDATA[
-Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. Všetky práva vyhradené.<br/>
-<br/>
-Veľká vďaka týmto open source nástrojom: %1$s a všetkým, ktorí
-<a href="http://translate.acdisplay.org">pomohli s prekladom</a> alebo
-<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">ma finančne podporili</a>.
-]]></string>
-  <string name="help">Pomoc</string>
-  <string name="help_faq">FAQ (Často kladené otázky)</string>
-  <string name="news_message"><![CDATA[
-Vitajte v novej verzii AcDisplay!
-Táto aktualizácia prináša kompletne nový a unikátny dizajn s množstvom nových možností.
-Dizajn je omnoho jednoduchší s cieľom poskytnúť Vám čo najlepší zážitok!<br/>
-<br/>
-<b>Jeden dotyk pre všetky akcie.</b><br/>
-Odomknutie zariadenia, skontrolovanie oznámení alebo práca s nimi je možná jednoduchým pohybom.<br/>
-<br/>
-<b>Odomykacie pole je všade.</b><br/>
-Pre odomknutie potiahnite prstom kdekoľvek na voľnom mieste.
-]]></string>
-  <string name="speech_message"><![CDATA[
-Ahojte,<br/>
-v prvom rade Vám chcem poďakovať za množstvo stiahnutí a vysoké hodnotenia v Obchode Play.
-Tento obrovský pokrok v aplikácii AcDisplay by nebol možný bez komunity. To je ten dôvod, prečo je AcDisplay <a href="https://www.github.com/AChep/AcDisplay">otvorený</a> pre každého. Avšak potrebujem aj pomoc od Vás. <br/>
-Toto je môj posledný školský rok a chcel by som si kúpiť notebook pre moje budúce štúdium a zároveň, aby som prinášal svetu úžasný software odkiaľkoľvek kde budem.
-Preto si budem nesmierne vážiť, keď mi s tým pomôžete.
-]]></string>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay je zadarmo a je to <a href="http://repo.acdisplay.org">open source</a> aplikácia.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Všetky práva vyhradené.<br/>
+        <br/>
+        Veľká vďaka týmto open source nástrojom: %1$s a všetkým, ktorí
+        <a href="http://translate.acdisplay.org">pomohli s prekladom</a> alebo ma finančne podporili.
+    ]]></string>
+  <string name="donate_dialog_title">Darovať vývojárovi</string>
+  <string name="donate_dialog_message">AcDisplay je zadarmo a je to open source aplikácia. Svojím príspevkom môžete ukázať svoje uznanie a podporiť vývoj:</string>
+  <string name="donate_alert_no_responsibility">Berte na vedomie, že Google nie je zodpovedný za tento spôsob platby.</string>
+  <string name="donate_billing_not_supported">Nákupy vrámci aplikácie nie sú na tomto zariadení podporované.</string>
+  <string name="donate_thanks">Ďakujem Vám veľmi pekne!</string>
+  <string name="donation_1">Zmrzlina</string>
+  <string name="donation_4">Šálka kávy</string>
+  <string name="donation_10">Účty za elektrinu</string>
+  <string name="donation_20">Pohodlný vankúš</string>
+  <string name="donation_50">SSD disk</string>
+  <string name="donation_99">Hi-Fi systém</string>
+  <string name="cry_dialog_title">Darovať</string>
+  <string name="cry_dialog_message"><![CDATA[
+        AcDisplay je zadarmo a je to <a href="http://repo.acdisplay.org">open source</a> aplikácia.
+        Investovali sme do nej veľa času a peňazí, preto Vás prosíme, zvážte možnosť finančnej podpory
+        pre ďalší vývoj aplikácie.
+    ]]></string>
+  <string name="help_dialog_title">Pomoc</string>
+  <string name="feedback_dialog_title">Spätná väzba</string>
+  <string name="feedback_dialog_message_hint">Vaša správa. Informácie o zariadení budú pripojené automaticky.</string>
+  <string name="feedback_dialog_attach_log">Pripojiť záznam</string>
+  <string name="feedback_dialog_read_help">FAQ (Často kladené otázky)</string>
+  <string name="feedback_error_no_app">Nainštalujte si e-mailového klienta.</string>
+  <string name="feedback_error_msg_too_short">Správa musí obsahovať aspoň %1$d znakov.</string>
+  <string name="feedback_error_accessing_log">Chyba pri prístupe k záznamu aplikácie. Chyba je: %1$s</string>
 </resources>

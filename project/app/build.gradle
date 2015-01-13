@@ -17,8 +17,8 @@
  * MA  02110-1301, USA.
  */
 
-
 import groovy.swing.SwingBuilder
+import org.apache.commons.codec.binary.Base64
 
 import java.text.SimpleDateFormat
 
@@ -28,9 +28,10 @@ buildscript {
     }
     dependencies {
         //noinspection GradleDynamicVersion
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.12.+'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.+'
         //noinspection GradleDynamicVersion
-        classpath 'com.android.tools.build:gradle:0.13.+'
+        classpath 'com.android.tools.build:gradle:1.0.+'
+        classpath 'commons-codec:commons-codec:1.10'
     }
 }
 
@@ -43,7 +44,7 @@ repositories {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21'
+    buildToolsVersion '21.1.2'
 
     lintOptions {
         checkReleaseBuilds true
@@ -56,7 +57,6 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        //noinspection OldTargetApi
         targetSdkVersion 21
     }
 
@@ -71,6 +71,22 @@ android {
         }
     }
 
+    //noinspection GroovyAssignabilityCheck
+    SimpleDateFormat timeStampFormat = new SimpleDateFormat(
+            "EEE MMMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH); // Don't change it!
+    String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());
+
+    String key = System.getenv("ACDISPLAY_GOOGLE_PLAY_PUBLIC_KEY");
+    if (key == null) key = "this-is-a-debug-build-blank-key";
+    String keySalt = UUID.randomUUID().toString();
+    String keyEncrypted = encryptPublicKey(key, keySalt);
+
+    // Google Play key is very important and better to check it twice
+    // then to get a billion of Force Close reports.
+    println "- - - - - - - - - - - -"
+    println "\u001B[36m\u001B[1mGOOGLE_PLAY_PUBLIC_KEY\u001B[0m: " + key
+    println "- - - - - - - - - - - -"
+
     signingConfigs {
         release {
             storeFile file(System.getenv("ACDISPLAY_SIGN_STORE_FILE") + "")
@@ -83,55 +99,69 @@ android {
         }
     }
 
-    //noinspection GroovyAssignabilityCheck
-    SimpleDateFormat timeStampFormat = new SimpleDateFormat(
-            "EEE MMMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-    String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());
-    String playPublicKey = System.getenv("ACDISPLAY_GOOGLE_PLAY_PUBLIC_KEY");
-
-    // Google Play key is very important and better to check it twice
-    // then to get a billion of Force Close reports.
-    println "- - - - - - - - - - - -"
-    println "\u001B[36m\u001B[1mGOOGLE_PLAY_PUBLIC_KEY\u001B[0m: " + playPublicKey
-    println "- - - - - - - - - - - -"
-
     buildTypes {
         debug {
             versionNameSuffix '-debug'
             buildConfigField "boolean", "MY_DEBUG", "true"
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
-            // In-App-Billings service compares the signs of apks, so
-            // the service won't accept debug build.
-            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "null"
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
         }
         release {
-            zipAlign true
-            runProguard true
+            zipAlignEnabled true
+            minifyEnabled true
             proguardFile 'proguard-rules.txt'
             signingConfig signingConfigs.release
+
             buildConfigField "boolean", "MY_DEBUG", "false"
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
-            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + playPublicKey + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
         }
     }
+
     productFlavors {
+        //noinspection GroovyMissingReturnStatement
         defaultFlavor {}
+        //noinspection GroovyMissingReturnStatement
         releaseFlavor {}
     }
 }
 
+// Visit for more info:
+// https://github.com/robolectric/robolectric-gradle-plugin
 robolectric {
     ignoreFailures true
+
+    // Specify max number of processes (default is 1)
+    maxParallelForks = 4
+
+    // Listen to the test execution results
+    afterTest { descriptor, result ->
+        println "Executing test for ${descriptor.name} with result: ${result.resultType}"
+    }
 }
 
 dependencies {
+    // Other libraries.
+    //noinspection GradleDynamicVersion
+    compile 'com.larswerkman:HoloColorPicker:1.4'
+    //noinspection GradleDynamicVersion
+    compile 'me.grantland:autofittextview:0.2.+'
+    //noinspection GradleDynamicVersion
+    compile 'com.github.andkulikov:transitions-everywhere:1.2.+'
+    //noinspection GradleDynamicVersion
+    compile 'org.solovyev.android:checkout:0.6.+@aar'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
-    //noinspection GradleDependency,GradleDynamicVersion
-    compile('com.android.support:support-v4:21.+') {
-        exclude module: 'support-annotations'
-    }
 
+    // Android support libs.
+    compile('com.android.support:palette-v7:+')
+    compile('com.android.support:appcompat-v7:21.+')
+    compile('com.android.support:recyclerview-v7:21.+')
+    compile('com.android.support:support-v13:21.+')
+
+    // Robolectric tests.
     androidTestCompile('junit:junit:4.11')
     androidTestCompile('org.robolectric:robolectric:2.3') {
         exclude module: 'classworlds'
@@ -189,12 +219,12 @@ project.task('askForPasswords') << {
         Console console = System.console();
         console.printf("\n\n\u001B[36m\u001B[1mSigning config\u001B[0m\n")
 
-        if ("true".equals(System.getenv("ACDISPLAY_USE_TEST_KEY") + "") 
+        if ("true".equals(System.getenv("ACDISPLAY_USE_TEST_KEY") + "")
                 || "yes".equals(console.readLine("Use default test key [yes/no]: "))) {
             android.signingConfigs.release.storeFile = file("test-key.keystore")
             android.signingConfigs.release.keyAlias = "acdisplay-test-build"
             passKeystore = "FBxBT8KmUPkKnks5"
-            passKey = "KBFvGmGgDGh9HyFx"          
+            passKey = "KBFvGmGgDGh9HyFx"
         } else {
             passKeystore = new String(console.readPassword("Please enter store password: "))
             passKey = new String(console.readPassword("Please enter key password: "))
@@ -221,4 +251,31 @@ project.configure(project) {
             }
         }
     }
+}
+
+/**
+ * Protects the key from kids, script kiddies and dumbs.
+ *
+ * @param key the key to encrypt
+ * @return encrypted tkey
+ */
+// Symmetric algorithm used for ciphering/deciphering.
+def encryptPublicKey(String key, String salt) {
+    String encoded = encryptPublicKeyX(key, salt);
+    return Base64.encodeBase64URLSafeString(encoded.getBytes());
+}
+
+def encryptPublicKeyX(String key, String salt) {
+    final char[] m = key.toCharArray();
+    final char[] s = salt.toCharArray();
+
+    final int ml = m.length;
+    final int sl = s.length;
+    final char[] result = new char[ml];
+
+    for (int i = 0; i < ml; i++) {
+        result[i] = (char) (m[i] ^ s[i % sl]);
+    }
+
+    return new String(result);
 }

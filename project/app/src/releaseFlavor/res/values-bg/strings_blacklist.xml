@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Черен списък</string>
   <string name="blacklist_app_config">Настройки на приложение</string>
-  <string name="blacklist_show_system_apps">Системни приложения</string>
   <string name="blacklist_app_hide_title">Скрий</string>
   <string name="blacklist_app_hide_summary">Известия за това приложение няма да се показват.</string>
   <string name="blacklist_app_restricted_title">Безшумен</string>
   <string name="blacklist_app_restricted_summary">Не събуждай телефона при нови известия.</string>
+  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 </resources>

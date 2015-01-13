@@ -19,46 +19,67 @@
   -->
 <resources>
 
-    <string name="close">Закрыть</string>
-    <string name="later">Позже</string>
+    <!--
+        About dialog
+        -->
 
-    <!-- About -->
-    <string name="about_action">О программе</string>
-    <string name="about_message"><![CDATA[
+    <string name="about_dialog_message"><![CDATA[
         AcDisplay — это бесплатное приложение с <a href="http://repo.acdisplay.org">открытым исходным кодом</a>.
-        Авторское право 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Артём Чепурной</a>. Все права защищены.<br/>
+        Авторское право 2013-%2$s <a href="http://artemchep.com">Артём Чепурной</a>. Все права защищены.<br/>
         <br/>
         Большое спасибо этим открытым библиотекам: %1$s, а также всем, кто
-        <a href="http://translate.acdisplay.org">помог с переводом приложения</a> или
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">пожертвовал на его развитие</a>.
+        <a href="http://translate.acdisplay.org">помог с переводом приложения</a> или пожертвовал на его развитие.
     ]]></string>
 
-    <!-- Help -->
-    <string name="help">Помощь</string>
-    <string name="help_faq">Часто задаваемые вопросы</string>
+    <!--
+        Donate-to-developer dialog
+        -->
 
-    <!-- News -->
-    <string name="news_message"><![CDATA[
-        Добро пожаловать в новую версию AcDisplay!
-        Обновление приносит уникальный дизайн вместе с многими новыми возможностями.
-        Интерфейс теперь просто создан для получения наилучших впечатлений от использования!<br/>
-        <br/>
-        <b>Одно прикосновение для всех действий.</b><br/>
-        Разблокировать устройство, просмотреть уведомление и выполнить действие над ним можно всего за одно прикосновение.<br/>
-        <br/>
-        <b>Единое кольцо разблокировки.</b><br/>
-        Для разблокировки просто проведите на любом свободном месте экрана.
+    <string name="donate_dialog_title">Пожертвовать</string>
+    <string name="donate_dialog_message">AcDisplay – это бесплатное приложение с открытым исходным кодом. Вы можете выразить свою благодарность и поддержать разработку через пожертвования:</string>
+    <string name="donate_alert_no_responsibility">Компания Google не несет никакой ответственности за альтернативные методы платежей.</string>
+    <string name="donate_billing_not_supported">Покупки внутри приложения не поддерживаются этим устройством.</string>
+    <string name="donate_thanks">Большое спасибо!</string>
+    <!-- An item which costs approximately 1$ -->
+    <string name="donation_1">Порция десерта</string>
+    <!-- An item which costs approximately 4$ -->
+    <string name="donation_4">Чашка кофе</string>
+    <!-- An item which costs approximately 10$ -->
+    <string name="donation_10">Счет за электричество</string>
+    <!-- An item which costs approximately 20$ -->
+    <string name="donation_20">Отличная подушка</string>
+    <!-- An item which costs approximately 50$ -->
+    <string name="donation_50">SSD</string>
+    <!-- An item which costs approximately 99$ -->
+    <string name="donation_99">Звуковая система</string>
+
+    <!--
+        Ask-for-donation dialog
+        -->
+
+    <string name="cry_dialog_title">Поддержать развитие</string>
+    <string name="cry_dialog_message"><![CDATA[
+        AcDisplay — это бесплатное приложение с <a href="http://repo.acdisplay.org">открытым исходным кодом</a>
+        и для его развития требуется множество времени и ресурсов. Пожалуйста, подумайте о пожертвовании,
+        как о выражении вашей благодарности и поддержке будущего развития.
     ]]></string>
 
-    <!-- Speech -->
-    <string name="speech_title">Артем Чепурной</string>
-    <string name="speech_message"><![CDATA[
-        Здравствуйте,<br/>
-        прежде всего, я благодарю всех за количество загрузок и высокую оценку в Play Маркете.
-        Огромный прогресс был сделан в новом AcDisplay, который всегда будет <a href="https://www.github.com/AChep/AcDisplay">открытым</a> для каждого, и сейчас я прошу вашей помощи.<br/>
-        Этот год - мой последний год учёбы в школе.
-        Я уверен, в скором будущем мне понадобится ноутбук для занятий и своевременной пересборки мира.
-        Если вы желаете помочь мне с его покупкой, воспользуйтесь функцией Пожертвовать, и я буду вам премного благодарен!
-    ]]></string>
+    <!--
+        Help dialog
+        -->
+
+    <string name="help_dialog_title">Помощь</string>
+
+    <!--
+        Feedback dialog
+        -->
+
+    <string name="feedback_dialog_title">Обратная связь</string>
+    <string name="feedback_dialog_message_hint">Ваше сообщение. Параметры устройства будут добавлены автоматически.</string>
+    <string name="feedback_dialog_attach_log">Прикрепить лог событий</string>
+    <string name="feedback_dialog_read_help">Часто задаваемые вопросы</string>
+    <string name="feedback_error_no_app">Установите приложение для отправки электронной почты.</string>
+    <string name="feedback_error_msg_too_short">Сообщение должно включать по крайней мере %1$d символов.</string>
+    <string name="feedback_error_accessing_log">Ошибка создания лога событий. Ошибка: %1$s</string>
 
 </resources>

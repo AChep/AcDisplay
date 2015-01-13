@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services.activemode.handlers;
 
 import android.content.BroadcastReceiver;
@@ -26,7 +25,7 @@ import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.services.activemode.ActiveModeHandler;
-import com.achep.acdisplay.utils.PowerUtils;
+import com.achep.base.utils.power.PowerUtils;
 
 /**
  * Prevents {@link com.achep.acdisplay.services.activemode.ActiveModeService} from listening to

@@ -18,36 +18,40 @@
   ~ MA  02110-1301, USA.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.achep.acdisplay.activities.MainActivity" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_test"
-        android:showAsAction="ifRoom"
-        android:title="@string/test_action" />
+        android:id="@+id/test_action"
+        android:title="@string/action_send_test_notify"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_settings"
-        android:showAsAction="never"
-        android:title="@string/settings" />
+        android:id="@+id/settings_action"
+        android:title="@string/settings"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_donate"
-        android:showAsAction="never"
-        android:title="@string/donation_action" />
+        android:id="@+id/donate_action"
+        android:icon="@drawable/ic_action_donate_white"
+        android:title="@string/action_donate"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_feedback"
-        android:showAsAction="never"
-        android:title="@string/feedback" />
+        android:id="@+id/feedback_action"
+        android:icon="@drawable/ic_action_feedback_white"
+        android:title="@string/action_feedback"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_about"
-        android:showAsAction="never"
-        android:title="@string/about_action" />
+        android:id="@+id/about_action"
+        android:icon="@drawable/ic_action_about_white"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_help"
-        android:showAsAction="never"
-        android:title="@string/help" />
+        android:id="@+id/help_action"
+        android:icon="@drawable/ic_action_help_white"
+        android:title="@string/action_help"
+        app:showAsAction="ifRoom" />
+
 </menu>

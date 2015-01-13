@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Problem</item>
-    <item>Prijedlozi</item>
-    <item>Ostalo</item>
+    <item>Проблем</item>
+    <item>Предлози</item>
+    <item>Остало</item>
   </string-array>
   <string-array name="dynamic_background">
-    <item>Artwork</item>
-    <item>Notification icon</item>
+    <item>Насловна страна албума</item>
+    <item>Иконица обавештења</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Критично и хитно (пропуштени позиви, праваци, хитна упозорења)</item>
+    <item>Важно (комуникација, важна пошта)</item>
+    <item>Нормално (+обавештења од старих апликација)</item>
+    <item>Неважно (ажурирање апликација, отпадна пошта)</item>
+    <item>Додатне и позадинске информације (временска прогноза, прошли догађаји, предлози)</item>
   </string-array>
 </resources>

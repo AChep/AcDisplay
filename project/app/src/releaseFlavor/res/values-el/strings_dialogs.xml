@@ -19,33 +19,26 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Κλείσιμο</string>
-  <string name="about_action">Σχετικά</string>
-  <string name="about_message"><![CDATA[
-Πνευματικά δικαιώματα 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. Με επιφύλαξη κάθε δικαιώματος.<br/>
-<br/>
-Ευχαριστούμε αυτά τα εργαλεία ανοιχτού κώδικα: %1$s και όλους αυτούς που
-<a href="http://translate.acdisplay.org"> βοήθησαν με την μετάφραση</a> or
-<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> και έκαναν δωρεά</a>.
-]]></string>
-  <string name="help">Βοήθεια</string>
-  <string name="help_faq">Συχνές ερωτήσεις</string>
-  <string name="news_message"><![CDATA[
-        Καλώς ήρθατε στην νέα έκδοση του AcDisplay!
-        Αυτή η αναβάθμιση φέρει ένα εξ\' ολοκλήρου νέο σχεδιασμό και πολλές δυνατότητες.
-        Ο σχεδιασμός είναι περισσότερο εξορθολογισμένος και σκοπεύει να σας προσφέρει την καλύτερη δυνατή εμπειρία!<br/>
-        <br/>
-        <b>Ένα άγγιγμα για όλες τις διαδράσεις.</b><br/>
-        Ξεκλείδωμα της συσκευής, έλεγχος ειδοποιήσεων ή και εκτέλεση δράσης αναλόγως ειδοποίησης, με μια κίνηση.<br/>
-        <br/>
-        <b>Το πεδίο ξεκλειδώματος είναι οπουδήποτε και παντού.</b><br/>
-        Κάντε κύλιση οπουδήποτε σε ελεύθερο χώρο για ξεκλείδωμα.
-    ]]></string>
-  <string name="speech_message"><![CDATA[
-        Γεια σας,<br/>
-        Καταρχάς θα ήθελα να σας ευχαριστήσω για τον αριθμό των λήψεων και της υψηλής βαθμολογίας στο Play Store.
-        Έχει γίνει μεγάλη πρόοδος στο AcDisplay και όλα αυτά δεν θα είχαν επιτευχθεί χωρίς την βοήθεια της κοινότητας. Γι\' αυτό το AcDisplay είναι <a href="https://www.github.com/AChep/AcDisplay">ανοιχτό</a> προς όλους. Αλλά χρειάζομαι μικρή βοήθεια από εσας.<br/>
-        Βρίσκομαι στο τελευταίο έτος στη σχολή μου και θα ήθελα να αγοράσω ένα notebook για το επόμενο μαθησιακό στάδιο και επίσης να μπορώ να δημιουργώ software όπου και αν βρίσκομαι.
-        Θα εκτιμούσα πολύ τη βοήθειά σας σε αυτό τον στόχο.
-    ]]></string>
+  <string name="about_dialog_message"><![CDATA[         AcDisplay είναι μια δωρεάν και <a href="http://repo.acdisplay.org"> ανοικτού κώδικα</a> εφαρμογή.         Πνευματικά δικαιώματα 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Όλα τα δικαιώματα είναι κατοχυρωμένα. <br/>         <br/> Πολλές ευχαριστίες σε εκείνους ανοίξουν τα εργαλεία πηγής: %1$s και σε όλους όσους <a href="http://translate.acdisplay.org"> βοήθησαν με τις μεταφράσεις</a> ή έκαναν δωρεά.     ]]></string>
+  <string name="donate_dialog_title">Κάντε δωρεά στους προγραμματιστές</string>
+  <string name="donate_dialog_message">Το AcDisplay είναι μια ελεύθερη και ανοικτού-κώδικα εφαρμογή. Μπορείτε να δείξετε την εκτίμησή σας και να υποστηρίξετε την ανάπτυξη της δωρίζοντας:</string>
+  <string name="donate_alert_no_responsibility">Έχετε στο νου σας ότι η Google δεν είναι υπεύθυνη για αυτήν την μέθοδο πληρωμής.</string>
+  <string name="donate_billing_not_supported">Πληρωμές μέσα από την εφαρμογή δεν υποστηρίζονται σε αυτήν την συσκευή.</string>
+  <string name="donate_thanks">Σε ευχαριστώ πολύ!</string>
+  <string name="donation_1">Ένα παγωτό</string>
+  <string name="donation_4">Έναν καφέ</string>
+  <string name="donation_10">Έναν λογαριασμό ρεύματος</string>
+  <string name="donation_20">Ένα σωστό μαξιλάρι</string>
+  <string name="donation_50">Σκληρός δίσκος SSD</string>
+  <string name="donation_99">Ένα ηχοσύστημα</string>
+  <string name="cry_dialog_title">Υποστήριξη της ανάπτυξης</string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay είναι μια δωρεάν και <a href="http://repo.acdisplay.org"> ανοικτού κώδικα</a> εφαρμογή και αφιερώνουμε πολύ χρόνο και πόρους για τη συντήρηση της. Παρακαλώ, σκεφτείτε μια δωρεά για να δείξετε την εκτίμησή σας, καθώς και για την περαιτέρω υποστήριξη ανάπτυξης.     ]]></string>
+  <string name="help_dialog_title">Βοήθεια</string>
+  <string name="feedback_dialog_title">Σχόλια</string>
+  <string name="feedback_dialog_message_hint">Το μήνυμα σας. Οι προδιαγραφές της συσκευής θα συμπεριληφθούν αυτόματα.</string>
+  <string name="feedback_dialog_attach_log">Επισυνάψτε ένα αρχείο καταγραφής</string>
+  <string name="feedback_dialog_read_help">Συχνές ερωτήσεις</string>
+  <string name="feedback_error_no_app">Εγκαταστήσετε οποιαδήποτε εφαρμογή ηλεκτρονικού ταχυδρομείου.</string>
+  <string name="feedback_error_msg_too_short">Το μήνυμα πρέπει να περιέχει τουλάχιστον %1$d σύμβολα.</string>
+  <string name="feedback_error_accessing_log">Σφάλμα κατά την προσπέλαση του αρχείου καταγραφής της εφαρμογής. Το σφάλμα είναι: %1$s</string>
 </resources>

@@ -19,33 +19,35 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Chiudi</string>
-  <string name="about_action">Informazioni su</string>
-  <string name="about_message"><![CDATA[
-Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. Tutti i Diritti Riservati.<br/>
-<br/>
-Molte grazie a questi strumenti open source: %1$s ed a tutti quelli che 
-<a href="http://translate.acdisplay.org">hanno aiutato nelle traduzioni</a> o
-<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">che mi hanno fatto delle donazioni</a>.
-]]></string>
-  <string name="help">Guida</string>
-  <string name="help_faq">Domande Frequenti</string>
-  <string name="news_message"><![CDATA[
-        Benvenuto nella nuova versione di AcDisplay!
-        Questo aggiornamento porta un design completamente nuovo ed unico con un sacco di nuove possibilità.
-        Il design è più \'snellito\' e mira a dare all\'utente l\' esperienza migliore possibile!<br/>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay è una applicazione gratuita e <a href="http://repo.acdisplay.org">open source</a>.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Tutti i diritti riservati.<br/>
         <br/>
-        <b>Un tocco per tutte le azioni.</b><br/>
-        Sbloccare il dispositivo, controllare le notifiche ed eseguire azioni su di esse può essere fatto con un solo semplice movimento.<br/>
-        <br/>
-        <b>Il campo di sblocco è ovunque e dovunque.</b><br/>
-        Scorri il dito in un punto qualsiasi dello spazio libero per sbloccare il dispositivo.
+        Un ringraziamento speciale a questo tool open source: %1$s e a tutte le persone che
+        <a href="http://translate.acdisplay.org">hanno aiutato con le traduzioni</a> o effettuato delle donazioni.
     ]]></string>
-  <string name="speech_message"><![CDATA[
-        Ciao,<br/>
-        Prima di tutto vorrei ringraziare per la quantità di download e le alte valutazioni sul Play Store.
-        Grandi progressi sono stati fatti in AcDisplay e ciò non sarebbe stato possibile senza l\'aiuto della community. Questo è il motivo per cui AcDisplay è <a href="https://www.github.com/AChep/AcDisplay">aperto</a> a tutti. Ma ora ho bisogno del tuo aiuto.<br/>
-        Questo è il mio ultimo anno di scuola e mi piacerebbe comprare un PC portatile per i miei futuri studi e per portare il fantastico mondo software dovunque io sia.
-        Apprezzerei davvero tanto il tuo aiuto.
+  <string name="donate_dialog_title">Dona agli sviluppatori</string>
+  <string name="donate_dialog_message">AcDisplay è una app gratuita e open source. Potete mostrare il vostro apprezzamento e sostegno allo sviluppo donando:</string>
+  <string name="donate_alert_no_responsibility">Nota: Google non è responsabile per questo metodo di pagamento.</string>
+  <string name="donate_billing_not_supported">Gli acquisti in-app non sono supportati nel dispositivo.</string>
+  <string name="donate_thanks">Grazie mille!</string>
+  <string name="donation_1">Un gelato</string>
+  <string name="donation_4">Una tazza di caffè</string>
+  <string name="donation_10">Bollette della corrente</string>
+  <string name="donation_20">Il cuscino giusto</string>
+  <string name="donation_50">Unità a stato solido SSD</string>
+  <string name="donation_99">Impianto audio</string>
+  <string name="cry_dialog_title">Sostieni lo sviluppo</string>
+  <string name="cry_dialog_message"><![CDATA[
+        AcDisplay è una applicazione gratuita e <a href="http://repo.acdisplay.org">open source</a> e abbiamo speso
+        molto tempo e risorse per svilupparla al meglio. Perfavore, considera di dimostrare il tuo apprezzamento e supporto allo sviluppo tramite una donazione.
     ]]></string>
+  <string name="help_dialog_title">Guida</string>
+  <string name="feedback_dialog_title">Feedback</string>
+  <string name="feedback_dialog_message_hint">Scrivi il tuo messaggio. Le specifiche del dispositivo verranno automaticamente incluse.</string>
+  <string name="feedback_dialog_attach_log">Allega un log</string>
+  <string name="feedback_dialog_read_help">F.A.Q.</string>
+  <string name="feedback_error_no_app">Installa una qualsiasi applicazione di posta elettronica.</string>
+  <string name="feedback_error_msg_too_short">Il messaggio deve contenere almeno %1$d caratteri.</string>
+  <string name="feedback_error_accessing_log">Errore di accesso ai log dell\'app. L\'errore è: %1$s</string>
 </resources>

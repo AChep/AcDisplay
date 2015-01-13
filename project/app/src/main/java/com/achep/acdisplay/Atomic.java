@@ -22,6 +22,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * A class for atomic handling start & stop events.
  *
@@ -50,13 +52,21 @@ public final class Atomic {
         mTag = tag == null ? getClass().getSimpleName() : tag;
     }
 
+    public void react(boolean start, Object... objects) {
+        if (start) {
+            start(objects);
+        } else {
+            stop(objects);
+        }
+    }
+
     public void start(Object... objects) {
         synchronized (this) {
             if (!mStarted) {
                 mStarted = true;
                 mCallback.onStart(objects);
             } else {
-                if (Build.DEBUG) Log.d(mTag, "Starting already started.");
+                if (DEBUG) Log.d(mTag, "Starting already started.");
             }
         }
     }
@@ -67,13 +77,15 @@ public final class Atomic {
                 mStarted = false;
                 mCallback.onStop(objects);
             } else {
-                if (Build.DEBUG) Log.d(mTag, "Stopping already stopped.");
+                if (DEBUG) Log.d(mTag, "Stopping already stopped.");
             }
         }
     }
 
     public boolean isRunning() {
-        return mStarted;
+        synchronized (this) {
+            return mStarted;
+        }
     }
 
 }

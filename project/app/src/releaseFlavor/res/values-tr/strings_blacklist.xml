@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Kara liste</string>
   <string name="blacklist_app_config">Uygulama ayarları</string>
-  <string name="blacklist_show_system_apps">Sistem uygulamaları</string>
   <string name="blacklist_app_hide_title">Gizle</string>
   <string name="blacklist_app_hide_summary">Bu uygulamanın bildirimleri gösterilmeyecek.</string>
   <string name="blacklist_app_restricted_title">Sessiz</string>
   <string name="blacklist_app_restricted_summary">Bildirim geldiğinde cihazı uyandırma.</string>
+  <string name="blacklist_app_non_clearable_title">Temizlenemeyen bildirimler</string>
+  <string name="blacklist_app_non_clearable_summary">Temizlenemeyen bildirimleri göster, mesela şu servisten olanları.</string>
 </resources>

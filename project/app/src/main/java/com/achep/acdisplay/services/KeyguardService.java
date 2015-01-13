@@ -24,31 +24,41 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.achep.acdisplay.Build;
+import com.achep.acdisplay.Atomic;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.acdisplay.AcDisplayActivity;
-import com.achep.acdisplay.utils.PackageUtils;
-import com.achep.acdisplay.utils.PowerUtils;
+import com.achep.acdisplay.notifications.NotificationPresenter;
+import com.achep.acdisplay.notifications.OpenNotification;
+import com.achep.base.content.ConfigBase;
+import com.achep.base.utils.PackageUtils;
+import com.achep.base.utils.power.PowerUtils;
 
 import java.util.List;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * Created by Artem on 16.02.14.
  *
  * @author Artem Chepurnoy
  */
-public class KeyguardService extends BathService.ChildService {
+public class KeyguardService extends BathService.ChildService implements
+        ConfigBase.OnConfigChangedListener,
+        NotificationPresenter.OnNotificationListChangedListener {
 
     private static final String TAG = "KeyguardService";
 
     private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
 
     private ActivityMonitorThread mActivityMonitorThread;
+    private String mPackageName;
+
+    public static boolean isActive = false;
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -67,6 +77,61 @@ public class KeyguardService extends BathService.ChildService {
             BathService.stopService(context, KeyguardService.class);
         }
     }
+
+    private final Atomic mAtomicOption = new Atomic(new Atomic.Callback() {
+
+        private final NotificationPresenter mNp = NotificationPresenter.getInstance();
+
+        @Override
+        public void onStart(Object... objects) {
+            mNp.registerListener(KeyguardService.this);
+            updateState();
+        }
+
+        @Override
+        public void onStop(Object... objects) {
+            mNp.unregisterListener(KeyguardService.this);
+            mAtomicMain.start();
+        }
+
+    });
+
+    private final Atomic mAtomicMain = new Atomic(new Atomic.Callback() {
+
+        @Override
+        public void onStart(Object... objects) {
+            final Context context = getContext();
+
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+            intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+            intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
+            context.registerReceiver(mReceiver, intentFilter);
+
+            if (!PowerUtils.isScreenOn(context)) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SCREEN_OFF);
+                mReceiver.onReceive(context, intent);
+            }
+
+            isActive = true;
+        }
+
+        @Override
+        public void onStop(Object... objects) {
+            final Context context = getContext();
+
+            getContext().unregisterReceiver(mReceiver);
+            stopMonitoringActivities();
+
+            if (!PowerUtils.isScreenOn(context)) {
+                Presenter.getInstance().kill();
+            }
+
+            isActive = false;
+        }
+
+    });
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -90,8 +155,11 @@ public class KeyguardService extends BathService.ChildService {
                     long now = SystemClock.elapsedRealtime();
                     boolean becauseOfActivityLaunch =
                             now - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME
-                                    && activityName != null && !activityName.startsWith(
-                                    PackageUtils.getName(getContext()));
+                                    && activityName != null
+                                    && !activityName.startsWith(mPackageName);
+
+                    if (DEBUG) Log.d(TAG, "Screen is on: is_call=" + isCall +
+                            " activity_flag=" + becauseOfActivityLaunch);
 
                     if (isCall) {
                         return;
@@ -102,14 +170,10 @@ public class KeyguardService extends BathService.ChildService {
                         // Finish AcDisplay activity so it won't shown
                         // after exiting from newly launched one.
                         Presenter.getInstance().kill();
-                    } else startGui();
-
-                    if (Build.DEBUG)
-                        Log.d(TAG, "Screen is on: is_call=" + isCall +
-                                " activity_flag=" + becauseOfActivityLaunch);
+                    } else startGui(); // Normal launch
                     break;
                 case Intent.ACTION_SCREEN_OFF:
-                    if (!isCall) startGui();
+                    if (!isCall) startGuiGhost(); // Ghost launch
 
                     startMonitoringActivities();
                     break;
@@ -118,16 +182,17 @@ public class KeyguardService extends BathService.ChildService {
 
     };
 
+    private void startGuiGhost() {
+        startGui();
+    }
+
     private void startGui() {
-        Context context = getContext();
-        context.startActivity(new Intent(context, AcDisplayActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        Presenter.getInstance().tryStartGuiCauseKeyguard(getContext());
     }
 
     private void startMonitoringActivities() {
         stopMonitoringActivities();
-        if (Build.DEBUG) Log.d(TAG, "Starting to monitor activities.");
+        if (DEBUG) Log.d(TAG, "Starting to monitor activities.");
 
         ActivityManager am = (ActivityManager) getContext()
                 .getSystemService(Context.ACTIVITY_SERVICE);
@@ -137,7 +202,7 @@ public class KeyguardService extends BathService.ChildService {
 
     private void stopMonitoringActivities() {
         if (mActivityMonitorThread != null) {
-            if (Build.DEBUG) Log.d(TAG, "Stopping to monitor activities.");
+            if (DEBUG) Log.d(TAG, "Stopping to monitor activities.");
 
             mActivityMonitorThread.running = false;
             mActivityMonitorThread.interrupt();
@@ -147,22 +212,60 @@ public class KeyguardService extends BathService.ChildService {
 
     @Override
     public void onCreate() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
-        getContext().registerReceiver(mReceiver, intentFilter);
+        mPackageName = PackageUtils.getName(getContext());
+
+        Config config = Config.getInstance();
+        config.registerListener(this);
+        (config.isKeyguardWithoutNotifiesEnabled() ? mAtomicMain : mAtomicOption).start();
     }
 
     @Override
     public void onDestroy() {
-        getContext().unregisterReceiver(mReceiver);
-        stopMonitoringActivities();
+        Config config = Config.getInstance();
+        config.unregisterListener(this);
+        mAtomicOption.stop();
+        mAtomicMain.stop();
     }
 
     @Override
     public String getLabel() {
         return getContext().getString(R.string.service_bath_keyguard);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onConfigChanged(@NonNull ConfigBase config,
+                                @NonNull String key,
+                                @NonNull Object value) {
+        switch (key) {
+            case Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS:
+                boolean start = !(boolean) value;
+                mAtomicOption.react(start);
+                break;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onNotificationListChanged(@NonNull NotificationPresenter np,
+                                          OpenNotification osbn,
+                                          int event, boolean f) {
+        switch (event) {
+            case NotificationPresenter.EVENT_POSTED:
+            case NotificationPresenter.EVENT_REMOVED:
+            case NotificationPresenter.EVENT_BATH:
+                updateState();
+                break;
+        }
+    }
+
+    private void updateState() {
+        boolean start = NotificationPresenter.getInstance().size() >= 1;
+        mAtomicMain.react(start);
     }
 
     /**
@@ -188,14 +291,12 @@ public class KeyguardService extends BathService.ChildService {
         @Override
         public void run() {
             super.run();
-
-            while (running) {
-                monitor();
-
-                try {
+            try {
+                while (running) {
+                    monitor();
                     Thread.sleep(MONITORING_PERIOD);
-                } catch (InterruptedException e) { /* unused */ }
-            }
+                }
+            } catch (InterruptedException e) { /* unused */ }
         }
 
         /**
@@ -217,7 +318,7 @@ public class KeyguardService extends BathService.ChildService {
 
                 topActivityName = topActivity;
 
-                if (Build.DEBUG) Log.d(TAG, "Current latest activity is " + topActivityName);
+                if (DEBUG) Log.d(TAG, "Current top activity is " + topActivityName);
             }
         }
     }

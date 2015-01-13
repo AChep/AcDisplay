@@ -29,8 +29,7 @@
 
     <color name="acdisplay_subtext_color">#9eee</color>
 
-    <color name="donation_normal">#b6cc45</color>
-    <color name="donation_purchased">#DFED47</color>
+    <color name="donation_normal">#8BC34A</color>
 
     <!-- BatteryMeterView parameters -->
     <color name="batterymeter_frame_color">#66FFFFFF</color><!-- 40% white -->
@@ -41,9 +40,12 @@
     <color name="batterymeter_full">#FFFFFFFF</color>
 
     <!-- Material design: Blue Grey -->
-    <color name="primary_color">#607d8b</color>
+    <color name="accent_color">#00bcd4</color>
+    <color name="primary_color">#37474f</color>
+    <color name="primary_color_dark">#263238</color>
     <color name="primary_color_600">#546e7a</color>
     <color name="primary_color_900">#263238</color>
+    <color name="secondary_color">#222222</color>
 
     <!-- Material design: text colors -->
     <color name="material_dark_primary_text">#DDFFFFFF</color>
@@ -52,4 +54,9 @@
     <color name="material_light_primary_text">#DD000000</color>
     <color name="material_light_secondary_text">#89000000</color>
     <color name="material_light_hint_text">#42000000</color>
+
+    <color name="dashboard_background_color">#ffe1e1e0</color>
+    <color name="switchbar_background_color">#ff37474f</color>
+    <color name="switch_accent_color">#ff7fcac3</color>
+
 </resources>

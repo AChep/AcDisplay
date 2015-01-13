@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -16,72 +17,79 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scene"
-    android:layout_width="236dp"
+    android:id="@id/scene"
+    android:layout_width="@dimen/media_scene_width"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:minWidth="236dp"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
-
-    <TextView
-        android:id="@+id/track"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="24sp"
-        style="?attr/acDisplayNotificationTitle" />
-
-    <TextView
-        android:id="@+id/artist_album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="#fff"
-        style="?attr/acDisplayStatus" />
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingStart="14dp">
+
+        <TextView
+            android:id="@+id/media_title"
+            style="?acDisplayTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/media_subtitle"
+            style="?acDisplaySubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/media_btn_size"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/previous"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/media_btn_size"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_media_previous"
-            android:scaleType="centerInside"
+            android:background="@drawable/ripple"
             android:contentDescription="@string/media_prev_description"
-            style="@android:style/Widget.Holo.Button.Borderless.Small" />
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_media_skip_previous_white" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
 
         <ImageButton
             android:id="@+id/play"
-            android:layout_width="96dp"
+            android:layout_width="@dimen/media_btn_size"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_media_play"
-            android:scaleType="centerInside"
+            android:layout_weight="1"
+            android:background="@drawable/ripple"
             android:contentDescription="@string/media_play_description"
-            style="@android:style/Widget.Holo.Button.Borderless.Small" />
+            android:scaleType="centerInside" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
 
         <ImageButton
             android:id="@+id/next"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/media_btn_size"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_media_next"
-            android:scaleType="centerInside"
+            android:background="@drawable/ripple"
             android:contentDescription="@string/media_next_description"
-            style="@android:style/Widget.Holo.Button.Borderless.Small" />
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_media_skip_next_white" />
 
     </LinearLayout>
 

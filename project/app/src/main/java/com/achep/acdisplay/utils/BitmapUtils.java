@@ -16,33 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 /**
  * Created by Artem on 24.03.2014.
  */
 public class BitmapUtils {
 
-    /**
-     * Recycles given bitmap, if it's not {@code null}.
-     */
-    public static void safelyRecycle(@Nullable Bitmap bitmap) {
-        if (bitmap != null) bitmap.recycle();
-    }
-
-    public static int getDominantColor(@NonNull Bitmap bitmap) {
+    public static int getAverageColor(@NonNull Bitmap bitmap) {
         Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
-        int color = onePixelBitmap.getPixel(0,0);
+        int color = onePixelBitmap.getPixel(0, 0);
         onePixelBitmap.recycle();
         return color;
     }
@@ -54,32 +41,6 @@ public class BitmapUtils {
                 || bitmap.getPixel(right, 0) == Color.TRANSPARENT
                 || bitmap.getPixel(0, bottom) == Color.TRANSPARENT
                 || bitmap.getPixel(right, bottom) == Color.TRANSPARENT;
-    }
-
-    /**
-     * Create a bitmap which is wrapped to circle
-     * (similar to what you can see in G+ profile pic.)
-     *
-     * @param bitmap Original Bitmap
-     * @return Circled bitmap
-     */
-    @NonNull
-    public static Bitmap createCircleBitmap(@NonNull Bitmap bitmap) {
-        final int width = bitmap.getWidth();
-        final int height = bitmap.getHeight();
-
-        BitmapShader bitmapShader = new BitmapShader(bitmap,
-                Shader.TileMode.CLAMP,
-                Shader.TileMode.CLAMP);
-        Paint bitmapPaint = new Paint();
-        bitmapPaint.setAntiAlias(true);
-        bitmapPaint.setShader(bitmapShader);
-
-        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-        canvas.drawCircle(width / 2, height / 2, Math.min(width, height) / 2, bitmapPaint);
-
-        return output;
     }
 
     @NonNull

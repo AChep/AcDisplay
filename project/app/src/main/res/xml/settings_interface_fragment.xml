@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_interface_title">
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/config_default_ui_full_screen"
+        android:key="ui_fullscreen"
+        android:title="@string/settings_full_screen_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/config_default_ui_show_wallpaper"
+        android:key="wallpaper_shown"
+        android:summaryOff="@string/settings_use_wallpaper_off"
+        android:summaryOn="@string/settings_use_wallpaper_on"
+        android:title="@string/settings_use_wallpaper_title" />
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/dynamic_background_entries"
+        android:entries="@array/dynamic_background"
+        android:entryValues="@array/dynamic_background_entries"
+        android:key="dynamic_background_mode"
+        android:title="@string/settings_dynamic_background_title" />
+
+    <com.achep.acdisplay.ui.preferences.IconSizePreference
+        android:dialogIcon="@drawable/ic_dialog_icon_size_white"
+        android:dialogTitle="@string/settings_icon_size_title"
+        android:key="icon_size"
+        android:title="@string/settings_icon_size_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/config_default_ui_status_battery_sticky"
+        android:key="ui_status_battery_sticky"
+        android:summaryOff="@string/settings_status_battery_always_visible_off"
+        android:title="@string/settings_status_battery_always_visible" />
+
+    <PreferenceCategory android:title="@string/settings_circle_category">
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/config_default_ui_unlock_animation"
+            android:key="unlock_animation"
+            android:title="@string/settings_circle_animation_title" />
+
+        <com.achep.acdisplay.ui.preferences.ColorPickerPreference
+            android:dialogIcon="@drawable/ic_settings_keyguard_white"
+            android:dialogTitle="@string/settings_circle_color_inner_title"
+            android:key="ui_circle_color_inner"
+            android:title="@string/settings_circle_color_inner_title" />
+
+        <com.achep.acdisplay.ui.preferences.ColorPickerPreference
+            android:dialogIcon="@drawable/ic_settings_keyguard_white"
+            android:dialogTitle="@string/settings_circle_color_outer_title"
+            android:key="ui_circle_color_outer"
+            android:title="@string/settings_circle_color_outer_title" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

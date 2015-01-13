@@ -1,2 +1,2 @@
-com.achep.acdisplay.xposed.ImmersiveModeDontPanic
-com.achep.acdisplay.xposed.OverrideHomeButton
+com.achep.acdisplay.plugins.xposed.ImmersiveModeDontPanic
+com.achep.acdisplay.plugins.xposed.OverrideHomeButton

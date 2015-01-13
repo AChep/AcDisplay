@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>バグ</item>
+    <item>問題</item>
     <item>提案</item>
     <item>その他</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>アートワーク</item>
     <item>通知アイコン</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>重要および緊急 (不在着信、指示、緊急時のアラート)</item>
+    <item>重要 (通信、重要なメール)</item>
+    <item>通常 (+古いアプリからの通知)</item>
+    <item>重要でない (ソフトウェアの更新、迷惑メール)</item>
+    <item>文脈および背景の情報 (天気、期限切れイベント、提案)</item>
   </string-array>
 </resources>

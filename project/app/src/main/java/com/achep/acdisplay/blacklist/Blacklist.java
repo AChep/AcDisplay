@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.achep.acdisplay.SharedList;
+import com.achep.base.content.SharedList;
 
 /**
  * The blacklist (also known as per-app-features.)
@@ -93,16 +93,17 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
     /**
      * This is called on {@link com.achep.acdisplay.App#onCreate() App create}.
      *
-     * @see com.achep.acdisplay.SharedList#init(android.content.Context)
+     * @see com.achep.base.content.SharedList#init(android.content.Context)
      */
     @Override
-    public void init(Context context) {
+    public void init(@NonNull Context context) {
         super.init(context);
     }
 
     /**
      * {@inheritDoc}
      */
+    @NonNull
     @Override
     protected String getPreferencesFileName() {
         return PREF_NAME;
@@ -111,6 +112,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
     /**
      * {@inheritDoc}
      */
+    @NonNull
     @Override
     protected AppConfig.Saver onCreateSaver() {
         return new AppConfig.Saver();
@@ -128,7 +130,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean isOverwriteAllowed(AppConfig object) {
+    protected boolean isOverwriteAllowed(@NonNull AppConfig object) {
         return true;
     }
 
@@ -163,7 +165,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
 
     @NonNull
     public AppConfig fill(@NonNull AppConfig config) {
-        for (AppConfig c : valuesSet()) {
+        for (AppConfig c : values()) {
             if (c.equals(config)) {
                 AppConfig.copy(c, config);
                 return config;
@@ -202,7 +204,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
      * {@inheritDoc}
      */
     @Override
-    protected final void notifyOnRemoved(AppConfig object, OnSharedListChangedListener l) {
+    protected final void notifyOnRemoved(@NonNull AppConfig object, OnSharedListChangedListener l) {
 
         // Change remove-event to event about putting
         // empty config to the list.

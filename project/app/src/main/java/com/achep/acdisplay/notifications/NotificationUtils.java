@@ -26,16 +26,15 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.achep.acdisplay.Device;
-import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import com.achep.base.Device;
+import com.achep.base.utils.Operator;
 
 /**
  * Created by Artem on 30.12.13.
@@ -68,7 +67,6 @@ public class NotificationUtils {
     @SuppressLint("NewApi")
     public static void dismissNotification(@NonNull OpenNotification n) {
         NotificationPresenter.getInstance().removeNotification(n);
-
         StatusBarNotification sbn = n.getStatusBarNotification();
         if (sbn != null && Device.hasJellyBeanMR2Api()) {
             MediaService service = MediaService.sService;
@@ -87,7 +85,10 @@ public class NotificationUtils {
         }
     }
 
-    public static Drawable getDrawable(Context context, OpenNotification n, int iconRes) {
+    @Nullable
+    public static Drawable getDrawable(@NonNull Context context,
+                                       @NonNull OpenNotification n,
+                                       @DrawableRes int iconRes) {
         Context pkgContext = createContext(context, n);
         if (pkgContext != null)
             try {
@@ -96,7 +97,8 @@ public class NotificationUtils {
         return null;
     }
 
-    public static Context createContext(Context context, OpenNotification n) {
+    @Nullable
+    public static Context createContext(@NonNull Context context, @NonNull OpenNotification n) {
         try {
             return context.createPackageContext(n.getPackageName(), Context.CONTEXT_RESTRICTED);
         } catch (PackageManager.NameNotFoundException e) {
@@ -108,7 +110,9 @@ public class NotificationUtils {
     /**
      * @see com.achep.acdisplay.notifications.OpenNotification#hasIdenticalIds(OpenNotification)
      */
-    public static boolean hasIdenticalIds(OpenNotification n, OpenNotification n2) {
+    public static boolean hasIdenticalIds(@Nullable OpenNotification n,
+                                          @Nullable OpenNotification n2) {
         return n == n2 || n != null && n.hasIdenticalIds(n2);
     }
+
 }

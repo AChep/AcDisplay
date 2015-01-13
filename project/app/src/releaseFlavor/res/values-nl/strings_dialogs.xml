@@ -19,27 +19,29 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Sluit</string>
-  <string name="about_action">Over</string>
-  <string name="about_message"><![CDATA[Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Artem Chepurnoy</a>. Alle rechten voorbehouden. <br/>         <br/> Veel dank aan deze open source tools: %1$s en aan allen die op<a href="http://translate.acdisplay.org"> geholpen hebben met vertalingen</a> of <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> gedoneerd hebben</a>.     ]]></string>
-  <string name="help">Help</string>
-  <string name="help_faq">Veel gestelde vragen</string>
-  <string name="news_message"><![CDATA[
-Welkom bij de nieuwe versie van AcDisplay!
-Deze update introduceert een compleet nieuw en uniek ontwerp  met eindeloze mogelijkheden.
-Het nieuwe design is gestroomlijnder en er op gericht om je de best mogelijke beleving te geven!<br/>
-<br/>
-<b>Een klik voor alle acties.</b><br/>
-Het apparaat ontgrendelen, meldingen lezen of actie op ze ondernemen kan allemaal met een enkele beweging.<br/>
-<br/>
-<b>Ontgrendel overal.</b><br/>
-Veeg over elk vrij stuk scherm om het apparaat te ontgrendelen.
-]]></string>
-  <string name="speech_message"><![CDATA[
-Hallo,<br/>
-Allereerst wil ik jullie als gebruikers bedanken voor de gigantische aantallen downloads en de geweldige beoordelingen in de Play Store.
-Er is ongeloofelijke vooruitgang geboekt in AcDisplay en dit kan niet zonder de community,  daarom is AcDisplay <a href="https://www.github.com/AChep/AcDisplay">open</a> voor iedereen,  maar ik heb wat hulp van jullie nodig.<br/>
-Dit jaar is mijn laatste schooljaar en ik zou graag een notebook kopen om verder te kunnen studeren en om de wereld aan betere software zonder gebonden te zijn aan een desktop.
-Ik zou alle hulp om dit te bereiken zeer waarderen.
-]]></string>
+  <string name="about_dialog_message"><![CDATA[
+         AcDisplay is een gratis en <a href="http://repo.acdisplay.org"> open source</a> app.         Copyright 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Alle rechten voorbehouden. <br/>         <br/> Veel dank aan deze open source tools: %1$s en aan allen die <a href="http://translate.acdisplay.org"> geholpen hebben met vertalingen</a> of gedoneerd hebben.]]></string>
+  <string name="donate_dialog_title">Doneer aan de ontwikkelaars</string>
+  <string name="donate_dialog_message">AcDisplay is een gratis en open source app. U kunt uw waardering tonen en de ontwikkeling ondersteunen door het doneren van:</string>
+  <string name="donate_alert_no_responsibility">Let er op dat Google niet verantwoordelijk is voor deze betalingsmethode.</string>
+  <string name="donate_billing_not_supported">In-app aankopen worden niet ondersteund op het apparaat.</string>
+  <string name="donate_thanks">Hartelijk dank!</string>
+  <string name="donation_1">Een ijsje</string>
+  <string name="donation_4">Een kopje koffie</string>
+  <string name="donation_10">Elektriciteitsrekeningen</string>
+  <string name="donation_20">Een goed kussen om op te slapen</string>
+  <string name="donation_50">Solid-State harde schijf</string>
+  <string name="donation_99">Geluids-systeem</string>
+  <string name="cry_dialog_title">Ondersteun de ontwikkeling</string>
+  <string name="cry_dialog_message"><![CDATA[
+         AcDisplay is een gratis en <a href="http://repo.acdisplay.org"> open source</a> app en we besteden veel tijd en middelen om het up to date te houden. Overweeg een donatie om uw waardering te tonen en verdere ontwikkeling te steunen.
+    ]]></string>
+  <string name="help_dialog_title">Help</string>
+  <string name="feedback_dialog_title">Feedback</string>
+  <string name="feedback_dialog_message_hint">Uw bericht. Toestel specificaties worden automatisch bijgevoegd.</string>
+  <string name="feedback_dialog_attach_log">Voeg een logbestand toe</string>
+  <string name="feedback_dialog_read_help">Veel gestelde vragen</string>
+  <string name="feedback_error_no_app">Installeer een e-mail apps.</string>
+  <string name="feedback_error_msg_too_short">Het bericht moet tenminste %1$d tekens bevatten.</string>
+  <string name="feedback_error_accessing_log">Fout bij toegang tot het app logboek. De fout is: %1$s</string>
 </resources>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -17,14 +18,15 @@
   ~ MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <com.achep.acdisplay.view.ForwardingLayout
+    <!-- Host layout for all widgets. -->
+    <com.achep.acdisplay.ui.view.ForwardingLayout
         android:id="@+id/scene"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -32,20 +34,37 @@
         android:gravity="center_horizontal|bottom"
         android:orientation="vertical" />
 
-    <View
+    <FrameLayout
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="?acDisplayDotsDrawable" />
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <com.achep.acdisplay.ui.widgets.ProgressBar
+            android:id="@+id/progress"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:progress="0"
+            android:progressDrawable="@drawable/pb_acdisplay_divider"
+            app:mirrored="true" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.4"
-        android:layout_marginTop="8dp"
         android:orientation="vertical">
 
-        <com.achep.acdisplay.view.ForwardingLayout
+        <com.achep.acdisplay.ui.view.ForwardingLayout
             android:id="@+id/forwarding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,9 +78,9 @@
                 android:layout_gravity="center_horizontal"
                 android:columnCount="@integer/icons_columns_count"
                 android:orientation="horizontal"
-                android:stretchMode="columnWidth"/>
+                android:stretchMode="columnWidth" />
 
-        </com.achep.acdisplay.view.ForwardingLayout>
+        </com.achep.acdisplay.ui.view.ForwardingLayout>
 
     </FrameLayout>
 

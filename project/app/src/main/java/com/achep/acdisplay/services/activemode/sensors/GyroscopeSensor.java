@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services.activemode.sensors;
 
 import android.hardware.Sensor;
@@ -26,14 +25,14 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
+import com.achep.base.Build;
 
 import java.lang.ref.WeakReference;
 
 /**
  * Basing on results of gyroscope sensor it notifies when
- * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity AcDisplay}
+ * {@link com.achep.acdisplay.ui.activities.AcDisplayActivity AcDisplay}
  * should be shown.
  *
  * @author Artem Chepurnoy
@@ -66,7 +65,7 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
     }
 
     @Override
-    protected boolean isSupported(@NonNull SensorManager sensorManager) {
+    public boolean isSupported(@NonNull SensorManager sensorManager) {
         return false;
     }
 

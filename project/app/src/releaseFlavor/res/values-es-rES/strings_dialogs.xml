@@ -19,27 +19,33 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Cerrar</string>
-  <string name="about_action">Acerca de</string>
-  <string name="about_message"><![CDATA[Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Artem Chepurnoy</a>. Todos los derechos reservados. <br/>         <br/> Muchas gracias a las herramientas de código abierto: %1$s y a todos los que <a href="http://translate.acdisplay.org"> ayudaron con las traducciones</a> o <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> hicieron alguna donación</a>.     ]]></string>
-  <string name="help">Ayuda</string>
-  <string name="help_faq">Preguntas frecuentes</string>
-  <string name="news_message"><![CDATA[
-¡Bienvenido a la nueva versión de AcDisplay!
-Esta actualización trae un diseño completamente renovado con muchas funciones nuevas.
-¡El diseño es ahora mas logico y fue diseñado para darte la mejor experiencia posible!<br/>
-<br/>
-<b>Un toque para cualquier acción.</b><br/>
-Desbloquear el dispositivo, revisar las notificaciones o realizar acciones sobre ellas se puede hacer con un solo movimiento.<br/>
-<br/>
-<b>El desbloqueo esta en todo lugar y todo momento.</b><br/>
-Arrastra en cualquier espacio libre para desbloquear.
-]]></string>
-  <string name="speech_message"><![CDATA[
-        Hola,<br/>
-        Primero que nada quiero agradecer la gran cantidad de descargas y puntuaciones alta en la Play Store.
-        AcDisplay ha progresado mucho, y esto no hubiera sido posible sin la comunidad, es por esto que AcDisplay esta <a href="https://www.github.com/AChep/AcDisplay">abierto</a> para todos. Pero necesito ayuda de tu parte.<br/>
-        Este es mi ultimo año de escuela, y me gustaria comprar una notebook para mis proximos estudios y para llevar al mundo aplicaciones maravillosas sin importar donde este.
-        Apreciaria mucho tu ayuda con esto.
+  <string name="about_dialog_message"><![CDATA[                AcDisplay es una aplicación grátis y<a href="http://repo.acdisplay.org">de código abierto.</a>        Copyright 2013-%2$s<a href="http://artemchep.com">Artem Chepurnoy</a>. Todos los derechos reservados.<br/>
+        <br/>
+        Muchas gracias a estos recursos de código abierto: %1$s y a todos los que
+        <a href="http://translate.acdisplay.org">ayudaron con las traducciones</a> o los que donaron.
     ]]></string>
+  <string name="donate_dialog_title">Donar al desarrollador</string>
+  <string name="donate_dialog_message">AcDisplay es una aplicación grátis y de código abierto. Puedes mostrar tu agradecimiento y apoyo al desarrollador donando:</string>
+  <string name="donate_alert_no_responsibility">Nótese que Google no es responsable de éste método de pago.</string>
+  <string name="donate_billing_not_supported">Compras en-aplicación no son compatibles con este dispositivo.</string>
+  <string name="donate_thanks">¡Muchas gracias!</string>
+  <string name="donation_1">Un helado</string>
+  <string name="donation_4">Una taza de café</string>
+  <string name="donation_10">Facturas de luz</string>
+  <string name="donation_20">Una almohada</string>
+  <string name="donation_50">Disco de estado sólido</string>
+  <string name="donation_99">Sistema de sonido</string>
+  <string name="cry_dialog_title">Apoyar el desarrollo</string>
+  <string name="cry_dialog_message"><![CDATA[        AcDisplay es una aplicación grátis y<a href="http://repo.acdisplay.org">de código abierto</a>y nosotros gastamos
+        mucho de nuestro tiempo y recursos para continuar con el proyecto. Por favor, considera una donación para mostrar tu
+        agradecimiento y apoyo para continuar el desarrollo.
+    ]]></string>
+  <string name="help_dialog_title">Ayuda</string>
+  <string name="feedback_dialog_title">Retroalimentación</string>
+  <string name="feedback_dialog_message_hint">Tu mensaje. Las especificaciones de su dispositivo serán incluidas automáticamente.</string>
+  <string name="feedback_dialog_attach_log">Adjuntar un registro</string>
+  <string name="feedback_dialog_read_help">Preguntas frecuentes</string>
+  <string name="feedback_error_no_app">Instalar cualquiera de las aplicaciones de correo electrónico.</string>
+  <string name="feedback_error_msg_too_short">El mensaje debe contener al menos %1$d símbolo.</string>
+  <string name="feedback_error_accessing_log">Error al acceder a registro de la aplicación. El error es: %1$s</string>
 </resources>

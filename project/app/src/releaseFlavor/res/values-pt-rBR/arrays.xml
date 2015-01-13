@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Bug</item>
+    <item>Erro</item>
     <item>Sugestão</item>
     <item>Outro</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Capa do álbum</item>
     <item>Ícone de notificação</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Crítico e urgente (ligações perdidas, direções, alertas de emergência)</item>
+    <item>Importante (comunicações, email importante)</item>
+    <item>Normal (+notificações de apps antigos)</item>
+    <item>Não importantes (atualizações de software, lixo eletrônico)</item>
+    <item>Contextual e informações do ambiente (tempo, eventos expirados, sugestões)</item>
   </string-array>
 </resources>

@@ -23,9 +23,9 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.widget.CompoundButton;
 
-import com.achep.acdisplay.Operator;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.base.utils.Operator;
 
 /**
  * Created by Artem on 27.02.14.
@@ -41,9 +41,9 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
     private boolean mBroadcasting;
 
     // ui
-    public Drawable icon;
-    public CharSequence title;
-    public CharSequence summary;
+    public final Drawable icon;
+    public final CharSequence title;
+    public final CharSequence summary;
 
     public Option(Context context, CompoundButton cb,
                   Blacklist blacklist, String packageName,

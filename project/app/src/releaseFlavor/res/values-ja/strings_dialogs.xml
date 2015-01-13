@@ -19,33 +19,34 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">閉じる</string>
-  <string name="about_action">概要</string>
-  <string name="about_message"><![CDATA[
-        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
-        <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
+  <string name="about_dialog_message"><![CDATA[
+AcDisplay はフリーで <a href="http://repo.acdisplay.org">オープン ソース</a> のアプリケーションです。
+Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+<br/>これらのオープン ソース ツール： %1$s および <a href="http://translate.acdisplay.org">翻訳を手伝っていただいた</a> また寄付をいただいたすべての方に大変感謝します。
     ]]></string>
-  <string name="help">ヘルプ</string>
-  <string name="help_faq">Frequently asked questions</string>
-  <string name="news_message"><![CDATA[
-AcDisplayの新しいバージョンへようこそ！ 
-このアップデートは、多くの新しい可能性を備えたユニークなデザインをもたらします。 
-デザインはより合理化され、あなたに最高の体験を与えることを目指します！<br/>
-<br/>
-<b>すべてのアクションをワンタッチで行えます。</b><br/>
-デバイスのロックを解除したり、通知をチェックしたり、それらに対してアクションを実行したりということをワンタッチで行うことができます。<br/>
-<br/>
-<b>ロックを解除するフィールドはどこでも、どこにでもあります。</b><br/>
-ロックを解除するには空きスペースのどこかにスワイプしてください。
-]]></string>
-  <string name="speech_message"><![CDATA[
-こんにちは<br/>
-まずはたくさんのダウンロードとPlay Storeにおける高評価をありがとうございます。
-AcDisplayの大きな進歩はコミュニティの存在無しには成し得ませんでした。 この事実こそがAcDisplayが<a href="https://www.github.com/AChep/AcDisplay">オープンソース</a> である理由です。まだまだ皆様の助けが必要です。<br/>
-私は今後の研究のためのノートブックを購入し、私はどこにいても世界最高のソフトウェアを提供したいと思います。 
-皆様の助けをいただければ幸いです。
-]]></string>
+  <string name="donate_dialog_title">開発者に寄付</string>
+  <string name="donate_dialog_message">AcDisplay は、フリーでオープン ソースのアプリケーションです。寄付することによって感謝を伝え、開発をサポートすることができます。</string>
+  <string name="donate_alert_no_responsibility">この決済についてはGoogleが責任を負わないことに注意してください。</string>
+  <string name="donate_billing_not_supported">アプリ内購入がデバイスでサポートされていません。</string>
+  <string name="donate_thanks">ありがとうございました!</string>
+  <string name="donation_1">アイスクリーム</string>
+  <string name="donation_4">コーヒー 1 杯</string>
+  <string name="donation_10">電気代</string>
+  <string name="donation_20">ちょうど良い枕</string>
+  <string name="donation_50">SSD</string>
+  <string name="donation_99">サウンドシステム</string>
+  <string name="cry_dialog_title">開発をサポート</string>
+  <string name="cry_dialog_message"><![CDATA[
+AcDisplay は、フリーの <a href="http://repo.acdisplay.org">オープン ソース</a> アプリケーションです。
+私たちは期限に間に合うように、多くの時間とリソースを使います。感謝を示して、
+さらなる開発をサポートするために寄付をご検討ください。
+    ]]></string>
+  <string name="help_dialog_title">ヘルプ</string>
+  <string name="feedback_dialog_title">フィードバック</string>
+  <string name="feedback_dialog_message_hint">あなたのメッセージ。自動的にデバイスの仕様が含まれます。</string>
+  <string name="feedback_dialog_attach_log">ログを添付</string>
+  <string name="feedback_dialog_read_help">よくある質問（FAQ）</string>
+  <string name="feedback_error_no_app">メール アプリを何かインストールしてください。</string>
+  <string name="feedback_error_msg_too_short">メッセージは%1$d文字以上入力する必要があります。</string>
+  <string name="feedback_error_accessing_log">アプリのログにアクセス中エラーが発生しました。エラーは: %1$s</string>
 </resources>

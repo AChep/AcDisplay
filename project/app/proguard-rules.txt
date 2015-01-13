@@ -70,10 +70,10 @@
 #########
 
 # Keep fragments of settings to be able to access them from resources.
--keep public class com.achep.acdisplay.settings.** extends android.app.Fragment
+-keep public class com.achep.acdisplay.ui.fragments.settings.** extends android.app.Fragment
 
 # Keep Xposed modules, cause they're predefined in /assets/xposed_init
--keep public class com.achep.acdisplay.xposed.**
+-keep public class com.achep.acdisplay.plugins.xposed.**
 
 # Keep Config methods to be able to access them using reflections.
 -keepclassmembers public class com.achep.acdisplay.Config {
@@ -83,3 +83,23 @@
 # Ignore compartability hacks
 -keep class android.** { *; }
 -dontwarn android.**
+
+######### android-checkout rules
+#### Check it there:
+#### https://github.com/serso/android-checkout/blob/master/lib/proguard-rules.txt
+
+# Artem Chepurnoy
+-dontwarn javax.annotation.**
+
+# should be copied to application proguard rules config
+-keep class com.android.vending.billing.**
+
+-assumenosideeffects class org.solovyev.android.checkout.Billing {
+    public static void debug(...);
+    public static void warning(...);
+    public static void error(...);
+}
+
+-assumenosideeffects class org.solovyev.android.checkout.Check {
+        *;
+}

@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Lista nera</string>
   <string name="blacklist_app_config">Impostazioni applicazione</string>
-  <string name="blacklist_show_system_apps">Applicazioni di sistema</string>
   <string name="blacklist_app_hide_title">Nascosta</string>
   <string name="blacklist_app_hide_summary">Tutte le notifiche da questa applicazione non saranno visualizzate.</string>
   <string name="blacklist_app_restricted_title">Silenzioso</string>
   <string name="blacklist_app_restricted_summary">Non risvegliare il telefono quando una sua notifica viene rilevata.</string>
+  <string name="blacklist_app_non_clearable_title">Notifica non eliminabile</string>
+  <string name="blacklist_app_non_clearable_summary">Visualizza le notifiche non eliminabili, come quelle dei servizi.</string>
 </resources>

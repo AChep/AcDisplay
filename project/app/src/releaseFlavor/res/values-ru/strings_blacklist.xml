@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Чёрный список</string>
   <string name="blacklist_app_config">Настройки приложения</string>
-  <string name="blacklist_show_system_apps">Системные приложения</string>
   <string name="blacklist_app_hide_title">Скрыть</string>
   <string name="blacklist_app_hide_summary">Все уведомления от этого приложения будут игнорироваться.</string>
   <string name="blacklist_app_restricted_title">Тихий режим</string>
   <string name="blacklist_app_restricted_summary">Показывать, но не просыпаться от уведомлений этого приложения.</string>
+  <string name="blacklist_app_non_clearable_title">Неочищаемые уведомления</string>
+  <string name="blacklist_app_non_clearable_summary">Показывать неочищаемые приложения, такие как уведомления от сервисов.</string>
 </resources>

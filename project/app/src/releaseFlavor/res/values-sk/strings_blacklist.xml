@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Blacklist</string>
   <string name="blacklist_app_config">Nastavenia aplikácie</string>
-  <string name="blacklist_show_system_apps">Systémové aplikácie</string>
   <string name="blacklist_app_hide_title">Skryť</string>
   <string name="blacklist_app_hide_summary">Oznámenia tejto aplikácie sa nebudú zobrazovať.</string>
   <string name="blacklist_app_restricted_title">Tichý režim</string>
   <string name="blacklist_app_restricted_summary">Neprebúdzať zariadenie pri oznámeniach od tejto aplikácie.</string>
+  <string name="blacklist_app_non_clearable_title">Neodstrániteľné upozornenia</string>
+  <string name="blacklist_app_non_clearable_summary">Zobrazovať neodstrániteľné upozornenia, ako napr. tie zo služieb.</string>
 </resources>

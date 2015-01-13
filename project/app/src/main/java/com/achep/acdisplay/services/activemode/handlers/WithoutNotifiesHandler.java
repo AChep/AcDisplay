@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services.activemode.handlers;
 
 import android.content.Context;
@@ -26,17 +25,18 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.activemode.ActiveModeHandler;
+import com.achep.base.content.ConfigBase;
 
 /**
  * Prevents {@link com.achep.acdisplay.services.activemode.ActiveModeService} from listening to
  * sensors while notification list is empty (if corresponding option is enabled.)
  *
  * @author Artem Chepurnoy
- * @see com.achep.acdisplay.settings.ActiveModeSettings
+ * @see com.achep.acdisplay.ui.fragments.settings.ActiveModeSettings
  */
 public final class WithoutNotifiesHandler extends ActiveModeHandler implements
         NotificationPresenter.OnNotificationListChangedListener,
-        Config.OnConfigChangedListener {
+        ConfigBase.OnConfigChangedListener {
 
     private Config mConfig;
     private NotificationPresenter mNotificationPresenter;
@@ -63,11 +63,13 @@ public final class WithoutNotifiesHandler extends ActiveModeHandler implements
     @Override
     public boolean isActive() {
         boolean enabled = mConfig.isActiveModeWithoutNotifiesEnabled();
-        return enabled || mNotificationPresenter.getList().size() > 0;
+        return enabled || mNotificationPresenter.size() > 0;
     }
 
     @Override
-    public void onConfigChanged(Config config, String key, Object value) {
+    public void onConfigChanged(@NonNull ConfigBase configBase,
+                                @NonNull String key,
+                                @NonNull Object value) {
         switch (key) {
             case Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS:
                 if ((boolean) value) {
@@ -83,9 +85,9 @@ public final class WithoutNotifiesHandler extends ActiveModeHandler implements
     }
 
     @Override
-    public void onNotificationListChanged(NotificationPresenter np,
+    public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
-                                          int event) {
+                                          int event, boolean f) {
         switch (event) {
             case NotificationPresenter.EVENT_BATH:
             case NotificationPresenter.EVENT_POSTED:

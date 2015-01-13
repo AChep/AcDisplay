@@ -19,11 +19,12 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="blacklist">Mustalista</string>
-  <string name="blacklist_app_config">Sovelluksen asetukset</string>
-  <string name="blacklist_show_system_apps">Käyttöjärjestelmän sovellukset</string>
+  <string name="blacklist">Musta lista</string>
+  <string name="blacklist_app_config">Sovellusasetukset</string>
   <string name="blacklist_app_hide_title">Piilota</string>
   <string name="blacklist_app_hide_summary">Tämän sovelluksen ilmoituksia ei tulla näyttämään.</string>
   <string name="blacklist_app_restricted_title">Hiljainen</string>
   <string name="blacklist_app_restricted_summary">Älä herätä näyttöä kun tämä lähettää ilmoituksen.</string>
+  <string name="blacklist_app_non_clearable_title">Pysyvät ilmoitukset</string>
+  <string name="blacklist_app_non_clearable_summary">Näyttää pysyvät ilmoitukset, kuten palveluista.</string>
 </resources>

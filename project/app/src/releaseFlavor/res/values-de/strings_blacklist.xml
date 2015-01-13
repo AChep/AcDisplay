@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Blacklist</string>
   <string name="blacklist_app_config">App-Einstellungen</string>
-  <string name="blacklist_show_system_apps">System App</string>
   <string name="blacklist_app_hide_title">Verstecken</string>
   <string name="blacklist_app_hide_summary">Die Benachrichtigungen dieser App werden nicht angezeigt.</string>
   <string name="blacklist_app_restricted_title">Still</string>
   <string name="blacklist_app_restricted_summary">Bildschirm wird bei einer eingehenden Benachrichtigung nicht reaktiviert.</string>
+  <string name="blacklist_app_non_clearable_title">Nichtlöschbare Benachrichtigungen</string>
+  <string name="blacklist_app_non_clearable_summary">Zeige nicht-löschbare Benachrichtigungen, wie die von Diensten.</string>
 </resources>

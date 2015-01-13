@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Chyba</item>
+    <item>Problém</item>
     <item>Návrh</item>
     <item>Ostatné</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Obal albumu</item>
     <item>Ikona v oznamovacej oblasti</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Kritické a naliehavé (zmeškané hovory, navigovanie, núdzové upozornenia)</item>
+    <item>Dôležité (komunikácia, dôležitý mail)</item>
+    <item>Normálne (+upozornenia od starých aplikácií)</item>
+    <item>Nepodstatné (aktualizácie softvéru, spam)</item>
+    <item>Kontextové a informácie bežiace na pozadí (počasie, skončené udalosti, návrhy)</item>
   </string-array>
 </resources>

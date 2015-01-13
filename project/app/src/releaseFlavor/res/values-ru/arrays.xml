@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Ошибка</item>
+    <item>Проблема</item>
     <item>Пожелание</item>
     <item>Другое</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Обложка трека</item>
     <item>Иконка уведомления</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Критические и неотложные (текущие вызовы, указания, аварийные оповещения)</item>
+    <item>Важные (диалоги, важные письма)</item>
+    <item>Нормальные (+уведомления от старых приложений)</item>
+    <item>Не важные (обновления ПО, нежелательная почта)</item>
+    <item>Контекстная и фоновая информация (погода, прошедшие события, советы)</item>
   </string-array>
 </resources>

@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Feketelista</string>
   <string name="blacklist_app_config">Alkalmazás beállításai</string>
-  <string name="blacklist_show_system_apps">Rendszer-alkalmazások</string>
   <string name="blacklist_app_hide_title">Elrejtés</string>
   <string name="blacklist_app_hide_summary">Ezen alkalmazás értesítései nem jelennek meg.</string>
   <string name="blacklist_app_restricted_title">Néma</string>
   <string name="blacklist_app_restricted_summary">Alkalmazás értesítéseire nem ébreszti fel a telefont.</string>
+  <string name="blacklist_app_non_clearable_title">Nem törölhető értesítések</string>
+  <string name="blacklist_app_non_clearable_summary">Mutasd a nem törölhető értesítéseket, mint pl. rendszer üzenetek</string>
 </resources>

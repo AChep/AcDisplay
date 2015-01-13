@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Danh sách đen</string>
   <string name="blacklist_app_config">Cài đặt ứng dụng</string>
-  <string name="blacklist_show_system_apps">Ứng dụng hệ thống</string>
   <string name="blacklist_app_hide_title">Ẩn</string>
   <string name="blacklist_app_hide_summary">Thông báo của ứng dụng này sẽ không được hiển thị.</string>
   <string name="blacklist_app_restricted_title">Im lặng</string>
   <string name="blacklist_app_restricted_summary">Không tự bật màn hình trên thông báo mới nhận của ứng dụng này.</string>
+  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 </resources>

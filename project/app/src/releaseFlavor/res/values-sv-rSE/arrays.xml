@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Bugg</item>
+    <item>Issue</item>
     <item>Förslag</item>
     <item>Annat</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Artwork</item>
     <item>Meddelandeikon</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
+    <item>Important (communications, important mail)</item>
+    <item>Normal (+notifications from old apps)</item>
+    <item>Non-important (software updates, junk mail)</item>
+    <item>Contextual and background info (weather, expired events, suggestions)</item>
   </string-array>
 </resources>

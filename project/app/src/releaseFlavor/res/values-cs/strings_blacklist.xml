@@ -19,11 +19,12 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="blacklist">Blokované</string>
+  <string name="blacklist">Černá listina</string>
   <string name="blacklist_app_config">Nastavení aplikace</string>
-  <string name="blacklist_show_system_apps">Systémové aplikace</string>
-  <string name="blacklist_app_hide_title">Skrytí</string>
+  <string name="blacklist_app_hide_title">Skrýt</string>
   <string name="blacklist_app_hide_summary">Oznámení této aplikace se nezobrazí.</string>
   <string name="blacklist_app_restricted_title">Tichý režim</string>
   <string name="blacklist_app_restricted_summary">Neprobouzet při oznámeních této aplikace.</string>
+  <string name="blacklist_app_non_clearable_title">Stálá upozornění</string>
+  <string name="blacklist_app_non_clearable_summary">Zobrazit stálá upozornění. Například ze služeb.</string>
 </resources>

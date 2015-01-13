@@ -19,33 +19,36 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Sluit</string>
-  <string name="about_action">Oor</string>
-  <string name="about_message"><![CDATA[
-        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>.Alle regte voorbehou.<br/>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
         <br/>
-        Heel veel dank aan hierdie open source programmes: %1$s en aan almal wat
-        <a href="http://translate.acdisplay.org">het gehelp met vertaal</a> of
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">aan my het geskenk</a>.
+        Many thanks to those open source tools: %1$s and to all who
+        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
     ]]></string>
-  <string name="help">Help</string>
-  <string name="help_faq">Vrae</string>
-  <string name="news_message"><![CDATA[
-Welkom by die nuwe weergawe van AcDisplay!
-Hierdie update stel \'n volledige nuwe en uniek ontwerp met eindelose moontlikhede.
-Die nuwe ontwerp is gestroomlijnder en daar op gerig om jou die beste moontlike belewing te gee! <br/>
-<br/>
-<b> Een klik vir alle aksies. </b> <br/>
-Die toestel ontsluit, kennisgewings lees of aksie op hulle onderneem kan almal met \'n enkele beweging. <br/>
-<br/>
-<b> Ontgrendel oral. </b> <br/>
-Vee oor elke vry stuk skerm om die toestel te ontsluit.
-]]></string>
-  <string name="speech_message"><![CDATA[
-Hallo, <br/>
-Eerstens wil ek julle as gebruikers bedank vir die reuse getalle downloads en die geweldige resensies in die Play Store.
-Daar is ongeloofelijke vordering gemaak in AcDisplay en dit kan nie sonder die gemeenskap, daarom is AcDisplay <a href="https://www.github.com/AChep/AcDisplay"> open </a> vir almal, maar ek het wat hulp van julle nodig. <br/>
-Hierdie jaar is my laaste skooljaar en ek sou graag \'n notebook koop om verder te kan studeer en om die wêreld aan beter sagteware sonder gebind te wees aan \'n lessenaar.
-Ek sou alle hulp om dit te bereik baie waardeer.
-]]></string>
+  <string name="donate_dialog_title">Donate to developers</string>
+  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
+  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
+  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+  <string name="donate_thanks">Thank you very much!</string>
+  <string name="donation_1">An ice cream</string>
+  <string name="donation_4">A cup of coffee</string>
+  <string name="donation_10">Electricity bills</string>
+  <string name="donation_20">The right pillow</string>
+  <string name="donation_50">Solid-state drive</string>
+  <string name="donation_99">Sound system</string>
+  <string name="cry_dialog_title">Support development</string>
+  <string name="cry_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
+        a lot of time and resources on keeping it with time. Please, consider a donation to show your
+        appreciation and to support further development.
+    ]]></string>
+  <string name="help_dialog_title">Help</string>
+  <string name="feedback_dialog_title">Terugvoer</string>
+  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
+  <string name="feedback_dialog_attach_log">Attach a log</string>
+  <string name="feedback_dialog_read_help">Frequently asked questions</string>
+  <string name="feedback_error_no_app">Install any of email apps.</string>
+  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
+  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
 </resources>

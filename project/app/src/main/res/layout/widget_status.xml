@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
@@ -18,32 +17,31 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-
-<com.achep.acdisplay.widgets.status.StatusWidget xmlns:android="http://schemas.android.com/apk/res/android"
+<com.achep.acdisplay.ui.widgets.status.StatusWidget xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    android:orientation="horizontal">
 
     <!-- TODO: Write normal Date widget. -->
-    <com.achep.acdisplay.widgets.DateView
+    <com.achep.acdisplay.ui.widgets.DateView
         android:id="@+id/date"
+        style="?acDisplaySubtitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?attr/acDisplayStatus"/>
+        android:layout_height="wrap_content" />
 
-    <com.achep.acdisplay.widgets.status.BatteryMeterView
+    <com.achep.acdisplay.ui.widgets.status.BatteryMeterView
         android:id="@+id/battery"
+        style="?acDisplaySubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/date"
-        android:layout_marginStart="16dp"
-        android:layout_toRightOf="@id/date"
         android:layout_marginLeft="16dp"
-        app:battery_width="@dimen/status_bar_battery_width"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/date"
+        android:layout_toRightOf="@id/date"
         app:battery_height="@dimen/status_bar_battery_height"
         app:battery_padding="4dp"
-        style="?attr/acDisplayStatus"/>
+        app:battery_width="@dimen/status_bar_battery_width" />
 
-</com.achep.acdisplay.widgets.status.StatusWidget>
+</com.achep.acdisplay.ui.widgets.status.StatusWidget>

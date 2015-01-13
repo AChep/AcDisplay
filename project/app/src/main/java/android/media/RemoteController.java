@@ -23,6 +23,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.KeyEvent;
 
+/*
+    This is needed to avoid of exceptions on
+    pre-KitKat platforms.
+ */
 public class RemoteController {
 
     public RemoteController(Context context, OnClientUpdateListener l) {

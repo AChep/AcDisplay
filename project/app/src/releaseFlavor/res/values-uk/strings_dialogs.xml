@@ -19,23 +19,36 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Закрити</string>
-  <string name="about_action">Про програму</string>
-  <string name="about_message"><![CDATA[
-        Авторське право 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Артем Чепурной</a>. Всі права захищені.<br/>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
         <br/>
-        Велике дякую цим opensource-інструментам: %1$s та всім тим, хто
-        <a href="http://translate.acdisplay.org">допомагав з перекладами</a> або
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">пожертвував мені</a>.
+        Many thanks to those open source tools: %1$s and to all who
+        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
     ]]></string>
-  <string name="help">Допомога</string>
-  <string name="help_faq">Запитання та відповіді</string>
-  <string name="news_message"><![CDATA[Ласкаво просимо в нову версію AcDisplay!         Це оновлення приносить абсолютно новий і унікальний дизайн з великою кількістю нових можливостей.         Дизайн більш продуманий і спрямований на надання вам найкращого досвіду в роботі з програмою! <br/>         <br/> <b>Один дотик для всіх дій.</b> <br/>         Розблокування пристрою, перевірка сповіщень або виконання операцій з ними може бути зроблено всього одним жестом. <br/>         <br/> <b>Місце для розблокування є скрізь і всюди.</b> <br/>         Проведіть будь-де на вільному місці щоб розблокувати.     ]]></string>
-  <string name="speech_message"><![CDATA[
-        Hello,<br/>
-        Перш за все я хочу подякувати за велику кількість завантажень та високих оцінок в Play Store.
-        Величезний прогрес AcDisplay був досягнутий і цього не могло б бути без спільноти. Ось чому AcDisplay <a href="https://www.github.com/AChep/AcDisplay">відкритий</a> для кожного. Але я потребую деякої вашої допомоги.<br/>
-        Це мій останній рік навчання в школі і я хотів би придбати ноутбук для майбутніх занять та розробки чудових програм де б я не був.
-        Буду дуже вдячний вашій допомозі з цим.
+  <string name="donate_dialog_title">Donate to developers</string>
+  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
+  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
+  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+  <string name="donate_thanks">Thank you very much!</string>
+  <string name="donation_1">An ice cream</string>
+  <string name="donation_4">A cup of coffee</string>
+  <string name="donation_10">Electricity bills</string>
+  <string name="donation_20">The right pillow</string>
+  <string name="donation_50">Solid-state drive</string>
+  <string name="donation_99">Sound system</string>
+  <string name="cry_dialog_title">Support development</string>
+  <string name="cry_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
+        a lot of time and resources on keeping it with time. Please, consider a donation to show your
+        appreciation and to support further development.
     ]]></string>
+  <string name="help_dialog_title">Допомога</string>
+  <string name="feedback_dialog_title">Зворотній зв\'язок</string>
+  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
+  <string name="feedback_dialog_attach_log">Attach a log</string>
+  <string name="feedback_dialog_read_help">Frequently asked questions</string>
+  <string name="feedback_error_no_app">Install any of email apps.</string>
+  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
+  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
 </resources>

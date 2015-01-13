@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">ブラックリスト</string>
   <string name="blacklist_app_config">アプリの設定</string>
-  <string name="blacklist_show_system_apps">システムアプリ</string>
   <string name="blacklist_app_hide_title">非表示</string>
   <string name="blacklist_app_hide_summary">このアプリの通知は表示されません。</string>
   <string name="blacklist_app_restricted_title">サイレント</string>
   <string name="blacklist_app_restricted_summary">通知を受信してもウェイクアップしません。</string>
+  <string name="blacklist_app_non_clearable_title">クリアできない通知</string>
+  <string name="blacklist_app_non_clearable_summary">サービスからなどのクリアできない通知を表示します。</string>
 </resources>

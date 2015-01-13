@@ -23,19 +23,19 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
+import com.achep.base.Build;
 import com.squareup.seismic.ShakeDetector;
 
 import java.lang.ref.WeakReference;
 
 /**
  * Basing on results of accelerometer sensor it notifies when
- * {@link com.achep.acdisplay.acdisplay.AcDisplayActivity AcDisplay}
+ * {@link com.achep.acdisplay.ui.activities.AcDisplayActivity AcDisplay}
  * should be shown.
  * <p>
- *     Uses nice library <a href="https://github.com/square/seismic">seismic</a>
- *     to detect shake.
+ * Uses nice library <a href="https://github.com/square/seismic">seismic</a>
+ * to detect shake.
  * </p>
  *
  * @author Artem Chepurnoy

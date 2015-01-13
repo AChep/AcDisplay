@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Svartlista</string>
   <string name="blacklist_app_config">App-inställningar</string>
-  <string name="blacklist_show_system_apps">System appar</string>
   <string name="blacklist_app_hide_title">Göm</string>
   <string name="blacklist_app_hide_summary">Meddelanden från denna app kommer inte att visas.</string>
   <string name="blacklist_app_restricted_title">Tyst</string>
   <string name="blacklist_app_restricted_summary">Väck inte vid meddelanden.</string>
+  <string name="blacklist_app_non_clearable_title">Icke borttagningsbara meddelanden</string>
+  <string name="blacklist_app_non_clearable_summary">Visa icke borttagningsbara meddelanden, t.ex. de från tjänster.</string>
 </resources>

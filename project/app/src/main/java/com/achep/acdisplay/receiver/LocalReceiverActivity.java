@@ -27,13 +27,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.admin.AdminReceiver;
-import com.achep.acdisplay.utils.PackageUtils;
-import com.achep.acdisplay.utils.ToastUtils;
+import com.achep.base.utils.PackageUtils;
+import com.achep.base.utils.ToastUtils;
 
 /**
  * Created by Artem on 12.03.14.
@@ -50,43 +49,25 @@ public class LocalReceiverActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            handleIntent(intent);
-        } else {
-            Log.wtf(TAG, "Got an empty launch intent.");
-        }
-
+        handleIntent(getIntent());
         finish();
     }
 
-    static String extractHost(Intent intent) {
-        Uri data = intent.getData();
-        return data != null ? data.getHost() : null;
-    }
+    private void handleIntent(@Nullable Intent intent) {
+        Uri data;
+        String host;
 
-    private void handleIntent(Intent intent) {
-        String host = extractHost(intent);
-        if (host == null) {
-            Log.wtf(TAG, "Got an empty launch intent.");
-            return;
-        }
+        if (intent == null
+                || (data = intent.getData()) == null
+                || (host = data.getHost()) == null) return;
 
         switch (host) {
             case HOST_REMOVE_ADMIN_ACCESS:
-                ComponentName admin = new ComponentName(this, AdminReceiver.class);
-                DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-
-                try {
-                    dpm.removeActiveAdmin(admin);
-                    ToastUtils.showShort(this, R.string.access_device_admin_removed_successful);
-                } catch (SecurityException e) {
-                    Log.i(TAG, "Failed to remove AcDisplay from active device admins.");
-                }
-                Log.i(TAG, "asdasdasd");
+                removeDeviceAdminRights();
                 break;
             case HOST_UNINSTALL:
                 try {
+                    removeDeviceAdminRights();
                     startActivity(new Intent(
                             Intent.ACTION_UNINSTALL_PACKAGE,
                             Uri.fromParts("package", PackageUtils.getName(this), null)));
@@ -103,14 +84,21 @@ public class LocalReceiverActivity extends Activity {
                     Log.wtf(TAG, "Failed to start ApplicationDetails activity.");
                 }
                 break;
-            default:
-                Log.wtf(TAG, "Got an unknown intent: " + host);
-                return;
         }
+    }
 
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction(host);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    private void removeDeviceAdminRights() {
+        ComponentName component = AdminReceiver.newComponentName(this);
+        DevicePolicyManager dpm = (DevicePolicyManager)
+                getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        if (dpm.isAdminActive(component)) {
+            try {
+                dpm.removeActiveAdmin(component);
+                ToastUtils.showShort(this, R.string.permissions_device_admin_removed);
+            } catch (SecurityException ignored) {
+            }
+        }
     }
 
 }

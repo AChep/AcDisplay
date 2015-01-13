@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>错误</item>
+    <item>问题</item>
     <item>建议</item>
     <item>其他</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>专辑封面</item>
     <item>通知图标</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>关键和紧急 (未接来电、 导航、 紧急警报）</item>
+    <item>重要（即时信息、重要邮件）</item>
+    <item>一般（包含旧应用的通知）</item>
+    <item>非重要（软件更新、垃圾邮件）</item>
+    <item>Contextual and background info (weather, expired events, suggestions)</item>
   </string-array>
 </resources>

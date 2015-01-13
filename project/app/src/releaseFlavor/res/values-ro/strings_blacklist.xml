@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Lista neagră</string>
   <string name="blacklist_app_config">Setări aplicaţie</string>
-  <string name="blacklist_show_system_apps">Aplicaţii de sistem</string>
   <string name="blacklist_app_hide_title">Ascunde</string>
   <string name="blacklist_app_hide_summary">Notificările acestei aplicaţii nu vor fi afişate.</string>
   <string name="blacklist_app_restricted_title">Silenţios</string>
   <string name="blacklist_app_restricted_summary">Dispozitivul nu se trezeşte la notificări noi adăugate de aceasta aplicaţie .</string>
+  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 </resources>

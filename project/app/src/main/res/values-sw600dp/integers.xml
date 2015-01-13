@@ -19,5 +19,9 @@
   -->
 
 <resources>
+
+    <!-- Dashboard number of columns -->
+    <integer name="dashboard_num_columns">2</integer>
+
     <integer name="icons_columns_count">7</integer>
 </resources>

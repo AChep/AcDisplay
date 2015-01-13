@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">لیست سیاه</string>
   <string name="blacklist_app_config">تنظیمات برنامه</string>
-  <string name="blacklist_show_system_apps">نرم‌افزارهای سیستمی</string>
   <string name="blacklist_app_hide_title">پنهان کردن</string>
   <string name="blacklist_app_hide_summary">اعلان‌های این برنامه نمایش داده نخواهد شد.</string>
   <string name="blacklist_app_restricted_title">سکوت</string>
   <string name="blacklist_app_restricted_summary">صفحه را هنگام دریافت اعلان از این برنامه روشن نکن.</string>
+  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
+  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
 </resources>

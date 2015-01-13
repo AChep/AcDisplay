@@ -21,9 +21,10 @@
 <resources>
   <string name="blacklist">Lista de Bloqueio</string>
   <string name="blacklist_app_config">Configurações do aplicativo</string>
-  <string name="blacklist_show_system_apps">Aplicativos do Sistema</string>
   <string name="blacklist_app_hide_title">Esconder</string>
   <string name="blacklist_app_hide_summary">Notificações deste app não serão exibidas.</string>
   <string name="blacklist_app_restricted_title">Silêncio</string>
   <string name="blacklist_app_restricted_summary">Não ligue a tela ao receber notificações.</string>
+  <string name="blacklist_app_non_clearable_title">Notificações não apagáveis</string>
+  <string name="blacklist_app_non_clearable_summary">Mostrar notificações não-apagáveis, como as de serviço.</string>
 </resources>

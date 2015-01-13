@@ -19,33 +19,36 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Затвори</string>
-  <string name="about_action">За разработчика</string>
-  <string name="about_message"><![CDATA[
-Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной"> Артьом Chepurnoy</a>. Всички права запазени.<br/>
-<br/> 
-Благодаря на следните инструменти с отворен код: %1$s и на всички, които 
-<a href="http://translate.acdisplay.org"> помогнаха с превода</a> или 
-<a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH"> направиха дарение</a>. <br/>
-<br/> 
-Превод на български: Петко \"psydex\" Йончев
-]]></string>
-  <string name="help">Помощ</string>
-  <string name="help_faq">Често задавани въпроси</string>
-  <string name="news_message"><![CDATA[
-Добре дошли в новата версия на AcDisplay!         
-Тази актуализация носи един напълно нов и уникален дизайн с много нови възможности.         
-С по-опростен дизайн за по-лесна работа! <br/>
-<br/>
- <b>Едно докосване за всички действия.</b> <br/> 
-        Отключване на устройството, проверка на известия или изпълнение на действия става само с едно движение. <br/>         <br/> 
-<b>Отключване на телефона с едно плъзване където и да е.</b> <br/> 
-       Плъзни на което и да е празно пространство, за да отключиш телефона
-     ]]></string>
-  <string name="speech_message"><![CDATA[
-Здравей, <br/> 
-Преди всичко искам да Ви благодаря за многото изтегляне и висока оценка в Google магазина.         
-Огромен напредък е постигнат в разработката на AcDisplay и това не би било възможно без Вашата помощ. Ето защо AcDisplay е <a href="https://www.github.com/AChep/AcDisplay">отворен</a> за всички, но имам нужда от Вашата помощ. <br/>         
-Това е последната ми година в училище и бих искал да си купя един лаптоп за бъдещи проучвания и да донеса на света нови страхотни приложения, където и да съм.         Много бих оценил Вашата помощ.
-     ]]></string>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+        <br/>
+        Many thanks to those open source tools: %1$s and to all who
+        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
+    ]]></string>
+  <string name="donate_dialog_title">Donate to developers</string>
+  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
+  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
+  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+  <string name="donate_thanks">Thank you very much!</string>
+  <string name="donation_1">An ice cream</string>
+  <string name="donation_4">A cup of coffee</string>
+  <string name="donation_10">Electricity bills</string>
+  <string name="donation_20">The right pillow</string>
+  <string name="donation_50">Solid-state drive</string>
+  <string name="donation_99">Sound system</string>
+  <string name="cry_dialog_title">Support development</string>
+  <string name="cry_dialog_message"><![CDATA[
+        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
+        a lot of time and resources on keeping it with time. Please, consider a donation to show your
+        appreciation and to support further development.
+    ]]></string>
+  <string name="help_dialog_title">Помощ</string>
+  <string name="feedback_dialog_title">Обратна връзка</string>
+  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
+  <string name="feedback_dialog_attach_log">Attach a log</string>
+  <string name="feedback_dialog_read_help">Frequently asked questions</string>
+  <string name="feedback_error_no_app">Install any of email apps.</string>
+  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
+  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
 </resources>

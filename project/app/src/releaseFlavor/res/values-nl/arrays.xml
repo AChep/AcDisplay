@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Fout</item>
+    <item>Probleem</item>
     <item>Suggestie</item>
     <item>Overige</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Album Illustraties</item>
     <item>Notificatie icoon</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Kritiek en urgent(gemiste oproepen, navigatie, nood meldingen)</item>
+    <item>Belangrijk (communicatie, belangrijke mail)</item>
+    <item>Normaal (+meldingen van oude apps)</item>
+    <item>Niet belangrijk(software updates, junk mail)</item>
+    <item>Contextuele en achtergrond informatie (weer, oude evenementen, suggesties)</item>
   </string-array>
 </resources>

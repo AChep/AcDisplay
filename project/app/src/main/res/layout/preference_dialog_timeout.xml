@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -17,67 +18,70 @@
   ~ MA  02110-1301, USA.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/padding_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/normal_timeout_title"
+        style="?dialogMessageStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:layout_marginTop="8dp"
-        android:text="@string/preference_timeout_normal"
-        style="?textAppearanceDialogMessage" />
+        android:text="@string/preference_timeout_normal" />
 
     <TextView
         android:id="@+id/normal_timeout_value"
+        style="?dialogMessageStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/normal_timeout_title"
+        android:gravity="center_vertical"
         android:minHeight="32dp"
         android:minWidth="55sp"
-        android:padding="4dp"
-        android:gravity="center_vertical"
-        style="?textAppearanceDialogInfo" />
+        android:padding="4dp" />
 
     <SeekBar
         android:id="@+id/normal_timeout_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/normal_timeout_title"
-        android:layout_toStartOf="@id/normal_timeout_value"
-        android:layout_toLeftOf="@id/normal_timeout_value" />
+        android:layout_toLeftOf="@id/normal_timeout_value"
+        android:layout_toStartOf="@id/normal_timeout_value" />
 
     <TextView
         android:id="@+id/short_timeout_title"
+        style="?dialogMessageStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/normal_timeout_value"
+        android:layout_marginBottom="4dp"
         android:layout_marginTop="16dp"
-        android:text="@string/preference_timeout_short"
-        style="?textAppearanceDialogMessage" />
+        android:text="@string/preference_timeout_short" />
 
     <TextView
         android:id="@+id/short_timeout_value"
+        style="?dialogMessageStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/short_timeout_title"
+        android:gravity="center_vertical"
         android:minHeight="32dp"
         android:minWidth="55sp"
-        android:padding="4dp"
-        android:gravity="center_vertical"
-        style="?textAppearanceDialogInfo" />
+        android:padding="4dp" />
 
     <SeekBar
         android:id="@+id/short_timeout_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/short_timeout_title"
-        android:layout_toStartOf="@id/short_timeout_value"
-        android:layout_toLeftOf="@id/short_timeout_value" />
+        android:layout_toLeftOf="@id/short_timeout_value"
+        android:layout_toStartOf="@id/short_timeout_value" />
 
 </RelativeLayout>

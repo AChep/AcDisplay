@@ -26,7 +26,7 @@ import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
 
 /**
- * An option for {@link com.achep.acdisplay.blacklist.fragments.BlacklistAppFragment app settings}
+ * An option for {@link com.achep.acdisplay.ui.fragments.BlacklistAppFragment app settings}
  * to allow enabling non-clearable notifications.
  *
  * @author Artem Chepurnoy

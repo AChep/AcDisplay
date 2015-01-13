@@ -19,4 +19,13 @@
   -->
 <resources>
 
+
+    <drawable name="bg_dashboard_category_dark">@drawable/bg_dashboard_category_compat_dark</drawable>
+    <drawable name="bg_dashboard_tile">@android:drawable/list_selector_background</drawable>
+    <drawable name="bg_timeout">#3fff</drawable>
+    <drawable name="bg_timeout_progress">#3fff</drawable>
+
+    <drawable name="transparent">@null</drawable>
+    <drawable name="ripple">@null</drawable>
+
 </resources>

@@ -22,10 +22,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.view.animation.LinearInterpolator;
+import android.widget.ProgressBar;
 
-import com.achep.acdisplay.animations.ProgressBarAnimation;
-import com.achep.acdisplay.utils.MathUtils;
-import com.achep.acdisplay.widgets.ProgressBar;
+import com.achep.acdisplay.ui.animations.ProgressBarAnimation;
+import com.achep.base.utils.MathUtils;
 
 import java.util.ArrayList;
 
@@ -201,7 +201,7 @@ public class Timeout {
     }
 
     /**
-     * Displays timeout's events in given {@link com.achep.acdisplay.widgets.ProgressBar}.
+     * Displays timeout's events in given {@link com.achep.acdisplay.ui.widgets.ProgressBar}.
      */
     public static class Gui implements Timeout.OnTimeoutEventListener {
 

@@ -20,12 +20,20 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Hata</item>
+    <item>Sorun</item>
     <item>Öneri</item>
     <item>Diğer</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Görsellik</item>
     <item>Bildirim simgesi</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Kritik ve acil (cevapsız aramalar, yönergeler, acil durum uyarıları) 
+</item>
+    <item>Önemli (konuşmalar,  önemli mail)</item>
+    <item>Normal (+eski uygulamalardan bildirimler)</item>
+    <item>Önemsiz (uygulama güncellemeleri, gereksiz mailler)</item>
+    <item>Contextual and background info (weather, expired events, suggestions)</item>
   </string-array>
 </resources>

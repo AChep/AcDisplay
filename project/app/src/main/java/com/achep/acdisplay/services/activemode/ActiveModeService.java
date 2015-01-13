@@ -22,6 +22,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -31,7 +32,6 @@ import android.util.Log;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Atomic;
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
@@ -44,7 +44,8 @@ import com.achep.acdisplay.services.activemode.handlers.WithoutNotifiesHandler;
 import com.achep.acdisplay.services.activemode.sensors.AccelerometerSensor;
 import com.achep.acdisplay.services.activemode.sensors.GyroscopeSensor;
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
-import com.achep.acdisplay.utils.PowerUtils;
+import com.achep.base.Build;
+import com.achep.base.utils.power.PowerUtils;
 
 /**
  * Service that turns on AcDisplay exactly when it's needed.
@@ -56,7 +57,7 @@ import com.achep.acdisplay.utils.PowerUtils;
 public class ActiveModeService extends BathService.ChildService implements
         ActiveModeSensor.Callback, ActiveModeHandler.Callback,
         NotificationPresenter.OnNotificationListChangedListener,
-Atomic.Callback {
+        Atomic.Callback {
 
     private static final String TAG = "ActiveModeService";
     private static final String WAKE_LOCK_TAG = "Consuming sensors";
@@ -96,6 +97,11 @@ Atomic.Callback {
         } else {
             BathService.stopService(context, ActiveModeService.class);
         }
+    }
+
+    public static boolean isSupported(@NonNull Context context) {
+        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        return sensorManager.getSensorList(Sensor.TYPE_PROXIMITY).size() > 0;
     }
 
     /**
@@ -177,8 +183,9 @@ Atomic.Callback {
     }
 
     @Override
-    public void onNotificationListChanged(NotificationPresenter np,
-                                          OpenNotification osbn, int event) {
+    public void onNotificationListChanged(@NonNull NotificationPresenter np,
+                                          OpenNotification osbn,
+                                          int event, boolean f) {
         if (Config.getInstance().isNotifyWakingUp()) {
             // Notification will wake up device without
             // any sensors' callback.
@@ -315,7 +322,7 @@ Atomic.Callback {
 
     @Override
     public void onWakeRequested(@NonNull ActiveModeSensor sensor) {
-        Presenter.getInstance().start(getContext());
+        Presenter.getInstance().tryStartGuiCauseSensor(getContext());
     }
 
 }

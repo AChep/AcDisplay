@@ -22,61 +22,74 @@
     <string name="app_name" translatable="false">AcDisplay</string>
     <string name="app_description">AcDisplay is a new way of handling notifications in Android. It will inform you about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what\'s going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.</string>
 
-    <string name="xposed_description">Helps AcDisplay to integrate deeper into Android.</string>
+    <string name="plugin_xposed_description">Helps AcDisplay to integrate deeper into Android.</string>
 
-    <!-- App widget -->
-    <string name="widget_toggle_enabled">Enabled</string>
-    <string name="widget_toggle_disabled">Disabled</string>
-
-    <!-- Test notification -->
-    <string name="test_action">Send test notification</string>
-    <string name="test_notification_message">This is a sample notification.</string>
-    <string name="test_notification_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
-
-    <!-- Initial notification -->
-    <string name="init_notification_text">Just dismiss this notification.</string>
-
-    <!-- Remote actions -->
-    <string name="remote_enable_acdisplay">AcDisplay is enabled.</string>
-    <string name="remote_disable_acdisplay">AcDisplay is disabled.</string>
-
-    <!-- Foreground service that may contain both Keyguard and Active mode. -->
-    <string name="service_bath">AcDisplay services</string>
-    <string name="service_bath_keyguard">Lockscreen</string>
-    <string name="service_bath_active_mode">Active mode</string>
-    <string name="service_bath_active_mode_dump">Sensors dumper</string>
-
-    <!-- Example: Mon, 7 April -->
-    <string name="status_date_format">EEE, d MMMM</string>
 
     <!--
-        Compatibility mode
-         -->
+        Coins
+        -->
 
-    <string name="compat_title">AcDisplay is running in compatibility mode:</string>
-    <string name="compat_formatter" translatable="false">- %s;\n</string>
-    <string name="compat_notifications">Notifications can not be dismissed from system nor grouped into one</string>
-    <string name="compat_immersive_mode">Navigation bar is shown</string>
-    <string name="compat_music_widget">No music widget available</string>
+    <string name="bitcoin" translatable="false">Bitcoin</string>
+    <string name="paypal" translatable="false">PayPal</string>
 
     <!--
         Device admin / notification access
          -->
 
-    <string name="access_title">Required permissions:</string>
-    <string name="access_setup">Setup permissions</string>
-    <string name="access_device_admin">Device admin</string>
-    <string name="access_device_admin_title" translatable="false">@string/app_name</string>
-    <string name="access_device_admin_description">Needed to manage the screen timeout policy.</string>
-    <!-- Shows as a toast, when clicking a button failed. -->
-    <string name="access_device_admin_grant_manually">Go to Settings > Security > Device admins and check AcDisplay on.</string>
-    <string name="access_notifications">Notifications</string>
-    <string name="access_notifications_description">Needed to get access to notifications.</string>
-    <!-- Shows as a toast, when clicking a button failed. -->
-    <string name="access_notifications_grant_manually">Go to Settings > Security > Notification access and check AcDisplay on.</string>
+    <string name="permissions_auto_disabled">AcDisplay has been turned off because it\'s missing some permissions.</string>
+    <string name="permissions_dialog_title">Required permissions:</string>
+    <string name="permissions_device_admin">Device admin</string>
+    <string name="permissions_device_admin_removed">AcDisplay has been removed from Device admins.</string>
+    <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+    <!-- A title of 'Provide device admin rights' system dialog -->
+    <string name="permissions_device_admin_title" translatable="false">@string/app_name</string>
+    <!-- Description of why do we need device admin rights -->
+    <string name="permissions_device_admin_description">Needed to manage the screen timeout policy.</string>
+    <!-- Shown as a toast, when clicking a button failed. -->
+    <string name="permissions_device_admin_grant_manually">Go to Settings > Security > Device admins and check AcDisplay on.</string>
+    <string name="permissions_notifications">Notifications</string>
+    <!-- Description of why do we need notification listener rights -->
+    <string name="permissions_notifications_description">Needed to get access to notifications.</string>
+    <!-- Shown as a toast, when clicking a button failed. -->
+    <string name="permissions_notifications_grant_manually">Go to Settings > Security > Notification access and check AcDisplay on.</string>
 
-    <string name="access_device_admin_removed_successful">AcDisplay has been removed from Device admins.</string>
-    <string name="app_auto_disabled">AcDisplay has been turned off because it\'s missing admin rights.</string>
+    <!--
+        Compatibility mode
+         -->
+
+    <string name="compat_alert_title">AcDisplay is running in compatibility mode:</string>
+    <string name="compat_alert_formatter" translatable="false">- %s;\n</string>
+    <string name="compat_alert_notifications">Notifications can not be dismissed from system nor grouped into one</string>
+    <string name="compat_alert_immersive_mode">Navigation bar is shown</string>
+    <string name="compat_alert_music_widget">No music widget available</string>
+
+    <!--
+        Actions
+        -->
+
+    <string name="action_about">About</string>
+    <string name="action_donate">Donate</string>
+    <string name="action_feedback">Feedback</string>
+    <string name="action_help">Help</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_send_test_notify">Send test notification</string>
+    <string name="action_show_system_apps">System apps</string>
+
+    <!--
+        Simple words
+        -->
+
+    <string name="close">Close</string>
+    <string name="later">Later</string>
+    <string name="send">Send</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+
+    <!--
+        Media
+        -->
 
     <!-- Pressing button goes to previous track. -->
     <string name="media_prev_description">Previous track button</string>
@@ -88,6 +101,24 @@
     <string name="media_play_description">Play button</string>
     <!-- Pressing button pauses playback -->
     <string name="media_stop_description">Stop button</string>
+
+    <!-- Test notification -->
+    <string name="notification_init_text">Just dismiss this notification.</string>
+    <string name="notification_test_message">This is a sample notification.</string>
+    <string name="notification_test_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
+
+    <!-- Remote actions -->
+    <string name="remote_enable_acdisplay">AcDisplay is enabled.</string>
+    <string name="remote_disable_acdisplay">AcDisplay is disabled.</string>
+
+    <!-- Foreground service that may contain both Keyguard and Active mode. -->
+    <string name="service_bath">AcDisplay services</string>
+    <string name="service_bath_keyguard">Lockscreen</string>
+    <string name="service_bath_active_mode">Active mode</string>
+    <string name="service_bath_active_mode_dump" >Sensors dumper</string>
+
+    <!-- Example: Mon, 7 April -->
+    <string name="status_date_format">EEE, d MMMM</string>
 
     <!-- Glyph to be overlaid atop the battery when the level is extremely low. -->
     <string name="batterymeter_very_low_overlay_symbol" translatable="false">!</string>

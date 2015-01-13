@@ -20,12 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Σφάλμα</item>
+    <item>Πρόβλημα</item>
     <item>Πρόταση</item>
     <item>Άλλα</item>
   </string-array>
   <string-array name="dynamic_background">
     <item>Εξώφυλλο</item>
     <item>Εικονίδιο ειδοποίησης</item>
+  </string-array>
+  <string-array name="notify_priorities">
+    <item>Κρίσιμα και επείγουσα (αναπάντητες κλήσεις, κατευθύνσεις, ειδοποιήσεις έκτακτης ανάγκης)</item>
+    <item>Σημαντικά (επικοινωνίες, σημαντικά emails)</item>
+    <item>Κανονικά (+ ειδοποιήσεις από παλιές εφαρμογές)</item>
+    <item>Μη-σημαντικά (αναβαθμίσεις εφαρμογών, ανεπιθύμητη αλληλογραφία)</item>
+    <item>Σχετικές και πληροφορίες υπόβαθρου (καιρός, περασμένες εκδηλώσεις, προτάσεις)</item>
   </string-array>
 </resources>

@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.services;
 
 import android.content.BroadcastReceiver;
@@ -32,11 +31,11 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.achep.acdisplay.Build;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.utils.FileUtils;
-import com.achep.acdisplay.utils.PowerUtils;
+import com.achep.base.Build;
+import com.achep.base.utils.FileUtils;
+import com.achep.base.utils.power.PowerUtils;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -55,11 +54,12 @@ public class SensorsDumpService extends BathService.ChildService implements
     private static final int MAX_SIZE = 2500;
 
     private SensorManager mSensorManager;
-    private final int[] mSensorTypes = new int[] {
-        Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ACCELEROMETER,
+    private final int[] mSensorTypes = new int[]{
+            Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ACCELEROMETER,
     };
 
     private final LinkedList<Event> mEventList = new LinkedList<>();
+
     private static class Event {
         long timestamp;
         float[] values;

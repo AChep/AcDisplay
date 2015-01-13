@@ -16,14 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
 package com.achep.acdisplay.compat;
 
-import android.annotation.SuppressLint;
-import android.transition.Scene;
+import android.transitions.everywhere.Scene;
+import android.view.View;
 import android.view.ViewGroup;
-
-import com.achep.acdisplay.Device;
 
 /**
  * This is a restricted {@link android.transition.Scene} compatibility
@@ -31,31 +28,22 @@ import com.achep.acdisplay.Device;
  *
  * @author Artem Chepurnoy
  */
-@SuppressLint("NewApi")
 public class SceneCompat {
 
-    private final ViewGroup mViewGroup;
     private final ViewGroup mView;
-    public Scene scene;
+    private final Scene mScene;
 
-    public SceneCompat(ViewGroup viewGroup, ViewGroup view) {
-        if (Device.hasKitKatApi()) {
-            scene = new Scene(viewGroup, view);
-        }
-        mViewGroup = viewGroup;
+    public SceneCompat(ViewGroup parent, ViewGroup view) {
+        mScene = new Scene(parent, (View) view);
         mView = view;
     }
 
-    public void enter() {
-        if (Device.hasKitKatApi()) {
-            scene.enter();
-        } else {
-            mViewGroup.removeAllViews();
-            mViewGroup.addView(mView);
-        }
+    public Scene getScene() {
+        return mScene;
     }
 
     public ViewGroup getView() {
         return mView;
     }
+
 }

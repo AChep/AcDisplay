@@ -17,8 +17,13 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-
 <resources>
     <item type="id" name="artwork" />
     <item type="id" name="icon_small" />
+
+    <!-- AcDisplay -->
+    <item type="id" name="scene" />
+    <item type="id" name="background" />
+    <item type="id" name="foreground" />
+
 </resources>

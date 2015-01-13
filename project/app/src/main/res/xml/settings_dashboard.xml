@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<dashboard xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <dashboard-category
+        app:dashboard_id="@+id/features_category"
+        app:dashboard_title="@string/settings_category_features">
+
+        <!-- Keyguard -->
+        <dashboard-tile
+            app:dashboard_fragment="com.achep.acdisplay.ui.fragments.settings.KeyguardSettings"
+            app:dashboard_icon="@drawable/ic_settings_keyguard_white"
+            app:dashboard_id="@+id/keyguard_settings"
+            app:dashboard_title="@string/settings_keyguard_title" />
+
+        <!-- Active mode -->
+        <dashboard-tile
+            app:dashboard_fragment="com.achep.acdisplay.ui.fragments.settings.ActiveModeSettings"
+            app:dashboard_icon="@drawable/ic_settings_active_mode_white"
+            app:dashboard_id="@+id/active_settings"
+            app:dashboard_title="@string/settings_active_title" />
+
+    </dashboard-category>
+
+    <dashboard-category
+        app:dashboard_id="@+id/settings_category"
+        app:dashboard_title="@string/settings_category_settings">
+
+        <!-- Notifications -->
+        <dashboard-tile
+            app:dashboard_fragment="com.achep.acdisplay.ui.fragments.settings.NotificationSettings"
+            app:dashboard_icon="@drawable/ic_settings_notifications_white"
+            app:dashboard_id="@+id/notification_settings"
+            app:dashboard_title="@string/settings_notification_title" />
+
+        <!-- Interface -->
+        <dashboard-tile
+            app:dashboard_fragment="com.achep.acdisplay.ui.fragments.settings.InterfaceSettings"
+            app:dashboard_icon="@drawable/ic_settings_gui_white"
+            app:dashboard_id="@+id/interface_settings"
+            app:dashboard_title="@string/settings_interface_title" />
+
+        <!-- Development -->
+        <dashboard-tile
+            app:dashboard_fragment="com.achep.acdisplay.ui.fragments.settings.DevSettings"
+            app:dashboard_icon="@drawable/ic_settings_development_white"
+            app:dashboard_id="@+id/dev_settings"
+            app:dashboard_title="@string/settings_dev_title" />
+
+        <!-- App settings -->
+        <dashboard-tile
+            app:dashboard_icon="@drawable/ic_settings_apps_white"
+            app:dashboard_id="@+id/app_settings"
+            app:dashboard_title="@string/settings_app_settings_title">
+            <intent
+                android:targetClass="com.achep.acdisplay.ui.activities.BlacklistActivity"
+                android:targetPackage="com.achep.acdisplay" />
+        </dashboard-tile>
+
+        <!-- More -->
+        <dashboard-tile
+            app:dashboard_fragment="com.achep.acdisplay.ui.fragments.settings.MoreSettings"
+            app:dashboard_icon="@drawable/ic_settings_more_white"
+            app:dashboard_id="@+id/more_settings"
+            app:dashboard_title="@string/settings_more_title" />
+    </dashboard-category>
+
+</dashboard>

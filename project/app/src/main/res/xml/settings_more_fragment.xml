@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_more_title">
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/config_default_enabled_only_while_charging"
+        android:key="only_while_charging"
+        android:summaryOff="@string/settings_only_while_charging_off"
+        android:summaryOn="@string/settings_only_while_charging_on"
+        android:title="@string/settings_only_while_charging_title" />
+
+    <com.achep.acdisplay.ui.preferences.InactiveTimePreference
+        android:dialogIcon="@drawable/ic_dialog_inactive_time_white"
+        android:dialogTitle="@string/settings_inactive_hours_title"
+        android:key="inactive_hours"
+        android:title="@string/settings_inactive_hours_title" />
+
+    <com.achep.acdisplay.ui.preferences.TimeoutPreference
+        android:dialogIcon="@drawable/ic_dialog_timeout_white"
+        android:dialogTitle="@string/settings_timeout_title"
+        android:key="timeout"
+        android:title="@string/settings_timeout_title" />
+
+    <PreferenceCategory android:title="@string/settings_behavior_category">
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/config_default_feel_screen_off_after_last_notify"
+            android:key="feel_widget_screen_off_after_last_notify"
+            android:summaryOff="@string/settings_lock_on_dismiss_last_notify_off"
+            android:summaryOn="@string/settings_lock_on_dismiss_last_notify_on"
+            android:title="@string/settings_lock_on_dismiss_last_notify_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/config_default_feel_widget_pinnable"
+            android:key="feel_widget_pinnable"
+            android:summaryOn="@string/settings_widget_pinnable_on"
+            android:title="@string/settings_widget_pinnable_title" />
+
+        <!--
+        <CheckBoxPreference
+            android:key="ui_widget_readable"
+            android:dependency="ui_widget_pinnable"
+            android:title="@string/settings_shadow_toggle_title"
+            android:summaryOn="@string/settings_shadow_toggle_on"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:defaultValue="@bool/config_default_feel_widget_readable"/>
+            -->
+
+    </PreferenceCategory>
+</PreferenceScreen>

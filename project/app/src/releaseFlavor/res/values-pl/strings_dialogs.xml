@@ -19,33 +19,28 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="close">Zamknij</string>
-  <string name="about_action">O aplikacji</string>
-  <string name="about_message"><![CDATA[
-        Copyright 2013-2014 <a href="https://plus.google.com/+АртёмЧепурной">Artem Chepurnoy</a>. All Rights Reserved.<br/>
-        <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or
-        <a href="https://plus.google.com/102696863054832206920/posts/7wi3WfWGSfH">donated to me</a>.
-    ]]></string>
-  <string name="help">Pomoc</string>
-  <string name="help_faq">Często zadawane pytania</string>
-  <string name="news_message"><![CDATA[
-        Welcome to the new version of AcDisplay!
-        This update brings a completely new and unique design with a lot of new possibilities.
-        The design is more streamlined and is aimed at giving you the best possible experience!<br/>
-        <br/>
-        <b>One touch for all actions.</b><br/>
-        Unlocking the device, checking the notifications or performing an actions on them can be done with a single motion.<br/>
-        <br/>
-        <b>Unlock field is anywhere and everywhere.</b><br/>
-        Swipe anywhere on free space to unlock.
-    ]]></string>
-  <string name="speech_message"><![CDATA[
-        Hello,<br/>
-        First of all I want to thank you for the amount of downloads and high ratings on Play Store.
-        Huge progress has been made in AcDisplay and a this could not have been done without the community. That is why AcDisplay is <a href="https://www.github.com/AChep/AcDisplay">open</a> for everyone. But I need some help from you.<br/>
-        This is my last school year and I would like to buy a notebook for future studies and to bring the world awesome software wherever I may be.
-        I would highly appreciate your help with it.
-    ]]></string>
+  <string name="about_dialog_message"><![CDATA[        
+
+AcDisplay jest darmowy i <a href="http://repo.acdisplay.org"> otwartoźródłowy</a> aplikacji.         Copyright 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Wszystkie prawa zastrzeżone. <br/>         <br/> Podziękowania dla tych, otwartoźródłowych narzędzi: %1$s i wszystkich, którzy <a href="http://translate.acdisplay.org"> pomagali w tłumaczeniu</a> lub dotowali.     ]]></string>
+  <string name="donate_dialog_title">Wspomóż twórców</string>
+  <string name="donate_dialog_message">AcDisplay jest darmową i otwartoźródłową aplikacją. Możesz pokazać swoje uznanie i wsparcie przekazując dotację:</string>
+  <string name="donate_alert_no_responsibility">Pamiętaj, że Google nie odpowiada za tę metodę płatności.</string>
+  <string name="donate_billing_not_supported">Zakupy w aplikacji nie są obsługiwane na urządzeniu.</string>
+  <string name="donate_thanks">Dziękuję bardzo!</string>
+  <string name="donation_1">Lody</string>
+  <string name="donation_4">Filiżanka kawy</string>
+  <string name="donation_10">Rachunki za prąd</string>
+  <string name="donation_20">Dobra poduszka</string>
+  <string name="donation_50">Nośnik SSD</string>
+  <string name="donation_99">System nagłośnienia</string>
+  <string name="cry_dialog_title">Wspieranie rozwoju</string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay jest darmową, <a href="http://repo.acdisplay.org"> otwartoźródłową</a> aplikacją i poświęcamy dużo czasu oraz zasobów na utrzymanie jej na czasie. Rozważ dotację, aby pokazać swoje uznanie i wsparcie dla dalszego rozwoju.     ]]></string>
+  <string name="help_dialog_title">Pomoc</string>
+  <string name="feedback_dialog_title">Opinie</string>
+  <string name="feedback_dialog_message_hint">Treść wiadomości. Specyfikacja urządzenia zostanie automatycznie uwzględniona.</string>
+  <string name="feedback_dialog_attach_log">Dołącz plik dziennika aplikacji</string>
+  <string name="feedback_dialog_read_help">Często zadawane pytania</string>
+  <string name="feedback_error_no_app">Zainstaluj jakąkolwiek aplikację poczty elektronicznej.</string>
+  <string name="feedback_error_msg_too_short">Wiadomość musi zawierać co najmniej %1$d symboli.</string>
+  <string name="feedback_error_accessing_log">Wystąpił błąd podczas uzyskiwania dostępu do dziennika aplikacji. Ten błąd to: %1$s</string>
 </resources>

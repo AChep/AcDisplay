@@ -29,8 +29,10 @@
     <string name="settings_placeholder_summary">Место для будущих опций и возможностей.</string>
 
     <!-- Headers -->
-    <string name="settings_lockscreen_title">Экран блокировки</string>
+    <string name="settings_category_features">Возможности</string>
+    <string name="settings_keyguard_title">Экран блокировки</string>
     <string name="settings_active_title">Активный режим</string>
+    <string name="settings_category_settings">Настройки</string>
     <string name="settings_app_settings_title">Приложения</string>
     <string name="settings_notification_title">Уведомления</string>
     <string name="settings_interface_title">Интерфейс</string>
@@ -38,7 +40,10 @@
     <string name="settings_dev_title">Для разработчиков</string>
 
     <!-- Lockscreen -->
-    <string name="settings_lockscreen_description">Изменить стандартный экран блокировки на приложение AcDisplay. Эта функция может работать нестабильно.</string>
+    <string name="settings_keyguard_description">Изменить стандартный экран блокировки на приложение AcDisplay. Эта функция может работать нестабильно.</string>
+    <string name="settings_keyguard_enabled_when_notification_list_empty_title">Пока нет уведомлений</string>
+    <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен вне зависимости от наличия текущих уведомлений.</string>
+    <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, пока текущий список уведомлений пуст.</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Активный режим пробуждает устройство тогда, когда вам это нужно. Вы можете взглянуть на время или уведомления, просто достав устройство из кармана. Эта функция не блокирует переход в спящий режим - вы не должны заметить существенной разницы в потреблении заряда батареи.</string>
@@ -48,6 +53,8 @@
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>
+    <string name="settings_notify_min_priority_title">Минимальный приоритет</string>
+    <string name="settings_notify_max_priority_title">Максимальный приоритет</string>
     <string name="settings_low_priority_notifications_title">Не важные уведомления</string>
     <string name="settings_low_priority_notifications_on">Все уведомления отображаются.</string>
     <string name="settings_low_priority_notifications_off">Уведомления, имеющие низкий приоритет, не отображаются.\nПример: погода от Google Now.</string>
@@ -57,19 +64,15 @@
     <string name="settings_use_wallpaper_title">Использовать обои</string>
     <string name="settings_use_wallpaper_on">Обои с вашего рабочего стола используются в качестве фона.</string>
     <string name="settings_use_wallpaper_off">Цельный чёрный фон.</string>
-    <string name="settings_shadow_toggle_title">Отображать тени</string>
-    <string name="settings_shadow_toggle_on">Отображать тени под элементами (отключите для повышения производительности).</string>
     <string name="settings_dynamic_background_title">Динамический фон</string>
     <string name="settings_dynamic_background_summary">Используется как фон: %1$s</string>
     <string name="settings_dynamic_background_disabled">Отключен</string>
     <string name="settings_status_battery_always_visible">Прикрепить состояние батареи</string>
     <string name="settings_status_battery_always_visible_off">Состояние батареи показывается при зарядке или низком уровне заряда.</string>
-    <string name="settings_mirrored_timeout_progress_bar_title">Зеркальный индикатор таймаута</string>
-    <string name="settings_mirrored_timeout_progress_bar_on">Индикатор времени таймаута уменьшается с двух сторон к центру.</string>
-    <string name="settings_mirrored_timeout_progress_bar_off">Индикатор времени таймаута уменьшается слева направо.</string>
-    <string name="settings_notify_circled_icon_title">Круговая иконка уведомления</string>
-    <string name="settings_notify_circled_icon_on">Большая иконка уведомления вписана в круг.</string>
-    <string name="settings_unlock_animation_title">Анимация разблокировки</string>
+    <string name="settings_circle_category">Круг разблокировки</string>
+    <string name="settings_circle_animation_title">Анимация разблокировки</string>
+    <string name="settings_circle_color_inner_title">Цвет круга</string>
+    <string name="settings_circle_color_outer_title">Фон круга</string>
 
     <!-- Development -->
     <string name="settings_dev_sensors_dump_title">Сохранять данные с сенсоров</string>

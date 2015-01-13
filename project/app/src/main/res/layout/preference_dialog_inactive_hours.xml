@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -17,16 +18,17 @@
   ~ MA  02110-1301, USA.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/padding_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <CheckBox
         android:id="@+id/checkbox"
+        style="?dialogMessageStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/preference_inactive_hours_enabled"
-        style="?textAppearanceDialogMessage" />
+        android:text="@string/preference_inactive_hours_enabled" />
 
     <LinearLayout
         android:id="@+id/content"
@@ -37,13 +39,14 @@
 
         <TextView
             android:id="@+id/from"
+            style="?android:spinnerStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="24sp"
-            android:textAppearance="?textAppearanceDialogMessage"
-            style="?android:spinnerStyle" />
+            android:textAppearance="?dialogMessageStyle"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="24sp" />
 
         <Space
             android:layout_width="16dp"
@@ -51,13 +54,14 @@
 
         <TextView
             android:id="@+id/to"
+            style="?android:spinnerStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="24sp"
-            android:textAppearance="?textAppearanceDialogMessage"
-            style="?android:spinnerStyle" />
+            android:textAppearance="?dialogMessageStyle"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
