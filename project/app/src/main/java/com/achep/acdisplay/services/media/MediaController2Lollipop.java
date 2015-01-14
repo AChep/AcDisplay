@@ -139,7 +139,7 @@ class MediaController2Lollipop extends MediaController2 {
             // Maybe somebody is waiting to start his player by
             // this lovely event.
             // TODO: Check if it works as expected.
-            MediaController2JellyBean.broadcastMediaAction(mContext, action);
+            MediaController2.broadcastMediaAction(mContext, action);
             return;
         }
 
