@@ -102,11 +102,13 @@ public class KeyguardService extends BathService.ChildService implements
             intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
             context.registerReceiver(mReceiver, intentFilter);
 
+            /*
             if (!PowerUtils.isScreenOn(context)) {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SCREEN_OFF);
                 mReceiver.onReceive(context, intent);
             }
+            */
 
             isActive = true;
         }
