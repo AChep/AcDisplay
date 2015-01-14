@@ -41,6 +41,7 @@ import com.achep.acdisplay.services.KeyguardService;
 import com.achep.base.Device;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.utils.LogUtils;
+import com.achep.base.utils.power.PowerUtils;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -53,6 +54,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
 
     private static final String TAG = "KeyguardActivity";
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
+    public static long focusLooseTime = 0;
 
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
     private static final int PF_MAX_TIME = 2000; // ms.
@@ -69,7 +71,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
     public void onWindowFocusChanged(boolean windowHasFocus) {
         super.onWindowFocusChanged(windowHasFocus);
         if (DEBUG) Log.d(TAG, "On window focus changed " + windowHasFocus);
-
+        focusLooseTime = windowHasFocus ? -1 : SystemClock.elapsedRealtime();
         if (isUnlocking()) {
             if (windowHasFocus) {
                 mUnlockingTime = 0;
@@ -77,6 +79,14 @@ public abstract class KeyguardActivity extends ActivityBase implements
                 finish();
                 return;
             }
+        } else if (!windowHasFocus
+                && !isFinishing()
+                && !PowerUtils.isScreenOn(this)) {
+            // Keep the focus on itself, to be able to
+            // detect further focus changes.
+            Class clazz = AcDisplayActivity.class;
+            startActivity(new Intent(this, clazz)
+                    .addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT));
         }
         if (mResumed) {
             populateFlags(windowHasFocus);

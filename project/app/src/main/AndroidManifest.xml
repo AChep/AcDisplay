@@ -45,10 +45,6 @@
     <!-- Needed to change system screen off timeout settings. -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-    <!-- Needed to get currently running activity. -->
-    <!--suppress DeprecatedClassUsageInspection -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-
     <!-- Needed to be able to show a popup above all notifications. -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
