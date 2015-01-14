@@ -589,9 +589,19 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 && notification.messageTextLines == null);
     }
 
+    // Here we filter completely wrong
+    // notifications.
+    @SuppressLint("NewApi")
     private boolean isValidForGlobal(@NonNull OpenNotification notification) {
-        // Here we filter completely wrong
-        // notifications.
+        if (Device.hasKitKatWatchApi()) {
+            // Do not display all notifications in
+            // the group.
+            String group = notification.getNotification().getGroup();
+            String sortKey = notification.getNotification().getSortKey();
+            if (group != null && sortKey != null) {
+                return false;
+            }
+        }
         return true;
     }
 
