@@ -50,7 +50,7 @@ public class Metadata {
         if (!TextUtils.isEmpty(artist)) {
             sb.append(artist);
 
-            if (TextUtils.isEmpty(album)) {
+            if (!TextUtils.isEmpty(album)) {
                 sb.append(" - ");
                 sb.append(album);
             }
