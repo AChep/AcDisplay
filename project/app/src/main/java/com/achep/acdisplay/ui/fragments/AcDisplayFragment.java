@@ -20,6 +20,7 @@ package com.achep.acdisplay.ui.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
@@ -30,6 +31,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.transitions.everywhere.ChangeBounds;
 import android.transitions.everywhere.Fade;
@@ -38,6 +40,7 @@ import android.transitions.everywhere.Transition;
 import android.transitions.everywhere.TransitionManager;
 import android.transitions.everywhere.TransitionSet;
 import android.util.Log;
+import android.util.Property;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -48,8 +51,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -75,8 +76,8 @@ import com.achep.acdisplay.ui.widgets.CircleView;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.activities.ActivityBase;
-import com.achep.base.ui.animations.AnimationListenerAdapter;
 import com.achep.base.ui.widgets.TextView;
+import com.achep.base.utils.FloatProperty;
 import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
@@ -105,6 +106,23 @@ public class AcDisplayFragment extends Fragment implements
 
     private static final int MSG_SHOW_HOME_WIDGET = 0;
     private static final int MSG_HIDE_MEDIA_WIDGET = 1;
+
+    private static final Property<AcDisplayFragment, Float> TRANSFORM =
+            new FloatProperty<AcDisplayFragment>("populateStdAnimation") {
+
+                private float mValue;
+
+                @Override
+                public void setValue(AcDisplayFragment fragment, float value) {
+                    fragment.populateStdAnimation(mValue = value);
+                }
+
+                @Override
+                public Float get(AcDisplayFragment fragment) {
+                    return mValue;
+                }
+
+            };
 
     // Views
     private CircleView mCircleView;
@@ -136,7 +154,7 @@ public class AcDisplayFragment extends Fragment implements
     // Animations and transitions
     private TransitionSet mTransitionJit;
     private Transition mTransitionSwitchScene;
-    private DismissAnimation mSceneContainerDismissAnim;
+    private ObjectAnimator mStdAnimator;
 
     // Clock widget
     private SceneCompat mSceneMainClock;
@@ -183,58 +201,12 @@ public class AcDisplayFragment extends Fragment implements
         }
     };
 
-    /**
-     * Controller of dismiss animation.
-     */
-    private class DismissAnimation extends Animation {
-
-        private float start;
-        private Widget widget;
-
-        public DismissAnimation() {
-            super();
-            setAnimationListener(new AnimationListenerAdapter() {
-                @Override
-                public void onAnimationEnd(@NonNull Animation animation) {
-                    Widget widget = DismissAnimation.this.widget;
-
-                    onWidgetDismiss(widget);
-                    if (mSelectedWidget == widget) {
-                        showHomeWidget();
-                    }
-                }
-            });
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            super.applyTransformation(interpolatedTime, t);
-            float value = (start + (1f - start) * interpolatedTime);
-            populateSceneContainerDismissAnimation(value);
-        }
-
-        public void setup(int duration, float start, Widget widget) {
-            if (!hasEnded()) Log.wtf(TAG, "Setting up running animation!!!");
-            setDuration(duration);
-            this.start = start;
-            this.widget = widget;
-        }
-
-    }
-
     private boolean isPinnable() {
         return getConfig().isWidgetPinnable();
     }
 
     private boolean isReadable() {
         return getConfig().isWidgetReadable();
-    }
-
-    private boolean isViewLaidOut(@NonNull View view) {
-        if (Device.hasKitKatApi()) {
-            return view.isLaidOut();
-        }
-        return !view.isLayoutRequested() && view.getWidth() != 0;
     }
 
     /**
@@ -278,7 +250,6 @@ public class AcDisplayFragment extends Fragment implements
         mMediaWidget = new MediaWidget(this, this);
 
         // Transitions
-        mSceneContainerDismissAnim = new DismissAnimation();
         mTransitionJit = new TransitionSet()
                 .setOrdering(TransitionSet.ORDERING_TOGETHER)
                 .addTransition(new Fade())
@@ -473,7 +444,7 @@ public class AcDisplayFragment extends Fragment implements
     public void onCircleEvent(float radius, float ratio, int event) {
         switch (event) {
             case CircleView.ACTION_START:
-                if (hasPinnedWidget()) {
+                if (mHasPinnedWidget) {
                     showHomeWidget();
                 }
 
@@ -535,8 +506,6 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public void onForwardedEvent(MotionEvent event, int activePointerId) {
-        boolean dismiss = false;
-
         int action = event.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -545,69 +514,17 @@ public class AcDisplayFragment extends Fragment implements
                 mVelocityTracker = VelocityTracker.obtain();
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-                populateSwipeToDismiss(event);
+                populateStdMotion(event);
 
                 if (action != MotionEvent.ACTION_UP) {
                     return; // Don't fall down.
                 }
 
-                //noinspection LoopStatementThatDoesntLoop
-                while (isDismissible(mSelectedWidget)) {
-                    mVelocityTracker.computeCurrentVelocity(1000);
-
-                    float velocityX = mVelocityTracker.getXVelocity();
-                    float velocityY = mVelocityTracker.getYVelocity();
-                    float absVelocityX = Math.abs(velocityX);
-                    float absVelocityY = Math.abs(velocityY);
-
-                    float deltaY = mSceneContainer.getTranslationY();
-                    float absDeltaY = Math.abs(deltaY);
-
-                    int height = getSceneView().getHeight();
-                    if (height == 0) {
-                        // Scene view is not measured yet.
-                        break; // Exits from loop not from the switch!
-                    } else if (absDeltaY < height / 2) {
-                        if (mMinFlingVelocity <= absVelocityY
-                                && absVelocityY <= mMaxFlingVelocity
-                                && absVelocityY > absVelocityX * 2
-                                && absDeltaY > height / 5) {
-                            // Dismiss only if flinging in the same direction as dragging
-                            dismiss = (velocityY < 0) == (deltaY < 0);
-                        }
-
-                        if (!dismiss) {
-                            break; // Exits from loop not from the switch!
-                        }
-                    }
-
-                    dismiss = true;
-
-                    if (height > absDeltaY) {
-                        int duration;
-                        duration = Math.round(1000f /* ms. */ * (height - absDeltaY) / absVelocityX);
-                        duration = Math.min(duration, 300);
-
-                        mSceneContainerDismissAnim.setup(duration,
-                                MathUtils.range(deltaY / height, 0f, 1f),
-                                mSelectedWidget);
-                        mSceneContainer.startAnimation(mSceneContainerDismissAnim);
-                        break; // Exits from loop not from the switch!
-                    }
-
-                    // Instant dismissing.
-                    onWidgetDismiss(mSelectedWidget);
-                    showHomeWidget();
-                    break;
-                }
-
-                // Don't not reset scene while dismissing, or if
-                // pinnable.
-                if (!dismiss) {
+                if (!swipeToDismiss()) {
                     if (mPressedIconView == null || !isPinnable()) {
                         showHomeWidget();
                     } else {
-                        onWidgetPinned(mSelectedWidget);
+                        onWidgetPin(mSelectedWidget);
                     }
                 }
             case MotionEvent.ACTION_CANCEL:
@@ -622,31 +539,108 @@ public class AcDisplayFragment extends Fragment implements
         }
     }
 
-    protected boolean hasPinnedWidget() {
-        return mHasPinnedWidget;
+    //-- SWIPE-TO-DISMISS -----------------------------------------------------
+
+    private boolean swipeToDismiss() {
+        if (!isDismissible(mSelectedWidget)) return false;
+        mVelocityTracker.computeCurrentVelocity(1000);
+
+        float velocityX = mVelocityTracker.getXVelocity();
+        float velocityY = mVelocityTracker.getYVelocity();
+        float absVelocityX = Math.abs(velocityX);
+        float absVelocityY = Math.abs(velocityY);
+
+        float deltaY = mSceneContainer.getTranslationY();
+        float absDeltaY = Math.abs(deltaY);
+
+        int height = getSceneView().getHeight();
+        if (height == 0) {
+            // Scene view is not measured yet.
+            return false;
+        } else if (absDeltaY < height / 2) {
+            boolean dismiss = false;
+            if (mMinFlingVelocity <= absVelocityY
+                    && absVelocityY <= mMaxFlingVelocity
+                    && absVelocityY > absVelocityX * 2
+                    && absDeltaY > height / 5) {
+                // Dismiss only if flinging in the same direction as dragging
+                dismiss = (velocityY < 0) == (deltaY < 0);
+            }
+
+            if (!dismiss) {
+                return false;
+            }
+        }
+
+        // /////////////////////
+        // ~~    DISMISS      ~~
+        // /////////////////////
+
+        if (height > absDeltaY && !isPowerSaveMode()) {
+            int duration;
+            duration = Math.round(1000f /* ms. */ * (height - absDeltaY) / absVelocityX);
+            duration = Math.min(duration, 300);
+
+            final Widget widget = mSelectedWidget;
+            float progress = MathUtils.range(deltaY / height, 0f, 1f);
+            if (mStdAnimator != null) mStdAnimator.cancel();
+            mStdAnimator = ObjectAnimator.ofFloat(this, TRANSFORM, progress, 1f);
+            mStdAnimator.setDuration(duration);
+            mStdAnimator.addListener(new AnimatorListenerAdapter() {
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    onWidgetDismiss(widget);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    super.onAnimationCancel(animation);
+                    onWidgetDismiss(widget);
+                }
+
+            });
+            mStdAnimator.start();
+        } else {
+            onWidgetDismiss(mSelectedWidget);
+        }
+
+        return true;
     }
 
-    protected void onWidgetPinned(Widget widget) {
-        mHandler.sendEmptyMessageDelayed(MSG_SHOW_HOME_WIDGET, mConfigWidgetPinDuration);
-        mHasPinnedWidget = true;
+    private void populateStdMotion(@NonNull MotionEvent srcEvent) {
+        // Track current movement to be able to handle
+        // flings correctly.
+        MotionEvent dstEvent = MotionEvent.obtainNoHistory(srcEvent);
+        mVelocityTracker.addMovement(MotionEvent.obtainNoHistory(srcEvent));
+        dstEvent.recycle();
+
+        // No need to handle swipe-to-dismiss if the
+        // widget is not dismissible.
+        if (!isDismissible(mSelectedWidget)) {
+            return;
+        }
+
+        final float y = srcEvent.getY() - mIconsContainer.getHeight();
+
+        if (y <= 0) {
+            if (mSceneContainer.getTranslationY() != 0) {
+                resetSceneContainerParams();
+            }
+            return;
+        }
+
+        // Populate current animation
+        float height = getSceneView().getHeight();
+        float progress = MathUtils.range(y / height, 0f, 1f);
+        populateStdAnimation(progress);
     }
 
-    protected void onWidgetReadAloud(Widget widget) {
-        // TODO: Read widget aloud
-    }
-
-    /**
-     * Resets {@link #mSceneContainer scene container}'s params, such
-     * as: animation, alpha level, translation, rotation etc.
-     */
-    private void resetSceneContainerParams() {
-        mSceneContainer.clearAnimation();
-        mSceneContainer.setAlpha(1f);
-        mSceneContainer.setTranslationY(0);
-        mSceneContainer.setRotationX(0);
-    }
-
-    private void populateSceneContainerDismissAnimation(float progress) {
+    private void populateStdAnimation(float progress) {
         float height = getSceneView().getHeight();
         float y = height * progress;
         double degrees = Math.toDegrees(Math.acos((height - y) / height));
@@ -656,30 +650,61 @@ public class AcDisplayFragment extends Fragment implements
         mSceneContainer.setRotationX((float) (-degrees / 2f));
     }
 
-    private void populateSwipeToDismiss(MotionEvent srcEvent) {
-        float y = srcEvent.getY() - mIconsContainer.getHeight();
+    //-- MANAGING WIDGETS -----------------------------------------------------
 
-        MotionEvent dstEvent = MotionEvent.obtainNoHistory(srcEvent);
-        mVelocityTracker.addMovement(MotionEvent.obtainNoHistory(srcEvent));
-        dstEvent.recycle();
-
-        if (!isDismissible(mSelectedWidget)) {
-            return;
-        }
-
-        if (y < 0) {
-            if (mSceneContainer.getTranslationY() != 0) {
-                resetSceneContainerParams();
-            }
-            return;
-        }
-
-        float height = getSceneView().getHeight();
-        float progress = MathUtils.range(y / height, 0f, 1f);
-        populateSceneContainerDismissAnimation(progress);
-
-        if (DEBUG) Log.d(TAG, "dismiss_progress=" + progress + " height=" + height);
+    /**
+     * Resets {@link #mSceneContainer scene container}'s params, such
+     * as: animation, alpha level, translation, rotation etc.
+     */
+    private void resetSceneContainerParams() {
+        if (mStdAnimator != null) mStdAnimator.cancel();
+        mSceneContainer.setAlpha(1f);
+        mSceneContainer.setTranslationY(0);
+        mSceneContainer.setRotationX(0);
     }
+
+    /**
+     * @return {@code true} if current widget equals to given one, {@code false} otherwise.
+     */
+    protected final boolean isCurrentWidget(Widget widget) {
+        return widget == mSelectedWidget;
+    }
+
+    /**
+     * @return {@code true} if widget is not {@code null} and
+     * {@link Widget#isDismissible() dismissible}, {@code false} otherwise.
+     */
+    public final boolean isDismissible(@Nullable Widget widget) {
+        return widget != null && widget.isDismissible();
+    }
+
+    /**
+     * @return The view of the {@link #mCurrentScene current scene}.
+     */
+    @NonNull
+    private View getSceneView() {
+        return mCurrentScene.getView();
+    }
+
+    @Nullable
+    private SceneCompat findSceneByWidget(@NonNull Widget widget) {
+        if (widget == mMediaWidget) {
+            return mSceneMainMedia;
+        } else if (widget == mClockWidget) {
+            return mSceneMainClock;
+        } else if (widget.getView() != null) {
+            String className = widget.getClass().getName();
+            return mScenesMap.get(className);
+        }
+        return null;
+    }
+
+    @NonNull
+    private Widget findWidgetByIcon(@NonNull View view) {
+        return mWidgetsMap.get(view);
+    }
+
+    //-- DISPLAYING WIDGETS ---------------------------------------------------
 
     public void showHomeWidget() {
         showHomeWidget(true);
@@ -695,7 +720,6 @@ public class AcDisplayFragment extends Fragment implements
 
     /**
      * @see #showWidget(com.achep.acdisplay.ui.components.Widget, boolean)
-     * @see #getCurrentWidget()
      */
     protected void showWidget(@NonNull Widget widget) {
         showWidget(widget, true);
@@ -703,11 +727,8 @@ public class AcDisplayFragment extends Fragment implements
 
     /**
      * @see #showWidget(com.achep.acdisplay.ui.components.Widget)
-     * @see #getCurrentWidget()
      */
     protected void showWidget(@NonNull Widget widget, boolean animate) {
-        LogUtils.v(TAG, "widget=" + widget, 3);
-
         mHandler.removeMessages(MSG_SHOW_HOME_WIDGET);
         mHasPinnedWidget = false;
 
@@ -727,14 +748,12 @@ public class AcDisplayFragment extends Fragment implements
         animate &= !isPowerSaveMode();
 
         SceneCompat scene = findSceneByWidget(mSelectedWidget);
-        if (scene == null) {
-            goScene(mSceneMainClock, animate);
-        } else if (mCurrentScene != scene) {
+        if (scene == null) scene = mSceneMainClock;
+        if (mCurrentScene != scene) {
             goScene(scene, animate);
         } else if (animate) {
-            ViewGroup viewGroup = mSelectedWidget.getView();
-            if (viewGroup != null && isViewLaidOut(viewGroup)) {
-                // Automatically animate the content change.
+            final ViewGroup viewGroup = mSelectedWidget.getView();
+            if (viewGroup != null) {
                 TransitionManager.beginDelayedTransition(viewGroup, mTransitionJit);
             }
         }
@@ -763,53 +782,6 @@ public class AcDisplayFragment extends Fragment implements
             mTimeout.setTimeoutDelayed(mTimeoutNormal, true);
             mTimeout.pause();
         }
-    }
-
-    /**
-     * @return Currently displayed widget, or {@code null} if main widget is displayed.
-     * @see #showWidget(com.achep.acdisplay.ui.components.Widget)
-     */
-    protected final Widget getCurrentWidget() {
-        return mSelectedWidget;
-    }
-
-    /**
-     * @return {@code true} if current widget equals to given one, {@code false} otherwise.
-     * @see #getCurrentWidget()
-     */
-    protected final boolean isCurrentWidget(Widget widget) {
-        return widget == mSelectedWidget;
-    }
-
-    /**
-     * @return {@code true} if widget is not {@code null} and
-     * {@link Widget#isDismissible() dismissible}, {@code false} otherwise.
-     */
-    public final boolean isDismissible(Widget widget) {
-        return widget != null && widget.isDismissible();
-    }
-
-    /**
-     * @return The view of the {@link #mCurrentScene current scene}.
-     */
-    private View getSceneView() {
-        return mCurrentScene.getView();
-    }
-
-    protected SceneCompat findSceneByWidget(Widget widget) {
-        if (widget == mMediaWidget) {
-            return mSceneMainMedia;
-        } else if (widget == mClockWidget) {
-            return mSceneMainClock;
-        } else if (widget.getView() != null) {
-            String className = widget.getClass().getName();
-            return mScenesMap.get(className);
-        }
-        return null;
-    }
-
-    private Widget findWidgetByIcon(View view) {
-        return mWidgetsMap.get(view);
     }
 
     /**
@@ -863,6 +835,13 @@ public class AcDisplayFragment extends Fragment implements
 
     //-- WIDGETS MANAGEMENT ---------------------------------------------------
 
+    protected void onWidgetPin(@NonNull Widget widget) {
+        mHandler.sendEmptyMessageDelayed(MSG_SHOW_HOME_WIDGET, mConfigWidgetPinDuration);
+        mHasPinnedWidget = true;
+    }
+
+    protected void onWidgetReadAloud(@NonNull Widget widget) { /* reading aloud */ }
+
     /**
      * Called when widget is going to be dismissed.
      */
@@ -882,8 +861,11 @@ public class AcDisplayFragment extends Fragment implements
             boolean lock = NotificationPresenter.getInstance().size() == 0;
             if (lock) {
                 mActivityAcd.lock();
+                return;
             }
         }
+
+        if (isCurrentWidget(widget)) showHomeWidget();
     }
 
     //-- SCENES MANAGEMENT ----------------------------------------------------
@@ -901,7 +883,7 @@ public class AcDisplayFragment extends Fragment implements
 
         mCurrentScene = sceneCompat;
         final Scene scene = sceneCompat.getScene();
-        if (animate && !isPowerSaveMode() && isViewLaidOut(mSceneContainer)) {
+        if (animate) {
             try {
                 // This must be a synchronization problem with Android's Scene or TransitionManager,
                 // but those were declared as final classes, so I have no idea how to fix it.
@@ -969,13 +951,13 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onPlaybackStateChanged(int state) {
         switch (state) {
-            case PlaybackStateCompat.STATE_NONE:
-                mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
-                disableMediaWidget();
-                break;
             case PlaybackStateCompat.STATE_PLAYING:
                 mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
                 enableMediaWidget();
+                break;
+            case PlaybackStateCompat.STATE_NONE:
+                mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
+                disableMediaWidget();
                 break;
             default:
                 mHandler.sendEmptyMessageDelayed(MSG_HIDE_MEDIA_WIDGET, 6000);
@@ -1039,7 +1021,7 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
-                                          int event, boolean last) {
+                                          int event, boolean isLastEventInSequence) {
         if (DEBUG) Log.d(TAG, "Handling notification list changed event: "
                 + NotificationPresenter.getEventName(event));
         NotifyWidget widgetPrev = null;
@@ -1065,9 +1047,11 @@ public class AcDisplayFragment extends Fragment implements
             case NotificationPresenter.EVENT_CHANGED:
                 if (widgetPrev != null) {
                     if (DEBUG) Log.d(TAG, "[Event] Updating notification widget...");
-                    ViewGroup viewGroup = widgetPrev.getView();
-                    if (!isPowerSaveMode() && isViewLaidOut(viewGroup)) {
-                        TransitionManager.beginDelayedTransition(viewGroup, mTransitionJit);
+                    if (isCurrentWidget(widgetPrev)) {
+                        final ViewGroup viewGroup = widgetPrev.getView();
+                        if (viewGroup != null) {
+                            beginDelayedTransition(viewGroup, mTransitionJit);
+                        }
                     }
                     widgetPrev.setNotification(osbn);
                     break;
@@ -1078,10 +1062,10 @@ public class AcDisplayFragment extends Fragment implements
 
                 // Create new widget and inflate its
                 // icon view.
-                LayoutInflater inflater = getActivity().getLayoutInflater();
                 NotifyWidget nw = new NotifyWidget(this, this);
-                View iconView = nw.createIconView(inflater, mIconsContainer);
                 nw.onStart();
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View iconView = nw.createIconView(inflater, mIconsContainer);
 
                 // Check if widget's scene is available.
                 String name = nw.getClass().getName();
@@ -1104,6 +1088,7 @@ public class AcDisplayFragment extends Fragment implements
                 }
 
                 mWidgetsMap.put(iconView, nw);
+                beginDelayedTransition(mIconsContainer, mTransitionJit);
                 mIconsContainer.addView(iconView);
                 break;
             case NotificationPresenter.EVENT_REMOVED:
@@ -1113,6 +1098,7 @@ public class AcDisplayFragment extends Fragment implements
                     iconView = widgetPrev.getIconView();
                     clearWidget(iconView);
                     mWidgetsMap.remove(iconView);
+                    beginDelayedTransition(mIconsContainer, mTransitionJit);
                     mIconsContainer.removeView(iconView);
 
                     // Remove widget's scene if it's not needed anymore.
@@ -1124,15 +1110,8 @@ public class AcDisplayFragment extends Fragment implements
                             break;
                         }
                     }
-                    if (removeScene) {
-                        mScenesMap.remove(name);
-                    }
-
-                    // Don't let removed widget to be shown.
-                    if (mSelectedWidget == widgetPrev) {
-                        showHomeWidget(); // Un-pin
-                        // TODO: Maybe simulate touch to update selected widget?
-                    }
+                    if (removeScene) mScenesMap.remove(name);
+                    if (isCurrentWidget(widgetPrev)) showHomeWidget();
                 }
                 break;
             case NotificationPresenter.EVENT_BATH:
@@ -1143,9 +1122,10 @@ public class AcDisplayFragment extends Fragment implements
 
         if (event == NotificationPresenter.EVENT_POSTED
                 || event == NotificationPresenter.EVENT_REMOVED) {
-            if (last) updateDividerVisibility();
-            // #EVENT_BATH causes #rebuildNotifications() to be run,
-            // which calls #updateDividerVisibility() by itself.
+            if (isLastEventInSequence) updateDividerVisibility();
+            // NotificationPresenter#EVENT_BATH causes #rebuildNotifications() to be run,
+            // which calls #updateDividerVisibility() and begins delayed
+            // transition by itself.
         }
     }
 
@@ -1153,9 +1133,6 @@ public class AcDisplayFragment extends Fragment implements
         final long now = SystemClock.elapsedRealtime();
 
         ViewGroup container = mIconsContainer;
-        if (!isPowerSaveMode() && isViewLaidOut(container)) {
-            TransitionManager.beginDelayedTransition(container, mTransitionJit);
-        }
 
         final int childCount = container.getChildCount();
 
@@ -1238,12 +1215,12 @@ public class AcDisplayFragment extends Fragment implements
             if (notifyUsed[i]) continue;
 
             NotifyWidget nw = new NotifyWidget(this, this);
+            nw.onStart();
 
             View iconView = nw.createIconView(inflater, container);
             ViewUtils.setSize(iconView, iconSize);
             container.addView(iconView);
 
-            nw.onStart();
             nw.setNotification(list.get(i));
             mWidgetsMap.put(iconView, nw);
         }
@@ -1324,6 +1301,11 @@ public class AcDisplayFragment extends Fragment implements
     }
 
     //-- OTHER CLASSES --------------------------------------------------------
+
+    private void beginDelayedTransition(@Nullable ViewGroup sceneRoot,
+                                        @Nullable Transition transition) {
+        if (!isPowerSaveMode()) TransitionManager.beginDelayedTransition(sceneRoot, transition);
+    }
 
     /**
      * Transfers the touch between views, and implements double-tap-to-lock.
