@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">Požadované povolenia:</string>
   <string name="permissions_device_admin">Správca zariadenia</string>
   <string name="permissions_device_admin_removed">AcDisplay bol odstránený spomedzi Správcov zariadenia.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">Nič sa neudialo? Udeľte povolenie manuálne: %1$s</string>
   <string name="permissions_device_admin_description">Potrebné pre riadenie časového limitu vypnutia obrazovky.</string>
   <string name="permissions_device_admin_grant_manually">Prejdite do Nastavenia &gt; Zabezpečenie &gt; Správcovia zariadenia a potvrďte AcDisplay.</string>
   <string name="permissions_notifications">Oznámenia</string>

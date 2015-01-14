@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">Permissões requeridas:</string>
   <string name="permissions_device_admin">Administrador do dispositivo</string>
   <string name="permissions_device_admin_removed">AcDisplay foi removido dos administradores do dispositivo.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">Nada aconteceu? Dê a permissão manualmente: %1$s</string>
   <string name="permissions_device_admin_description">Necessário para gerenciar o tempo limite da tela.</string>
   <string name="permissions_device_admin_grant_manually">Vá para Configurações &gt; Segurança &gt; Administradores do dispositivo e selecione AcDisplay.</string>
   <string name="permissions_notifications">Notificações</string>

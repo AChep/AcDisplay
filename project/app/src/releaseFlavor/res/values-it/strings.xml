@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">Autorizzazioni necessarie:</string>
   <string name="permissions_device_admin">Amministratore Dispositivo</string>
   <string name="permissions_device_admin_removed">AcDisplay è stato rimosso dall\'Amministratore Dispositivo.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">Non è successo niente? Prova a dare il permesso manualmente: %1$s</string>
   <string name="permissions_device_admin_description">Necessari per gestire il sistema di timeout schermo.</string>
   <string name="permissions_device_admin_grant_manually">Vai in impostazioni &gt; Sicurezza &gt; Amministratori del dispositivo ed attiva AcDisplay.</string>
   <string name="permissions_notifications">Notifiche</string>

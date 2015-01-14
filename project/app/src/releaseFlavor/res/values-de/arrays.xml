@@ -29,10 +29,10 @@
     <item>Benachrichtigungssymbol</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>WIchtig und dringend (verpasste Anrufe, Navigationsanweisungen, Notfallwarnungen)</item>
+    <item>Wichtig und dringend (verpasste Anrufe, Navigationsanweisungen, Notfallwarnungen)</item>
     <item>Wichtig (Kommunikation, wichtige Nachrichten)</item>
     <item>Normal (+Benachrichtigungen von alten Apps)</item>
-    <item>Nicht wichtig (Software-Aktualisierungen, Junk-Mails)</item>
+    <item>Nicht wichtig (Software-Aktualisierungen, Spam-Mails)</item>
     <item>Kontext- und Hintergrundinformationen (Wetter, abgelaufene Termine, Vorschläge)</item>
   </string-array>
 </resources>

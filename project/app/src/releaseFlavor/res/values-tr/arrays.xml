@@ -34,6 +34,6 @@
     <item>Önemli (konuşmalar,  önemli mail)</item>
     <item>Normal (+eski uygulamalardan bildirimler)</item>
     <item>Önemsiz (uygulama güncellemeleri, gereksiz mailler)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>İçerik ve arka plan bilgisi (Hava, süresi dolmuş olaylar, öneriler)</item>
   </string-array>
 </resources>

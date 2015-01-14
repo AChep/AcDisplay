@@ -26,7 +26,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="permissions_dialog_title">Benötigte Berechtigungen:</string>
   <string name="permissions_device_admin">Geräteadministrator</string>
   <string name="permissions_device_admin_removed">AcDisplay wurde als Geräteadministrator entfernt.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">Nichts passiert? Berechtigung manuell gewähren: %1$s</string>
   <string name="permissions_device_admin_description">Wird gebraucht um die Bildschirmabschaltzeit zu verwalten.</string>
   <string name="permissions_device_admin_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Geräteadministratoren und überprüfe, ob AcDisplay aktiviert ist.</string>
   <string name="permissions_notifications">Benachrichtigungen</string>
@@ -63,7 +63,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="service_bath">AcDisplay-Dienste</string>
   <string name="service_bath_keyguard">Sperrbildschirm</string>
   <string name="service_bath_active_mode">Aktiv-Modus</string>
-  <string name="service_bath_active_mode_dump">Sensoren-kipper</string>
+  <string name="service_bath_active_mode_dump">Sensor-Speicherwerkzeug</string>
   <string name="status_date_format">EEE, d MMMM</string>
   <string name="accessibility_battery_level">Akku <xliff:g id="number" example="100">%d</xliff:g> Prozent.</string>
 </resources>

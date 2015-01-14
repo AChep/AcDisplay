@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">Απαραίτητα δικαιώματα:</string>
   <string name="permissions_device_admin">Διαχειριστής συσκευής</string>
   <string name="permissions_device_admin_removed">Το AcDisplay έχει αφαιρεθεί από τους διαχειριστές της συσκευής.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">Δεν έγινε τίποτα; Δώστε το δικαίωμα χειροκίνητα: %1$s</string>
   <string name="permissions_device_admin_description">Χρειάζεται να αλλάξετε τον χρόνο απενεργοποίησης της οθόνης.</string>
   <string name="permissions_device_admin_grant_manually">Μεταβείτε στις Ρυθμίσεις &gt; Ασφάλεια &gt; Διαχειριστές Συσκευής και επιλέξτε και το AcDisplay.</string>
   <string name="permissions_notifications">Ειδοποιήσεις</string>

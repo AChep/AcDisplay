@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">Permisos necesarios:</string>
   <string name="permissions_device_admin">Administrador de dispositivo</string>
   <string name="permissions_device_admin_removed">AcDisplay se ha eliminado de los administradores del dispositivo.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">No ha pasado nada? Dé el permiso manualmente: %1$s</string>
   <string name="permissions_device_admin_description">Necesario para administrar la política de tiempo de espera de pantalla.</string>
   <string name="permissions_device_admin_grant_manually">Ir a ajustes &gt; Seguridad &gt; Administradores del dispositivo y comprueba que AcDisplay está seleccionado.</string>
   <string name="permissions_notifications">Notificaciones</string>

@@ -24,7 +24,7 @@
   <string name="settings_unknown_value">未知值</string>
   <string name="settings_placeholder_title">预留位置</string>
   <string name="settings_placeholder_summary">为未来选项预留的位置</string>
-  <string name="settings_category_features">Features</string>
+  <string name="settings_category_features">特性：</string>
   <string name="settings_keyguard_title">锁屏界面</string>
   <string name="settings_active_title">主动模式</string>
   <string name="settings_category_settings">设置</string>
@@ -35,8 +35,8 @@
   <string name="settings_dev_title">开发</string>
   <string name="settings_keyguard_description">用 AcDisplay 替换默认锁屏界面。这是一项测试功能，可能并不稳定。</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">在没有通知时启用</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_on">无论是否有通知都替换默认锁屏界面</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_off">在没有通知时不替换默认锁屏界面</string>
   <string name="settings_active_description">主动模式使用光线传感器来唤醒您的设备。当你从口袋里拿出手机，想看看是否有通知时，屏幕会自动唤醒。主动模式不会使 CPU 持续运作，所以设备应当不会有明显耗电。</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">在没有通知时启用</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">无论是否有通知都主动提示</string>
@@ -56,10 +56,10 @@
   <string name="settings_dynamic_background_disabled">禁用</string>
   <string name="settings_status_battery_always_visible">保留电池状态</string>
   <string name="settings_status_battery_always_visible_off">在低电量或插入电源时显示电池状态</string>
-  <string name="settings_circle_category">Unlock circle</string>
-  <string name="settings_circle_animation_title">Unlock animation</string>
-  <string name="settings_circle_color_inner_title">Circle color</string>
-  <string name="settings_circle_color_outer_title">Circle background</string>
+  <string name="settings_circle_category">解锁圈</string>
+  <string name="settings_circle_animation_title">解锁动画</string>
+  <string name="settings_circle_color_inner_title">解锁圈颜色</string>
+  <string name="settings_circle_color_outer_title">解锁圈壁纸</string>
   <string name="settings_dev_sensors_dump_title">通过传感器记录数据</string>
   <string name="settings_dev_sensors_dump_on">通过传感器持续记录设备状态及数据至存储器上的文件中。</string>
   <string name="settings_dev_sensors_dump_send_title">发送已保存的数据</string>
