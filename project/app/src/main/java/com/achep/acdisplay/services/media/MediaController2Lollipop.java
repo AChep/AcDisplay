@@ -164,7 +164,7 @@ class MediaController2Lollipop extends MediaController2 {
         }
     }
 
-    private void updateMetadata(MediaMetadata metadata) {
+    private void updateMetadata(@Nullable MediaMetadata metadata) {
         if (metadata == null) {
             mMetadata.clear();
         } else {
@@ -194,7 +194,7 @@ class MediaController2Lollipop extends MediaController2 {
         notifyOnPlaybackStateChanged();
     }
 
-    private void switchMediaController(MediaController controller) {
+    private void switchMediaController(@NonNull MediaController controller) {
         clearMediaController();
 
         mMediaController = controller;

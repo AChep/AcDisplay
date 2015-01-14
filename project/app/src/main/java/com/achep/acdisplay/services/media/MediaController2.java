@@ -69,7 +69,7 @@ public abstract class MediaController2 {
      *
      * @see android.view.KeyEvent
      */
-    public static void broadcastMediaAction(Context context, int action) {
+    public static void broadcastMediaAction(@NonNull Context context, int action) {
         int keyCode;
         switch (action) {
             case ACTION_PLAY_PAUSE:
@@ -123,9 +123,13 @@ public abstract class MediaController2 {
 
     }
 
+    @NonNull
     protected final Context mContext;
+    @NonNull
     protected final ArrayList<MediaListener> mListeners;
+    @NonNull
     protected final Metadata mMetadata;
+
     protected int mPlaybackState;
 
     protected MediaController2(@NonNull Context context) {

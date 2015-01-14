@@ -31,6 +31,7 @@ import android.media.RemoteController;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -212,7 +213,7 @@ class MediaController2KitKat extends MediaController2 {
      * @param data Object of metadata to update from, or {@code null} to clear local metadata.
      * @see #clearMetadata()
      */
-    private void updateMetadata(RemoteController.MetadataEditor data) {
+    private void updateMetadata(@Nullable RemoteController.MetadataEditor data) {
         if (data == null) {
             mMetadata.clear();
         } else {
@@ -230,13 +231,6 @@ class MediaController2KitKat extends MediaController2 {
         }
 
         notifyOnMetadataChanged();
-    }
-
-    /**
-     * @return {@code string == null ? null : TextUtils.isEmpty(string = string.trim()) ? null : string}
-     */
-    private String trim(String string) {
-        return string == null ? null : TextUtils.isEmpty(string = string.trim()) ? null : string;
     }
 
 }
