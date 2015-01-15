@@ -19,29 +19,22 @@
 package com.achep.acdisplay.notifications;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
-import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.acdisplay.services.MediaService;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.Operator;
-import com.achep.base.utils.PackageUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -93,16 +86,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     private static final int RESULT_SUCCESS = 1;
     private static final int RESULT_SPAM = -1;
 
-    private static final int INITIALIZING_PROCESS_NONE = 0;
-    private static final int INITIALIZING_PROCESS_STARTED = 1;
-    private static final int INITIALIZING_PROCESS_DONE = 2;
-
     private static final int FLAG_DONT_NOTIFY_FOLLOWERS = 1;
     private static final int FLAG_DONT_WAKE_UP = 2;
 
     private static NotificationPresenter sNotificationPresenter;
-
-    private int mInitProcess = INITIALIZING_PROCESS_NONE;
 
     private final NotificationList mGList;
     private final NotificationList mLList;
@@ -112,7 +99,6 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     private final Blacklist mBlacklist;
 
     // Threading
-    private final Object mMonitor = new Object(); // This is not really needed to be synced... :D
     private final Handler mHandler;
 
     //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
@@ -513,17 +499,13 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     @SuppressLint("NewApi")
     public boolean isTestNotification(@NonNull Context context, @NonNull OpenNotification n) {
         StatusBarNotification sbn = n.getStatusBarNotification();
-        return sbn != null
-                && sbn.getId() == App.ID_NOTIFY_TEST
-                && n.getPackageName().equals(PackageUtils.getName(context));
+        return n.isMine() && sbn != null && sbn.getId() == App.ID_NOTIFY_TEST;
     }
 
     @SuppressLint("NewApi")
     public boolean isInitNotification(@NonNull Context context, @NonNull OpenNotification n) {
         StatusBarNotification sbn = n.getStatusBarNotification();
-        return sbn != null
-                && sbn.getId() == App.ID_NOTIFY_INIT
-                && n.getPackageName().equals(PackageUtils.getName(context));
+        return n.isMine() && sbn != null && sbn.getId() == App.ID_NOTIFY_INIT;
     }
 
     private void notifyListeners(OpenNotification n, int event) {
@@ -607,74 +589,32 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
 
     //-- INITIALIZING ---------------------------------------------------------
 
-    /**
-     * Should be called when notification listener service is ready to receive new notifications.
-     */
-    // Running on wrong thread
-    public void tryStartInitProcess() {
-        synchronized (mMonitor) {
+    void init(final @NonNull Context context,
+              final @NonNull StatusBarNotification[] activeNotifications) {
+        mHandler.post(new Runnable() {
+            @SuppressLint("NewApi")
+            @Override
+            public void run() {
+                clear(false);
 
-            if (mInitProcess != INITIALIZING_PROCESS_NONE) {
-                return;
-            }
-
-            mInitProcess = INITIALIZING_PROCESS_STARTED;
-
-            // Well I know that handler doesn't work properly on deep sleep.
-            // This is okay. It'll send this init notification after waking up.
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    MediaService service = MediaService.sService;
-
-                    if (service == null) {
-                        Log.w(TAG, "Tried to send an init-notification but notification service is offline.");
-                        return;
-                    }
-
-                    Resources res = service.getResources();
-                    Notification.Builder builder = new Notification.Builder(service)
-                            .setContentTitle(res.getString(R.string.app_name))
-                            .setContentText(res.getString(R.string.notification_init_text))
-                            .setSmallIcon(R.drawable.stat_notify)
-                            .setPriority(Notification.PRIORITY_MIN)
-                            .setAutoCancel(true);
-
-                    NotificationManager nm = (NotificationManager)
-                            service.getSystemService(Context.NOTIFICATION_SERVICE);
-                    nm.notify(App.ID_NOTIFY_INIT, builder.build());
+                if (DEBUG) Log.d(TAG, "Initializing the notifications list...");
+                for (StatusBarNotification sbn : activeNotifications) {
+                    OpenNotification n = OpenNotification.newInstance(sbn);
+                    postNotification(context, n, FLAG_DONT_NOTIFY_FOLLOWERS | FLAG_DONT_WAKE_UP);
                 }
-            }, 2500);
-        }
+
+                notifyListeners(null, EVENT_BATH);
+            }
+        });
     }
 
-    // Running on wrong thread
-    public void tryInit(final @NonNull Context context,
-                        final @Nullable StatusBarNotification[] activeNotifications) {
-        synchronized (mMonitor) {
-            if (mInitProcess != INITIALIZING_PROCESS_STARTED
-                    || activeNotifications == null) {
-                return;
-            }
+    void clear(boolean notifyListeners) {
+        if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
+                + notifyListeners);
 
-            mInitProcess = INITIALIZING_PROCESS_DONE;
-            mHandler.post(new Runnable() {
-                @SuppressLint("NewApi")
-                @Override
-                public void run() {
-                    for (StatusBarNotification notification : activeNotifications) {
-                        OpenNotification n = OpenNotification.newInstance(notification);
-                        postNotification(context, n, FLAG_DONT_NOTIFY_FOLLOWERS | FLAG_DONT_WAKE_UP);
-                    }
-
-                    notifyListeners(null, EVENT_BATH);
-                }
-            });
-        }
-    }
-
-    public boolean isInitialized() {
-        return mInitProcess == INITIALIZING_PROCESS_DONE;
+        mGList.list().clear();
+        mLList.list().clear();
+        if (notifyListeners) notifyListeners(null, EVENT_BATH);
     }
 
 }

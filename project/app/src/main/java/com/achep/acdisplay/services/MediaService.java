@@ -33,6 +33,7 @@ import android.util.Log;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.notifications.NotificationListener;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.base.Device;
@@ -50,6 +51,8 @@ public class MediaService extends NotificationListenerService implements
     private static final String TAG = "MediaService";
 
     public static MediaService sService;
+
+    private final NotificationListener mNotificationListener = NotificationListener.newInstance();
 
     private final IBinder mBinder = new B();
     private AudioManager mAudioManager;
@@ -81,15 +84,7 @@ public class MediaService extends NotificationListenerService implements
                 return mBinder;
             default:
                 sService = this;
-
-                // What is the idea of init notification?
-                // Well the main goal is to access #getActiveNotifications()
-                // what seems to be not possible without dirty and buggy
-                // workarounds.
-                NotificationPresenter
-                        .getInstance()
-                        .tryStartInitProcess();
-
+                mNotificationListener.onListenerBind(this);
                 return super.onBind(intent);
         }
     }
@@ -100,6 +95,7 @@ public class MediaService extends NotificationListenerService implements
             case App.ACTION_BIND_MEDIA_CONTROL_SERVICE:
                 break;
             default:
+                mNotificationListener.onListenerUnbind(this);
                 sService = null;
                 break;
         }
@@ -109,30 +105,19 @@ public class MediaService extends NotificationListenerService implements
     //-- HANDLING NOTIFICATIONS -----------------------------------------------
 
     @Override
+    public void onListenerConnected() {
+        super.onListenerConnected();
+        mNotificationListener.onListenerConnected(this);
+    }
+
+    @Override
     public void onNotificationPosted(@NonNull StatusBarNotification notification) {
-        NotificationPresenter np = NotificationPresenter.getInstance();
-        if (np.isInitialized()) {
-            OpenNotification n = OpenNotification.newInstance(notification);
-            np.postNotificationFromMain(this, n, 0);
-        } else {
-            rockNotification(np);
-        }
+        mNotificationListener.onNotificationPosted(this, notification);
     }
 
     @Override
     public void onNotificationRemoved(@NonNull StatusBarNotification notification) {
-        NotificationPresenter np = NotificationPresenter.getInstance();
-        if (np.isInitialized()) {
-            OpenNotification n = OpenNotification.newInstance(notification);
-            np.removeNotificationFromMain(n);
-        } else {
-            rockNotification(np);
-        }
-    }
-
-    private void rockNotification(@NonNull NotificationPresenter np) {
-        StatusBarNotification[] activeNotifies = getActiveNotifications();
-        np.tryInit(MediaService.this, activeNotifies);
+        mNotificationListener.onNotificationRemoved(this, notification);
     }
 
     //-- REMOTE CONTROLLER ----------------------------------------------------
