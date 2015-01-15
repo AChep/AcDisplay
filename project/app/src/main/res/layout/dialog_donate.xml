@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<com.achep.acdisplay.ui.view.HeaderGridView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.achep.base.ui.widgets.HeaderGridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/grid"
     android:layout_width="match_parent"
     android:layout_height="296dp"

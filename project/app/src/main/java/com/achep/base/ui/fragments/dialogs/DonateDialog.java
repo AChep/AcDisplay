@@ -48,12 +48,12 @@ import android.widget.ProgressBar;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.ui.view.HeaderGridView;
 import com.achep.base.billing.Bitcoin;
 import com.achep.base.billing.PayPal;
 import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.adapters.BetterArrayAdapter;
+import com.achep.base.ui.widgets.HeaderGridView;
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.CoinUtils;
 import com.achep.base.utils.IntentUtils;
