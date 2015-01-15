@@ -33,6 +33,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.achep.acdisplay.graphics.BackgroundFactory;
 import com.achep.acdisplay.graphics.IconFactory;
@@ -44,6 +45,8 @@ import com.achep.base.utils.PackageUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -52,6 +55,7 @@ import java.util.ArrayList;
 public class OpenNotification implements
         ISubscriptable<OpenNotification.OnNotificationDataChangedListener> {
 
+    private static final String TAG = "OpenNotification";
 
     /**
      * Creates empty notification instance.
@@ -475,6 +479,21 @@ public class OpenNotification implements
     public String getPackageName() {
         assert mStatusBarNotification != null;
         return mStatusBarNotification.getPackageName();
+    }
+
+    public boolean isGroupChild() {
+        if (!Device.hasLollipopApi()) return false;
+
+        try {
+            Method method = Notification.class.getDeclaredMethod("isGroupChild");
+            method.setAccessible(true);
+            return (boolean) method.invoke(mNotification);
+        } catch (NoSuchMethodException
+                | InvocationTargetException
+                | IllegalAccessException e) {
+            Log.e(TAG, "Failed to check for group child.");
+        }
+        return false;
     }
 
 }

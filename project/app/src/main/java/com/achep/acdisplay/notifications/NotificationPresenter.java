@@ -575,16 +575,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
     // notifications.
     @SuppressLint("NewApi")
     private boolean isValidForGlobal(@NonNull OpenNotification notification) {
-        if (Device.hasKitKatWatchApi()) {
-            // Do not display all notifications in
-            // the group.
-            String group = notification.getNotification().getGroup();
-            String sortKey = notification.getNotification().getSortKey();
-            if (group != null && sortKey != null) {
-                return false;
-            }
-        }
-        return true;
+        // Ignore children of notifications that have a summary, since we're not
+        // going to show them anyway.
+        return !notification.isGroupChild();
+
     }
 
     //-- INITIALIZING ---------------------------------------------------------
