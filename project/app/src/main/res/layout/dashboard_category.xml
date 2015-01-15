@@ -35,7 +35,6 @@
         style="?dashboardCategoryTitle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dashboard_category_title_height"
-        android:gravity="center_vertical"
         android:paddingLeft="@dimen/dashboard_category_title_margin_start"
         android:paddingStart="@dimen/dashboard_category_title_margin_start"
         android:textAlignment="viewStart" />

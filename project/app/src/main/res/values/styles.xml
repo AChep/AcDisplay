@@ -137,11 +137,17 @@
         <item name="android:textSize">14sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center_vertical</item>
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="font">roboto_medium</item>
         <item name="font_beforeApi">21</item>
+    </style>
+
+    <style name="MaterialListSeparator" parent="MaterialDashboard.Category_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dashboard_category_title_height</item>
     </style>
 
     <!--
