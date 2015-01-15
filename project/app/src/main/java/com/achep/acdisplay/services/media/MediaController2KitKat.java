@@ -45,7 +45,7 @@ import com.achep.acdisplay.services.MediaService;
  * Created by Artem Chepurnoy on 26.10.2014.
  */
 @SuppressWarnings("deprecation")
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(Build.VERSION_CODES.KITKAT)
 class MediaController2KitKat extends MediaController2 {
 
     private MediaService mService;
