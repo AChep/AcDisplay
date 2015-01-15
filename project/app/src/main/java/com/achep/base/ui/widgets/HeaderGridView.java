@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /* Modified by Artem Chepurnoy at 2014 */
-package com.achep.acdisplay.ui.view;
+package com.achep.base.ui.widgets;
 
 import android.content.Context;
 import android.database.DataSetObservable;
