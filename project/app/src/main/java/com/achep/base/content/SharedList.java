@@ -283,22 +283,12 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> implements
     }
 
     @Nullable
-    public V put(@NonNull Context context, V object) {
+    public V put(@NonNull Context context, @NonNull V object) {
         return put(context, object, null);
     }
 
     @Nullable
-    public V put(@NonNull Context context, V object, @Nullable OnSharedListChangedListener l) {
-        // Check for correct arguments.
-        if (object == null) {
-            if (Build.DEBUG) {
-                throw new IllegalArgumentException("Argument must be not null!");
-            }
-
-            Log.w(TAG, "Tried to put null to shared list.");
-            return null;
-        }
-
+    public V put(@NonNull Context context, @NonNull V object, @Nullable OnSharedListChangedListener l) {
         boolean growUp = false;
         int pos;
 

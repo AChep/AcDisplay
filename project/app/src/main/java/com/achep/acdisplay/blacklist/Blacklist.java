@@ -183,7 +183,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
      */
     @Nullable
     @Override
-    public AppConfig put(@NonNull Context context, AppConfig object,
+    public AppConfig put(@NonNull Context context, @NonNull AppConfig object,
                          @Nullable OnSharedListChangedListener l) {
         throw new RuntimeException();
     }
@@ -193,7 +193,7 @@ public final class Blacklist extends SharedList<AppConfig, AppConfig.Saver> {
      * {@link #saveAppConfig(Context, AppConfig, SharedList.OnSharedListChangedListener)} instead.
      */
     @Override
-    public void remove(@NonNull Context context, AppConfig object,
+    public void remove(@NonNull Context context, @NonNull AppConfig object,
                        @Nullable OnSharedListChangedListener l) {
         throw new RuntimeException();
     }
