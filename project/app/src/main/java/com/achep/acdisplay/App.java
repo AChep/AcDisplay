@@ -20,26 +20,18 @@ package com.achep.acdisplay;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Base64;
-import android.util.Log;
 
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.base.Build;
+import com.achep.base.billing.CheckoutInternal;
 
-import org.solovyev.android.checkout.Billing;
 import org.solovyev.android.checkout.Checkout;
-import org.solovyev.android.checkout.Inventory;
 import org.solovyev.android.checkout.ProductTypes;
 import org.solovyev.android.checkout.Products;
-import org.solovyev.android.checkout.RobotmediaDatabase;
-import org.solovyev.android.checkout.RobotmediaInventory;
 
 import java.util.Arrays;
-import java.util.concurrent.Executor;
 
 /**
  * Created by Artem on 22.02.14.
@@ -76,82 +68,12 @@ public class App extends Application {
             .add(ProductTypes.SUBSCRIPTION, Arrays.asList(""));
 
     /**
-     * For better performance billing class should be used as singleton
-     */
-    @NonNull
-    private final Billing mBilling = new Billing(this, new Billing.DefaultConfiguration() {
-
-        @NonNull
-        @Override
-        public String getPublicKey() {
-            // TODO: Somehow replace those local variables on build.
-            // final String k = "__BUILD_SCRIPT__:ENCRYPTED_PUBLIC_KEY:";
-            // final String s = "__BUILD_SCRIPT__:ENCRYPTED_PUBLIC_KEY_SALT:";
-            final String k = Build.GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED;
-            final String s = Build.GOOGLE_PLAY_PUBLIC_KEY_SALT;
-            try {
-                return fromX(k, s);
-            } catch (IllegalArgumentException e) {
-                Log.e(TAG, "Failed to decode the public Google Play key!");
-            }
-            return "fail";
-        }
-
-        @Nullable
-        @Override
-        public Inventory getFallbackInventory(@NonNull Checkout checkout,
-                                              @NonNull Executor onLoadExecutor) {
-            if (RobotmediaDatabase.exists(mBilling.getContext())) {
-                return new RobotmediaInventory(checkout, onLoadExecutor);
-            } else {
-                return null;
-            }
-        }
-
-    });
-
-    /**
      * Application wide {@link org.solovyev.android.checkout.Checkout} instance
      * (can be used anywhere in the app). This instance contains all available
      * products in the app.
      */
     @NonNull
-    private final Checkout mCheckout = Checkout.forApplication(mBilling, sProducts);
-
-    /**
-     * Method deciphers previously ciphered message
-     *
-     * @param message ciphered message
-     * @param salt    salt which was used for ciphering
-     * @return deciphered message
-     */
-    @NonNull
-    static String fromX(@NonNull String message, @NonNull String salt)
-            throws IllegalArgumentException {
-        return x(new String(Base64.decode(message, Base64.URL_SAFE)), salt);
-    }
-
-    /**
-     * Symmetric algorithm used for ciphering/deciphering.
-     *
-     * @param message message
-     * @param salt    salt
-     * @return ciphered/deciphered message
-     */
-    @NonNull
-    static String x(@NonNull String message, @NonNull String salt) {
-        final char[] m = message.toCharArray();
-        final char[] s = salt.toCharArray();
-
-        final int ml = m.length;
-        final int sl = s.length;
-        final char[] result = new char[ml];
-
-        for (int i = 0; i < ml; i++) {
-            result[i] = (char) (m[i] ^ s[i % sl]);
-        }
-        return new String(result);
-    }
+    private final CheckoutInternal mCheckoutInternal = new CheckoutInternal(this, sProducts);
 
     @NonNull
     private static App instance;
@@ -166,7 +88,7 @@ public class App extends Application {
         Blacklist.getInstance().init(this);
 
         super.onCreate();
-        mBilling.connect();
+        mCheckoutInternal.getBilling().connect();
 
         // Launch keyguard and (or) active mode on
         // app launch.
@@ -189,7 +111,7 @@ public class App extends Application {
 
     @NonNull
     public static Checkout getCheckout() {
-        return instance.mCheckout;
+        return instance.mCheckoutInternal.getCheckout();
     }
 
 }
