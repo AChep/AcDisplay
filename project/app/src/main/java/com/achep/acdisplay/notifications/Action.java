@@ -39,6 +39,8 @@ import java.lang.reflect.Field;
  * <p/>
  * This is actually a wrapper around {@link android.app.Notification.Action} class that supports both
  * Jelly Bean (via reflections) and KitKat Android versions.
+ *
+ * @author Artem Chepurnoy
  */
 public class Action {
 
@@ -49,16 +51,28 @@ public class Action {
 
     @NonNull
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    static Factory getFactory() {
+    private static Factory getFactory() {
         Factory factory = sFactoryRef.get();
         if (factory == null) {
             factory = Device.hasKitKatApi()
-                    ? new FactoryNative()
-                    : new FactoryReflective();
+                    ? new FactoryKitKat()
+                    : new FactoryJellyBean();
             sFactoryRef = new SoftReference<>(factory);
             return factory;
         }
         return factory;
+    }
+
+    /**
+     * Creates a list of actions based on given {@link android.app.Notification notification}
+     * instance.
+     *
+     * @param notification the notification to create from
+     * @return array of {@link com.achep.acdisplay.notifications.Action actions} or {@code null}
+     */
+    @Nullable
+    public static Action[] makeFor(@NonNull Notification notification) {
+        return getFactory().makeFor(notification);
     }
 
     /**
@@ -101,18 +115,18 @@ public class Action {
          * @return array of {@link com.achep.acdisplay.notifications.Action actions} or {@code null}
          */
         @Nullable
-        public abstract Action[] create(@NonNull Notification notification);
+        public abstract Action[] makeFor(@NonNull Notification notification);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static class FactoryNative extends Factory {
+    private static class FactoryKitKat extends Factory {
 
         /**
          * {@inheritDoc}
          */
         @Nullable
         @Override
-        public Action[] create(@NonNull Notification notification) {
+        public Action[] makeFor(@NonNull Notification notification) {
             Notification.Action[] src = notification.actions;
 
             if (src == null) {
@@ -130,14 +144,14 @@ public class Action {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static class FactoryReflective extends Factory {
+    private static class FactoryJellyBean extends Factory {
 
         /**
          * {@inheritDoc}
          */
         @Nullable
         @Override
-        public Action[] create(@NonNull Notification notification) {
+        public Action[] makeFor(@NonNull Notification notification) {
 
             // Getting actions from stupid Jelly Bean.
             Object[] src;

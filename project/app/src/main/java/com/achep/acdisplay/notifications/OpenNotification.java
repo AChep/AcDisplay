@@ -157,7 +157,7 @@ public class OpenNotification implements
 
     public void load(@NonNull Context context) {
         mMine = TextUtils.equals(getPackageName(), PackageUtils.getName(context));
-        mActions = Action.getFactory().create(mNotification);
+        mActions = Action.makeFor(mNotification);
         mNumber = mNotification.number;
 
         // Load the brand color.
