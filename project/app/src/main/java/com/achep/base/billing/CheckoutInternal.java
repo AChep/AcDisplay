@@ -36,7 +36,7 @@ import org.solovyev.android.checkout.RobotmediaInventory;
 import java.util.concurrent.Executor;
 
 /**
- * @author Artem Chepurnoy 
+ * @author Artem Chepurnoy
  */
 public class CheckoutInternal {
 
@@ -61,10 +61,12 @@ public class CheckoutInternal {
         mCheckout = Checkout.forApplication(mBilling, products);
     }
 
+    @NonNull
     public Billing getBilling() {
         return mBilling;
     }
 
+    @NonNull
     public Checkout getCheckout() {
         return mCheckout;
     }
