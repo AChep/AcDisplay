@@ -73,12 +73,10 @@ import com.achep.acdisplay.ui.components.Widget;
 import com.achep.acdisplay.ui.view.ForwardingLayout;
 import com.achep.acdisplay.ui.view.ForwardingListener;
 import com.achep.acdisplay.ui.widgets.CircleView;
-import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.FloatProperty;
-import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
 

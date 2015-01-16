@@ -34,8 +34,6 @@ import android.util.Log;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationListener;
-import com.achep.acdisplay.notifications.NotificationPresenter;
-import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.base.Device;
 
 /**

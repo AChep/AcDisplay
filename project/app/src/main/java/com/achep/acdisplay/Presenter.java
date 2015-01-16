@@ -33,7 +33,6 @@ import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
 import com.achep.acdisplay.ui.activities.AcDisplayActivity;
 import com.achep.acdisplay.ui.activities.KeyguardActivity;
-import com.achep.base.Build;
 import com.achep.base.utils.power.PowerUtils;
 import com.achep.base.utils.zen.ZenConsts;
 import com.achep.base.utils.zen.ZenUtils;

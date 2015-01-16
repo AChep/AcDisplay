@@ -65,7 +65,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
     private final Handler mHandler;
     private int mHistoryMaximumSize;
 
-    private Program mPocketProgram;
+    private final Program mPocketProgram;
 
     private static class Program {
 
@@ -75,7 +75,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
         private static class Data {
             public final boolean isNear;
             public int timeMin;
-            public long timeMax;
+            public final long timeMax;
 
             public Data(boolean isNear, int timeMin, long timeMax) {
                 this.isNear = isNear;
