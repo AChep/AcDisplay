@@ -29,11 +29,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.transitions.everywhere.TransitionManager;
-import android.transitions.everywhere.hidden.Crossfade;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.achep.acdisplay.Config;
@@ -50,13 +47,9 @@ public abstract class DynamicBackground {
 
     protected static final String TAG = "DynamicBackground";
 
-    private static final boolean TRANSITION_IS_NOT_BUGGY = false;
-
     public static DynamicBackground newInstance(@NonNull AcDisplayFragment fragment,
                                                 @Nullable ImageView imageView) {
-        return TRANSITION_IS_NOT_BUGGY
-                ? new DynamicBackgroundTransition(fragment, imageView)
-                : new DynamicBackgroundCompat(fragment, imageView);
+        return new DynamicBackgroundCompat(fragment, imageView);
     }
 
     protected final AcDisplayFragment mFragment;
@@ -119,46 +112,6 @@ public abstract class DynamicBackground {
         } else {
             dispatchSetBackgroundInternal(bitmap);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    private static class DynamicBackgroundTransition extends DynamicBackground {
-
-        private Crossfade mTransition;
-
-        /**
-         * {@inheritDoc}
-         */
-        DynamicBackgroundTransition(
-                @NonNull AcDisplayFragment fragment,
-                @Nullable ImageView imageView) {
-            super(fragment, imageView);
-        }
-
-        @Override
-        protected void initBackground() {
-            assert mImageView != null;
-
-            mTransition = new Crossfade();
-            mTransition.addTarget(mImageView);
-        }
-
-        @Override
-        protected void dispatchSetBackgroundInternal(@Nullable Bitmap bitmap) {
-            assert mImageView != null;
-
-            if (mImageView.getWidth() > 0 && mImageView.getHeight() > 0) {
-                // Avoid of bug in Crossfade.java that causes 0-sized Bitmap to be
-                // created.
-                // https://github.com/andkulikov/transitions-everywhere/blob/master/library/src/main/java/android/transitions/everywhere/hidden/Crossfade.java
-                TransitionManager.beginDelayedTransition((ViewGroup) mFragment.getView(), mTransition);
-            }
-
-            mImageView.setImageBitmap(bitmap);
-        }
-
     }
 
     /**

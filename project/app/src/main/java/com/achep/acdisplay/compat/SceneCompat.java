@@ -18,9 +18,11 @@
  */
 package com.achep.acdisplay.compat;
 
-import android.transitions.everywhere.Scene;
+import android.transition.Scene;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.achep.base.Device;
 
 /**
  * This is a restricted {@link android.transition.Scene} compatibility
@@ -31,10 +33,14 @@ import android.view.ViewGroup;
 public class SceneCompat {
 
     private final ViewGroup mView;
-    private final Scene mScene;
+    private final ViewGroup mParent;
+    private Scene mScene;
 
     public SceneCompat(ViewGroup parent, ViewGroup view) {
-        mScene = new Scene(parent, (View) view);
+        if (Device.hasKitKatApi()) {
+            mScene = new Scene(parent, view);
+        }
+        mParent = parent;
         mView = view;
     }
 
@@ -44,6 +50,15 @@ public class SceneCompat {
 
     public ViewGroup getView() {
         return mView;
+    }
+
+    public void enter() {
+        if (Device.hasKitKatApi()) {
+            mScene.enter();
+        } else {
+            mParent.removeAllViews();
+            mParent.addView(mView);
+        }
     }
 
 }

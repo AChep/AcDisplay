@@ -30,7 +30,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.graphics.Palette;
-import android.transitions.everywhere.TransitionManager;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -205,7 +205,9 @@ public class MediaWidget extends Widget implements
      * provided by {@link com.achep.acdisplay.services.media.MediaController2#getMetadata()}.
      */
     private void populateMetadata() {
-        TransitionManager.beginDelayedTransition(getView());
+        if (Device.hasKitKatApi()) {
+            TransitionManager.beginDelayedTransition(getView());
+        }
 
         Metadata metadata = mMediaController.getMetadata();
         ViewUtils.safelySetText(mTitleView, metadata.title);

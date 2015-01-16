@@ -33,12 +33,12 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.transitions.everywhere.ChangeBounds;
-import android.transitions.everywhere.Fade;
-import android.transitions.everywhere.Scene;
-import android.transitions.everywhere.Transition;
-import android.transitions.everywhere.TransitionManager;
-import android.transitions.everywhere.TransitionSet;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.Scene;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.Log;
 import android.util.Property;
 import android.view.GestureDetector;
@@ -73,6 +73,7 @@ import com.achep.acdisplay.ui.components.Widget;
 import com.achep.acdisplay.ui.view.ForwardingLayout;
 import com.achep.acdisplay.ui.view.ForwardingListener;
 import com.achep.acdisplay.ui.widgets.CircleView;
+import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.TextView;
@@ -248,15 +249,17 @@ public class AcDisplayFragment extends Fragment implements
         mMediaWidget = new MediaWidget(this, this);
 
         // Transitions
-        mTransitionJit = new TransitionSet()
-                .setOrdering(TransitionSet.ORDERING_TOGETHER)
-                .addTransition(new Fade())
-                .addTransition(new ChangeBounds());
-        mTransitionSwitchScene = new TransitionSet()
-                .setOrdering(TransitionSet.ORDERING_TOGETHER)
-                .addTransition(new Fade(Fade.OUT).setDuration(200))
-                .addTransition(new Fade(Fade.IN).setStartDelay(80))
-                .addTransition(new ChangeBounds().setStartDelay(80));
+        if (Device.hasKitKatApi()) {
+            mTransitionJit = new TransitionSet()
+                    .setOrdering(TransitionSet.ORDERING_TOGETHER)
+                    .addTransition(new Fade())
+                    .addTransition(new ChangeBounds());
+            mTransitionSwitchScene = new TransitionSet()
+                    .setOrdering(TransitionSet.ORDERING_TOGETHER)
+                    .addTransition(new Fade(Fade.OUT).setDuration(200))
+                    .addTransition(new Fade(Fade.IN).setStartDelay(80))
+                    .addTransition(new ChangeBounds().setStartDelay(80));
+        }
 
         // Timeout
         mTimeout = isNotDemo()
@@ -730,6 +733,8 @@ public class AcDisplayFragment extends Fragment implements
         mHandler.removeMessages(MSG_SHOW_HOME_WIDGET);
         mHasPinnedWidget = false;
 
+        Log.d(TAG, "showing widget " + widget);
+
         View iconView;
 
         if (mSelectedWidget != null) {
@@ -751,9 +756,7 @@ public class AcDisplayFragment extends Fragment implements
             goScene(scene, animate);
         } else if (animate) {
             final ViewGroup viewGroup = mSelectedWidget.getView();
-            if (viewGroup != null) {
-                TransitionManager.beginDelayedTransition(viewGroup, mTransitionJit);
-            }
+            beginDelayedTransition(viewGroup, mTransitionJit);
         }
 
         mSelectedWidget.onViewAttached();
@@ -875,13 +878,17 @@ public class AcDisplayFragment extends Fragment implements
      */
     @SuppressLint("NewApi")
     protected final void goScene(@NonNull SceneCompat sceneCompat, boolean animate) {
-        if (mCurrentScene == sceneCompat) {
+        if (mCurrentScene == sceneCompat) return;
+        mCurrentScene = sceneCompat;
+        Log.w(TAG, "Going to " + sceneCompat);
+
+        if (!animate) {
+            sceneCompat.enter();
             return;
         }
 
-        mCurrentScene = sceneCompat;
-        final Scene scene = sceneCompat.getScene();
-        if (animate) {
+        if (Device.hasKitKatApi()) {
+            final Scene scene = sceneCompat.getScene();
             try {
                 // This must be a synchronization problem with Android's Scene or TransitionManager,
                 // but those were declared as final classes, so I have no idea how to fix it.
@@ -906,7 +913,18 @@ public class AcDisplayFragment extends Fragment implements
 
                 TransitionManager.go(scene, mTransitionSwitchScene);
             }
-        } else scene.enter();
+        } else {
+            sceneCompat.enter();
+
+            if (getActivity() != null) {
+                // TODO: Better animation for Jelly Bean users.
+                float density = getResources().getDisplayMetrics().density;
+                getSceneView().setAlpha(0.4f);
+                getSceneView().setRotationX(10f);
+                getSceneView().setTranslationY(10f * density);
+                getSceneView().animate().alpha(1).rotationX(0).translationY(0);
+            }
+        }
     }
 
     //-- DYNAMIC BACKGROUND ---------------------------------------------------
@@ -1047,9 +1065,7 @@ public class AcDisplayFragment extends Fragment implements
                     if (DEBUG) Log.d(TAG, "[Event] Updating notification widget...");
                     if (isCurrentWidget(widgetPrev)) {
                         final ViewGroup viewGroup = widgetPrev.getView();
-                        if (viewGroup != null) {
-                            beginDelayedTransition(viewGroup, mTransitionJit);
-                        }
+                        beginDelayedTransition(viewGroup, mTransitionJit);
                     }
                     widgetPrev.setNotification(osbn);
                     break;
@@ -1300,9 +1316,15 @@ public class AcDisplayFragment extends Fragment implements
 
     //-- OTHER CLASSES --------------------------------------------------------
 
+    @SuppressLint("NewApi")
     private void beginDelayedTransition(@Nullable ViewGroup sceneRoot,
                                         @Nullable Transition transition) {
-        if (!isPowerSaveMode()) TransitionManager.beginDelayedTransition(sceneRoot, transition);
+        if (Device.hasKitKatApi()
+                && !isPowerSaveMode()
+                && sceneRoot != null
+                && sceneRoot.isLaidOut()) {
+            TransitionManager.beginDelayedTransition(sceneRoot, transition);
+        }
     }
 
     /**

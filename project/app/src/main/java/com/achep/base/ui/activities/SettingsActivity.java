@@ -34,7 +34,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.transitions.everywhere.TransitionManager;
+import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Xml;
@@ -42,6 +42,7 @@ import android.view.ViewGroup;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.activities.Settings2;
+import com.achep.base.Device;
 import com.achep.base.dashboard.DashboardCategory;
 import com.achep.base.dashboard.DashboardTile;
 import com.achep.base.ui.fragments.DashboardFragment;
@@ -415,7 +416,7 @@ public abstract class SettingsActivity extends ActivityBase implements
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_content, f);
 
-        if (withTransition) TransitionManager.beginDelayedTransition(mContent);
+        if (withTransition && Device.hasKitKatApi()) TransitionManager.beginDelayedTransition(mContent);
         if (addToBackStack) transaction.addToBackStack(SettingsActivity.BACK_STACK_PREFS);
         if (titleResId > 0) {
             transaction.setBreadCrumbTitle(titleResId);
