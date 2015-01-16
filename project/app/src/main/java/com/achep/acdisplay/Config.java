@@ -205,7 +205,7 @@ public final class Config extends ConfigBase {
                 res.getInteger(R.integer.config_default_ui_icon_size_dp));
         mUiCircleColorInner = prefs.getInt(KEY_UI_CIRCLE_COLOR_INNER, 0xFFF0F0F0);
         mUiCircleColorOuter = prefs.getInt(KEY_UI_CIRCLE_COLOR_OUTER, 0xFF303030);
-        mUiOverrideFonts = prefs.getBoolean(KEY_UI_UNLOCK_ANIMATION,
+        mUiOverrideFonts = prefs.getBoolean(KEY_UI_OVERRIDE_FONTS,
                 res.getBoolean(R.bool.config_default_ui_override_fonts));
 
         // development
