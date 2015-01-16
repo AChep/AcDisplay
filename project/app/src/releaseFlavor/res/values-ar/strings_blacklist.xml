@@ -25,6 +25,6 @@
   <string name="blacklist_app_hide_summary">لن يتم عرض أي إخطارات من هذا التطبيق.</string>
   <string name="blacklist_app_restricted_title">صامت</string>
   <string name="blacklist_app_restricted_summary">لا تشغل الشاشة اذا ظهر إخطار.</string>
-  <string name="blacklist_app_non_clearable_title">إشعارات لا تلغى</string>
-  <string name="blacklist_app_non_clearable_summary">إظهار الإشعارات التي لا تلغى، مثل التي من الخدمات.</string>
+  <string name="blacklist_app_non_clearable_title">الإشعارات غير القابلة للاستبعاد</string>
+  <string name="blacklist_app_non_clearable_summary">إظهار الإشعارات غير القابلة للاستبعاد، كتلك التي ترسلها التطبيقات الخدميّة.</string>
 </resources>

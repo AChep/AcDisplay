@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Пробуди се са обавештењем</string>
   <string name="settings_notify_min_priority_title">Минимални приоритет</string>
   <string name="settings_notify_max_priority_title">Максимални приоритет</string>
-  <string name="settings_low_priority_notifications_title">Обавештења ниског приоритета</string>
-  <string name="settings_low_priority_notifications_on">Сва обаваштења су приказана.</string>
-  <string name="settings_low_priority_notifications_off">Обавештења ниског приоритета, као што су од стране Google Now-а, нису приказане.</string>
   <string name="settings_full_screen_title">Преко читавог екрана режим</string>
   <string name="settings_use_wallpaper_title">Корист позадину</string>
   <string name="settings_use_wallpaper_on">Твоја слика са главног екрана се користи као позадина.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Деактивирај</string>
   <string name="settings_status_battery_always_visible">Задржи статус батерије</string>
   <string name="settings_status_battery_always_visible_off">Статус батерије се приказује када је батерија при крају или током пуњења.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

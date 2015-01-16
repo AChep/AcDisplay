@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">알림이 올 때마다 화면 켜기</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">비우선 알림</string>
-  <string name="settings_low_priority_notifications_on">모든 알림들이 표시 됩니다.</string>
-  <string name="settings_low_priority_notifications_off">Google Now와 같은 비우선 알림들은 나타나지 않습니다.</string>
   <string name="settings_full_screen_title">전체 화면 모드</string>
   <string name="settings_use_wallpaper_title">배경하면 사용</string>
   <string name="settings_use_wallpaper_on">기기 배경화면을 잠금화면 배경화면으로 사용합니다.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">비활성화</string>
   <string name="settings_status_battery_always_visible">배터리 상태 표시</string>
   <string name="settings_status_battery_always_visible_off">배터리가 얼마 남지 않거나 충전중일 때 배터리 상태가 표시됩니다.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

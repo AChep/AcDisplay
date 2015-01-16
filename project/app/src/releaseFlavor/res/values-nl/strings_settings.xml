@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Wakker worden bij meldingen</string>
   <string name="settings_notify_min_priority_title">Minimale prioriteit</string>
   <string name="settings_notify_max_priority_title">Maximale prioriteit</string>
-  <string name="settings_low_priority_notifications_title">Meldingen met lage prioriteit</string>
-  <string name="settings_low_priority_notifications_on">Alle meldingen worden weergegeven.</string>
-  <string name="settings_low_priority_notifications_off">Meldingen met een lage prioriteit, zoals die van Google Now, worden niet weergeven.</string>
   <string name="settings_full_screen_title">Volledig scherm modus</string>
   <string name="settings_use_wallpaper_title">Gebruik achtergrond</string>
   <string name="settings_use_wallpaper_on">Je home-scherm\'s achtergrond wordt gebruikt als achtergrond.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Uitgeschakeld</string>
   <string name="settings_status_battery_always_visible">Batterij percentage altijd tonen</string>
   <string name="settings_status_battery_always_visible_off">Status van de batterij wordt weergegeven wanneer deze bijna leeg is of wanneer het apparaat opgeladen wordt.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Ontgrendel cirkel</string>
   <string name="settings_circle_animation_title">Ontgrendel animatie</string>
   <string name="settings_circle_color_inner_title">Cirkel kleur</string>

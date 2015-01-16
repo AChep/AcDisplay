@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Accendi lo schermo quando arriva una notifica</string>
   <string name="settings_notify_min_priority_title">Priorità minima</string>
   <string name="settings_notify_max_priority_title">Priorità massima</string>
-  <string name="settings_low_priority_notifications_title">Notifiche a bassa priorità</string>
-  <string name="settings_low_priority_notifications_on">Vengono visualizzate tutte le notifiche.</string>
-  <string name="settings_low_priority_notifications_off">Le notifiche a bassa priorità come quelle di Google Now non vengono visualizzate.</string>
   <string name="settings_full_screen_title">Modalità a schermo intero</string>
   <string name="settings_use_wallpaper_title">Usa uno sfondo</string>
   <string name="settings_use_wallpaper_on">Lo sfondo della tua home screen è usato come immagine di sfondo.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Disattivato</string>
   <string name="settings_status_battery_always_visible">Attiva icona della batteria</string>
   <string name="settings_status_battery_always_visible_off">Lo stato della batteria è mostrato quando il livello di carica è basso o quando il dispositivo è in carica.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Cerchio di sblocco</string>
   <string name="settings_circle_animation_title">Animazione di sblocco</string>
   <string name="settings_circle_color_inner_title">Colore del cerchio</string>

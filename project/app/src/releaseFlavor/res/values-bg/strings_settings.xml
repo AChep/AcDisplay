@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Събуди телефона при ново известие</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">Известия с нисък приоритет</string>
-  <string name="settings_low_priority_notifications_on">Всички известия се показват.</string>
-  <string name="settings_low_priority_notifications_off">Известия с нисък приоритет, като тези от Google Now не се показват.</string>
   <string name="settings_full_screen_title">Режим на цял екран</string>
   <string name="settings_use_wallpaper_title">Използвай тапет</string>
   <string name="settings_use_wallpaper_on">Ще се използва тапета на началния Ви екран.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Изключено</string>
   <string name="settings_status_battery_always_visible">Запази статуса на батерията</string>
   <string name="settings_status_battery_always_visible_off">Състоянието на батерията се показва при малко батерия или когато телефона се зарежда.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

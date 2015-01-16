@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Bildirim geldiğinde uyandır</string>
   <string name="settings_notify_min_priority_title">En düşük öncelik</string>
   <string name="settings_notify_max_priority_title">En yüksek öncelik</string>
-  <string name="settings_low_priority_notifications_title">Düşük öncelikli bildirimler</string>
-  <string name="settings_low_priority_notifications_on">Tüm bildirimler gösterilir.</string>
-  <string name="settings_low_priority_notifications_off">Google Now\'dan olanlar gibi, düşük öncelikli bildirimler gösterilmez.</string>
   <string name="settings_full_screen_title">Tam ekran modu</string>
   <string name="settings_use_wallpaper_title">Duvar kağıdı kullan</string>
   <string name="settings_use_wallpaper_on">Ana ekran duvar kağıdı arka plan olarak kullanılır.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Etkin değil</string>
   <string name="settings_status_battery_always_visible">Pil durumunu göster</string>
   <string name="settings_status_battery_always_visible_off">Pil durumu düşük seviye durumunda veya prize takılı olduğu zaman gösterilir.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Açma halkası</string>
   <string name="settings_circle_animation_title">Kilit animasyonu</string>
   <string name="settings_circle_color_inner_title">Halka rengi</string>

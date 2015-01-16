@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">必要なアクセス許可:</string>
   <string name="permissions_device_admin">デバイス管理</string>
   <string name="permissions_device_admin_removed">AcDisplay は、デバイス管理から削除されています。</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">何も起こりませんか? 手動でアクセス許可を与えてください: %1$s</string>
   <string name="permissions_device_admin_description">画面タイムアウト ポリシーを管理するために必要です。</string>
   <string name="permissions_device_admin_grant_manually">設定 &gt; セキュリティ &gt; デバイス管理に移動し AcDisplay をチェックします。</string>
   <string name="permissions_notifications">通知</string>

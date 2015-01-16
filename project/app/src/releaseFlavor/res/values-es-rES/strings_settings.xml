@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Despertar con una notificación</string>
   <string name="settings_notify_min_priority_title">Prioridad mínima</string>
   <string name="settings_notify_max_priority_title">Máxima prioridad</string>
-  <string name="settings_low_priority_notifications_title">Notificaciones de baja prioridad</string>
-  <string name="settings_low_priority_notifications_on">Se muestran todas las notificaciones.</string>
-  <string name="settings_low_priority_notifications_off">Notificaciones de baja prioridad como las de Google now, no serán mostradas.</string>
   <string name="settings_full_screen_title">Modo a pantalla completa</string>
   <string name="settings_use_wallpaper_title">Usar fondo de escritorio</string>
   <string name="settings_use_wallpaper_on">Tu fondo de pantalla es usado como fondo.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Desactivado</string>
   <string name="settings_status_battery_always_visible">Mantener estado de bateria</string>
   <string name="settings_status_battery_always_visible_off">El estado de la bateria se muestra cuando la carga es baja o cuando se está cargando.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Círculo de desbloqueo</string>
   <string name="settings_circle_animation_title">Animación de desbloqueo</string>
   <string name="settings_circle_color_inner_title">Color del círculo</string>

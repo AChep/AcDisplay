@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Herätä ilmoituksen saapuessa</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">Matalan tärkeyden ilmoitukset</string>
-  <string name="settings_low_priority_notifications_on">Kaikki ilmoitukset näytetään.</string>
-  <string name="settings_low_priority_notifications_off">Matalan tärkeyden ilmoitukset, kuten Google Now eivät tule näkyviin.</string>
   <string name="settings_full_screen_title">Kokonäyttötila</string>
   <string name="settings_use_wallpaper_title">Käytä taustakuvaa</string>
   <string name="settings_use_wallpaper_on">Kotinäyttösi taustakuva on käytössä taustalla.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Poissa käytöstä</string>
   <string name="settings_status_battery_always_visible">Näytä akun tila</string>
   <string name="settings_status_battery_always_visible_off">Akun tila näkyy alhaisen varauksen tai latauksen aikana.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

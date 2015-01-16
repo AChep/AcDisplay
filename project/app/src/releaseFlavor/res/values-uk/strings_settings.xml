@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Прокидатися під час надходження сповіщеня</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">Сповіщення з низьким пріоритетом</string>
-  <string name="settings_low_priority_notifications_on">Показуються всі сповіщення.</string>
-  <string name="settings_low_priority_notifications_off">Сповіщення з низьким пріоритетом (як-от від Google Now) не показуються.</string>
   <string name="settings_full_screen_title">Повноекранний режим</string>
   <string name="settings_use_wallpaper_title">Використовувати шпалери</string>
   <string name="settings_use_wallpaper_on">Шпалери з головного екрана використовуються в якості фону.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Вимкнено</string>
   <string name="settings_status_battery_always_visible">Показувати стан акумулятора</string>
   <string name="settings_status_battery_always_visible_off">Показувати стан акумулятора тільки при низькому заряді або при підключенні до ПК.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

@@ -32,7 +32,7 @@
   <string name="donation_50">一块固态硬盘</string>
   <string name="donation_99">一套音响系统</string>
   <string name="cry_dialog_title">支持开发</string>
-  <string name="cry_dialog_message"><![CDATA[AcDisplay 是一款自由且 <a href="http://repo.acdisplay.org"> 开放源码</a> 的应用程序。我们为此花费大量的时间和资源，为了让它可以日臻完善，请考虑捐赠给我们捐赠以表达你的谢意，并支持进一步开发。]]></string>
+  <string name="cry_dialog_message"><![CDATA[AcDisplay 是一款自由且 <a href="http://repo.acdisplay.org"> 开放源码</a> 的应用程序。我们为此花费大量的时间和资源，为了让它可以日臻完善，请考虑给我们捐赠以表达你的谢意，并支持进一步开发。]]></string>
   <string name="help_dialog_title">帮助</string>
   <string name="feedback_dialog_title">反馈</string>
   <string name="feedback_dialog_message_hint">您的消息将自动包含设备信息。</string>

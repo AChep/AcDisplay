@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>Težava</item>
     <item>Predlog</item>
     <item>Drugo</item>
   </string-array>
@@ -29,10 +29,10 @@
     <item>Ikona obvestila</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
-    <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Kritično in nujno (zgrešeni klici, navodila, opozorila)</item>
+    <item>Pomembno (komunikacija, pomembna pošta)</item>
+    <item>Normalna (+ obvestila iz stare aplikacije)</item>
+    <item>Zanemarljivo (posodobitve, neželena pošta)</item>
+    <item>Kontekstne in druge informacije (vreme, potekli dogodki, predlogi)</item>
   </string-array>
 </resources>

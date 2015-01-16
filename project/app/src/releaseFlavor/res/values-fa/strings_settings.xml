@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">اعلان‌های کم اولویت</string>
-  <string name="settings_low_priority_notifications_on">All notifications are shown.</string>
-  <string name="settings_low_priority_notifications_off">Low-priority notifications such as those from Google Now aren\'t shown.</string>
   <string name="settings_full_screen_title">حالت تمام صفحه</string>
   <string name="settings_use_wallpaper_title">Use wallpaper</string>
   <string name="settings_use_wallpaper_on">Your home screen\'s wallpaper is used as the background.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">غیرفعال</string>
   <string name="settings_status_battery_always_visible">حفظ وضعیت باتری</string>
   <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

@@ -20,19 +20,19 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
-    <item>Suggestion</item>
-    <item>Other</item>
+    <item>Problema</item>
+    <item>suggerència</item>
+    <item>Altre</item>
   </string-array>
   <string-array name="dynamic_background">
-    <item>Artwork</item>
-    <item>Notification icon</item>
+    <item>Il·lustració</item>
+    <item>Icona de notificació</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
-    <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Crític i urgent (trucades perdudes, adreces, alertes d\'emergència)</item>
+    <item>Important (comunicacions, correus importants)</item>
+    <item>Normal (+notificacions d\'aplicacions antigues)</item>
+    <item>Sense importància (actualitzacions de software, correu no desitjat)</item>
+    <item>Informació contextual i en segon pla (el temps, esdeveniments passats, suggerències)</item>
   </string-array>
 </resources>

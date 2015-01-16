@@ -29,10 +29,10 @@
     <item>Notificatie icoon</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Kritiek en urgent(gemiste oproepen, navigatie, nood meldingen)</item>
+    <item>Kritisch en urgent (gemiste oproepen, navigatie, noodmeldingen)</item>
     <item>Belangrijk (communicatie, belangrijke mail)</item>
     <item>Normaal (+meldingen van oude apps)</item>
-    <item>Niet belangrijk(software updates, junk mail)</item>
+    <item>Niet belangrijk (software updates, junk mail)</item>
     <item>Contextuele en achtergrond informatie (weer, oude evenementen, suggesties)</item>
   </string-array>
 </resources>

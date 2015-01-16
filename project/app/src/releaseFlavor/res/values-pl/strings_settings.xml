@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Wybudź po powiadomieniu</string>
   <string name="settings_notify_min_priority_title">Minimalny priorytet</string>
   <string name="settings_notify_max_priority_title">Maksymalny priorytet</string>
-  <string name="settings_low_priority_notifications_title">Powiadomienia o niskim priorytecie</string>
-  <string name="settings_low_priority_notifications_on">Wszystkie powiadomienia są wyświetlane.</string>
-  <string name="settings_low_priority_notifications_off">Powiadomienia o niskim priorytecie takie jak np. z Google Now nie będą wyświetlane.</string>
   <string name="settings_full_screen_title">Tryb pełnoekranowy</string>
   <string name="settings_use_wallpaper_title">Użyj tapety</string>
   <string name="settings_use_wallpaper_on">Tapeta twojego ekranu głównego jest użyta jako tło.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Wyłączone</string>
   <string name="settings_status_battery_always_visible">Wyświetlaj stan baterii</string>
   <string name="settings_status_battery_always_visible_off">Stan baterii wyświetli się przy niskim poziomie naładowania baterii lub jeśli telefon jest podłączony do ładowarki.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

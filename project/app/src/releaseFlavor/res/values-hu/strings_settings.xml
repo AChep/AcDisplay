@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Értesítésre ébreszt</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">Alacsony prioritású értesítések</string>
-  <string name="settings_low_priority_notifications_on">Minden értesítés megjelenítve.</string>
-  <string name="settings_low_priority_notifications_off">Alacsony prioritású értesítések elrejtése, mint például Google Now.</string>
   <string name="settings_full_screen_title">Teljes képernyős mód</string>
   <string name="settings_use_wallpaper_title">Háttérkép használata</string>
   <string name="settings_use_wallpaper_on">Főoldal háttérképének használata háttérképként.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Letiltva</string>
   <string name="settings_status_battery_always_visible">Akkumulátor állapot megtartása</string>
   <string name="settings_status_battery_always_visible_off">Akkumulátor állapot megjelenítése alacsony töltöttség, vagy csatlakoztatás esetén.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

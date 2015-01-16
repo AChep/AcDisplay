@@ -25,7 +25,7 @@
   <string name="permissions_dialog_title">Permissions requises :</string>
   <string name="permissions_device_admin">Administrateur de l\'appareil</string>
   <string name="permissions_device_admin_removed">AcDisplay a été retiré des administrateurs de l\'appareil.</string>
-  <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
+  <string name="permissions_device_admin_troubleshooting">Il ne s\'est rien passé ? Accordez la permission manuellement : %1$s</string>
   <string name="permissions_device_admin_description">Requis pour gérer la stratégie de délai de l\'extinction de l\'écran.</string>
   <string name="permissions_device_admin_grant_manually">Allez dans Paramètres &gt; Sécurité &gt; Administrateurs de l\'appareil puis cochez AcDisplay.</string>
   <string name="permissions_notifications">Notifications</string>

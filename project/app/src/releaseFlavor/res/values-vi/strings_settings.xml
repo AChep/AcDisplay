@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Tự bật màn hình khi có thông báo</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">Thông báo có mức độ ưu tiên thấp</string>
-  <string name="settings_low_priority_notifications_on">Tất cả thông báo được hiển thị.</string>
-  <string name="settings_low_priority_notifications_off">Thông báo có mức ưu tiên thấp chẳng hạn như từ Google Now sẽ không hiển thị.</string>
   <string name="settings_full_screen_title">Chế độ toàn màn hình</string>
   <string name="settings_use_wallpaper_title">Sử dụng hình nền</string>
   <string name="settings_use_wallpaper_on">Sử dụng hình nền của màn hình chính.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Tắt</string>
   <string name="settings_status_battery_always_visible">Giữ trạng thái pin</string>
   <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

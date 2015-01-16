@@ -21,7 +21,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_description">AcDisplay es una nueva forma de gestionar las notificaciones en Android. Le informará sobre  nuevas notificaciones con una simple y hermosa interfaz, la cual le permitirá abrir sus notificaciones directamente desde la pantalla de bloqueo. Y si además quiere ver lo que está pasando, sólo tiene que tomar el teléfono de su bolsillo y le mostrará  todas las últimas notificaciones, de una manera  agradable y minimalista.</string>
   <string name="plugin_xposed_description">Ayuda a AcDisplay tener una integración más profunda en Android.</string>
-  <string name="permissions_auto_disabled">AcDisplay ha sido apagado porque le faltan algunos permisos.</string>
+  <string name="permissions_auto_disabled">AcDisplay ha sido desactivado porque le faltan algunos permisos.</string>
   <string name="permissions_dialog_title">Permisos necesarios:</string>
   <string name="permissions_device_admin">Administrador de dispositivo</string>
   <string name="permissions_device_admin_removed">AcDisplay se ha eliminado de los administradores del dispositivo.</string>

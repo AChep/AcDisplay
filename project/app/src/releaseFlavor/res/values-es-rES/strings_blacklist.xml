@@ -25,6 +25,6 @@
   <string name="blacklist_app_hide_summary">No se mostrarán las notificaciones de esta aplicación.</string>
   <string name="blacklist_app_restricted_title">Silencioso</string>
   <string name="blacklist_app_restricted_summary">No despertar cuando se reciba una notificación.</string>
-  <string name="blacklist_app_non_clearable_title">Notificaciones no desechables</string>
-  <string name="blacklist_app_non_clearable_summary">Mostrar las notificaciones no desechables, como las de servicios.</string>
+  <string name="blacklist_app_non_clearable_title">Notificaciones no eliminables</string>
+  <string name="blacklist_app_non_clearable_summary">Mostrar las notificaciones no eliminables, como las de servicios.</string>
 </resources>

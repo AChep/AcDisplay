@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Probudit při příchozím oznámení</string>
   <string name="settings_notify_min_priority_title">Minimální priorita</string>
   <string name="settings_notify_max_priority_title">Maximální priorita</string>
-  <string name="settings_low_priority_notifications_title">Oznámení s nižší prioritou</string>
-  <string name="settings_low_priority_notifications_on">Zobrazují se všechna oznámení</string>
-  <string name="settings_low_priority_notifications_off">Oznámení s nižší prioritou (např. Google Now) se nezobrazují</string>
   <string name="settings_full_screen_title">Celoobrazovkový režim</string>
   <string name="settings_use_wallpaper_title">Nastavit tapetu jako pozadí</string>
   <string name="settings_use_wallpaper_on">Tapeta domovské obrazovky je nastavena jako pozadí</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Zakázáno</string>
   <string name="settings_status_battery_always_visible">Zobrazit stav baterie</string>
   <string name="settings_status_battery_always_visible_off">Stav baterie je zobrazen při nízké úrovni nabití nebo během nabíjení.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

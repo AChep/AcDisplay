@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>בעיה</item>
     <item>הצעה</item>
     <item>אחר</item>
   </string-array>

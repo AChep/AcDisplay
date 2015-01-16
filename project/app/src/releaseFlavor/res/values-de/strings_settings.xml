@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Bei Benachrichtigung anschalten</string>
   <string name="settings_notify_min_priority_title">Minimale Priorität</string>
   <string name="settings_notify_max_priority_title">Höchste Priorität</string>
-  <string name="settings_low_priority_notifications_title">Benachrichtigungen niedriger Priorität</string>
-  <string name="settings_low_priority_notifications_on">Alle Benachrichtigungen werden angezeigt.</string>
-  <string name="settings_low_priority_notifications_off">Benachrichtigungen niedriger Priorität, wie die von Google Now, werden nicht angezeigt.</string>
   <string name="settings_full_screen_title">Vollbild-Modus</string>
   <string name="settings_use_wallpaper_title">Hintergrundbild benutzen</string>
   <string name="settings_use_wallpaper_on">Dein voreingestellter Hintergrund wird verwendet.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Deaktiviert</string>
   <string name="settings_status_battery_always_visible">Ladezustand immer anzeigen</string>
   <string name="settings_status_battery_always_visible_off">Ladezustand der Batterie während des Ladens oder bei niedrigem Akkustand anzeigen.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Entsperrungs-Kreis</string>
   <string name="settings_circle_animation_title">Entsperranimation</string>
   <string name="settings_circle_color_inner_title">Kreisfarbe</string>

@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Αφύπνιση όταν υπάρχει ειδοποίηση</string>
   <string name="settings_notify_min_priority_title">Ελάχιστη προτεραιότητα</string>
   <string name="settings_notify_max_priority_title">Ύψιστη προτεραιότητα</string>
-  <string name="settings_low_priority_notifications_title">Ειδοποιήσεις χαμηλής προτεραιότητας</string>
-  <string name="settings_low_priority_notifications_on">Εμφανίζονται όλες οι ειδοποιήσεις</string>
-  <string name="settings_low_priority_notifications_off">Δεν εμφανίζονται ειδοποιήσεις χαμηλής προτεραιότητας όπως αυτές του Google Now</string>
   <string name="settings_full_screen_title">Λειτουργία πλήρους οθόνης</string>
   <string name="settings_use_wallpaper_title">Χρήση εικόνας φόντου</string>
   <string name="settings_use_wallpaper_on">Η εικόνα της οθόνης αφετηρίας σας χρησιμοποιείται ως φόντο.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Ανενεργό</string>
   <string name="settings_status_battery_always_visible">Διατήρηση κατάστασης μπαταρίας</string>
   <string name="settings_status_battery_always_visible_off">Η κατάσταση της μπαταρίας θα εμφανίζεται σε χαμηλό επίπεδο φόρτισης ή κατά την διάρκεια της φόρτισης.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Κύκλος ξεκλειδώματος</string>
   <string name="settings_circle_animation_title">Κίνηση ξεκλειδώματος</string>
   <string name="settings_circle_color_inner_title">Χρώμα κύκλου</string>

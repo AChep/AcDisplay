@@ -19,36 +19,26 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="about_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
-        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
-        <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
-    ]]></string>
-  <string name="donate_dialog_title">Donate to developers</string>
-  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
-  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
-  <string name="donate_thanks">Thank you very much!</string>
-  <string name="donation_1">An ice cream</string>
-  <string name="donation_4">A cup of coffee</string>
-  <string name="donation_10">Electricity bills</string>
-  <string name="donation_20">The right pillow</string>
-  <string name="donation_50">Solid-state drive</string>
-  <string name="donation_99">Sound system</string>
-  <string name="cry_dialog_title">Support development</string>
-  <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
-    ]]></string>
+  <string name="about_dialog_message"><![CDATA[         AcDisplay est une application gratuite et <a href="http://repo.acdisplay.org"> open source</a>.         Copyright 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Tous droits réservés. <br/>         <br/> Un grand merci à ces outils open source : %1$s et à tous ceux qui <a href="http://translate.acdisplay.org"> ont aidé avec les traductions</a> ou avec des donations.     ]]></string>
+  <string name="donate_dialog_title">Faire un don aux développeurs</string>
+  <string name="donate_dialog_message">AcDisplay est une application gratuite et open source. Vous pouvez montrer votre reconnaissance et soutenir le développement en faisant un don :</string>
+  <string name="donate_alert_no_responsibility">Notez que Google n\'est pas responsable pour cette méthode de paiement.</string>
+  <string name="donate_billing_not_supported">Les microtransactions ne sont pas pris en compte sur cet appareil.</string>
+  <string name="donate_thanks">Merci beaucoup !</string>
+  <string name="donation_1">Une glace</string>
+  <string name="donation_4">Une tasse de café</string>
+  <string name="donation_10">Factures d\'électricité</string>
+  <string name="donation_20">Un bon oreiller</string>
+  <string name="donation_50">SSD</string>
+  <string name="donation_99">Chaîne HiFi</string>
+  <string name="cry_dialog_title">Soutenir le développement</string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay est une application gratuite et <a href="http://repo.acdisplay.org"> open source</a> et nous passons beaucoup de temps et de ressources pour le développement. S'il vous plaît, envisager un don pour montrer votre appréciation et à soutenir davantage le développement.     ]]></string>
   <string name="help_dialog_title">Aide</string>
   <string name="feedback_dialog_title">Commentaires</string>
-  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
-  <string name="feedback_dialog_attach_log">Attach a log</string>
-  <string name="feedback_dialog_read_help">Frequently asked questions</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
-  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
-  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
+  <string name="feedback_dialog_message_hint">Votre message. Les caractéristiques de votre appareil seront incluses automatiquement.</string>
+  <string name="feedback_dialog_attach_log">Joindre un journal d\'erreurs</string>
+  <string name="feedback_dialog_read_help">Foire aux questions</string>
+  <string name="feedback_error_no_app">Installer une des applications de courrier électronique.</string>
+  <string name="feedback_error_msg_too_short">Le message doit contenir au moins %1$d caractères.</string>
+  <string name="feedback_error_accessing_log">Erreur d\'accès au Journal de l\'application. L\'erreur est : %1$s</string>
 </resources>

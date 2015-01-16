@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Prebudiť pri novom oznámení</string>
   <string name="settings_notify_min_priority_title">Najnižšia priorita</string>
   <string name="settings_notify_max_priority_title">Najvyššia priorita</string>
-  <string name="settings_low_priority_notifications_title">Oznámenia s nízkou prioritou</string>
-  <string name="settings_low_priority_notifications_on">Zobrazujú sa všetky oznámenia.</string>
-  <string name="settings_low_priority_notifications_off">Oznámenia s nízkou prioritou (napr. Google Now) sa nezobrazujú.</string>
   <string name="settings_full_screen_title">Režim celej obrazovky</string>
   <string name="settings_use_wallpaper_title">Použiť tapetu</string>
   <string name="settings_use_wallpaper_on">Tapeta domácej obrazovky je použitá ako pozadie.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Zakázané</string>
   <string name="settings_status_battery_always_visible">Zobraziť stav batérie</string>
   <string name="settings_status_battery_always_visible_off">Stav batérie sa zobrazuje len pri nízkej úrovni alebo počas nabíjania.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Koliesko odomykania</string>
   <string name="settings_circle_animation_title">Animácia odomknutia</string>
   <string name="settings_circle_color_inner_title">Farba kruhu</string>

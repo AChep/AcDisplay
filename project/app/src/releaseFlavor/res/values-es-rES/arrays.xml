@@ -32,7 +32,7 @@
     <item>Urgente y crítico (Llamadas perdidas, direcciones, alertas de emergencia)</item>
     <item>Importante (Comunicaciones, correo importante)</item>
     <item>Normal (+notificaciones de aplicaciones antiguas)</item>
-    <item>Sin importancia (Actualizaciones de Software, correo no deseado)</item>
+    <item>Sin importancia (actualizaciones de software, correo no deseado)</item>
     <item>Informaciones e información de fondo (Clima, eventos expirados, sugerencias)</item>
   </string-array>
 </resources>

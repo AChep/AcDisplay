@@ -44,9 +44,6 @@
   <string name="settings_wake_up_on_notification_title">Acordar com notificação</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
-  <string name="settings_low_priority_notifications_title">Notificações de baixa prioridade</string>
-  <string name="settings_low_priority_notifications_on">Todas as notificações serão exibidas.</string>
-  <string name="settings_low_priority_notifications_off">Notificações de prioridade baixa como as provenientes do Google Now não são exibidas.</string>
   <string name="settings_full_screen_title">Modo ecrã inteiro</string>
   <string name="settings_use_wallpaper_title">Usar imagem de fundo</string>
   <string name="settings_use_wallpaper_on">A imagem de fundo do seu dispositivo será usada como imagem de fundo.</string>
@@ -56,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Desactivado</string>
   <string name="settings_status_battery_always_visible">Manter estado da bateria</string>
   <string name="settings_status_battery_always_visible_off">Está da bateria é mostrado quando baixo ou quando a carregar.</string>
+  <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>

@@ -19,34 +19,36 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="about_dialog_message"><![CDATA[<br/>
-AcDisplay برنامج مجاني و <a href="http://repo.acdisplay.org">مفتوح المصدر</a> حقوق الطبع 2013-%2$s <a href="http://artemchep.com">اّرتم شيبورنوي</a>. كل الحقوق محفوظة.<br/>
-<br/>
-كل الشكر لهذه الأدوات مفتوحة المصدر: %1$s و لكل من <a href="http://translate.acdisplay.org">ساعد في الترجمة </a> او بالتبرع.
-]]></string>
-  <string name="donate_dialog_title">التبرع للمطورين</string>
-  <string name="donate_dialog_message">أي سي ديسبلاي تطبيق مجاني ومفتوح المصدر. يمكنك إظهار التقدير الخاص بك ودعم التطوير عن طريق التبرع:</string>
+  <string name="about_dialog_message"><![CDATA[
+        AcDisplay هو تطبيق مجاني و<a href="http://repo.acdisplay.org">مفتوح المصدر</a>.
+        حقوق النشر 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. جميع الحقوق محفوظة.<br/>
+        <br/>
+        جزيل الشكر للأدوات مفتوحة المصدر الآتية: %1$s ولكل من
+        <a href="http://translate.acdisplay.org">ساعد في ترجمة التطبيق</a>، أو قام بالتبرع.
+    ]]></string>
+  <string name="donate_dialog_title">تبرَّع للمطورين</string>
+  <string name="donate_dialog_message">AcDisplay هو تطبيق مجاني ومفتوح المصدر. يمكنك إظهار تقديرك ودعمك لتطوير التطبيق عن طريق التبرع:</string>
   <string name="donate_alert_no_responsibility">لاحظ أن Google ليست مسؤولة عن طريقة الدفع هذه.</string>
   <string name="donate_billing_not_supported">الشراء في التطبيق غير مدعومة في هذا الجهاز.</string>
-  <string name="donate_thanks">شكرا جزيلا!</string>
-  <string name="donation_1">الآيس كريم</string>
-  <string name="donation_4">فنجان من القهوة</string>
+  <string name="donate_thanks">شكرًا جزيلًا لك!</string>
+  <string name="donation_1">آيس كريم</string>
+  <string name="donation_4">فنجان قهوة</string>
   <string name="donation_10">فواتير الكهرباء</string>
   <string name="donation_20">وسادة مناسبة</string>
   <string name="donation_50">محرك أقراص SSD</string>
-  <string name="donation_99">نظام صوت</string>
+  <string name="donation_99">نظام صوتي</string>
   <string name="cry_dialog_title">دعم التطوير</string>
   <string name="cry_dialog_message"><![CDATA[
-اي سي ديسبلاي تطبيق مجاني و<a href="http://repo.acdisplay.org"> مفتوح المصدر</a> و نحن ننفق 
-الكثير من الوقت و الموارد في التطوير. الرجاء التفكير في التبرع
- لاظهار التقدير و دعم التطوير.
+        AcDisplay هو تطبيق مجاني و<a href="http://repo.acdisplay.org">مفتوح المصدر</a>، ولقد قمنا بصرف
+        الكثير من الوقت والموارد لإبقائه محدَّثا. لطفًا، فكر في تبرع لإظهار
+        تقديرك ودعمك للتطويرات المستقبلية.
     ]]></string>
   <string name="help_dialog_title">مساعدة</string>
-  <string name="feedback_dialog_title">التغذية المرتدة</string>
+  <string name="feedback_dialog_title">إبلاغ أو اقتراح</string>
   <string name="feedback_dialog_message_hint">الرسالة الخاصة بك. سيتم تضمين مواصفات الجهاز تلقائياً.</string>
   <string name="feedback_dialog_attach_log">إرفاق سجل البرنامج</string>
-  <string name="feedback_dialog_read_help">الأسئلة المتداولة</string>
+  <string name="feedback_dialog_read_help">الأسئلة الشائعة</string>
   <string name="feedback_error_no_app">قم بتثبيت أي من تطبيقات البريد الإلكتروني.</string>
-  <string name="feedback_error_msg_too_short">يجب أن تحتوي الرسالة على الأقل %1$d رمز.</string>
+  <string name="feedback_error_msg_too_short">يجب أن تحتوي الرسالة على الأقل على %1$d رمز.</string>
   <string name="feedback_error_accessing_log">خطأ في الوصول إلى سجل التطبيق. الخطأ: %1$s</string>
 </resources>
