@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -34,6 +35,7 @@ import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.utils.Operator;
 
 import java.lang.ref.WeakReference;
@@ -44,7 +46,9 @@ import static com.achep.base.Build.DEBUG;
 /**
  * Created by Artem on 27.12.13.
  */
-public class NotificationPresenter implements NotificationList.OnNotificationListChangedListener {
+public class NotificationPresenter implements
+        NotificationList.OnNotificationListChangedListener,
+        ISubscriptable<NotificationPresenter.OnNotificationListChangedListener> {
 
     private static final String TAG = "NotificationPresenter";
 
@@ -225,19 +229,25 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         /**
          * Callback that the list of notifications has changed.
          *
-         * @param osbn  an instance of notification.
-         * @param event event type:
-         *              {@link #EVENT_POSTED}, {@link #EVENT_REMOVED},
-         *              {@link #EVENT_CHANGED}, {@link #EVENT_CHANGED_SPAM},
-         *              {@link #EVENT_BATH}
-         * @param f     {@code true} if this is last of bath changes, {@code false} otherwise.
+         * @param osbn                  an instance of notification (must be non-null, if the
+         *                              event is not a {@link #EVENT_BATH, {@code null} otherwise})
+         * @param event                 event type:
+         *                              {@link #EVENT_POSTED}, {@link #EVENT_REMOVED},
+         *                              {@link #EVENT_CHANGED}, {@link #EVENT_CHANGED_SPAM},
+         *                              {@link #EVENT_BATH}
+         * @param isLastEventInSequence {@code true} if this is last of bath changes, {@code false}
+         *                              otherwise.
          */
         public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                               OpenNotification osbn, int event,
-                                              boolean f);
+                                              boolean isLastEventInSequence);
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void registerListener(@NonNull OnNotificationListChangedListener listener) {
         // Make sure to register listener only once.
         for (WeakReference<OnNotificationListChangedListener> ref : mListenersRefs) {
@@ -250,6 +260,10 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         mListenersRefs.add(new WeakReference<>(listener));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void unregisterListener(@NonNull OnNotificationListChangedListener listener) {
         for (WeakReference<OnNotificationListChangedListener> ref : mListenersRefs) {
             if (ref.get() == listener) {
@@ -508,11 +522,12 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
         return n.isMine() && sbn != null && sbn.getId() == App.ID_NOTIFY_INIT;
     }
 
-    private void notifyListeners(OpenNotification n, int event) {
+    private void notifyListeners(@Nullable OpenNotification n, int event) {
         notifyListeners(n, event, true);
     }
 
-    private void notifyListeners(OpenNotification n, int event, boolean f) {
+    private void notifyListeners(@Nullable OpenNotification n, int event,
+                                 boolean isLastEventInSequence) {
         for (int i = mListenersRefs.size() - 1; i >= 0; i--) {
             WeakReference<OnNotificationListChangedListener> ref = mListenersRefs.get(i);
             OnNotificationListChangedListener l = ref.get();
@@ -523,7 +538,7 @@ public class NotificationPresenter implements NotificationList.OnNotificationLis
                 Log.w(TAG, "Deleting an unused listener!");
                 mListenersRefs.remove(i);
             } else {
-                l.onNotificationListChanged(this, n, event, f);
+                l.onNotificationListChanged(this, n, event, isLastEventInSequence);
             }
         }
     }

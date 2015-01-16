@@ -27,14 +27,15 @@ import android.widget.RemoteViews;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
- * Created by Artem Chepurnoy on 05.09.2014.
+ * @author Artem Chepurnoy
  */
 // TODO: Find the way to get notification's ID and TAG.
-public class OpenNotificationCompat extends OpenNotification {
+public class OpenNotificationJellyBean extends OpenNotification {
 
+    @NonNull
     private String mPackageName;
 
-    protected OpenNotificationCompat(Notification n) {
+    OpenNotificationJellyBean(@NonNull Notification n) {
         super(null, n);
     }
 

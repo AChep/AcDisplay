@@ -211,7 +211,7 @@ public class KeyguardService extends BathService.ChildService implements
     @Override
     public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
-                                          int event, boolean f) {
+                                          int event, boolean isLastEventInSequence) {
         switch (event) {
             case NotificationPresenter.EVENT_POSTED:
             case NotificationPresenter.EVENT_REMOVED:

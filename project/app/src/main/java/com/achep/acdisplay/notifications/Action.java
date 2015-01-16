@@ -94,7 +94,7 @@ public class Action {
     @Nullable
     public final PendingIntent intent;
 
-    Action(@DrawableRes int icon, @NonNull CharSequence title, @Nullable PendingIntent intent) {
+    private Action(@DrawableRes int icon, @NonNull CharSequence title, @Nullable PendingIntent intent) {
         this.icon = icon;
         this.title = title;
         this.intent = intent;

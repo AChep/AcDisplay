@@ -185,7 +185,7 @@ public class ActiveModeService extends BathService.ChildService implements
     @Override
     public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
-                                          int event, boolean f) {
+                                          int event, boolean isLastEventInSequence) {
         if (Config.getInstance().isNotifyWakingUp()) {
             // Notification will wake up device without
             // any sensors' callback.

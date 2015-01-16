@@ -87,7 +87,7 @@ public final class WithoutNotifiesHandler extends ActiveModeHandler implements
     @Override
     public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
-                                          int event, boolean f) {
+                                          int event, boolean isLastEventInSequence) {
         switch (event) {
             case NotificationPresenter.EVENT_BATH:
             case NotificationPresenter.EVENT_POSTED:

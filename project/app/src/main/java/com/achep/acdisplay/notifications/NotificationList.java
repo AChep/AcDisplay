@@ -36,7 +36,7 @@ final class NotificationList {
      * Default return value of {@link #push(OpenNotification)}
      * or {@link #remove(OpenNotification)} methods.
      */
-    public static final int RESULT_DEFAULT = 0;
+    private static final int RESULT_DEFAULT = 0;
 
     private static final int EVENT_ADDED = 0;
     private static final int EVENT_CHANGED = 1;
@@ -123,7 +123,7 @@ final class NotificationList {
         return pushOrRemove(n, push);
     }
 
-    public int pushOrRemove(OpenNotification n, boolean push) {
+    int pushOrRemove(OpenNotification n, boolean push) {
         return push ? push(n) : remove(n);
     }
 
@@ -133,7 +133,7 @@ final class NotificationList {
      * @return {@link NotificationList.OnNotificationListChangedListener#onNotificationAdded(OpenNotification n)} or
      * {@link NotificationList.OnNotificationListChangedListener#onNotificationChanged(OpenNotification n, OpenNotification old)}
      */
-    public int push(OpenNotification n) {
+    int push(OpenNotification n) {
         final int index = indexOf(n);
         if (index == -1) {
             if (mList.size() > mMaximumSize) {

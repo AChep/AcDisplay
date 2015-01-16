@@ -33,7 +33,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.achep.acdisplay.graphics.BackgroundFactory;
 import com.achep.acdisplay.graphics.IconFactory;
@@ -43,37 +42,36 @@ import com.achep.base.async.AsyncTask;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.utils.PackageUtils;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
- * Created by Artem on 23.01.14.
+ * @author Artem Chepurnoy
  */
-public class OpenNotification implements
+public abstract class OpenNotification implements
         ISubscriptable<OpenNotification.OnNotificationDataChangedListener> {
 
     private static final String TAG = "OpenNotification";
 
-    /**
-     * Creates empty notification instance.
-     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @NonNull
     public static OpenNotification newInstance(@NonNull StatusBarNotification sbn) {
-        return new OpenNotification(sbn, sbn.getNotification());
+        Notification n = sbn.getNotification();
+        if (Device.hasLollipopApi()) {
+            return new OpenNotificationLollipop(sbn, n);
+        } else if (Device.hasKitKatWatchApi()) {
+            return new OpenNotificationKitKatWatch(sbn, n);
+        }
+
+        return new OpenNotificationJellyBeanMR2(sbn, n);
     }
 
-    /**
-     * Creates empty notification instance.
-     *
-     * @deprecated use {@link #newInstance(android.service.notification.StatusBarNotification)}
-     * instead.
-     */
-    @Deprecated
+    @NonNull
     public static OpenNotification newInstance(@NonNull Notification n) {
-        return new OpenNotificationCompat(n);
+        if (Device.hasJellyBeanMR2Api()) {
+            throw new RuntimeException("Use StatusBarNotification instead!");
+        }
+
+        return new OpenNotificationJellyBean(n);
     }
 
     //-- BEGIN ----------------------------------------------------------------
@@ -262,20 +260,14 @@ public class OpenNotification implements
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
-        assert mStatusBarNotification != null;
-        return mStatusBarNotification.hashCode();
-    }
+    public abstract int hashCode();
 
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
-    public boolean equals(Object o) {
-        assert mStatusBarNotification != null;
-        return mStatusBarNotification.equals(o);
-    }
+    public abstract boolean equals(Object o);
 
     /**
      * Note, that method does not equals with {@link #equals(Object)} method.
@@ -286,21 +278,7 @@ public class OpenNotification implements
      */
     @SuppressLint("NewApi")
     @SuppressWarnings("ConstantConditions")
-    public boolean hasIdenticalIds(@Nullable OpenNotification n) {
-        if (n == null) return false;
-        StatusBarNotification sbn = getStatusBarNotification();
-        StatusBarNotification sbn2 = n.getStatusBarNotification();
-        if (Device.hasLollipopApi()) {
-            return new EqualsBuilder()
-                    .append(sbn2.getKey(), sbn.getKey())
-                    .isEquals();
-        }
-        return new EqualsBuilder()
-                .append(sbn.getId(), sbn2.getId())
-                .append(getPackageName(), n.getPackageName())
-                .append(sbn.getTag(), sbn2.getTag())
-                .isEquals();
-    }
+    public abstract boolean hasIdenticalIds(@Nullable OpenNotification n);
 
     //-- NOTIFICATION DATA ----------------------------------------------------
 
@@ -482,17 +460,6 @@ public class OpenNotification implements
     }
 
     public boolean isGroupChild() {
-        if (!Device.hasLollipopApi()) return false;
-
-        try {
-            Method method = Notification.class.getDeclaredMethod("isGroupChild");
-            method.setAccessible(true);
-            return (boolean) method.invoke(mNotification);
-        } catch (NoSuchMethodException
-                | InvocationTargetException
-                | IllegalAccessException e) {
-            Log.e(TAG, "Failed to check for group child.");
-        }
         return false;
     }
 

@@ -96,6 +96,7 @@ public class NotificationListenerJellyBeanMR2 extends NotificationListener {
         NotificationPresenter.getInstance().clear(true);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private boolean postActiveNotifications(@NonNull NotificationListenerService service) {
         StatusBarNotification[] an = service.getActiveNotifications();
