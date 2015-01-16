@@ -27,8 +27,6 @@
     <color name="keyguard_background">#F000</color>
     <color name="keyguard_background_semi">#7000</color>
 
-    <color name="acdisplay_subtext_color">#9eee</color>
-
     <color name="donation_normal">#8BC34A</color>
 
     <!-- BatteryMeterView parameters -->
@@ -54,9 +52,5 @@
     <color name="material_light_primary_text">#DD000000</color>
     <color name="material_light_secondary_text">#89000000</color>
     <color name="material_light_hint_text">#42000000</color>
-
-    <color name="dashboard_background_color">#ffe1e1e0</color>
-    <color name="switchbar_background_color">#ff37474f</color>
-    <color name="switch_accent_color">#ff7fcac3</color>
 
 </resources>

@@ -18,6 +18,7 @@
      Modified by AChep@xda <artemchep@gmail.com> for AcDisplay
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/category"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -28,7 +29,8 @@
     android:paddingEnd="@dimen/dashboard_category_padding_end"
     android:paddingLeft="@dimen/dashboard_category_padding_start"
     android:paddingRight="@dimen/dashboard_category_padding_end"
-    android:paddingStart="@dimen/dashboard_category_padding_start">
+    android:paddingStart="@dimen/dashboard_category_padding_start"
+    tools:ignore="Overdraw">
 
     <com.achep.base.ui.widgets.TextView
         android:id="@+id/category_title"

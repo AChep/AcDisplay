@@ -180,6 +180,7 @@ public class BatteryMeterView extends TextView {
         mBatteryWidth = arr.getDimensionPixelSize(R.styleable.BatteryMeterView_battery_width, 0);
         mBatteryPadding = arr.getDimensionPixelSize(R.styleable.BatteryMeterView_battery_padding, 0);
         setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
+        arr.recycle();
 
         final Resources res = context.getResources();
         if (!isInEditMode()) {

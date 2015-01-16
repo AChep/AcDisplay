@@ -132,7 +132,6 @@ public abstract class SettingsActivity extends ActivityBase implements
     private ViewGroup mContent;
 
     private boolean mDisplayHomeAsUpEnabled;
-    private boolean mIsShowingDashboard;
     private boolean mIsShortcut;
 
     private ArrayList<DashboardCategory> mCategories = new ArrayList<>();
@@ -186,7 +185,7 @@ public abstract class SettingsActivity extends ActivityBase implements
         final ComponentName cn = intent.getComponent();
         final String className = cn.getClassName();
 
-        mIsShowingDashboard = className.equals(Settings2.class.getName());
+        boolean isShowingDashboard = className.equals(Settings2.class.getName());
 
         // This is a "Sub Settings" when:
         // - this is a real SubSettings
@@ -228,7 +227,7 @@ public abstract class SettingsActivity extends ActivityBase implements
 
             mDisplayHomeAsUpEnabled = savedState.getBoolean(SAVE_KEY_SHOW_HOME_AS_UP);
         } else {
-            if (!mIsShowingDashboard) {
+            if (!isShowingDashboard) {
                 mDisplayHomeAsUpEnabled = isSubSettings;
                 setTitleFromIntent(intent);
 

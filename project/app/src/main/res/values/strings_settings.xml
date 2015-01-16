@@ -55,9 +55,6 @@
     <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
     <string name="settings_notify_min_priority_title">Minimum priority</string>
     <string name="settings_notify_max_priority_title">Maximum priority</string>
-    <string name="settings_low_priority_notifications_title">Low-priority notifications</string>
-    <string name="settings_low_priority_notifications_on">All notifications are shown.</string>
-    <string name="settings_low_priority_notifications_off">Low-priority notifications such as those from Google Now aren\'t shown.</string>
 
     <!-- Interface -->
     <string name="settings_full_screen_title">Full screen mode</string>

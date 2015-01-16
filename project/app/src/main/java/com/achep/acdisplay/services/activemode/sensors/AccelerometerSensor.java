@@ -47,7 +47,7 @@ public final class AccelerometerSensor extends ActiveModeSensor.Consuming implem
 
     private static WeakReference<AccelerometerSensor> sAccelerometerSensorWeak;
 
-    private ShakeDetector mShakeDetector;
+    private final ShakeDetector mShakeDetector;
 
     private AccelerometerSensor() {
         super();

@@ -26,10 +26,8 @@
     <bool name="config_default_active_mode_enabled">false</bool>
     <bool name="config_default_active_mode_without_notifies_enabled">true</bool>
     <bool name="config_default_enabled_only_while_charging">false</bool>
-    <bool name="config_default_notify_low_priority">false</bool>
     <bool name="config_default_notify_wake_up_on">true</bool>
     <bool name="config_default_ui_show_wallpaper">false</bool>
-    <bool name="config_default_ui_mirrored_timeout_bar">true</bool>
     <bool name="config_default_inactive_time_enabled">false</bool>
     <bool name="config_default_ui_status_battery_sticky">false</bool>
     <bool name="config_default_ui_full_screen">true</bool>

@@ -45,9 +45,9 @@ public class AppConfig {
     static final boolean DEFAULT_NON_CLEARABLE = false;
 
     public String packageName;
-    public boolean[] restricted = new boolean[]{DEFAULT_RESTRICTED};
-    public boolean[] hidden = new boolean[]{DEFAULT_HIDDEN};
-    public boolean[] nonClearable = new boolean[]{DEFAULT_NON_CLEARABLE};
+    public final boolean[] restricted = new boolean[]{DEFAULT_RESTRICTED};
+    public final boolean[] hidden = new boolean[]{DEFAULT_HIDDEN};
+    public final boolean[] nonClearable = new boolean[]{DEFAULT_NON_CLEARABLE};
 
     public AppConfig(String packageName) {
         this(packageName,

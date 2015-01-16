@@ -121,7 +121,7 @@ public abstract class PreferenceFragmentBase extends Fragment implements
     private static final int FIRST_REQUEST_CODE = 100;
 
     private static final int MSG_BIND_PREFERENCES = 1;
-    private Handler mHandler = new Handler() {
+    private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -377,7 +377,7 @@ public abstract class PreferenceFragmentBase extends Fragment implements
         mHandler.post(mRequestFocus);
     }
 
-    private View.OnKeyListener mListOnKeyListener = new View.OnKeyListener() {
+    private final View.OnKeyListener mListOnKeyListener = new View.OnKeyListener() {
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {

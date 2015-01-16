@@ -57,8 +57,6 @@
     <dimen name="media_btn_size">48dp</dimen>
     <!-- The size of media buttons (excluding padding) -->
     <dimen name="media_btn_actual_size">18dp</dimen>
-    <!-- The size of padding of media buttons -->
-    <dimen name="media_btn_padding">15dp</dimen>
     <!-- The width of media widget -->
     <dimen name="media_scene_width">236dp</dimen>
 

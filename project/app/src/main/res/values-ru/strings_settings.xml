@@ -55,9 +55,6 @@
     <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>
     <string name="settings_notify_min_priority_title">Минимальный приоритет</string>
     <string name="settings_notify_max_priority_title">Максимальный приоритет</string>
-    <string name="settings_low_priority_notifications_title">Не важные уведомления</string>
-    <string name="settings_low_priority_notifications_on">Все уведомления отображаются.</string>
-    <string name="settings_low_priority_notifications_off">Уведомления, имеющие низкий приоритет, не отображаются.\nПример: погода от Google Now.</string>
 
     <!-- Interface -->
     <string name="settings_full_screen_title">Полноэкранный режим</string>
