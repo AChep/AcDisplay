@@ -83,6 +83,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_UI_UNLOCK_ANIMATION = "unlock_animation";
     public static final String KEY_UI_CIRCLE_COLOR_INNER = "ui_circle_color_inner";
     public static final String KEY_UI_CIRCLE_COLOR_OUTER = "ui_circle_color_outer";
+    public static final String KEY_UI_OVERRIDE_FONTS = "ui_override_fonts";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -123,6 +124,7 @@ public final class Config extends ConfigBase {
     private int mUiCircleColorOuter;
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
+    private boolean mUiOverrideFonts;
     private boolean mUiWallpaper;
     private boolean mUiBatterySticky;
     private boolean mUiUnlockAnimation;
@@ -203,6 +205,8 @@ public final class Config extends ConfigBase {
                 res.getInteger(R.integer.config_default_ui_icon_size_dp));
         mUiCircleColorInner = prefs.getInt(KEY_UI_CIRCLE_COLOR_INNER, 0xFFF0F0F0);
         mUiCircleColorOuter = prefs.getInt(KEY_UI_CIRCLE_COLOR_OUTER, 0xFF303030);
+        mUiOverrideFonts = prefs.getBoolean(KEY_UI_UNLOCK_ANIMATION,
+                res.getBoolean(R.bool.config_default_ui_override_fonts));
 
         // development
         mDevSensorsDump = prefs.getBoolean(KEY_DEV_SENSORS_DUMP,
@@ -271,6 +275,9 @@ public final class Config extends ConfigBase {
         hashMap.put(KEY_UI_UNLOCK_ANIMATION, new ConfigBase.Option(
                 "setUnlockAnimationEnabled",
                 "isUnlockAnimationEnabled", boolean.class));
+        hashMap.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
+                "setOverridingFontsEnabled",
+                "isOverridingFontsEnabled", boolean.class));
         hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new ConfigBase.Option(
                 "setScreenOffAfterLastNotify",
                 "isScreenOffAfterLastNotify", boolean.class));
@@ -457,6 +464,11 @@ public final class Config extends ConfigBase {
     public void setFullScreen(Context context, boolean enabled, OnConfigChangedListener listener) {
         boolean changed = mUiFullScreen != (mUiFullScreen = enabled);
         saveOption(context, KEY_UI_FULLSCREEN, enabled, listener, changed);
+    }
+
+    public void setOverridingFontsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mUiOverrideFonts != (mUiOverrideFonts = enabled);
+        saveOption(context, KEY_UI_OVERRIDE_FONTS, enabled, listener, changed);
     }
 
     /**
@@ -656,6 +668,10 @@ public final class Config extends ConfigBase {
 
     public boolean isFullScreen() {
         return mUiFullScreen;
+    }
+
+    public boolean isOverridingFontsEnabled() {
+        return mUiOverrideFonts;
     }
 
     public boolean isScreenOffAfterLastNotify() {

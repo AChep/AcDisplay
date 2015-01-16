@@ -36,6 +36,7 @@
     <bool name="config_default_feel_screen_off_after_last_notify">false</bool>
     <bool name="config_default_ui_unlock_animation">true</bool>
     <bool name="config_default_dev_sensors_dump">false</bool>
+    <bool name="config_default_ui_override_fonts">true</bool>
     <integer name="config_default_timeout_normal">10000</integer>
     <integer name="config_default_timeout_short">5000</integer>
     <integer name="config_default_inactive_time_from">60</integer>

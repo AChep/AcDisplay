@@ -25,6 +25,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.Device;
 
@@ -49,18 +50,20 @@ public class TextView extends android.widget.TextView {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextView);
 
-        String fontName = a.getString(R.styleable.TextView_font);
-        if (fontName != null) {
-            int maximumSdkVersion = a.getInt(
-                    R.styleable.TextView_font_beforeApi,
-                    Build.VERSION_CODES.LOLLIPOP);
+        if (Config.getInstance().isOverridingFontsEnabled()) {
+            String fontName = a.getString(R.styleable.TextView_font);
+            if (fontName != null) {
+                int maximumSdkVersion = a.getInt(
+                        R.styleable.TextView_font_beforeApi,
+                        Build.VERSION_CODES.LOLLIPOP);
 
-            if (!Device.hasTargetApi(maximumSdkVersion)) {
-                if (fontName.indexOf('.') != -1) fontName += ".ttf";
-                try {
-                    setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/" + fontName));
-                } catch (Exception ignored) {
-                    Log.w(TAG, "Failed to create the typeface!");
+                if (!Device.hasTargetApi(maximumSdkVersion)) {
+                    if (fontName.indexOf('.') != -1) fontName += ".ttf";
+                    try {
+                        setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/" + fontName));
+                    } catch (Exception ignored) {
+                        Log.w(TAG, "Failed to create the typeface!");
+                    }
                 }
             }
         }

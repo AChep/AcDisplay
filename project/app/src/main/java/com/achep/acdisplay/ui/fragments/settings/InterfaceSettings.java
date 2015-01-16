@@ -133,6 +133,7 @@ public class InterfaceSettings extends PreferenceFragment implements
         syncPreference(Config.KEY_UI_WALLPAPER_SHOWN);
         syncPreference(Config.KEY_UI_STATUS_BATTERY_STICKY);
         syncPreference(Config.KEY_UI_FULLSCREEN);
+        syncPreference(Config.KEY_UI_OVERRIDE_FONTS);
         syncPreference(Config.KEY_UI_UNLOCK_ANIMATION);
 
         mIconSizePreference = findPreference("icon_size");
