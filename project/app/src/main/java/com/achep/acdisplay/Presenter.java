@@ -18,6 +18,7 @@
  */
 package com.achep.acdisplay;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
@@ -32,7 +33,12 @@ import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
 import com.achep.acdisplay.ui.activities.AcDisplayActivity;
 import com.achep.acdisplay.ui.activities.KeyguardActivity;
+import com.achep.base.Build;
 import com.achep.base.utils.power.PowerUtils;
+import com.achep.base.utils.zen.ZenConsts;
+import com.achep.base.utils.zen.ZenUtils;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * Created by Artem on 07.03.14.
@@ -82,6 +88,18 @@ public class Presenter {
                     && !PowerUtils.isPlugged(context)) {
                 // Don't turn screen on due to user settings.
                 return false;
+            }
+
+            // Respect the device's zen mode.
+            final int zenMode = ZenUtils.getValue(context);
+            if (DEBUG) Log.d(TAG, "The current ZEN mode is " + ZenUtils.zenModeToString(zenMode));
+            switch (zenMode) {
+                case ZenConsts.ZEN_MODE_IMPORTANT_INTERRUPTIONS:
+                    if (n.getNotification().priority >= Notification.PRIORITY_HIGH) {
+                        break;
+                    }
+                case ZenConsts.ZEN_MODE_NO_INTERRUPTIONS:
+                    return false;
             }
 
             if (ProximitySensor.isNear()) {
