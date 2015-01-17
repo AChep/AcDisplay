@@ -138,7 +138,7 @@ public class SmileyParser {
     };
 
     public static final int DEFAULT_SMILEY_TEXTS = R.array.default_smiley_texts;
-    public static final int DEFAULT_SMILEY_NAMES = R.array.default_smiley_names;
+//    public static final int DEFAULT_SMILEY_NAMES = R.array.default_smiley_names;
 
     /**
      * Builds the hashtable we use for mapping the string version
