@@ -52,6 +52,11 @@
         android:title="@string/settings_status_battery_always_visible" />
 
     <CheckBoxPreference
+        android:defaultValue="@bool/config_default_ui_emoticons"
+        android:key="ui_emoticons"
+        android:title="@string/settings_emoticons_title" />
+
+    <CheckBoxPreference
         android:defaultValue="@bool/config_default_ui_override_fonts"
         android:key="ui_override_fonts"
         android:title="@string/settings_override_fonts_title" />

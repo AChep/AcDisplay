@@ -154,6 +154,12 @@ public class NotificationPresenter implements
                         }
                     }
                     break;
+                case Config.KEY_UI_EMOTICONS:
+                    boolean b = (boolean) value;
+                    for (OpenNotification n : mGList.list()) {
+                        n.setEmoticonsEnabled(b);
+                    }
+                    break;
             }
         }
 
@@ -360,6 +366,7 @@ public class NotificationPresenter implements
             n.load(context);
 
             Config config = Config.getInstance();
+            n.setEmoticonsEnabled(config.isEmoticonsEnabled());
             // Selective load exactly what we need and nothing more.
             // This will reduce RAM consumption for a bit (1% or so.)
             if (Operator.bitAnd(

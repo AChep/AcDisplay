@@ -84,6 +84,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_UI_CIRCLE_COLOR_INNER = "ui_circle_color_inner";
     public static final String KEY_UI_CIRCLE_COLOR_OUTER = "ui_circle_color_outer";
     public static final String KEY_UI_OVERRIDE_FONTS = "ui_override_fonts";
+    public static final String KEY_UI_EMOTICONS = "ui_emoticons";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -125,6 +126,7 @@ public final class Config extends ConfigBase {
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
     private boolean mUiOverrideFonts;
+    private boolean mUiEmoticons;
     private boolean mUiWallpaper;
     private boolean mUiBatterySticky;
     private boolean mUiUnlockAnimation;
@@ -207,6 +209,8 @@ public final class Config extends ConfigBase {
         mUiCircleColorOuter = prefs.getInt(KEY_UI_CIRCLE_COLOR_OUTER, 0xFF303030);
         mUiOverrideFonts = prefs.getBoolean(KEY_UI_OVERRIDE_FONTS,
                 res.getBoolean(R.bool.config_default_ui_override_fonts));
+        mUiEmoticons = prefs.getBoolean(KEY_UI_EMOTICONS,
+                res.getBoolean(R.bool.config_default_ui_emoticons));
 
         // development
         mDevSensorsDump = prefs.getBoolean(KEY_DEV_SENSORS_DUMP,
@@ -275,6 +279,9 @@ public final class Config extends ConfigBase {
         hashMap.put(KEY_UI_UNLOCK_ANIMATION, new ConfigBase.Option(
                 "setUnlockAnimationEnabled",
                 "isUnlockAnimationEnabled", boolean.class));
+        hashMap.put(KEY_UI_EMOTICONS, new ConfigBase.Option(
+                "setEmoticonsEnabled",
+                "isEmoticonsEnabled", boolean.class));
         hashMap.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
                 "setOverridingFontsEnabled",
                 "isOverridingFontsEnabled", boolean.class));
@@ -469,6 +476,16 @@ public final class Config extends ConfigBase {
     public void setOverridingFontsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
         boolean changed = mUiOverrideFonts != (mUiOverrideFonts = enabled);
         saveOption(context, KEY_UI_OVERRIDE_FONTS, enabled, listener, changed);
+    }
+
+    /**
+     * Defines if textual emoticons should be converted to graphical ones.
+     *
+     * @see #isEmoticonsEnabled()
+     */
+    public void setEmoticonsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
+        boolean changed = mUiEmoticons != (mUiEmoticons = enabled);
+        saveOption(context, KEY_UI_EMOTICONS, enabled, listener, changed);
     }
 
     /**
@@ -672,6 +689,10 @@ public final class Config extends ConfigBase {
 
     public boolean isOverridingFontsEnabled() {
         return mUiOverrideFonts;
+    }
+
+    public boolean isEmoticonsEnabled() {
+        return mUiEmoticons;
     }
 
     public boolean isScreenOffAfterLastNotify() {

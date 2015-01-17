@@ -73,4 +73,62 @@
         <item>0</item>  <item>334</item>
     </array>
 
+    <!--
+        Smiley
+        -->
+
+    <!-- NOTE: if you change anything about this array, you must make the corresponding change
+         to the array DEFAULT_SMILEY_RES_IDS in MessageListItem.java and to default_smiley_names
+         below. -->
+    <string-array name="default_smiley_texts" translatable="false">
+        <item>:-)</item>   <!-- 0: Happy -->
+        <item>:-(</item>   <!-- 1: Sad -->
+        <item>;-)</item>   <!-- 2: Winking -->
+        <item>:-P</item>   <!-- 3: Tongue sticking out -->
+        <item>=-O</item>   <!-- 4: Surprised -->
+        <item>:-*</item>   <!-- 5: Kissing -->
+        <item>:O</item>    <!-- 6: Yelling -->
+        <item>B-)</item>   <!-- 7: Cool -->
+        <item>:-$</item>   <!-- 8: Money mouth -->
+        <item>:-!</item>   <!-- 9: Foot in mouth -->
+        <item>:-[</item>   <!-- 10: Embarrassed -->
+        <item>O:-)</item>  <!-- 11: Angel -->
+        <item>:-\\</item>  <!-- 12: Undecided -->
+        <item>:\'(</item>  <!-- 13: Crying -->
+        <item>:-X</item>   <!-- 14: Lips are sealed -->
+        <item>:-D</item>   <!-- 15: Laughing -->
+        <item>o_O</item>   <!-- 16: Confused -->
+        <item>&lt;3</item> <!-- 17: Heart -->
+        <item>x-(</item>   <!-- 18: Mad -->
+        <item>:-/</item>   <!-- 19: Smirk -->
+        <item>:-I</item>   <!-- 20: Poker face -->
+    </string-array>
+
+    <!-- NOTE: if you change anything about this array, you must make the corresponding change
+         to the array DEFAULT_SMILEY_RES_IDS in SmileyParser.java and to default_smiley_texts
+         above.
+    <string-array name="default_smiley_names">
+        <item>Happy</item>                   <!- 0: :-) ->
+        <item>Sad</item>                     <!- 1: :-( ->
+        <item>Winking</item>                 <!- 2: ;-) ->
+        <item>Tongue sticking out</item>     <!- 3: :-P ->
+        <item>Surprised</item>               <!- 4: =-O ->
+        <item>Kissing</item>                 <!- 5: :-* ->
+        <item>Yelling</item>                 <!- 6: :O ->
+        <item>Cool</item>                    <!- 7: B-) ->
+        <item>Money mouth</item>             <!- 8: :-$ ->
+        <item>Foot in mouth</item>           <!- 9: :-! ->
+        <item>Embarrassed</item>             <!- 10: :-[ ->
+        <item>Angel</item>                   <!- 11: O:-) ->
+        <item>Undecided</item>               <!- 12: :-\\ ->
+        <item>Crying</item>                  <!- 13: :\'( ->
+        <item>Lips are sealed</item>         <!- 14: :-X ->
+        <item>Laughing</item>                <!- 15: :-D ->
+        <item>Confused</item>                <!- 16: o_O ->
+        <item>Heart</item>                   <!- 17: <3 ->
+        <item>Mad</item>                     <!- 18: x-( ->
+        <item>Smirk</item>                   <!- 19: :-/ ->
+        <item>Poker face</item>              <!- 20: :-I ->
+    </string-array> -->
+
 </resources>

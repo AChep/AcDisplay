@@ -26,6 +26,7 @@ import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
 import com.achep.base.billing.CheckoutInternal;
+import com.achep.base.utils.smiley.SmileyParser;
 
 import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.ProductTypes;
@@ -86,6 +87,7 @@ public class App extends Application {
     public void onCreate() {
         Config.getInstance().init(this);
         Blacklist.getInstance().init(this);
+        SmileyParser.init(this);
 
         super.onCreate();
         mCheckoutInternal.getBilling().connect();

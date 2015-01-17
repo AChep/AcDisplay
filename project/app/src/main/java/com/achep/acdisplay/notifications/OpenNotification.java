@@ -41,6 +41,7 @@ import com.achep.base.Device;
 import com.achep.base.async.AsyncTask;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.utils.PackageUtils;
+import com.achep.base.utils.smiley.SmileyParser;
 
 import java.util.ArrayList;
 
@@ -87,6 +88,7 @@ public abstract class OpenNotification implements
     private final Notification mNotification;
     @Nullable
     private Action[] mActions;
+    private boolean mEmoticonsEnabled;
     private boolean mMine;
     private boolean mRead;
     private int mNumber;
@@ -98,10 +100,13 @@ public abstract class OpenNotification implements
     public CharSequence titleText;
     @Nullable
     public CharSequence messageBigText;
+    private CharSequence messageBigTextOrigin;
     @Nullable
     public CharSequence messageText;
+    private CharSequence messageTextOrigin;
     @Nullable
     public CharSequence[] messageTextLines;
+    private CharSequence[] messageTextLinesOrigin;
     @Nullable
     public CharSequence infoText;
     @Nullable
@@ -186,6 +191,16 @@ public abstract class OpenNotification implements
         // Load all other things, such as title text, message text
         // and more and more.
         new Extractor().loadTexts(context, this);
+
+        messageTextOrigin = messageText;
+        messageBigTextOrigin = messageBigText;
+        messageTextLinesOrigin = messageTextLines == null ? null : messageTextLines.clone();
+
+        // Initially load emoticons.
+        if (mEmoticonsEnabled) {
+            mEmoticonsEnabled = false;
+            setEmoticonsEnabled(true);
+        }
     }
 
     /**
@@ -371,7 +386,35 @@ public abstract class OpenNotification implements
         return bitmap != null && !BitmapUtils.hasTransparentCorners(bitmap);
     }
 
+    //-- EMOTICONS ------------------------------------------------------------
+
+    public void setEmoticonsEnabled(boolean enabled) {
+        if (mEmoticonsEnabled == (mEmoticonsEnabled = enabled)) return;
+        reformatTexts();
+    }
+
+    @Nullable
+    private CharSequence maybeAddSmileySpans(@Nullable CharSequence cs, boolean add) {
+        return add ? SmileyParser.getInstance().addSmileySpans(cs) : cs;
+    }
+
     //-- BASICS ---------------------------------------------------------------
+
+    private void reformatTexts() {
+        messageText = reformatMessage(messageTextOrigin);
+        messageBigText = reformatMessage(messageBigTextOrigin);
+        if (messageTextLines != null) {
+            for (int i = 0; i < messageTextLines.length; i++) {
+                messageTextLines[i] = reformatMessage(messageTextLinesOrigin[i]);
+            }
+        }
+    }
+
+    private CharSequence reformatMessage(@Nullable CharSequence cs) {
+        if (cs == null) return null;
+        if (mEmoticonsEnabled) cs = SmileyParser.getInstance().addSmileySpans(cs);
+        return cs;
+    }
 
     /**
      * Marks the notification as read.
