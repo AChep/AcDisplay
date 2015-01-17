@@ -83,21 +83,21 @@
             android:label="@string/settings"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activities.MainActivity"
-            android:taskAffinity="com.achep.acdisplay:settings"
+            android:taskAffinity=".settings"
             android:theme="@style/MaterialTheme.Dashboard" />
 
         <activity
             android:name="com.achep.base.ui.activities.SubSettings"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".ui.activities.Settings2"
-            android:taskAffinity="com.achep.acdisplay:settings" />
+            android:taskAffinity=".settings" />
 
         <activity
             android:name=".ui.activities.BlacklistActivity"
             android:label="@string/blacklist"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activities.Settings2"
-            android:taskAffinity="com.achep.acdisplay:settings"
+            android:taskAffinity=".settings"
             android:theme="@android:style/Theme.Holo" />
 
         <activity
@@ -105,7 +105,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/blacklist_app_config"
             android:parentActivityName=".ui.activities.BlacklistActivity"
-            android:taskAffinity="com.achep.acdisplay:settings"
+            android:taskAffinity=".settings"
             android:theme="@android:style/Theme.Holo" />
 
         <!-- This is needed to access notifications and to control music. -->
