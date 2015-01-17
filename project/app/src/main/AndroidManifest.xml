@@ -38,15 +38,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
-
-    <!-- Needed to show AcDisplay above the keyguard. -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <!-- Needed to change system screen off timeout settings. -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
-    <!-- Needed to be able to show a popup above all notifications. -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- Needed to be able to get notifications from system. -->
     <permission android:name="android.permission.STATUS_BAR_SERVICE" />
@@ -66,9 +61,17 @@
         tools:ignore="UnusedAttribute">
 
         <activity
+            android:name=".ui.activities.AcDisplayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:screenOrientation="nosensor"
+            android:theme="@style/MaterialTheme.AcDisplay" />
+
+        <activity
             android:name=".ui.activities.MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -76,45 +79,34 @@
         </activity>
 
         <activity
-            android:name="com.achep.snake.MainActivity"
-            android:immersive="true"
-            android:isGame="true"
-            android:label="@string/snake_app_name"
-            android:theme="@style/MaterialTheme.Snake" />
-
-        <activity
-            android:name=".ui.activities.BlacklistActivity"
-            android:label="@string/blacklist"
-            android:launchMode="singleTask"
-            android:parentActivityName=".ui.activities.MainActivity" />
-
-        <activity
-            android:name=".ui.activities.SubBlacklistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/blacklist_app_config"
-            android:parentActivityName=".ui.activities.BlacklistActivity" />
-
-        <activity
             android:name=".ui.activities.Settings2"
             android:label="@string/settings"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activities.MainActivity"
+            android:taskAffinity="com.achep.acdisplay:settings"
             android:theme="@style/MaterialTheme.Dashboard" />
 
         <activity
             android:name="com.achep.base.ui.activities.SubSettings"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:parentActivityName=".ui.activities.Settings2" />
+            android:parentActivityName=".ui.activities.Settings2"
+            android:taskAffinity="com.achep.acdisplay:settings" />
 
         <activity
-            android:name=".ui.activities.AcDisplayActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:launchMode="singleInstance"
-            android:screenOrientation="nosensor"
-            android:theme="@style/MaterialTheme.AcDisplay" />
+            android:name=".ui.activities.BlacklistActivity"
+            android:label="@string/blacklist"
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.activities.Settings2"
+            android:taskAffinity="com.achep.acdisplay:settings"
+            android:theme="@android:style/Theme.Holo" />
+
+        <activity
+            android:name=".ui.activities.SubBlacklistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/blacklist_app_config"
+            android:parentActivityName=".ui.activities.BlacklistActivity"
+            android:taskAffinity="com.achep.acdisplay:settings"
+            android:theme="@android:style/Theme.Holo" />
 
         <!-- This is needed to access notifications and to control music. -->
         <service
