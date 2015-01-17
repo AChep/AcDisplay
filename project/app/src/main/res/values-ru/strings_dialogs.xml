@@ -82,4 +82,14 @@
     <string name="feedback_error_msg_too_short">Сообщение должно включать по крайней мере %1$d символов.</string>
     <string name="feedback_error_accessing_log">Ошибка создания лога событий. Ошибка: %1$s</string>
 
+    <!--
+        Compat dialog
+        -->
+
+    <string name="compat_dialog_title">Режим совместимости</string>
+    <string name="compat_dialog_message">Приложение работает в режиме совместимости для поддержки Андроид %1$s: %2$s</string>
+    <string name="compat_dialog_item_notification">Из-за того, что приложение вынуждено использовать сервис дополнительных возможностей, оно не может узнать о очищениях либо обновлениях уведомлений, а также не может очистить уведомление из панели уведомлений.</string>
+    <string name="compat_dialog_item_immersive_mode">Панель навигации всегда отображается.</string>
+    <string name="compat_dialog_item_music_widget">Нет виджета музыки.</string>
+
 </resources>

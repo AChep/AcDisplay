@@ -19,6 +19,7 @@
 package com.achep.acdisplay;
 
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import android.text.Html;
 
 import com.achep.acdisplay.ui.fragments.dialogs.SetupPermissionsDialog;
 import com.achep.acdisplay.ui.fragments.dialogs.WelcomeDialog;
+import com.achep.base.Device;
 import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.fragments.dialogs.AboutDialog;
 import com.achep.base.ui.fragments.dialogs.DonateDialog;
@@ -66,6 +68,49 @@ public class DialogHelper {
         new DialogBuilder(activity)
                 .setIcon(R.drawable.ic_action_about_white)
                 .setTitle(R.string.cry_dialog_title)
+                .setMessage(message)
+                .createAlertDialogBuilder()
+                .setNegativeButton(R.string.close, null)
+                .create()
+                .show();
+    }
+
+    public static void showCompatDialog(@NonNull ActionBarActivity activity) {
+        int[] pairs = {
+                R.string.compat_dialog_item_notification,
+                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2,
+                R.string.compat_dialog_item_immersive_mode,
+                android.os.Build.VERSION_CODES.KITKAT,
+                R.string.compat_dialog_item_music_widget,
+                android.os.Build.VERSION_CODES.KITKAT,
+        };
+
+        // Check over all pairs.
+        boolean empty = true;
+        for (int i = 1; i < pairs.length; i += 2) {
+            final int api = pairs[i];
+            if (!Device.hasTargetApi(api)) {
+                empty = false;
+                break;
+            }
+        }
+        if (empty) return;
+
+        String formatter = activity.getString(R.string.compat_dialog_item_formatter);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < pairs.length; i += 2) {
+            final int api = pairs[i + 1];
+            if (!Device.hasTargetApi(api)) {
+                String str = activity.getString(pairs[i]);
+                str = String.format(formatter, str);
+                builder.append(str);
+            }
+        }
+
+        String message = activity.getString(R.string.compat_dialog_message, Build.VERSION.RELEASE, builder);
+        new DialogBuilder(activity)
+                .setIcon(R.drawable.ic_dialog_compat_white)
+                .setTitle(R.string.compat_dialog_title)
                 .setMessage(message)
                 .createAlertDialogBuilder()
                 .setNegativeButton(R.string.close, null)

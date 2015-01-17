@@ -95,50 +95,6 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
 
     private boolean mBroadcasting;
 
-    private void showCompatibilityIssuesAlert() {
-        boolean force = DEBUG;
-        int[] pairs = {
-                R.string.compat_alert_notifications,
-                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2,
-                R.string.compat_alert_immersive_mode,
-                android.os.Build.VERSION_CODES.KITKAT,
-                R.string.compat_alert_music_widget,
-                android.os.Build.VERSION_CODES.KITKAT,
-        };
-
-        // Check over all pairs.
-        if (!force) {
-            boolean empty = true;
-            for (int i = 1; i < pairs.length; i += 2) {
-                final int api = pairs[i];
-                if (!Device.hasTargetApi(api)) {
-                    empty = false;
-                    break;
-                }
-            }
-            if (empty) return;
-        }
-
-        String formatter = getString(R.string.compat_alert_formatter);
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(getString(R.string.compat_alert_title));
-        builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(), 0);
-        builder.append('\n');
-
-        for (int i = 0; i < pairs.length; i += 2) {
-            final int api = pairs[i + 1];
-            if (!Device.hasTargetApi(api) || force) {
-                String str = getString(pairs[i]);
-                str = String.format(formatter, str);
-                builder.append(str);
-            }
-        }
-
-        final int length = builder.length();
-        builder.delete(length - 1, length);
-        ToastUtils.showLong(this, builder);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestCheckout();
@@ -170,11 +126,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
 
                     // Show permission dialog.
                     DialogHelper.showSetupPermissionsDialog(context);
-                } else if (mConfig.setEnabled(context, checked, MainActivity.this)) {
-                    if (checked) {
-                        showCompatibilityIssuesAlert();
-                    }
-                } else {
+                } else if (!mConfig.setEnabled(context, checked, MainActivity.this)) {
 
                     // Setting option failed, so we need to
                     // sync switch with config.
@@ -209,6 +161,10 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
 
         if (versionCodeOld < versionCode) {
             triggers.setPreviousVersion(this, pi.versionCode, null);
+
+            if (versionCodeOld <= 34 /* version 3.0.2 */) {
+                DialogHelper.showCompatDialog(MainActivity.this);
+            }
         }
     }
 

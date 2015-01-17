@@ -53,16 +53,6 @@
     <string name="permissions_notifications_grant_manually">Go to Settings > Security > Notification access and check AcDisplay on.</string>
 
     <!--
-        Compatibility mode
-         -->
-
-    <string name="compat_alert_title">AcDisplay is running in compatibility mode:</string>
-    <string name="compat_alert_formatter" translatable="false">- %s;\n</string>
-    <string name="compat_alert_notifications">Notifications can not be dismissed from system nor grouped into one</string>
-    <string name="compat_alert_immersive_mode">Navigation bar is shown</string>
-    <string name="compat_alert_music_widget">No music widget available</string>
-
-    <!--
         Actions
         -->
 

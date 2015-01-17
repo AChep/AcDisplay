@@ -106,15 +106,6 @@
     <!-- Example: Mon, 7 April -->
     <string name="status_date_format">EEE, d MMMM</string>
 
-    <!--
-        Compatibility mode
-         -->
-
-    <string name="compat_alert_title">AcDisplay работает в режиме совместимости:</string>
-    <string name="compat_alert_notifications">Уведомления не могут быть отклонены из системы или сгрупированы в одно</string>
-    <string name="compat_alert_immersive_mode">Панель навигации показывается</string>
-    <string name="compat_alert_music_widget">Нет виджета музыки</string>
-
     <!-- Content description of the battery level icon for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_battery_level">Battery <xliff:g id="number" example="100">%d</xliff:g> percent.</string>
 
