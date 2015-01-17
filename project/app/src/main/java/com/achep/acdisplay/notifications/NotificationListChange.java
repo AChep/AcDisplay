@@ -21,7 +21,7 @@ package com.achep.acdisplay.notifications;
 /**
  * Created by Artem Chepurnoy on 08.11.2014.
  */
-public class NotificationListChange {
+public final class NotificationListChange {
 
     public final int event;
     public final OpenNotification notification;

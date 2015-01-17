@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
  * @author Artem Chepurnoy
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class OpenNotificationJellyBeanMR2 extends OpenNotification {
+class OpenNotificationJellyBeanMR2 extends OpenNotification {
 
     OpenNotificationJellyBeanMR2(@NonNull StatusBarNotification sbn, @NonNull Notification n) {
         super(sbn, n);

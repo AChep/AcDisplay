@@ -36,7 +36,7 @@ import com.achep.acdisplay.services.MediaService;
 /**
  * Created by Artem Chepurnoy on 15.01.2015.
  */
-public class NotificationListenerJellyBeanMR2 extends NotificationListener {
+class NotificationListenerJellyBeanMR2 extends NotificationListener {
 
     private boolean mInitialized;
 

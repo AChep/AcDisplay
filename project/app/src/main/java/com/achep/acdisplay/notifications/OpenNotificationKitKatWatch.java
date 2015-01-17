@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
  * @author Artem Chepurnoy
  */
 @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
-public class OpenNotificationKitKatWatch extends OpenNotificationJellyBeanMR2 {
+class OpenNotificationKitKatWatch extends OpenNotificationJellyBeanMR2 {
 
     OpenNotificationKitKatWatch(@NonNull StatusBarNotification sbn, @NonNull Notification n) {
         super(sbn, n);

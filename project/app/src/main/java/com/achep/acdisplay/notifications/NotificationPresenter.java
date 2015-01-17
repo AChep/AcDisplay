@@ -72,19 +72,22 @@ public class NotificationPresenter implements
     public static final int EVENT_CHANGED_SPAM = 3;
     public static final int EVENT_REMOVED = 4;
 
-    private static final String[] EVENT_NAMES;
-
-    static {
-        EVENT_NAMES = new String[5];
-        EVENT_NAMES[EVENT_BATH] = "EVENT_BATH";
-        EVENT_NAMES[EVENT_POSTED] = "EVENT_POSTED";
-        EVENT_NAMES[EVENT_CHANGED] = "EVENT_CHANGED";
-        EVENT_NAMES[EVENT_CHANGED_SPAM] = "EVENT_CHANGED_SPAM";
-        EVENT_NAMES[EVENT_REMOVED] = "EVENT_REMOVED";
-    }
-
+    @NonNull
     public static String getEventName(int event) {
-        return EVENT_NAMES[event];
+        switch (event) {
+            case EVENT_POSTED:
+                return "EVENT_POSTED";
+            case EVENT_CHANGED:
+                return "EVENT_CHANGED";
+            case EVENT_CHANGED_SPAM:
+                return "EVENT_CHANGED_SPAM";
+            case EVENT_REMOVED:
+                return "EVENT_REMOVED";
+            case EVENT_BATH:
+                return "EVENT_BATH";
+            default:
+                return "UNKNOWN_VALUE";
+        }
     }
 
     private static final int RESULT_SUCCESS = 1;
@@ -107,6 +110,7 @@ public class NotificationPresenter implements
 
     //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
 
+    // Do not make local!
     private final ConfigListener mConfigListener;
     private final BlacklistListener mBlacklistListener;
 
@@ -301,11 +305,6 @@ public class NotificationPresenter implements
     public synchronized static NotificationPresenter getInstance() {
         if (sNotificationPresenter == null) {
             sNotificationPresenter = new NotificationPresenter();
-            // This is here to fool proguard and prevent
-            // listeners from converting to the local
-            // variables.
-            assert sNotificationPresenter.mConfigListener != null;
-            assert sNotificationPresenter.mBlacklistListener != null;
         }
         return sNotificationPresenter;
     }
@@ -593,7 +592,6 @@ public class NotificationPresenter implements
         // Ignore children of notifications that have a summary, since we're not
         // going to show them anyway.
         return !notification.isGroupChild();
-
     }
 
     //-- INITIALIZING ---------------------------------------------------------

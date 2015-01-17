@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
  * @author Artem Chepurnoy
  */
 // TODO: Find the way to get notification's ID and TAG.
-public class OpenNotificationJellyBean extends OpenNotification {
+class OpenNotificationJellyBean extends OpenNotification {
 
     @NonNull
     private String mPackageName;

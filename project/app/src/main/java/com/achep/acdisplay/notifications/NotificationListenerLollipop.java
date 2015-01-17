@@ -29,7 +29,7 @@ import com.achep.acdisplay.services.MediaService;
 /**
  * Created by Artem Chepurnoy on 15.01.2015.
  */
-public class NotificationListenerLollipop extends NotificationListener {
+class NotificationListenerLollipop extends NotificationListener {
 
     @Override
     public void onListenerBind(@NonNull MediaService service) { /* unused */ }

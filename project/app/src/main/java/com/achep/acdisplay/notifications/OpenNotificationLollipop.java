@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
  * @author Artem Chepurnoy
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
+class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
 
     private static final String TAG = "OpenNotificationLollipop";
 

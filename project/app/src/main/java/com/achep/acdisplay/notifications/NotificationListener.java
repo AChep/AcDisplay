@@ -30,6 +30,7 @@ import com.achep.base.Device;
  */
 public abstract class NotificationListener {
 
+    @NonNull
     public static NotificationListener newInstance() {
         if (Device.hasLollipopApi()) {
             return new NotificationListenerLollipop();
@@ -40,20 +41,43 @@ public abstract class NotificationListener {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Called on {@link com.achep.acdisplay.services.MediaService media service} bind.
+     */
     public abstract void onListenerBind(
             @NonNull MediaService service);
 
+    /**
+     * Called on {@link NotificationListenerService#onListenerConnected()}.
+     *
+     * @since {@link android.os.Build.VERSION_CODES#LOLLIPOP}
+     */
     public abstract void onListenerConnected(
             @NonNull NotificationListenerService service);
 
+    /**
+     * Called on {@link NotificationListenerService#onNotificationPosted(android.service.notification.StatusBarNotification)}.
+     *
+     * @see #onListenerConnected(NotificationListenerService)
+     * @see #onNotificationRemoved(NotificationListenerService, android.service.notification.StatusBarNotification)
+     */
     public abstract void onNotificationPosted(
             @NonNull NotificationListenerService service,
             @NonNull StatusBarNotification sbn);
 
+    /**
+     * Called on {@link NotificationListenerService#onNotificationRemoved(android.service.notification.StatusBarNotification)}.
+     *
+     * @see #onNotificationPosted(NotificationListenerService, android.service.notification.StatusBarNotification)
+     */
     public abstract void onNotificationRemoved(
             @NonNull NotificationListenerService service,
             @NonNull StatusBarNotification sbn);
 
+    /**
+     * Called on {@link com.achep.acdisplay.services.MediaService media service} unbind.
+     */
     public abstract void onListenerUnbind(
             @NonNull MediaService mediaService);
+
 }
