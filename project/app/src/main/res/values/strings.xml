@@ -40,7 +40,6 @@
     <string name="permissions_dialog_title">Required permissions:</string>
     <string name="permissions_device_admin">Device admin</string>
     <string name="permissions_device_admin_removed">AcDisplay has been removed from Device admins.</string>
-    <string name="permissions_device_admin_troubleshooting">Nothing happened? Give the permission manually: %1$s</string>
     <!-- A title of 'Provide device admin rights' system dialog -->
     <string name="permissions_device_admin_title" translatable="false">@string/app_name</string>
     <!-- Description of why do we need device admin rights -->

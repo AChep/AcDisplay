@@ -143,15 +143,6 @@ public class SetupPermissionsDialog extends DialogFragment {
 
                         try {
                             startActivity(intent);
-
-                            // TODO: Fix 'Device admin request intent acts strange on Lollipop'
-                            if (Device.hasLollipopApi()) {
-                                // Yes, they broke the intent somehow.
-                                String message = getString(
-                                        R.string.permissions_device_admin_troubleshooting,
-                                        getString(R.string.permissions_device_admin_grant_manually));
-                                ToastUtils.showLong(context, message);
-                            }
                         } catch (ActivityNotFoundException e) {
                             ToastUtils.showLong(context, R.string.permissions_device_admin_grant_manually);
                             Log.e(TAG, "Device admins activity not found.");

@@ -31,7 +31,6 @@
     <string name="permissions_dialog_title">Необходимые разрешения:</string>
     <string name="permissions_device_admin">Администратор устройства</string>
     <string name="permissions_device_admin_removed">AcDisplay был удален из списка администраторов устройства.</string>
-    <string name="permissions_device_admin_troubleshooting">Ничего не произошло? Предоставьте разрешение вручную: %1$s</string>
     <!-- Description of why do we need device admin rights -->
     <string name="permissions_device_admin_description">Необходимо, чтобы управлять собственной задержкой выключения экрана.</string>
     <!-- Shown as a toast, when clicking a button failed. -->
