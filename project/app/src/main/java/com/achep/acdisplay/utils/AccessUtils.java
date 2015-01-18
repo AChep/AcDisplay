@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import com.achep.acdisplay.receiver.AdminReceiver;
 import com.achep.acdisplay.services.AccessibilityService;
 import com.achep.acdisplay.services.MediaService;
+import com.achep.acdisplay.utils.tasks.RunningTasks;
 import com.achep.base.Device;
 
 /**
@@ -34,7 +35,9 @@ import com.achep.base.Device;
 public class AccessUtils {
 
     public static boolean hasAllRights(Context context) {
-        return isDeviceAdminAccessGranted(context) && isNotificationAccessGranted(context);
+        return isDeviceAdminAccessGranted(context)
+                && isNotificationAccessGranted(context)
+                && hasUsageStatsAccess(context);
     }
 
     public static boolean isDeviceAdminAccessGranted(@NonNull Context context) {
@@ -46,6 +49,10 @@ public class AccessUtils {
         return Device.hasJellyBeanMR2Api()
                 ? MediaService.sService != null
                 : AccessibilityService.isRunning;//.isServiceRunning(context);
+    }
+
+    public static boolean hasUsageStatsAccess(@NonNull Context context) {
+        return Device.hasLollipopApi() && RunningTasks.newInstance().getRunningTasksTop(context) != null;
     }
 
 }
