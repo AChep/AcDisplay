@@ -18,7 +18,6 @@
  */
 package com.achep.acdisplay.services;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,11 +33,10 @@ import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
+import com.achep.acdisplay.utils.tasks.RunningTasks;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.power.PowerUtils;
-
-import java.util.List;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -196,9 +194,7 @@ public class KeyguardService extends BathService.ChildService implements
         stopMonitoringActivities();
         if (DEBUG) Log.d(TAG, "Starting to monitor activities.");
 
-        ActivityManager am = (ActivityManager) getContext()
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        mActivityMonitorThread = new ActivityMonitorThread(am);
+        mActivityMonitorThread = new ActivityMonitorThread(getContext());
         mActivityMonitorThread.start();
     }
 
@@ -284,10 +280,10 @@ public class KeyguardService extends BathService.ChildService implements
         public volatile String topActivityName;
         public volatile boolean running = true;
 
-        private final ActivityManager mActivityManager;
+        private final Context mContext;
 
-        public ActivityMonitorThread(ActivityManager activityManager) {
-            mActivityManager = activityManager;
+        public ActivityMonitorThread(@NonNull Context context) {
+            mContext = context;
         }
 
         @Override
@@ -305,13 +301,8 @@ public class KeyguardService extends BathService.ChildService implements
          * Checks what activity is the latest.
          */
         public synchronized void monitor() {
-            List<ActivityManager.RunningTaskInfo> tasks = mActivityManager.getRunningTasks(1);
-            if (tasks == null || tasks.size() == 0) {
-                return;
-            }
-
-            String topActivity = tasks.get(0).topActivity.getClassName();
-            if (!topActivity.equals(topActivityName)) {
+            String topActivity = RunningTasks.newInstance().getRunningTasksTop(mContext);
+            if (topActivity != null && !topActivity.equals(topActivityName)) {
 
                 // Update time if it's not first try.
                 if (topActivityName != null) {
