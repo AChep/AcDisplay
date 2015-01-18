@@ -33,8 +33,9 @@ import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
-import com.achep.acdisplay.ui.activities.KeyguardActivity;
+import com.achep.acdisplay.utils.tasks.RunningTasks;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.power.PowerUtils;
 
 import static com.achep.base.Build.DEBUG;
@@ -50,7 +51,10 @@ public class KeyguardService extends BathService.ChildService implements
 
     private static final String TAG = "KeyguardService";
 
-    private static final int ACTIVITY_LAUNCH_MAX_TIME = 2500; // ms.
+    private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
+
+    private ActivityMonitorThread mActivityMonitorThread;
+    private String mPackageName;
 
     public static boolean isActive = false;
 
@@ -118,6 +122,7 @@ public class KeyguardService extends BathService.ChildService implements
             final Context context = getContext();
 
             getContext().unregisterReceiver(mReceiver);
+            stopMonitoringActivities();
 
             if (!PowerUtils.isScreenOn(context)) {
                 Presenter.getInstance().kill();
@@ -137,8 +142,21 @@ public class KeyguardService extends BathService.ChildService implements
 
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
-                    long delta = SystemClock.elapsedRealtime() - KeyguardActivity.focusLooseTime;
-                    boolean becauseOfActivityLaunch = delta < ACTIVITY_LAUNCH_MAX_TIME;
+                    String activityName = null;
+                    long activityChangeTime = 0;
+                    if (mActivityMonitorThread != null) {
+                        mActivityMonitorThread.monitor();
+                        activityName = mActivityMonitorThread.topActivityName;
+                        activityChangeTime = mActivityMonitorThread.topActivityTime;
+                    }
+
+                    stopMonitoringActivities();
+
+                    long now = SystemClock.elapsedRealtime();
+                    boolean becauseOfActivityLaunch =
+                            now - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME
+                                    && activityName != null
+                                    && !activityName.startsWith(mPackageName);
 
                     if (DEBUG) Log.d(TAG, "Screen is on: is_call=" + isCall +
                             " activity_flag=" + becauseOfActivityLaunch);
@@ -152,10 +170,12 @@ public class KeyguardService extends BathService.ChildService implements
                         // Finish AcDisplay activity so it won't shown
                         // after exiting from newly launched one.
                         Presenter.getInstance().kill();
-                    } else if (KeyguardActivity.focusLooseTime != -1) startGui(); // Normal launch
+                    } else startGui(); // Normal launch
                     break;
                 case Intent.ACTION_SCREEN_OFF:
                     if (!isCall) startGuiGhost(); // Ghost launch
+
+                    startMonitoringActivities();
                     break;
             }
         }
@@ -170,8 +190,28 @@ public class KeyguardService extends BathService.ChildService implements
         Presenter.getInstance().tryStartGuiCauseKeyguard(getContext());
     }
 
+    private void startMonitoringActivities() {
+        stopMonitoringActivities();
+        if (DEBUG) Log.d(TAG, "Starting to monitor activities.");
+
+        mActivityMonitorThread = new ActivityMonitorThread(getContext());
+        mActivityMonitorThread.start();
+    }
+
+    private void stopMonitoringActivities() {
+        if (mActivityMonitorThread != null) {
+            if (DEBUG) Log.d(TAG, "Stopping to monitor activities.");
+
+            mActivityMonitorThread.running = false;
+            mActivityMonitorThread.interrupt();
+            mActivityMonitorThread = null;
+        }
+    }
+
     @Override
     public void onCreate() {
+        mPackageName = PackageUtils.getName(getContext());
+
         Config config = Config.getInstance();
         config.registerListener(this);
         (config.isKeyguardWithoutNotifiesEnabled() ? mAtomicMain : mAtomicOption).start();
@@ -224,6 +264,56 @@ public class KeyguardService extends BathService.ChildService implements
     private void updateState() {
         boolean start = NotificationPresenter.getInstance().size() >= 1;
         mAtomicMain.react(start);
+    }
+
+    /**
+     * Thread that monitors current top activity.
+     * This is needed to prevent launching AcDisplay above any other
+     * activity which launched with
+     * {@link android.view.WindowManager.LayoutParams#FLAG_TURN_SCREEN_ON} flag.
+     */
+    private static class ActivityMonitorThread extends Thread {
+
+        private static final long MONITORING_PERIOD = 15 * 60 * 1000; // 15 min.
+
+        public volatile long topActivityTime;
+        public volatile String topActivityName;
+        public volatile boolean running = true;
+
+        private final Context mContext;
+
+        public ActivityMonitorThread(@NonNull Context context) {
+            mContext = context;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            try {
+                while (running) {
+                    monitor();
+                    Thread.sleep(MONITORING_PERIOD);
+                }
+            } catch (InterruptedException e) { /* unused */ }
+        }
+
+        /**
+         * Checks what activity is the latest.
+         */
+        public synchronized void monitor() {
+            String topActivity = RunningTasks.newInstance().getRunningTasksTop(mContext);
+            if (topActivity != null && !topActivity.equals(topActivityName)) {
+
+                // Update time if it's not first try.
+                if (topActivityName != null) {
+                    topActivityTime = SystemClock.elapsedRealtime();
+                }
+
+                topActivityName = topActivity;
+
+                if (DEBUG) Log.d(TAG, "Current top activity is " + topActivityName);
+            }
+        }
     }
 
 }

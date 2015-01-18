@@ -51,6 +51,10 @@
     <string name="permissions_notifications_description">Needed to get access to notifications.</string>
     <!-- Shown as a toast, when clicking a button failed. -->
     <string name="permissions_notifications_grant_manually">Go to Settings > Security > Notification access and check AcDisplay on.</string>
+    <!-- A title of 'Provide device admin rights' system dialog -->
+    <string name="permissions_usage_stats">Usage stats</string>
+    <!-- Description of why do we need device admin rights -->
+    <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
 
     <!--
         Actions

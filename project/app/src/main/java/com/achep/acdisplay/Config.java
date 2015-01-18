@@ -321,9 +321,7 @@ public final class Config extends ConfigBase {
         if (!changed) {
             return true;
         }
-        if (enabled
-                && !(AccessUtils.isNotificationAccessGranted(context)
-                && AccessUtils.isDeviceAdminAccessGranted(context))) {
+        if (enabled && !AccessUtils.hasAllRights(context)) {
             return false;
         }
 

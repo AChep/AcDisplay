@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -125,6 +126,25 @@ public class SetupPermissionsDialog extends DialogFragment {
 
     }
 
+    private static class UsageStatsItem extends Item {
+
+        private Context mContext;
+
+        public UsageStatsItem(@DrawableRes int icon,
+                                        String title, String summary,
+                                        @NonNull Runnable runnable,
+                                        Context context) {
+            super(icon, title, summary, runnable);
+            mContext = context;
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return AccessUtils.hasUsageStatsAccess(mContext);
+        }
+
+    }
+
     private Item[] buildItems() {
         Context context = getActivity();
         ArrayList<Item> items = new ArrayList<>();
@@ -182,6 +202,26 @@ public class SetupPermissionsDialog extends DialogFragment {
                             String message = "Accessibility settings not found!";
                             ToastUtils.showLong(getActivity(), message);
                             Log.wtf(TAG, message);
+                        }
+                    }
+
+                }, context));
+        items.add(new UsageStatsItem(R.drawable.ic_settings_apps_white,
+                getString(R.string.permissions_usage_stats),
+                getString(R.string.permissions_usage_stats_description),
+                new Runnable() {
+
+                    @Override
+                    public void run() {
+                        launchUsageAccessSettings();
+                    }
+
+                    private void launchUsageAccessSettings() {
+                        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            Log.e(TAG, "Usage access settings not found.");
                         }
                     }
 

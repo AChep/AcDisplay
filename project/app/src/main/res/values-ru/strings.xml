@@ -40,6 +40,10 @@
     <string name="permissions_notifications_description">Необходимо, чтобы иметь доступ к уведомлениям.</string>
     <!-- Shown as a toast, when clicking a button failed. -->
     <string name="permissions_notifications_grant_manually">Перейдите в Настройки > Безопасность > Доступ к уведомлениям и включите AcDisplay.</string>
+    <!-- A title of 'Provide device admin rights' system dialog -->
+    <string name="permissions_usage_stats">Статистика использования</string>
+    <!-- Description of why do we need device admin rights -->
+    <string name="permissions_usage_stats_description">Необходимо, чтобы избегать перекрытия таких приложений, как будильник либо приложение звонков.</string>
 
     <!--
         Actions
