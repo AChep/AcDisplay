@@ -73,6 +73,11 @@ class RunningTasksLollipop extends RunningTasks {
             // Sort the stats by the last time used
             SortedMap<Long, UsageStats> statsSortedMap = new TreeMap<>();
             for (final UsageStats usageStats : statsList) {
+                // Filter system decor apps
+                if ("com.android.systemui".equals(usageStats.getPackageName())) {
+                    continue;
+                }
+
                 statsSortedMap.put(usageStats.getLastTimeUsed(), usageStats);
             }
             return statsSortedMap;
@@ -83,7 +88,7 @@ class RunningTasksLollipop extends RunningTasks {
     @Nullable
     private UsageStats getUsageStatsTop(@NonNull Context context) throws SecurityException {
         SortedMap<Long, UsageStats> statsSortedMap = getUsageStats(context);
-        return statsSortedMap != null ? statsSortedMap.get(statsSortedMap.firstKey()) : null;
+        return statsSortedMap != null ? statsSortedMap.get(statsSortedMap.lastKey()) : null;
     }
 
 }
