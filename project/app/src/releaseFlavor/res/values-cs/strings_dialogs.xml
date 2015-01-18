@@ -50,4 +50,9 @@
   <string name="feedback_error_no_app">Nainstalujte některou z e-mailových aplikací.</string>
   <string name="feedback_error_msg_too_short">Zpráva musí obsahovat alespoň %1$d znaků.</string>
   <string name="feedback_error_accessing_log">Chyba při přístupu k protokolu aplikace. Chyba je: %1$s</string>
+  <string name="compat_dialog_title">Režim kompatibility</string>
+  <string name="compat_dialog_message">AcDisplay je spuštěn v režimu kompatibility k podpoře Androidu %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Protože AcDisplay využívá služby dostupnosti, nemůže detekovat zamítnutí/aktualizaci oznámení nebo je zamítnout z panelu oznámení.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigační panel je vždy zobrazený.</string>
+  <string name="compat_dialog_item_music_widget">Žádný widget hudby.</string>
 </resources>

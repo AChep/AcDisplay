@@ -19,16 +19,16 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="about_dialog_message"><![CDATA[         AcDisplay είναι μια δωρεάν και <a href="http://repo.acdisplay.org"> ανοικτού κώδικα</a> εφαρμογή.         Πνευματικά δικαιώματα 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Όλα τα δικαιώματα είναι κατοχυρωμένα. <br/>         <br/> Πολλές ευχαριστίες σε εκείνους ανοίξουν τα εργαλεία πηγής: %1$s και σε όλους όσους <a href="http://translate.acdisplay.org"> βοήθησαν με τις μεταφράσεις</a> ή έκαναν δωρεά.     ]]></string>
+  <string name="about_dialog_message"><![CDATA[         AcDisplay είναι μια δωρεάν και <a href="http://repo.acdisplay.org"> ανοικτού κώδικα</a> εφαρμογή.         Πνευματικά δικαιώματα 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Όλα τα δικαιώματα είναι κατοχυρωμένα. <br/>         <br/> Πολλές ευχαριστίες στα εργαλεία ανοιχτού κώδικα: %1$s και σε όλους όσους <a href="http://translate.acdisplay.org"> βοήθησαν με τις μεταφράσεις</a> ή έκαναν δωρεά.     ]]></string>
   <string name="donate_dialog_title">Κάντε δωρεά στους προγραμματιστές</string>
   <string name="donate_dialog_message">Το AcDisplay είναι μια ελεύθερη και ανοικτού-κώδικα εφαρμογή. Μπορείτε να δείξετε την εκτίμησή σας και να υποστηρίξετε την ανάπτυξη της δωρίζοντας:</string>
-  <string name="donate_alert_no_responsibility">Έχετε στο νου σας ότι η Google δεν είναι υπεύθυνη για αυτήν την μέθοδο πληρωμής.</string>
+  <string name="donate_alert_no_responsibility">Σας υπενθυμίζουμε ότι η Google δεν είναι υπεύθυνη για αυτήν την μέθοδο πληρωμής.</string>
   <string name="donate_billing_not_supported">Πληρωμές μέσα από την εφαρμογή δεν υποστηρίζονται σε αυτήν την συσκευή.</string>
-  <string name="donate_thanks">Σε ευχαριστώ πολύ!</string>
+  <string name="donate_thanks">Σε ευχαριστούμε πολύ!</string>
   <string name="donation_1">Ένα παγωτό</string>
   <string name="donation_4">Έναν καφέ</string>
-  <string name="donation_10">Έναν λογαριασμό ρεύματος</string>
-  <string name="donation_20">Ένα σωστό μαξιλάρι</string>
+  <string name="donation_10">Το λογαριασμό ρεύματος</string>
+  <string name="donation_20">Ένα καλό μαξιλάρι</string>
   <string name="donation_50">Σκληρός δίσκος SSD</string>
   <string name="donation_99">Ένα ηχοσύστημα</string>
   <string name="cry_dialog_title">Υποστήριξη της ανάπτυξης</string>
@@ -41,4 +41,9 @@
   <string name="feedback_error_no_app">Εγκαταστήσετε οποιαδήποτε εφαρμογή ηλεκτρονικού ταχυδρομείου.</string>
   <string name="feedback_error_msg_too_short">Το μήνυμα πρέπει να περιέχει τουλάχιστον %1$d σύμβολα.</string>
   <string name="feedback_error_accessing_log">Σφάλμα κατά την προσπέλαση του αρχείου καταγραφής της εφαρμογής. Το σφάλμα είναι: %1$s</string>
+  <string name="compat_dialog_title">Λειτουργία συμβατότητας</string>
+  <string name="compat_dialog_message">AcDisplay εκτελείται σε κατάσταση λειτουργίας συμβατότητας για τη στήριξη του Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Επειδή το AcDisplay χρησιμοποιεί την υπηρεσία προσβασημότητας, δεν μπορεί να ανιχνεύσει ειδοποιήσεις που έχουν απορριφθεί/ενημερωθεί, ή να απομακρύνει ειδοποιήσεις από το συρτάρι.</string>
+  <string name="compat_dialog_item_immersive_mode">Γραμμή περιήγησης να εμφανίζεται πάντα.</string>
+  <string name="compat_dialog_item_music_widget">Χωρίς widget μουσικής.</string>
 </resources>

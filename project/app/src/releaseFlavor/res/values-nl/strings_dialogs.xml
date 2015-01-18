@@ -44,4 +44,9 @@
   <string name="feedback_error_no_app">Installeer een e-mail apps.</string>
   <string name="feedback_error_msg_too_short">Het bericht moet tenminste %1$d tekens bevatten.</string>
   <string name="feedback_error_accessing_log">Fout bij toegang tot het app logboek. De fout is: %1$s</string>
+  <string name="compat_dialog_title">Compatitiliteitsmodus</string>
+  <string name="compat_dialog_message">AcDisplay is actief in compatibiliteitsmodus om Android %1$s: %2$s te ondersteunen</string>
+  <string name="compat_dialog_item_notification">Omdat AcDisplay de toegankelheids-service aan het gebruiken is, kunnen geüpdatete/gesloten notificaties niet gedetecteerd worden, of notificaties van het notificatie paneel niet gesloten worden.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigatiebalk is altijd zichtbaar.</string>
+  <string name="compat_dialog_item_music_widget">Geen muziekwidget.</string>
 </resources>

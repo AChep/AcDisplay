@@ -53,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">禁用</string>
   <string name="settings_status_battery_always_visible">保留电池状态</string>
   <string name="settings_status_battery_always_visible_off">在低电量或插入电源时显示电池状态</string>
+  <string name="settings_emoticons_title">Emoticons</string>
   <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">解锁圈</string>
   <string name="settings_circle_animation_title">解锁动画</string>

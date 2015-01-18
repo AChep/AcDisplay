@@ -24,7 +24,7 @@
   <string name="settings_unknown_value">Непозната вредност</string>
   <string name="settings_placeholder_title">Placeholder</string>
   <string name="settings_placeholder_summary">Место за будуће опције.</string>
-  <string name="settings_category_features">Features</string>
+  <string name="settings_category_features">Карактеристике</string>
   <string name="settings_keyguard_title">Закључавање екрана</string>
   <string name="settings_active_title">Активни режим</string>
   <string name="settings_category_settings">Подешавања</string>
@@ -35,8 +35,8 @@
   <string name="settings_dev_title">Развој</string>
   <string name="settings_keyguard_description">Користи AcDisplay као закључавање екрана. Ово је бета опција и може бити нестабилна.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Активирај када нема обавештења</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Закључавање екрана је активирано без обзира да ли постоје обавештења или не.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Закључавање екрана је деактивирано када нема обавештења.</string>
   <string name="settings_active_description">Активни режим користи сензоре на уређају да би пробудио ваш уређај када је то потребно. Ово је одлично када извадите ваш телефон из џепа и тада можете добити брзи увид у ваша пристигла обавештења. Активни режим не држи процесор у сталном раду, тако да не би требали да искусите повећавање уптребе батерије.</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Активирај када нема обавештења</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Активни режим је активиран без обзира да ли постоје обавештења или не.</string>
@@ -53,11 +53,12 @@
   <string name="settings_dynamic_background_disabled">Деактивирај</string>
   <string name="settings_status_battery_always_visible">Задржи статус батерије</string>
   <string name="settings_status_battery_always_visible_off">Статус батерије се приказује када је батерија при крају или током пуњења.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
-  <string name="settings_circle_category">Unlock circle</string>
-  <string name="settings_circle_animation_title">Unlock animation</string>
-  <string name="settings_circle_color_inner_title">Circle color</string>
-  <string name="settings_circle_color_outer_title">Circle background</string>
+  <string name="settings_emoticons_title">Emoticons</string>
+  <string name="settings_override_fonts_title">Промени фонт система</string>
+  <string name="settings_circle_category">Кружић за откључавање</string>
+  <string name="settings_circle_animation_title">Анимација при откључавању</string>
+  <string name="settings_circle_color_inner_title">Боја кружића</string>
+  <string name="settings_circle_color_outer_title">Позадина кружића</string>
   <string name="settings_dev_sensors_dump_title">Ослободи се података од сензора</string>
   <string name="settings_dev_sensors_dump_on">Непрестално снима стање уређаја и податке од сензора у фајл на уређају.</string>
   <string name="settings_dev_sensors_dump_send_title">Пошаљи сачуване податке</string>

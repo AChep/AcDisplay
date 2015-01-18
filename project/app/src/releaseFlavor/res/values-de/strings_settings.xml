@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">Deaktiviert</string>
   <string name="settings_status_battery_always_visible">Ladezustand immer anzeigen</string>
   <string name="settings_status_battery_always_visible_off">Ladezustand der Batterie während des Ladens oder bei niedrigem Akkustand anzeigen.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">Emoticons</string>
+  <string name="settings_override_fonts_title">Überschreiben von Systemschriften</string>
   <string name="settings_circle_category">Entsperrungs-Kreis</string>
   <string name="settings_circle_animation_title">Entsperranimation</string>
   <string name="settings_circle_color_inner_title">Kreisfarbe</string>

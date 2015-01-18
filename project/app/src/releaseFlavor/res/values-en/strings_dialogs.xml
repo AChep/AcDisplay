@@ -48,7 +48,12 @@
   <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
   <string name="feedback_dialog_attach_log">Attach a log</string>
   <string name="feedback_dialog_read_help">Frequently asked questions</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
-  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
+  <string name="feedback_error_no_app">Install an email app.</string>
+  <string name="feedback_error_msg_too_short">Message must contain at least %1$d characters.</string>
   <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
+  <string name="compat_dialog_title">Compatibility mode</string>
+  <string name="compat_dialog_message">AcDisplay is running in compatibility mode to support Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
+  <string name="compat_dialog_item_music_widget">No music widget.</string>
 </resources>

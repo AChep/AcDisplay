@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>Probléma</item>
     <item>Javaslat</item>
     <item>Másik</item>
   </string-array>

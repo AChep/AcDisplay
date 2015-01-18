@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">Uitgeschakeld</string>
   <string name="settings_status_battery_always_visible">Batterij percentage altijd tonen</string>
   <string name="settings_status_battery_always_visible_off">Status van de batterij wordt weergegeven wanneer deze bijna leeg is of wanneer het apparaat opgeladen wordt.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">Emoticons</string>
+  <string name="settings_override_fonts_title">Systeemlettertypen overschrijven</string>
   <string name="settings_circle_category">Ontgrendel cirkel</string>
   <string name="settings_circle_animation_title">Ontgrendel animatie</string>
   <string name="settings_circle_color_inner_title">Cirkel kleur</string>

@@ -27,7 +27,7 @@
         <a href="http://translate.acdisplay.org">ساعد في ترجمة التطبيق</a>، أو قام بالتبرع.
     ]]></string>
   <string name="donate_dialog_title">تبرَّع للمطورين</string>
-  <string name="donate_dialog_message">AcDisplay هو تطبيق مجاني ومفتوح المصدر. يمكنك إظهار تقديرك ودعمك لتطوير التطبيق عن طريق التبرع:</string>
+  <string name="donate_dialog_message">تطبيق AcDisplay هو تطبيق مجاني ومفتوح المصدر. يمكنك إظهار تقديرك ودعمك لتطوير التطبيق عن طريق التبرع:</string>
   <string name="donate_alert_no_responsibility">لاحظ أن Google ليست مسؤولة عن طريقة الدفع هذه.</string>
   <string name="donate_billing_not_supported">الشراء في التطبيق غير مدعومة في هذا الجهاز.</string>
   <string name="donate_thanks">شكرًا جزيلًا لك!</string>
@@ -39,7 +39,7 @@
   <string name="donation_99">نظام صوتي</string>
   <string name="cry_dialog_title">دعم التطوير</string>
   <string name="cry_dialog_message"><![CDATA[
-        AcDisplay هو تطبيق مجاني و<a href="http://repo.acdisplay.org">مفتوح المصدر</a>، ولقد قمنا بصرف
+        تطبيق AcDisplay هو تطبيق مجاني و<a href="http://repo.acdisplay.org">مفتوح المصدر</a>، ولقد قمنا بصرف
         الكثير من الوقت والموارد لإبقائه محدَّثا. لطفًا، فكر في تبرع لإظهار
         تقديرك ودعمك للتطويرات المستقبلية.
     ]]></string>
@@ -51,4 +51,9 @@
   <string name="feedback_error_no_app">قم بتثبيت أي من تطبيقات البريد الإلكتروني.</string>
   <string name="feedback_error_msg_too_short">يجب أن تحتوي الرسالة على الأقل على %1$d رمز.</string>
   <string name="feedback_error_accessing_log">خطأ في الوصول إلى سجل التطبيق. الخطأ: %1$s</string>
+  <string name="compat_dialog_title">وضعية التوافق</string>
+  <string name="compat_dialog_message">تطبيق AcDisplay يعمل حاليًا على وضعية التوافق لدعم %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">لأن AcDisplay يستخدم خدمات «إمكانية الدخول»، فإنه لا يمكنه كشف الإشعارات في حالة تحديثها أو استبعادها، أو استبعاد إشعارات من نافذة الإشعارات.</string>
+  <string name="compat_dialog_item_immersive_mode">شريط التنقل ظاهر دائمًا.</string>
+  <string name="compat_dialog_item_music_widget">لا تتوفر أداة للموسيقى.</string>
 </resources>

@@ -53,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Отключен</string>
   <string name="settings_status_battery_always_visible">Показывать состояние батареи</string>
   <string name="settings_status_battery_always_visible_off">Состояние батареи отображается при зарядке либо низком уровне заряда.</string>
+  <string name="settings_emoticons_title">Графические смайлы</string>
   <string name="settings_override_fonts_title">Заместить системные шрифты</string>
   <string name="settings_circle_category">Круг разблокировки</string>
   <string name="settings_circle_animation_title">Анимация разблокировки</string>

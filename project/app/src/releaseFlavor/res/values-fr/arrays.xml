@@ -29,10 +29,10 @@
     <item>Icône de notification</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Urgent &amp; Important (appels manqués, directions, alertes urgentes)</item>
-    <item>Important (communications, e-mails importants)</item>
+    <item>Urgent &amp; Important (appels manqués, instructions, alertes urgentes)</item>
+    <item>Important (communications, mails importants)</item>
     <item>Normal (et notifications d\'autres applications)</item>
-    <item>Non-important (mises à jour, e-mails indésirables)</item>
+    <item>Non-important (mises à jour, courrier indésirables)</item>
     <item>Information contextuelle (météo, événements passés, suggestions)</item>
   </string-array>
 </resources>

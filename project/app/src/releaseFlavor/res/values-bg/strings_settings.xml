@@ -53,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Изключено</string>
   <string name="settings_status_battery_always_visible">Запази статуса на батерията</string>
   <string name="settings_status_battery_always_visible_off">Състоянието на батерията се показва при малко батерия или когато телефона се зарежда.</string>
+  <string name="settings_emoticons_title">Emoticons</string>
   <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>

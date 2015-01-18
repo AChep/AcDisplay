@@ -19,7 +19,7 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="about_dialog_message"><![CDATA[         AcDisplay ist eine gratis und <a href="http://repo.acdisplay.org"> open-Source</a>-app.         Copyright 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Alle Rechte vorbehalten. <br/>         <br/> Vielen Dank an diese open-Source-Tools: %1$s und alle, die <a href="http://translate.acdisplay.org"> mit Übersetzungen geholfen</a> oder gespendet haben.     ]]></string>
+  <string name="about_dialog_message"><![CDATA[         AcDisplay ist eine gratis und <a href="http://repo.acdisplay.org">Open-Source</a>-Anwendung.         Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Alle Rechte vorbehalten. <br/>         <br/> Vielen Dank an diese Open-Source-Tools: %1$s und alle, die <a href="http://translate.acdisplay.org"> mit Übersetzungen geholfen</a> oder gespendet haben.     ]]></string>
   <string name="donate_dialog_title">An die Entwickler spenden</string>
   <string name="donate_dialog_message">AcDisplay ist eine gratis und open-Source-App. Du kannst deine Wertschätzung zeigen und die Entwicklung durch eine Spende unterstützen:</string>
   <string name="donate_alert_no_responsibility">Beachte, dass Google für diese Zahlungsmethode nicht verantwortlich ist.</string>
@@ -41,4 +41,9 @@
   <string name="feedback_error_no_app">Installiere eine e-Mail-Anwendungen.</string>
   <string name="feedback_error_msg_too_short">Die Nachricht muss mindestens %1$d Zeichen beinhalten.</string>
   <string name="feedback_error_accessing_log">Fehler beim Zugriff auf den App-Log. Der Fehler ist: %1$s</string>
+  <string name="compat_dialog_title">Kompatibilitätsmodus</string>
+  <string name="compat_dialog_message">AcDisplay läuft in einem Kompatibilitätsmodus, um Android %1$s: %2$s zu unterstützen</string>
+  <string name="compat_dialog_item_notification">Da AcDisplay den Eingabehilfen-Dienst verwendet, kann nicht es erkennen, ob Benachrichtigungen entfernt oder aktualisiert wurden.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigations-Leiste wird immer angezeigt.</string>
+  <string name="compat_dialog_item_music_widget">Kein Musik Widget.</string>
 </resources>

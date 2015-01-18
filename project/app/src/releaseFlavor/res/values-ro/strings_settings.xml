@@ -53,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Dezactivat</string>
   <string name="settings_status_battery_always_visible">Arata stare baterie</string>
   <string name="settings_status_battery_always_visible_off">Starea bateriei este afişatã când nivelul de încãrcare este redus sau atunci când se încarcã.</string>
+  <string name="settings_emoticons_title">Emoticons</string>
   <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Incercuirea butonului de deblocare</string>
   <string name="settings_circle_animation_title">Animatie de deblocare</string>

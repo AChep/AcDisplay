@@ -53,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">비활성화</string>
   <string name="settings_status_battery_always_visible">배터리 상태 표시</string>
   <string name="settings_status_battery_always_visible_off">배터리가 얼마 남지 않거나 충전중일 때 배터리 상태가 표시됩니다.</string>
+  <string name="settings_emoticons_title">Emoticons</string>
   <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>

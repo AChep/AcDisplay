@@ -41,4 +41,9 @@
   <string name="feedback_error_no_app">尚未安装电子邮件应用</string>
   <string name="feedback_error_msg_too_short">消息必须包含至少 %1$d 个字符</string>
   <string name="feedback_error_accessing_log">访问应用程序的日志时出错。该错误是：%1$s</string>
+  <string name="compat_dialog_title">Compatibility mode</string>
+  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
+  <string name="compat_dialog_item_music_widget">No music widget.</string>
 </resources>

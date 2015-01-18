@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>Ongelma</item>
     <item>Ehdotus</item>
     <item>Muu</item>
   </string-array>
@@ -29,10 +29,10 @@
     <item>Ilmoituksen kuvake</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
-    <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Kriittiset ja kiireelliset (vastaamattomat puhelut, ajo-ohjeet, hätävaroitukset)</item>
+    <item>Tärkeät (viestintä, tärkeät sähköpostit)</item>
+    <item>Normaalit (+ilmoitukset vanhoista sovelluksista)</item>
+    <item>Ei-tärkeät (järjestelmäpäivitykset, roskaposti)</item>
+    <item>Kontekstuaaliset ja taustatiedot (sää, vanhentuneet tapahtumat, ehdotukset)</item>
   </string-array>
 </resources>

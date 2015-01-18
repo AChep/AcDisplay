@@ -19,22 +19,19 @@
   ~ MA  02110-1301, USA.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="app_description">AcDisplay هو طريقة جديدة للتعامل مع الإشعارات في Android. سوف يتيح لك معرفة الإشعارات الجديدة عن طريق عرض شاشة بسيطة وجميلة، كما يتيح لك فتح إحداها مباشرة من شاشة القفل. وإذا كنت تريد أن تعرف ما يجري في وقت ما، يمكنك ببساطة إخراج هاتفك من جيبك لعرض أحدث الإشعارات، بطريقة مماثلة في الجاذبية والبساطة.</string>
+  <string name="app_description">تطبيق AcDisplay هو طريقة جديدة للتعامل مع الإشعارات في Android. سوف يتيح لك معرفة الإشعارات الجديدة عن طريق عرض شاشة بسيطة وجميلة، كما يتيح لك فتح إحداها مباشرة من شاشة القفل. وإذا كنت تريد أن تعرف ما يجري في وقت ما، يمكنك ببساطة إخراج هاتفك من جيبك لعرض أحدث الإشعارات، بطريقة مماثلة في الجاذبية والبساطة.</string>
   <string name="plugin_xposed_description">يساعد ذلك AcDisplay على التكامل بشكل أفضل مع Android.</string>
   <string name="permissions_auto_disabled">تم إيقاف AcDisplay لأنه يفتقد بعض الصلاحيات.</string>
   <string name="permissions_dialog_title">الصلاحيات المطلوبة:</string>
   <string name="permissions_device_admin">مشرف الجهاز</string>
   <string name="permissions_device_admin_removed">تمت إزالة AcDisplay من قائمة مشرفي الجهاز.</string>
-  <string name="permissions_device_admin_troubleshooting">لم يحدث شيء؟ أعطِ الإذن يدويًا: %1$s</string>
   <string name="permissions_device_admin_description">ضروري لإدارة مهلة قفل الشاشة.</string>
   <string name="permissions_device_admin_grant_manually">اذهب إلى «الإعدادات» &gt; «الأمان» &gt; «مشرفو الجهاز»، وتحقق من أن AcDisplay مفعل.</string>
   <string name="permissions_notifications">الإشعارات</string>
   <string name="permissions_notifications_description">ضروري ليتمكن التطبيق من الوصول إلى الإشعارات.</string>
   <string name="permissions_notifications_grant_manually">اذهب إلى «الإعدادات» &gt; «الأمان» &gt; «الدخول إلى الإشعارات»، وتحقق من أن AcDisplay مفعل.</string>
-  <string name="compat_alert_title">AcDisplay قيد التشغيل في وضعية التوافق:</string>
-  <string name="compat_alert_notifications">الإشعارات لا يمكن استبعادها من النظام أو جمعها في إشعار واحد</string>
-  <string name="compat_alert_immersive_mode">شريط التنقل ظاهر</string>
-  <string name="compat_alert_music_widget">لا تتوفر أداة لتشغيل الموسيقى</string>
+  <string name="permissions_usage_stats">إحصائيات الاستخدام</string>
+  <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
   <string name="action_about">حول التطبيق</string>
   <string name="action_donate">تبرع</string>
   <string name="action_feedback">إبلاغ أو اقتراح</string>
@@ -54,7 +51,7 @@
   <string name="media_pause_description">زر الإيقاف المؤقت</string>
   <string name="media_play_description">زر التشغيل</string>
   <string name="media_stop_description">زر الإيقاف</string>
-  <string name="notification_init_text">استبعد هذا التنبيه فقط.</string>
+  <string name="notification_init_text">استبعد هذا الإشعار فقط.</string>
   <string name="notification_test_message">هذا مثال لإشعار.</string>
   <string name="notification_test_message_large">اسحب لأسفل لاستبعاد الإشعار.\nاسحب في أي مكان آخر لفتح القفل.</string>
   <string name="remote_enable_acdisplay">AcDisplay مفعل.</string>

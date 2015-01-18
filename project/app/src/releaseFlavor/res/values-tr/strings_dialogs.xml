@@ -21,7 +21,7 @@
 <resources>
   <string name="about_dialog_message"><![CDATA[
         AcDisplay ücretsiz ve<a href="http://repo.acdisplay.org">açık kaynaklı</a>bir uygulamadır.
-        Telif hakkı 2013-%2$s<a href="http://artemchep.com">Artem Chepurnoy</a>. Bütün hakları saklıdır.<br/>
+        Telif hakkı 2013-%2$s<a href="http://artemchep.com">Artem Chepurnoy</a>. Tüm hakları saklıdır.<br/>
         <br/>
         Şu açık kaynak araçlarına:%1$s ve        <a href="http://translate.acdisplay.org">çevirilerde yardım eden</a>veya bağış yapan herkese çok teşekkürler.    ]]></string>
   <string name="donate_dialog_title">Geliştiriciye bağış yap</string>
@@ -41,9 +41,14 @@
   <string name="help_dialog_title">Yardım</string>
   <string name="feedback_dialog_title">Geri bildirim</string>
   <string name="feedback_dialog_message_hint">İletiniz. Aygıt özellikleri otomatik olarak eklenecektir.</string>
-  <string name="feedback_dialog_attach_log">Bir günlük ekle</string>
+  <string name="feedback_dialog_attach_log">Bir hata günlüğü de ekle</string>
   <string name="feedback_dialog_read_help">Sıkça sorulan sorular</string>
   <string name="feedback_error_no_app">Herhangi bir e-posta uygulaması yükleyin.</string>
-  <string name="feedback_error_msg_too_short">İleti en azından %1$d simgelerini içermelidir.</string>
+  <string name="feedback_error_msg_too_short">İleti en azından %1$d karakter içermelidir.</string>
   <string name="feedback_error_accessing_log">Uyguluma günlüğüne erişirken hata oluştu. Hata:%1$s</string>
+  <string name="compat_dialog_title">Compatibility mode</string>
+  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
+  <string name="compat_dialog_item_music_widget">No music widget.</string>
 </resources>

@@ -51,4 +51,9 @@
   <string name="feedback_error_no_app">Nainštalujte si e-mailového klienta.</string>
   <string name="feedback_error_msg_too_short">Správa musí obsahovať aspoň %1$d znakov.</string>
   <string name="feedback_error_accessing_log">Chyba pri prístupe k záznamu aplikácie. Chyba je: %1$s</string>
+  <string name="compat_dialog_title">Režim kompatibility</string>
+  <string name="compat_dialog_message">AcDisplay je spustený v režime kompatibility %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Pretože AcDisplay využíva službu Zjednodušenie ovládania, nedokáže detegovať zamietnuté/aktualizované oznámenia, ani zrušiť upozornenia v stavovom riadku.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigačný panel sa stále zobrazuje.</string>
+  <string name="compat_dialog_item_music_widget">Bez hudobného widgetu.</string>
 </resources>

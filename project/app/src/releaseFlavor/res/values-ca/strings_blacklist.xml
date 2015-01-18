@@ -19,12 +19,12 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="blacklist">Blacklist</string>
-  <string name="blacklist_app_config">App settings</string>
-  <string name="blacklist_app_hide_title">Hide</string>
-  <string name="blacklist_app_hide_summary">This app\'s notifications won\'t be displayed.</string>
-  <string name="blacklist_app_restricted_title">Silent</string>
-  <string name="blacklist_app_restricted_summary">Notifications from this application will not wake up AcDisplay.</string>
-  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
+  <string name="blacklist">Llista negra</string>
+  <string name="blacklist_app_config">Configuració de l\'aplicació</string>
+  <string name="blacklist_app_hide_title">Amagar</string>
+  <string name="blacklist_app_hide_summary">No es mostraran les notificacions d\'aquesta aplicació.</string>
+  <string name="blacklist_app_restricted_title">Silenciós</string>
+  <string name="blacklist_app_restricted_summary">Les notificacions d\'aquesta aplicació no despertaran AcDisplay.</string>
+  <string name="blacklist_app_non_clearable_title">Notificacions no eliminables</string>
+  <string name="blacklist_app_non_clearable_summary">Mostra les notificacions no eliminables/en curs, com les de serveis.</string>
 </resources>

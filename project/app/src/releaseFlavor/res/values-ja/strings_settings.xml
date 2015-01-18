@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">無効</string>
   <string name="settings_status_battery_always_visible">バッテリーの状態を保持</string>
   <string name="settings_status_battery_always_visible_off">バッテリの状態は低充電レベルまたは充電器接続中に表示されます。</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">絵文字</string>
+  <string name="settings_override_fonts_title">システム フォントを上書き</string>
   <string name="settings_circle_category">ロック解除サークル</string>
   <string name="settings_circle_animation_title">ロック解除アニメーション</string>
   <string name="settings_circle_color_inner_title">サークルの色</string>

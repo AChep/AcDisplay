@@ -41,4 +41,9 @@
   <string name="feedback_error_no_app">Installer une des applications de courrier électronique.</string>
   <string name="feedback_error_msg_too_short">Le message doit contenir au moins %1$d caractères.</string>
   <string name="feedback_error_accessing_log">Erreur d\'accès au Journal de l\'application. L\'erreur est : %1$s</string>
+  <string name="compat_dialog_title">Mode de compatibilité</string>
+  <string name="compat_dialog_message">AcDisplay s\'exécute dans un mode de compatibilité pour soutenir Android %1$s : %2$s</string>
+  <string name="compat_dialog_item_notification">Parce que AcDisplay utilise le service de l\'accessibilité, il ne peut pas détecter des notifications rejetées/mises à jour, ou fermer les notifications.</string>
+  <string name="compat_dialog_item_immersive_mode">La barre de navigation est toujours affichée.</string>
+  <string name="compat_dialog_item_music_widget">Pas de widget média.</string>
 </resources>

@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">معطل</string>
   <string name="settings_status_battery_always_visible">الإبقاء على حالة البطارية</string>
   <string name="settings_status_battery_always_visible_off">تعرض حالة البطارية إذا كان مستوى الشحن منخفضًا، أو عندما يكون الجهاز موصولًا.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">ابتسامات</string>
+  <string name="settings_override_fonts_title">استبدال خطوط النظام</string>
   <string name="settings_circle_category">دائرة فتح القفل</string>
   <string name="settings_circle_animation_title">حركة فتح القفل</string>
   <string name="settings_circle_color_inner_title">لون الدائرة</string>
@@ -70,23 +71,23 @@
   <string name="settings_timeout_title">النوم</string>
   <string name="settings_timeout_summary">بعد %1$s / %2$s ثانية من عدم النشاط.</string>
   <string name="settings_icon_size_title">حجم الرمز</string>
-  <string name="settings_icon_size_summary">حجم الايقونات الحالي  هو %1$s   dpi.</string>
+  <string name="settings_icon_size_summary">الحجم الحالي للرموز هو %1$s dpi.</string>
   <string name="settings_behavior_category">السلوك</string>
-  <string name="settings_lock_on_dismiss_last_notify_title">قفل عند استبعاد التنبيه الأخير</string>
+  <string name="settings_lock_on_dismiss_last_notify_title">قفل الشاشة عند استبعاد الإشعار الأخير</string>
   <string name="settings_lock_on_dismiss_last_notify_on">إيقاف تشغيل الشاشة بعد إستبعاد اخر تنبيه موجود.</string>
-  <string name="settings_lock_on_dismiss_last_notify_off">تبقى الشاشة مضيئة على بعد إستبعاد اخر تنبيه موجود.</string>
-  <string name="settings_widget_pinnable_title">تنبيه يمكن تثبيته</string>
-  <string name="settings_widget_pinnable_on">ويدجت التنبيه يبقى موسعا لثواني بعد لمسه.</string>
-  <string name="preference_inactive_hours_enabled">تمكين الساعات الخاملة</string>
+  <string name="settings_lock_on_dismiss_last_notify_off">تبقى الشاشة غير مقفلة بعد استبعاد آخر إشعار موجود.</string>
+  <string name="settings_widget_pinnable_title">إشعارات قابلة للتثبيت</string>
+  <string name="settings_widget_pinnable_on">الإشعارات تبقى في حالة التوسعة لعدة ثواني بعد لمسها.</string>
+  <string name="preference_inactive_hours_enabled">تمكين الساعات غير النشطة</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         من:<br/><b><font color="#ffffff">%1$s</font></b>
     ]]></string>
   <string name="preference_inactive_hours_to"><![CDATA[
         إلى:<br/><b><font color="#ffffff">%1$s</font></b>
     ]]></string>
-  <string name="preference_timeout_normal">في البدء أو تحديد الإخطار</string>
-  <string name="preference_timeout_short">بعد المس في منطقة غير نشطة</string>
+  <string name="preference_timeout_normal">بعد الاستيقاظ أو اختيار إشعار</string>
+  <string name="preference_timeout_short">بعد لمس منطقة فارغة</string>
   <string name="preference_timeout_sec">%1$s ثانية.</string>
-  <string name="preference_icon_size_message">قم بضبط حجم رموز التنبيه.</string>
+  <string name="preference_icon_size_message">تغيير حجم رموز الإشعارات.</string>
   <string name="preference_icon_size_dpi">%1$s نقطة في البوصة.</string>
 </resources>

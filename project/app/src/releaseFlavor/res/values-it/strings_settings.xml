@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">Disattivato</string>
   <string name="settings_status_battery_always_visible">Attiva icona della batteria</string>
   <string name="settings_status_battery_always_visible_off">Lo stato della batteria è mostrato quando il livello di carica è basso o quando il dispositivo è in carica.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">Emoticons</string>
+  <string name="settings_override_fonts_title">Sovrascrivi il font di sistema</string>
   <string name="settings_circle_category">Cerchio di sblocco</string>
   <string name="settings_circle_animation_title">Animazione di sblocco</string>
   <string name="settings_circle_color_inner_title">Colore del cerchio</string>

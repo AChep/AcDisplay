@@ -53,6 +53,7 @@
   <string name="settings_dynamic_background_disabled">Afkeskakel</string>
   <string name="settings_status_battery_always_visible">Behoud battery status</string>
   <string name="settings_status_battery_always_visible_off">Hoeveelheid battery word vertoon by hef of wanneer byna leeg.</string>
+  <string name="settings_emoticons_title">Emoticons</string>
   <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>

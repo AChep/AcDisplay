@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">Zakázané</string>
   <string name="settings_status_battery_always_visible">Zobraziť stav batérie</string>
   <string name="settings_status_battery_always_visible_off">Stav batérie sa zobrazuje len pri nízkej úrovni alebo počas nabíjania.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">Emotikony</string>
+  <string name="settings_override_fonts_title">Prepísanie systémových písiem</string>
   <string name="settings_circle_category">Koliesko odomykania</string>
   <string name="settings_circle_animation_title">Animácia odomknutia</string>
   <string name="settings_circle_color_inner_title">Farba kruhu</string>

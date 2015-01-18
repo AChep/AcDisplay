@@ -49,4 +49,9 @@ AcDisplay は、フリーの <a href="http://repo.acdisplay.org">オープン �
   <string name="feedback_error_no_app">メール アプリを何かインストールしてください。</string>
   <string name="feedback_error_msg_too_short">メッセージは%1$d文字以上入力する必要があります。</string>
   <string name="feedback_error_accessing_log">アプリのログにアクセス中エラーが発生しました。エラーは: %1$s</string>
+  <string name="compat_dialog_title">互換モード</string>
+  <string name="compat_dialog_message">AcDisplayはAndroid %1$s をサポートするために互換モードで実行している： %2$s</string>
+  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
+  <string name="compat_dialog_item_immersive_mode">ナビゲーションバーは、常に表示されます。</string>
+  <string name="compat_dialog_item_music_widget">No music widget.</string>
 </resources>

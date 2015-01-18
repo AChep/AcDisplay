@@ -43,4 +43,9 @@
   <string name="feedback_error_no_app">Instale qualquer aplicativo de email.</string>
   <string name="feedback_error_msg_too_short">Mensagem deve conter pelo menos %1$d símbolos.</string>
   <string name="feedback_error_accessing_log">Erro ao acessar o registro do aplicativo. O erro é: %1$s</string>
+  <string name="compat_dialog_title">Modo de compatibilidade</string>
+  <string name="compat_dialog_message">AcDisplay está em modo de compatibilidade para suportar o Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Já que o AcDisplay está usando o serviço de acessibilidade, não é possível detectar notificações ao serem atualizadas/retiradas ou ao descartar notificações do painel.</string>
+  <string name="compat_dialog_item_immersive_mode">Barra de navegação será sempre mostrada.</string>
+  <string name="compat_dialog_item_music_widget">Sem widget de música.</string>
 </resources>

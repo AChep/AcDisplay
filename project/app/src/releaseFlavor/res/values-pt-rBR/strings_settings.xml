@@ -53,7 +53,8 @@
   <string name="settings_dynamic_background_disabled">Desativado</string>
   <string name="settings_status_battery_always_visible">Sempre mostrar o status da bateria</string>
   <string name="settings_status_battery_always_visible_off">Status da bateria só será mostrado quando com pouca ou carregando.</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_emoticons_title">Emoticons</string>
+  <string name="settings_override_fonts_title">Substituição de fontes do sistema</string>
   <string name="settings_circle_category">Desbloquear círculo</string>
   <string name="settings_circle_animation_title">Desbloquear animação</string>
   <string name="settings_circle_color_inner_title">Cor do Círculo</string>
