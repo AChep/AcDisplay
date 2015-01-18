@@ -34,18 +34,18 @@ import com.achep.base.Device;
  */
 public class AccessUtils {
 
-    public static boolean hasAllRights(Context context) {
-        return isDeviceAdminAccessGranted(context)
-                && isNotificationAccessGranted(context)
+    public static boolean hasAllRights(@NonNull Context context) {
+        return hasDeviceAdminAccess(context)
+                && hasNotificationAccess(context)
                 && hasUsageStatsAccess(context);
     }
 
-    public static boolean isDeviceAdminAccessGranted(@NonNull Context context) {
+    public static boolean hasDeviceAdminAccess(@NonNull Context context) {
         DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         return dpm.isAdminActive(new ComponentName(context, AdminReceiver.class));
     }
 
-    public static boolean isNotificationAccessGranted(Context context) {
+    public static boolean hasNotificationAccess(@NonNull Context context) {
         return Device.hasJellyBeanMR2Api()
                 ? MediaService.sService != null
                 : AccessibilityService.isRunning;//.isServiceRunning(context);

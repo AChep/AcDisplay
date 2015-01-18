@@ -18,6 +18,7 @@
  */
 package com.achep.acdisplay.ui.fragments.dialogs;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -27,17 +28,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ import com.achep.acdisplay.receiver.AdminReceiver;
 import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.base.Device;
 import com.achep.base.ui.DialogBuilder;
+import com.achep.base.ui.adapters.BetterArrayAdapter;
 import com.achep.base.utils.ToastUtils;
 
 import java.lang.ref.WeakReference;
@@ -56,7 +58,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Dialog fragment that shows some info about this application.
+ * Dialog fragment that helps user to give all needed permissions
+ * to the app.
  *
  * @author Artem Chepurnoy
  */
@@ -64,169 +67,152 @@ public class SetupPermissionsDialog extends DialogFragment {
 
     private static final String TAG = "AccessDialog";
 
-    private ListView mListView;
     private Adapter mAdapter;
     private Item[] mItems;
 
-    private abstract static class Item {
+    private abstract static class Item implements Runnable {
 
-        public int icon;
-        public String title;
-        public String summary;
-        public Runnable runnable;
-
-        public Item(@DrawableRes int icon,
-                    String title, String summary,
-                    @NonNull Runnable runnable) {
-            this.icon = icon;
-            this.title = title;
-            this.summary = summary;
-            this.runnable = runnable;
+        protected static void startActivityWithErrorMessage(
+                @NonNull Context context, @NonNull Intent intent,
+                @NonNull String errorMessageLog,
+                @Nullable String errorMessageToast) {
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, errorMessageLog);
+                if (errorMessageToast != null) ToastUtils.showLong(context, errorMessageToast);
+            }
         }
 
-        public abstract boolean isAllowed();
+        public final int icon;
+        public final String title;
+        public final String summary;
+
+        protected final Context mContext;
+
+        public Item(@NonNull Context context, @DrawableRes int icon,
+                    @StringRes int titleRes, @StringRes int summaryRes) {
+            mContext = context;
+            this.icon = icon;
+            this.title = context.getString(titleRes);
+            this.summary = context.getString(summaryRes);
+        }
+
+        public abstract boolean isDone();
 
     }
 
+    /**
+     * Device admin.
+     *
+     * @author Artem Chepurnoy
+     * @see com.achep.acdisplay.utils.AccessUtils#hasDeviceAdminAccess(android.content.Context)
+     */
     private static class DeviceAdminItem extends Item {
 
-        private Context mContext;
-
-        public DeviceAdminItem(@DrawableRes int icon,
-                               String title, String summary,
-                               @NonNull Runnable runnable,
-                               Context context) {
-            super(icon, title, summary, runnable);
-            mContext = context;
+        public DeviceAdminItem(@NonNull Context context, @DrawableRes int icon,
+                               @StringRes int titleRes, @StringRes int summaryRes) {
+            super(context, icon, titleRes, summaryRes);
         }
 
         @Override
-        public boolean isAllowed() {
-            return AccessUtils.isDeviceAdminAccessGranted(mContext);
+        public void run() {
+            ComponentName admin = new ComponentName(mContext, AdminReceiver.class);
+            Intent intent = new Intent()
+                    .setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                    .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
+            String message = "Device admins activity not found.";
+            String messageToast = mContext.getString(R.string.permissions_device_admin_grant_manually);
+            startActivityWithErrorMessage(mContext, intent, message, messageToast);
+        }
+
+        @Override
+        public boolean isDone() {
+            return AccessUtils.hasDeviceAdminAccess(mContext);
         }
 
     }
 
+    /**
+     * Notification listener service if {@link com.achep.base.Device#hasJellyBeanMR2Api() Android 4.3}
+     * and accessibility service otherwise.
+     *
+     * @author Artem Chepurnoy
+     * @see com.achep.acdisplay.utils.AccessUtils#hasNotificationAccess(android.content.Context)
+     */
     private static class NotificationListenerItem extends Item {
 
-        private Context mContext;
-
-        public NotificationListenerItem(@DrawableRes int icon,
-                                        String title, String summary,
-                                        @NonNull Runnable runnable,
-                                        Context context) {
-            super(icon, title, summary, runnable);
-            mContext = context;
+        public NotificationListenerItem(@NonNull Context context, @DrawableRes int icon,
+                                        @StringRes int titleRes, @StringRes int summaryRes) {
+            super(context, icon, titleRes, summaryRes);
         }
 
         @Override
-        public boolean isAllowed() {
-            return AccessUtils.isNotificationAccessGranted(mContext);
+        public void run() {
+            if (Device.hasJellyBeanMR2Api()) {
+                launchNotificationSettings();
+            } else {
+                launchAccessibilitySettings();
+            }
+        }
+
+        private void launchNotificationSettings() {
+            Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+            String message = "Notification listeners activity not found.";
+            String messageToast = mContext.getString(R.string.permissions_notifications_grant_manually);
+            startActivityWithErrorMessage(mContext, intent, message, messageToast);
+        }
+
+        private void launchAccessibilitySettings() {
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            String message = "Accessibility settings not found!";
+            startActivityWithErrorMessage(mContext, intent, message, null);
+        }
+
+        @Override
+        public boolean isDone() {
+            return AccessUtils.hasNotificationAccess(mContext);
         }
 
     }
 
+    /**
+     * Usage stats
+     *
+     * @author Artem Chepurnoy
+     * @see com.achep.acdisplay.utils.AccessUtils#hasUsageStatsAccess(android.content.Context)
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static class UsageStatsItem extends Item {
 
-        private Context mContext;
-
-        public UsageStatsItem(@DrawableRes int icon,
-                                        String title, String summary,
-                                        @NonNull Runnable runnable,
-                                        Context context) {
-            super(icon, title, summary, runnable);
-            mContext = context;
+        public UsageStatsItem(@NonNull Context context, @DrawableRes int icon,
+                              @StringRes int titleRes, @StringRes int summaryRes) {
+            super(context, icon, titleRes, summaryRes);
         }
 
         @Override
-        public boolean isAllowed() {
+        public void run() {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startActivityWithErrorMessage(mContext, intent, "Usage access settings not found.", null);
+        }
+
+        @Override
+        public boolean isDone() {
             return AccessUtils.hasUsageStatsAccess(mContext);
         }
 
     }
 
+    @NonNull
     private Item[] buildItems() {
-        Context context = getActivity();
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(new DeviceAdminItem(R.drawable.stat_lock,
-                getString(R.string.permissions_device_admin),
-                getString(R.string.permissions_device_admin_description),
-                new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Context context = getActivity();
-                        ComponentName admin = new ComponentName(context, AdminReceiver.class);
-                        Intent intent = new Intent()
-                                .setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-                                .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
-
-                        try {
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            ToastUtils.showLong(context, R.string.permissions_device_admin_grant_manually);
-                            Log.e(TAG, "Device admins activity not found.");
-                        }
-                    }
-
-                }, context));
-        items.add(new NotificationListenerItem(R.drawable.stat_notify,
-                getString(R.string.permissions_notifications),
-                getString(R.string.permissions_notifications_description),
-                new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if (Device.hasJellyBeanMR2Api()) {
-                            launchNotificationSettings();
-                        } else {
-                            launchAccessibilitySettings();
-                        }
-                    }
-
-                    private void launchNotificationSettings() {
-                        Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-                        try {
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            ToastUtils.showLong(getActivity(), R.string.permissions_notifications_grant_manually);
-                            Log.e(TAG, "Notification listeners activity not found.");
-                        }
-                    }
-
-                    private void launchAccessibilitySettings() {
-                        Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                        try {
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            String message = "Accessibility settings not found!";
-                            ToastUtils.showLong(getActivity(), message);
-                            Log.wtf(TAG, message);
-                        }
-                    }
-
-                }, context));
-        items.add(new UsageStatsItem(R.drawable.ic_settings_apps_white,
-                getString(R.string.permissions_usage_stats),
-                getString(R.string.permissions_usage_stats_description),
-                new Runnable() {
-
-                    @Override
-                    public void run() {
-                        launchUsageAccessSettings();
-                    }
-
-                    private void launchUsageAccessSettings() {
-                        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                        try {
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            Log.e(TAG, "Usage access settings not found.");
-                        }
-                    }
-
-                }, context));
-
+        final Context context = getActivity();
+        final ArrayList<Item> items = new ArrayList<>();
+        items.add(new DeviceAdminItem(context, R.drawable.stat_lock,
+                R.string.permissions_device_admin, R.string.permissions_device_admin_description));
+        items.add(new NotificationListenerItem(context, R.drawable.stat_notify,
+                R.string.permissions_notifications, R.string.permissions_notifications_description));
+        items.add(new UsageStatsItem(context, R.drawable.ic_settings_apps_white,
+                R.string.permissions_usage_stats, R.string.permissions_usage_stats_description));
         return items.toArray(new Item[items.size()]);
     }
 
@@ -238,22 +224,22 @@ public class SetupPermissionsDialog extends DialogFragment {
 
         View view = new DialogBuilder(context)
                 .setTitle(R.string.permissions_dialog_title)
-                .setView(R.layout.fragment_access)
+                .setView(R.layout.dialog_permissions)
                 .createSkeletonView();
 
         // Make title more red
         TextView title = (TextView) view.findViewById(R.id.title);
-        title.setTextColor(title.getCurrentTextColor() & 0xFFFF2020 | 0xFF << 16);
+        title.setTextColor(title.getCurrentTextColor() & 0xFFFF3333 | 0xFF << 16);
 
-        mListView = (ListView) view.findViewById(R.id.list);
+        ListView listView = (ListView) view.findViewById(R.id.list);
         mAdapter = new Adapter(context, new ArrayList<Item>());
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Adapter adapter = (Adapter) parent.getAdapter();
                 Item item = adapter.getItem(position);
-                item.runnable.run();
+                item.run();
             }
         });
 
@@ -276,7 +262,7 @@ public class SetupPermissionsDialog extends DialogFragment {
         List<Item> data = mAdapter.mDataset;
         data.clear();
         for (Item item : mItems) {
-            if (!item.isAllowed()) {
+            if (!item.isDone()) {
                 data.add(item);
             }
         }
@@ -287,54 +273,44 @@ public class SetupPermissionsDialog extends DialogFragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public static class Adapter extends ArrayAdapter<Item> {
+    public static class Adapter extends BetterArrayAdapter<Item> {
 
-        private final Context mContext;
         private final List<Item> mDataset;
-        private final LayoutInflater mInflater;
         private final HashMap<Integer, WeakReference<Drawable>> mDrawableCache;
 
-        static class ViewHolder {
+        private static class ViewHolder extends BetterArrayAdapter.ViewHolder {
 
-            ImageView icon;
-            TextView title;
-            TextView summary;
+            final ImageView icon;
+            final TextView title;
+            final TextView summary;
 
-            public ViewHolder(View itemView) {
-                this.icon = (ImageView) itemView.findViewById(R.id.icon);
-                this.title = (TextView) itemView.findViewById(R.id.title);
-                this.summary = (TextView) itemView.findViewById(R.id.summary);
+            public ViewHolder(@NonNull View view) {
+                super(view);
+                this.icon = (ImageView) view.findViewById(R.id.icon);
+                this.title = (TextView) view.findViewById(R.id.title);
+                this.summary = (TextView) view.findViewById(R.id.summary);
             }
 
         }
 
         public Adapter(Context context, List<Item> items) {
-            super(context, 0);
-            mContext = context;
+            super(context, R.layout.item_blah);
             mDataset = items;
-            mInflater = LayoutInflater.from(getContext());
             mDrawableCache = new HashMap<>(Math.min(getCount(), 10));
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final Item item = getItem(position);
-            final ViewHolder holder;
-            final View view;
+        protected BetterArrayAdapter.ViewHolder onCreateViewHolder(@NonNull View view) {
+            int padding = mContext.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+            view.setPadding(padding, view.getPaddingTop(), padding, view.getPaddingBottom());
+            return new ViewHolder(view);
+        }
 
-            if (convertView == null) {
-                view = mInflater.inflate(R.layout.item_blah, parent, false);
-                assert view != null;
-                holder = new ViewHolder(view);
-
-                int padding = mContext.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
-                view.setPadding(padding, view.getPaddingTop(), padding, view.getPaddingBottom());
-
-                view.setTag(holder);
-            } else {
-                view = convertView;
-                holder = (ViewHolder) view.getTag();
-            }
+        @Override
+        protected void onBindViewHolder(@NonNull BetterArrayAdapter.ViewHolder viewHolder, int i) {
+            final Item item = getItem(i);
+            final ViewHolder holder = (ViewHolder) viewHolder;
 
             holder.title.setText(item.title);
             holder.summary.setText(item.summary);
@@ -348,8 +324,6 @@ public class SetupPermissionsDialog extends DialogFragment {
             } else {
                 holder.icon.setImageDrawable(drawable);
             }
-
-            return view;
         }
 
         @Override
