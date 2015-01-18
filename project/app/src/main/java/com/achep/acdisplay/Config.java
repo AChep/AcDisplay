@@ -231,7 +231,7 @@ public final class Config extends ConfigBase {
         mTrigTranslated = prefs.getBoolean(KEY_TRIG_TRANSLATED, false);
         mTrigPreviousVersion = prefs.getInt(KEY_TRIG_PREVIOUS_VERSION, 0);
         mTrigLaunchCount = prefs.getInt(KEY_TRIG_LAUNCH_COUNT, 0);
-        mTrigDonationAsked = prefs.getBoolean(KEY_TRIG_TRANSLATED, false);
+        mTrigDonationAsked = prefs.getBoolean(KEY_TRIG_DONATION_ASKED, false);
     }
 
     @Override
