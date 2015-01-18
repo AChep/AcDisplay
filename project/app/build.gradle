@@ -28,9 +28,9 @@ buildscript {
     }
     dependencies {
         //noinspection GradleDynamicVersion
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.12.+'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.13.+'
         //noinspection GradleDynamicVersion
-        classpath 'com.android.tools.build:gradle:0.13.+'
+        classpath 'com.android.tools.build:gradle:1.0.+'
     }
 }
 
@@ -105,8 +105,9 @@ android {
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "null"
         }
         release {
-            zipAlign true
-            runProguard true
+            //zipAlign true
+            //runProguard true
+            minifyEnabled true
             proguardFile 'proguard-rules.txt'
             signingConfig signingConfigs.release
             buildConfigField "boolean", "MY_DEBUG", "false"
