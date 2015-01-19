@@ -90,7 +90,6 @@ public class App extends Application {
         SmileyParser.init(this);
 
         super.onCreate();
-        mCheckoutInternal.getBilling().connect();
 
         // Launch keyguard and (or) active mode on
         // app launch.
@@ -114,6 +113,11 @@ public class App extends Application {
     @NonNull
     public static Checkout getCheckout() {
         return instance.mCheckoutInternal.getCheckout();
+    }
+
+    @NonNull
+    public static CheckoutInternal getCheckoutInternal() {
+        return instance.mCheckoutInternal;
     }
 
 }

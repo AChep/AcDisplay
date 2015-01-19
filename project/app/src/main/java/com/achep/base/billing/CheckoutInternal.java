@@ -33,6 +33,8 @@ import org.solovyev.android.checkout.Products;
 import org.solovyev.android.checkout.RobotmediaDatabase;
 import org.solovyev.android.checkout.RobotmediaInventory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 
 /**
@@ -69,6 +71,32 @@ public class CheckoutInternal {
     @NonNull
     public Checkout getCheckout() {
         return mCheckout;
+    }
+
+    /**
+     * Connects to the billing service.
+     *
+     * @see #disconnect()
+     */
+    public void connect() {
+        mBilling.connect();
+    }
+
+    /**
+     * Disconnect from the billing service.
+     *
+     * @see #connect()
+     */
+    public void disconnect() {
+        try {
+            Method method = Billing.class.getDeclaredMethod("disconnect");
+            method.setAccessible(true);
+            method.invoke(mBilling);
+        } catch (NoSuchMethodException
+                | IllegalAccessException
+                | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
