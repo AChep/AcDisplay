@@ -301,7 +301,7 @@ public class KeyguardService extends BathService.ChildService implements
          * Checks what activity is the latest.
          */
         public synchronized void monitor() {
-            String topActivity = RunningTasks.newInstance().getRunningTasksTop(mContext);
+            String topActivity = RunningTasks.getInstance().getRunningTasksTop(mContext);
             if (topActivity != null && !topActivity.equals(topActivityName)) {
 
                 // Update time if it's not first try.

@@ -24,13 +24,29 @@ import android.support.annotation.Nullable;
 
 import com.achep.base.Device;
 
+import java.lang.ref.SoftReference;
+
 /**
  * @author Artem Chepurnoy
  */
 public abstract class RunningTasks {
 
     @NonNull
-    public static RunningTasks newInstance() {
+    private static SoftReference<RunningTasks> sFactoryRef = new SoftReference<>(null);
+
+    @NonNull
+    public static RunningTasks getInstance() {
+        RunningTasks factory = sFactoryRef.get();
+        if (factory == null) {
+            factory = newInstance();
+            sFactoryRef = new SoftReference<>(factory);
+            return factory;
+        }
+        return factory;
+    }
+
+    @NonNull
+    private static RunningTasks newInstance() {
         if (Device.hasLollipopApi()) {
             return new RunningTasksLollipop();
         }

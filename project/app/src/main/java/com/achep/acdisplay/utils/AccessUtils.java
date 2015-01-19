@@ -52,7 +52,7 @@ public class AccessUtils {
     }
 
     public static boolean hasUsageStatsAccess(@NonNull Context context) {
-        return !Device.hasLollipopApi() || RunningTasks.newInstance().getRunningTasksTop(context) != null;
+        return !Device.hasLollipopApi() || RunningTasks.getInstance().getRunningTasksTop(context) != null;
     }
 
 }
