@@ -23,7 +23,10 @@ import android.support.annotation.NonNull;
 import com.achep.acdisplay.BuildConfig;
 
 /**
- * Created by Artem on 30.12.13.
+ * Contains a number of build constants mostly redirected from
+ * the {@link BuildConfig build config}.
+ * 
+ * @author Artem Chepurnoy
  */
 /* The first class of the AcDisplay, dated by 30.12.2013 */
 public final class Build {
@@ -42,21 +45,26 @@ public final class Build {
             BuildConfig.MY_TIME_STAMP;
 
     /**
-     *
+     * Uncrypted Google Play's public key.
+     * 
+     * @see #GOOGLE_PLAY_PUBLIC_KEY_SALT
      */
     @NonNull
     public static final String GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED =
             BuildConfig.MY_GOOGLE_PLAY_PUBLIC_KEY;
 
     /**
-     *
+     * Salt for {@link #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED}
+     * 
+     * @see #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED
      */
     @NonNull
     public static final String GOOGLE_PLAY_PUBLIC_KEY_SALT =
             BuildConfig.MY_GOOGLE_PLAY_PUBLIC_KEY_SALT;
 
     /**
-     *
+     * The oficial e-mail for tons of complains, billions of
+     * "How to uninistall?" screams and one or two useful emails.
      */
     @NonNull
     public static final String SUPPORT_EMAIL =
