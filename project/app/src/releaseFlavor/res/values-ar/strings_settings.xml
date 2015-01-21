@@ -49,24 +49,24 @@
   <string name="settings_use_wallpaper_on">يتم استخدام خلفية الشاشة الرئيسية لجهازك.</string>
   <string name="settings_use_wallpaper_off">خلفية سوداء.</string>
   <string name="settings_dynamic_background_title">خلفية حيوية</string>
-  <string name="settings_dynamic_background_summary">المستخدمة كخلفية: %1$s</string>
+  <string name="settings_dynamic_background_summary">الصور التي يتم استخدامها كخلفية: %1$s</string>
   <string name="settings_dynamic_background_disabled">معطل</string>
   <string name="settings_status_battery_always_visible">الإبقاء على حالة البطارية</string>
   <string name="settings_status_battery_always_visible_off">تعرض حالة البطارية إذا كان مستوى الشحن منخفضًا، أو عندما يكون الجهاز موصولًا.</string>
-  <string name="settings_emoticons_title">ابتسامات</string>
+  <string name="settings_emoticons_title">وجوه تعبيرية صورية</string>
   <string name="settings_override_fonts_title">استبدال خطوط النظام</string>
   <string name="settings_circle_category">دائرة فتح القفل</string>
   <string name="settings_circle_animation_title">حركة فتح القفل</string>
   <string name="settings_circle_color_inner_title">لون الدائرة</string>
   <string name="settings_circle_color_outer_title">خلفية الدائرة</string>
   <string name="settings_dev_sensors_dump_title">حفظ البيانات من أجهزة الاستشعار</string>
-  <string name="settings_dev_sensors_dump_on">حفظ حالة الجهاز والبيانات من أجهزة الاستشعار باستمرار الى ملف بالذاكرة.</string>
+  <string name="settings_dev_sensors_dump_on">يقوم باستمرار بحفظ حالة الجهاز وبيانات من أجهزة الاستشعار إلى ملف في الذاكرة.</string>
   <string name="settings_dev_sensors_dump_send_title">إرسال البيانات المحفوظة</string>
   <string name="settings_only_while_charging_title">أثناء الشحن فقط</string>
   <string name="settings_only_while_charging_on">التطبيق نشط فقط أثناء شحن الجهاز. يشمل هذا كل مزايا التطبيق، كـ«شاشة القفل» و«الوضع النشط».</string>
   <string name="settings_only_while_charging_off">التطبيق نشط دائمًا.</string>
   <string name="settings_inactive_hours_title">الساعات غير النشطة</string>
-  <string name="settings_inactive_hours_disabled">معطل</string>
+  <string name="settings_inactive_hours_disabled">معطَّل</string>
   <string name="settings_inactive_hours_enabled">من %1$s إلى %2$s.</string>
   <string name="settings_timeout_title">النوم</string>
   <string name="settings_timeout_summary">بعد %1$s / %2$s ثانية من عدم النشاط.</string>
@@ -74,7 +74,7 @@
   <string name="settings_icon_size_summary">الحجم الحالي للرموز هو %1$s dpi.</string>
   <string name="settings_behavior_category">السلوك</string>
   <string name="settings_lock_on_dismiss_last_notify_title">قفل الشاشة عند استبعاد الإشعار الأخير</string>
-  <string name="settings_lock_on_dismiss_last_notify_on">إيقاف تشغيل الشاشة بعد إستبعاد اخر تنبيه موجود.</string>
+  <string name="settings_lock_on_dismiss_last_notify_on">يتم قفل الشاشة بعد استبعاد آخر إشعار موجود.</string>
   <string name="settings_lock_on_dismiss_last_notify_off">تبقى الشاشة غير مقفلة بعد استبعاد آخر إشعار موجود.</string>
   <string name="settings_widget_pinnable_title">إشعارات قابلة للتثبيت</string>
   <string name="settings_widget_pinnable_on">الإشعارات تبقى في حالة التوسعة لعدة ثواني بعد لمسها.</string>
@@ -89,5 +89,5 @@
   <string name="preference_timeout_short">بعد لمس منطقة فارغة</string>
   <string name="preference_timeout_sec">%1$s ثانية.</string>
   <string name="preference_icon_size_message">تغيير حجم رموز الإشعارات.</string>
-  <string name="preference_icon_size_dpi">%1$s نقطة في البوصة.</string>
+  <string name="preference_icon_size_dpi">%1$s dpi.</string>
 </resources>

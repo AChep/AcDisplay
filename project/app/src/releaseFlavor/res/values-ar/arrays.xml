@@ -26,7 +26,7 @@
   </string-array>
   <string-array name="dynamic_background">
     <item>العمل الفني</item>
-    <item>ايقونة التنبيه</item>
+    <item>رمز الإشعار</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>مهمة وعاجلة (مكالمات فائتة، توجيهات التنقل، تنبيهات الطوارئ)</item>

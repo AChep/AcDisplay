@@ -20,7 +20,7 @@
   -->
 <resources>
   <string name="about_dialog_message"><![CDATA[
-        AcDisplay هو تطبيق مجاني و<a href="http://repo.acdisplay.org">مفتوح المصدر</a>.
+        تطبيق AcDisplay هو تطبيق مجاني و<a href="http://repo.acdisplay.org">مفتوح المصدر</a>.
         حقوق النشر 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. جميع الحقوق محفوظة.<br/>
         <br/>
         جزيل الشكر للأدوات مفتوحة المصدر الآتية: %1$s ولكل من
@@ -29,7 +29,7 @@
   <string name="donate_dialog_title">تبرَّع للمطورين</string>
   <string name="donate_dialog_message">تطبيق AcDisplay هو تطبيق مجاني ومفتوح المصدر. يمكنك إظهار تقديرك ودعمك لتطوير التطبيق عن طريق التبرع:</string>
   <string name="donate_alert_no_responsibility">لاحظ أن Google ليست مسؤولة عن طريقة الدفع هذه.</string>
-  <string name="donate_billing_not_supported">الشراء في التطبيق غير مدعومة في هذا الجهاز.</string>
+  <string name="donate_billing_not_supported">خاصية الشراء ضمن التطبيق غير مدعومة في هذا الجهاز.</string>
   <string name="donate_thanks">شكرًا جزيلًا لك!</string>
   <string name="donation_1">آيس كريم</string>
   <string name="donation_4">فنجان قهوة</string>

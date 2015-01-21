@@ -30,8 +30,8 @@
   <string name="permissions_notifications">Notificacions</string>
   <string name="permissions_notifications_description">Necessari per accedir a les notificacions.</string>
   <string name="permissions_notifications_grant_manually">Vagi a Configuració &gt; Seguretat &gt; accés a notificacions i activi AcDisplay.</string>
-  <string name="permissions_usage_stats">Usage stats</string>
-  <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
+  <string name="permissions_usage_stats">Estadístiques d\'ús</string>
+  <string name="permissions_usage_stats_description">Necessari per evitar la superposició d\'aplicacions despertador i telèfon.</string>
   <string name="action_about">Sobre</string>
   <string name="action_donate">Donar</string>
   <string name="action_feedback">Retroalimentació</string>

@@ -30,8 +30,8 @@
   <string name="permissions_notifications">Bildirimler</string>
   <string name="permissions_notifications_description">Bildirimlere erişmek için gerekli.</string>
   <string name="permissions_notifications_grant_manually">Ayarlara gidin &gt; Güvenlik &gt; Bildirimlere erişim ve AcDisplay \'i etkinleştirin.</string>
-  <string name="permissions_usage_stats">Usage stats</string>
-  <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
+  <string name="permissions_usage_stats">Kullanım istatistikleri</string>
+  <string name="permissions_usage_stats_description">Alarmın ve telefon uygulamalarının fazla yüklenmesinden kaçınılması gerekti.</string>
   <string name="action_about">Hakkında</string>
   <string name="action_donate">Bağış</string>
   <string name="action_feedback">Geri bildirim</string>

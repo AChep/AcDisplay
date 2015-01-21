@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>Fråga</item>
     <item>Förslag</item>
     <item>Annat</item>
   </string-array>
@@ -29,10 +29,10 @@
     <item>Meddelandeikon</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
-    <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Viktiga och brådskande (missade samtal, riktningar, akuta varningar)</item>
+    <item>Viktigt (kommunikation, viktiga mail)</item>
+    <item>Normal (+ påminnelser från gamla appar)</item>
+    <item>Icke-viktigt (programuppdateringar, skräppost)</item>
+    <item>Sammanhangsbaserade och bakgrunds info (väder, passerat evenemang, förslag)</item>
   </string-array>
 </resources>

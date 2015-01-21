@@ -21,18 +21,18 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_description">AcDisplay ist eine neue Art wie man mit Benachrichtigungen unter Android umgeht. Neue Benachrichtigungen werden Ihnen auf einer wunderschönen, minimalistischen Oberfläche angezeigt, die es ihnen erlaubt diese direkt vom Sperrbildschirm aus zu öffnen.
 Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tasche nehmen und die neuesten Benachrichtigungen werden Ihnen auf eine praktische und übersichtliche Art und Weise dargestellt.</string>
-  <string name="plugin_xposed_description">Hilft AcDisplay sich besser in Android zu integrieren.</string>
+  <string name="plugin_xposed_description">Hilft AcDisplay sich tiefer in Android zu integrieren.</string>
   <string name="permissions_auto_disabled">AcDisplay wurde ausgeschaltet, da einige Berechtigungen fehlen.</string>
   <string name="permissions_dialog_title">Benötigte Berechtigungen:</string>
   <string name="permissions_device_admin">Geräteadministrator</string>
-  <string name="permissions_device_admin_removed">AcDisplay wurde als Geräteadministrator entfernt.</string>
+  <string name="permissions_device_admin_removed">AcDisplay wurde von den  Geräteadministratoren entfernt.</string>
   <string name="permissions_device_admin_description">Wird gebraucht um die Bildschirmabschaltzeit zu verwalten.</string>
-  <string name="permissions_device_admin_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Geräteadministratoren und überprüfe, ob AcDisplay aktiviert ist.</string>
+  <string name="permissions_device_admin_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Geräteadministratoren und aktiviere AcDisplay.</string>
   <string name="permissions_notifications">Benachrichtigungen</string>
   <string name="permissions_notifications_description">Erforderlich, um Zugriff auf Benachrichtigungen zu erhalten.</string>
-  <string name="permissions_notifications_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Benachrichtigungszugriff und überprüfe, ob AcDisplay aktiviert ist.</string>
+  <string name="permissions_notifications_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Benachrichtigungszugriff und aktiviere AcDisplay.</string>
   <string name="permissions_usage_stats">Nutzungsstatistiken</string>
-  <string name="permissions_usage_stats_description">Zur Vermeidung der Überlagerung vom Wecker und Telefon-Anwendungen erforderlich.</string>
+  <string name="permissions_usage_stats_description">Zur Vermeidung der Überlagerung von Wecker und Telefon-Anwendungen erforderlich.</string>
   <string name="action_about">Über</string>
   <string name="action_donate">Spenden</string>
   <string name="action_feedback">Rückmeldung</string>
@@ -60,7 +60,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="service_bath">AcDisplay-Dienste</string>
   <string name="service_bath_keyguard">Sperrbildschirm</string>
   <string name="service_bath_active_mode">Aktiv-Modus</string>
-  <string name="service_bath_active_mode_dump">Sensor-Speicherwerkzeug</string>
+  <string name="service_bath_active_mode_dump">Sensorenauswertung</string>
   <string name="status_date_format">EEE, d MMMM</string>
   <string name="accessibility_battery_level">Akku <xliff:g id="number" example="100">%d</xliff:g> Prozent.</string>
 </resources>

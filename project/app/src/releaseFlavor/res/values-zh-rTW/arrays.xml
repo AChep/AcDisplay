@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>問題</item>
     <item>建議</item>
     <item>其他</item>
   </string-array>
@@ -29,7 +29,7 @@
     <item>通知圖示</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
+    <item>重大及緊急事件(未接來電，方向指示，緊急警示)</item>
     <item>Important (communications, important mail)</item>
     <item>Normal (+notifications from old apps)</item>
     <item>Non-important (software updates, junk mail)</item>

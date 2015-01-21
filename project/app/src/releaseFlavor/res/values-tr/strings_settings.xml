@@ -53,7 +53,7 @@
   <string name="settings_dynamic_background_disabled">Etkin değil</string>
   <string name="settings_status_battery_always_visible">Pil durumunu göster</string>
   <string name="settings_status_battery_always_visible_off">Pil düşük seviyede iken veya prize takılı olduğu zaman gösterilir.</string>
-  <string name="settings_emoticons_title">Emoticons</string>
+  <string name="settings_emoticons_title">İfadeler</string>
   <string name="settings_override_fonts_title">Sistem yazı tipini yok say</string>
   <string name="settings_circle_category">Açma halkası</string>
   <string name="settings_circle_animation_title">Kilit animasyonu</string>

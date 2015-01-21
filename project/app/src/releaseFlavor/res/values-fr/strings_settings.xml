@@ -55,7 +55,7 @@
   <string name="settings_status_battery_always_visible_off">L\'état de la batterie ne s\'affiche qu\'avec le niveau de batterie faible ou en charge.</string>
   <string name="settings_emoticons_title">Émoticônes</string>
   <string name="settings_override_fonts_title">Remplacer les polices système</string>
-  <string name="settings_circle_category">Débloquer le cercle</string>
+  <string name="settings_circle_category">Cercle de déverrouillage</string>
   <string name="settings_circle_animation_title">Animation de déverrouillage</string>
   <string name="settings_circle_color_inner_title">Couleur du cercle</string>
   <string name="settings_circle_color_outer_title">Fond du cercle</string>
