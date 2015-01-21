@@ -45,11 +45,11 @@
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="font">roboto_light</item>
         <item name="font_beforeApi">21</item>
-</style>
+    </style>
 
-<!--
-    AcDisplay
-    -->
+    <!--
+        AcDisplay
+        -->
 
     <style name="MaterialAcDisplay" />
 
