@@ -122,7 +122,7 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
         mActionAddIcon = a.getBoolean(R.styleable.NotificationWidget_actionItemShowIcon, true);
         a.recycle();
 
-        float v = -0.8f;
+        float v = -1f;
         float[] colorMatrix = {
                 v, 0, 0, 0, 0,
                 0, v, 0, 0, 0,
