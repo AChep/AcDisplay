@@ -143,6 +143,15 @@ public abstract class ConfigBase implements
         return hashMap;
     }
 
+    @NonNull
+    public final Option getOption(@NonNull String key) {
+        Option option = getHashMap().get(key);
+        if (option != null) return option;
+
+        throw new RuntimeException("You have forgotten to put #"
+                + key + " to the hash map of config.");
+    }
+
     /**
      * You may get a context from here only on
      * {@link ConfigBase.OnConfigChangedListener#onConfigChanged(ConfigBase, String, Object) config change}.
@@ -337,7 +346,7 @@ public abstract class ConfigBase implements
                          @NonNull Setter setter) {
                 this.preference = preference;
                 this.setter = setter;
-                this.option = config.getHashMap().get(preference.getKey());
+                this.option = config.getOption(preference.getKey());
             }
         }
 

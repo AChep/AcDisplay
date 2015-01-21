@@ -51,7 +51,7 @@ public class ColorPickerPreference extends DialogPreference {
     public ColorPickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mConfig = Config.getInstance();
-        mOption = mConfig.getHashMap().get(getKey());
+        mOption = mConfig.getOption(getKey());
 
         // Get data from default dialog and hide it.
         mIcon = getDialogIcon();

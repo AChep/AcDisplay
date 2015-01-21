@@ -70,9 +70,7 @@ public class Enabler {
         mContext = context;
         mCheckable = checkable;
 
-        mOption = mConfig.getHashMap().get(mKey);
-        if (mOption == null) throw new RuntimeException(
-                "You have forgotten to put #" + mKey + " to the hash map of config.");
+        mOption = mConfig.getOption(mKey);
     }
 
     /**
