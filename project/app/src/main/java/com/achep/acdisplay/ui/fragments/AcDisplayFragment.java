@@ -859,7 +859,7 @@ public class AcDisplayFragment extends Fragment implements
 
         if (preLock) {
             // Check is the latest notification is gone.
-            boolean lock = NotificationPresenter.getInstance().size() == 0;
+            boolean lock = NotificationPresenter.getInstance().isEmpty();
             if (lock) {
                 mActivityAcd.lock();
                 return;

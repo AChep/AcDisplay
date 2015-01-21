@@ -31,43 +31,42 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.Atomic;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.BathService;
-import com.achep.acdisplay.services.activemode.handlers.InactiveTimeHandler;
-import com.achep.acdisplay.services.activemode.handlers.ScreenHandler;
-import com.achep.acdisplay.services.activemode.handlers.WithoutNotifiesHandler;
+import com.achep.acdisplay.services.Switch;
+import com.achep.acdisplay.services.SwitchService;
 import com.achep.acdisplay.services.activemode.sensors.AccelerometerSensor;
 import com.achep.acdisplay.services.activemode.sensors.GyroscopeSensor;
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
+import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
+import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
+import com.achep.acdisplay.services.switches.ScreenOffSwitch;
 import com.achep.base.Build;
+import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.power.PowerUtils;
+
+import java.util.HashMap;
 
 /**
  * Service that turns on AcDisplay exactly when it's needed.
  *
  * @author Artem Chepurnoy
- * @see com.achep.acdisplay.services.activemode.ActiveModeHandler
  * @see com.achep.acdisplay.services.activemode.ActiveModeSensor
  */
-public class ActiveModeService extends BathService.ChildService implements
-        ActiveModeSensor.Callback, ActiveModeHandler.Callback,
-        NotificationPresenter.OnNotificationListChangedListener,
-        Atomic.Callback {
+public class ActiveModeService extends SwitchService implements
+        NotificationPresenter.OnNotificationListChangedListener, ActiveModeSensor.Callback {
 
     private static final String TAG = "ActiveModeService";
     private static final String WAKE_LOCK_TAG = "Consuming sensors";
 
     private ActiveModeSensor[] mSensors;
-    private ActiveModeHandler[] mHandlers;
 
     private long mConsumingPingTimestamp;
     private PowerManager.WakeLock mWakeLock;
-    private Atomic mListeningAtom;
 
     private final BroadcastReceiver mLocalReceiver = new BroadcastReceiver() {
 
@@ -141,22 +140,23 @@ public class ActiveModeService extends BathService.ChildService implements
         return sensorsSupported;
     }
 
+    @NonNull
+    @Override
+    public Switch[] onBuildSwitches() {
+        HashMap<String, ConfigBase.Option> map = Config.getInstance().getHashMap();
+        ConfigBase.Option noNotifies = map.get(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
+        return new Switch[]{
+                new ScreenOffSwitch(getContext(), this),
+                new InactiveTimeSwitch(getContext(), this),
+                new NoNotifiesSwitch(getContext(), this, noNotifies, true),
+        };
+    }
+
     @Override
     public void onCreate() {
+        super.onCreate();
         Context context = getContext();
-        mListeningAtom = new Atomic(this, TAG);
         mSensors = buildAvailableSensorsList(context);
-        mHandlers = new ActiveModeHandler[]{
-                new ScreenHandler(context, this),
-                new InactiveTimeHandler(context, this),
-                new WithoutNotifiesHandler(context, this),
-        };
-
-        for (ActiveModeHandler handler : mHandlers) {
-            handler.create();
-        }
-
-        requestActive();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(App.ACTION_INTERNAL_PING_SENSORS);
@@ -167,14 +167,9 @@ public class ActiveModeService extends BathService.ChildService implements
 
     @Override
     public void onDestroy() {
-        for (ActiveModeHandler handler : mHandlers) {
-            handler.destroy();
-        }
-
-        stopListening();
-
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mLocalReceiver);
         NotificationPresenter.getInstance().unregisterListener(this);
+        super.onDestroy();
     }
 
     @Override
@@ -198,47 +193,6 @@ public class ActiveModeService extends BathService.ChildService implements
                 pingConsumingSensors();
                 break;
         }
-    }
-
-    @Override
-    public void requestActive() {
-        if (mListeningAtom.isRunning()) {
-            return; // Already listening, no need to check all handlers.
-        }
-
-        // Check through all available handlers.
-        for (ActiveModeHandler handler : mHandlers) {
-            if (!handler.isCreated() || !handler.isActive()) {
-                return;
-            }
-        }
-
-        startListening();
-    }
-
-    @Override
-    public void requestInactive() {
-        stopListening();
-    }
-
-    /**
-     * Stops listening to {@link ActiveModeSensor sensors} (if not stopped already.)
-     *
-     * @see #buildAvailableSensorsList(android.content.Context)
-     * @see #startListening()
-     */
-    private void stopListening() {
-        mListeningAtom.stop();
-    }
-
-    /**
-     * Starts listening to {@link ActiveModeSensor sensors} (if not started already.)
-     *
-     * @see #buildAvailableSensorsList(android.content.Context)
-     * @see #stopListening()
-     */
-    private void startListening() {
-        mListeningAtom.start();
     }
 
     @Override
@@ -270,7 +224,6 @@ public class ActiveModeService extends BathService.ChildService implements
     /**
      * {@inheritDoc}
      */
-    @Override
     public void pingConsumingSensors() {
         mConsumingPingTimestamp = SystemClock.elapsedRealtime();
         pingConsumingSensorsInternal();

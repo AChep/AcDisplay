@@ -102,8 +102,12 @@ public class NotificationPresenter implements
     private final NotificationList mLList;
 
     private final ArrayList<WeakReference<OnNotificationListChangedListener>> mListenersRefs;
+    private final ArrayList<NotificationListChange> mFrozenEvents;
+    private boolean mFrozen;
+
     private final Config mConfig;
     private final Blacklist mBlacklist;
+    private final Presenter mPresenter;
 
     // Threading
     private final Handler mHandler;
@@ -288,6 +292,7 @@ public class NotificationPresenter implements
     //-- MAIN -----------------------------------------------------------------
 
     private NotificationPresenter() {
+        mFrozenEvents = new ArrayList<>();
         mListenersRefs = new ArrayList<>();
         mGList = new NotificationList(null);
         mLList = new NotificationList(this);
@@ -305,6 +310,8 @@ public class NotificationPresenter implements
         mBlacklistListener = new BlacklistListener();
         mBlacklist = Blacklist.getInstance();
         mBlacklist.registerListener(mBlacklistListener);
+
+        mPresenter = Presenter.getInstance();
     }
 
     @NonNull
@@ -383,13 +390,18 @@ public class NotificationPresenter implements
         boolean flagWakeUp = !Operator.bitAnd(
                 flags, FLAG_DONT_WAKE_UP);
 
+        freezeListeners(); // we should handle the event first
         if (KEEP_GLOBAL_LIST) mGList.pushOrRemove(n, globalValid, flagIgnoreFollowers);
         int result = mLList.pushOrRemove(n, localValid, flagIgnoreFollowers);
 
         if (flagWakeUp && result == RESULT_SUCCESS) {
             // Try start gui
-            Presenter.getInstance().tryStartGuiCauseNotification(context, n);
+            mPresenter.tryStartGuiCauseNotification(context, n);
         }
+
+        // Release listeners and send all pending
+        // events.
+        meltListeners();
     }
 
     public void removeNotificationFromMain(final @NonNull OpenNotification n) {
@@ -467,6 +479,10 @@ public class NotificationPresenter implements
         return getList().size();
     }
 
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
     //-- LOCAL LIST'S EVENTS --------------------------------------------------
 
     @Override
@@ -528,12 +544,38 @@ public class NotificationPresenter implements
         return n.isMine() && sbn != null && sbn.getId() == App.ID_NOTIFY_INIT;
     }
 
+    /**
+     * Freezes the listeners notification process and
+     * stores all events to list.
+     *
+     * @see #meltListeners()
+     */
+    private void freezeListeners() {
+        mFrozen = true;
+    }
+
+    /**
+     * Unfreezes all events and sends them.
+     *
+     * @see #freezeListeners()
+     */
+    private void meltListeners() {
+        mFrozen = false;
+        notifyListeners(mFrozenEvents);
+        mFrozenEvents.clear();
+    }
+
     private void notifyListeners(@Nullable OpenNotification n, int event) {
         notifyListeners(n, event, true);
     }
 
     private void notifyListeners(@Nullable OpenNotification n, int event,
                                  boolean isLastEventInSequence) {
+        if (mFrozen) {
+            mFrozenEvents.add(new NotificationListChange(event, n));
+            return;
+        }
+
         for (int i = mListenersRefs.size() - 1; i >= 0; i--) {
             WeakReference<OnNotificationListChangedListener> ref = mListenersRefs.get(i);
             OnNotificationListChangedListener l = ref.get();
@@ -622,13 +664,19 @@ public class NotificationPresenter implements
         });
     }
 
-    void clear(boolean notifyListeners) {
-        if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
-                + notifyListeners);
+    void clear(final boolean notifyListeners) {
+        mHandler.post(new Runnable() {
+            @SuppressLint("NewApi")
+            @Override
+            public void run() {
+                if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
+                        + notifyListeners);
 
-        mGList.list().clear();
-        mLList.list().clear();
-        if (notifyListeners) notifyListeners(null, EVENT_BATH);
+                mGList.list().clear();
+                mLList.list().clear();
+                if (notifyListeners) notifyListeners(null, EVENT_BATH);
+            }
+        });
     }
 
 }

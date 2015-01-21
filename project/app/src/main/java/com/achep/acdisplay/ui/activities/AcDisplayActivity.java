@@ -41,7 +41,10 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
     private static final String TAG = "AcDisplayActivity";
 
-    private Config mConfig = Config.getInstance();
+    private final Config mConfig = Config.getInstance();
+    private final Presenter mPresenter = Presenter.getInstance();
+
+
     private PocketFragment mPocketFragment;
 
     @Override
@@ -81,6 +84,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         if (mConfig.isWallpaperShown()) setTheme(R.style.MaterialTheme_AcDisplay_Wallpaper);
         super.onCreate(savedInstanceState);
+        mPresenter.onCreate(this);
 
         setContentView(R.layout.acdisplay);
 
@@ -102,33 +106,21 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
         //   mPulsingThread = new PulsingThread(getContentResolver());
         //   mPulsingThread.start();
-        Presenter.getInstance().attachActivity(this);
-    }
-
-    /**
-     * Initializes non-UI fragments such as {@link com.achep.acdisplay.ui.fragments.PocketFragment}.
-     */
-    private void initInternalFragments() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-        // Turns screen off inside of your pocket.
-        if (mConfig.isActiveModeEnabled()) {
-            mPocketFragment = PocketFragment.newInstance();
-            ft.add(mPocketFragment, PocketFragment.TAG);
-        }
-
-        ft.commit();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        mPresenter.onStart();
+
         mConfig.getTriggers().incrementLaunchCount(this, null);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mPresenter.onResume();
+
         hideHeadsUpApp(true);
         populateFlags(true);
     }
@@ -137,7 +129,21 @@ public class AcDisplayActivity extends KeyguardActivity implements
     protected void onPause() {
         hideHeadsUpApp(false);
         populateFlags(false);
+
+        mPresenter.onPause();
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        mPresenter.onStop();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDestroy();
+        super.onDestroy();
     }
 
     /**
@@ -154,10 +160,19 @@ public class AcDisplayActivity extends KeyguardActivity implements
         sendBroadcast(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        Presenter.getInstance().detachActivity();
-        super.onDestroy();
+    /**
+     * Initializes non-UI fragments such as {@link com.achep.acdisplay.ui.fragments.PocketFragment}.
+     */
+    private void initInternalFragments() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        // Turns screen off inside of your pocket.
+        if (mConfig.isActiveModeEnabled()) {
+            mPocketFragment = PocketFragment.newInstance();
+            ft.add(mPocketFragment, PocketFragment.TAG);
+        }
+
+        ft.commit();
     }
 
     /**

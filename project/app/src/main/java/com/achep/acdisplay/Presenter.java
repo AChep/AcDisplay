@@ -47,10 +47,18 @@ public class Presenter {
     private static final String TAG = "AcDisplayPresenter";
     private static final String WAKE_LOCK_TAG = "AcDisplay launcher.";
 
+    private static final int STATE_CREATED = 5;
+    private static final int STATE_STARTED = 4;
+    private static final int STATE_RESUMED = 3;
+    private static final int STATE_PAUSED = 2;
+    private static final int STATE_STOPPED = 1;
+    private static final int STATE_DESTROYED = 0;
+
     private static Presenter sPresenter;
 
     @Nullable
     private AcDisplayActivity mActivity;
+    private int mActivityState = STATE_DESTROYED;
 
     public static synchronized Presenter getInstance() {
         if (sPresenter == null) {
@@ -59,71 +67,76 @@ public class Presenter {
         return sPresenter;
     }
 
-    public void attachActivity(@Nullable AcDisplayActivity activity) {
-        mActivity = activity;
+    //-- START-UP -------------------------------------------------------------
+
+    /**
+     * Checks if the current state of device is correct for waking-up cause
+     * of notification, or no.
+     */
+    public boolean checkNotification(@NonNull Context context, @NonNull OpenNotification n) {
+        NotificationPresenter np = NotificationPresenter.getInstance();
+
+        if (np.isTestNotification(context, n)) {
+            return true;  // force test notification to be shown
+        }
+
+        if (ProximitySensor.isNear()) {
+            // Don't display while device is face down.
+            return false;
+        }
+
+        Config config = Config.getInstance();
+        if (!config.isEnabled() || !config.isNotifyWakingUp()
+                // Inactive time
+                || config.isInactiveTimeEnabled()
+                && InactiveTimeHelper.isInactiveTime(config)
+                // Only while charging
+                || config.isEnabledOnlyWhileCharging()
+                && !PowerUtils.isPlugged(context)) {
+            // Don't turn screen on due to user settings.
+            return false;
+        }
+
+        // Respect the device's zen mode.
+        final int zenMode = ZenUtils.getValue(context);
+        if (DEBUG) Log.d(TAG, "The current ZEN mode is " + ZenUtils.zenModeToString(zenMode));
+        switch (zenMode) {
+            case ZenConsts.ZEN_MODE_IMPORTANT_INTERRUPTIONS:
+                if (n.getNotification().priority >= Notification.PRIORITY_HIGH) {
+                    break;
+                }
+            case ZenConsts.ZEN_MODE_NO_INTERRUPTIONS:
+                return false;
+        }
+
+        String packageName = n.getPackageName();
+        Blacklist blacklist = Blacklist.getInstance();
+        return !blacklist.getAppConfig(packageName).isRestricted();
     }
 
-    public void detachActivity() {
-        attachActivity(null);
+    /**
+     * Checks if the screen if off and call state is idle.
+     */
+    public boolean checkBasics(@NonNull Context context) {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return !PowerUtils.isScreenOn(pm) && ts.getCallState() == TelephonyManager.CALL_STATE_IDLE;
     }
 
-    public void kill() {
-        if (mActivity != null) mActivity.finish();
+    public boolean tryStartGuiCauseNotification(
+            @NonNull Context context,
+            @NonNull OpenNotification n) {
+        return checkNotification(context, n) && checkBasics(context) && start(context);
+    }
+
+    public boolean tryStartGuiCauseSensor(@NonNull Context context) {
+        return checkBasics(context) && start(context);
     }
 
     //-- START-UP -------------------------------------------------------------
 
-    public boolean tryStartGuiCauseNotification(@NonNull Context context,
-                                                @NonNull OpenNotification n) {
-        NotificationPresenter np = NotificationPresenter.getInstance();
-        if (!np.isTestNotification(context, n)) { // force test notification to be shown
-            Config config = Config.getInstance();
-            if (!config.isEnabled() || !config.isNotifyWakingUp()
-                    // Inactive time
-                    || config.isInactiveTimeEnabled()
-                    && InactiveTimeHelper.isInactiveTime(config)
-                    // Only while charging
-                    || config.isEnabledOnlyWhileCharging()
-                    && !PowerUtils.isPlugged(context)) {
-                // Don't turn screen on due to user settings.
-                return false;
-            }
-
-            // Respect the device's zen mode.
-            final int zenMode = ZenUtils.getValue(context);
-            if (DEBUG) Log.d(TAG, "The current ZEN mode is " + ZenUtils.zenModeToString(zenMode));
-            switch (zenMode) {
-                case ZenConsts.ZEN_MODE_IMPORTANT_INTERRUPTIONS:
-                    if (n.getNotification().priority >= Notification.PRIORITY_HIGH) {
-                        break;
-                    }
-                case ZenConsts.ZEN_MODE_NO_INTERRUPTIONS:
-                    return false;
-            }
-
-            if (ProximitySensor.isNear()) {
-                // Don't display while device is face down.
-                return false;
-            }
-
-            String packageName = n.getPackageName();
-            Blacklist blacklist = Blacklist.getInstance();
-            if (blacklist.getAppConfig(packageName).isRestricted()) {
-                // Don't display due to app settings.
-                return false;
-            }
-        }
-
-        return tryStartGuiCauseSensor(context);
-    }
-
-    public boolean tryStartGuiCauseSensor(@NonNull Context context) {
+    public boolean start(@NonNull Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (PowerUtils.isScreenOn(pm) || ts.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
-            // Screen is on || phone call.
-            return false;
-        }
 
         // Wake up from possible deep sleep.
         //
@@ -144,7 +157,7 @@ public class Presenter {
                         | Intent.FLAG_FROM_BACKGROUND)
                 .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true));
 
-        Log.i(TAG, "Launching AcDisplay activity.");
+        if (DEBUG) Log.i(TAG, "Launching AcDisplay activity.");
         return true;
     }
 
@@ -153,6 +166,40 @@ public class Presenter {
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION));
         return true;
+    }
+
+    //-- ACTIVITY -------------------------------------------------------------
+
+    public void onCreate(@NonNull AcDisplayActivity activity) {
+        mActivity = activity;
+        mActivityState = STATE_CREATED;
+    }
+
+    public void onStart() {
+        mActivityState = STATE_STARTED;
+    }
+
+    public void onResume() {
+        mActivityState = STATE_RESUMED;
+    }
+
+    public void onPause() {
+        mActivityState = STATE_PAUSED;
+    }
+
+    public void onStop() {
+        mActivityState = STATE_STOPPED;
+    }
+
+    public void onDestroy() {
+        mActivity = null;
+        mActivityState = STATE_DESTROYED;
+    }
+
+    //-- OTHER ----------------------------------------------------------------
+
+    public void kill() {
+        if (mActivity != null) mActivity.finish();
     }
 
 }

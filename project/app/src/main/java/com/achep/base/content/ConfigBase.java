@@ -39,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -462,6 +463,16 @@ public abstract class ConfigBase implements
                     .append(getterName, option.getterName)
                     .append(clazz, option.clazz)
                     .isEquals();
+        }
+
+        @NonNull
+        public final String getKey(@NonNull ConfigBase config) {
+            for (Map.Entry<String, Option> entry : config.getHashMap().entrySet()) {
+                if (entry.getValue().equals(this)) {
+                    return entry.getKey();
+                }
+            }
+            throw new RuntimeException();
         }
 
         /**
