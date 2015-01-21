@@ -239,7 +239,7 @@ public class KeyguardService extends SwitchService {
          * Checks what activity is the latest.
          */
         public void monitor() {
-            synchronized(this) {
+            synchronized (this) {
                 String topActivity = RunningTasks.getInstance().getRunningTasksTop(mContext);
                 if (topActivity != null && !topActivity.equals(topActivityName)) {
 

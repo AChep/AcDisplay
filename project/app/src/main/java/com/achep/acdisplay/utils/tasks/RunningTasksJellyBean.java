@@ -38,7 +38,7 @@ class RunningTasksJellyBean extends RunningTasks {
      */
     @SuppressWarnings("deprecation")
     @Nullable
-    public String getRunningTasksTop(@NonNull Context context)  {
+    public String getRunningTasksTop(@NonNull Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
         return tasks == null || tasks.isEmpty() ? null : tasks.get(0).topActivity.getPackageName();

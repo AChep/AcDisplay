@@ -416,7 +416,8 @@ public abstract class SettingsActivity extends ActivityBase implements
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_content, f);
 
-        if (withTransition && Device.hasKitKatApi()) TransitionManager.beginDelayedTransition(mContent);
+        if (withTransition && Device.hasKitKatApi())
+            TransitionManager.beginDelayedTransition(mContent);
         if (addToBackStack) transaction.addToBackStack(SettingsActivity.BACK_STACK_PREFS);
         if (titleResId > 0) {
             transaction.setBreadCrumbTitle(titleResId);

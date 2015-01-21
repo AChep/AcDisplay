@@ -28,15 +28,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,15 +45,11 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.utils.AccessUtils;
-import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.PackageUtils;
-import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
-
-import static com.achep.base.Build.DEBUG;
 
 /**
  * Created by Artem on 21.01.14.

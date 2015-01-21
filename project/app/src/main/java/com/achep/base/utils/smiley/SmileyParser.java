@@ -18,10 +18,6 @@
 
 package com.achep.base.utils.smiley;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +27,10 @@ import android.text.style.ImageSpan;
 
 import com.achep.acdisplay.R;
 
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A class for annotating a CharSequence with spans to convert textual emoticons
  * to graphical ones.
@@ -38,6 +38,7 @@ import com.achep.acdisplay.R;
 public class SmileyParser {
     // Singleton stuff
     private static SmileyParser sInstance;
+
     public static SmileyParser getInstance() {
         return sInstance;
     }
@@ -189,7 +190,7 @@ public class SmileyParser {
      *
      * @param text A CharSequence possibly containing emoticons
      * @return A CharSequence annotated with ImageSpans covering any
-     *         recognized emoticons.
+     * recognized emoticons.
      */
     public CharSequence addSmileySpans(@Nullable CharSequence text) {
         if (text == null) return null;
