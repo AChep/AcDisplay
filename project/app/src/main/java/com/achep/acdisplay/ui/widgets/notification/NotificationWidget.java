@@ -265,7 +265,6 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
                 if (icon != null) {
                     final int size = getResources().getDimensionPixelSize(R.dimen.notification_action_icon_size);
                     icon.setBounds(0, 0, size, size);
-                    icon.setAlpha(255 * 0x89 / 0xFF); // TODO: Move that magic constant away
 
                     if (hasDarkTextColor(textView)) {
                         icon.setColorFilter(mColorFilterDark);

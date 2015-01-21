@@ -93,7 +93,7 @@
 
     <style name="MaterialAcDisplay.Action" parent="MaterialAcDisplay">
         <item name="android:background">?android:listChoiceBackgroundIndicator</item>
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
+        <item name="android:textColor">@color/primary_text_default_material_dark</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
