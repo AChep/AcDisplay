@@ -882,6 +882,7 @@ public class AcDisplayFragment extends Fragment implements
         mCurrentScene = sceneCompat;
         Log.w(TAG, "Going to " + sceneCompat);
 
+        if (Device.hasKitKatApi()) animate &= mSceneContainer.isLaidOut();
         if (!animate) {
             sceneCompat.enter();
             return;
