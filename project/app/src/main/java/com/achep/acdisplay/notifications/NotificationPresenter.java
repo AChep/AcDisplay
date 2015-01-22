@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,6 +67,8 @@ public class NotificationPresenter implements
      * {@code false} to handle all notifications' updates normally.
      */
     private static final boolean FILTER_NOISY_NOTIFICATIONS = true;
+
+    private static final int FRESH_NOTIFICATION_EXPIRY_TIME = 4000; // 4 sec.
 
     public static final int EVENT_BATH = 0;
     public static final int EVENT_POSTED = 1;
@@ -466,6 +469,16 @@ public class NotificationPresenter implements
         } else if (size > 0) {
             notifyListeners(changes);
         }
+    }
+
+    @Nullable
+    public OpenNotification getFreshNotification() {
+        for (OpenNotification n : getList()) {
+            long delta = Math.max(n.getNotification().priority, 1) * FRESH_NOTIFICATION_EXPIRY_TIME;
+            long past = SystemClock.elapsedRealtime() - delta;
+            if (!n.isRead() && n.getLoadTimestamp() > past) return n;
+        }
+        return null;
     }
 
     @NonNull

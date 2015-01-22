@@ -1047,6 +1047,23 @@ public class AcDisplayFragment extends Fragment implements
 
     //-- NOTIFICATION HANDLING ------------------------------------------------
 
+    @Nullable
+    private NotifyWidget find(@Nullable OpenNotification n) {
+        if (n == null) return null;
+        // Find the widget of this or previous notification,
+        // so we can manage it.
+        for (Widget item : mWidgetsMap.values()) {
+            if (item instanceof NotifyWidget) {
+                // Check if notification has the same key.
+                NotifyWidget nw = (NotifyWidget) item;
+                if (nw.hasIdenticalIds(n)) {
+                    return nw;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
@@ -1060,16 +1077,7 @@ public class AcDisplayFragment extends Fragment implements
 
             // Find the widget of this or previous notification,
             // so we can manage it.
-            for (Widget item : mWidgetsMap.values()) {
-                if (item instanceof NotifyWidget) {
-                    // Check if notification has the same key.
-                    NotifyWidget nw = (NotifyWidget) item;
-                    if (nw.hasIdenticalIds(osbn)) {
-                        widgetPrev = nw;
-                        break;
-                    }
-                }
-            }
+            widgetPrev = find(osbn);
         }
 
         switch (event) { // don't update on spam-change.

@@ -28,6 +28,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -91,6 +92,7 @@ public abstract class OpenNotification implements
     private boolean mEmoticonsEnabled;
     private boolean mMine;
     private boolean mRead;
+    private long mLoadedTimestamp;
     private int mNumber;
 
     // Extracted
@@ -159,6 +161,7 @@ public abstract class OpenNotification implements
     }
 
     public void load(@NonNull Context context) {
+        mLoadedTimestamp = SystemClock.elapsedRealtime();
         mMine = TextUtils.equals(getPackageName(), PackageUtils.getName(context));
         mActions = Action.makeFor(mNotification);
         mNumber = mNotification.number;
@@ -500,6 +503,14 @@ public abstract class OpenNotification implements
     public String getPackageName() {
         assert mStatusBarNotification != null;
         return mStatusBarNotification.getPackageName();
+    }
+
+    /**
+     * Time since notification has been loaded; in {@link android.os.SystemClock#elapsedRealtime()}
+     * format.
+     */
+    public long getLoadTimestamp() {
+        return mLoadedTimestamp;
     }
 
     public boolean isGroupChild() {
