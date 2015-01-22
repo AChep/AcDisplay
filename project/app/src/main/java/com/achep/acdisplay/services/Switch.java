@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.Config;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.tests.Check;
 
 /**
  * Provides a callback when <b>something</b> should be started or stopped
@@ -184,13 +185,25 @@ public abstract class Switch {
          */
         @Override
         public final boolean isActive() {
-            return !isFeatureEnabled((boolean) mOption.read(mConfig)) || isActiveInternal();
+            return !isFeatureEnabled() || isActiveInternal();
         }
 
         /**
          * @see #isActive()
          */
         public abstract boolean isActiveInternal();
+
+        public void requestActiveInternal() {
+            Check.getInstance().isTrue(isActive());
+            requestActive();
+        }
+
+        public void requestInactiveInternal() {
+            if (isFeatureEnabled()) {
+                Check.getInstance().isFalse(isActive());
+                requestInactive();
+            }
+        }
 
         @Override
         public void onConfigChanged(@NonNull ConfigBase configBase,
@@ -210,6 +223,10 @@ public abstract class Switch {
                     requestActive();
                 }
             }
+        }
+
+        private boolean isFeatureEnabled() {
+            return isFeatureEnabled((boolean) mOption.read(mConfig));
         }
 
         private boolean isFeatureEnabled(boolean on) {

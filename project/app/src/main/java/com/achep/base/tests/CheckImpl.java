@@ -26,6 +26,13 @@ import android.support.annotation.Nullable;
 final class CheckImpl extends Check {
 
     @Override
+    public void isTrue(boolean bool) {
+        if (!bool) {
+            throw new RuntimeException("Should be true!");
+        }
+    }
+
+    @Override
     public void isFalse(boolean bool) {
         if (bool) {
             throw new RuntimeException("Should be false!");

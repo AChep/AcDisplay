@@ -34,10 +34,11 @@ public abstract class Check {
         return sCheck;
     }
 
+    public abstract void isTrue(boolean bool);
+
     public abstract void isFalse(boolean bool);
 
     public abstract void isNull(@Nullable Object object);
 
     public abstract void isInMainThread();
-
 }
