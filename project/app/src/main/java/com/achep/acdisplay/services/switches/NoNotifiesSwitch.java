@@ -72,10 +72,12 @@ public final class NoNotifiesSwitch extends Switch.Optional implements
             case NotificationPresenter.EVENT_BATH:
             case NotificationPresenter.EVENT_POSTED:
             case NotificationPresenter.EVENT_REMOVED:
-                if (isActiveInternal()) {
-                    requestActive();
-                } else {
-                    requestInactive();
+                if (isLastEventInSequence) {
+                    if (isActiveInternal()) {
+                        requestActive();
+                    } else {
+                        requestInactive();
+                    }
                 }
                 break;
         }
