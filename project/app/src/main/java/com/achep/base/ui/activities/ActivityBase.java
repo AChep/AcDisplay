@@ -25,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 
 import com.achep.acdisplay.App;
+import com.achep.base.tests.Check;
 import com.achep.base.utils.power.PowerSaveDetector;
 
 import org.solovyev.android.checkout.ActivityCheckout;
@@ -41,6 +42,8 @@ public abstract class ActivityBase extends ActionBarActivity {
     private boolean mCheckoutRequest;
 
     public void requestCheckout() {
+        Check.getInstance().isFalse(mCheckoutRequest);
+        Check.getInstance().isNull(mPowerSaveDetector); // not created yet.
         mCheckoutRequest = true;
     }
 
