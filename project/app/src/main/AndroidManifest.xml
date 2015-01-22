@@ -20,8 +20,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.acdisplay"
-    android:versionCode="37"
-    android:versionName="3.0.5">
+    android:versionCode="38"
+    android:versionName="3.0.6">
 
     <!--
         Normally replaced by build script. Required by
