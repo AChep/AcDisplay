@@ -34,6 +34,7 @@ import android.util.Log;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
 import com.achep.base.Device;
+import com.achep.base.tests.Check;
 import com.achep.base.utils.Operator;
 
 /**

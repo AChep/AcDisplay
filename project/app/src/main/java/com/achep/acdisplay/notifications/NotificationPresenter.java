@@ -36,6 +36,7 @@ import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.tests.Check;
 import com.achep.base.utils.Operator;
 
 import java.lang.ref.WeakReference;
@@ -351,12 +352,10 @@ public class NotificationPresenter implements
      * @see #FLAG_DONT_NOTIFY_FOLLOWERS
      * @see #FLAG_DONT_WAKE_UP
      */
-    @Deprecated
     public void postNotification(
             @NonNull Context context,
             @NonNull OpenNotification n, int flags) {
-        if (DEBUG) Log.d(TAG, "Posting new " + n + " from \'"
-                + Thread.currentThread().getName() + "\' thread.");
+        Check.getInstance().isInMainThread();
 
         // Check for the test notification.
         if (isInitNotification(context, n)) {
@@ -426,8 +425,7 @@ public class NotificationPresenter implements
      */
     @Deprecated
     public void removeNotification(@NonNull OpenNotification n) {
-        if (DEBUG) Log.d(TAG, "Removing " + n + " from \'"
-                + Thread.currentThread().getName() + "\' thread.");
+        Check.getInstance().isInMainThread();
 
         if (KEEP_GLOBAL_LIST) mGList.remove(n);
         mLList.remove(n);
@@ -571,6 +569,8 @@ public class NotificationPresenter implements
 
     private void notifyListeners(@Nullable OpenNotification n, int event,
                                  boolean isLastEventInSequence) {
+        Check.getInstance().isInMainThread();
+
         if (mFrozen) {
             mFrozenEvents.add(new NotificationListChange(event, n));
             return;

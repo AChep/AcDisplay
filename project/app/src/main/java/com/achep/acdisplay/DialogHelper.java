@@ -31,6 +31,7 @@ import android.text.Html;
 import com.achep.acdisplay.ui.fragments.dialogs.SetupPermissionsDialog;
 import com.achep.acdisplay.ui.fragments.dialogs.WelcomeDialog;
 import com.achep.base.Device;
+import com.achep.base.tests.Check;
 import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.fragments.dialogs.AboutDialog;
 import com.achep.base.ui.fragments.dialogs.DonateDialog;
@@ -62,6 +63,8 @@ public class DialogHelper {
     }
 
     public static void showCryDialog(@NonNull ActionBarActivity activity) {
+        Check.getInstance().isInMainThread();
+
         Resources res = activity.getResources();
         CharSequence message = Html.fromHtml(res.getString(R.string.cry_dialog_message));
 
@@ -76,6 +79,8 @@ public class DialogHelper {
     }
 
     public static void showCompatDialog(@NonNull ActionBarActivity activity) {
+        Check.getInstance().isInMainThread();
+
         int[] pairs = {
                 R.string.compat_dialog_item_notification,
                 android.os.Build.VERSION_CODES.JELLY_BEAN_MR2,
@@ -133,6 +138,8 @@ public class DialogHelper {
     private static void showDialog(@NonNull ActionBarActivity activity,
                                    @NonNull Class clazz,
                                    @NonNull String tag) {
+        Check.getInstance().isInMainThread();
+
         FragmentManager fm = activity.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag(tag);

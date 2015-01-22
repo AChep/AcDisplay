@@ -20,6 +20,8 @@ package com.achep.base.content;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
@@ -29,12 +31,14 @@ import android.util.Log;
 import com.achep.base.Device;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.tests.Check;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -61,6 +65,9 @@ public abstract class ConfigBase implements
     private SoftReference<HashMap<String, Option>> mHashMapRef = new SoftReference<>(null);
     private final ArrayList<WeakReference<OnConfigChangedListener>> mListenersRefs = new ArrayList<>(6);
     private Context mContext;
+
+    // Threading
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Interface definition for a callback to be invoked
@@ -184,17 +191,42 @@ public abstract class ConfigBase implements
      */
     protected abstract void onCreateHashMap(@NonNull HashMap<String, Option> hashMap);
 
-    protected void saveOption(@NonNull Context context,
-                              @NonNull String key, @NonNull Object value,
-                              @Nullable OnConfigChangedListener listenerToBeIgnored,
-                              boolean changed) {
-        if (!changed) {
-            // The change is a lie!
-            return;
-        }
+    protected abstract void onOptionChanged(@NonNull Option option, @NonNull String key);
+
+    protected void writeFromMain(final @NonNull Context context,
+                         final @NonNull Option option, final @NonNull Object value,
+                         final @Nullable OnConfigChangedListener listenerToBeIgnored) {
+        mHandler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                write(context, option, value, listenerToBeIgnored);
+            }
+
+        });
+    }
+
+    protected void write(final @NonNull Context context,
+                         final @NonNull Option option,
+                         final @NonNull Object value,
+                         final @Nullable OnConfigChangedListener listenerToBeIgnored) {
+        Check.getInstance().isInMainThread();
+
+        if (option.read(ConfigBase.this).equals(value)) return;
+        String key = option.getKey(ConfigBase.this);
 
         if (DEBUG) Log.d(TAG, "Writing \"" + key + "=" + value + "\" to config.");
 
+        // Set the current value to the field.
+        try {
+            Field field = getClass().getDeclaredField(option.fieldName);
+            field.setAccessible(true);
+            field.set(this, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalStateException("");
+        }
+
+        // Set the current value to the preferences file.
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         if (value instanceof Boolean) {
             editor.putBoolean(key, (Boolean) value);
@@ -208,6 +240,7 @@ public abstract class ConfigBase implements
         editor.apply();
 
         mContext = context;
+        onOptionChanged(option, key);
         notifyConfigChanged(key, value, listenerToBeIgnored);
         mContext = null;
     }
@@ -219,6 +252,8 @@ public abstract class ConfigBase implements
      */
     private void notifyConfigChanged(@NonNull String key, @NonNull Object value,
                                      @Nullable OnConfigChangedListener listenerToBeIgnored) {
+        Check.getInstance().isInMainThread();
+
         for (int i = mListenersRefs.size() - 1; i >= 0; i--) {
             WeakReference<OnConfigChangedListener> ref = mListenersRefs.get(i);
             OnConfigChangedListener l = ref.get();
@@ -384,7 +419,6 @@ public abstract class ConfigBase implements
             if (mStarted) {
                 startListeningGroup(group);
             }
-
         }
 
         /**
@@ -420,21 +454,30 @@ public abstract class ConfigBase implements
      */
     public static class Option {
 
+        @NonNull
+        private final String fieldName;
+        @Nullable
         private final String setterName;
+        @Nullable
         private final String getterName;
+        @NonNull
         private final Class clazz;
+
         private final int minSdkVersion;
         private final int maxSdkVersion;
 
-        public Option(@NonNull String setterName,
-                      @NonNull String getterName,
+        public Option(@NonNull String fieldName,
+                      @Nullable String setterName,
+                      @Nullable String getterName,
                       @NonNull Class clazz) {
-            this(setterName, getterName, clazz, 0, Integer.MAX_VALUE - 1);
+            this(fieldName, setterName, getterName, clazz, 0, Integer.MAX_VALUE - 1);
         }
 
-        public Option(@NonNull String setterName,
-                      @NonNull String getterName,
+        public Option(@NonNull String fieldName,
+                      @Nullable String setterName,
+                      @Nullable String getterName,
                       @NonNull Class clazz, int minSdkVersion, int maxSdkVersion) {
+            this.fieldName = fieldName;
             this.setterName = setterName;
             this.getterName = getterName;
             this.clazz = clazz;
@@ -448,6 +491,7 @@ public abstract class ConfigBase implements
         @Override
         public int hashCode() {
             return new HashCodeBuilder(11, 31)
+                    .append(fieldName)
                     .append(setterName)
                     .append(getterName)
                     .append(clazz)
@@ -468,6 +512,7 @@ public abstract class ConfigBase implements
 
             Option option = (Option) o;
             return new EqualsBuilder()
+                    .append(fieldName, option.fieldName)
                     .append(setterName, option.setterName)
                     .append(getterName, option.getterName)
                     .append(clazz, option.clazz)
@@ -493,14 +538,30 @@ public abstract class ConfigBase implements
          */
         @NonNull
         public final Object read(@NonNull ConfigBase config) {
-            Object configInstance = getConfigInstance(config);
-            Class configClass = configInstance.getClass();
+            return getterName != null ? readFromGetter(config) : readFromField(config);
+        }
+
+        @NonNull
+        private Object readFromField(@NonNull ConfigBase config) {
+            assert fieldName != null;
             try {
-                Method method = configClass.getDeclaredMethod(getterName);
+                Field field = config.getClass().getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return field.get(config);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException("Failed to access the " + clazz.getName() + "#" + fieldName + " field.");
+            }
+        }
+
+        @NonNull
+        private Object readFromGetter(@NonNull ConfigBase config) {
+            assert getterName != null;
+            try {
+                Method method = config.getClass().getDeclaredMethod(getterName);
                 method.setAccessible(true);
-                return method.invoke(configInstance);
+                return method.invoke(config);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to access " + clazz.getName() + "." + getterName + " method.");
+                throw new RuntimeException("Failed to access the " + clazz.getName() + "#" + getterName + " method.");
             }
         }
 
@@ -513,24 +574,27 @@ public abstract class ConfigBase implements
          */
         public final void write(@NonNull ConfigBase config, @NonNull Context context,
                                 @NonNull Object newValue, @Nullable OnConfigChangedListener listener) {
-            Object configInstance = getConfigInstance(config);
-            Class configClass = configInstance.getClass();
+            if (setterName != null) {
+                // Setter must be calling #writeFromMain by itself.
+                writeBySetter(config, context, newValue, listener);
+                return;
+            }
+
+            config.writeFromMain(context, this, newValue, listener);
+        }
+
+        private void writeBySetter(@NonNull ConfigBase config, @NonNull Context context,
+                                   @NonNull Object newValue, @Nullable OnConfigChangedListener listener) {
+            assert setterName != null;
             try {
-                Method method = configClass.getDeclaredMethod(setterName,
+                Method method = config.getClass().getDeclaredMethod(setterName,
                         Context.class, clazz,
                         ConfigBase.OnConfigChangedListener.class);
                 method.setAccessible(true);
-                method.invoke(configInstance, context, newValue, listener);
+                method.invoke(config, context, newValue, listener);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException("Failed to access " + clazz.getName() + "#" + setterName + "(***) method.");
             }
-        }
-
-        @NonNull
-        protected Object getConfigInstance(@NonNull ConfigBase config) {
-            // This method is needed to be able to create options from
-            // other classes, not only Config.
-            return config;
         }
 
     }

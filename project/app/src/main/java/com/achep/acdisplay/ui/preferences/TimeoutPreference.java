@@ -29,11 +29,10 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.DialogBuilder;
 
 import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * Preference to configure timeouts.
@@ -79,33 +78,25 @@ public class TimeoutPreference extends DialogPreference implements
                 .setContentView(R.layout.preference_dialog_timeout)
                 .createView();
 
+        Config config = Config.getInstance();
+
         mProgresses = new int[2];
         mGroups = new Group[mProgresses.length];
         mGroups[0] = new Group(
                 (SeekBar) root.findViewById(R.id.normal_timeout_seekbar),
                 (TextView) root.findViewById(R.id.normal_timeout_value),
-                "setTimeoutNormal", "getTimeoutNormal");
+                config.getOption(Config.KEY_TIMEOUT_NORMAL));
         mGroups[1] = new Group(
                 (SeekBar) root.findViewById(R.id.short_timeout_seekbar),
                 (TextView) root.findViewById(R.id.short_timeout_value),
-                "setTimeoutShort", "getTimeoutShort");
+                config.getOption(Config.KEY_TIMEOUT_SHORT));
 
         final int max = res.getInteger(R.integer.config_timeout_maxDurationMillis) / MULTIPLIER;
         mMin = res.getInteger(R.integer.config_timeout_minDurationMillis) / MULTIPLIER;
         mSoftStoredLabels = new SoftReference[max + 1];
 
-        Config config = Config.getInstance();
-
         for (Group group : mGroups) {
-            int progress = 0;
-            try {
-                Method method = Config.class.getDeclaredMethod(group.getterName);
-                method.setAccessible(true);
-                progress = (int) method.invoke(config);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
+            int progress = (int) group.option.read(config);
             group.seekBar.setOnSeekBarChangeListener(this);
             group.seekBar.setMax(max);
             group.seekBar.setProgress(progress / MULTIPLIER);
@@ -125,15 +116,8 @@ public class TimeoutPreference extends DialogPreference implements
         // Save changes to config.
         Config config = Config.getInstance();
         for (Group group : mGroups) {
-            try {
-                Method method = Config.class.getDeclaredMethod(group.setterName,
-                        Context.class, int.class,
-                        Config.OnConfigChangedListener.class);
-                method.setAccessible(true);
-                method.invoke(config, getContext(), group.seekBar.getProgress() * MULTIPLIER, null);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            int value = group.seekBar.getProgress() * MULTIPLIER;
+            group.option.write(config, getContext(), value, null);
         }
     }
 
@@ -203,14 +187,12 @@ public class TimeoutPreference extends DialogPreference implements
     private static class Group {
         SeekBar seekBar;
         TextView textView;
-        String setterName;
-        String getterName;
+        ConfigBase.Option option;
 
-        public Group(SeekBar seekBar, TextView textView, String setterName, String getterName) {
+        public Group(SeekBar seekBar, TextView textView, ConfigBase.Option option) {
             this.seekBar = seekBar;
             this.textView = textView;
-            this.setterName = setterName;
-            this.getterName = getterName;
+            this.option = option;
         }
     }
 }

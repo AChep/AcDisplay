@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,30 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.base.utils;
+package com.achep.base.tests;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-
-import com.achep.base.interfaces.ICoin;
+import android.support.annotation.Nullable;
 
 /**
- * Base class for simple virtual coins.
- *
- * @author Artem Chepurnoy
+ * Created by Artem Chepurnoy on 21.01.2015.
  */
-public class CoinUtils {
+final class CheckImpl extends Check {
 
-    @NonNull
-    public static Intent getPaymentIntent(@NonNull ICoin coin) {
-        return getPaymentIntent(coin, coin.getPaymentAmount());
+    @Override
+    public void isNull(@Nullable Object object) {
+        if (object != null) {
+            throw new RuntimeException("Should be null!");
+        }
     }
 
-    @NonNull
-    public static Intent getPaymentIntent(@NonNull ICoin coin, double amount) {
-        Uri uri = coin.getPaymentUri(amount);
-        return IntentUtils.createViewIntent(uri);
+    @Override
+    public void isInMainThread() {
+        if (!Thread.currentThread().getName().equals("main")) {
+            throw new RuntimeException("Should be called on the main thread");
+        }
     }
 
 }

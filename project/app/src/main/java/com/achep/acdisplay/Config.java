@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
@@ -29,7 +30,6 @@ import com.achep.acdisplay.plugins.powertoggles.ToggleReceiver;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.base.content.ConfigBase;
 
 import java.util.HashMap;
@@ -103,7 +103,7 @@ public final class Config extends ConfigBase {
 
     private static Config sConfig;
 
-    private boolean mAcDisplayEnabled;
+    private boolean mEnabled;
     private boolean mKeyguardEnabled;
     private boolean mKeyguardWithoutNotifies;
     private boolean mActiveMode;
@@ -159,7 +159,7 @@ public final class Config extends ConfigBase {
     void init(@NonNull Context context) {
         Resources res = context.getResources();
         SharedPreferences prefs = getSharedPreferences(context);
-        mAcDisplayEnabled = prefs.getBoolean(KEY_ENABLED,
+        mEnabled = prefs.getBoolean(KEY_ENABLED,
                 res.getBoolean(R.bool.config_default_enabled));
         mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
                 res.getBoolean(R.bool.config_default_keyguard_enabled));
@@ -237,66 +237,106 @@ public final class Config extends ConfigBase {
     @Override
     protected void onCreateHashMap(@NonNull HashMap<String, ConfigBase.Option> hashMap) {
         hashMap.put(KEY_ENABLED, new ConfigBase.Option(
-                "setEnabled", "isEnabled", boolean.class));
+                "mEnabled", "setEnabled", "isEnabled", boolean.class));
         hashMap.put(KEY_KEYGUARD, new ConfigBase.Option(
-                "setKeyguardEnabled", "isKeyguardEnabled", boolean.class));
+                "mKeyguardEnabled", null, null, boolean.class));
         hashMap.put(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
-                "setKeyguardWithoutNotificationsEnabled",
-                "isKeyguardWithoutNotifiesEnabled", boolean.class));
+                "mKeyguardWithoutNotifies", null, null, boolean.class));
         hashMap.put(KEY_ACTIVE_MODE, new ConfigBase.Option(
-                "setActiveModeEnabled", "isActiveModeEnabled", boolean.class));
+                "mActiveMode", null, null, boolean.class));
         hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
-                "setActiveModeWithoutNotificationsEnabled",
-                "isActiveModeWithoutNotifiesEnabled", boolean.class));
+                "mActiveModeWithoutNotifies", null, null, boolean.class));
+
+        // notifications
         hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
-                "setWakeUpOnNotifyEnabled",
-                "isNotifyWakingUp", boolean.class));
+                "mNotifyWakeUpOn", null, null, boolean.class));
         hashMap.put(KEY_NOTIFY_MIN_PRIORITY, new ConfigBase.Option(
-                "setNotifyMinPriority",
-                "getNotifyMinPriority", int.class));
+                "mNotifyMinPriority", null, null, int.class));
         hashMap.put(KEY_NOTIFY_MAX_PRIORITY, new ConfigBase.Option(
-                "setNotifyMaxPriority",
-                "getNotifyMaxPriority", int.class));
-        hashMap.put(KEY_ONLY_WHILE_CHARGING, new ConfigBase.Option(
-                "setEnabledOnlyWhileCharging",
-                "isEnabledOnlyWhileCharging", boolean.class));
+                "mNotifyMaxPriority", null, null, int.class));
+
+        // timeout
+        hashMap.put(KEY_TIMEOUT_NORMAL, new ConfigBase.Option(
+                "mTimeoutNormal", null, null, int.class));
+        hashMap.put(KEY_TIMEOUT_SHORT, new ConfigBase.Option(
+                "mTimeoutShort", null, null, int.class));
+
+        // inactive time
+        hashMap.put(KEY_INACTIVE_TIME_ENABLED, new ConfigBase.Option(
+                "mInactiveTimeEnabled", null, null, boolean.class));
+        hashMap.put(KEY_INACTIVE_TIME_FROM, new ConfigBase.Option(
+                "mInactiveTimeFrom", null, null, int.class));
+        hashMap.put(KEY_INACTIVE_TIME_TO, new ConfigBase.Option(
+                "mInactiveTimeTo", null, null, int.class));
+
+        // interface
         hashMap.put(KEY_UI_FULLSCREEN, new ConfigBase.Option(
-                "setFullScreen", "isFullScreen", boolean.class));
+                "mUiFullScreen", null, null, boolean.class));
         hashMap.put(KEY_UI_WALLPAPER_SHOWN, new ConfigBase.Option(
-                "setWallpaperShown", "isWallpaperShown", boolean.class));
+                "mUiWallpaper", null, null, boolean.class));
         hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new ConfigBase.Option(
-                "setStatusBatterySticky",
-                "isStatusBatterySticky", boolean.class));
+                "mUiBatterySticky", null, null, boolean.class));
         hashMap.put(KEY_UI_DYNAMIC_BACKGROUND_MODE, new ConfigBase.Option(
-                "setDynamicBackgroundMode",
-                "getDynamicBackgroundMode", int.class));
+                "mUiDynamicBackground", null, null, int.class));
         hashMap.put(KEY_UI_CIRCLE_COLOR_INNER, new ConfigBase.Option(
-                "setCircleInnerColor",
-                "getCircleInnerColor", int.class));
+                "mUiCircleColorInner", null, null, int.class));
         hashMap.put(KEY_UI_CIRCLE_COLOR_OUTER, new ConfigBase.Option(
-                "setCircleOuterColor",
-                "getCircleOuterColor", int.class));
+                "mUiCircleColorOuter", null, null, int.class));
         hashMap.put(KEY_UI_UNLOCK_ANIMATION, new ConfigBase.Option(
-                "setUnlockAnimationEnabled",
-                "isUnlockAnimationEnabled", boolean.class));
+                "mUiUnlockAnimation", null, null, boolean.class));
         hashMap.put(KEY_UI_EMOTICONS, new ConfigBase.Option(
-                "setEmoticonsEnabled",
-                "isEmoticonsEnabled", boolean.class));
+                "mUiEmoticons", null, null, boolean.class));
         hashMap.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
-                "setOverridingFontsEnabled",
-                "isOverridingFontsEnabled", boolean.class));
-        hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new ConfigBase.Option(
-                "setScreenOffAfterLastNotify",
-                "isScreenOffAfterLastNotify", boolean.class));
-        hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new ConfigBase.Option(
-                "setWidgetPinnable",
-                "isWidgetPinnable", boolean.class));
-        hashMap.put(KEY_FEEL_WIDGET_READABLE, new ConfigBase.Option(
-                "setWidgetReadable",
-                "isWidgetReadable", boolean.class));
+                "mUiOverrideFonts", null, null, boolean.class));
+        hashMap.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
+                "mUiIconSize", null, null, int.class));
+
+        // development
         hashMap.put(KEY_DEV_SENSORS_DUMP, new ConfigBase.Option(
-                "setDevSensorsDumpEnabled",
-                "isDevSensorsDumpEnabled", boolean.class));
+                "mDevSensorsDump", null, null, boolean.class));
+
+        // other
+        hashMap.put(KEY_ONLY_WHILE_CHARGING, new ConfigBase.Option(
+                "mEnabledOnlyWhileCharging", null, null, boolean.class));
+        hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new ConfigBase.Option(
+                "mScreenOffAfterLastNotify", null, null, boolean.class));
+        hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new ConfigBase.Option(
+                "mFeelWidgetPinnable", null, null, boolean.class));
+        hashMap.put(KEY_FEEL_WIDGET_READABLE, new ConfigBase.Option(
+                "mFeelWidgetReadable", null, null, boolean.class));
+
+        // triggers
+        hashMap.put(KEY_TRIG_DONATION_ASKED, new ConfigBase.Option(
+                "mTrigDonationAsked", null, null, boolean.class));
+        hashMap.put(KEY_TRIG_HELP_READ, new ConfigBase.Option(
+                "mTrigHelpRead", null, null, boolean.class));
+        hashMap.put(KEY_TRIG_LAUNCH_COUNT, new ConfigBase.Option(
+                "mTrigLaunchCount", null, null, int.class));
+        hashMap.put(KEY_TRIG_PREVIOUS_VERSION, new ConfigBase.Option(
+                "mTrigPreviousVersion", null, null, int.class));
+        hashMap.put(KEY_TRIG_TRANSLATED, new ConfigBase.Option(
+                "mTrigTranslated", null, null, boolean.class));
+    }
+
+    @Override
+    protected void onOptionChanged(@NonNull Option option, @NonNull String key) {
+        switch (key) {
+            case KEY_ACTIVE_MODE:
+                ActiveModeService.handleState(getContext());
+                break;
+            case KEY_KEYGUARD:
+                KeyguardService.handleState(getContext());
+                break;
+            case KEY_ENABLED:
+                ToggleReceiver.sendStateUpdate(ToggleReceiver.class, mEnabled, getContext());
+            case KEY_ONLY_WHILE_CHARGING:
+                ActiveModeService.handleState(getContext());
+                KeyguardService.handleState(getContext());
+                break;
+            case KEY_DEV_SENSORS_DUMP:
+                SensorsDumpService.handleState(getContext());
+                break;
+        }
     }
 
     /**
@@ -314,176 +354,33 @@ public final class Config extends ConfigBase {
     /**
      * Setter for the entire app enabler.
      */
-    public boolean setEnabled(Context context, boolean enabled,
-                              OnConfigChangedListener listener) {
-        boolean changed = mAcDisplayEnabled != (mAcDisplayEnabled = enabled);
-
-        if (!changed) {
-            return true;
-        }
-        if (enabled && !AccessUtils.hasAllRights(context)) {
-            return false;
-        }
-
-        saveOption(context, KEY_ENABLED, enabled, listener, changed);
-
-        if (changed) {
-            ActiveModeService.handleState(context);
-            KeyguardService.handleState(context);
-        }
-
-        ToggleReceiver.sendStateUpdate(ToggleReceiver.class, enabled, context);
-        return true;
-    }
-
-    /**
-     * Setter to enable the lockscreen mode.
-     */
-    public void setKeyguardEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mKeyguardEnabled != (mKeyguardEnabled = enabled);
-        saveOption(context, KEY_KEYGUARD, enabled, listener, changed);
-
-        if (changed) {
-            KeyguardService.handleState(context);
-        }
-    }
-
-    public void setKeyguardWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mKeyguardWithoutNotifies != (mKeyguardWithoutNotifies = enabled);
-        saveOption(context, KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
-    }
-
-    /**
-     * Setter to enable the active mode.
-     */
-    public void setActiveModeEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mActiveMode != (mActiveMode = enabled);
-        saveOption(context, KEY_ACTIVE_MODE, enabled, listener, changed);
-
-        if (changed) {
-            ActiveModeService.handleState(context);
-        }
-    }
-
-    public void setActiveModeWithoutNotificationsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mActiveModeWithoutNotifies != (mActiveModeWithoutNotifies = enabled);
-        saveOption(context, KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, enabled, listener, changed);
-    }
-
-    /**
-     * Setter to only have the app running while charging.
-     */
-    public void setEnabledOnlyWhileCharging(Context context, boolean enabled,
-                                            OnConfigChangedListener listener) {
-        boolean changed = mEnabledOnlyWhileCharging != (mEnabledOnlyWhileCharging = enabled);
-        saveOption(context, KEY_ONLY_WHILE_CHARGING, enabled, listener, changed);
-
-        if (changed) {
-            ActiveModeService.handleState(context);
-            KeyguardService.handleState(context);
-        }
-    }
-
-    public void setWakeUpOnNotifyEnabled(Context context, boolean enabled,
-                                         OnConfigChangedListener listener) {
-        boolean changed = mNotifyWakeUpOn != (mNotifyWakeUpOn = enabled);
-        saveOption(context, KEY_NOTIFY_WAKE_UP_ON, enabled, listener, changed);
-    }
-
-    /**
-     * Setter to set the timeout in a normal situation.
-     */
-    // used via reflections!
-    public void setTimeoutNormal(Context context, int delayMillis, OnConfigChangedListener listener) {
-        boolean changed = mTimeoutNormal != (mTimeoutNormal = delayMillis);
-        saveOption(context, KEY_TIMEOUT_NORMAL, delayMillis, listener, changed);
-    }
-
-    /**
-     * Setter for short timeout time.
-     */
-    // used via reflections!
-    public void setTimeoutShort(Context context, int delayMillis, OnConfigChangedListener listener) {
-        boolean changed = mTimeoutShort != (mTimeoutShort = delayMillis);
-        saveOption(context, KEY_TIMEOUT_SHORT, delayMillis, listener, changed);
+    public void setEnabled(@NonNull Context context, boolean enabled,
+                           @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_ENABLED), enabled, listener);
     }
 
     /**
      * Setter to enable "night mode".
      */
-    public void setInactiveTimeEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mInactiveTimeEnabled != (mInactiveTimeEnabled = enabled);
-        saveOption(context, KEY_INACTIVE_TIME_ENABLED, enabled, listener, changed);
+    public void setInactiveTimeEnabled(@NonNull Context context, boolean enabled,
+                                       @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_INACTIVE_TIME_ENABLED), enabled, listener);
     }
 
     /**
      * Setter for the time "night mode" should start
      */
-    public void setInactiveTimeFrom(Context context, int minutes, OnConfigChangedListener listener) {
-        boolean changed = mInactiveTimeFrom != (mInactiveTimeFrom = minutes);
-        saveOption(context, KEY_INACTIVE_TIME_FROM, minutes, listener, changed);
+    public void setInactiveTimeFrom(@NonNull Context context, int minutes,
+                                    @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_INACTIVE_TIME_FROM), minutes, listener);
     }
 
     /**
      * Setter for the time "night mode" should end.
      */
-    public void setInactiveTimeTo(Context context, int minutes, OnConfigChangedListener listener) {
-        boolean changed = mInactiveTimeTo != (mInactiveTimeTo = minutes);
-        saveOption(context, KEY_INACTIVE_TIME_TO, minutes, listener, changed);
-    }
-
-    /**
-     * Setter to allow the wallpaper to be shown instead of black
-     */
-    public void setWallpaperShown(Context context, boolean shown, OnConfigChangedListener listener) {
-        boolean changed = mUiWallpaper != (mUiWallpaper = shown);
-        saveOption(context, KEY_UI_WALLPAPER_SHOWN, shown, listener, changed);
-    }
-
-    /**
-     * Allow the background to change based on the notification.
-     */
-    public void setDynamicBackgroundMode(Context context, int mode, OnConfigChangedListener listener) {
-        boolean changed = mUiDynamicBackground != (mUiDynamicBackground = mode);
-        saveOption(context, KEY_UI_DYNAMIC_BACKGROUND_MODE, mode, listener, changed);
-    }
-
-    public void setStatusBatterySticky(Context context, boolean visible, OnConfigChangedListener listener) {
-        boolean changed = mUiBatterySticky != (mUiBatterySticky = visible);
-        saveOption(context, KEY_UI_STATUS_BATTERY_STICKY, visible, listener, changed);
-    }
-
-    public void setWidgetPinnable(Context context, boolean pinnable, OnConfigChangedListener listener) {
-        boolean changed = mFeelWidgetPinnable != (mFeelWidgetPinnable = pinnable);
-        saveOption(context, KEY_FEEL_WIDGET_PINNABLE, pinnable, listener, changed);
-    }
-
-    public void setWidgetReadable(Context context, boolean readable, OnConfigChangedListener listener) {
-        boolean changed = mFeelWidgetReadable != (mFeelWidgetReadable = readable);
-        saveOption(context, KEY_FEEL_WIDGET_READABLE, readable, listener, changed);
-    }
-
-    /**
-     * Setter for Immersive Mode
-     */
-    public void setFullScreen(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mUiFullScreen != (mUiFullScreen = enabled);
-        saveOption(context, KEY_UI_FULLSCREEN, enabled, listener, changed);
-    }
-
-    public void setOverridingFontsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mUiOverrideFonts != (mUiOverrideFonts = enabled);
-        saveOption(context, KEY_UI_OVERRIDE_FONTS, enabled, listener, changed);
-    }
-
-    /**
-     * Defines if textual emoticons should be converted to graphical ones.
-     *
-     * @see #isEmoticonsEnabled()
-     */
-    public void setEmoticonsEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mUiEmoticons != (mUiEmoticons = enabled);
-        saveOption(context, KEY_UI_EMOTICONS, enabled, listener, changed);
+    public void setInactiveTimeTo(@NonNull Context context, int minutes,
+                                  @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_INACTIVE_TIME_TO), minutes, listener);
     }
 
     /**
@@ -493,75 +390,13 @@ public final class Config extends ConfigBase {
      * @see #getIconSizePx()
      * @see #getIconSize(String)
      */
-    public void setIconSizeDp(Context context, int size, OnConfigChangedListener listener) {
-        boolean changed = mUiIconSize != (mUiIconSize = size);
-        saveOption(context, KEY_UI_ICON_SIZE, size, listener, changed);
-    }
-
-    /**
-     * Setter to turn the screen off after dismissing the last notification.
-     */
-    public void setScreenOffAfterLastNotify(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mScreenOffAfterLastNotify != (mScreenOffAfterLastNotify = enabled);
-        saveOption(context, KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, enabled, listener, changed);
-    }
-
-    /**
-     * Setter to turn the screen off after dismissing the last notification.
-     */
-    public void setUnlockAnimationEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mUiUnlockAnimation != (mUiUnlockAnimation = enabled);
-        saveOption(context, KEY_UI_UNLOCK_ANIMATION, enabled, listener, changed);
-    }
-
-    public void setDevSensorsDumpEnabled(Context context, boolean enabled, OnConfigChangedListener listener) {
-        boolean changed = mDevSensorsDump != (mDevSensorsDump = enabled);
-        saveOption(context, KEY_DEV_SENSORS_DUMP, enabled, listener, changed);
-
-        if (changed) {
-            SensorsDumpService.handleState(context);
-        }
-    }
-
-    public void setCircleInnerColor(Context context, int color, OnConfigChangedListener listener) {
-        boolean changed = mUiCircleColorInner != (mUiCircleColorInner = color);
-        saveOption(context, KEY_UI_CIRCLE_COLOR_INNER, color, listener, changed);
-    }
-
-    public void setCircleOuterColor(Context context, int color, OnConfigChangedListener listener) {
-        boolean changed = mUiCircleColorOuter != (mUiCircleColorOuter = color);
-        saveOption(context, KEY_UI_CIRCLE_COLOR_OUTER, color, listener, changed);
-    }
-
-    /**
-     * Sets the minimum notification's priority to be shown.
-     *
-     * @param priority minimum notification's priority to be shown.
-     * @see #getNotifyMinPriority()
-     * @see #setNotifyMaxPriority(Context, int, OnConfigChangedListener)
-     * @see android.app.Notification#priority
-     */
-    public void setNotifyMinPriority(Context context, int priority, OnConfigChangedListener listener) {
-        boolean changed = mNotifyMinPriority != (mNotifyMinPriority = priority);
-        saveOption(context, KEY_NOTIFY_MIN_PRIORITY, priority, listener, changed);
-    }
-
-    /**
-     * Sets the maximum notification's priority to be shown.
-     *
-     * @param priority maximum notification's priority to be shown.
-     * @see #getNotifyMaxPriority()
-     * @see #setNotifyMinPriority(Context, int, OnConfigChangedListener)
-     * @see android.app.Notification#priority
-     */
-    public void setNotifyMaxPriority(Context context, int priority, OnConfigChangedListener listener) {
-        boolean changed = mNotifyMaxPriority != (mNotifyMaxPriority = priority);
-        saveOption(context, KEY_NOTIFY_MAX_PRIORITY, priority, listener, changed);
+    public void setIconSizeDp(@NonNull Context context, int size,
+                              @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_UI_ICON_SIZE), size, listener);
     }
 
     /**
      * @return minimal {@link android.app.Notification#priority} of notification to be shown.
-     * @see #setNotifyMinPriority(Context, int, OnConfigChangedListener)
      * @see #getNotifyMaxPriority()
      * @see android.app.Notification#priority
      */
@@ -571,7 +406,6 @@ public final class Config extends ConfigBase {
 
     /**
      * @return maximum {@link android.app.Notification#priority} of notification to be shown.
-     * @see #setNotifyMaxPriority(Context, int, OnConfigChangedListener)
      * @see #getNotifyMinPriority()
      * @see android.app.Notification#priority
      */
@@ -579,10 +413,18 @@ public final class Config extends ConfigBase {
         return mNotifyMaxPriority;
     }
 
+    /**
+     * @return the color of unlock circle
+     * @see #getCircleOuterColor()
+     */
     public int getCircleInnerColor() {
         return mUiCircleColorInner;
     }
 
+    /**
+     * @return the background color of the unlock circle
+     * @see #getCircleInnerColor()
+     */
     public int getCircleOuterColor() {
         return mUiCircleColorOuter;
     }
@@ -634,7 +476,7 @@ public final class Config extends ConfigBase {
     }
 
     public boolean isEnabled() {
-        return mAcDisplayEnabled;
+        return mEnabled;
     }
 
     public boolean isKeyguardEnabled() {
@@ -716,46 +558,42 @@ public final class Config extends ConfigBase {
      */
     public class Triggers {
 
-        public void setPreviousVersion(Context context, int versionCode, OnConfigChangedListener listener) {
-            boolean changed = mTrigPreviousVersion != (mTrigPreviousVersion = versionCode);
-            saveOption(context, KEY_TRIG_PREVIOUS_VERSION, versionCode, listener, changed);
+        public void setPreviousVersion(@NonNull Context context, int versionCode,
+                                       @Nullable OnConfigChangedListener listener) {
+            writeFromMain(context, getOption(KEY_TRIG_PREVIOUS_VERSION), versionCode, listener);
         }
 
-        public void setHelpRead(Context context, boolean isRead, OnConfigChangedListener listener) {
-            boolean changed = mTrigHelpRead != (mTrigHelpRead = isRead);
-            saveOption(context, KEY_TRIG_HELP_READ, isRead, listener, changed);
+        public void setHelpRead(@NonNull Context context, boolean isRead,
+                                @Nullable OnConfigChangedListener listener) {
+            writeFromMain(context, getOption(KEY_TRIG_HELP_READ), isRead, listener);
         }
 
-        public void setDonationAsked(Context context, boolean isAsked, OnConfigChangedListener listener) {
-            boolean changed = mTrigDonationAsked != (mTrigDonationAsked = isAsked);
-            saveOption(context, KEY_TRIG_DONATION_ASKED, isAsked, listener, changed);
+        public void setDonationAsked(@NonNull Context context, boolean isAsked,
+                                     @Nullable OnConfigChangedListener listener) {
+            writeFromMain(context, getOption(KEY_TRIG_DONATION_ASKED), isAsked, listener);
         }
 
-        public void setTranslated(Context context, boolean translated, OnConfigChangedListener listener) {
-            boolean changed = mTrigTranslated != (mTrigTranslated = translated);
-            saveOption(context, KEY_TRIG_TRANSLATED, translated, listener, changed);
+        public void setTranslated(@NonNull Context context, boolean translated,
+                                  @Nullable OnConfigChangedListener listener) {
+            writeFromMain(context, getOption(KEY_TRIG_TRANSLATED), translated, listener);
         }
 
         /**
-         * @param context
-         * @param listener
          * @see #setLaunchCount(android.content.Context, int, com.achep.base.content.ConfigBase.OnConfigChangedListener)
          * @see #getLaunchCount()
          */
-        public void incrementLaunchCount(Context context, OnConfigChangedListener listener) {
+        public void incrementLaunchCount(@NonNull Context context,
+                                         @Nullable OnConfigChangedListener listener) {
             setLaunchCount(context, getLaunchCount() + 1, listener);
         }
 
         /**
-         * @param context
-         * @param launchCount
-         * @param listener
          * @see #incrementLaunchCount(android.content.Context, com.achep.base.content.ConfigBase.OnConfigChangedListener)
          * @see #getLaunchCount()
          */
-        public void setLaunchCount(Context context, int launchCount, OnConfigChangedListener listener) {
-            boolean changed = mTrigLaunchCount != (mTrigLaunchCount = launchCount);
-            saveOption(context, KEY_TRIG_LAUNCH_COUNT, launchCount, listener, changed);
+        public void setLaunchCount(@NonNull Context context, int launchCount,
+                                   @Nullable OnConfigChangedListener listener) {
+            writeFromMain(context, getOption(KEY_TRIG_LAUNCH_COUNT), launchCount, listener);
         }
 
         /**

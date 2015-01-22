@@ -119,12 +119,8 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
 
                     // Show permission dialog.
                     DialogHelper.showSetupPermissionsDialog(context);
-                } else if (!mConfig.setEnabled(context, checked, MainActivity.this)) {
-
-                    // Setting option failed, so we need to
-                    // sync switch with config.
-                    compoundButton.setChecked(mConfig.isEnabled());
-                    updateSendTestNotificationMenuItem();
+                } else {
+                    mConfig.setEnabled(context, checked, MainActivity.this);
                 }
             }
         });
