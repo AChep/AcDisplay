@@ -50,7 +50,7 @@ public abstract class ActivityBase extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (mCheckoutRequest) {
-            App.getCheckoutInternal().connect();
+            App.getCheckoutInternal().requestConnect();
             mCheckout = Checkout.forActivity(this, App.getCheckout());
         }
         mPowerSaveDetector = PowerSaveDetector.newInstance(this);
@@ -80,7 +80,7 @@ public abstract class ActivityBase extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         if (mCheckout != null) {
-            App.getCheckoutInternal().disconnect();
+            App.getCheckoutInternal().requestDisconnect();
             mCheckout = null;
         }
         super.onDestroy();

@@ -58,6 +58,11 @@ public class CheckoutInternal {
     @NonNull
     private final Checkout mCheckout;
 
+    /**
+     * The number of active {@link #requestConnect() connect requests}.
+     */
+    private int mConnections;
+
     public CheckoutInternal(@NonNull Context context, @NonNull Products products) {
         mBilling = new Billing(context, new Configuration());
         mCheckout = Checkout.forApplication(mBilling, products);
@@ -78,7 +83,7 @@ public class CheckoutInternal {
      *
      * @see #disconnect()
      */
-    public void connect() {
+    private void connect() {
         mBilling.connect();
     }
 
@@ -87,7 +92,7 @@ public class CheckoutInternal {
      *
      * @see #connect()
      */
-    public void disconnect() {
+    private void disconnect() {
         try {
             Method method = Billing.class.getDeclaredMethod("disconnect");
             method.setAccessible(true);
@@ -97,6 +102,14 @@ public class CheckoutInternal {
                 | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void requestConnect() {
+        if (mConnections++ == 0) connect();
+    }
+
+    public void requestDisconnect() {
+        if (mConnections-- == 1) disconnect();
     }
 
     /**
