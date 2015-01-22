@@ -26,6 +26,13 @@ import android.support.annotation.Nullable;
 final class CheckImpl extends Check {
 
     @Override
+    public void isFalse(boolean bool) {
+        if (bool) {
+            throw new RuntimeException("Should be false!");
+        }
+    }
+
+    @Override
     public void isNull(@Nullable Object object) {
         if (object != null) {
             throw new RuntimeException("Should be null!");

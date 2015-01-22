@@ -318,6 +318,18 @@ public class AcDisplayFragment extends Fragment implements
             View.OnTouchListener listener = new TouchForwarder(getActivity(), mCircleView, mActivityAcd);
             view.setOnTouchListener(listener);
             mCircleView.setCallback(this);
+            mCircleView.setSupervisor(new CircleView.Supervisor() {
+                @Override
+                public boolean isAnimationEnabled() {
+                    return !isPowerSaveMode();
+                }
+
+                @Override
+                public boolean isAnimationUnlockEnabled() {
+                    return isAnimationEnabled() && getConfig().isUnlockAnimationEnabled();
+                }
+
+            });
         }
 
         // Needs to be started before it may be attached
@@ -1363,7 +1375,7 @@ public class AcDisplayFragment extends Fragment implements
                     float y = event.getY();
                     mCircling = ViewUtils.pointInView(v, x, y, -20);
                 default:
-                    if (mCircling) mCircleView.onTouchEvent2(event);
+                    if (mCircling) mCircleView.sendTouchEvent(event);
             }
 
             return mCircling;
