@@ -320,7 +320,8 @@ public abstract class KeyguardActivity extends ActivityBase implements
                     finish();
 
                     Config config = Config.getInstance();
-                    overridePendingTransition(0, config.isUnlockAnimationEnabled()
+                    boolean animate = config.isUnlockAnimationEnabled() && !isPowerSaveMode();
+                    overridePendingTransition(0, animate
                             ? R.anim.activity_unlock
                             : 0);
                 }
