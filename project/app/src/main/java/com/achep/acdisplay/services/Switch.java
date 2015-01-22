@@ -184,7 +184,7 @@ public abstract class Switch {
          */
         @Override
         public final boolean isActive() {
-            return isFeatureEnabled((boolean) mOption.read(mConfig)) || isActiveInternal();
+            return !isFeatureEnabled((boolean) mOption.read(mConfig)) || isActiveInternal();
         }
 
         /**
@@ -198,7 +198,7 @@ public abstract class Switch {
                                     @NonNull Object value) {
             if (key.equals(mOptionKey)) {
                 if (isFeatureEnabled((boolean) value)) {
-                    if (isActive()) {
+                    if (isActiveInternal()) {
                         requestActive();
                     } else {
                         requestInactive();
