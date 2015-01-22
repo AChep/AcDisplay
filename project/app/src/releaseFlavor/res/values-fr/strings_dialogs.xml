@@ -23,27 +23,27 @@
   <string name="donate_dialog_title">Faire un don aux développeurs</string>
   <string name="donate_dialog_message">AcDisplay est une application gratuite et open source. Vous pouvez montrer votre reconnaissance et soutenir le développement en faisant un don :</string>
   <string name="donate_alert_no_responsibility">Notez que Google n\'est pas responsable pour cette méthode de paiement.</string>
-  <string name="donate_billing_not_supported">Les microtransactions ne sont pas pris en compte sur cet appareil.</string>
+  <string name="donate_billing_not_supported">Les microtransactions ne sont pas prises en compte sur cet appareil.</string>
   <string name="donate_thanks">Merci beaucoup !</string>
   <string name="donation_1">Une glace</string>
-  <string name="donation_4">Une tasse de café</string>
+  <string name="donation_4">Un café</string>
   <string name="donation_10">Factures d\'électricité</string>
   <string name="donation_20">Un bon oreiller</string>
   <string name="donation_50">SSD</string>
   <string name="donation_99">Chaîne HiFi</string>
   <string name="cry_dialog_title">Soutenir le développement</string>
-  <string name="cry_dialog_message"><![CDATA[         AcDisplay est une application gratuite et <a href="http://repo.acdisplay.org"> open source</a> et nous passons beaucoup de temps et de ressources pour le développement. S\'il vous plaît, envisager un don pour montrer votre appréciation et à soutenir davantage le développement.     ]]></string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay est une application gratuite et <a href="http://repo.acdisplay.org"> open source</a> et nous passons beaucoup de temps et de ressources pour le développement. S\'il vous plaît, pensez à faire un don si vous appréciez notre travail et ainsi soutenir nos efforts futurs.]]></string>
   <string name="help_dialog_title">Aide</string>
   <string name="feedback_dialog_title">Commentaires</string>
   <string name="feedback_dialog_message_hint">Votre message. Les caractéristiques de votre appareil seront incluses automatiquement.</string>
-  <string name="feedback_dialog_attach_log">Joindre un journal d\'erreurs</string>
+  <string name="feedback_dialog_attach_log">Joindre un rapport d\'erreurs</string>
   <string name="feedback_dialog_read_help">Foire aux questions</string>
   <string name="feedback_error_no_app">Installer une des applications de courrier électronique.</string>
   <string name="feedback_error_msg_too_short">Le message doit contenir au moins %1$d caractères.</string>
   <string name="feedback_error_accessing_log">Erreur d\'accès au Journal de l\'application. L\'erreur est : %1$s</string>
   <string name="compat_dialog_title">Mode de compatibilité</string>
-  <string name="compat_dialog_message">AcDisplay s\'exécute dans un mode de compatibilité pour soutenir Android %1$s : %2$s</string>
-  <string name="compat_dialog_item_notification">Parce que AcDisplay utilise le service de l\'accessibilité, il ne peut pas détecter des notifications rejetées/mises à jour, ou fermer les notifications.</string>
+  <string name="compat_dialog_message">AcDisplay s\'exécute dans un mode de compatibilité pour supporter Android %1$s : %2$s</string>
+  <string name="compat_dialog_item_notification">AcDisplay utilise le service de l\'accessibilité, il ne peut donc pas détecter des notifications rejetées/mises à jour, ou fermer les notifications.</string>
   <string name="compat_dialog_item_immersive_mode">La barre de navigation est toujours affichée.</string>
   <string name="compat_dialog_item_music_widget">Pas de widget média.</string>
 </resources>

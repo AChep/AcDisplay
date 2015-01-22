@@ -21,12 +21,12 @@
 <resources>
   <string name="about_dialog_message"><![CDATA[         AcDisplay ist eine gratis und <a href="http://repo.acdisplay.org">Open-Source</a>-Anwendung.         Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Alle Rechte vorbehalten. <br/>         <br/> Vielen Dank an diese Open-Source-Tools: %1$s und alle, die <a href="http://translate.acdisplay.org"> mit Übersetzungen geholfen</a> oder gespendet haben.     ]]></string>
   <string name="donate_dialog_title">An die Entwickler spenden</string>
-  <string name="donate_dialog_message">AcDisplay ist eine gratis und open-Source-App. Du kannst deine Wertschätzung zeigen und die Entwicklung durch eine Spende unterstützen:</string>
+  <string name="donate_dialog_message">AcDisplay ist eine gratis und open-Source-App. Du kannst Deine Wertschätzung zeigen und die Entwicklung durch eine Spende unterstützen:</string>
   <string name="donate_alert_no_responsibility">Beachte, dass Google für diese Zahlungsmethode nicht verantwortlich ist.</string>
   <string name="donate_billing_not_supported">In-App-Käufe werden auf dem Gerät nicht unterstützt.</string>
   <string name="donate_thanks">Vielen Dank!</string>
   <string name="donation_1">Eine Kugel Eis</string>
-  <string name="donation_4">Ne Tasse Kaffe</string>
+  <string name="donation_4">Ne Tasse Kaffee</string>
   <string name="donation_10">Stromrechnung</string>
   <string name="donation_20">Das richtige Kissen</string>
   <string name="donation_50">SSD</string>

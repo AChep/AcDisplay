@@ -45,7 +45,7 @@ AcDisplay jest darmowy i <a href="http://repo.acdisplay.org"> otwartoźródłowy
   <string name="feedback_error_accessing_log">Wystąpił błąd podczas uzyskiwania dostępu do dziennika aplikacji. Ten błąd to: %1$s</string>
   <string name="compat_dialog_title">Tryb zgodności</string>
   <string name="compat_dialog_message">AcDisplay działa w trybie zgodności, aby współpracować z Androidem %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
+  <string name="compat_dialog_item_notification">Ponieważ AcDisplay używa usługi Dostępności, nie może wykryć aktualizacji lub usunięcia powiadomienia, ani nie może też usunąć powiadomień.</string>
   <string name="compat_dialog_item_immersive_mode">Pasek nawigacji jest zawsze wyświetlany.</string>
   <string name="compat_dialog_item_music_widget">Brak widżetu muzyki.</string>
 </resources>

@@ -30,7 +30,7 @@
   <string name="permissions_notifications">通知</string>
   <string name="permissions_notifications_description">用于获取通知信息。</string>
   <string name="permissions_notifications_grant_manually">在 设置 &gt; 安全 &gt; 通知访问 中勾选AcDisplay。</string>
-  <string name="permissions_usage_stats">Usage stats</string>
+  <string name="permissions_usage_stats">使用情况统计信息</string>
   <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
   <string name="action_about">关于</string>
   <string name="action_donate">捐赠</string>
