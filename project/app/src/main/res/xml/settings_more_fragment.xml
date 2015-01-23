@@ -27,6 +27,13 @@
         android:summaryOn="@string/settings_only_while_charging_on"
         android:title="@string/settings_only_while_charging_title" />
 
+    <MultiSelectListPreference
+        android:defaultValue="@array/privacy_mode_entries"
+        android:entries="@array/privacy_mode"
+        android:entryValues="@array/privacy_mode_entries"
+        android:key="privacy_mode"
+        android:title="@string/settings_privacy_mode_title" />
+
     <com.achep.acdisplay.ui.preferences.InactiveTimePreference
         android:dialogIcon="@drawable/ic_dialog_inactive_time_white"
         android:dialogTitle="@string/settings_inactive_hours_title"

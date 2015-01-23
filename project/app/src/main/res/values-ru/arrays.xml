@@ -32,6 +32,11 @@
         <item>Иконка уведомления</item>
     </string-array>
 
+    <!-- Privacy modes -->
+    <string-array name="privacy_mode">
+        <item>Скрыть содержимое уведомлений</item>
+    </string-array>
+
     <!-- Notifies' priority -->
     <string-array name="notify_priorities">
         <item>Важные и неотложные (текущие вызовы, указания, аварийные оповещения)</item>

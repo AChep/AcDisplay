@@ -94,6 +94,8 @@
     <string name="notification_test_message">Пример того, как выглядит уведомление.</string>
     <string name="notification_test_message_large">Смахните уведомление вниз для его удаления.\nПроведите в любом месте для разблокировки.</string>
 
+    <string name="privacy_mode_hidden_content">Содержимое скрыто.</string>
+
     <!-- Initial notification -->
     <string name="notification_init_text">Просто отклоните это уведомление.</string>
 

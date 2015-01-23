@@ -44,11 +44,12 @@ import android.widget.TextView;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.interfaces.INotificatiable;
 import com.achep.acdisplay.notifications.Action;
+import com.achep.acdisplay.notifications.Formatter;
+import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.Device;
-import com.achep.base.utils.NullUtils;
 import com.achep.base.utils.ViewUtils;
 
 import java.util.Arrays;
@@ -465,19 +466,15 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
             setSmallIcon(null);
         }
 
-        mTitleTextView.setText(NullUtils.whileNotNull(osbn.titleBigText, osbn.titleText));
-        mSubtextTextView.setText(NullUtils.whileNotNull(osbn.infoText, osbn.subText));
+        Formatter formatter = NotificationPresenter.getInstance().getFormatter();
+        Formatter.Data data = formatter.get(getContext(), osbn);
+
+        mTitleTextView.setText(data.title);
+        mSubtextTextView.setText(data.subtitle);
         mWhenTextView.setText(getTimestamp(n));
 
         setActions(osbn);
-        setMessageLines((CharSequence[]) NullUtils.whileNotNull(
-                osbn.messageTextLines,
-                wrap(osbn.messageBigText),
-                wrap(osbn.messageText)));
-    }
-
-    private CharSequence[] wrap(CharSequence charSequence) {
-        return charSequence == null ? null : new CharSequence[]{charSequence};
+        setMessageLines(data.messages);
     }
 
     private String getTimestamp(@NonNull Notification notification) {

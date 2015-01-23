@@ -90,6 +90,8 @@ public final class Config extends ConfigBase {
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
     public static final String KEY_FEEL_WIDGET_PINNABLE = "feel_widget_pinnable";
     public static final String KEY_FEEL_WIDGET_READABLE = "feel_widget_readable";
+    public static final String KEY_PRIVACY = "privacy_mode";
+    public static final int PRIVACY_HIDE_CONTENT_MASK = 1;
 
     // development
     public static final String KEY_DEV_SENSORS_DUMP = "dev_sensors_dump";
@@ -123,6 +125,7 @@ public final class Config extends ConfigBase {
     private int mUiIconSize; // dp.
     private int mUiCircleColorInner;
     private int mUiCircleColorOuter;
+    private int mPrivacyMode;
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
     private boolean mUiOverrideFonts;
@@ -225,6 +228,8 @@ public final class Config extends ConfigBase {
                 res.getBoolean(R.bool.config_default_feel_widget_pinnable));
         mFeelWidgetReadable = prefs.getBoolean(KEY_FEEL_WIDGET_READABLE,
                 res.getBoolean(R.bool.config_default_feel_widget_readable));
+        mPrivacyMode = prefs.getInt(KEY_PRIVACY,
+                res.getInteger(R.integer.config_default_privacy_mode));
 
         // triggers
         mTrigHelpRead = prefs.getBoolean(KEY_TRIG_HELP_READ, false);
@@ -304,6 +309,8 @@ public final class Config extends ConfigBase {
                 "mFeelWidgetPinnable", null, null, boolean.class));
         hashMap.put(KEY_FEEL_WIDGET_READABLE, new ConfigBase.Option(
                 "mFeelWidgetReadable", null, null, boolean.class));
+        hashMap.put(KEY_PRIVACY, new ConfigBase.Option(
+                "mPrivacyMode", null, null, int.class));
 
         // triggers
         hashMap.put(KEY_TRIG_DONATION_ASKED, new ConfigBase.Option(
@@ -447,6 +454,10 @@ public final class Config extends ConfigBase {
 
     public int getDynamicBackgroundMode() {
         return mUiDynamicBackground;
+    }
+
+    public int getPrivacyMode() {
+        return mPrivacyMode;
     }
 
     /**

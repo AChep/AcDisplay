@@ -116,6 +116,9 @@ public class NotificationPresenter implements
     // Threading
     private final Handler mHandler;
 
+    // Threading
+    private final Formatter mFormatter;
+
     //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
 
     // Do not make local!
@@ -167,6 +170,10 @@ public class NotificationPresenter implements
                     for (OpenNotification n : mGList.list()) {
                         n.setEmoticonsEnabled(b);
                     }
+                    break;
+                case Config.KEY_PRIVACY:
+                    v = (int) value;
+                    mFormatter.setPrivacyMode(v);
                     break;
             }
         }
@@ -301,6 +308,7 @@ public class NotificationPresenter implements
         mGList = new NotificationList(null);
         mLList = new NotificationList(this);
         mHandler = new Handler(Looper.getMainLooper());
+        mFormatter = new Formatter();
 
         if (!Device.hasJellyBeanMR2Api()) { // pre 4.3 version
             mGList.setMaximumSize(5);
@@ -310,6 +318,7 @@ public class NotificationPresenter implements
         mConfig = Config.getInstance();
         mConfigListener = new ConfigListener(mConfig); // because of weak listeners
         mConfig.registerListener(mConfigListener);
+        mFormatter.setPrivacyMode(mConfig.getPrivacyMode());
 
         mBlacklistListener = new BlacklistListener();
         mBlacklist = Blacklist.getInstance();
@@ -469,6 +478,11 @@ public class NotificationPresenter implements
         } else if (size > 0) {
             notifyListeners(changes);
         }
+    }
+
+    @NonNull
+    public Formatter getFormatter() {
+        return mFormatter;
     }
 
     @Nullable

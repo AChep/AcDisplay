@@ -41,83 +41,6 @@ import java.util.Set;
 public class InterfaceSettings extends PreferenceFragment implements
         ConfigBase.OnConfigChangedListener {
 
-    private final ListPreferenceSetter mListPreferenceDynamicBackgroundSetter =
-            new ListPreferenceSetter() {
-
-                @Override
-                public void updateSummary(@NonNull Preference preference,
-                                          @NonNull Config.Option option,
-                                          @NonNull Object value) {
-                    MultiSelectListPreference mslp = (MultiSelectListPreference) preference;
-                    int mode = (int) value;
-
-                    CharSequence summary;
-                    if (mode != 0) {
-                        CharSequence[] entries = mslp.getEntries();
-                        CharSequence[] values = mslp.getEntryValues();
-
-                        String divider = getString(R.string.settings_multi_list_divider);
-                        StringBuilder sb = new StringBuilder();
-                        boolean empty = true;
-
-                        assert entries != null;
-                        assert values != null;
-
-                        // Append selected items.
-                        for (int i = 0; i < values.length; i++) {
-                            int a = Integer.parseInt(values[i].toString());
-                            if (Operator.bitAnd(mode, a)) {
-                                if (!empty) {
-                                    sb.append(divider);
-                                }
-                                sb.append(entries[i]);
-                                empty = false;
-                            }
-                        }
-
-                        String itemsText = sb.toString().toLowerCase();
-                        summary = getString(R.string.settings_dynamic_background_summary, itemsText);
-                    } else {
-                        summary = getString(R.string.settings_dynamic_background_disabled);
-                    }
-
-                    mslp.setSummary(summary);
-                }
-
-                @Override
-                public void setValue(@NonNull Preference preference,
-                                     @NonNull Config.Option option,
-                                     @NonNull Object value) {
-                    int mode = (int) value;
-                    String[] values = new String[Integer.bitCount(mode)];
-                    for (int i = 1, j = 0; j < values.length; i <<= 1) {
-                        if (Operator.bitAnd(mode, i)) {
-                            values[j++] = Integer.toString(i);
-                        }
-                    }
-
-                    Set<String> valuesSet = new HashSet<>();
-                    Collections.addAll(valuesSet, values);
-
-                    MultiSelectListPreference mslp = (MultiSelectListPreference) preference;
-                    mslp.setValues(valuesSet);
-                }
-
-                @NonNull
-                @Override
-                public Object getValue(@NonNull Object value) {
-                    int mode = 0;
-
-                    Set<String> values = (Set<String>) value;
-                    for (String v : values) {
-                        mode |= Integer.parseInt(v);
-                    }
-
-                    return mode;
-                }
-
-            };
-
     private Preference mIconSizePreference;
 
     @Override
@@ -129,7 +52,10 @@ public class InterfaceSettings extends PreferenceFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_interface_fragment);
-        syncPreference(Config.KEY_UI_DYNAMIC_BACKGROUND_MODE, mListPreferenceDynamicBackgroundSetter);
+        syncPreference(Config.KEY_UI_DYNAMIC_BACKGROUND_MODE,
+                new MultiSelectListPreferenceSetter(getActivity(),
+                        R.string.settings_dynamic_background_summary,
+                        R.string.settings_dynamic_background_disabled));
         syncPreference(Config.KEY_UI_WALLPAPER_SHOWN);
         syncPreference(Config.KEY_UI_STATUS_BATTERY_STICKY);
         syncPreference(Config.KEY_UI_FULLSCREEN);

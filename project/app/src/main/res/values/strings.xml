@@ -100,6 +100,8 @@
     <string name="notification_test_message">This is a sample notification.</string>
     <string name="notification_test_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
 
+    <string name="privacy_mode_hidden_content">Hidden content.</string>
+
     <!-- Remote actions -->
     <string name="remote_enable_acdisplay">AcDisplay is enabled.</string>
     <string name="remote_disable_acdisplay">AcDisplay is disabled.</string>

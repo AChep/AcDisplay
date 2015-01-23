@@ -45,6 +45,9 @@ public class MoreSettings extends PreferenceFragment implements ConfigBase.OnCon
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_more_fragment);
+        syncPreference(Config.KEY_PRIVACY,
+                new MultiSelectListPreferenceSetter(getActivity(), 0,
+                        R.string.settings_privacy_mode_disabled));
         syncPreference(Config.KEY_ONLY_WHILE_CHARGING);
         syncPreference(Config.KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY);
         syncPreference(Config.KEY_FEEL_WIDGET_PINNABLE);

@@ -36,6 +36,14 @@
         <item>2</item>
     </string-array>
 
+    <!-- Privacy modes -->
+    <string-array name="privacy_mode">
+        <item>Hide notifications\' content</item>
+    </string-array>
+    <string-array name="privacy_mode_entries" translatable="false">
+        <item>1</item>
+    </string-array>
+
     <!-- Notifies' priority -->
     <string-array name="notify_priorities">
         <item>Critical and urgent (missed calls, directions, emergency alerts)</item>

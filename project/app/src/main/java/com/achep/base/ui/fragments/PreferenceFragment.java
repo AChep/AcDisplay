@@ -19,13 +19,16 @@
 package com.achep.base.ui.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
@@ -34,6 +37,11 @@ import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.preferences.Enabler;
 import com.achep.base.ui.widgets.SwitchBar;
+import com.achep.base.utils.Operator;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -209,6 +217,106 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
         @Override
         public Object getValue(@NonNull Object value) {
             return Integer.parseInt((String) value);
+        }
+
+    }
+
+    protected static class MultiSelectListPreferenceSetter implements ConfigBase.Syncer.Setter {
+
+        @NonNull
+        private final Context mContext;
+        private final int mStrResSummary;
+        private final int mStrResDisabled;
+
+        public MultiSelectListPreferenceSetter(@NonNull Context context,
+                                               @StringRes int summaryStrRes,
+                                               @StringRes int disabledStrRes) {
+            mContext = context;
+            mStrResSummary = summaryStrRes;
+            mStrResDisabled = disabledStrRes;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateSummary(@NonNull Preference preference,
+                                  @NonNull ConfigBase.Option option,
+                                  @NonNull Object value) {
+            MultiSelectListPreference mslp = (MultiSelectListPreference) preference;
+            int mode = (int) value;
+
+            CharSequence summary;
+            if (mode != 0) {
+                CharSequence[] entries = mslp.getEntries();
+                CharSequence[] values = mslp.getEntryValues();
+
+                String divider = mContext.getString(R.string.settings_multi_list_divider);
+                StringBuilder sb = new StringBuilder();
+                boolean empty = true;
+
+                assert entries != null;
+                assert values != null;
+
+                // Append selected items.
+                for (int i = 0; i < values.length; i++) {
+                    int a = Integer.parseInt(values[i].toString());
+                    if (Operator.bitAnd(mode, a)) {
+                        if (!empty) {
+                            sb.append(divider);
+                        }
+                        sb.append(entries[i]);
+                        empty = false;
+                    }
+                }
+
+                String itemsText = sb.toString().toLowerCase();
+                summary = mStrResSummary != 0
+                        ? mContext.getString(mStrResSummary, itemsText)
+                        : sb.replace(0, 1, "" + Character.toUpperCase(sb.charAt(0)));
+            } else {
+                summary = mContext.getString(mStrResDisabled);
+            }
+
+            mslp.setSummary(summary);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void setValue(@NonNull Preference preference,
+                             @NonNull ConfigBase.Option option,
+                             @NonNull Object value) {
+            int mode = (int) value;
+            String[] values = new String[Integer.bitCount(mode)];
+            for (int i = 1, j = 0; j < values.length; i <<= 1) {
+                if (Operator.bitAnd(mode, i)) {
+                    values[j++] = Integer.toString(i);
+                }
+            }
+
+            Set<String> valuesSet = new HashSet<>();
+            Collections.addAll(valuesSet, values);
+
+            MultiSelectListPreference mslp = (MultiSelectListPreference) preference;
+            mslp.setValues(valuesSet);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @NonNull
+        @Override
+        public Object getValue(@NonNull Object value) {
+            int mode = 0;
+
+            Set<String> values = (Set<String>) value;
+            for (String v : values) {
+                mode |= Integer.parseInt(v);
+            }
+
+            return mode;
         }
 
     }
