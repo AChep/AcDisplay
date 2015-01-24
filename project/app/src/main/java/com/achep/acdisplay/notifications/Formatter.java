@@ -47,7 +47,7 @@ public class Formatter {
     Formatter() { /* empty */ }
 
     /**
-     * @see #isTopSecret()
+     * @see #hasHiddenContent()
      */
     void setPrivacyMode(int privacy) {
         mPrivacyMode = privacy;
@@ -58,14 +58,20 @@ public class Formatter {
      * secure mode and may return not real notification's data.
      * @see #setPrivacyMode(int)
      */
-    public boolean isTopSecret() {
+    private boolean hasHiddenContent() {
         return Operator.bitAnd(mPrivacyMode, Config.PRIVACY_HIDE_CONTENT_MASK);
+    }
+
+    private boolean hasHiddenActions() {
+        return Operator.bitAnd(mPrivacyMode, Config.PRIVACY_HIDE_ACTIONS_MASK);
     }
 
     @NonNull
     public Data get(@NonNull Context context, @NonNull OpenNotification notification) {
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        boolean secret = km.isKeyguardSecure() && km.isKeyguardLocked() && isTopSecret();
+        boolean secure = km.isKeyguardSecure() && km.isKeyguardLocked();
+        boolean hiddenContent = secure && hasHiddenContent();
+        boolean hiddenActions = secure && hasHiddenActions();
 
         // Get the title
         CharSequence title = NullUtils.whileNotNull(
@@ -74,7 +80,7 @@ public class Formatter {
 
         // Get the subtitle
         CharSequence subtitle;
-        if (secret) {
+        if (hiddenContent) {
             PackageManager pm = context.getPackageManager();
             try {
                 ApplicationInfo appInfo = pm.getApplicationInfo(notification.getPackageName(), 0);
@@ -88,7 +94,7 @@ public class Formatter {
 
         // Get message text
         CharSequence[] messages;
-        if (secret) {
+        if (hiddenContent) {
             Resources res = context.getResources();
             CharSequence message = res.getString(R.string.privacy_mode_hidden_content);
             SpannableString spannableMessage = new SpannableString(message);
@@ -104,7 +110,15 @@ public class Formatter {
                     new CharSequence[]{message});
         }
 
-        return new Data(title, subtitle, messages);
+        // Get actions
+        Action[] actions;
+        if (hiddenActions) {
+            actions = null;
+        } else {
+            actions = notification.getActions();
+        }
+
+        return new Data(title, subtitle, messages, actions);
     }
 
     public static class Data {
@@ -115,13 +129,17 @@ public class Formatter {
         public CharSequence subtitle;
         @Nullable
         public CharSequence[] messages;
+        @Nullable
+        public Action[] actions;
 
         private Data(@Nullable CharSequence title,
                      @Nullable CharSequence subtitle,
-                     @Nullable CharSequence[] messages) {
+                     @Nullable CharSequence[] messages,
+                     @Nullable Action[] actions) {
             this.title = title;
             this.subtitle = subtitle;
             this.messages = messages;
+            this.actions = actions;
         }
 
     }

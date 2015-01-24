@@ -35,6 +35,7 @@
     <!-- Privacy modes -->
     <string-array name="privacy_mode">
         <item>Скрыть содержимое уведомлений</item>
+        <item>Скрыть действия уведомлений</item>
     </string-array>
 
     <!-- Notifies' priority -->

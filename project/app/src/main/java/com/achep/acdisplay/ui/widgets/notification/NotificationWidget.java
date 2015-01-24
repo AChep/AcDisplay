@@ -193,8 +193,7 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
      * or higher Android version.
      */
     @SuppressLint("NewApi")
-    private void setActions(@NonNull OpenNotification notification) {
-        Action[] actions = notification.getActions();
+    private void setActions(@NonNull OpenNotification notification, @Nullable Action[] actions) {
         if (actions == null) {
             mActionsContainer.removeAllViews();
             return;
@@ -473,7 +472,7 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
         mSubtextTextView.setText(data.subtitle);
         mWhenTextView.setText(getTimestamp(n));
 
-        setActions(osbn);
+        setActions(osbn, data.actions);
         setMessageLines(data.messages);
     }
 

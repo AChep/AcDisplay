@@ -92,6 +92,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_FEEL_WIDGET_READABLE = "feel_widget_readable";
     public static final String KEY_PRIVACY = "privacy_mode";
     public static final int PRIVACY_HIDE_CONTENT_MASK = 1;
+    public static final int PRIVACY_HIDE_ACTIONS_MASK = 2;
 
     // development
     public static final String KEY_DEV_SENSORS_DUMP = "dev_sensors_dump";
