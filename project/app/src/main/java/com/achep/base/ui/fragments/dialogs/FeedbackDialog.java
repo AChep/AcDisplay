@@ -310,7 +310,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
                 break;
             }
 
-            extra = obj.toString();
+            extra = obj.toString().replaceAll(",\"", ", \"");
         } while (false);
 
         return msg + "\n\nExtras (added automatically & do not change):\n" + extra;
