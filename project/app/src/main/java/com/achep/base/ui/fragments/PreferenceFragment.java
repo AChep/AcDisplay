@@ -273,7 +273,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
                 String itemsText = sb.toString().toLowerCase();
                 summary = mStrResSummary != 0
                         ? mContext.getString(mStrResSummary, itemsText)
-                        : sb.replace(0, 1, "" + Character.toUpperCase(sb.charAt(0)));
+                        : sb.charAt(0) + itemsText.substring(1, itemsText.length());
             } else {
                 summary = mContext.getString(mStrResDisabled);
             }
