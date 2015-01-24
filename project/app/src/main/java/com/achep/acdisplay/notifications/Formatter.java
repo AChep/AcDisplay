@@ -32,6 +32,7 @@ import android.text.style.StyleSpan;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.base.utils.CsUtils;
 import com.achep.base.utils.NullUtils;
 import com.achep.base.utils.Operator;
 
@@ -89,7 +90,7 @@ public class Formatter {
                 subtitle = null;
             }
         } else {
-            subtitle = NullUtils.whileNotNull(notification.subText, notification.infoText);
+            subtitle = CsUtils.join(" ", notification.subText, notification.infoText);
         }
 
         // Get message text
