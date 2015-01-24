@@ -30,7 +30,7 @@
 
     <!-- Notification widget -->
     <dimen name="notification_icon_size">24dp</dimen>
-    <dimen name="notification_action_icon_size">20dp</dimen>
+    <dimen name="notification_action_icon_size">24dp</dimen>
     <dimen name="notification_subtext_size">12sp</dimen>
 
     <!-- AcDisplay -->
