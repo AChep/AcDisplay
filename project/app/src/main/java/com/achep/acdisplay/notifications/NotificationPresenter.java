@@ -691,19 +691,24 @@ public class NotificationPresenter implements
         });
     }
 
-    void clear(final boolean notifyListeners) {
+    void clearFromMain(final boolean notifyListeners) {
         mHandler.post(new Runnable() {
             @SuppressLint("NewApi")
             @Override
             public void run() {
-                if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
-                        + notifyListeners);
-
-                mGList.list().clear();
-                mLList.list().clear();
-                if (notifyListeners) notifyListeners(null, EVENT_BATH);
+                clear(notifyListeners);
             }
         });
+    }
+
+    void clear(final boolean notifyListeners) {
+        Check.getInstance().isInMainThread();
+        if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
+                + notifyListeners);
+
+        mGList.list().clear();
+        mLList.list().clear();
+        if (notifyListeners) notifyListeners(null, EVENT_BATH);
     }
 
 }

@@ -93,7 +93,7 @@ class NotificationListenerJellyBeanMR2 extends NotificationListener {
 
     @Override
     public void onListenerUnbind(@NonNull MediaService mediaService) {
-        NotificationPresenter.getInstance().clear(true);
+        NotificationPresenter.getInstance().clearFromMain(true);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
