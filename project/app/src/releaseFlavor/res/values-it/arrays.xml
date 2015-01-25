@@ -30,6 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>Hide notifications\' content</item>
+    <item>Hide notifications\' actions</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Importanti e urgenti (chiamate perse, indicazioni, avvisi di emergenza)</item>

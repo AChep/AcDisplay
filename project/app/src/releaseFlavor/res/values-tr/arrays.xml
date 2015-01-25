@@ -30,6 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>Bildirimlerin içeriğini gizle</item>
+    <item>Hide notifications\' actions</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Kritik ve acil (cevapsız aramalar, yönergeler, acil durum uyarıları) 

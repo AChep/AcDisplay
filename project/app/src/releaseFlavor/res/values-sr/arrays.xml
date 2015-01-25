@@ -30,6 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>Сакриј садржај обавештења</item>
+    <item>Hide notifications\' actions</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Критично и хитно (пропуштени позиви, праваци, хитна упозорења)</item>

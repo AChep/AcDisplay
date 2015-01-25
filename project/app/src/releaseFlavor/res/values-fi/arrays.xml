@@ -30,6 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>Piilota ilmoitusten sisältö</item>
+    <item>Hide notifications\' actions</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Kriittiset ja kiireelliset (vastaamattomat puhelut, ajo-ohjeet, hätävaroitukset)</item>

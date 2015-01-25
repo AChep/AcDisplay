@@ -30,6 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>Hide notifications\' content</item>
+    <item>Hide notifications\' actions</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>重大及緊急事件(未接來電，方向指示，緊急警示)</item>

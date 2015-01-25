@@ -30,6 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>Hide notifications\' content</item>
+    <item>Hide notifications\' actions</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Důležité a naléhavé (zmeškané hovory, směry, nouzové výstrahy)</item>
