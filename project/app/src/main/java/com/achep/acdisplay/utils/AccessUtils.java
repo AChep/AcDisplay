@@ -18,7 +18,10 @@
  */
 package com.achep.acdisplay.utils;
 
+import android.annotation.SuppressLint;
 import android.app.admin.DevicePolicyManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -26,8 +29,9 @@ import android.support.annotation.NonNull;
 import com.achep.acdisplay.receiver.AdminReceiver;
 import com.achep.acdisplay.services.AccessibilityService;
 import com.achep.acdisplay.services.MediaService;
-import com.achep.acdisplay.utils.tasks.RunningTasks;
 import com.achep.base.Device;
+
+import java.util.List;
 
 /**
  * Created by Artem on 23.01.14.
@@ -51,8 +55,15 @@ public class AccessUtils {
                 : AccessibilityService.isRunning;//.isServiceRunning(context);
     }
 
+    @SuppressLint("NewApi")
     public static boolean hasUsageStatsAccess(@NonNull Context context) {
-        return !Device.hasLollipopApi() || RunningTasks.getInstance().getRunningTasksTop(context) != null;
+        if (!Device.hasLollipopApi()) {
+            return true;
+        }
+
+        UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
+        List<UsageStats> statsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_MONTHLY, 0, 12);
+        return statsList != null;
     }
 
 }
