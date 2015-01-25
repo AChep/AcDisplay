@@ -38,6 +38,7 @@ import android.view.animation.AccelerateInterpolator;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.FloatProperty;
 
@@ -125,21 +126,14 @@ public class CircleView extends View {
 
     }
 
-    private static class H extends Handler {
+    private static class H extends WeakHandler<CircleView> {
 
-        @NonNull
-        private WeakReference<CircleView> mWeakRef;
-
-        public H(CircleView cv) {
-            mWeakRef = new WeakReference<>(cv);
+        public H(@NonNull CircleView cv) {
+            super(cv);
         }
 
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            CircleView cv = mWeakRef.get();
-            if (cv == null) return;
-
+        protected void onHandleMassage(@NonNull CircleView cv, Message msg) {
             switch (msg.what) {
                 case MSG_CANCEL:
                     cv.cancelCircle();
@@ -155,6 +149,7 @@ public class CircleView extends View {
                     break;
             }
         }
+
     }
 
     public CircleView(Context context) {
