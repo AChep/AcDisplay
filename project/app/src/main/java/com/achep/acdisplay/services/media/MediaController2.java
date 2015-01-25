@@ -105,7 +105,9 @@ public abstract class MediaController2 {
     public interface MediaListener {
 
         /**
-         * Override to handle changes to the current metadata.
+         * Override to handle changes to the current metadata. <br/><br/><b>Warning:</b> You must NOT call
+         * {@link #registerListener(MediaListener)} nor {@link #unregisterListener(MediaListener)}
+         * from here, otherwise it will crash!
          *
          * @param metadata The current metadata for the session.
          * @see com.achep.acdisplay.services.media.Metadata
@@ -114,7 +116,9 @@ public abstract class MediaController2 {
         void onMetadataChanged(@NonNull Metadata metadata);
 
         /**
-         * Override to handle changes in playback state.
+         * Override to handle changes in playback state. <br/><br/><b>Warning:</b> You must NOT call
+         * {@link #registerListener(MediaListener)} nor {@link #unregisterListener(MediaListener)}
+         * from here, otherwise it will crash!
          *
          * @param state The new playback state of the session
          * @see #getPlaybackState()
