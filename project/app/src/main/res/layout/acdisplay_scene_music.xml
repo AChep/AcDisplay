@@ -43,7 +43,8 @@
             android:id="@+id/media_subtitle"
             style="?acDisplaySubtitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="2" />
 
     </LinearLayout>
 
