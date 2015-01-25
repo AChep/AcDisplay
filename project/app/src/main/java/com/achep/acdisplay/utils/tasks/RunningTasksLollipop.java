@@ -69,7 +69,7 @@ class RunningTasksLollipop extends RunningTasks {
                 timeBegin,
                 timeEnd);
 
-        if (statsList != null && !statsList.isEmpty()) {
+        if (statsList != null) {
             // Sort the stats by the last time used
             SortedMap<Long, UsageStats> statsSortedMap = new TreeMap<>();
             for (final UsageStats usageStats : statsList) {
@@ -88,7 +88,9 @@ class RunningTasksLollipop extends RunningTasks {
     @Nullable
     private UsageStats getUsageStatsTop(@NonNull Context context) throws SecurityException {
         SortedMap<Long, UsageStats> statsSortedMap = getUsageStats(context);
-        return statsSortedMap != null ? statsSortedMap.get(statsSortedMap.lastKey()) : null;
+        return statsSortedMap != null && !statsSortedMap.isEmpty()
+                ? statsSortedMap.get(statsSortedMap.lastKey())
+                : null;
     }
 
 }
