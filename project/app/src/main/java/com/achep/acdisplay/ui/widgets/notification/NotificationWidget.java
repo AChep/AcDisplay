@@ -382,8 +382,10 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
             }
 
             CharSequence text;
-
-            if (highlightFirstLetter) {
+            
+            char symbol = lines[i].charAt(0);
+            boolean isClear = Character.isLetter(symbol) || Character.isDigit(symbol);
+            if (highlightFirstLetter && isClear) {
                 SpannableString spannable = new SpannableString(lines[i]);
                 spannable.setSpan(new UnderlineSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 text = spannable;
