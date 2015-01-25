@@ -54,6 +54,7 @@
   <string name="notification_init_text">Zrušte toto oznámenie.</string>
   <string name="notification_test_message">Toto je testovacie oznámenie.</string>
   <string name="notification_test_message_large">Potiahnite nadol pre zrušenie oznámenia.\nPotiahnite kdekoľvek pre odomknutie.</string>
+  <string name="privacy_mode_hidden_content">Skrytý obsah.</string>
   <string name="remote_enable_acdisplay">AcDisplay je povolený.</string>
   <string name="remote_disable_acdisplay">AcDisplay je zakázaný.</string>
   <string name="service_bath">Služby AcDisplay</string>

@@ -28,6 +28,9 @@
     <item>Slika</item>
     <item>Ikona obvestila</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Kritično in nujno (zgrešeni klici, navodila, opozorila)</item>
     <item>Pomembno (komunikacija, pomembna pošta)</item>

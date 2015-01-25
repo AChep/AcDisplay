@@ -78,6 +78,8 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Bildschirm bleibt nach dem Entfernen der letzten Benachrichtigung weiter an.</string>
   <string name="settings_widget_pinnable_title">Pinnable Benachrichtigung</string>
   <string name="settings_widget_pinnable_on">Benachrichtigungswidget bleibt nach der Berührung für einige Sekunden erweitert.</string>
+  <string name="settings_privacy_mode_title">Datenschutz (auf sichere Sperre)</string>
+  <string name="settings_privacy_mode_disabled">Deaktiviert</string>
   <string name="preference_inactive_hours_enabled">Inaktive Stunden aktiviert</string>
   <string name="preference_inactive_hours_from"><![CDATA[
 von:<br/><b><font color="#ffffff">%1$s</font></b>

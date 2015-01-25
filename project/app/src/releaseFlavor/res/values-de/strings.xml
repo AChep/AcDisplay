@@ -55,6 +55,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="notification_init_text">Verwerfe diese Benachrichtigung ganz einfach.</string>
   <string name="notification_test_message">Dies ist eine Testbenachrichtigung.</string>
   <string name="notification_test_message_large">Wische nach unten um die Benachrichtigung auszublenden.\n Wische irgendwo zum entsperren.</string>
+  <string name="privacy_mode_hidden_content">Versteckte Inhalte.</string>
   <string name="remote_enable_acdisplay">AcDisplay ist aktiv.</string>
   <string name="remote_disable_acdisplay">AcDisplay ist inaktiv.</string>
   <string name="service_bath">AcDisplay-Dienste</string>

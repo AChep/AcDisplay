@@ -28,6 +28,9 @@
     <item>Обложка трека</item>
     <item>Иконка уведомления</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Скрыть содержимое уведомлений</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Критические и неотложные (текущие вызовы, указания, аварийные оповещения)</item>
     <item>Важные (диалоги, важные письма)</item>

@@ -28,6 +28,9 @@
     <item>Artwork</item>
     <item>Biểu tượng thông báo</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
     <item>Important (communications, important mail)</item>

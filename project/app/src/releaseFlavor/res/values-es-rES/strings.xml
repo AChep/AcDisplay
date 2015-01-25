@@ -54,6 +54,7 @@
   <string name="notification_init_text">Sólo descarte esta notificación.</string>
   <string name="notification_test_message">Esta es una notificación de ejemplo.</string>
   <string name="notification_test_message_large">Deslizar hacia abajo para descartar cualquier notificación. \nDesliza hacia cualquier lado para desbloquear.</string>
+  <string name="privacy_mode_hidden_content">Hidden content.</string>
   <string name="remote_enable_acdisplay">AcDisplay está activado.</string>
   <string name="remote_disable_acdisplay">AcDisplay está desactivado.</string>
   <string name="service_bath">Servicios de AcDisplay</string>

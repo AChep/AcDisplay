@@ -54,6 +54,7 @@
   <string name="notification_init_text">Toto oznámení odmítněte.</string>
   <string name="notification_test_message">Toto je zkušební oznámení.</string>
   <string name="notification_test_message_large">Přejeďte dolu pro zamítnutí oznámení.\nPřejeďte kdekoli pro odemknutí.</string>
+  <string name="privacy_mode_hidden_content">Hidden content.</string>
   <string name="remote_enable_acdisplay">AcDisplay je povolen.</string>
   <string name="remote_disable_acdisplay">AcDisplay je zakázán.</string>
   <string name="service_bath">Služby AcDisplay</string>

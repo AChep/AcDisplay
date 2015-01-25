@@ -78,6 +78,8 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Ekran mevcut tüm bildirim görüntüledikten sonra bile açık kalır.</string>
   <string name="settings_widget_pinnable_title">Sabitlenebilir bildirim</string>
   <string name="settings_widget_pinnable_on">Bildirim widgeti bir dokunuştan sonra birkaç saniye daha genişletilmiş kalır.</string>
+  <string name="settings_privacy_mode_title">Gizlilik (güvenlik kilidi açık)</string>
+  <string name="settings_privacy_mode_disabled">Devre dışı</string>
   <string name="preference_inactive_hours_enabled">Etkin olmayan saatler etkin</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         den/dan:<br/><b><font color="#ffffff">%1$s</font></b>

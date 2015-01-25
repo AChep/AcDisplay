@@ -49,7 +49,7 @@
   <string name="settings_use_wallpaper_on">يتم استخدام خلفية الشاشة الرئيسية لجهازك.</string>
   <string name="settings_use_wallpaper_off">خلفية سوداء.</string>
   <string name="settings_dynamic_background_title">خلفية حيوية</string>
-  <string name="settings_dynamic_background_summary">الصور التي يتم استخدامها كخلفية: %1$s</string>
+  <string name="settings_dynamic_background_summary">الصور المستخدمة كخلفية: %1$s</string>
   <string name="settings_dynamic_background_disabled">معطل</string>
   <string name="settings_status_battery_always_visible">الإبقاء على حالة البطارية</string>
   <string name="settings_status_battery_always_visible_off">تعرض حالة البطارية إذا كان مستوى الشحن منخفضًا، أو عندما يكون الجهاز موصولًا.</string>
@@ -71,13 +71,15 @@
   <string name="settings_timeout_title">النوم</string>
   <string name="settings_timeout_summary">بعد %1$s / %2$s ثانية من عدم النشاط.</string>
   <string name="settings_icon_size_title">حجم الرمز</string>
-  <string name="settings_icon_size_summary">الحجم الحالي للرموز هو %1$s dpi.</string>
+  <string name="settings_icon_size_summary">الحجم الحالي للرموز هو %1$s نقطة/بوصة.</string>
   <string name="settings_behavior_category">السلوك</string>
   <string name="settings_lock_on_dismiss_last_notify_title">قفل الشاشة عند استبعاد الإشعار الأخير</string>
   <string name="settings_lock_on_dismiss_last_notify_on">يتم قفل الشاشة بعد استبعاد آخر إشعار موجود.</string>
   <string name="settings_lock_on_dismiss_last_notify_off">تبقى الشاشة غير مقفلة بعد استبعاد آخر إشعار موجود.</string>
   <string name="settings_widget_pinnable_title">إشعارات قابلة للتثبيت</string>
   <string name="settings_widget_pinnable_on">الإشعارات تبقى في حالة التوسعة لعدة ثواني بعد لمسها.</string>
+  <string name="settings_privacy_mode_title">الخصوصية (للشاشات المُأمنة)</string>
+  <string name="settings_privacy_mode_disabled">معطَّل</string>
   <string name="preference_inactive_hours_enabled">تمكين الساعات غير النشطة</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         من:<br/><b><font color="#ffffff">%1$s</font></b>
@@ -89,5 +91,5 @@
   <string name="preference_timeout_short">بعد لمس منطقة فارغة</string>
   <string name="preference_timeout_sec">%1$s ثانية.</string>
   <string name="preference_icon_size_message">تغيير حجم رموز الإشعارات.</string>
-  <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_icon_size_dpi">%1$s نقطة/بوصة.</string>
 </resources>

@@ -28,6 +28,9 @@
     <item>Насловна страна албума</item>
     <item>Иконица обавештења</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Сакриј садржај обавештења</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Критично и хитно (пропуштени позиви, праваци, хитна упозорења)</item>
     <item>Важно (комуникација, важна пошта)</item>

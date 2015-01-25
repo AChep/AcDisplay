@@ -28,6 +28,9 @@
     <item>Ilustración</item>
     <item>Icono de notificación</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Urgente y crítico (Llamadas perdidas, direcciones, alertas de emergencia)</item>
     <item>Importante (Comunicaciones, correo importante)</item>

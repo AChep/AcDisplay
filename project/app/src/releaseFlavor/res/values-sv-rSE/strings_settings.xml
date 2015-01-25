@@ -48,17 +48,17 @@
   <string name="settings_use_wallpaper_title">Använd bakgrund</string>
   <string name="settings_use_wallpaper_on">Din hemskärms bakgrund används.</string>
   <string name="settings_use_wallpaper_off">Solid svart bakgrund.</string>
-  <string name="settings_dynamic_background_title">Dynamiska bakgrund</string>
+  <string name="settings_dynamic_background_title">Dynamisk bakgrund</string>
   <string name="settings_dynamic_background_summary">Dessa används som bakgrund: %1$s</string>
   <string name="settings_dynamic_background_disabled">Inaktiverade</string>
   <string name="settings_status_battery_always_visible">Behåll batteristatus</string>
   <string name="settings_status_battery_always_visible_off">Batteristatus visas vid låg batterinivå eller när enheten är ansluten.</string>
   <string name="settings_emoticons_title">Uttryckssymboler</string>
   <string name="settings_override_fonts_title">Åsidosätt systemteckensnitt</string>
-  <string name="settings_circle_category">Låsa upp cirkeln</string>
-  <string name="settings_circle_animation_title">Låsa upp animation</string>
-  <string name="settings_circle_color_inner_title">Cirkel färg</string>
-  <string name="settings_circle_color_outer_title">Cirkel bakgrund</string>
+  <string name="settings_circle_category">Upplåsningscirkeln</string>
+  <string name="settings_circle_animation_title">Upplåsningsanimation</string>
+  <string name="settings_circle_color_inner_title">Cirkelns färg</string>
+  <string name="settings_circle_color_outer_title">Cirkelns bakgrund</string>
   <string name="settings_dev_sensors_dump_title">Dumpa data från sensorer</string>
   <string name="settings_dev_sensors_dump_on">Sparar kontinuerligt enhetsstatus och data från sensorer till en lagrad fil.</string>
   <string name="settings_dev_sensors_dump_send_title">Skicka sparade data</string>
@@ -78,6 +78,8 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Skärmen förblir aktiv efter avvisande av det sista meddelandet.</string>
   <string name="settings_widget_pinnable_title">Låsbart meddelande</string>
   <string name="settings_widget_pinnable_on">Meddelande-widget förblir expanderad under några sekunder efter en beröring.</string>
+  <string name="settings_privacy_mode_title">Privacy (on secure lock)</string>
+  <string name="settings_privacy_mode_disabled">Inaktiverade</string>
   <string name="preference_inactive_hours_enabled">Inaktiva timmar aktiverat</string>
   <string name="preference_inactive_hours_from"><![CDATA[         från: <br/> <b><font color="#ffffff">%1$s</font></b>     ]]></string>
   <string name="preference_inactive_hours_to"><![CDATA[         till: <br/> <b><font color="#ffffff">%1$s</font></b>     ]]></string>

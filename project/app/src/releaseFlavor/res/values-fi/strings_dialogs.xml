@@ -26,34 +26,34 @@
        Suuret kiitokset avaimen lähdekoodin työkaluille: %1$s ja niille, jotka
         <a href="http://translate.acdisplay.org">auttoivat käännöksissä </a> tai lahjoittivat.
     ]]></string>
-  <string name="donate_dialog_title">Lahjoista kehittäjille</string>
-  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
-  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
-  <string name="donate_thanks">Thank you very much!</string>
-  <string name="donation_1">An ice cream</string>
-  <string name="donation_4">A cup of coffee</string>
-  <string name="donation_10">Electricity bills</string>
-  <string name="donation_20">The right pillow</string>
-  <string name="donation_50">Solid-state drive</string>
-  <string name="donation_99">Sound system</string>
-  <string name="cry_dialog_title">Support development</string>
+  <string name="donate_dialog_title">Lahjoita kehittäjille</string>
+  <string name="donate_dialog_message">AcDisplay on ilmainen avoimen lähdekoodin sovellus. Voit näyttää arvostuksesi ja tukea kehitystä lahjoittamalla:</string>
+  <string name="donate_alert_no_responsibility">Huomaa että Google ei ole vastuussa tästä maksutavasta.</string>
+  <string name="donate_billing_not_supported">Sovellusten sisäisiä ostoksia ei tueta tällä laitteella.</string>
+  <string name="donate_thanks">Kiitoksia paljon!</string>
+  <string name="donation_1">Jäätelöä</string>
+  <string name="donation_4">Kuppia kahvia</string>
+  <string name="donation_10">Sähkölaskut</string>
+  <string name="donation_20">Sopiva tyyny</string>
+  <string name="donation_50">SSD-levy</string>
+  <string name="donation_99">Äänijärjestelmä</string>
+  <string name="cry_dialog_title">Tue kehitystä</string>
   <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
+        AcDisplay on ilmainen <a href="http://repo.acdisplay.org">avoimen lähdekoodin</a> sovellus ja
+        käytämme paljon aikaa ja resursseja sen ajan tasalla pitämiseen. Harkitse lahjoittamista
+        näyttääksesi kiitollisuutesi ja edistääksesi sen kehittämistä.
     ]]></string>
   <string name="help_dialog_title">Apua</string>
   <string name="feedback_dialog_title">Palaute</string>
-  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
-  <string name="feedback_dialog_attach_log">Attach a log</string>
-  <string name="feedback_dialog_read_help">Frequently asked questions</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
-  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
-  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
-  <string name="compat_dialog_title">Compatibility mode</string>
-  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
-  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
-  <string name="compat_dialog_item_music_widget">No music widget.</string>
+  <string name="feedback_dialog_message_hint">Viestisi. Laitteen tiedot sisällytetään automaattisesti.</string>
+  <string name="feedback_dialog_attach_log">Liitä loki</string>
+  <string name="feedback_dialog_read_help">Usein kysyttyjä kysymyksiä</string>
+  <string name="feedback_error_no_app">Asenna jokin sähköposti-sovellus.</string>
+  <string name="feedback_error_msg_too_short">Viestissä on oltava vähintään %1$d merkkiä.</string>
+  <string name="feedback_error_accessing_log">Virhe sovelluksen lokiin pääsyssä. Virhe on: %1$s</string>
+  <string name="compat_dialog_title">Yhteensopivuustila</string>
+  <string name="compat_dialog_message">AcDisplay suoritetaan yhteensopivuustilassa jotta tuetaan Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Koska AcDisplay käyttää esteettömyyspalvelua, se ei voi havaita ilmoitusten sulkemisia/päivityksiä, tai ohittaa ilmoituksia ilmoitusvalikosta.</string>
+  <string name="compat_dialog_item_immersive_mode">Navigointipalkki on aina näkyvissä.</string>
+  <string name="compat_dialog_item_music_widget">Ei musiikki-widgettiä.</string>
 </resources>

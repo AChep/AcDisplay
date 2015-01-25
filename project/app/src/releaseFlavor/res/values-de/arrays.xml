@@ -28,6 +28,9 @@
     <item>Grafik</item>
     <item>Benachrichtigungssymbol</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Benachrichtigungen-Inhalt ausblenden</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Wichtig und dringend (verpasste Anrufe, Navigationsanweisungen, Notfallwarnungen)</item>
     <item>Wichtig (Kommunikation, wichtige Nachrichten)</item>

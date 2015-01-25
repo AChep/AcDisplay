@@ -54,12 +54,13 @@
   <string name="notification_init_text">Bu bildirimi göz ardı et.</string>
   <string name="notification_test_message">Bu bir bildirim örneğidir.</string>
   <string name="notification_test_message_large">Bildirimi kaldırmak için aşağı kaydırın.\nKilidi açmak için herhangi bir yere dokunun.</string>
+  <string name="privacy_mode_hidden_content">Gizli içerik.</string>
   <string name="remote_enable_acdisplay">AcDisplay etkin.</string>
   <string name="remote_disable_acdisplay">AcDisplay devre dışı.</string>
   <string name="service_bath">AcDisplay hizmetleri</string>
   <string name="service_bath_keyguard">Kilit ekranı</string>
   <string name="service_bath_active_mode">Aktif Mod</string>
   <string name="service_bath_active_mode_dump">Sensör temelli</string>
-  <string name="status_date_format">GGG, s AAAA</string>
+  <string name="status_date_format">EEE, d MMMM</string>
   <string name="accessibility_battery_level">Pil yüzde <xliff:g id="number" example="100">%d</xliff:g>\'da.</string>
 </resources>

@@ -28,6 +28,9 @@
     <item>Kansitaide</item>
     <item>Ilmoituksen kuvake</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Piilota ilmoitusten sisältö</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Kriittiset ja kiireelliset (vastaamattomat puhelut, ajo-ohjeet, hätävaroitukset)</item>
     <item>Tärkeät (viestintä, tärkeät sähköpostit)</item>

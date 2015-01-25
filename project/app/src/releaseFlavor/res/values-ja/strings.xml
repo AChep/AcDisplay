@@ -54,6 +54,7 @@
   <string name="notification_init_text">この通知を閉じます。</string>
   <string name="notification_test_message">これはサンプル通知です。</string>
   <string name="notification_test_message_large">通知を閉じるには下にスワイプします。\nロックを解除するには任意の場所をスワイプします。</string>
+  <string name="privacy_mode_hidden_content">内容を非表示にする。</string>
   <string name="remote_enable_acdisplay">AcDisplayは有効です。</string>
   <string name="remote_disable_acdisplay">AcDisplayが無効です。</string>
   <string name="service_bath">AcDisplay サービス</string>

@@ -54,6 +54,7 @@
   <string name="notification_init_text">Po prostu odrzuć to powiadomienie.</string>
   <string name="notification_test_message">To jest przykładowe powiadomienie.</string>
   <string name="notification_test_message_large">Przesuń w dół by usunąć powiadomienie.\nPrzesuń gdziekolwiek by odblokować.</string>
+  <string name="privacy_mode_hidden_content">Ukryta zawartość.</string>
   <string name="remote_enable_acdisplay">AcDisplay jest włączony.</string>
   <string name="remote_disable_acdisplay">AcDisplay jest wyłączony.</string>
   <string name="service_bath">Usługi AcDisplay</string>

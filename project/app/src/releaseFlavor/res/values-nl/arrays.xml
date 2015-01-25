@@ -28,6 +28,9 @@
     <item>Album Illustraties</item>
     <item>Notificatie icoon</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Kritisch en urgent (gemiste oproepen, navigatie, noodmeldingen)</item>
     <item>Belangrijk (communicatie, belangrijke mail)</item>

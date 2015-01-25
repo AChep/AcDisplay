@@ -28,6 +28,9 @@
     <item>Obal albumu</item>
     <item>Ikona v oznamovacej oblasti</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Skryť obsah oznámení</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Kritické a naliehavé (zmeškané hovory, navigovanie, núdzové upozornenia)</item>
     <item>Dôležité (komunikácia, dôležitý mail)</item>

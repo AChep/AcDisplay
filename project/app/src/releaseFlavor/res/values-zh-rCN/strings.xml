@@ -31,7 +31,7 @@
   <string name="permissions_notifications_description">用于获取通知信息。</string>
   <string name="permissions_notifications_grant_manually">在 设置 &gt; 安全 &gt; 通知访问 中勾选AcDisplay。</string>
   <string name="permissions_usage_stats">使用情况统计信息</string>
-  <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
+  <string name="permissions_usage_stats_description">为避免覆盖应用程序提示音和闹钟所需</string>
   <string name="action_about">关于</string>
   <string name="action_donate">捐赠</string>
   <string name="action_feedback">反馈</string>
@@ -54,6 +54,7 @@
   <string name="notification_init_text">仅忽略本通知。</string>
   <string name="notification_test_message">这是一条示例通知。</string>
   <string name="notification_test_message_large">向下滑动可忽略通知\n向其它方向滑动可解锁</string>
+  <string name="privacy_mode_hidden_content">Hidden content.</string>
   <string name="remote_enable_acdisplay">AcDisplay 已启用</string>
   <string name="remote_disable_acdisplay">AcDisplay 已禁用</string>
   <string name="service_bath">AcDisplay 服务</string>

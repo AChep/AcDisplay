@@ -28,6 +28,9 @@
     <item>专辑封面</item>
     <item>通知图标</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>关键和紧急（未接来电、导航、紧急警报）</item>
     <item>重要（即时信息、重要邮件）</item>

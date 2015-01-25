@@ -28,6 +28,9 @@
     <item>Il·lustració</item>
     <item>Icona de notificació</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Crític i urgent (trucades perdudes, adreces, alertes d\'emergència)</item>
     <item>Important (comunicacions, correus importants)</item>

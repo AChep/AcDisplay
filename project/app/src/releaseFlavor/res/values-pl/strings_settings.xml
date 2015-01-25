@@ -78,6 +78,8 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Ekran pozostanie włączony po usunięciu ostatniego obecnego powiadomienia.</string>
   <string name="settings_widget_pinnable_title">Przypinane powiadomienie</string>
   <string name="settings_widget_pinnable_on">Widżet powiadomienia pozostaje rozwinięty kilka sekund po dotknięciu.</string>
+  <string name="settings_privacy_mode_title">Prywatność (na chronionym ekranie blokady)</string>
+  <string name="settings_privacy_mode_disabled">Wyłączone</string>
   <string name="preference_inactive_hours_enabled">Godziny nieaktywności włączone</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         od:<br/><b><font color="#ffffff">%1$s</font></b>

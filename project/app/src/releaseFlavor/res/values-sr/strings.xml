@@ -54,12 +54,13 @@
   <string name="notification_init_text">Само одбаци ово обавештење.</string>
   <string name="notification_test_message">Ово је пример обавештења.</string>
   <string name="notification_test_message_large">Превуци на доле да откажеш обавештење.\nПревуци у било ком правцу да откључаш.</string>
+  <string name="privacy_mode_hidden_content">Скривен садржај.</string>
   <string name="remote_enable_acdisplay">AcDisplay је активиран.</string>
   <string name="remote_disable_acdisplay">AcDisplay је деактивиран.</string>
   <string name="service_bath">AcDisplay сервиси</string>
   <string name="service_bath_keyguard">Закључавање екрана</string>
   <string name="service_bath_active_mode">Активни режим</string>
   <string name="service_bath_active_mode_dump">Sensors dumper</string>
-  <string name="status_date_format">Дан у недељи, дан у месецу, месец</string>
+  <string name="status_date_format">EEE, d MMMM</string>
   <string name="accessibility_battery_level">Батерија<xliff:g id="number" example="100">%d</xliff:g> процената.</string>
 </resources>

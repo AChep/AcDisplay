@@ -28,6 +28,9 @@
     <item>アートワーク</item>
     <item>通知アイコン</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>通知の内容を非表示にする</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>重要および緊急 (不在着信、指示、緊急時のアラート)</item>
     <item>重要 (通信、重要なメール)</item>

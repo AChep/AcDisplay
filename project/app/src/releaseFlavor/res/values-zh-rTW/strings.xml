@@ -54,6 +54,7 @@
   <string name="notification_init_text">Just dismiss this notification.</string>
   <string name="notification_test_message">這是一則示範通知。</string>
   <string name="notification_test_message_large">向下輕掃以清除通知。\n滑動任意方向即可解鎖。</string>
+  <string name="privacy_mode_hidden_content">Hidden content.</string>
   <string name="remote_enable_acdisplay">AcDisplay 已啟用</string>
   <string name="remote_disable_acdisplay">AcDisplay 已停用</string>
   <string name="service_bath">AcDisplay 服務</string>

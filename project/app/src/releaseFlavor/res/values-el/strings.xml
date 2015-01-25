@@ -54,6 +54,7 @@
   <string name="notification_init_text">Απορρίψτε αυτήν την ειδοποίηση.</string>
   <string name="notification_test_message">Αυτή είναι μια δοκιμαστική ειδοποίηση.</string>
   <string name="notification_test_message_large">Σύρετε προς τα κάτω για να αποδεσμεύσετε την ειδοποίηση.\nΣύρετε οπουδήποτε για ξεκλείδωμα.</string>
+  <string name="privacy_mode_hidden_content">Hidden content.</string>
   <string name="remote_enable_acdisplay">Το AcDisplay είναι ενεργοποιημένο.</string>
   <string name="remote_disable_acdisplay">Το AcDisplay είναι απενεργοποιημένο.</string>
   <string name="service_bath">Υπηρεσίες AcDisplay</string>

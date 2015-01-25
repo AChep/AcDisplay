@@ -28,6 +28,9 @@
     <item>Εξώφυλλο</item>
     <item>Εικονίδιο ειδοποίησης</item>
   </string-array>
+  <string-array name="privacy_mode">
+    <item>Hide notifications\' content</item>
+  </string-array>
   <string-array name="notify_priorities">
     <item>Κρίσιμα και επείγοντα (αναπάντητες κλήσεις, κατευθύνσεις, ειδοποιήσεις έκτακτης ανάγκης)</item>
     <item>Σημαντικά (επικοινωνίες, σημαντικά emails)</item>
