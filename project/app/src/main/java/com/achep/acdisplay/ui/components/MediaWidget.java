@@ -78,6 +78,8 @@ public class MediaWidget extends Widget implements
     private ImageButton mButtonPlayPause;
     private ImageButton mButtonNext;
 
+    private boolean mIdle;
+
     private Bitmap mArtwork;
     private Bitmap mArtworkBackground;
     private AsyncTask<Bitmap, Void, Palette> mPaletteWorker;
@@ -119,15 +121,19 @@ public class MediaWidget extends Widget implements
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewAttached() {
+        super.onViewAttached();
+        mIdle = false;
         mMediaController.registerListener(this);
+        onMetadataChanged(mMediaController.getMetadata());
+        onPlaybackStateChanged(mMediaController.getPlaybackState());
+        mIdle = true;
     }
 
     @Override
-    public void onStop() {
+    public void onViewDetached() {
         mMediaController.unregisterListener(this);
-        super.onStop();
+        super.onViewDetached();
     }
 
     @Override
@@ -166,6 +172,7 @@ public class MediaWidget extends Widget implements
 
     @Override
     public void onPlaybackStateChanged(int state) {
+
         // Making transformation rule for the warning icon is too
         // much overkill for me.
         if (state == PlaybackStateCompat.STATE_ERROR) {
@@ -205,8 +212,11 @@ public class MediaWidget extends Widget implements
      * provided by {@link com.achep.acdisplay.services.media.MediaController2#getMetadata()}.
      */
     private void populateMetadata() {
-        if (Device.hasKitKatApi()) {
-            TransitionManager.beginDelayedTransition(getView());
+        if (mIdle) {
+            ViewGroup vg = getView();
+            if (Device.hasKitKatApi() && vg.isLaidOut() && !getHostFragment().isPowerSaveMode()) {
+                TransitionManager.beginDelayedTransition(vg);
+            }
         }
 
         Metadata metadata = mMediaController.getMetadata();

@@ -74,6 +74,7 @@ import com.achep.acdisplay.ui.view.ForwardingLayout;
 import com.achep.acdisplay.ui.view.ForwardingListener;
 import com.achep.acdisplay.ui.widgets.CircleView;
 import com.achep.base.Device;
+import com.achep.base.async.WeakHandler;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.TextView;
@@ -163,7 +164,7 @@ public class AcDisplayFragment extends Fragment implements
     private SceneCompat mSceneMainMedia;
     private MediaController2 mMediaController;
     private MediaWidget mMediaWidget;
-    private boolean mShowMediaWidget;
+    private boolean mMediaWidgetActive;
 
     // Timeout
     private Timeout.Gui mTimeoutGui;
@@ -185,20 +186,10 @@ public class AcDisplayFragment extends Fragment implements
      * @see #MSG_HIDE_MEDIA_WIDGET
      * @see #MSG_SHOW_HOME_WIDGET
      */
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_HIDE_MEDIA_WIDGET:
-                    disableMediaWidget();
-                    break;
-                case MSG_SHOW_HOME_WIDGET:
-                    showHomeWidget();
-                    break;
-            }
-        }
-    };
+    private final Handler mHandler = new H(this);
+
+    private boolean mPendingIconsSizeChange;
+    private boolean mPendingNotifyChange;
 
     private boolean isPinnable() {
         return getConfig().isWidgetPinnable();
@@ -230,14 +221,17 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (DEBUG) Log.d(TAG, "Attaching fragment...");
         mActivity = (ActivityBase) activity;
         mActivityAcd = isNotDemo() ? (AcDisplayActivity) activity : null;
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Resources res = getResources();
         mConfigWidgetPinDuration = res.getInteger(R.integer.config_maxPinTime);
         mConfigWidgetSelectDelay = res.getInteger(R.integer.config_iconSelectDelayMillis);
-        ViewConfiguration vc = ViewConfiguration.get(activity);
+        ViewConfiguration vc = ViewConfiguration.get(getActivity());
         mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
 
@@ -245,7 +239,7 @@ public class AcDisplayFragment extends Fragment implements
         mClockWidget = new ClockWidget(this, this);
 
         // Media widget
-        mMediaController = MediaController2.newInstance(activity);
+        mMediaController = MediaController2.newInstance(getActivity());
         mMediaWidget = new MediaWidget(this, this);
 
         // Transitions
@@ -289,12 +283,6 @@ public class AcDisplayFragment extends Fragment implements
         mSceneContainer = (ForwardingLayout) c.findViewById(R.id.scene);
         mIconsForwarder = (ForwardingLayout) c.findViewById(R.id.forwarding);
         mIconsContainer = (GridLayout) c.findViewById(R.id.grid);
-        mIconsForwarder.setOnForwardedEventListener(this);
-        mIconsForwarder.setAllViewsForwardable(true, 1 /* the touch depth */);
-        mIconsForwarder.setOnTouchListener(this);
-
-        mSceneForwardingListener = new ForwardingListener(mIconsForwarder, false, mSceneContainer);
-        mIconsForwardingListener = new ForwardingListener(mIconsForwarder, true, mIconsForwarder);
 
         // Initialize home widgets.
         mSceneMainClock = new SceneCompat(mSceneContainer, mClockWidget
@@ -309,6 +297,13 @@ public class AcDisplayFragment extends Fragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (DEBUG) Log.d(TAG, "Creating view (created)...");
+
+        mSceneForwardingListener = new ForwardingListener(mIconsForwarder, false, mSceneContainer);
+        mIconsForwardingListener = new ForwardingListener(mIconsForwarder, true, mIconsForwarder);
+        mIconsForwarder.setOnForwardedEventListener(this);
+        mIconsForwarder.setAllViewsForwardable(true, 1 /* the touch depth */);
+        mIconsForwarder.setOnTouchListener(this);
+
         if (isNotDemo()) {
             // Init the timeout
             mTimeoutGui = new Timeout.Gui(mProgressBar);
@@ -331,64 +326,73 @@ public class AcDisplayFragment extends Fragment implements
 
             });
         }
+    }
 
-        // Needs to be started before it may be attached
-        mClockWidget.onStart();
-        mMediaWidget.onStart();
-
-        showHomeWidget(false); // Enter home widget.
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        showWidget(mClockWidget, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (DEBUG) Log.d(TAG, "Starting fragment...");
-
-        // Start all available widgets.
-        for (Widget widget : mWidgetsMap.values()) widget.onStart();
-
-        // Start listening to the media controller.
-        mMediaController.onStart();
-        mMediaController.registerListener(this);
-        onPlaybackStateChanged(mMediaController.getPlaybackState());
-
-        // Apply all possible background changes of
-        // the config or the list of notifications.
         NotificationPresenter.getInstance().registerListener(this);
-        rebuildNotifications();
         getConfig().registerListener(this);
-        updateIconsSize();
-        updateTimeouts();
+        mPendingNotifyChange = true;
+        mPendingIconsSizeChange = true;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        // Start all available widgets.
+        for (Widget widget : mWidgetsMap.values()) widget.onStart();
+        mClockWidget.onStart();
+        mMediaWidget.onStart();
+
+        // Update notifications list & config.
+        if (mPendingNotifyChange) rebuildNotifications();
+        if (mPendingIconsSizeChange) updateIconsSize();
+        updateTimeouts();
+        mPendingNotifyChange = false;
+        mPendingIconsSizeChange = false;
+
+        // Media controller.
+        mMediaController.onStart();
+        mMediaController.registerListener(this);
+        onPlaybackStateChanged(mMediaController.getPlaybackState());
     }
 
     @Override
     public void onPause() {
-        super.onPause();
+        // Back to the home widget.
+        showWidget(mClockWidget);
+
+        // Clear all ongoing events such as handling media widget,
+        // handing pinned widget, handing the touch delay, etc...
+        mMediaWidgetActive = false;
         mHandler.removeCallbacksAndMessages(null);
         mTouchHandler.removeCallbacksAndMessages(null);
 
-        // Back to the home widget.
-        showHomeWidget();
+        // Stop all widgets.
+        for (Widget widget : mWidgetsMap.values()) widget.onStop();
+        mClockWidget.onStop();
+        mMediaWidget.onStop();
+
+        // Media controller.
+        mMediaController.onStop();
+        mMediaController.unregisterListener(this);
+        super.onPause();
     }
 
     @Override
     public void onStop() {
-        if (DEBUG) Log.d(TAG, "Stopping fragment...");
-
-        // Stop all widgets.
-        for (Widget widget : mWidgetsMap.values()) widget.onStop();
 
         // Unregister everything.
-        mMediaController.onStop();
-        mMediaController.unregisterListener(this);
         NotificationPresenter.getInstance().unregisterListener(this);
         getConfig().unregisterListener(this);
-
         super.onStop();
     }
 
@@ -399,13 +403,14 @@ public class AcDisplayFragment extends Fragment implements
             mTimeout.unregisterListener(mTimeoutGui);
         }
 
-        mClockWidget.onStop();
-        mMediaWidget.onStop();
         super.onDestroyView();
     }
 
     //-- CONFIG ---------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfigChanged(@NonNull ConfigBase config,
                                 @NonNull String key,
@@ -433,6 +438,11 @@ public class AcDisplayFragment extends Fragment implements
      * {@link com.achep.acdisplay.Config#getIconSizePx() set} in config.
      */
     private void updateIconsSize() {
+        if (!isResumed()) {
+            mPendingIconsSizeChange = true;
+            return;
+        }
+
         final int sizePx = getConfig().getIconSizePx();
         final int childCount = mIconsContainer.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -445,6 +455,7 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public void requestTimeoutRestart(@NonNull Widget widget) {
+
         if (isCurrentWidget(widget)) {
             int timeoutDelay = getConfig().getTimeoutNormal();
             mTimeout.setTimeoutDelayed(timeoutDelay, true);
@@ -533,7 +544,8 @@ public class AcDisplayFragment extends Fragment implements
                     return; // Don't fall down.
                 }
 
-                if (!swipeToDismiss()) {
+                boolean dismissing = swipeToDismiss();
+                if (!dismissing) {
                     if (mPressedIconView == null || !isPinnable()) {
                         showHomeWidget();
                     } else {
@@ -979,36 +991,33 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public void onPlaybackStateChanged(int state) {
-        switch (state) {
-            case PlaybackStateCompat.STATE_PLAYING:
-                mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
-                enableMediaWidget();
-                break;
-            case PlaybackStateCompat.STATE_NONE:
-                mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
-                disableMediaWidget();
-                break;
-            default:
-                mHandler.sendEmptyMessageDelayed(MSG_HIDE_MEDIA_WIDGET, 6000);
-                break;
+        if (state == PlaybackStateCompat.STATE_PLAYING) {
+            mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
+            makeMediaWidgetActive();
+        } else if (mMediaWidgetActive) {
+            int delay = 6000; // 6 sec.
+            if (state == PlaybackStateCompat.STATE_NONE) delay = 500;
+            mHandler.sendEmptyMessageDelayed(MSG_HIDE_MEDIA_WIDGET, delay);
         }
     }
 
-    private void enableMediaWidget() {
-        mShowMediaWidget = true;
+    private void makeMediaWidgetActive() {
+        if (!mMediaWidgetActive) {
+            mMediaWidgetActive = true;
 
-        // Update home widget.
-        if (mSelectedWidget.isHomeWidget()) {
-            showHomeWidget();
+            // Update home widget if the current widget is
+            // the clock / media widget.
+            if (mSelectedWidget.isHomeWidget()) showHomeWidget();
         }
     }
 
-    private void disableMediaWidget() {
-        mShowMediaWidget = false;
+    private void makeMediaWidgetInactive() {
+        if (mMediaWidgetActive) {
+            mMediaWidgetActive = false;
 
-        // Reset home widget.
-        if (isCurrentWidget(mMediaWidget)) {
-            showHomeWidget();
+            // Update home widget if the current widget
+            // is the media widget.
+            if (isCurrentWidget(mMediaWidget)) showHomeWidget();
         }
     }
 
@@ -1020,7 +1029,7 @@ public class AcDisplayFragment extends Fragment implements
      * {@code false} otherwise.
      */
     private boolean isMediaWidgetHome() {
-        return mShowMediaWidget;
+        return mMediaWidgetActive;
     }
 
     //-- LOLLIPOP -------------------------------------------------------------
@@ -1070,6 +1079,12 @@ public class AcDisplayFragment extends Fragment implements
                                           int event, boolean isLastEventInSequence) {
         if (DEBUG) Log.d(TAG, "Handling notification list changed event: "
                 + NotificationPresenter.getEventName(event));
+
+        if (!isResumed()) {
+            mPendingNotifyChange = true;
+            return;
+        }
+
         NotifyWidget widgetPrev = null;
 
         if (event == NotificationPresenter.EVENT_REMOVED
@@ -1406,6 +1421,26 @@ public class AcDisplayFragment extends Fragment implements
                 return mListener.onSleepRequest();
             }
 
+        }
+
+    }
+
+    private static class H extends WeakHandler<AcDisplayFragment> {
+
+        public H(@NonNull AcDisplayFragment fragment) {
+            super(fragment);
+        }
+
+        @Override
+        protected void onHandleMassage(@NonNull AcDisplayFragment fragment, Message msg) {
+            switch (msg.what) {
+                case MSG_HIDE_MEDIA_WIDGET:
+                    fragment.makeMediaWidgetInactive();
+                    break;
+                case MSG_SHOW_HOME_WIDGET:
+                    fragment.showHomeWidget();
+                    break;
+            }
         }
 
     }
