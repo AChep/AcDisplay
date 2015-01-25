@@ -382,7 +382,7 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
             }
 
             CharSequence text;
-            
+
             char symbol = lines[i].charAt(0);
             boolean isClear = Character.isLetter(symbol) || Character.isDigit(symbol);
             if (highlightFirstLetter && isClear) {
