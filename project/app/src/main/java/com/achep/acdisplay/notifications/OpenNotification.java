@@ -194,6 +194,8 @@ public abstract class OpenNotification implements
         // Load all other things, such as title text, message text
         // and more and more.
         new Extractor().loadTexts(context, this);
+        messageText = ensureNotEmpty(messageText);
+        messageBigText = ensureNotEmpty(messageBigText);
 
         messageTextOrigin = messageText;
         messageBigTextOrigin = messageBigText;
@@ -204,6 +206,11 @@ public abstract class OpenNotification implements
             mEmoticonsEnabled = false;
             setEmoticonsEnabled(true);
         }
+    }
+
+    @Nullable
+    private CharSequence ensureNotEmpty(@Nullable CharSequence cs) {
+        return TextUtils.isEmpty(cs) ? null : cs;
     }
 
     /**
