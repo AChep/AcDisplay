@@ -106,9 +106,10 @@ public class Formatter {
             CharSequence message = NullUtils.whileNotNull(
                     notification.messageBigText,
                     notification.messageText);
+            messages = message != null ? new CharSequence[]{message} : null;
             messages = (CharSequence[]) NullUtils.whileNotNull(
                     notification.messageTextLines,
-                    new CharSequence[]{message});
+                    messages);
         }
 
         // Get actions
