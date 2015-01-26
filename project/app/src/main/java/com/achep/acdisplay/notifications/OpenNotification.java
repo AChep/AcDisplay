@@ -403,11 +403,6 @@ public abstract class OpenNotification implements
         reformatTexts();
     }
 
-    @Nullable
-    private CharSequence maybeAddSmileySpans(@Nullable CharSequence cs, boolean add) {
-        return add ? SmileyParser.getInstance().addSmileySpans(cs) : cs;
-    }
-
     //-- BASICS ---------------------------------------------------------------
 
     private void reformatTexts() {
