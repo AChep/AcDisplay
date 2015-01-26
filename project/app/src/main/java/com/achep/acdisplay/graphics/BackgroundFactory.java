@@ -52,7 +52,14 @@ public class BackgroundFactory {
                     protected Bitmap doInBackground(Void... params) {
                         final long start = SystemClock.elapsedRealtime();
 
-                        Bitmap output = generate(bitmap);
+
+                        Bitmap output;
+                        try {
+                            output = generate(bitmap);
+                        } catch (OutOfMemoryError e) {
+                            Log.e(TAG, "Out-of-memory error while blurring the background!");
+                            output = bitmap;
+                        }
 
                         if (DEBUG) {
                             long delta = SystemClock.elapsedRealtime() - start;
