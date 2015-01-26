@@ -125,13 +125,13 @@ public class Formatter {
     public static class Data {
 
         @Nullable
-        public CharSequence title;
+        public final CharSequence title;
         @Nullable
-        public CharSequence subtitle;
+        public final CharSequence subtitle;
         @Nullable
-        public CharSequence[] messages;
+        public final CharSequence[] messages;
         @Nullable
-        public Action[] actions;
+        public final Action[] actions;
 
         private Data(@Nullable CharSequence title,
                      @Nullable CharSequence subtitle,

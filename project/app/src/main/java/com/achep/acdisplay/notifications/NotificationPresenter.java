@@ -364,7 +364,7 @@ public class NotificationPresenter implements
      * @see #FLAG_DONT_NOTIFY_FOLLOWERS
      * @see #FLAG_DONT_WAKE_UP
      */
-    public void postNotification(
+    void postNotification(
             @NonNull Context context,
             @NonNull OpenNotification n, int flags) {
         Check.getInstance().isInMainThread();

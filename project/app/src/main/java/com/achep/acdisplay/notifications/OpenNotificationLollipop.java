@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
 
-    private static final String TAG = "OpenNotificationLollipop";
+    private static final String TAG = "OpenNotificationLp";
 
     OpenNotificationLollipop(@NonNull StatusBarNotification sbn, @NonNull Notification n) {
         super(sbn, n);
