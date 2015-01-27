@@ -18,15 +18,15 @@
  */
 package com.achep.base.interfaces;
 
-import android.support.annotation.Nullable;
-import android.widget.Checkable;
-import android.widget.CompoundButton;
-
 /**
- * @author Artem Chepurnoy
+ * Created by Artem Chepurnoy on 27.01.2015.
  */
-public interface ICheckable extends Checkable {
+public interface IPermission {
 
-    void setOnCheckedChangeListener(@Nullable CompoundButton.OnCheckedChangeListener listener);
+    /**
+     * @return {@code true} if the permission is active and you may use its power right now,
+     * {@code false} otherwise.
+     */
+    public abstract boolean isActive();
 
 }

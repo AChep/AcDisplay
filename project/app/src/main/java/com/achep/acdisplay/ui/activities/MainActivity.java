@@ -38,18 +38,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.permissions.Permission;
+import com.achep.base.ui.SwitchBarPermissible;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.PackageUtils;
-import com.achep.base.utils.ViewUtils;
 
 /**
  * Created by Artem on 21.01.14.
@@ -81,8 +80,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
         nm.notify(id, builder.build());
     }
 
-    private SwitchBar mSwitchBar;
-    private ImageView mSwitchAlertView;
+    private SwitchBarPermissible mSwitchPermission;
     private MenuItem mSendTestNotificationMenuItem;
     private Config mConfig;
 
@@ -97,11 +95,12 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
         mConfig = Config.getInstance();
         mConfig.registerListener(this);
 
-        mSwitchBar = (SwitchBar) findViewById(R.id.switch_bar);
-        mSwitchAlertView = (ImageView) mSwitchBar.findViewById(R.id.icon);
-        mSwitchAlertView.setImageResource(R.drawable.ic_action_warning_amber);
-        mSwitchBar.setChecked(mConfig.isEnabled());
-        mSwitchBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        Permission[] permissions = App.getAccessManager().getMasterPermissions().permissions;
+        SwitchBar switchBar = (SwitchBar) findViewById(R.id.switch_bar);
+        mSwitchPermission = new SwitchBarPermissible(this, switchBar, permissions);
+        mSwitchPermission.setChecked(mConfig.isEnabled());
+        mSwitchPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -111,17 +110,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
                 }
 
                 ActionBarActivity context = MainActivity.this;
-                if (checked && !AccessUtils.hasAllRights(context)) {
-                    // Reset compound button and update
-                    // testing menu item.
-                    compoundButton.setChecked(false);
-                    updateSendTestNotificationMenuItem();
-
-                    // Show permission dialog.
-                    DialogHelper.showSetupPermissionsDialog(context);
-                } else {
-                    mConfig.setEnabled(context, checked, MainActivity.this);
-                }
+                mConfig.setEnabled(context, checked, MainActivity.this);
             }
         });
 
@@ -157,19 +146,22 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
         }
     }
 
+    private void updateSendTestNotificationMenuItem() {
+        if (mSendTestNotificationMenuItem != null) {
+            mSendTestNotificationMenuItem.setVisible(mSwitchPermission.isChecked());
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-
-        boolean hasAllRights = AccessUtils.hasAllRights(this);
-        mSwitchBar.setChecked(mSwitchBar.isChecked() && hasAllRights);
-        ViewUtils.setVisible(mSwitchAlertView, !hasAllRights);
+        mSwitchPermission.resume();
     }
 
-    private void updateSendTestNotificationMenuItem() {
-        if (mSendTestNotificationMenuItem != null) {
-            mSendTestNotificationMenuItem.setVisible(mSwitchBar.isChecked());
-        }
+    @Override
+    protected void onPause() {
+        mSwitchPermission.pause();
+        super.onPause();
     }
 
     @Override
@@ -185,7 +177,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
         switch (key) {
             case Config.KEY_ENABLED:
                 mBroadcasting = true;
-                mSwitchBar.setChecked((Boolean) value);
+                mSwitchPermission.setChecked((Boolean) value);
                 mBroadcasting = false;
                 break;
         }

@@ -35,6 +35,10 @@ import android.view.ViewStub;
 
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.interfaces.ICheckable;
+import com.achep.base.permissions.Permission;
+import com.achep.base.ui.SwitchBarPermissible;
+import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.preferences.Enabler;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.Operator;
@@ -50,6 +54,8 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
     private static final String TAG = "PreferenceFragment";
 
     private SwitchBar mSwitch;
+    private SwitchBarPermissible mSwitchPermissible;
+    private Permission[] mEnablerPermissions;
     private String mEnablerKey;
     private Enabler mEnabler;
     private ConfigBase mConfig;
@@ -68,7 +74,12 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
      * @see com.achep.base.ui.preferences.Enabler
      */
     public void requestMasterSwitch(@NonNull String key) {
+        requestMasterSwitch(key, null);
+    }
+
+    public void requestMasterSwitch(@NonNull String key, @Nullable Permission[] permissions) {
         mEnablerKey = key;
+        mEnablerPermissions = permissions;
     }
 
     @Override
@@ -86,23 +97,36 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
             if (DEBUG) Log.d(TAG, "Creating the enabler for #" + mEnablerKey + " key.");
 
             // Setup enabler to switch bar.
-            SwitchBar switchBar = getSwitchBar();
-            assert switchBar != null;
-            mEnabler = new Enabler(getActivity(), mConfig, mEnablerKey, switchBar);
+            mEnabler = new Enabler(getActivity(), mConfig, mEnablerKey, createPermissionSwitch());
         }
+    }
+
+    @NonNull
+    private ICheckable createPermissionSwitch() {
+        ActivityBase activity = (ActivityBase) getActivity();
+        SwitchBar switchBar = getSwitchBar();
+        assert switchBar != null;
+        mSwitchPermissible = new SwitchBarPermissible(activity, switchBar, mEnablerPermissions);
+        return mSwitchPermissible;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mEnabler != null) mEnabler.start();
+        if (mEnabler != null) {
+            mSwitchPermissible.resume();
+            mEnabler.start();
+        }
         mSyncer.start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mEnabler != null) mEnabler.stop();
+        if (mEnabler != null) {
+            mEnabler.stop();
+            mSwitchPermissible.pause();
+        }
         mSyncer.stop();
     }
 

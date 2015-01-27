@@ -19,7 +19,6 @@
 package com.achep.acdisplay.ui.fragments.settings;
 
 import android.os.Bundle;
-import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 
@@ -27,11 +26,6 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.fragments.PreferenceFragment;
-import com.achep.base.utils.Operator;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Interface settings fragment.

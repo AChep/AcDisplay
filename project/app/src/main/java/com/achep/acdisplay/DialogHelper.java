@@ -28,15 +28,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 
-import com.achep.acdisplay.ui.fragments.dialogs.SetupPermissionsDialog;
 import com.achep.acdisplay.ui.fragments.dialogs.WelcomeDialog;
 import com.achep.base.Device;
+import com.achep.base.permissions.Permission;
 import com.achep.base.tests.Check;
 import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.fragments.dialogs.AboutDialog;
 import com.achep.base.ui.fragments.dialogs.DonateDialog;
 import com.achep.base.ui.fragments.dialogs.FeedbackDialog;
 import com.achep.base.ui.fragments.dialogs.HelpDialog;
+import com.achep.base.ui.fragments.dialogs.PermissionsDialog;
 
 /**
  * Helper class for showing fragment dialogs.
@@ -44,7 +45,7 @@ import com.achep.base.ui.fragments.dialogs.HelpDialog;
 public class DialogHelper {
 
     public static final String TAG_FRAGMENT_ABOUT = "dialog_about";
-    public static final String TAG_FRAGMENT_SETUP_PERMISSIONS = "dialog_setup_permissions";
+    public static final String TAG_FRAGMENT_PERMISSIONS = "dialog_permissions";
     public static final String TAG_FRAGMENT_HELP = "dialog_help";
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
     public static final String TAG_FRAGMENT_FEEDBACK = "dialog_feedback";
@@ -131,12 +132,23 @@ public class DialogHelper {
         showDialog(activity, WelcomeDialog.class, TAG_FRAGMENT_WELCOME);
     }
 
-    public static void showSetupPermissionsDialog(@NonNull ActionBarActivity activity) {
-        showDialog(activity, SetupPermissionsDialog.class, TAG_FRAGMENT_SETUP_PERMISSIONS);
+    public static void showPermissionsDialog(@NonNull ActionBarActivity activity,
+                                             @NonNull Permission[] permissions) {
+        showDialog(activity, PermissionsDialog.newInstance(permissions), TAG_FRAGMENT_PERMISSIONS);
     }
 
     private static void showDialog(@NonNull ActionBarActivity activity,
                                    @NonNull Class clazz,
+                                   @NonNull String tag) {
+        try {
+            showDialog(activity, (DialogFragment) clazz.newInstance(), tag);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void showDialog(@NonNull ActionBarActivity activity,
+                                   @NonNull DialogFragment fragment,
                                    @NonNull String tag) {
         Check.getInstance().isInMainThread();
 
@@ -147,12 +159,7 @@ public class DialogHelper {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-
-        try {
-            ((DialogFragment) clazz.newInstance()).show(ft, tag);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        fragment.show(ft, tag);
     }
 
 }

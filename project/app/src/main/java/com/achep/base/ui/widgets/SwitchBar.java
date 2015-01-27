@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
@@ -125,6 +126,11 @@ public class SwitchBar extends LinearLayout implements ICheckable {
 
     public void setIconDrawable(@Nullable Drawable drawable) {
         mIconView.setImageDrawable(drawable);
+    }
+
+    @NonNull
+    public ImageView getIconView() {
+        return mIconView;
     }
 
     /**

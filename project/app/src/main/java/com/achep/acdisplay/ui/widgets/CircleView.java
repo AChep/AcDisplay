@@ -26,7 +26,6 @@ import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -41,8 +40,6 @@ import com.achep.acdisplay.R;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.FloatProperty;
-
-import java.lang.ref.WeakReference;
 
 /**
  * Created by achep on 19.04.14.

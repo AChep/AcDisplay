@@ -194,8 +194,8 @@ public abstract class ConfigBase implements
     protected abstract void onOptionChanged(@NonNull Option option, @NonNull String key);
 
     protected void writeFromMain(final @NonNull Context context,
-                         final @NonNull Option option, final @NonNull Object value,
-                         final @Nullable OnConfigChangedListener listenerToBeIgnored) {
+                                 final @NonNull Option option, final @NonNull Object value,
+                                 final @Nullable OnConfigChangedListener listenerToBeIgnored) {
         mHandler.post(new Runnable() {
 
             @Override

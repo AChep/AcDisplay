@@ -20,8 +20,10 @@ package com.achep.acdisplay.ui.fragments.settings;
 
 import android.os.Bundle;
 
+import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.base.permissions.Permission;
 import com.achep.base.ui.fragments.PreferenceFragment;
 
 /**
@@ -37,7 +39,8 @@ public class KeyguardSettings extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestMasterSwitch(Config.KEY_KEYGUARD);
+        Permission[] permissions = App.getAccessManager().getKeyguardPermissions().permissions;
+        requestMasterSwitch(Config.KEY_KEYGUARD, permissions);
         addPreferencesFromResource(R.xml.settings_keyguard_fragment);
         syncPreference(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
     }

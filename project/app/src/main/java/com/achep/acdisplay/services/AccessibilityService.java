@@ -33,7 +33,6 @@ import com.achep.base.Device;
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
 
     private static final String TAG = "AccessibilityService";
-    public static boolean isRunning;
 
     @Override
     public void onServiceConnected() {
@@ -42,8 +41,6 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         info.notificationTimeout = 100;
         setServiceInfo(info);
-
-        isRunning = true;
     }
 
     @Override
@@ -66,9 +63,10 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void onInterrupt() {
-        isRunning = false;
-    }
+    public void onInterrupt() { /* unused */ }
 
 }

@@ -25,7 +25,7 @@ import com.achep.acdisplay.BuildConfig;
 /**
  * Contains a number of build constants mostly redirected from
  * the {@link BuildConfig build config}.
- * 
+ *
  * @author Artem Chepurnoy
  */
 /* The first class of the AcDisplay, dated by 30.12.2013 */
@@ -46,7 +46,7 @@ public final class Build {
 
     /**
      * Uncrypted Google Play's public key.
-     * 
+     *
      * @see #GOOGLE_PLAY_PUBLIC_KEY_SALT
      */
     @NonNull
@@ -55,7 +55,7 @@ public final class Build {
 
     /**
      * Salt for {@link #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED}
-     * 
+     *
      * @see #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED
      */
     @NonNull

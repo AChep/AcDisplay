@@ -22,6 +22,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.acdisplay.permissions.AccessManager;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
@@ -77,6 +78,9 @@ public class App extends Application {
     private final CheckoutInternal mCheckoutInternal = new CheckoutInternal(this, sProducts);
 
     @NonNull
+    private AccessManager mAccessManager;
+
+    @NonNull
     private static App instance;
 
     public App() {
@@ -85,6 +89,8 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+        mAccessManager = new AccessManager(this);
+
         Config.getInstance().init(this);
         Blacklist.getInstance().init(this);
         SmileyParser.init(this);
@@ -102,6 +108,7 @@ public class App extends Application {
     public void onLowMemory() {
         Config.getInstance().onLowMemory();
         Blacklist.getInstance().onLowMemory();
+        mAccessManager.onLowMemory();
         super.onLowMemory();
     }
 
@@ -118,6 +125,11 @@ public class App extends Application {
     @NonNull
     public static CheckoutInternal getCheckoutInternal() {
         return instance.mCheckoutInternal;
+    }
+
+    @NonNull
+    public static AccessManager getAccessManager() {
+        return instance.mAccessManager;
     }
 
 }

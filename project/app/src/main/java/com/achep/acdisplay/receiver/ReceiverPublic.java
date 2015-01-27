@@ -26,7 +26,6 @@ import android.util.Log;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.utils.AccessUtils;
 import com.achep.base.utils.ToastUtils;
 
 /**
@@ -63,7 +62,7 @@ public class ReceiverPublic extends BroadcastReceiver {
      * @param enable {@code true} to enable AcDisplay, {@code false} to disable.
      */
     private void setAcDisplayEnabled(Context context, Config config, boolean enable) {
-        enable &= AccessUtils.hasAllRights(context);
+        enable &= App.getAccessManager().getMasterPermissions().isActive();
         config.setEnabled(context, enable, null);
         ToastUtils.showLong(context, enable
                 ? R.string.remote_enable_acdisplay
