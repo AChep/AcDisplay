@@ -500,12 +500,8 @@ public abstract class OpenNotification implements
      * @return the package name of notification, or a random string
      * if not possible to get the package name.
      */
-    @SuppressLint("NewApi")
     @NonNull
-    public String getPackageName() {
-        assert mStatusBarNotification != null;
-        return mStatusBarNotification.getPackageName();
-    }
+    public abstract String getPackageName();
 
     /**
      * Time since notification has been loaded; in {@link android.os.SystemClock#elapsedRealtime()}

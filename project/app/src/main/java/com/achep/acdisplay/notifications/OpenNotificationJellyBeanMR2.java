@@ -80,4 +80,13 @@ class OpenNotificationJellyBeanMR2 extends OpenNotification {
                 .isEquals();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public String getPackageName() {
+        return getStatusBarNotification().getPackageName();
+    }
+
 }
