@@ -505,18 +505,27 @@ public class AcDisplayFragment extends Fragment implements
         }
 
         final Widget widget = findWidgetByIcon(view);
-        if (!isCurrentWidget(widget)) {
-            int delay = event.getActionMasked() != MotionEvent.ACTION_DOWN
-                    ? mConfigWidgetSelectDelay : 0;
-            mTouchHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+        if (isCurrentWidget(widget)) {
+            // We need to reset this, cause current widget may be
+            // pinned.
+            mHandler.removeMessages(MSG_SHOW_HOME_WIDGET);
+            return;
+        } else if (widget == null && mSelectedWidget.isHomeWidget()) {
+            return;
+        }
+
+        int action = event.getActionMasked();
+        int delay = action != MotionEvent.ACTION_DOWN ? mConfigWidgetSelectDelay : 0;
+        mTouchHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (widget == null) {
+                    showHomeWidget();
+                } else {
                     showWidget(widget);
                 }
-            }, delay);
-        } else {
-            mHandler.removeMessages(MSG_SHOW_HOME_WIDGET);
-        }
+            }
+        }, delay);
     }
 
     @Override
@@ -725,7 +734,6 @@ public class AcDisplayFragment extends Fragment implements
         return null;
     }
 
-    @NonNull
     private Widget findWidgetByIcon(@NonNull View view) {
         return mWidgetsMap.get(view);
     }
