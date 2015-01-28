@@ -29,8 +29,8 @@
     <item>Ícone de notificação</item>
   </string-array>
   <string-array name="privacy_mode">
-    <item>Hide notifications\' content</item>
-    <item>Hide notifications\' actions</item>
+    <item>ocultar o conteúdo de notificações</item>
+    <item>esconder as ações de notificações</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Crítico e urgente (ligações perdidas, direções, alertas de emergência)</item>

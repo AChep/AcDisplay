@@ -29,8 +29,8 @@
     <item>Benachrichtigungssymbol</item>
   </string-array>
   <string-array name="privacy_mode">
-    <item>Benachrichtigungen-Inhalt ausblenden</item>
-    <item>Hide notifications\' actions</item>
+    <item>Benachrichtigungsinhalte ausblenden</item>
+    <item>Benachrichtigungsaktionen ausblenden</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Wichtig und dringend (verpasste Anrufe, Navigationsanweisungen, Notfallwarnungen)</item>

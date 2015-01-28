@@ -54,7 +54,7 @@
   <string name="notification_init_text">Apenas retire essa notificação.</string>
   <string name="notification_test_message">Essa é uma simples notificação.</string>
   <string name="notification_test_message_large">Deslize para baixo na notificação para esconder. \nDeslize em qualquer lugar para desbloquear a tela.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">conteúdo oculto.</string>
   <string name="remote_enable_acdisplay">AcDisplay está habilitado.</string>
   <string name="remote_disable_acdisplay">AcDisplay está desativado.</string>
   <string name="service_bath">Serviços do AcDisplay</string>

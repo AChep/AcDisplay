@@ -54,7 +54,7 @@
   <string name="notification_init_text">Bare avvis dette varselet.</string>
   <string name="notification_test_message">Dette er et test-varsel.</string>
   <string name="notification_test_message_large">Dra ned for å avvise meldingen. \nDra hvor som helst for å låse opp.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">Skjult innhold.</string>
   <string name="remote_enable_acdisplay">AcDisplay er aktivert.</string>
   <string name="remote_disable_acdisplay">AcDisplay er deaktivert.</string>
   <string name="service_bath">AcDisplay tjenester</string>

@@ -78,7 +78,7 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Skjermen forblir på etter siste varsling er avvist.</string>
   <string name="settings_widget_pinnable_title">Lagre varsling</string>
   <string name="settings_widget_pinnable_on">Varsel-widget forblir utvidet i noen sekunder etter en touch.</string>
-  <string name="settings_privacy_mode_title">Privacy (on secure lock)</string>
+  <string name="settings_privacy_mode_title">Personvern (på sikkerhetslås)</string>
   <string name="settings_privacy_mode_disabled">Deaktivert</string>
   <string name="preference_inactive_hours_enabled">Inaktive perioder aktivert</string>
   <string name="preference_inactive_hours_from"><![CDATA[         fra: <br/> <b><font color="#ffffff">%1$s</font></b>     ]]></string>

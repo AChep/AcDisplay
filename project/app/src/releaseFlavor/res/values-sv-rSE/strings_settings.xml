@@ -78,7 +78,7 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Skärmen förblir aktiv efter avvisande av det sista meddelandet.</string>
   <string name="settings_widget_pinnable_title">Låsbart meddelande</string>
   <string name="settings_widget_pinnable_on">Meddelande-widget förblir expanderad under några sekunder efter en beröring.</string>
-  <string name="settings_privacy_mode_title">Privacy (on secure lock)</string>
+  <string name="settings_privacy_mode_title">Sekretess (vid säkert lås)</string>
   <string name="settings_privacy_mode_disabled">Inaktiverade</string>
   <string name="preference_inactive_hours_enabled">Inaktiva timmar aktiverat</string>
   <string name="preference_inactive_hours_from"><![CDATA[         från: <br/> <b><font color="#ffffff">%1$s</font></b>     ]]></string>

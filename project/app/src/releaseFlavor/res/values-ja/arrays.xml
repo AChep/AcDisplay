@@ -30,7 +30,7 @@
   </string-array>
   <string-array name="privacy_mode">
     <item>通知の内容を非表示にする</item>
-    <item>Hide notifications\' actions</item>
+    <item>通知のアクションを非表示にする</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>重要および緊急 (不在着信、指示、緊急時のアラート)</item>

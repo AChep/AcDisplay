@@ -54,13 +54,13 @@
   <string name="notification_init_text">仅忽略本通知。</string>
   <string name="notification_test_message">这是一条示例通知。</string>
   <string name="notification_test_message_large">向下滑动可忽略通知\n向其它方向滑动可解锁</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">隐藏内容。</string>
   <string name="remote_enable_acdisplay">AcDisplay 已启用</string>
   <string name="remote_disable_acdisplay">AcDisplay 已禁用</string>
   <string name="service_bath">AcDisplay 服务</string>
   <string name="service_bath_keyguard">锁屏界面</string>
   <string name="service_bath_active_mode">主动模式</string>
   <string name="service_bath_active_mode_dump">传感器记录</string>
-  <string name="status_date_format">EEE, d MMMM</string>
+  <string name="status_date_format">MMMMd日，EEE</string>
   <string name="accessibility_battery_level">电量剩余 <xliff:g id="number" example="100">%d</xliff:g> 百分之</string>
 </resources>

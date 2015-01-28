@@ -54,7 +54,7 @@
   <string name="notification_init_text">Avfärda detta meddelande.</string>
   <string name="notification_test_message">Detta är ett exempelmeddelande.</string>
   <string name="notification_test_message_large">Svep ner för att avfärda meddelandet. \nSvep någonstans för att låsa upp.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">Dolt innehåll.</string>
   <string name="remote_enable_acdisplay">AcDisplay är aktiverad.</string>
   <string name="remote_disable_acdisplay">AcDisplay är inaktiverad.</string>
   <string name="service_bath">AcDisplay tjänster</string>
