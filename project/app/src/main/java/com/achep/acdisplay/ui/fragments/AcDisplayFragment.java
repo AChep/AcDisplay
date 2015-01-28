@@ -76,6 +76,7 @@ import com.achep.acdisplay.ui.widgets.CircleView;
 import com.achep.base.Device;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.tests.Check;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.FloatProperty;
@@ -754,6 +755,8 @@ public class AcDisplayFragment extends Fragment implements
      * @see #showWidget(com.achep.acdisplay.ui.components.Widget)
      */
     protected void showWidget(@NonNull Widget widget, boolean animate) {
+        Check.getInstance().isNonNull(widget);
+
         mHandler.removeMessages(MSG_SHOW_HOME_WIDGET);
         mHasPinnedWidget = false;
 

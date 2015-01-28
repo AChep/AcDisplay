@@ -47,6 +47,13 @@ final class CheckImpl extends Check {
     }
 
     @Override
+    public void isNonNull(@Nullable Object object) {
+        if (object == null) {
+            throw new RuntimeException("Should be not null!");
+        }
+    }
+
+    @Override
     public void isInMainThread() {
         if (!Thread.currentThread().getName().equals("main")) {
             throw new RuntimeException("Should be called on the main thread");
