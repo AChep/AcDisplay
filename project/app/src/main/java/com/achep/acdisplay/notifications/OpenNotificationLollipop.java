@@ -23,6 +23,7 @@ import android.app.Notification;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,6 +41,11 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
         super(sbn, n);
     }
 
+    @Nullable
+    public String getGroupKey() {
+        return getStatusBarNotification().getGroupKey();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -53,6 +59,23 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
                 | InvocationTargetException
                 | IllegalAccessException e) {
             Log.e(TAG, "Failed to check for group child.");
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isGroupSummary() {
+        try {
+            Method method = Notification.class.getDeclaredMethod("isGroupSummary");
+            method.setAccessible(true);
+            return (boolean) method.invoke(getNotification());
+        } catch (NoSuchMethodException
+                | InvocationTargetException
+                | IllegalAccessException e) {
+            Log.e(TAG, "Failed to check for group summary.");
         }
         return false;
     }

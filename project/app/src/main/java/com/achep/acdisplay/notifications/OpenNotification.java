@@ -515,7 +515,16 @@ public abstract class OpenNotification implements
         return mLoadedTimestamp;
     }
 
+    @Nullable
+    public String getGroupKey() {
+        return null;
+    }
+
     public boolean isGroupChild() {
+        return false;
+    }
+
+    public boolean isGroupSummary() {
         return false;
     }
 

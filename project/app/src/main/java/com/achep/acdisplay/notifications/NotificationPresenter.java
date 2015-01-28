@@ -42,6 +42,8 @@ import com.achep.base.utils.Operator;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -104,6 +106,7 @@ public class NotificationPresenter implements
 
     private final NotificationList mGList;
     private final NotificationList mLList;
+    private Set<String> mGroupsWithSummaries;
 
     private final ArrayList<WeakReference<OnNotificationListChangedListener>> mListenersRefs;
     private final ArrayList<NotificationListChange> mFrozenEvents;
@@ -307,6 +310,7 @@ public class NotificationPresenter implements
         mListenersRefs = new ArrayList<>();
         mGList = new NotificationList(null);
         mLList = new NotificationList(this);
+        mGroupsWithSummaries = new HashSet<>();
         mHandler = new Handler(Looper.getMainLooper());
         mFormatter = new Formatter();
 
@@ -383,6 +387,12 @@ public class NotificationPresenter implements
         if (globalValid) {
             n.load(context);
 
+            if (n.isGroupSummary()) {
+                String groupKey = n.getGroupKey();
+                assert groupKey != null;
+                mGroupsWithSummaries.add(groupKey);
+            }
+
             Config config = Config.getInstance();
             n.setEmoticonsEnabled(config.isEmoticonsEnabled());
             // Selective load exactly what we need and nothing more.
@@ -441,6 +451,13 @@ public class NotificationPresenter implements
 
         if (KEEP_GLOBAL_LIST) mGList.remove(n);
         mLList.remove(n);
+
+        if (n.isGroupSummary()) {
+            String groupKey = n.getGroupKey();
+            assert groupKey != null;
+            mGroupsWithSummaries.remove(groupKey);
+            rebuildLocalList();
+        }
     }
 
     /**
@@ -653,6 +670,11 @@ public class NotificationPresenter implements
             return false;
         }
 
+        Check.getInstance().isTrue(Device.hasLollipopApi() || !notification.isGroupChild());
+        if (notification.isGroupChild() && mGroupsWithSummaries.contains(notification.getGroupKey())) {
+            return false;
+        }
+
         // Do not allow notifications with no content.
         return !(TextUtils.isEmpty(notification.titleText)
                 && TextUtils.isEmpty(notification.titleBigText)
@@ -665,9 +687,7 @@ public class NotificationPresenter implements
     // notifications.
     @SuppressLint("NewApi")
     private boolean isValidForGlobal(@NonNull OpenNotification notification) {
-        // Ignore children of notifications that have a summary, since we're not
-        // going to show them anyway.
-        return !notification.isGroupChild();
+        return true;
     }
 
     //-- INITIALIZING ---------------------------------------------------------
@@ -706,6 +726,7 @@ public class NotificationPresenter implements
         if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
                 + notifyListeners);
 
+        mGroupsWithSummaries.clear();
         mGList.list().clear();
         mLList.list().clear();
         if (notifyListeners) notifyListeners(null, EVENT_BATH);
