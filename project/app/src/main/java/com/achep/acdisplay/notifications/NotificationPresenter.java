@@ -620,6 +620,8 @@ public class NotificationPresenter implements
         Check.getInstance().isInMainThread();
 
         if (mFrozen) {
+            if (mFrozenEvents.size() >= 1 && mFrozenEvents.get(0).event == EVENT_BATH) return;
+            if (event == EVENT_BATH) mFrozenEvents.clear();
             mFrozenEvents.add(new NotificationListChange(event, n));
             return;
         }
