@@ -381,6 +381,7 @@ public class NotificationPresenter implements
 
         boolean globalValid = isValidForGlobal(n);
         boolean localValid = false;
+        boolean isGroupSummary = false;
 
         // If notification will not be added to the
         // list there's no point of loading its data.
@@ -388,6 +389,8 @@ public class NotificationPresenter implements
             n.load(context);
 
             if (n.isGroupSummary()) {
+                isGroupSummary = true;
+
                 String groupKey = n.getGroupKey();
                 assert groupKey != null;
                 mGroupsWithSummaries.add(groupKey);
@@ -412,6 +415,7 @@ public class NotificationPresenter implements
                 flags, FLAG_DONT_WAKE_UP);
 
         freezeListeners(); // we should handle the event first
+        if (localValid && isGroupSummary) rebuildLocalList();
         if (KEEP_GLOBAL_LIST) mGList.pushOrRemove(n, globalValid, flagIgnoreFollowers);
         int result = mLList.pushOrRemove(n, localValid, flagIgnoreFollowers);
 
