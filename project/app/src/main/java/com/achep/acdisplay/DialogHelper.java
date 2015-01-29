@@ -28,7 +28,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 
-import com.achep.acdisplay.ui.fragments.dialogs.WelcomeDialog;
 import com.achep.base.Device;
 import com.achep.base.permissions.Permission;
 import com.achep.base.tests.Check;
@@ -49,7 +48,6 @@ public class DialogHelper {
     public static final String TAG_FRAGMENT_HELP = "dialog_help";
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
     public static final String TAG_FRAGMENT_FEEDBACK = "dialog_feedback";
-    public static final String TAG_FRAGMENT_WELCOME = "dialog_welcome";
 
     public static void showAboutDialog(@NonNull ActionBarActivity activity) {
         showDialog(activity, AboutDialog.class, TAG_FRAGMENT_ABOUT);
@@ -126,10 +124,6 @@ public class DialogHelper {
 
     public static void showFeedbackDialog(@NonNull ActionBarActivity activity) {
         showDialog(activity, FeedbackDialog.class, TAG_FRAGMENT_FEEDBACK);
-    }
-
-    public static void showWelcomeDialog(@NonNull ActionBarActivity activity) {
-        showDialog(activity, WelcomeDialog.class, TAG_FRAGMENT_WELCOME);
     }
 
     public static void showPermissionsDialog(@NonNull ActionBarActivity activity,
