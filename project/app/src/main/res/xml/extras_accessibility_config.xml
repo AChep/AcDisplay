@@ -23,4 +23,4 @@
     android:accessibilityFlags="flagDefault"
     android:description="@string/app_name"
     android:notificationTimeout="100"
-    android:settingsActivity="com.achep.acdisplay.settings.Settings" />
+    android:settingsActivity="com.achep.acdisplay.ui.activities.MainActivity" />
