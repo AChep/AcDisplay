@@ -31,7 +31,7 @@
     <integer name="config_icon_size_max_dp">72</integer>
 
     <!-- True to show PayPal / Bitcoin buttons in donation fragment. -->
-    <bool name="config_alternative_payments">true</bool>
+    <bool name="config_alternative_payments">false</bool>
 
     <!-- The delay between turning screen off and sending test notification. -->
     <integer name="config_test_notification_delay">1500</integer>
