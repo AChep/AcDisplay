@@ -427,7 +427,7 @@ public abstract class OpenNotification implements
      * @see #setRead(boolean)
      */
     public void markAsRead() {
-        setRead(true);
+        NotificationPresenter.getInstance().setNotificationRead(this, true);
     }
 
     /**
@@ -437,7 +437,7 @@ public abstract class OpenNotification implements
      *               {@code false} otherwise.
      * @see #markAsRead()
      */
-    public void setRead(boolean isRead) {
+    void setRead(boolean isRead) {
         if (mRead == (mRead = isRead)) return;
         notifyListeners(EVENT_READ);
     }

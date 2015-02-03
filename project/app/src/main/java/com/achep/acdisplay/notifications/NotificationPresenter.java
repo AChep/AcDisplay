@@ -556,7 +556,7 @@ public class NotificationPresenter implements
                 && TextUtils.equals(n.infoText, old.infoText)) {
             // Technically notification was changed, but it was a fault
             // of dumb developer. Mark notification as read, if old one was.
-            n.setRead(old.isRead());
+            setNotificationRead(n, old.isRead());
 
             if (!n.isMine()) {
                 notifyListeners(n, EVENT_CHANGED_SPAM);
@@ -694,6 +694,20 @@ public class NotificationPresenter implements
     @SuppressLint("NewApi")
     private boolean isValidForGlobal(@NonNull OpenNotification notification) {
         return true;
+    }
+
+    //-- MARK-AS-READ ---------------------------------------------------------
+
+    void setNotificationRead(@NonNull OpenNotification notification, boolean isRead) {
+        notification.setRead(isRead);
+        if (notification.isGroupSummary()) {
+            String key = notification.getGroupKey();
+            assert key != null;
+            for (OpenNotification n : mGList.list()) {
+                if (key.equals(n.getGroupKey())) n.setRead(isRead);
+            }
+        }
+        rebuildLocalList();
     }
 
     //-- INITIALIZING ---------------------------------------------------------
