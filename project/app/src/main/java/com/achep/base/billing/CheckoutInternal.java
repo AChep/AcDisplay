@@ -93,15 +93,7 @@ public class CheckoutInternal {
      * @see #connect()
      */
     private void disconnect() {
-        try {
-            Method method = Billing.class.getDeclaredMethod("disconnect");
-            method.setAccessible(true);
-            method.invoke(mBilling);
-        } catch (NoSuchMethodException
-                | IllegalAccessException
-                | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        mBilling.disconnect();
     }
 
     public void requestConnect() {
