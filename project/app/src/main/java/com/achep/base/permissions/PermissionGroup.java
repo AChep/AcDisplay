@@ -24,6 +24,9 @@ import android.support.annotation.NonNull;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.IPermission;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 
 /**
@@ -36,6 +39,31 @@ public class PermissionGroup implements IOnLowMemory, IPermission {
 
     public PermissionGroup(@NonNull Permission[] permissions) {
         this.permissions = permissions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(37, 49)
+                .append(permissions)
+                .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof PermissionGroup)) return false;
+
+        PermissionGroup pg = (PermissionGroup) o;
+        return new EqualsBuilder()
+                .append(permissions, pg.permissions)
+                .isEquals();
     }
 
     /**

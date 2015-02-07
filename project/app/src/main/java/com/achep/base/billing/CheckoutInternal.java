@@ -26,6 +26,8 @@ import android.util.Log;
 
 import com.achep.base.Build;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.solovyev.android.checkout.Billing;
 import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.Inventory;
@@ -66,6 +68,35 @@ public class CheckoutInternal {
     public CheckoutInternal(@NonNull Context context, @NonNull Products products) {
         mBilling = new Billing(context, new Configuration());
         mCheckout = Checkout.forApplication(mBilling, products);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(15689, 31)
+                .append(mBilling)
+                .append(mCheckout)
+                .append(mConnections)
+                .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof CheckoutInternal)) return false;
+
+        CheckoutInternal ci = (CheckoutInternal) o;
+        return new EqualsBuilder()
+                .append(mConnections, ci.mConnections)
+                .append(mBilling, ci.mBilling)
+                .append(mCheckout, ci.mCheckout)
+                .isEquals();
     }
 
     @NonNull
