@@ -25,6 +25,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
 import com.achep.base.Device;
@@ -54,9 +55,13 @@ public class Action {
     private static Factory getFactory() {
         Factory factory = sFactoryRef.get();
         if (factory == null) {
-            factory = Device.hasKitKatApi()
-                    ? new FactoryKitKat()
-                    : new FactoryJellyBean();
+            if (Device.hasKitKatWatchApi()) {
+                factory = new FactoryKitKatWatch();
+            } else {
+                factory = Device.hasKitKatApi()
+                        ? new FactoryKitKat()
+                        : new FactoryJellyBean();
+            }
             sFactoryRef = new SoftReference<>(factory);
             return factory;
         }
@@ -94,10 +99,19 @@ public class Action {
     @Nullable
     public final PendingIntent intent;
 
-    private Action(@DrawableRes int icon, @NonNull CharSequence title, @Nullable PendingIntent intent) {
+    /**
+     * The list of inputs to be collected from the user when this action is sent.
+     * May be null if no remote inputs were added.
+     */
+    @Nullable
+    public final RemoteInput[] remoteInputs;
+
+    private Action(@DrawableRes int icon, @NonNull CharSequence title,
+                   @Nullable PendingIntent intent, @Nullable RemoteInput[] remoteInputs) {
         this.icon = icon;
         this.title = title;
         this.intent = intent;
+        this.remoteInputs = remoteInputs;
     }
 
     /**
@@ -118,6 +132,19 @@ public class Action {
         public abstract Action[] makeFor(@NonNull Notification notification);
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
+    private static class FactoryKitKatWatch extends FactoryKitKat {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nullable
+        public RemoteInput[] getRemoteInputs(@NonNull Notification.Action action) {
+            return RemoteInputUtils.toCompat(action.getRemoteInputs());
+        }
+
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private static class FactoryKitKat extends Factory {
 
@@ -136,10 +163,20 @@ public class Action {
             final int length = src.length;
             final Action[] dst = new Action[src.length];
             for (int i = 0; i < length; i++) {
-                dst[i] = new Action(src[i].icon, src[i].title, src[i].actionIntent);
+                RemoteInput[] remoteInputs = getRemoteInputs(src[i]);
+                dst[i] = new Action(src[i].icon, src[i].title, src[i].actionIntent, remoteInputs);
             }
 
             return dst;
+        }
+
+        /**
+         * Get the list of inputs to be collected from the user when this action is sent.
+         * May return null if no remote inputs were added.
+         */
+        @Nullable
+        public RemoteInput[] getRemoteInputs(@NonNull Notification.Action action) {
+            return null;
         }
     }
 
@@ -185,7 +222,7 @@ public class Action {
                     field.setAccessible(true);
                     final PendingIntent intent = (PendingIntent) field.get(object);
 
-                    dst[i] = new Action(icon, title, intent);
+                    dst[i] = new Action(icon, title, intent, null);
                 } catch (Exception e) {
                     Log.wtf(TAG, "Failed to access fields of the Action.");
                     return null;
