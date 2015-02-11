@@ -42,6 +42,14 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
         super(sbn, n);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getVisibility() {
+        return getNotification().visibility;
+    }
+
     @Override
     protected void loadBrandColor(@NonNull Context context) {
         setBrandColor(getNotification().color | 0xFF000000);

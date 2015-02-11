@@ -78,6 +78,28 @@ public abstract class OpenNotification implements
 
     //-- BEGIN ----------------------------------------------------------------
 
+    /**
+     * Notification visibility: Show this notification in its entirety on all lockscreens.
+     *
+     * {@see #getVisibility()}
+     */
+    public static final int VISIBILITY_PUBLIC = 1;
+
+    /**
+     * Notification visibility: Show this notification on all lockscreens, but conceal sensitive or
+     * private information on secure lockscreens.
+     *
+     * {@see #getVisibility()}
+     */
+    public static final int VISIBILITY_PRIVATE = 0;
+
+    /**
+     * Notification visibility: Do not reveal any part of this notification on a secure lockscreen.
+     *
+     * {@see #getVisibility()}
+     */
+    public static final int VISIBILITY_SECRET = -1;
+
     public static final int EVENT_ICON = 1;
     public static final int EVENT_READ = 2;
     public static final int EVENT_BACKGROUND = 3;
@@ -245,6 +267,26 @@ public abstract class OpenNotification implements
      */
     public int getNumber() {
         return mNumber;
+    }
+
+    /**
+     * Sphere of visibility of this notification, which affects how and when the SystemUI reveals
+     * the notification's presence and contents in untrusted situations (namely, on the secure
+     * lockscreen).
+     *
+     * The default level, {@link #VISIBILITY_PRIVATE}, behaves exactly as notifications have always
+     * done on Android: The notification's {@link #getIcon()} (if available) are
+     * shown in all situations, but the contents are only available if the device is unlocked for
+     * the appropriate user.
+     *
+     * A more permissive policy can be expressed by {@link #VISIBILITY_PUBLIC}; such a notification
+     * can be read even in an "insecure" context (that is, above a secure lockscreen).
+     *
+     * Finally, a notification can be made {@link #VISIBILITY_SECRET}, which will suppress its icon
+     * and ticker until the user has bypassed the lockscreen.
+     */
+    public int getVisibility() {
+        return VISIBILITY_PRIVATE;
     }
 
     /**
