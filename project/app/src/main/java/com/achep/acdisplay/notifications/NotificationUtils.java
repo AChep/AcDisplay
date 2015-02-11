@@ -71,6 +71,8 @@ public class NotificationUtils {
         if (sbn != null && Device.hasJellyBeanMR2Api()) {
             MediaService service = MediaService.sService;
             if (service != null) {
+                // FIXME: Should I call the #deleteIntent?
+                PendingIntentUtils.sendPendingIntent(sbn.getNotification().deleteIntent);
                 if (Device.hasLollipopApi()) {
                     service.cancelNotification(sbn.getKey());
                 } else {
