@@ -20,6 +20,7 @@ package com.achep.acdisplay.notifications;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.content.Context;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
@@ -39,6 +40,11 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
 
     OpenNotificationLollipop(@NonNull StatusBarNotification sbn, @NonNull Notification n) {
         super(sbn, n);
+    }
+
+    @Override
+    protected void loadBrandColor(@NonNull Context context) {
+        setBrandColor(getNotification().color | 0xFF000000);
     }
 
     @Nullable

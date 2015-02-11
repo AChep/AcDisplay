@@ -167,25 +167,7 @@ public abstract class OpenNotification implements
         mNumber = mNotification.number;
 
         // Load the brand color.
-        try {
-            String packageName = getPackageName();
-            Drawable appIcon = context.getPackageManager().getApplicationIcon(packageName);
-
-            final Bitmap bitmap = Bitmap.createBitmap(
-                    appIcon.getMinimumWidth(),
-                    appIcon.getMinimumHeight(),
-                    Bitmap.Config.ARGB_4444);
-            appIcon.draw(new Canvas(bitmap));
-            AsyncTask.stop(mPaletteWorker);
-            mPaletteWorker = Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-                    mBrandColor = palette.getVibrantColor(Color.WHITE);
-                    notifyListeners(EVENT_BRAND_COLOR);
-                    bitmap.recycle();
-                }
-            });
-        } catch (PackageManager.NameNotFoundException e) { /* do nothing */ }
+        loadBrandColor(context);
 
         // Load notification icon.
         AsyncTask.stop(mIconWorker);
@@ -263,10 +245,6 @@ public abstract class OpenNotification implements
      */
     public int getNumber() {
         return mNumber;
-    }
-
-    public int getBrandColor() {
-        return mBrandColor;
     }
 
     /**
@@ -353,6 +331,38 @@ public abstract class OpenNotification implements
     private void setIcon(@Nullable Bitmap bitmap) {
         if (mIconBitmap == (mIconBitmap = bitmap)) return;
         notifyListeners(EVENT_ICON);
+    }
+
+    //-- BRAND COLOR ----------------------------------------------------------
+
+    protected void setBrandColor(int color) {
+        if (mBrandColor == (mBrandColor = color)) return;
+        notifyListeners(EVENT_BRAND_COLOR);
+    }
+
+    protected void loadBrandColor(@NonNull Context context) {
+        try {
+            String packageName = getPackageName();
+            Drawable appIcon = context.getPackageManager().getApplicationIcon(packageName);
+
+            final Bitmap bitmap = Bitmap.createBitmap(
+                    appIcon.getMinimumWidth(),
+                    appIcon.getMinimumHeight(),
+                    Bitmap.Config.ARGB_4444);
+            appIcon.draw(new Canvas(bitmap));
+            AsyncTask.stop(mPaletteWorker);
+            mPaletteWorker = Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    setBrandColor(palette.getVibrantColor(Color.WHITE));
+                    bitmap.recycle();
+                }
+            });
+        } catch (PackageManager.NameNotFoundException e) { /* do nothing */ }
+    }
+
+    public int getBrandColor() {
+        return mBrandColor;
     }
 
     //-- BACKGROUND -----------------------------------------------------------
