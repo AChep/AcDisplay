@@ -453,6 +453,7 @@ public class NotificationPresenter implements
     public void removeNotification(@NonNull OpenNotification n) {
         Check.getInstance().isInMainThread();
 
+        freezeListeners();
         if (KEEP_GLOBAL_LIST) mGList.remove(n);
         mLList.remove(n);
 
@@ -460,8 +461,18 @@ public class NotificationPresenter implements
             String groupKey = n.getGroupKey();
             assert groupKey != null;
             mGroupsWithSummaries.remove(groupKey);
-            rebuildLocalList();
+
+            // Remove the whole group.
+            int size = getLargeList().list().size();
+            for (int i = size - 1; i >= 0; i--) {
+                OpenNotification n2 = getLargeList().list().get(i);
+                if (groupKey.equals(n2.getGroupKey())) {
+                    if (KEEP_GLOBAL_LIST) mGList.remove(n2);
+                    mLList.remove(n2);
+                }
+            }
         }
+        meltListeners();
     }
 
     /**
