@@ -348,7 +348,6 @@ public class NotificationPresenter implements
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                //noinspection deprecation
                 postNotification(context, n, flags);
             }
         });
@@ -436,7 +435,6 @@ public class NotificationPresenter implements
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                //noinspection deprecation
                 removeNotification(n);
             }
         });
@@ -446,8 +444,6 @@ public class NotificationPresenter implements
      * Removes notification from the presenter and sends
      * this event to followers. Calling his method will not
      * remove notification from system!
-     *
-     * @deprecated use {@link #removeNotificationFromMain(OpenNotification)} instead!
      */
     @Deprecated
     public void removeNotification(@NonNull OpenNotification n) {
