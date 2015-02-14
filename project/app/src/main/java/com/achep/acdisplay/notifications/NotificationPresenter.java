@@ -62,7 +62,7 @@ public class NotificationPresenter implements
      * use local list only. Using global list allows to change local list in-time after
      * any of preferences change, which is useful for <b>AcDisplay</b>, but useless for <b>HeadsUp</b>.
      */
-    private static final boolean KEEP_GLOBAL_LIST = true;
+    private static final boolean KEEP_GLOBAL_LIST = true || Device.hasLollipopApi(); // required on LP
 
     /**
      * {@code true} to filter the noisy flow of same notifications,
