@@ -45,6 +45,7 @@ import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.smiley.SmileyParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Artem Chepurnoy
@@ -80,7 +81,7 @@ public abstract class OpenNotification implements
 
     /**
      * Notification visibility: Show this notification in its entirety on all lockscreens.
-     *
+     * <p/>
      * {@see #getVisibility()}
      */
     public static final int VISIBILITY_PUBLIC = 1;
@@ -88,14 +89,14 @@ public abstract class OpenNotification implements
     /**
      * Notification visibility: Show this notification on all lockscreens, but conceal sensitive or
      * private information on secure lockscreens.
-     *
+     * <p/>
      * {@see #getVisibility()}
      */
     public static final int VISIBILITY_PRIVATE = 0;
 
     /**
      * Notification visibility: Do not reveal any part of this notification on a secure lockscreen.
-     *
+     * <p/>
      * {@see #getVisibility()}
      */
     public static final int VISIBILITY_SECRET = -1;
@@ -273,15 +274,15 @@ public abstract class OpenNotification implements
      * Sphere of visibility of this notification, which affects how and when the SystemUI reveals
      * the notification's presence and contents in untrusted situations (namely, on the secure
      * lockscreen).
-     *
+     * <p/>
      * The default level, {@link #VISIBILITY_PRIVATE}, behaves exactly as notifications have always
      * done on Android: The notification's {@link #getIcon()} (if available) are
      * shown in all situations, but the contents are only available if the device is unlocked for
      * the appropriate user.
-     *
+     * <p/>
      * A more permissive policy can be expressed by {@link #VISIBILITY_PUBLIC}; such a notification
      * can be read even in an "insecure" context (that is, above a secure lockscreen).
-     *
+     * <p/>
      * Finally, a notification can be made {@link #VISIBILITY_SECRET}, which will suppress its icon
      * and ticker until the user has bypassed the lockscreen.
      */
@@ -479,7 +480,7 @@ public abstract class OpenNotification implements
      * @see #setRead(boolean)
      */
     public void markAsRead() {
-        NotificationPresenter.getInstance().setNotificationRead(this, true);
+        setRead(true);
     }
 
     /**
@@ -490,6 +491,10 @@ public abstract class OpenNotification implements
      * @see #markAsRead()
      */
     void setRead(boolean isRead) {
+        List<OpenNotification> list = getGroupNotifications();
+        if (list != null) {
+            for (OpenNotification n : list) n.setRead(isRead);
+        }
         if (mRead == (mRead = isRead)) return;
         notifyListeners(EVENT_READ);
     }
@@ -565,6 +570,16 @@ public abstract class OpenNotification implements
 
     @Nullable
     public String getGroupKey() {
+        return null;
+    }
+
+    /**
+     * @return the list of notifications of this group (without its summary)
+     * @see #isGroupChild()
+     * @see #isGroupSummary()
+     */
+    @Nullable
+    public List<OpenNotification> getGroupNotifications() {
         return null;
     }
 

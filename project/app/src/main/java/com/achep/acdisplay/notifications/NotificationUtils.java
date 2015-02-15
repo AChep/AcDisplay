@@ -19,6 +19,7 @@
 package com.achep.acdisplay.notifications;
 
 import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -42,6 +43,15 @@ import com.achep.base.utils.Operator;
 public class NotificationUtils {
 
     private static final String TAG = "NotificationUtils";
+
+    /**
+     * Return whether the keyguard requires a password to unlock and may
+     * have any privacy restrictions.
+     */
+    public static boolean isSecure(@NonNull Context context) {
+        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        return km.isKeyguardSecure() && km.isKeyguardLocked();
+    }
 
     /**
      * Imitates a click on given notification: launches content intent and

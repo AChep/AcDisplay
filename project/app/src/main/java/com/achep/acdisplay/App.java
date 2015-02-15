@@ -22,6 +22,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.permissions.AccessManager;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
@@ -94,6 +95,12 @@ public class App extends Application {
         Config.getInstance().init(this);
         Blacklist.getInstance().init(this);
         SmileyParser.init(this);
+
+        // Init the main notification listener.
+        NotificationPresenter.getInstance().setOnNotificationPostedListener(
+                Config.getInstance().isEnabled()
+                        ? Presenter.getInstance()
+                        : null);
 
         super.onCreate();
 

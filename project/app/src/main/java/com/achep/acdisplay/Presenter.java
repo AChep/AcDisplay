@@ -33,6 +33,7 @@ import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
 import com.achep.acdisplay.ui.activities.AcDisplayActivity;
 import com.achep.acdisplay.ui.activities.KeyguardActivity;
+import com.achep.base.utils.Operator;
 import com.achep.base.utils.power.PowerUtils;
 import com.achep.base.utils.zen.ZenConsts;
 import com.achep.base.utils.zen.ZenUtils;
@@ -42,7 +43,7 @@ import static com.achep.base.Build.DEBUG;
 /**
  * Created by Artem on 07.03.14.
  */
-public class Presenter {
+public class Presenter implements NotificationPresenter.OnNotificationPostedListener {
 
     private static final String TAG = "AcDisplayPresenter";
     private static final String WAKE_LOCK_TAG = "AcDisplay launcher.";
@@ -65,6 +66,16 @@ public class Presenter {
             sPresenter = new Presenter();
         }
         return sPresenter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onNotificationPosted(@NonNull Context context,
+                                     @NonNull OpenNotification n, int flags) {
+        boolean silent = Operator.bitAnd(flags, NotificationPresenter.FLAG_SILENCE);
+        if (!silent) tryStartGuiCauseNotification(context, n);
     }
 
     //-- START-UP -------------------------------------------------------------

@@ -29,6 +29,7 @@ import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * @author Artem Chepurnoy
@@ -38,8 +39,12 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
 
     private static final String TAG = "OpenNotificationLp";
 
+    @NonNull
+    private final NotificationList mGroupNotifications;
+
     OpenNotificationLollipop(@NonNull StatusBarNotification sbn, @NonNull Notification n) {
         super(sbn, n);
+        mGroupNotifications = new NotificationList(null);
     }
 
     /**
@@ -58,6 +63,12 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
     @Nullable
     public String getGroupKey() {
         return getStatusBarNotification().getGroupKey();
+    }
+
+    @NonNull
+    @Override
+    public List<OpenNotification> getGroupNotifications() {
+        return mGroupNotifications;
     }
 
     /**

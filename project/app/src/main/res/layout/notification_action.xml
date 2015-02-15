@@ -18,7 +18,7 @@
   ~ MA  02110-1301, USA.
   -->
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/title"
+    android:id="@android:id/title"
     style="?acDisplayAction"
     android:layout_width="0dp"
     android:layout_height="48dp"

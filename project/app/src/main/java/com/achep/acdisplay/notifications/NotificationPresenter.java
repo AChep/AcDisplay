@@ -31,7 +31,6 @@ import android.util.Log;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.base.Device;
@@ -57,20 +56,14 @@ public class NotificationPresenter implements
     private static final String TAG = "NotificationPresenter";
 
     /**
-     * {@code true} to use an additional {@link com.achep.acdisplay.notifications.NotificationList list}
-     * to store all current notifications, not depending on the preferences, {@code false} to
-     * use local list only. Using global list allows to change local list in-time after
-     * any of preferences change, which is useful for <b>AcDisplay</b>, but useless for <b>HeadsUp</b>.
-     */
-    private static final boolean KEEP_GLOBAL_LIST = true || Device.hasLollipopApi(); // required on LP
-
-    /**
      * {@code true} to filter the noisy flow of same notifications,
      * {@code false} to handle all notifications' updates normally.
      */
     private static final boolean FILTER_NOISY_NOTIFICATIONS = true;
 
     private static final int FRESH_NOTIFICATION_EXPIRY_TIME = 4000; // 4 sec.
+
+    public static final int FLAG_SILENCE = 1;
 
     public static final int EVENT_BATH = 0;
     public static final int EVENT_POSTED = 1;
@@ -99,28 +92,22 @@ public class NotificationPresenter implements
     private static final int RESULT_SUCCESS = 1;
     private static final int RESULT_SPAM = -1;
 
-    private static final int FLAG_DONT_NOTIFY_FOLLOWERS = 1;
-    private static final int FLAG_DONT_WAKE_UP = 2;
-
     private static NotificationPresenter sNotificationPresenter;
 
     private final NotificationList mGList;
     private final NotificationList mLList;
-    private Set<String> mGroupsWithSummaries;
+    private final Set<String> mGroupsWithSummaries;
 
+    private OnNotificationPostedListener mMainListener;
     private final ArrayList<WeakReference<OnNotificationListChangedListener>> mListenersRefs;
     private final ArrayList<NotificationListChange> mFrozenEvents;
-    private boolean mFrozen;
+    private int mFreezeLevel;
 
     private final Config mConfig;
     private final Blacklist mBlacklist;
-    private final Presenter mPresenter;
 
     // Threading
     private final Handler mHandler;
-
-    // Threading
-    private final Formatter mFormatter;
 
     //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
 
@@ -160,7 +147,7 @@ public class NotificationPresenter implements
                     break;
                 case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
                     enabled = Operator.bitAnd((int) value, Config.DYNAMIC_BG_NOTIFICATION_MASK);
-                    for (OpenNotification notification : getLargeList().list()) {
+                    for (OpenNotification notification : mGList) {
                         if (enabled) {
                             notification.loadBackgroundAsync();
                         } else {
@@ -170,13 +157,9 @@ public class NotificationPresenter implements
                     break;
                 case Config.KEY_UI_EMOTICONS:
                     boolean b = (boolean) value;
-                    for (OpenNotification n : mGList.list()) {
+                    for (OpenNotification n : mGList) {
                         n.setEmoticonsEnabled(b);
                     }
-                    break;
-                case Config.KEY_PRIVACY:
-                    v = (int) value;
-                    mFormatter.setPrivacyMode(v);
                     break;
             }
         }
@@ -196,8 +179,8 @@ public class NotificationPresenter implements
             final int lower = a, higher = b;
             rebuildLocalList(new Comparator() {
                 @Override
-                public boolean needsRebuild(@NonNull OpenNotification osbn) {
-                    int priority = osbn.getNotification().priority;
+                public boolean needsRebuild(@NonNull OpenNotification n) {
+                    int priority = n.getNotification().priority;
                     return priority >= lower && priority <= higher;
                 }
             });
@@ -225,29 +208,24 @@ public class NotificationPresenter implements
         private void handlePackageVisibilityChanged(@NonNull final String packageName) {
             rebuildLocalList(new Comparator() {
                 @Override
-                public boolean needsRebuild(@NonNull OpenNotification osbn) {
-                    return osbn.getPackageName().equals(packageName);
+                public boolean needsRebuild(@NonNull OpenNotification n) {
+                    return n.getPackageName().equals(packageName);
                 }
             });
         }
     }
 
     private interface Comparator {
-        public boolean needsRebuild(@NonNull OpenNotification osbn);
+        public boolean needsRebuild(@NonNull OpenNotification n);
     }
 
     private void rebuildLocalList(@NonNull Comparator comparator) {
-        for (OpenNotification n : getLargeList().list()) {
+        for (OpenNotification n : mGList) {
             if (comparator.needsRebuild(n)) {
                 rebuildLocalList();
                 break;
             }
         }
-    }
-
-    @NonNull
-    private NotificationList getLargeList() {
-        return KEEP_GLOBAL_LIST ? mGList : mLList;
     }
 
     //-- LISTENERS ------------------------------------------------------------
@@ -257,7 +235,7 @@ public class NotificationPresenter implements
         /**
          * Callback that the list of notifications has changed.
          *
-         * @param osbn                  an instance of notification (must be non-null, if the
+         * @param n                     an instance of notification (must be non-null, if the
          *                              event is not a {@link #EVENT_BATH, {@code null} otherwise})
          * @param event                 event type:
          *                              {@link #EVENT_POSTED}, {@link #EVENT_REMOVED},
@@ -267,7 +245,7 @@ public class NotificationPresenter implements
          *                              otherwise.
          */
         public void onNotificationListChanged(@NonNull NotificationPresenter np,
-                                              OpenNotification osbn, int event,
+                                              OpenNotification n, int event,
                                               boolean isLastEventInSequence);
 
     }
@@ -303,6 +281,24 @@ public class NotificationPresenter implements
         Log.w(TAG, "Tried to unregister non-existent listener!");
     }
 
+    public interface OnNotificationPostedListener {
+
+        /**
+         * @see #postNotificationFromMain(android.content.Context, OpenNotification, int)
+         * @see #postNotification(android.content.Context, OpenNotification, int)
+         */
+        void onNotificationPosted(@NonNull Context context, @NonNull OpenNotification n, int flags);
+
+    }
+
+    /**
+     * @see #registerListener(OnNotificationListChangedListener)
+     * @see #unregisterListener(OnNotificationListChangedListener)
+     */
+    public void setOnNotificationPostedListener(@Nullable OnNotificationPostedListener listener) {
+        mMainListener = listener;
+    }
+
     //-- MAIN -----------------------------------------------------------------
 
     private NotificationPresenter() {
@@ -312,7 +308,6 @@ public class NotificationPresenter implements
         mLList = new NotificationList(this);
         mGroupsWithSummaries = new HashSet<>();
         mHandler = new Handler(Looper.getMainLooper());
-        mFormatter = new Formatter();
 
         if (!Device.hasJellyBeanMR2Api()) { // pre 4.3 version
             mGList.setMaximumSize(5);
@@ -322,13 +317,10 @@ public class NotificationPresenter implements
         mConfig = Config.getInstance();
         mConfigListener = new ConfigListener(mConfig); // because of weak listeners
         mConfig.registerListener(mConfigListener);
-        mFormatter.setPrivacyMode(mConfig.getPrivacyMode());
 
         mBlacklistListener = new BlacklistListener();
         mBlacklist = Blacklist.getInstance();
         mBlacklist.registerListener(mBlacklistListener);
-
-        mPresenter = Presenter.getInstance();
     }
 
     @NonNull
@@ -364,8 +356,7 @@ public class NotificationPresenter implements
      * method.
      * </i></p>
      *
-     * @see #FLAG_DONT_NOTIFY_FOLLOWERS
-     * @see #FLAG_DONT_WAKE_UP
+     * @see #FLAG_SILENCE
      */
     void postNotification(
             @NonNull Context context,
@@ -378,9 +369,11 @@ public class NotificationPresenter implements
             return;
         }
 
+        freezeListeners();
+
         boolean globalValid = isValidForGlobal(n);
         boolean localValid = false;
-        boolean isGroupSummary = false;
+        boolean groupChild = false;
 
         // If notification will not be added to the
         // list there's no point of loading its data.
@@ -388,11 +381,43 @@ public class NotificationPresenter implements
             n.load(context);
 
             if (n.isGroupSummary()) {
-                isGroupSummary = true;
-
                 String groupKey = n.getGroupKey();
                 assert groupKey != null;
                 mGroupsWithSummaries.add(groupKey);
+
+                // Put all group's children to its summary
+                // notification.
+                for (int i = mGList.size() - 1; i >= 0; i--) {
+                    OpenNotification n2 = mGList.get(0);
+                    if (groupKey.equals(n2.getGroupKey())) {
+                        assert n.getGroupNotifications() != null;
+                        n.getGroupNotifications().add(n2);
+
+                        // Remove this notification from the global list.
+                        mGList.removeNotification(n2);
+                        mLList.removeNotification(n2);
+                    }
+                }
+            } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
+                // Artem Chepurnoy: Not sure if this may happen.
+                if (DEBUG) Log.d(TAG, "Adding a notification to an existent group.");
+
+                String groupKey = n.getGroupKey();
+                assert groupKey != null;
+                for (OpenNotification n2 : mGList) {
+                    if (groupKey.equals(n2.getGroupKey())) {
+                        Check.getInstance().isTrue(n2.isGroupSummary());
+
+                        groupChild = true;
+
+                        assert n2.getGroupNotifications() != null;
+                        n2.getGroupNotifications().add(n);
+                        notifyListeners(n2, EVENT_CHANGED);
+                        break;
+                    }
+                }
+
+                Check.getInstance().isTrue(groupChild);
             }
 
             Config config = Config.getInstance();
@@ -404,27 +429,25 @@ public class NotificationPresenter implements
                     Config.DYNAMIC_BG_NOTIFICATION_MASK))
                 n.loadBackgroundAsync();
 
-            localValid = isValidForLocal(n);
+            if (groupChild) {
+                globalValid = false;
+                // I assume that 'localValid' if
+                // 'False' here.
+            } else {
+                localValid = isValidForLocal(n);
+            }
         }
 
-        // Extract flags.
-        boolean flagIgnoreFollowers = Operator.bitAnd(
-                flags, FLAG_DONT_NOTIFY_FOLLOWERS);
-        boolean flagWakeUp = !Operator.bitAnd(
-                flags, FLAG_DONT_WAKE_UP);
-
-        freezeListeners(); // we should handle the event first
-        if (localValid && isGroupSummary) rebuildLocalList();
-        if (KEEP_GLOBAL_LIST) mGList.pushOrRemove(n, globalValid, flagIgnoreFollowers);
-        int result = mLList.pushOrRemove(n, localValid, flagIgnoreFollowers);
-
-        if (flagWakeUp && result == RESULT_SUCCESS) {
-            // Try start gui
-            mPresenter.tryStartGuiCauseNotification(context, n);
+        mGList.pushOrRemoveNotification(n, globalValid);
+        int result = mLList.pushOrRemoveNotification(n, localValid);
+        if (localValid && result == RESULT_SUCCESS && mMainListener != null) {
+            if (DEBUG) Log.d(TAG, "Notification posted: notifying the main listener.");
+            mMainListener.onNotificationPosted(context, n, flags);
         }
 
         // Release listeners and send all pending
         // events.
+        if (Operator.bitAnd(flags, FLAG_SILENCE)) mFrozenEvents.clear();
         meltListeners();
     }
 
@@ -445,30 +468,17 @@ public class NotificationPresenter implements
      * this event to followers. Calling his method will not
      * remove notification from system!
      */
-    @Deprecated
     public void removeNotification(@NonNull OpenNotification n) {
         Check.getInstance().isInMainThread();
-
-        freezeListeners();
-        if (KEEP_GLOBAL_LIST) mGList.remove(n);
-        mLList.remove(n);
 
         if (n.isGroupSummary()) {
             String groupKey = n.getGroupKey();
             assert groupKey != null;
             mGroupsWithSummaries.remove(groupKey);
-
-            // Remove the whole group.
-            int size = getLargeList().list().size();
-            for (int i = size - 1; i >= 0; i--) {
-                OpenNotification n2 = getLargeList().list().get(i);
-                if (groupKey.equals(n2.getGroupKey())) {
-                    if (KEEP_GLOBAL_LIST) mGList.remove(n2);
-                    mLList.remove(n2);
-                }
-            }
         }
-        meltListeners();
+
+        mGList.removeNotification(n);
+        mLList.removeNotification(n);
     }
 
     /**
@@ -483,19 +493,18 @@ public class NotificationPresenter implements
 
         // Remove not valid notifications
         // from local list.
-        ArrayList<OpenNotification> list = mLList.list();
-        for (int i = 0; i < list.size(); i++) {
-            OpenNotification n = list.get(i);
+        for (int i = 0; i < mLList.size(); i++) {
+            OpenNotification n = mLList.get(i);
             if (!isValidForLocal(n)) {
-                list.remove(i--);
+                mLList.remove(i--);
                 changes.add(new NotificationListChange(EVENT_REMOVED, n));
             }
         }
 
         // Add newly valid notifications to local list.
-        for (OpenNotification n : mGList.list()) {
-            if (isValidForLocal(n) && mLList.indexOf(n) == -1) {
-                list.add(n);
+        for (OpenNotification n : mGList) {
+            if (isValidForLocal(n) && mLList.indexOfNotification(n) == -1) {
+                mLList.add(n);
                 changes.add(new NotificationListChange(EVENT_POSTED, n));
             }
         }
@@ -506,11 +515,6 @@ public class NotificationPresenter implements
         } else if (size > 0) {
             notifyListeners(changes);
         }
-    }
-
-    @NonNull
-    public Formatter getFormatter() {
-        return mFormatter;
     }
 
     @Nullable
@@ -525,19 +529,25 @@ public class NotificationPresenter implements
 
     @NonNull
     public ArrayList<OpenNotification> getList() {
-        return mLList.list();
+        return mLList;
     }
 
+    /**
+     * @return the number of notifications in local list of notifications.
+     */
     public int size() {
         return getList().size();
     }
 
     public boolean isEmpty() {
-        return size() == 0;
+        return getList().isEmpty();
     }
 
     //-- LOCAL LIST'S EVENTS --------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     // Not an enter point, should not be synchronized.
     public int onNotificationAdded(@NonNull OpenNotification n) {
@@ -545,6 +555,9 @@ public class NotificationPresenter implements
         return RESULT_SUCCESS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     // Not an enter point, should not be synchronized.
     public int onNotificationChanged(@NonNull OpenNotification n, @NonNull OpenNotification old) {
@@ -563,7 +576,7 @@ public class NotificationPresenter implements
                 && TextUtils.equals(n.infoText, old.infoText)) {
             // Technically notification was changed, but it was a fault
             // of dumb developer. Mark notification as read, if old one was.
-            setNotificationRead(n, old.isRead());
+            n.setRead(old.isRead());
 
             if (!n.isMine()) {
                 notifyListeners(n, EVENT_CHANGED_SPAM);
@@ -575,6 +588,9 @@ public class NotificationPresenter implements
         return RESULT_SUCCESS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     // Not an enter point, should not be synchronized.
     public int onNotificationRemoved(@NonNull OpenNotification n) {
@@ -604,7 +620,7 @@ public class NotificationPresenter implements
      * @see #meltListeners()
      */
     private void freezeListeners() {
-        mFrozen = true;
+        mFreezeLevel++;
     }
 
     /**
@@ -613,9 +629,11 @@ public class NotificationPresenter implements
      * @see #freezeListeners()
      */
     private void meltListeners() {
-        mFrozen = false;
-        notifyListeners(mFrozenEvents);
-        mFrozenEvents.clear();
+        Check.getInstance().isTrue(mFreezeLevel > 0);
+        if (--mFreezeLevel == 0) {
+            notifyListeners(mFrozenEvents);
+            mFrozenEvents.clear();
+        }
     }
 
     private void notifyListeners(@Nullable OpenNotification n, int event) {
@@ -626,7 +644,7 @@ public class NotificationPresenter implements
                                  boolean isLastEventInSequence) {
         Check.getInstance().isInMainThread();
 
-        if (mFrozen) {
+        if (mFreezeLevel > 0) {
             if (mFrozenEvents.size() >= 1 && mFrozenEvents.get(0).event == EVENT_BATH) return;
             if (event == EVENT_BATH) mFrozenEvents.clear();
             mFrozenEvents.add(new NotificationListChange(event, n));
@@ -683,11 +701,6 @@ public class NotificationPresenter implements
             return false;
         }
 
-        Check.getInstance().isTrue(Device.hasLollipopApi() || !notification.isGroupChild());
-        if (notification.isGroupChild() && mGroupsWithSummaries.contains(notification.getGroupKey())) {
-            return false;
-        }
-
         // Do not allow notifications with no content.
         return !(TextUtils.isEmpty(notification.titleText)
                 && TextUtils.isEmpty(notification.titleBigText)
@@ -703,20 +716,6 @@ public class NotificationPresenter implements
         return true;
     }
 
-    //-- MARK-AS-READ ---------------------------------------------------------
-
-    void setNotificationRead(@NonNull OpenNotification notification, boolean isRead) {
-        notification.setRead(isRead);
-        if (notification.isGroupSummary()) {
-            String key = notification.getGroupKey();
-            assert key != null;
-            for (OpenNotification n : mGList.list()) {
-                if (key.equals(n.getGroupKey())) n.setRead(isRead);
-            }
-        }
-        rebuildLocalList();
-    }
-
     //-- INITIALIZING ---------------------------------------------------------
 
     void init(final @NonNull Context context,
@@ -730,7 +729,7 @@ public class NotificationPresenter implements
                 if (DEBUG) Log.d(TAG, "Initializing the notifications list...");
                 for (StatusBarNotification sbn : activeNotifications) {
                     OpenNotification n = OpenNotification.newInstance(sbn);
-                    postNotification(context, n, FLAG_DONT_NOTIFY_FOLLOWERS | FLAG_DONT_WAKE_UP);
+                    postNotification(context, n, FLAG_SILENCE);
                 }
 
                 notifyListeners(null, EVENT_BATH);
@@ -754,10 +753,9 @@ public class NotificationPresenter implements
                 + notifyListeners);
 
         mGroupsWithSummaries.clear();
-        mGList.list().clear();
-        mLList.list().clear();
+        mGList.clear();
+        mLList.clear();
         if (notifyListeners) notifyListeners(null, EVENT_BATH);
     }
 
 }
-

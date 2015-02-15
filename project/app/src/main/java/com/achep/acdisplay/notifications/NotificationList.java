@@ -28,22 +28,18 @@ import java.util.ArrayList;
  * an ability to easily add / replace / remove item from the list.
  *
  * @author Artem Chepurnoy
- * @see NotificationUtils#hasIdenticalIds(OpenNotification, OpenNotification)
  */
-final class NotificationList {
+final class NotificationList extends ArrayList<OpenNotification> {
 
     /**
-     * Default return value of {@link #push(OpenNotification)}
-     * or {@link #remove(OpenNotification)} methods.
+     * Default return value of {@link #pushNotification(OpenNotification)}
+     * or {@link #removeNotification(OpenNotification)} methods.
      */
     private static final int RESULT_DEFAULT = 0;
 
     private static final int EVENT_ADDED = 0;
     private static final int EVENT_CHANGED = 1;
     private static final int EVENT_REMOVED = 2;
-
-    @NonNull
-    private final ArrayList<OpenNotification> mList;
 
     @Nullable
     private OnNotificationListChangedListener mListener;
@@ -91,7 +87,6 @@ final class NotificationList {
      */
     public NotificationList(@Nullable OnNotificationListChangedListener listener) {
         mListener = listener;
-        mList = new ArrayList<>(10);
     }
 
     /**
@@ -107,24 +102,8 @@ final class NotificationList {
         mMaximumSize = maxSize;
     }
 
-    public int pushOrRemove(OpenNotification n, boolean push, boolean silently) {
-        if (silently) {
-            // Hide listener.
-            OnNotificationListChangedListener l = mListener;
-            mListener = null;
-
-            // Perform action.
-            pushOrRemove(n, push);
-
-            // Restore listener.
-            mListener = l;
-            return RESULT_DEFAULT;
-        }
-        return pushOrRemove(n, push);
-    }
-
-    int pushOrRemove(OpenNotification n, boolean push) {
-        return push ? push(n) : remove(n);
+    int pushOrRemoveNotification(@NonNull OpenNotification n, boolean push) {
+        return push ? pushNotification(n) : removeNotification(n);
     }
 
     /**
@@ -133,21 +112,21 @@ final class NotificationList {
      * @return {@link NotificationList.OnNotificationListChangedListener#onNotificationAdded(OpenNotification n)} or
      * {@link NotificationList.OnNotificationListChangedListener#onNotificationChanged(OpenNotification n, OpenNotification old)}
      */
-    int push(OpenNotification n) {
-        final int index = indexOf(n);
+    int pushNotification(@NonNull OpenNotification n) {
+        final int index = indexOfNotification(n);
         if (index == -1) {
-            if (mList.size() > mMaximumSize) {
-                remove(mList.get(0));
+            if (size() > mMaximumSize) {
+                remove(get(0));
             }
 
             // Add new notification to the list.
-            mList.add(n);
+            add(n);
             return notifyListener(EVENT_ADDED, n, null);
         } else {
             // Replace old notification with new one.
-            OpenNotification old = mList.get(index);
-            mList.remove(index);
-            mList.add(index, n);
+            OpenNotification old = get(index);
+            remove(index);
+            add(index, n);
             return notifyListener(EVENT_CHANGED, n, old);
         }
     }
@@ -156,37 +135,26 @@ final class NotificationList {
      * Removes notification from the list.
      *
      * @return {@link NotificationList.OnNotificationListChangedListener#onNotificationRemoved(OpenNotification n)}
-     * @see #push(OpenNotification n)
+     * @see #pushNotification(OpenNotification n)
      */
-    public int remove(OpenNotification n) {
-        final int index = indexOf(n);
+    int removeNotification(@NonNull OpenNotification n) {
+        final int index = indexOfNotification(n);
         if (index != -1) {
-            OpenNotification old = mList.get(index);
-            mList.remove(index);
+            OpenNotification old = get(index);
+            remove(index);
             return notifyListener(EVENT_REMOVED, old, null);
         }
         return RESULT_DEFAULT;
     }
 
     /**
-     * <b>Do not operate on this list!</b>
-     * Use this only for searching and getting notifications.
-     *
-     * @return link to primitive list of notifications.
+     * @return the position of given {@link OpenNotification} in list, or {@code -1} if not found.
+     * @see NotificationUtils#hasIdenticalIds(OpenNotification, OpenNotification)
      */
-    @NonNull
-    public ArrayList<OpenNotification> list() {
-        return mList;
-    }
-
-    /**
-     * @return the position of given {@link OpenNotification} in
-     * {@link #mList list}, or {@code -1} if not found.
-     */
-    public int indexOf(@NonNull OpenNotification n) {
-        final int size = mList.size();
+    int indexOfNotification(@NonNull OpenNotification n) {
+        final int size = size();
         for (int i = 0; i < size; i++) {
-            if (NotificationUtils.hasIdenticalIds(n, mList.get(i))) {
+            if (NotificationUtils.hasIdenticalIds(n, get(i))) {
                 return i;
             }
         }
@@ -200,7 +168,7 @@ final class NotificationList {
      * @see #EVENT_CHANGED
      * @see #EVENT_REMOVED
      */
-    private int notifyListener(int event, @NonNull OpenNotification n, OpenNotification old) {
+    private int notifyListener(final int event, @NonNull OpenNotification n, OpenNotification old) {
         if (mListener == null) return RESULT_DEFAULT;
         switch (event) {
             case EVENT_ADDED:

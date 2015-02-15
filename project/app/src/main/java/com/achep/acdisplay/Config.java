@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.plugins.powertoggles.ToggleReceiver;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
@@ -337,6 +338,9 @@ public final class Config extends ConfigBase {
                 break;
             case KEY_ENABLED:
                 ToggleReceiver.sendStateUpdate(ToggleReceiver.class, mEnabled, getContext());
+                NotificationPresenter.getInstance().setOnNotificationPostedListener(isEnabled()
+                        ? Presenter.getInstance()
+                        : null);
             case KEY_ONLY_WHILE_CHARGING:
                 ActiveModeService.handleState(getContext());
                 KeyguardService.handleState(getContext());
