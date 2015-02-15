@@ -190,7 +190,7 @@ public class NotificationUiHelper {
 
     //-- TITLE ----------------------------------------------------------------
 
-    private void updateTitle() {
+    protected void updateTitle() {
         if (!mResumed) {
             mPendingUpdates |= PENDING_UPDATE_TITLE;
             return;
@@ -238,7 +238,7 @@ public class NotificationUiHelper {
 
     //-- TIMESTAMP ------------------------------------------------------------
 
-    private void updateTimestamp() {
+    protected void updateTimestamp() {
         if (!mResumed) {
             mPendingUpdates |= PENDING_UPDATE_TIMESTAMP;
             return;
@@ -259,7 +259,7 @@ public class NotificationUiHelper {
 
     //-- SUBTITLE -------------------------------------------------------------
 
-    private void updateSubtitle() {
+    protected void updateSubtitle() {
         if (!mResumed) {
             mPendingUpdates |= PENDING_UPDATE_SUBTITLE;
             return;
@@ -280,7 +280,7 @@ public class NotificationUiHelper {
 
     //-- MESSAGE --------------------------------------------------------------
 
-    private void updateMessage() {
+    protected void updateMessage() {
         if (!mResumed) {
             mPendingUpdates |= PENDING_UPDATE_MESSAGE;
             return;
@@ -449,7 +449,7 @@ public class NotificationUiHelper {
 
     //-- ACTIONS --------------------------------------------------------------
 
-    private void updateActions() {
+    protected void updateActions() {
         if (!mResumed) {
             mPendingUpdates |= PENDING_UPDATE_ACTIONS;
             return;
