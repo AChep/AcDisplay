@@ -21,6 +21,7 @@ package com.achep.acdisplay.notifications;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
@@ -57,7 +58,10 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
 
     @Override
     protected void loadBrandColor(@NonNull Context context) {
-        setBrandColor(getNotification().color | 0xFF000000);
+        int color = getNotification().color;
+        if (color == Color.BLACK || color == Color.WHITE) {
+            super.loadBrandColor(context);
+        } else setBrandColor(getNotification().color | 0xFF000000);
     }
 
     @Nullable
