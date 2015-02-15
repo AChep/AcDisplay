@@ -404,7 +404,10 @@ public abstract class OpenNotification implements
         } catch (PackageManager.NameNotFoundException e) { /* do nothing */ }
     }
 
-    public int getBrandColor() {
+    public int getBrandColor(int defaultColor) {
+        if (mBrandColor == Color.BLACK || mBrandColor == Color.WHITE) {
+            return defaultColor;
+        }
         return mBrandColor;
     }
 
