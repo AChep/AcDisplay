@@ -35,6 +35,7 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.Build;
+import com.achep.base.Device;
 import com.achep.base.interfaces.IOnLowMemory;
 
 import java.util.HashMap;
@@ -204,17 +205,17 @@ public class BathService extends Service {
     private Notification buildNotification() {
         boolean empty = true;
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         String divider = getString(R.string.settings_multi_list_divider);
         for (ChildService child : mMap.values()) {
             if (!empty) {
-                builder.append(divider);
+                sb.append(divider);
             }
-            builder.append(child.getLabel());
+            sb.append(child.getLabel());
             empty = false;
         }
 
-        String contentText = builder.toString();
+        String contentText = sb.toString();
         if (contentText.length() > 0) {
             contentText = contentText.charAt(0) + contentText.substring(1).toLowerCase();
         }
@@ -222,13 +223,14 @@ public class BathService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 App.ID_NOTIFY_BATH, new Intent(this, MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        return new Notification.Builder(this)
+        Notification.Builder builder = new Notification.Builder(this)
                 .setContentTitle(getString(R.string.service_bath))
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.stat_acdisplay)
-                .setPriority(Notification.PRIORITY_MIN)
-                .build();
+                .setPriority(Notification.PRIORITY_MIN);
+        if (Device.hasLollipopApi()) builder.setColor(App.ACCENT_COLOR);
+        return builder.build();
     }
 
     @Override

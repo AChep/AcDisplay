@@ -32,6 +32,7 @@ import android.support.annotation.NonNull;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.MediaService;
+import com.achep.base.Device;
 
 /**
  * Created by Artem Chepurnoy on 15.01.2015.
@@ -61,6 +62,7 @@ class NotificationListenerJellyBeanMR2 extends NotificationListener {
                         .setSmallIcon(R.drawable.stat_notify)
                         .setPriority(Notification.PRIORITY_MIN)
                         .setAutoCancel(true);
+                if (Device.hasLollipopApi()) builder.setColor(App.ACCENT_COLOR);
 
                 String name = Context.NOTIFICATION_SERVICE;
                 NotificationManager nm = (NotificationManager) service.getSystemService(name);

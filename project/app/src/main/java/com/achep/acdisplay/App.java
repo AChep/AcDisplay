@@ -27,6 +27,7 @@ import com.achep.acdisplay.permissions.AccessManager;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
+import com.achep.base.Device;
 import com.achep.base.billing.CheckoutInternal;
 import com.achep.base.utils.smiley.SmileyParser;
 
@@ -42,6 +43,8 @@ import java.util.Arrays;
 public class App extends Application {
 
     private static final String TAG = "App";
+
+    public static final int ACCENT_COLOR = 0xFF607D8B;
 
     public static final int ID_NOTIFY_INIT = 30;
     public static final int ID_NOTIFY_TEST = 40;

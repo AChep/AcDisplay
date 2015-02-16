@@ -43,6 +43,7 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
+import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.permissions.Permission;
 import com.achep.base.ui.SwitchBarPermissible;
@@ -75,6 +76,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
                 .setAutoCancel(true)
                 .setStyle(bts)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        if (Device.hasLollipopApi()) builder.setColor(App.ACCENT_COLOR);
 
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(id, builder.build());
