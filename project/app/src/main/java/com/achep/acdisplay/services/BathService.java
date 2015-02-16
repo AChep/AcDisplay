@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,7 +36,6 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.Build;
-import com.achep.base.Device;
 import com.achep.base.interfaces.IOnLowMemory;
 
 import java.util.HashMap;
@@ -223,13 +223,13 @@ public class BathService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 App.ID_NOTIFY_BATH, new Intent(this, MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.Builder builder = new Notification.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.service_bath))
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.stat_acdisplay)
-                .setPriority(Notification.PRIORITY_MIN);
-        if (Device.hasLollipopApi()) builder.setColor(App.ACCENT_COLOR);
+                .setPriority(Notification.PRIORITY_MIN)
+                .setColor(App.ACCENT_COLOR);
         return builder.build();
     }
 

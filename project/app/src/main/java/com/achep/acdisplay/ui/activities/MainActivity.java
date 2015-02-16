@@ -18,7 +18,6 @@
  */
 package com.achep.acdisplay.ui.activities;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
@@ -33,6 +32,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -43,7 +43,6 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.DialogHelper;
 import com.achep.acdisplay.R;
-import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.permissions.Permission;
 import com.achep.base.ui.SwitchBarPermissible;
@@ -65,9 +64,9 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
                 id, new Intent(context, MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.BigTextStyle bts = new Notification.BigTextStyle()
+        NotificationCompat.BigTextStyle bts = new NotificationCompat.BigTextStyle()
                 .bigText(res.getString(R.string.notification_test_message_large));
-        Notification.Builder builder = new Notification.Builder(context)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentTitle(res.getString(R.string.app_name))
                 .setContentText(res.getString(R.string.notification_test_message))
                 .setContentIntent(pendingIntent)
@@ -75,8 +74,8 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
                 .setSmallIcon(R.drawable.stat_acdisplay)
                 .setAutoCancel(true)
                 .setStyle(bts)
+                .setColor(App.ACCENT_COLOR)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        if (Device.hasLollipopApi()) builder.setColor(App.ACCENT_COLOR);
 
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(id, builder.build());

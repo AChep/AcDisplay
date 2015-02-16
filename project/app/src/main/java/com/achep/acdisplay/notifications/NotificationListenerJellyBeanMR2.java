@@ -28,11 +28,11 @@ import android.os.Handler;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.MediaService;
-import com.achep.base.Device;
 
 /**
  * Created by Artem Chepurnoy on 15.01.2015.
@@ -56,13 +56,13 @@ class NotificationListenerJellyBeanMR2 extends NotificationListener {
                 if (service == null) return;
 
                 Resources res = service.getResources();
-                Notification.Builder builder = new Notification.Builder(service)
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(service)
                         .setContentTitle(res.getString(R.string.app_name))
                         .setContentText(res.getString(R.string.notification_init_text))
                         .setSmallIcon(R.drawable.stat_notify)
                         .setPriority(Notification.PRIORITY_MIN)
-                        .setAutoCancel(true);
-                if (Device.hasLollipopApi()) builder.setColor(App.ACCENT_COLOR);
+                        .setAutoCancel(true)
+                        .setColor(App.ACCENT_COLOR);
 
                 String name = Context.NOTIFICATION_SERVICE;
                 NotificationManager nm = (NotificationManager) service.getSystemService(name);
