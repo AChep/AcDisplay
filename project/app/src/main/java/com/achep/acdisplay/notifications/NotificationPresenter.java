@@ -475,6 +475,17 @@ public class NotificationPresenter implements
             String groupKey = n.getGroupKey();
             assert groupKey != null;
             mGroupsWithSummaries.remove(groupKey);
+        } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
+            String groupKey = n.getGroupKey();
+            assert groupKey != null;
+            for (OpenNotification n2 : mGList) {
+                if (groupKey.equals(n2.getGroupKey())) {
+                    Check.getInstance().isTrue(n2.isGroupSummary());
+                    assert n2.getGroupNotifications() != null;
+                    n2.getGroupNotifications().remove(n);
+                    break;
+                }
+            }
         }
 
         mGList.removeNotification(n);
