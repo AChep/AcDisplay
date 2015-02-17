@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import com.achep.base.billing.CheckoutInternal;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.tests.Check;
+import com.drivemode.android.typeface.TypefaceHelper;
 
 import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.ProductTypes;
@@ -90,6 +91,8 @@ public class AppHeap implements IOnLowMemory {
     public void init(@NonNull Application application) {
         mCheckoutInternal = new CheckoutInternal(application, sProducts);
         mApplication = application;
+
+        TypefaceHelper.initialize(application);
     }
 
     /**

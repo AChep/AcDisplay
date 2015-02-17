@@ -28,6 +28,7 @@ import android.util.Log;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.Device;
+import com.drivemode.android.typeface.TypefaceHelper;
 
 /**
  * Created by Artem on 29.01.14.
@@ -59,11 +60,7 @@ public class TextView extends android.widget.TextView {
 
                 if (!Device.hasTargetApi(maximumSdkVersion)) {
                     if (fontName.indexOf('.') != -1) fontName += ".ttf";
-                    try {
-                        setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/" + fontName));
-                    } catch (Exception ignored) {
-                        Log.w(TAG, "Failed to create the typeface!");
-                    }
+                    TypefaceHelper.getInstance().setTypeface(this, "fonts/" + fontName);
                 }
             }
         }
