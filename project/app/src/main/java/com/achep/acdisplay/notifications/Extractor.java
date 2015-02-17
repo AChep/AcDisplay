@@ -24,7 +24,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.CharacterStyle;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +60,23 @@ final class Extractor {
         return string
                 .replaceAll("(\\s+$|^\\s+)", "")
                 .replaceAll("\n+", "\n");
+    }
+
+    /**
+     * Removes both {@link ForegroundColorSpan} and {@link BackgroundColorSpan} from given string.
+     */
+    @Nullable
+    private static CharSequence removeColorSpans(@Nullable CharSequence cs) {
+        if (cs == null) return null;
+        if (cs instanceof Spannable) {
+            CharacterStyle[] styles;
+            Spannable spanned = (Spannable) cs;
+            styles = spanned.getSpans(0, spanned.length(), ForegroundColorSpan.class);
+            for (CharacterStyle style : styles) spanned.removeSpan(style);
+            styles = spanned.getSpans(0, spanned.length(), BackgroundColorSpan.class);
+            for (CharacterStyle style : styles) spanned.removeSpan(style);
+        }
+        return cs;
     }
 
     @SuppressLint("InlinedApi")
@@ -101,7 +122,7 @@ final class Extractor {
             for (CharSequence msg : lines) {
                 msg = removeSpaces(msg);
                 if (!TextUtils.isEmpty(msg)) {
-                    list.add(msg);
+                    list.add(removeColorSpans(msg));
                 }
             }
 
@@ -127,8 +148,8 @@ final class Extractor {
         n.infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT);
         n.subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT);
         n.summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT);
-        n.messageBigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT);
-        n.messageText = extras.getCharSequence(Notification.EXTRA_TEXT);
+        n.messageBigText = removeColorSpans(extras.getCharSequence(Notification.EXTRA_BIG_TEXT));
+        n.messageText = removeColorSpans(extras.getCharSequence(Notification.EXTRA_TEXT));
 
         CharSequence[] lines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
         n.messageTextLines = doIt(lines);
