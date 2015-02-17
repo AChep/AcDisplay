@@ -139,42 +139,47 @@ public class NotificationUiHelper {
         if (mOpenNotification != null) mOpenNotification.unregisterListener(mListener);
     }
 
+    protected boolean isSecret(int minVisibility, int privacyMask) {
+        final int privacyMode = Config.getInstance().getPrivacyMode();
+        return mOpenNotification.getVisibility() <= minVisibility
+                && Operator.bitAnd(privacyMode, privacyMask)
+                && NotificationUtils.isSecure(mContext);
+    }
+
     //-- LARGE ICON -----------------------------------------------------------
 
-    protected boolean updateLargeIcon() {
+    protected void updateLargeIcon() {
         if (!mResumed) {
             mPendingUpdates |= PENDING_UPDATE_LARGE_ICON;
-            return false;
+            return;
         }
         final ImageView largeIconImageView = mData.largeIconImageView;
-        if (largeIconImageView == null) return false;
+        if (largeIconImageView == null) return;
         if (mOpenNotification == null) {
             largeIconImageView.setImageDrawable(null);
-            largeIconImageView.setVisibility(View.INVISIBLE);
-            return false;
+            return;
         }
 
-        final int privacyMode = Config.getInstance().getPrivacyMode();
-        final boolean secret = mOpenNotification.getVisibility() <= OpenNotification.VISIBILITY_SECRET
-                && Operator.bitAnd(privacyMode, Config.PRIVACY_HIDE_CONTENT_MASK)
-                && NotificationUtils.isSecure(mContext);
+        final boolean secret = isLargeIconSecret();
 
         if (secret) {
             Drawable drawable = getAppIcon();
             if (drawable != null) {
                 largeIconImageView.setImageDrawable(drawable);
                 largeIconImageView.setVisibility(View.VISIBLE);
-                return true;
+                return;
             }
         }
 
-        boolean hasImage;
         Bitmap bitmap = (Bitmap) NullUtils.whileNotNull(
                 secret ? null : mOpenNotification.getNotification().largeIcon,
                 mOpenNotification.getIcon());
         largeIconImageView.setImageBitmap(bitmap);
-        ViewUtils.setVisible(largeIconImageView, hasImage = bitmap != null);
-        return hasImage;
+        ViewUtils.setVisible(largeIconImageView, bitmap != null);
+    }
+
+    protected final boolean isLargeIconSecret() {
+        return isSecret(OpenNotification.VISIBILITY_SECRET, Config.PRIVACY_HIDE_CONTENT_MASK);
     }
 
     @Nullable
@@ -203,10 +208,7 @@ public class NotificationUiHelper {
             return;
         }
 
-        final int privacyMode = Config.getInstance().getPrivacyMode();
-        final boolean secret = mOpenNotification.getVisibility() <= OpenNotification.VISIBILITY_SECRET
-                && Operator.bitAnd(privacyMode, Config.PRIVACY_HIDE_CONTENT_MASK)
-                && NotificationUtils.isSecure(mContext);
+        final boolean secret = isTitleSecret();
 
         CharSequence title;
         if (secret) {
@@ -223,6 +225,10 @@ public class NotificationUiHelper {
 
         titleTextView.setText(title);
         titleTextView.setVisibility(View.VISIBLE);
+    }
+
+    protected final boolean isTitleSecret() {
+        return isSecret(OpenNotification.VISIBILITY_SECRET, Config.PRIVACY_HIDE_CONTENT_MASK);
     }
 
     @Nullable
@@ -291,10 +297,7 @@ public class NotificationUiHelper {
             return;
         }
 
-        final int privacyMode = Config.getInstance().getPrivacyMode();
-        final boolean secret = mOpenNotification.getVisibility() < OpenNotification.VISIBILITY_PUBLIC
-                && Operator.bitAnd(privacyMode, Config.PRIVACY_HIDE_CONTENT_MASK)
-                && NotificationUtils.isSecure(mContext);
+        final boolean secret = isMessageSecret();
 
         // Get message text
         if (secret) {
@@ -330,6 +333,10 @@ public class NotificationUiHelper {
             rebuildMessageViews(message);
         }
 
+    }
+
+    protected final boolean isMessageSecret() {
+        return isSecret(OpenNotification.VISIBILITY_PRIVATE, Config.PRIVACY_HIDE_CONTENT_MASK);
     }
 
     private void rebuildMessageViews(@Nullable CharSequence message) {
@@ -460,12 +467,13 @@ public class NotificationUiHelper {
             return;
         }
 
-        final int privacyMode = Config.getInstance().getPrivacyMode();
-        final boolean secret = mOpenNotification.getVisibility() < OpenNotification.VISIBILITY_PUBLIC
-                && Operator.bitAnd(privacyMode, Config.PRIVACY_HIDE_ACTIONS_MASK)
-                && NotificationUtils.isSecure(mContext);
+        final boolean secret = isActionsSecret();
 
         rebuildActionViews(secret || !mData.big ? null : mOpenNotification.getActions());
+    }
+
+    protected final boolean isActionsSecret() {
+        return isSecret(OpenNotification.VISIBILITY_PRIVATE, Config.PRIVACY_HIDE_ACTIONS_MASK);
     }
 
     @SuppressLint("NewApi")
