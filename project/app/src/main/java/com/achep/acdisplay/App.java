@@ -27,15 +27,8 @@ import com.achep.acdisplay.permissions.AccessManager;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.base.Device;
-import com.achep.base.billing.CheckoutInternal;
+import com.achep.base.AppHeap;
 import com.achep.base.utils.smiley.SmileyParser;
-
-import org.solovyev.android.checkout.Checkout;
-import org.solovyev.android.checkout.ProductTypes;
-import org.solovyev.android.checkout.Products;
-
-import java.util.Arrays;
 
 /**
  * Created by Artem on 22.02.14.
@@ -63,25 +56,6 @@ public class App extends Application {
     public static final String ACTION_INTERNAL_PING_SENSORS = "PING_SENSORS";
 
     @NonNull
-    private static final Products sProducts = Products.create()
-            .add(ProductTypes.IN_APP, Arrays.asList(
-                    "donation_1",
-                    "donation_4",
-                    "donation_10",
-                    "donation_20",
-                    "donation_50",
-                    "donation_99"))
-            .add(ProductTypes.SUBSCRIPTION, Arrays.asList(""));
-
-    /**
-     * Application wide {@link org.solovyev.android.checkout.Checkout} instance
-     * (can be used anywhere in the app). This instance contains all available
-     * products in the app.
-     */
-    @NonNull
-    private final CheckoutInternal mCheckoutInternal = new CheckoutInternal(this, sProducts);
-
-    @NonNull
     private AccessManager mAccessManager;
 
     @NonNull
@@ -95,6 +69,7 @@ public class App extends Application {
     public void onCreate() {
         mAccessManager = new AccessManager(this);
 
+        AppHeap.getInstance().init(this);
         Config.getInstance().init(this);
         Blacklist.getInstance().init(this);
         SmileyParser.init(this);
@@ -120,21 +95,6 @@ public class App extends Application {
         Blacklist.getInstance().onLowMemory();
         mAccessManager.onLowMemory();
         super.onLowMemory();
-    }
-
-    @NonNull
-    public static App get() {
-        return instance;
-    }
-
-    @NonNull
-    public static Checkout getCheckout() {
-        return instance.mCheckoutInternal.getCheckout();
-    }
-
-    @NonNull
-    public static CheckoutInternal getCheckoutInternal() {
-        return instance.mCheckoutInternal;
     }
 
     @NonNull

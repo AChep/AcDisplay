@@ -23,7 +23,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.achep.acdisplay.App;
+import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.utils.FileUtils;
 import com.achep.base.utils.NetworkUtils;
@@ -168,7 +168,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
         @Override
         protected String[] doInBackground(String... urls) {
             String[] result = new String[urls.length];
-            if (!NetworkUtils.isOnline(App.get())) return result;
+            if (!NetworkUtils.isOnline(AppHeap.getContext())) return result;
             for (String url : urls) {
                 if (TextUtils.isEmpty(url)) continue;
 

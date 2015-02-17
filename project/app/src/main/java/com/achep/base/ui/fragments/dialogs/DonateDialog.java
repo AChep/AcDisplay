@@ -46,8 +46,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
+import com.achep.base.AppHeap;
 import com.achep.base.billing.Bitcoin;
 import com.achep.base.billing.PayPal;
 import com.achep.base.ui.DialogBuilder;
@@ -468,7 +468,7 @@ public class DonateDialog extends DialogFragment {
                 int price = Integer.parseInt(sku.id.substring(prefix.length()));
                 for (int i = 0; i < data.length; i += 2) {
                     if (price == data[i]) {
-                        Context context = App.get();
+                        Context context = AppHeap.getContext();
                         return context.getString(data[i + 1]);
                     }
                 }

@@ -24,7 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 
-import com.achep.acdisplay.App;
+import com.achep.base.AppHeap;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.power.PowerSaveDetector;
 
@@ -53,8 +53,8 @@ public abstract class ActivityBase extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (mCheckoutRequest) {
-            App.getCheckoutInternal().requestConnect();
-            mCheckout = Checkout.forActivity(this, App.getCheckout());
+            AppHeap.getCheckoutInternal().requestConnect();
+            mCheckout = Checkout.forActivity(this, AppHeap.getCheckout());
         }
         mPowerSaveDetector = PowerSaveDetector.newInstance(this);
         super.onCreate(savedInstanceState);
@@ -83,7 +83,7 @@ public abstract class ActivityBase extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         if (mCheckout != null) {
-            App.getCheckoutInternal().requestDisconnect();
+            AppHeap.getCheckoutInternal().requestDisconnect();
             mCheckout = null;
         }
         super.onDestroy();
