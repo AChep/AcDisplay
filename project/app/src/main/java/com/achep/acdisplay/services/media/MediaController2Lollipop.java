@@ -126,7 +126,7 @@ class MediaController2Lollipop extends MediaController2 {
     public void onStop() {
         if (mSessionListening) {
             mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
-            clearMediaController();
+            clearMediaController(true);
         }
         super.onStop();
     }
@@ -195,7 +195,7 @@ class MediaController2Lollipop extends MediaController2 {
     }
 
     private void switchMediaController(@NonNull MediaController controller) {
-        clearMediaController();
+        clearMediaController(false);
 
         mMediaController = controller;
         mMediaController.registerCallback(mCallback);
@@ -205,11 +205,15 @@ class MediaController2Lollipop extends MediaController2 {
         Log.i(TAG, "Switching to " + mMediaController.getPackageName() + " controller.");
     }
 
-    private void clearMediaController() {
+    private void clearMediaController(boolean clear) {
         if (mMediaController != null) {
             mMediaController.unregisterCallback(mCallback);
             mMediaController = null;
-            mMetadata.clear();
+
+            if (clear) {
+                updateMetadata(null);
+                updatePlaybackState(null);
+            }
         }
     }
 
