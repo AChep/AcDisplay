@@ -31,6 +31,8 @@ import com.achep.base.Device;
 
 import java.util.ArrayList;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Allows an app to interact with an ongoing media session. Media buttons and
  * other commands can be sent to the session. A callback may be registered to
@@ -144,11 +146,11 @@ public abstract class MediaController2 {
     }
 
     public void onStart() {
-        if (Build.DEBUG) Log.d(TAG, "Starting media controller: [" + toString() + "]");
+        if (DEBUG) Log.d(TAG, "Starting media controller: [" + toString() + "]");
     }
 
     public void onStop() {
-        if (Build.DEBUG) Log.d(TAG, "Stopping media controller: [" + toString() + "]");
+        if (DEBUG) Log.d(TAG, "Stopping media controller: [" + toString() + "]");
 
         mPlaybackState = PlaybackStateCompat.STATE_NONE;
     }

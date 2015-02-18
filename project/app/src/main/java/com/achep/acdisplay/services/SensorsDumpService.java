@@ -40,6 +40,8 @@ import com.achep.base.utils.power.PowerUtils;
 import java.io.File;
 import java.util.LinkedList;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Created by achep on 24.08.14.
  */
@@ -141,21 +143,21 @@ public class SensorsDumpService extends BathService.ChildService implements
         for (int type : mSensorTypes) {
             Sensor sensor = mSensorManager.getDefaultSensor(type);
             if (sensor != null) {
-                if (Build.DEBUG) Log.d(TAG, "Listening to " + sensor.getName() + " sensor...");
+                if (DEBUG) Log.d(TAG, "Listening to " + sensor.getName() + " sensor...");
                 mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_GAME);
             }
         }
     }
 
     private void stopListening() {
-        if (Build.DEBUG) Log.d(TAG, "Stopping listening...");
+        if (DEBUG) Log.d(TAG, "Stopping listening...");
         mSensorManager.unregisterListener(this);
         mHandler.removeCallbacksAndMessages(null);
     }
 
     private void dropToStorage() {
         synchronized (mEventList) {
-            if (Build.DEBUG) Log.d(TAG, "Dumping sensors data to file...");
+            if (DEBUG) Log.d(TAG, "Dumping sensors data to file...");
             if (mEventList.size() == 0) {
                 return;
             }

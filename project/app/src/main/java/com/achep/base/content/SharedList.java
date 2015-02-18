@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Simple list which automatically saves items to private storage and restores on initialize.
  * This may be useful for implementing blacklists or something fun.
@@ -297,7 +299,7 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> implements
             // This is completely useless if equality-checking
             // method had been implemented correctly (content truly equals).
             if (!isOverwriteAllowed(object)) {
-                if (Build.DEBUG) Log.w(TAG, "Trying to put an existing object to the shared list.");
+                if (DEBUG) Log.w(TAG, "Trying to put an existing object to the shared list.");
                 return null; // Do nothing.
             }
 

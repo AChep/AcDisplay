@@ -30,6 +30,8 @@ import com.achep.base.Build;
 
 import java.lang.ref.WeakReference;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Basing on results of gyroscope sensor it notifies when
  * {@link com.achep.acdisplay.ui.activities.AcDisplayActivity AcDisplay}
@@ -71,7 +73,7 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
 
     @Override
     public void onStart(@NonNull SensorManager sensorManager) {
-        if (Build.DEBUG) Log.d(TAG, "Starting gyroscope sensor...");
+        if (DEBUG) Log.d(TAG, "Starting gyroscope sensor...");
 
         Sensor accelerationSensor = sensorManager.getDefaultSensor(getType());
         sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_GAME);
@@ -79,7 +81,7 @@ public final class GyroscopeSensor extends ActiveModeSensor.Consuming implements
 
     @Override
     public void onStop() {
-        if (Build.DEBUG) Log.d(TAG, "Stopping gyroscope sensor...");
+        if (DEBUG) Log.d(TAG, "Stopping gyroscope sensor...");
 
         SensorManager sensorManager = getSensorManager();
         sensorManager.unregisterListener(this);

@@ -29,6 +29,8 @@ import com.squareup.seismic.ShakeDetector;
 
 import java.lang.ref.WeakReference;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Basing on results of accelerometer sensor it notifies when
  * {@link com.achep.acdisplay.ui.activities.AcDisplayActivity AcDisplay}
@@ -72,21 +74,21 @@ public final class AccelerometerSensor extends ActiveModeSensor.Consuming implem
 
     @Override
     public void onStart(@NonNull SensorManager sensorManager) {
-        if (Build.DEBUG) Log.d(TAG, "Starting accelerometer sensor...");
+        if (DEBUG) Log.d(TAG, "Starting accelerometer sensor...");
 
         mShakeDetector.start(sensorManager);
     }
 
     @Override
     public void onStop() {
-        if (Build.DEBUG) Log.d(TAG, "Stopping accelerometer sensor...");
+        if (DEBUG) Log.d(TAG, "Stopping accelerometer sensor...");
 
         mShakeDetector.stop();
     }
 
     @Override
     public void hearShake() {
-        if (Build.DEBUG) Log.d(TAG, "Hearing shake...");
+        if (DEBUG) Log.d(TAG, "Hearing shake...");
 
         requestWakeUp();
     }

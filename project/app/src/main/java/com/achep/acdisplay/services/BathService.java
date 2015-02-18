@@ -43,6 +43,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Created by achep on 26.05.14.
  *
@@ -294,7 +296,7 @@ public class BathService extends Service {
         private Context mContext;
 
         public ChildService() {
-            if (Build.DEBUG) {
+            if (DEBUG) {
                 Log.d(TAG, "Creating " + getClass().getSimpleName() + " service...");
             }
         }

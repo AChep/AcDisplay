@@ -51,6 +51,8 @@ import com.achep.base.utils.power.PowerUtils;
 
 import java.util.HashMap;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Service that turns on AcDisplay exactly when it's needed.
  *
@@ -197,7 +199,7 @@ public class ActiveModeService extends SwitchService implements
 
     @Override
     public void onStart(Object... objects) {
-        if (Build.DEBUG) Log.d(TAG, "Starting listening to sensors.");
+        if (DEBUG) Log.d(TAG, "Starting listening to sensors.");
 
         Context context = getContext();
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -211,7 +213,7 @@ public class ActiveModeService extends SwitchService implements
 
     @Override
     public void onStop(Object... objects) {
-        if (Build.DEBUG) Log.d(TAG, "Stopping listening to sensors.");
+        if (DEBUG) Log.d(TAG, "Stopping listening to sensors.");
 
         for (ActiveModeSensor sensor : mSensors) {
             sensor.onDetached();

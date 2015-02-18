@@ -35,6 +35,8 @@ import com.achep.acdisplay.R;
 import com.achep.base.Build;
 import com.achep.base.content.ConfigBase;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Toggle widget provider.
  *
@@ -84,7 +86,7 @@ public class ToggleWidgetProvider extends AppWidgetProvider
         mConfig = Config.getInstance();
         mConfig.registerListener(this);
 
-        if (Build.DEBUG) Log.d(TAG, "Toggle widget enabled");
+        if (DEBUG) Log.d(TAG, "Toggle widget enabled");
     }
 
     private void onDisabledInternal(Context context) {
@@ -95,7 +97,7 @@ public class ToggleWidgetProvider extends AppWidgetProvider
         mConfig.unregisterListener(this);
         mConfig = null;
 
-        if (Build.DEBUG) Log.d(TAG, "Toggle widget disabled");
+        if (DEBUG) Log.d(TAG, "Toggle widget disabled");
     }
 
     private void updateWidgets(Context context) {

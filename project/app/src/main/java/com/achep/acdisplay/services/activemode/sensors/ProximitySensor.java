@@ -32,6 +32,8 @@ import com.achep.base.Build;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Basing on results of proximity sensor it notifies when
  * {@link com.achep.acdisplay.ui.activities.AcDisplayActivity AcDisplay}
@@ -189,7 +191,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 .build();
 
         mPrograms = new ArrayList<>();
-        if (Build.DEBUG) mPrograms.add(programWave2Wake);
+        if (DEBUG) mPrograms.add(programWave2Wake);
         mPrograms.add(mPocketProgram);
 
         for (Program program : mPrograms) {
@@ -228,7 +230,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
 
     @Override
     public void onStart(@NonNull SensorManager sensorManager) {
-        if (Build.DEBUG) Log.d(TAG, "Starting proximity sensor...");
+        if (DEBUG) Log.d(TAG, "Starting proximity sensor...");
 
         mHistory.clear();
         mHistory.add(new Event(false, getTimeNow()));
@@ -247,7 +249,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
 
     @Override
     public void onStop() {
-        if (Build.DEBUG) Log.d(TAG, "Stopping proximity sensor...");
+        if (DEBUG) Log.d(TAG, "Stopping proximity sensor...");
 
         SensorManager sensorManager = getSensorManager();
         sensorManager.unregisterListener(this);
@@ -263,7 +265,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
 
         synchronized (monitor) {
             long now = getTimeNow();
-            if (Build.DEBUG) {
+            if (DEBUG) {
                 int historySize = mHistory.size();
                 String delta = (historySize > 0
                         ? " delta=" + (now - mHistory.get(historySize - 1).time)
