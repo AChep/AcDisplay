@@ -72,8 +72,7 @@ class MediaController2Lollipop extends MediaController2 {
                 public void onActiveSessionsChanged(List<MediaController> controllers) {
                     int size = controllers.size();
                     if (size == 0) {
-                        updateMetadata(null);
-                        updatePlaybackState(PlaybackState.STATE_NONE);
+                        clearMediaController(true);
                     } else {
                         if (mMediaController != null) {
                             for (MediaController controller : controllers) {
