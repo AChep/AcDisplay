@@ -189,9 +189,11 @@ class MediaController2KitKat extends MediaController2 {
         rc.sendMediaKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, keyCode));
     }
 
-    private void updatePlaybackState(int state) {
-        mPlaybackState = mStateSparse.get(state);
-        notifyOnPlaybackStateChanged();
+    /**
+     * {@inheritDoc}
+     */
+    protected void updatePlaybackState(int playbackStateRcc) {
+        super.updatePlaybackState(mStateSparse.get(playbackStateRcc));
     }
 
     /**

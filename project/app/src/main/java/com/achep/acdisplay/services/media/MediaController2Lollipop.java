@@ -188,11 +188,6 @@ class MediaController2Lollipop extends MediaController2 {
         updatePlaybackState(state == null ? PlaybackState.STATE_NONE : state.getState());
     }
 
-    private void updatePlaybackState(int state) {
-        mPlaybackState = state;
-        notifyOnPlaybackStateChanged();
-    }
-
     private void switchMediaController(@NonNull MediaController controller) {
         clearMediaController(false);
 

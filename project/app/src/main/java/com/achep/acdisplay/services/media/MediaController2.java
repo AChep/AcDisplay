@@ -190,6 +190,11 @@ public abstract class MediaController2 {
         }
     }
 
+    protected void updatePlaybackState(int playbackState) {
+        if (mPlaybackState == (mPlaybackState = playbackState)) return;
+        notifyOnPlaybackStateChanged();
+    }
+
     protected void notifyOnPlaybackStateChanged() {
         synchronized (this) {
             for (MediaListener listener : mListeners) {
