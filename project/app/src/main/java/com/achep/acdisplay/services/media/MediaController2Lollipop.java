@@ -103,13 +103,15 @@ class MediaController2Lollipop extends MediaController2 {
 
                         // Check for the current state
                         PlaybackState state = mc.getPlaybackState();
-                        switch (state.getState()) {
-                            case PlaybackState.STATE_STOPPED:
-                            case PlaybackState.STATE_ERROR:
-                                continue;
-                            default:
-                                mcScore++;
-                                break;
+                        if (state != null) {
+                            switch (state.getState()) {
+                                case PlaybackState.STATE_STOPPED:
+                                case PlaybackState.STATE_ERROR:
+                                    break;
+                                default:
+                                    mcScore++;
+                                    break;
+                            }
                         }
 
                         if (mcScore > mediaControllerScore) {
