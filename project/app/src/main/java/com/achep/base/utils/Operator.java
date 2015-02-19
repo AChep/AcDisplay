@@ -27,10 +27,10 @@ package com.achep.base.utils;
 public class Operator {
 
     /**
-     * @return {@code (v AND target) == target}
+     * @return {@code (v AND target) != 0}
      */
     public static boolean bitAnd(int v, int target) {
-        return (v & target) == target;
+        return (v & target) != 0;
     }
 
 }
