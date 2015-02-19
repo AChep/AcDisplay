@@ -171,13 +171,19 @@ class MediaController2Lollipop extends MediaController2 {
             mMetadata.title = description.getTitle();
             mMetadata.artist = metadata.getText(MediaMetadata.METADATA_KEY_ARTIST);
             mMetadata.album = metadata.getText(MediaMetadata.METADATA_KEY_ALBUM);
-            mMetadata.bitmap = metadata.getBitmap(MediaMetadata.METADATA_KEY_ART);
             mMetadata.duration = metadata.getLong(MediaMetadata.METADATA_KEY_DURATION);
             mMetadata.updateSubtitle();
 
-            if (mMetadata.bitmap != null) {
+            // Load the artwork
+            Bitmap artwork = metadata.getBitmap(MediaMetadata.METADATA_KEY_ART);
+            if (artwork == null) {
+                artwork = metadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
+                // might still be null
+            }
+
+            if (artwork != null) {
                 final int size = mContext.getResources().getDimensionPixelSize(R.dimen.media_artwork_size);
-                mMetadata.bitmap = Bitmap.createScaledBitmap(mMetadata.bitmap, size, size, true);
+                mMetadata.bitmap = Bitmap.createScaledBitmap(artwork, size, size, true);
             }
         }
 
