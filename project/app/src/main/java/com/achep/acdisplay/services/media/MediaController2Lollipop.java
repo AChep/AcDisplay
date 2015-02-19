@@ -83,9 +83,41 @@ class MediaController2Lollipop extends MediaController2 {
                             }
                         }
 
-                        // TODO: Maybe check which one is better instead of selecting first one?
-                        switchMediaController(controllers.get(0));
+                        MediaController mc = pickBestMediaController(controllers);
+                        if (mc != null) {
+                            switchMediaController(mc);
+                        } else {
+                            clearMediaController(true);
+                        }
                     }
+                }
+
+                @Nullable
+                private MediaController pickBestMediaController(
+                        @NonNull List<MediaController> list) {
+                    int mediaControllerScore = -1;
+                    MediaController mediaController = null;
+                    for (MediaController mc : list) {
+                        if (mc == null) continue;
+                        int mcScore = 0;
+
+                        // Check for the current state
+                        PlaybackState state = mc.getPlaybackState();
+                        switch (state.getState()) {
+                            case PlaybackState.STATE_STOPPED:
+                            case PlaybackState.STATE_ERROR:
+                                continue;
+                            default:
+                                mcScore++;
+                                break;
+                        }
+
+                        if (mcScore > mediaControllerScore) {
+                            mediaControllerScore = mcScore;
+                            mediaController = mc;
+                        }
+                    }
+                    return mediaController;
                 }
 
             };
