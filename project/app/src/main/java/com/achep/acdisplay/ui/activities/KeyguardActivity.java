@@ -62,7 +62,9 @@ public abstract class KeyguardActivity extends ActivityBase implements
     private long mUnlockingTime;
     private boolean mResumed;
 
+    private boolean mTimeoutPaused = true;
     private final Timeout mTimeout = new Timeout();
+    private final Handler mTimeoutHandler = new Handler();
     private final Handler mHandler = new Handler();
 
     @Override
@@ -90,11 +92,15 @@ public abstract class KeyguardActivity extends ActivityBase implements
         if (manualControl) {
             getWindow().addFlags(windowFlags);
 
+            mTimeoutPaused = false;
+            mTimeoutHandler.removeCallbacksAndMessages(null);
+
             mTimeout.resume();
             mTimeout.setTimeoutDelayed(timeoutDelay, true);
         } else {
             getWindow().clearFlags(windowFlags);
 
+            mTimeoutPaused = true;
             mTimeout.setTimeoutDelayed(timeoutDelay, true);
             mTimeout.pause();
         }
@@ -253,6 +259,17 @@ public abstract class KeyguardActivity extends ActivityBase implements
     public void onTimeoutEvent(@NonNull Timeout timeout, int event) {
         if (DEBUG) LogUtils.v(TAG, "TIMEOUT: " + event, 5);
         switch (event) {
+            case Timeout.EVENT_CHANGED:
+            case Timeout.EVENT_RESUMED:
+                if (mTimeoutPaused) {
+                    mTimeoutHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTimeout.pause();
+                        }
+                    });
+                }
+                break;
             case Timeout.EVENT_TIMEOUT:
                 lock();
                 break;
