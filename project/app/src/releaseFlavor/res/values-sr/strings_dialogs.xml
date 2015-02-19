@@ -19,11 +19,11 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="about_dialog_message"><![CDATA[        AcDisplay је бесплатана и <a href="http://repo.acdisplay.org"> отвореног кода</a>апликација.
-        Copyright 2013-%2$s<a href="http://artemchep.com">Artem Chepurnoy</a>.
-Сва права задржаха.<br/>
+  <string name="about_dialog_message"><![CDATA[        AcDisplay је бесплатана и <a href="http://repo.acdisplay.org"> отвореног кода</a> апликација.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>.
+All Rights Reserved.<br/>
         <br/>
-        Захваљујемо се следећим алатима отвореног кода:%1$s и свима онима
+        Захваљујемо се следећим алатима отвореног кода: %1$s и свима онима
         <a href="http://translate.acdisplay.org">који су помогли са преводима</a> или донирали.
     ]]></string>
   <string name="donate_dialog_title">Донитај програмерима</string>

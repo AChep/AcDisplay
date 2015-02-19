@@ -54,7 +54,7 @@
   <string name="notification_init_text">Ignora semplicemente la notifica.</string>
   <string name="notification_test_message">Questa è un esempio di notifica.</string>
   <string name="notification_test_message_large">Scorri verso il basso per rimuovere la notifica.\nScorri ovunque per sbloccare.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">Contenuto nascosto.</string>
   <string name="remote_enable_acdisplay">AcDisplay è abilitato.</string>
   <string name="remote_disable_acdisplay">AcDisplay è disabilitato.</string>
   <string name="service_bath">Servizi di AcDisplay</string>

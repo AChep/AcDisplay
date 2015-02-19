@@ -21,7 +21,7 @@
 <resources>
   <string name="settings">Einstellungen</string>
   <string name="settings_multi_list_divider">,&#160;</string>
-  <string name="settings_unknown_value">Unbekannte Variable</string>
+  <string name="settings_unknown_value">Unbekannter Wert</string>
   <string name="settings_placeholder_title">Platzhalter</string>
   <string name="settings_placeholder_summary">Ein Platz für zukünftige Optionen.</string>
   <string name="settings_category_features">Funktionen</string>
@@ -33,10 +33,10 @@
   <string name="settings_interface_title">Oberfläche</string>
   <string name="settings_more_title">Mehr...</string>
   <string name="settings_dev_title">Entwicklung</string>
-  <string name="settings_keyguard_description">Verwende AcDisplay als Sperrbildschirm. Das ist eine Beta-Funktion und kann instabil sein.</string>
+  <string name="settings_keyguard_description">Verwende AcDisplay als Sperrbildschirm. Dies ist eine Beta-Funktion und kann instabil sein.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Aktivieren, wenn es keine Benachrichtigungen gibt</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen ist aktiviert, unabhängig davon, ob Benachrichtigungen oder nicht vorhanden sind.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen ist deaktiviert, wenn es keine Benachrichtigungen gibt.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen ist aktiviert, unabhängig davon, ob Benachrichtigungen vorhanden sind oder nicht.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen ist deaktiviert, wenn keine Benachrichtigungen vorliegen.</string>
   <string name="settings_active_description">Der Aktivmodus verwendet die Gerätesensoren um das Gerät aufzuwecken, wenn Sie es benötigen. Das funktioniert gut, wenn Sie das Gerät aus der Tasche nehmen um einen kurzen Blick auf ihre Benachrichtigungen zu erhalten. Der Aktivmodus benötigt keine extra Rechenleistung, es sollte also kein erhöhter Akkuverbrauch auftreten.</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Aktivieren, wenn es keine Benachrichtigungen gibt</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktivmodus ist immer aktiviert.</string>
@@ -54,7 +54,7 @@
   <string name="settings_status_battery_always_visible">Ladezustand immer anzeigen</string>
   <string name="settings_status_battery_always_visible_off">Ladezustand der Batterie während des Ladens oder bei niedrigem Akkustand anzeigen.</string>
   <string name="settings_emoticons_title">Emoticons</string>
-  <string name="settings_override_fonts_title">Überschreiben von Systemschriften</string>
+  <string name="settings_override_fonts_title">Systemschriften außer Kraft setzen</string>
   <string name="settings_circle_category">Entsperrungs-Kreis</string>
   <string name="settings_circle_animation_title">Entsperranimation</string>
   <string name="settings_circle_color_inner_title">Kreisfarbe</string>

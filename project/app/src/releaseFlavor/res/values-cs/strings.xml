@@ -30,7 +30,7 @@
   <string name="permissions_notifications">Oznámení</string>
   <string name="permissions_notifications_description">Potřebné získat přistup k oznámením.</string>
   <string name="permissions_notifications_grant_manually">Přejdi do Nastavení &gt; Zabezpečení &gt; Přistup k oznámením a zaškrtni AcDisplay.</string>
-  <string name="permissions_usage_stats">Statistika využití</string>
+  <string name="permissions_usage_stats">Statistiky využití</string>
   <string name="permissions_usage_stats_description">Je zapotřebí k zabránění překrývání budíku a telefonních aplikací.</string>
   <string name="action_about">O aplikaci</string>
   <string name="action_donate">Přispět</string>
@@ -45,7 +45,7 @@
   <string name="on">Zapnuto</string>
   <string name="off">Vypnuto</string>
   <string name="enabled">Povoleno</string>
-  <string name="disabled">Zakázáno</string>
+  <string name="disabled">Vypnuto</string>
   <string name="media_prev_description">Tlačítko předchozí skladba</string>
   <string name="media_next_description">Tlačítko další skladba</string>
   <string name="media_pause_description">Tlačítko pozastavit</string>

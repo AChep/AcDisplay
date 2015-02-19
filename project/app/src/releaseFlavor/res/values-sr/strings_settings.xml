@@ -75,7 +75,7 @@
   <string name="settings_behavior_category">Понашање</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Закључај при отказивању последњег обавештења</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екран се гаси после отказивања последње приказаног обавештења.</string>
-  <string name="settings_lock_on_dismiss_last_notify_off">Екран остаје упањен после отказивања последње приказаног обавештења.</string>
+  <string name="settings_lock_on_dismiss_last_notify_off">Екран остаје упаљен после отказивања последње приказаног обавештења.</string>
   <string name="settings_widget_pinnable_title">Закачи обавештење на тренутак</string>
   <string name="settings_widget_pinnable_on">Widget обавештења остаје раширен неколико секунди после додира.</string>
   <string name="settings_privacy_mode_title">Приватност (приликом укључења закључаног екрана)</string>

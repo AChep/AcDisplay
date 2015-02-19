@@ -55,7 +55,7 @@
   <string name="notification_test_message">Ceci est un exemple de notification.</string>
   <string name="notification_test_message_large">Glissez vers le bas pour supprimer la notification.\n
 Glissez partout ailleurs pour déverrouiller.</string>
-  <string name="privacy_mode_hidden_content">Contenu cacher.</string>
+  <string name="privacy_mode_hidden_content">Contenu masqué.</string>
   <string name="remote_enable_acdisplay">AcDisplay est activé.</string>
   <string name="remote_disable_acdisplay">AcDisplay est désactivé.</string>
   <string name="service_bath">Services d\'AcDisplay</string>

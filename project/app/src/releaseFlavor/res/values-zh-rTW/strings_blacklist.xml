@@ -22,9 +22,9 @@
   <string name="blacklist">黑名單</string>
   <string name="blacklist_app_config">應用程式設定</string>
   <string name="blacklist_app_hide_title">隱藏</string>
-  <string name="blacklist_app_hide_summary">不會顯示此應用程式的通知。</string>
-  <string name="blacklist_app_restricted_title">靜音</string>
-  <string name="blacklist_app_restricted_summary">有新通知時不喚醒裝置</string>
-  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
+  <string name="blacklist_app_hide_summary">系統將不再顯示此應用程式的通知。</string>
+  <string name="blacklist_app_restricted_title">停用喚醒功能</string>
+  <string name="blacklist_app_restricted_summary">這個應用程式的通知不會喚醒裝置。</string>
+  <string name="blacklist_app_non_clearable_title">無法清除的通知</string>
+  <string name="blacklist_app_non_clearable_summary">顯示無法清除的通知/持續性通知 (例如服務通知)。</string>
 </resources>

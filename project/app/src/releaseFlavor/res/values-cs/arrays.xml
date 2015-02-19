@@ -33,10 +33,10 @@
     <item>Skrýt akce oznámení</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Důležité a naléhavé (zmeškané hovory, směry, nouzové výstrahy)</item>
+    <item>Důležité a naléhavé (zmeškané hovory, navigace, nouzové výstrahy)</item>
     <item>Důležité (komunikace, důležité emaily)</item>
     <item>Normální (+ notifikace starých aplikací)</item>
-    <item>Nedůležité (softwarové updaty, spamy)</item>
-    <item>Informace kontextové a na pozadí (počasí, prošlé události, návrhy)</item>
+    <item>Nedůležité (softwarové aktualizace, spam)</item>
+    <item>Informace místní a na pozadí (počasí, předešlé události, návrhy)</item>
   </string-array>
 </resources>

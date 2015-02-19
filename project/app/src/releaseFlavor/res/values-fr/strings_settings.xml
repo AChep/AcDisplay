@@ -33,10 +33,10 @@
   <string name="settings_interface_title">Interface</string>
   <string name="settings_more_title">Plus&#8230;</string>
   <string name="settings_dev_title">Développement</string>
-  <string name="settings_keyguard_description">Utiliser AcDisplay comme écran de verrouillage. Fonctionnalité beta, peut être instable.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_title">Activer quand il n\'y a pas de notifications</string>
+  <string name="settings_keyguard_description">Utiliser AcDisplay comme écran de verrouillage. Fonctionnalité bêta, peut être instable.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_title">Activer lorsqu\'il n\'y a pas de notifications</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Le lockscreen est activé indépendamment de la présence ou non de notifications.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Le lockscreen est desactivé indépendamment de la présence ou non de notifications.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_off">L\'écran de verrouillage est désactivé indépendamment de la présence ou non de notifications.</string>
   <string name="settings_active_description">Le mode actif utilise les capteurs du téléphone pour le réveiller quand vous en avez besoin. C\'est très pratique quand vous retirez l\'appareil de votre poche pour jeter un œil aux notifications que vous avez reçues. Le mode actif n\'empêche pas la mise en veille du CPU, l\'impact sur la consommation est donc faible.</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Activer quand il n\'y a pas de notifications</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Le mode actif est activé qu\'il y aie des notifications ou pas.</string>
@@ -78,7 +78,7 @@
   <string name="settings_lock_on_dismiss_last_notify_off">L\'écran reste allumé après le rejet de la dernière notification.</string>
   <string name="settings_widget_pinnable_title">Notification persistante</string>
   <string name="settings_widget_pinnable_on">Le détail de la notification reste affiché quelques secondes après avoir touché l\'écran.</string>
-  <string name="settings_privacy_mode_title">Privacy (on secure lock)</string>
+  <string name="settings_privacy_mode_title">Confidentialité (avec verrouillage sécurisé)</string>
   <string name="settings_privacy_mode_disabled">Désactivé</string>
   <string name="preference_inactive_hours_enabled">Horaires d\'inactivité activés</string>
   <string name="preference_inactive_hours_from"><![CDATA[

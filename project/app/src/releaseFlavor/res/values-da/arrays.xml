@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Issue</item>
+    <item>Fejl</item>
     <item>Forslag</item>
     <item>Andet</item>
   </string-array>
@@ -29,14 +29,14 @@
     <item>Underretningsikon</item>
   </string-array>
   <string-array name="privacy_mode">
-    <item>Hide notifications\' content</item>
-    <item>Hide notifications\' actions</item>
+    <item>Gem notifikations indhold</item>
+    <item>Gem notifikations aktiviteter</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
-    <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Vigtige og nødvendige (ubesvarede opkald, retninger, nødsituations opkald)</item>
+    <item>Vigtige (kommunikationer, vigtige mails)</item>
+    <item>Normale (+notifikationer fra ældre applikationer)</item>
+    <item>Ikke-vigtige (Software opdateringer, junk mails)</item>
+    <item>Kontekstuelle og baggrunds info (vejret, udløbet aktiviteter, forslag)</item>
   </string-array>
 </resources>
