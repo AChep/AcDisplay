@@ -218,6 +218,8 @@ class MediaController2Lollipop extends MediaController2 {
             if (artwork != null) {
                 final int size = mContext.getResources().getDimensionPixelSize(R.dimen.media_artwork_size);
                 mMetadata.bitmap = Bitmap.createScaledBitmap(artwork, size, size, true);
+            } else {
+                mMetadata.bitmap = null;
             }
         }
 
