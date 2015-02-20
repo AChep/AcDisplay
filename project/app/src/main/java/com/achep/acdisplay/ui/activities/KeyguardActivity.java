@@ -332,7 +332,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
                     return;
                 }
 
-                if (runnable != null) runnable.run();
+                if (runnable != null) runOnUiThread(runnable);
                 if (finish) {
                     finish();
 
