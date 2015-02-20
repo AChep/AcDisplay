@@ -1315,7 +1315,10 @@ public class AcDisplayFragment extends Fragment implements
             Log.d(TAG, "Fragment list updated in " + delta + "ms.");
         }
 
-        updateDividerVisibility(true);
+        // Do not animate divider's visibility change on
+        // pause/resume, cause it _somehow_ confuses people.
+        boolean animate = !mPendingNotifyChange;
+        updateDividerVisibility(animate);
     }
 
     private void clearWidget(@NonNull View iconView) {
