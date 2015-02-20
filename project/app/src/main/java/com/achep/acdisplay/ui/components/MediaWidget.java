@@ -153,7 +153,7 @@ public class MediaWidget extends Widget implements
         com.achep.base.async.AsyncTask.stop(mPaletteWorker);
         com.achep.base.async.AsyncTask.stop(mBackgroundWorker);
 
-        if (metadata.bitmap != null) {
+        if (bitmap != null) {
             // TODO: Load the vibrant color only.
             mPaletteWorker = Palette.generateAsync(bitmap, mPaletteCallback);
 
