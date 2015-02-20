@@ -388,7 +388,7 @@ public class NotificationPresenter implements
                 // Put all group's children to its summary
                 // notification.
                 for (int i = mGList.size() - 1; i >= 0; i--) {
-                    OpenNotification n2 = mGList.get(0);
+                    OpenNotification n2 = mGList.get(i);
                     if (groupKey.equals(n2.getGroupKey())) {
                         assert n.getGroupNotifications() != null;
                         n.getGroupNotifications().add(n2);
