@@ -1183,7 +1183,7 @@ public class AcDisplayFragment extends Fragment implements
 
         if (event == NotificationPresenter.EVENT_POSTED
                 || event == NotificationPresenter.EVENT_REMOVED) {
-            if (isLastEventInSequence) updateDividerVisibility();
+            if (isLastEventInSequence) updateDividerVisibility(true);
             // NotificationPresenter#EVENT_BATH causes #rebuildNotifications() to be run,
             // which calls #updateDividerVisibility() and begins delayed
             // transition by itself.
@@ -1315,7 +1315,7 @@ public class AcDisplayFragment extends Fragment implements
             Log.d(TAG, "Fragment list updated in " + delta + "ms.");
         }
 
-        updateDividerVisibility();
+        updateDividerVisibility(true);
     }
 
     private void clearWidget(@NonNull View iconView) {
@@ -1329,13 +1329,13 @@ public class AcDisplayFragment extends Fragment implements
      * the scene and icons.
      */
     @SuppressLint("NewApi")
-    private void updateDividerVisibility() {
+    private void updateDividerVisibility(boolean animate) {
         final View view = mDividerView;
 
         final boolean visible = view.getVisibility() == View.VISIBLE;
         final boolean visibleNow = mIconsContainer.getChildCount() > 0;
 
-        if (!isPowerSaveMode() && isResumed()) {
+        if (animate && !isPowerSaveMode() && isResumed()) {
             int visibleInt = MathUtils.bool(visible);
             int visibleNowInt = MathUtils.bool(visibleNow);
             float[] values = {1.0f, 0.1f, 1.0f, 0.5f};
