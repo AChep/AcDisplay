@@ -18,6 +18,7 @@
  */
 package com.achep.base.tests;
 
+import android.os.Looper;
 import android.support.annotation.Nullable;
 
 /**
@@ -55,7 +56,7 @@ final class CheckImpl extends Check {
 
     @Override
     public void isInMainThread() {
-        if (!Thread.currentThread().getName().equals("main")) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new RuntimeException("Should be called on the main thread");
         }
     }
