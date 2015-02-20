@@ -31,7 +31,7 @@
   <string name="settings_app_settings_title">应用设置</string>
   <string name="settings_notification_title">通知</string>
   <string name="settings_interface_title">界面</string>
-  <string name="settings_more_title">更多...</string>
+  <string name="settings_more_title">更多</string>
   <string name="settings_dev_title">开发</string>
   <string name="settings_keyguard_description">用 AcDisplay 替换默认锁屏界面。这是一项测试功能，可能并不稳定。</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">在没有通知时启用</string>

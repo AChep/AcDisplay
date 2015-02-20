@@ -62,5 +62,5 @@
   <string name="service_bath_active_mode">主動模式</string>
   <string name="service_bath_active_mode_dump">感應器傾印工具</string>
   <string name="status_date_format">EEE, d MMMM</string>
-  <string name="accessibility_battery_level">電量 <xliff:g id="number" example="100">%d</xliff:g>%。</string>
+  <string name="accessibility_battery_level">電量 <xliff:g id="number" example="100">%d</xliff:g>%%。</string>
 </resources>

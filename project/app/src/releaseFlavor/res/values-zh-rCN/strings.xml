@@ -31,7 +31,7 @@
   <string name="permissions_notifications_description">用于获取通知信息。</string>
   <string name="permissions_notifications_grant_manually">在 设置 &gt; 安全 &gt; 通知访问 中勾选AcDisplay。</string>
   <string name="permissions_usage_stats">使用情况统计信息</string>
-  <string name="permissions_usage_stats_description">为避免覆盖应用程序提示音和闹钟所需</string>
+  <string name="permissions_usage_stats_description">为避免应用程序提示音和闹钟重叠所需的权限</string>
   <string name="action_about">关于</string>
   <string name="action_donate">捐赠</string>
   <string name="action_feedback">反馈</string>
