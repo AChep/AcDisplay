@@ -35,6 +35,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.achep.acdisplay.R;
+import com.achep.base.utils.ResUtils;
 
 // TODO: Bring RTL support
 public class BatteryMeterView extends TextView {
@@ -78,7 +79,7 @@ public class BatteryMeterView extends TextView {
 
                     // Update view
                     setText(String.format(mBatteryFormat, this.level));
-                    setContentDescription(context.getString(R.string.accessibility_battery_level, level));
+                    setContentDescription(ResUtils.getString(context, R.string.accessibility_battery_level, level));
 
                     // Notify listener
                     if (mOnBatteryChangedListener != null) {

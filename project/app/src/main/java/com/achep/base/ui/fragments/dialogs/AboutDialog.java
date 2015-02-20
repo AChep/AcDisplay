@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.achep.acdisplay.R;
 import com.achep.base.Build;
 import com.achep.base.ui.DialogBuilder;
+import com.achep.base.utils.ResUtils;
 import com.achep.base.utils.ToastUtils;
 
 /**
@@ -85,7 +86,7 @@ public class AboutDialog extends DialogFragment {
 
         Resources res = context.getResources();
         return Html.fromHtml(
-                res.getString(R.string.about_dialog_title,
+                ResUtils.getString(res, R.string.about_dialog_title,
                         res.getString(R.string.app_name),
                         versionName,
                         Integer.toHexString(Color.red(color))
@@ -109,7 +110,7 @@ public class AboutDialog extends DialogFragment {
         String year = Build.TIME_STAMP.substring(Build.TIME_STAMP.lastIndexOf(' ') + 1);
         if (year.charAt(0) != '2') Log.w(TAG, "The build year is corrupted! Check build script.");
         CharSequence credits = getString(R.string.about_dialog_credits);
-        CharSequence message = Html.fromHtml(getString(R.string.about_dialog_message, credits, year));
+        CharSequence message = Html.fromHtml(ResUtils.getString(getResources(), R.string.about_dialog_message, credits, year));
 
         View view = new DialogBuilder(context)
                 .setIcon(R.drawable.ic_action_about_white)

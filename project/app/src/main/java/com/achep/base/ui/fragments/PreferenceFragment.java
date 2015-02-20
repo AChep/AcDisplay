@@ -42,6 +42,7 @@ import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.preferences.Enabler;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.Operator;
+import com.achep.base.utils.ResUtils;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -296,7 +297,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
 
                 String itemsText = sb.toString().toLowerCase();
                 summary = mStrResSummary != 0
-                        ? mContext.getString(mStrResSummary, itemsText)
+                        ? ResUtils.getString(mContext, mStrResSummary, itemsText)
                         : sb.charAt(0) + itemsText.substring(1, itemsText.length());
             } else {
                 summary = mContext.getString(mStrResDisabled);

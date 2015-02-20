@@ -27,6 +27,7 @@ import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.fragments.PreferenceFragment;
 import com.achep.base.utils.DateUtils;
+import com.achep.base.utils.ResUtils;
 
 /**
  * Created by Artem on 09.02.14.
@@ -96,7 +97,8 @@ public class MoreSettings extends PreferenceFragment implements ConfigBase.OnCon
         if (config.isInactiveTimeEnabled()) {
             int from = config.getInactiveTimeFrom();
             int to = config.getInactiveTimeTo();
-            mInactiveHoursPreference.setSummary(getString(R.string.settings_inactive_hours_enabled,
+            mInactiveHoursPreference.setSummary(ResUtils.getString(getResources(),
+                    R.string.settings_inactive_hours_enabled,
                     DateUtils.formatTime(getActivity(), from / 60, from % 60),
                     DateUtils.formatTime(getActivity(), to / 60, to % 60)));
         } else {
@@ -105,7 +107,8 @@ public class MoreSettings extends PreferenceFragment implements ConfigBase.OnCon
     }
 
     private void updateTimeoutSummary(Config config) {
-        mTimeoutPreference.setSummary(getString(R.string.settings_timeout_summary,
+        mTimeoutPreference.setSummary(ResUtils.getString(getResources(),
+                R.string.settings_timeout_summary,
                 Float.toString(config.getTimeoutNormal() / 1000f),
                 Float.toString(config.getTimeoutShort() / 1000f)));
     }

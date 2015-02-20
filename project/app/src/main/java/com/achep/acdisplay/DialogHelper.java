@@ -37,6 +37,7 @@ import com.achep.base.ui.fragments.dialogs.DonateDialog;
 import com.achep.base.ui.fragments.dialogs.FeedbackDialog;
 import com.achep.base.ui.fragments.dialogs.HelpDialog;
 import com.achep.base.ui.fragments.dialogs.PermissionsDialog;
+import com.achep.base.utils.ResUtils;
 
 /**
  * Helper class for showing fragment dialogs.
@@ -111,7 +112,7 @@ public class DialogHelper {
             }
         }
 
-        String message = activity.getString(R.string.compat_dialog_message, Build.VERSION.RELEASE, builder);
+        String message = ResUtils.getString(activity, R.string.compat_dialog_message, Build.VERSION.RELEASE, builder);
         new DialogBuilder(activity)
                 .setIcon(R.drawable.ic_dialog_compat_white)
                 .setTitle(R.string.compat_dialog_title)

@@ -53,6 +53,7 @@ import com.achep.base.ui.DialogBuilder;
 import com.achep.base.utils.FileUtils;
 import com.achep.base.utils.IntentUtils;
 import com.achep.base.utils.PackageUtils;
+import com.achep.base.utils.ResUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
 import com.achep.base.utils.logcat.Logcat;
@@ -355,7 +356,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
             Uri uri = Uri.parse("content://" + LogAttachmentProvider.AUTHORITY + "/" + fileName);
             intent.putExtra(Intent.EXTRA_STREAM, uri);
         } catch (Exception e) {
-            String message = getString(R.string.feedback_error_accessing_log, e.getMessage());
+            String message = ResUtils.getString(getResources(), R.string.feedback_error_accessing_log, e.getMessage());
             ToastUtils.showLong(context, message);
         }
     }

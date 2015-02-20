@@ -26,6 +26,7 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.fragments.PreferenceFragment;
+import com.achep.base.utils.ResUtils;
 
 /**
  * Interface settings fragment.
@@ -89,7 +90,9 @@ public class InterfaceSettings extends PreferenceFragment implements
     }
 
     private void updateIconSizeSummary(Config config) {
-        mIconSizePreference.setSummary(getString(R.string.settings_icon_size_summary,
-                Integer.toString(config.getIconSize(Config.ICON_SIZE_DP))));
+        String summary = ResUtils.getString(getResources(),
+                R.string.settings_icon_size_summary,
+                Integer.toString(config.getIconSize(Config.ICON_SIZE_DP)));
+        mIconSizePreference.setSummary(summary);
     }
 }
