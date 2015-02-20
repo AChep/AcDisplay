@@ -111,7 +111,7 @@ public class Metadata {
                 .append(id, metadata.id)
                 .append(title, metadata.title)
                 .append(artist, metadata.artist)
-                .append(subtitle, metadata.title)
+                .append(subtitle, metadata.subtitle)
                 .append(bitmap, metadata.bitmap)
                 .isEquals();
     }
