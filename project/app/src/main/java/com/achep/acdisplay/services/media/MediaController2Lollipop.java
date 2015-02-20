@@ -22,7 +22,6 @@ import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.MediaDescription;
 import android.media.MediaMetadata;
 import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
@@ -37,18 +36,21 @@ import com.achep.acdisplay.services.MediaService;
 
 import java.util.List;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * {@inheritDoc}
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class MediaController2Lollipop extends MediaController2 {
 
+    @Nullable
     private MediaController mMediaController;
 
     private boolean mSessionListening;
 
     private final ComponentName mComponent;
-    private final MediaSessionManager mMediaSessionManager;
+    private final MediaSessionManager mMSManager;
     private final MediaController.Callback mCallback =
             new MediaController.Callback() {
 
@@ -70,31 +72,28 @@ class MediaController2Lollipop extends MediaController2 {
 
                 @Override
                 public void onActiveSessionsChanged(List<MediaController> controllers) {
-                    int size = controllers.size();
-                    if (size == 0) {
-                        clearMediaController(true);
-                    } else {
-                        if (mMediaController != null) {
-                            for (MediaController controller : controllers) {
-                                if (mMediaController == controller) {
-                                    // Current media controller is still alive.
-                                    return;
-                                }
+                    if (mMediaController != null) {
+                        for (MediaController controller : controllers) {
+                            if (mMediaController == controller) {
+                                // Current media controller is still alive.
+                                return;
                             }
                         }
+                    }
 
-                        MediaController mc = pickBestMediaController(controllers);
-                        if (mc != null) {
-                            switchMediaController(mc);
-                        } else {
-                            clearMediaController(true);
-                        }
+                    MediaController mc = pickBestMediaController(controllers);
+                    if (mc != null) {
+                        setMediaController(mc);
+                    } else {
+                        clearMediaController(true);
                     }
                 }
 
                 @Nullable
                 private MediaController pickBestMediaController(
                         @NonNull List<MediaController> list) {
+                    if (DEBUG) Log.d(TAG, "Media controllers count:" + list.size());
+
                     int mediaControllerScore = -1;
                     MediaController mediaController = null;
                     for (MediaController mc : list) {
@@ -130,38 +129,61 @@ class MediaController2Lollipop extends MediaController2 {
     protected MediaController2Lollipop(@NonNull Context context) {
         super(context);
 
-        //noinspection ResourceType
-        mMediaSessionManager = (MediaSessionManager) mContext
-                .getSystemService(Context.MEDIA_SESSION_SERVICE);
+        mMSManager = (MediaSessionManager) mContext.getSystemService(Context.MEDIA_SESSION_SERVICE);
         mComponent = new ComponentName(context, MediaService.class);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void onStart() {
+    @Override
+    public void onStart(Object... objects) {
         super.onStart();
 
         try {
-            mMediaSessionManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
-            List<MediaController> sessions = mMediaSessionManager.getActiveSessions(mComponent);
-            mSessionListener.onActiveSessionsChanged(sessions);
+            mMSManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
+            mSessionListener.onActiveSessionsChanged(mMSManager.getActiveSessions(mComponent));
             mSessionListening = true;
         } catch (SecurityException exception) {
-            Log.i(TAG, "Caught SecurityException on start: " + exception.getMessage());
+            Log.w(TAG, "Failed to start Lollipop media controller: " + exception.getMessage());
             mSessionListening = false;
+            // Media controller needs notification listener service
+            // permissions to be granted.
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void onStop() {
+    @Override
+    public void onStop(Object... objects) {
         if (mSessionListening) {
-            mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
+            mMSManager.removeOnActiveSessionsChangedListener(mSessionListener);
             clearMediaController(true);
         }
         super.onStop();
+    }
+
+    private void clearMediaController(boolean clear) {
+        if (mMediaController != null) {
+            mMediaController.unregisterCallback(mCallback);
+            mMediaController = null;
+
+            if (clear) {
+                clearMetadata();
+                updatePlaybackState(null);
+            }
+        }
+    }
+
+    private void setMediaController(@NonNull MediaController controller) {
+        if (DEBUG) Log.d(TAG, "Switching to \'" + controller.getPackageName() + "\' controller.");
+
+        clearMediaController(false);
+        mMediaController = controller;
+        mMediaController.registerCallback(mCallback);
+        updatePlaybackState(mMediaController.getPlaybackState());
+        updateMetadata(mMediaController.getMetadata());
     }
 
     /**
@@ -194,32 +216,65 @@ class MediaController2Lollipop extends MediaController2 {
             case ACTION_SKIP_TO_PREVIOUS:
                 controls.skipToPrevious();
                 break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
-    private void updateMetadata(@Nullable MediaMetadata metadata) {
-        if (metadata == null) {
+    /**
+     * Clears {@link #mMetadata metadata}. Same as calling
+     * {@link #updateMetadata(MediaMetadata)}
+     * with {@code null} parameter.
+     *
+     * @see #updateMetadata(MediaMetadata)
+     */
+    private void clearMetadata() {
+        updateMetadata(null);
+    }
+
+    /**
+     * Updates {@link #mMetadata metadata} from given media metadata class.
+     * This also updates play state.
+     *
+     * @param data Object of metadata to update from, or {@code null} to clear local metadata.
+     * @see #clearMetadata()
+     */
+    private void updateMetadata(@Nullable MediaMetadata data) {
+        if (data == null) {
+            if (mMetadata.isEmpty()) {
+                // No need to clear it again nor
+                // notify subscribers about it.
+                return;
+            }
             mMetadata.clear();
         } else {
-            MediaDescription description = metadata.getDescription();
-            mMetadata.title = description.getTitle();
-            mMetadata.artist = metadata.getText(MediaMetadata.METADATA_KEY_ARTIST);
-            mMetadata.album = metadata.getText(MediaMetadata.METADATA_KEY_ALBUM);
-            mMetadata.duration = metadata.getLong(MediaMetadata.METADATA_KEY_DURATION);
-            mMetadata.updateSubtitle();
+            final String id = data.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
+            if (id != null && id.equals(mMetadata.id)) return;
+
+            mMetadata.id = id;
+            mMetadata.title = data.getDescription().getTitle();
+            mMetadata.artist = data.getText(MediaMetadata.METADATA_KEY_ARTIST);
+            mMetadata.album = data.getText(MediaMetadata.METADATA_KEY_ALBUM);
+            mMetadata.duration = data.getLong(MediaMetadata.METADATA_KEY_DURATION);
+            mMetadata.generateSubtitle();
 
             // Load the artwork
-            Bitmap artwork = metadata.getBitmap(MediaMetadata.METADATA_KEY_ART);
+            Bitmap artwork = data.getBitmap(MediaMetadata.METADATA_KEY_ART);
             if (artwork == null) {
-                artwork = metadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
-                // might still be null
+                artwork = data.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
+                // Might still be null
             }
 
             if (artwork != null) {
                 final int size = mContext.getResources().getDimensionPixelSize(R.dimen.media_artwork_size);
-                mMetadata.bitmap = Bitmap.createScaledBitmap(artwork, size, size, true);
+                try {
+                    mMetadata.bitmap = Bitmap.createScaledBitmap(artwork, size, size, true);
+                } catch (OutOfMemoryError e) {
+                    mMetadata.bitmap = null;
+                }
             } else {
                 mMetadata.bitmap = null;
+                // Clear previous artwork
             }
         }
 
@@ -228,29 +283,6 @@ class MediaController2Lollipop extends MediaController2 {
 
     private void updatePlaybackState(@Nullable PlaybackState state) {
         updatePlaybackState(state == null ? PlaybackState.STATE_NONE : state.getState());
-    }
-
-    private void switchMediaController(@NonNull MediaController controller) {
-        clearMediaController(false);
-
-        mMediaController = controller;
-        mMediaController.registerCallback(mCallback);
-        updateMetadata(mMediaController.getMetadata());
-        updatePlaybackState(mMediaController.getPlaybackState());
-
-        Log.i(TAG, "Switching to " + mMediaController.getPackageName() + " controller.");
-    }
-
-    private void clearMediaController(boolean clear) {
-        if (mMediaController != null) {
-            mMediaController.unregisterCallback(mCallback);
-            mMediaController = null;
-
-            if (clear) {
-                updateMetadata(null);
-                updatePlaybackState(null);
-            }
-        }
     }
 
 }

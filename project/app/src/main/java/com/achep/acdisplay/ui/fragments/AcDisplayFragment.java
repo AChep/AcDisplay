@@ -361,7 +361,7 @@ public class AcDisplayFragment extends Fragment implements
         mPendingIconsSizeChange = false;
 
         // Media controller.
-        mMediaController.onStart();
+        mMediaController.start();
         mMediaController.registerListener(this);
         onPlaybackStateChanged(mMediaController.getPlaybackState());
     }
@@ -383,7 +383,7 @@ public class AcDisplayFragment extends Fragment implements
         mMediaWidget.onStop();
 
         // Media controller.
-        mMediaController.onStop();
+        mMediaController.stop();
         mMediaController.unregisterListener(this);
         super.onPause();
     }

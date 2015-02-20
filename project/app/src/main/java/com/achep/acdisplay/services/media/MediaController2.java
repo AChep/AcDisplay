@@ -23,15 +23,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 
-import com.achep.base.Build;
+import com.achep.acdisplay.Atomic;
 import com.achep.base.Device;
+import com.achep.base.interfaces.ISubscriptable;
 
 import java.util.ArrayList;
-
-import static com.achep.base.Build.DEBUG;
 
 /**
  * Allows an app to interact with an ongoing media session. Media buttons and
@@ -40,7 +38,8 @@ import static com.achep.base.Build.DEBUG;
  *
  * @author Artem Chepurnoy
  */
-public abstract class MediaController2 {
+public abstract class MediaController2 implements
+        Atomic.Callback, ISubscriptable<MediaController2.MediaListener> {
 
     protected static final String TAG = "MediaController";
 
@@ -87,15 +86,13 @@ public abstract class MediaController2 {
                 keyCode = KeyEvent.KEYCODE_MEDIA_PREVIOUS;
                 break;
             default:
-                Log.d(TAG, "Received unknown media action(" + action + ").");
-                return;
+                throw new IllegalArgumentException();
         }
 
         Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         KeyEvent keyDown = new KeyEvent(KeyEvent.ACTION_DOWN, keyCode);
         KeyEvent keyUp = new KeyEvent(KeyEvent.ACTION_UP, keyCode);
 
-        if (Device.hasKitKatApi()) Log.i(TAG, "Broadcasting this (" + action + ") media action.");
         context.sendOrderedBroadcast(intent.putExtra(Intent.EXTRA_KEY_EVENT, keyDown), null);
         context.sendOrderedBroadcast(intent.putExtra(Intent.EXTRA_KEY_EVENT, keyUp), null);
     }
@@ -130,6 +127,9 @@ public abstract class MediaController2 {
     }
 
     @NonNull
+    private final Atomic mAtomic;
+
+    @NonNull
     protected final Context mContext;
     @NonNull
     protected final ArrayList<MediaListener> mListeners;
@@ -143,21 +143,35 @@ public abstract class MediaController2 {
 
         mListeners = new ArrayList<>();
         mMetadata = new Metadata();
+        mAtomic = new Atomic(this);
     }
 
-    public void onStart() {
-        if (DEBUG) Log.d(TAG, "Starting media controller: [" + toString() + "]");
+    public void start() {
+        mAtomic.start();
     }
 
-    public void onStop() {
-        if (DEBUG) Log.d(TAG, "Stopping media controller: [" + toString() + "]");
+    public void stop() {
+        mAtomic.stop();
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onStart(Object... objects) { /* empty */ }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onStop(Object... objects) {
         mPlaybackState = PlaybackStateCompat.STATE_NONE;
     }
 
     /**
-     * Registers the specified callback.
+     * {@inheritDoc}
      */
+    @Override
     public final void registerListener(@NonNull MediaListener listener) {
         synchronized (this) {
             mListeners.add(listener);
@@ -165,8 +179,9 @@ public abstract class MediaController2 {
     }
 
     /**
-     * Unregisters the specified callback.
+     * {@inheritDoc}
      */
+    @Override
     public final void unregisterListener(@NonNull MediaListener listener) {
         synchronized (this) {
             mListeners.remove(listener);

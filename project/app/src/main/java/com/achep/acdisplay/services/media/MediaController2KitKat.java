@@ -33,12 +33,13 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.KeyEvent;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.services.MediaService;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by Artem Chepurnoy on 26.10.2014.
@@ -47,12 +48,12 @@ import com.achep.acdisplay.services.MediaService;
 @TargetApi(Build.VERSION_CODES.KITKAT)
 class MediaController2KitKat extends MediaController2 {
 
+    private static WeakReference<SparseIntArray> sStateSparse = new WeakReference<>(null);
+
+    @Nullable
     private MediaService mService;
     private boolean mBound = false;
 
-    private boolean mStarted;
-
-    private RemoteController.MetadataEditor mPopulateMetadataWhenStarted;
     private final RemoteController.OnClientUpdateListener mRCClientUpdateListener =
             new RemoteController.OnClientUpdateListener() {
 
@@ -115,30 +116,31 @@ class MediaController2KitKat extends MediaController2 {
     protected MediaController2KitKat(@NonNull Activity activity) {
         super(activity);
 
-        mStateSparse = new SparseIntArray();
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_BUFFERING, PlaybackStateCompat.STATE_BUFFERING);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_PLAYING, PlaybackStateCompat.STATE_PLAYING);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_PAUSED, PlaybackStateCompat.STATE_PAUSED);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_ERROR, PlaybackStateCompat.STATE_ERROR);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_REWINDING, PlaybackStateCompat.STATE_REWINDING);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_FAST_FORWARDING, PlaybackStateCompat.STATE_FAST_FORWARDING);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_NEXT);
-        mStateSparse.put(RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS);
+        SparseIntArray cachedStateSparse = sStateSparse.get();
+        if (cachedStateSparse == null) {
+            mStateSparse = new SparseIntArray();
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_BUFFERING, PlaybackStateCompat.STATE_BUFFERING);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_PLAYING, PlaybackStateCompat.STATE_PLAYING);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_PAUSED, PlaybackStateCompat.STATE_PAUSED);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_ERROR, PlaybackStateCompat.STATE_ERROR);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_REWINDING, PlaybackStateCompat.STATE_REWINDING);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_FAST_FORWARDING, PlaybackStateCompat.STATE_FAST_FORWARDING);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_NEXT);
+            mStateSparse.put(RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS);
+
+            // Cache sparse array
+            sStateSparse = new WeakReference<>(mStateSparse);
+        } else {
+            mStateSparse = cachedStateSparse;
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void onStart() {
+    @Override
+    public void onStart(Object... objects) {
         super.onStart();
-
-        mStarted = true;
-
-        if (mPopulateMetadataWhenStarted != null) {
-            updateMetadata(mPopulateMetadataWhenStarted);
-            mPopulateMetadataWhenStarted = null;
-        }
-
         Intent intent = new Intent(App.ACTION_BIND_MEDIA_CONTROL_SERVICE);
         mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -146,13 +148,16 @@ class MediaController2KitKat extends MediaController2 {
     /**
      * {@inheritDoc}
      */
-    public void onStop() {
-        mStarted = false;
+    @Override
+    public void onStop(Object... objects) {
         mMetadata.clear();
 
         if (mBound) {
+            assert mService != null;
             mService.setClientUpdateListener(null);
             mService.setRemoteControllerDisabled();
+            mService = null;
+            mBound = false;
         }
 
         mContext.unbindService(mConnection);
@@ -178,8 +183,7 @@ class MediaController2KitKat extends MediaController2 {
                 keyCode = KeyEvent.KEYCODE_MEDIA_PREVIOUS;
                 break;
             default:
-                Log.wtf(TAG, "Received unknown media action.");
-                return;
+                throw new IllegalArgumentException();
         }
 
         // TODO We should think about sending these up/down events accurately with touch up/down
@@ -216,19 +220,15 @@ class MediaController2KitKat extends MediaController2 {
      */
     private void updateMetadata(@Nullable RemoteController.MetadataEditor data) {
         if (data == null) {
+            if (mMetadata.isEmpty()) return;
             mMetadata.clear();
         } else {
-            if (mStarted) {
-                mMetadata.title = data.getString(MediaMetadataRetriever.METADATA_KEY_TITLE, null);
-                mMetadata.artist = data.getString(MediaMetadataRetriever.METADATA_KEY_ARTIST, null);
-                mMetadata.album = data.getString(MediaMetadataRetriever.METADATA_KEY_ALBUM, null);
-                mMetadata.duration = data.getLong(MediaMetadataRetriever.METADATA_KEY_DURATION, -1);
-                mMetadata.bitmap = data.getBitmap(MediaMetadataEditor.BITMAP_KEY_ARTWORK, mMetadata.bitmap);
-                mMetadata.updateSubtitle();
-            } else {
-                mPopulateMetadataWhenStarted = data;
-                return;
-            }
+            mMetadata.title = data.getString(MediaMetadataRetriever.METADATA_KEY_TITLE, null);
+            mMetadata.artist = data.getString(MediaMetadataRetriever.METADATA_KEY_ARTIST, null);
+            mMetadata.album = data.getString(MediaMetadataRetriever.METADATA_KEY_ALBUM, null);
+            mMetadata.duration = data.getLong(MediaMetadataRetriever.METADATA_KEY_DURATION, -1);
+            mMetadata.bitmap = data.getBitmap(MediaMetadataEditor.BITMAP_KEY_ARTWORK, null);
+            mMetadata.generateSubtitle();
         }
 
         notifyOnMetadataChanged();
