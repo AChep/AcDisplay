@@ -92,7 +92,7 @@ public class Metadata {
         return new EqualsBuilder()
                 .append(duration, metadata.duration)
                 .append(title, metadata.title)
-                .append(subtitle, metadata.title)
+                .append(subtitle, metadata.subtitle)
                 .append(bitmap, metadata.bitmap)
                 .isEquals();
     }
