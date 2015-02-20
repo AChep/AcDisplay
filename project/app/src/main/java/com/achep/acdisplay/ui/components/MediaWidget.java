@@ -212,12 +212,14 @@ public class MediaWidget extends Widget implements
      * provided by {@link com.achep.acdisplay.services.media.MediaController2#getMetadata()}.
      */
     private void populateMetadata() {
+        /*
         if (mIdle) {
             ViewGroup vg = getView();
             if (Device.hasKitKatApi() && vg.isLaidOut() && !getHostFragment().isPowerSaveMode()) {
                 TransitionManager.beginDelayedTransition(vg);
             }
         }
+        */
 
         Metadata metadata = mMediaController.getMetadata();
         ViewUtils.safelySetText(mTitleView, metadata.title);
