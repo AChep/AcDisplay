@@ -19,6 +19,7 @@
 package com.achep.base.tests;
 
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -48,7 +49,7 @@ final class CheckImpl extends Check {
     }
 
     @Override
-    public void isNonNull(@Nullable Object object) {
+    public void isNonNull(@NonNull Object object) {
         if (object == null) {
             throw new RuntimeException("Should be not null!");
         }

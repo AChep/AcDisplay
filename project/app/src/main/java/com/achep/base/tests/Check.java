@@ -18,6 +18,7 @@
  */
 package com.achep.base.tests;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -40,7 +41,7 @@ public abstract class Check {
 
     public abstract void isNull(@Nullable Object object);
 
-    public abstract void isNonNull(@Nullable Object object);
+    public abstract void isNonNull(@NonNull Object object);
 
     public abstract void isInMainThread();
 }
