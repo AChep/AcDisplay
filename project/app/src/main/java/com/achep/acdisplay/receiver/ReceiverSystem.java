@@ -21,6 +21,7 @@ package com.achep.acdisplay.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
@@ -33,18 +34,25 @@ public class ReceiverSystem extends BroadcastReceiver {
 
     private static final String TAG = "Receiver";
 
+    private Handler mHandler = new Handler();
+
     @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        switch (action) {
-            case Intent.ACTION_BOOT_COMPLETED:
-            case Intent.ACTION_POWER_CONNECTED:
-            case Intent.ACTION_POWER_DISCONNECTED:
-                ActiveModeService.handleState(context);
-                KeyguardService.handleState(context);
-                SensorsDumpService.handleState(context);
-                break;
-        }
+    public void onReceive(final Context context, final Intent intent) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                String action = intent.getAction();
+                switch (action) {
+                    case Intent.ACTION_BOOT_COMPLETED:
+                    case Intent.ACTION_POWER_CONNECTED:
+                    case Intent.ACTION_POWER_DISCONNECTED:
+                        ActiveModeService.handleState(context);
+                        KeyguardService.handleState(context);
+                        SensorsDumpService.handleState(context);
+                        break;
+                }
+            }
+        });
     }
 
 }
