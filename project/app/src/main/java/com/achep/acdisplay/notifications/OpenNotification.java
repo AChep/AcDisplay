@@ -34,6 +34,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.achep.acdisplay.graphics.BackgroundFactory;
 import com.achep.acdisplay.graphics.IconFactory;
@@ -386,7 +387,13 @@ public abstract class OpenNotification implements
     protected void loadBrandColor(@NonNull Context context) {
         try {
             String packageName = getPackageName();
-            Drawable appIcon = context.getPackageManager().getApplicationIcon(packageName);
+            Drawable appIcon;
+            try {
+                appIcon = context.getPackageManager().getApplicationIcon(packageName);
+            } catch (OutOfMemoryError e) {
+                Log.e(TAG, "Failed to get application\'s icon due to OutOfMemoryError!");
+                return;
+            }
 
             final Bitmap bitmap = Bitmap.createBitmap(
                     appIcon.getMinimumWidth(),
