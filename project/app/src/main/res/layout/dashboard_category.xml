@@ -30,7 +30,7 @@
     android:paddingLeft="@dimen/dashboard_category_padding_start"
     android:paddingRight="@dimen/dashboard_category_padding_end"
     android:paddingStart="@dimen/dashboard_category_padding_start"
-    tools:ignore="Overdraw">
+    tools:ignore="Overdraw,UnusedAttribute">
 
     <com.achep.base.ui.widgets.TextView
         android:id="@+id/category_title"

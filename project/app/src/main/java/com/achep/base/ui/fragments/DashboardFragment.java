@@ -21,8 +21,8 @@ package com.achep.base.ui.fragments;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.achep.acdisplay.R;
+import com.achep.base.async.WeakHandler;
 import com.achep.base.dashboard.DashboardCategory;
 import com.achep.base.dashboard.DashboardTile;
 import com.achep.base.ui.activities.SettingsActivity;
@@ -48,18 +49,25 @@ public class DashboardFragment extends Fragment {
     private ViewGroup mDashboardContainer;
 
     private static final int MSG_REBUILD_UI = 1;
-    private final Handler mHandler = new Handler() {
+    private final H mHandler = new H(this);
+
+    private static class H extends WeakHandler<DashboardFragment> {
+
+        public H(@NonNull DashboardFragment object) {
+            super(object);
+        }
+
         @Override
-        public void handleMessage(Message msg) {
+        protected void onHandleMassage(@NonNull DashboardFragment df, Message msg) {
             switch (msg.what) {
                 case MSG_REBUILD_UI: {
-                    final Context context = getActivity();
-                    rebuildUI(context);
+                    final Context context = df.getActivity();
+                    df.rebuildUI(context);
                 }
                 break;
             }
         }
-    };
+    }
 
     @Override
     public void onResume() {

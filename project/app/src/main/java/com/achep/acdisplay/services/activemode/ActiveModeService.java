@@ -45,7 +45,6 @@ import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
 import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.services.switches.ScreenOffSwitch;
-import com.achep.base.Build;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.power.PowerUtils;
 

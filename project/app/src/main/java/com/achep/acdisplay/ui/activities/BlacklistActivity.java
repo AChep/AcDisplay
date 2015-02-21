@@ -35,6 +35,7 @@ import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -145,7 +146,7 @@ public class BlacklistActivity extends PreferenceActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Save the current fragment, if it is the same as originally launched
@@ -252,7 +253,7 @@ public class BlacklistActivity extends PreferenceActivity {
     }
 
     @Override
-    public void switchToHeader(Header header) {
+    public void switchToHeader(@NonNull Header header) {
         if (!mInLocalHeaderSwitch) {
             mCurrentHeader = null;
             mParentHeader = null;
@@ -671,7 +672,7 @@ public class BlacklistActivity extends PreferenceActivity {
     }
 
     @Override
-    public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
+    public boolean onPreferenceStartFragment(PreferenceFragment caller, @NonNull Preference pref) {
         startPreferencePanel(
                 pref.getFragment(),
                 pref.getExtras(),
@@ -681,7 +682,7 @@ public class BlacklistActivity extends PreferenceActivity {
     }
 
     @Override
-    public boolean shouldUpRecreateTask(Intent targetIntent) {
+    public boolean shouldUpRecreateTask(@NonNull Intent targetIntent) {
         return super.shouldUpRecreateTask(new Intent(this, BlacklistActivity.class));
     }
 

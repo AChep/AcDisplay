@@ -35,7 +35,6 @@ import android.util.Log;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.activities.MainActivity;
-import com.achep.base.Build;
 import com.achep.base.interfaces.IOnLowMemory;
 
 import java.util.HashMap;

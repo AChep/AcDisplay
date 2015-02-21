@@ -17,11 +17,11 @@ package com.achep.base.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.achep.acdisplay.R;
+import com.achep.base.async.WeakHandler;
 import com.achep.base.utils.PreferenceManagerUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -121,17 +122,23 @@ public abstract class PreferenceFragmentBase extends Fragment implements
     private static final int FIRST_REQUEST_CODE = 100;
 
     private static final int MSG_BIND_PREFERENCES = 1;
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
+    private final H mHandler = new H(this);
 
+    private static class H extends WeakHandler<PreferenceFragmentBase> {
+
+        public H(@NonNull PreferenceFragmentBase object) {
+            super(object);
+        }
+
+        @Override
+        protected void onHandleMassage(@NonNull PreferenceFragmentBase pfb, Message msg) {
+            switch (msg.what) {
                 case MSG_BIND_PREFERENCES:
-                    bindPreferences();
+                    pfb.bindPreferences();
                     break;
             }
         }
-    };
+    }
 
     final private Runnable mRequestFocus = new Runnable() {
         public void run() {

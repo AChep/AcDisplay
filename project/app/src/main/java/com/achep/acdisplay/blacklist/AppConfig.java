@@ -234,7 +234,7 @@ public class AppConfig {
          * {@inheritDoc}
          */
         @Override
-        public int compare(AppConfig object, AppConfig old) {
+        public int compare(@NonNull AppConfig object, AppConfig old) {
             return orZero(DIFF_HIDDEN, object.isHidden(), old.isHidden())
                     | orZero(DIFF_RESTRICTED, object.isRestricted(), old.isRestricted())
                     | orZero(DIFF_NON_CLEARABLE, object.isNonClearableEnabled(), old.isNonClearableEnabled());

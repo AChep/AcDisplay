@@ -39,7 +39,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
  */
 public class ImmersiveModeDontPanic implements IXposedHookZygoteInit {
 
-    private static final String TAG = "xposed:ImmersiveModeDontPanic";
+    private static final String TAG = "xposed:ImmersivePanic";
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {

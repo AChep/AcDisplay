@@ -20,10 +20,8 @@ package com.achep.base.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;

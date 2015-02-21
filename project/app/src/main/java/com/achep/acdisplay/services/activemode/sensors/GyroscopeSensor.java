@@ -26,7 +26,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
-import com.achep.base.Build;
 
 import java.lang.ref.WeakReference;
 

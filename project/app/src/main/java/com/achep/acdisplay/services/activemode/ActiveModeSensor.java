@@ -20,13 +20,13 @@ package com.achep.acdisplay.services.activemode;
 
 import android.content.Context;
 import android.hardware.SensorManager;
-import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
+import com.achep.base.async.WeakHandler;
 
 import java.util.ArrayList;
 
@@ -172,25 +172,31 @@ public abstract class ActiveModeSensor {
 
         private boolean mRunning;
 
-        private final Handler mHandler = new Handler() {
+        private final H mHandler = new H(this);
+
+        private static class H extends WeakHandler<Consuming> {
+
+            public H(@NonNull Consuming object) {
+                super(object);
+            }
+
             @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (mRunning == (msg.what == START)) return;
+            protected void onHandleMassage(@NonNull Consuming c, Message msg) {
+                if (c.mRunning == (msg.what == START)) return;
                 switch (msg.what) {
                     case START:
-                        mRunning = true;
-                        onStart(getSensorManager());
+                        c.mRunning = true;
+                        c.onStart(c.getSensorManager());
                         break;
                     case STOP:
-                        onStop();
-                        mRunning = false;
+                        c.onStop();
+                        c.mRunning = false;
                         break;
                     default:
                         throw new IllegalArgumentException();
                 }
             }
-        };
+        }
 
         /**
          * Specifies how long sensor should be active after receiving

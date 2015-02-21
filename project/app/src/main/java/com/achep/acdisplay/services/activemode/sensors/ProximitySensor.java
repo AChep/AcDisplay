@@ -27,7 +27,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
-import com.achep.base.Build;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -270,7 +269,7 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 String delta = (historySize > 0
                         ? " delta=" + (now - mHistory.get(historySize - 1).time)
                         : " first_event");
-                Log.d(TAG + ":SensorEvent", "distance=" + distance
+                Log.d(TAG + ":Event", "distance=" + distance
                         + " is_near=" + isNear
                         + " changed=" + changed
                         + delta);
