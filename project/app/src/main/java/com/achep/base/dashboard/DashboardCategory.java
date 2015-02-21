@@ -172,11 +172,8 @@ public class DashboardCategory implements Parcelable, List<DashboardTile> {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if (titleRes != 0) {
-            dest.writeInt(titleRes);
-        } else {
-            TextUtils.writeToParcel(title, dest, flags);
-        }
+        dest.writeInt(titleRes);
+        TextUtils.writeToParcel(title, dest, flags);
 
         final int count = tiles.size();
         dest.writeInt(count);
