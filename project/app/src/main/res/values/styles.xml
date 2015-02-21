@@ -55,7 +55,7 @@
 
     <style name="MaterialAcDisplay.Title" parent="MaterialAcDisplay">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
-        <item name="android:textColor">@color/material_dark_primary_text</item>
+        <item name="android:textColor">@color/primary_dark_material_dark</item>
         <item name="android:textSize">22sp</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
@@ -68,7 +68,7 @@
 
     <style name="MaterialAcDisplay.Subtitle" parent="MaterialAcDisplay">
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
-        <item name="android:textColor">@color/material_dark_secondary_text</item>
+        <item name="android:textColor">@color/secondary_text_material_dark</item>
         <item name="android:textSize">15sp</item>
         <item name="android:maxLines">1</item>
 
@@ -79,7 +79,7 @@
     </style>
 
     <style name="MaterialAcDisplay.Message" parent="MaterialAcDisplay">
-        <item name="android:textColor">@color/material_dark_primary_text</item>
+        <item name="android:textColor">@color/primary_dark_material_dark</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
         <item name="android:textSize">14sp</item>
@@ -87,7 +87,7 @@
 
     <style name="MaterialAcDisplay.Action" parent="MaterialAcDisplay">
         <item name="android:background">?android:listChoiceBackgroundIndicator</item>
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
+        <item name="android:textColor">@color/secondary_text_material_dark</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
