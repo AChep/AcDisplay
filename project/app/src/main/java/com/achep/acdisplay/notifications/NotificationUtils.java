@@ -32,6 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
 import com.achep.base.Device;
@@ -51,6 +52,14 @@ public class NotificationUtils {
     public static boolean isSecure(@NonNull Context context) {
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         return km.isKeyguardSecure() && km.isKeyguardLocked();
+    }
+
+    public static boolean isSecret(@NonNull Context context, @NonNull OpenNotification n,
+                            int minVisibility, int privacyMask) {
+        final int privacyMode = Config.getInstance().getPrivacyMode();
+        return n.getVisibility() <= minVisibility
+                && Operator.bitAnd(privacyMode, privacyMask)
+                && isSecure(context);
     }
 
     /**

@@ -36,12 +36,14 @@ import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.graphics.BackgroundFactory;
 import com.achep.acdisplay.graphics.IconFactory;
 import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.Device;
 import com.achep.base.async.AsyncTask;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.utils.Operator;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.smiley.SmileyParser;
 
@@ -561,6 +563,11 @@ public abstract class OpenNotification implements
     public boolean isClearable() {
         return ((mNotification.flags & Notification.FLAG_ONGOING_EVENT) == 0)
                 && ((mNotification.flags & Notification.FLAG_NO_CLEAR) == 0);
+    }
+
+    public boolean isContentSecret(@NonNull Context context) {
+        return NotificationUtils.isSecret(context, this, VISIBILITY_PRIVATE,
+                Config.PRIVACY_HIDE_CONTENT_MASK);
     }
 
     /**

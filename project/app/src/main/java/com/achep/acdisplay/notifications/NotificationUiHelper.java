@@ -140,10 +140,7 @@ public class NotificationUiHelper {
     }
 
     protected boolean isSecret(int minVisibility, int privacyMask) {
-        final int privacyMode = Config.getInstance().getPrivacyMode();
-        return mOpenNotification.getVisibility() <= minVisibility
-                && Operator.bitAnd(privacyMode, privacyMask)
-                && NotificationUtils.isSecure(mContext);
+        return NotificationUtils.isSecret(mContext, mOpenNotification, minVisibility, privacyMask);
     }
 
     //-- LARGE ICON -----------------------------------------------------------
