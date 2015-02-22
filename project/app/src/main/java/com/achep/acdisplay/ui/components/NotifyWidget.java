@@ -101,7 +101,7 @@ public class NotifyWidget extends Widget implements
 
     @Override
     public boolean isReadable() {
-        return false;
+        return !mNotification.isContentSecret(getHostFragment().getActivity());
     }
 
     @Override
