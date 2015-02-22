@@ -61,6 +61,10 @@ public class NotificationUtils {
      */
     public static boolean startContentIntent(@NonNull OpenNotification n) {
         PendingIntent pi = n.getNotification().contentIntent;
+        if (pi == null) {
+            pi = n.getNotification().fullScreenIntent; // nullable
+            if (pi != null) Log.i(TAG, "Sending full screen intent, instead of content one!");
+        }
         boolean successful = PendingIntentUtils.sendPendingIntent(pi);
         if (successful && Operator.bitAnd(
                 n.getNotification().flags,
