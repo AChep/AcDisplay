@@ -38,15 +38,14 @@ import android.util.Log;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.graphics.BackgroundFactory;
-import com.achep.acdisplay.graphics.IconFactory;
 import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.Device;
 import com.achep.base.async.AsyncTask;
 import com.achep.base.interfaces.ISubscriptable;
-import com.achep.base.utils.Operator;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.smiley.SmileyParser;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,13 +145,14 @@ public abstract class OpenNotification implements
     @Nullable
     private Bitmap mIconBitmap;
     @Nullable
-    private AsyncTask<Void, Void, Bitmap> mIconWorker;
+    private static WeakReference<IconFactory> sIconFactoryRef;
+    private IconFactory mIconFactory;
     @NonNull
     private final IconFactory.IconAsyncListener mIconCallback =
             new IconFactory.IconAsyncListener() {
                 @Override
                 public void onGenerated(@NonNull Bitmap bitmap) {
-                    mIconWorker = null;
+                    mIconFactory = null;
                     setIcon(bitmap);
                 }
             };
@@ -196,8 +196,11 @@ public abstract class OpenNotification implements
         loadBrandColor(context);
 
         // Load notification icon.
-        AsyncTask.stop(mIconWorker);
-        mIconWorker = IconFactory.generateAsync(context, this, mIconCallback);
+        if (sIconFactoryRef == null || (mIconFactory = sIconFactoryRef.get()) == null) {
+            sIconFactoryRef = new WeakReference<>(mIconFactory = new IconFactory());
+        }
+        mIconFactory.remove(this);
+        mIconFactory.add(context, this, mIconCallback);
 
         // Load all other things, such as title text, message text
         // and more and more.
@@ -537,7 +540,10 @@ public abstract class OpenNotification implements
     public void recycle() {
         clearBackground();
         AsyncTask.stop(mPaletteWorker);
-        AsyncTask.stop(mIconWorker);
+        if (mIconFactory != null) {
+            mIconFactory.remove(this);
+            mIconFactory = null;
+        }
     }
 
     /**
