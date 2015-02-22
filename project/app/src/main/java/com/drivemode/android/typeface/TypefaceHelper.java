@@ -71,7 +71,9 @@ public final class TypefaceHelper {
 	 */
 	public <V extends TextView> void setTypeface(V view, String typefaceName) {
 		Typeface typeface = mCache.get(typefaceName);
-		view.setTypeface(typeface);
+        if (typeface != null) {
+            view.setTypeface(typeface);
+        }
 	}
 
 	/**
@@ -83,7 +85,9 @@ public final class TypefaceHelper {
 	 */
 	public <V extends TextView> void setTypeface(V view, String typefaceName, int style) {
 		Typeface typeface = mCache.get(typefaceName);
-		view.setTypeface(typeface, style);
+        if (typeface != null) {
+            view.setTypeface(typeface, style);
+        }
 	}
 
 	/**
@@ -138,7 +142,9 @@ public final class TypefaceHelper {
      */
     public void setTypeface(Paint paint, String typefaceName) {
         Typeface typeface = mCache.get(typefaceName);
-        paint.setTypeface(typeface);
+        if (typeface != null) {
+            paint.setTypeface(typeface);
+        }
     }
 
     /**
