@@ -150,8 +150,6 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
     //noinspection GradleDynamicVersion
     compile 'org.solovyev.android:checkout:0.6.+@aar'
-    //noinspection GradleDynamicVersion
-    compile 'com.drivemode:TypefaceHelper:1.+@aar'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
 
