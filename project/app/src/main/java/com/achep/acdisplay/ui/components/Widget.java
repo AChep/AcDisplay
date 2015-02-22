@@ -161,7 +161,7 @@ public abstract class Widget {
      * @see #isReadable()
      */
     @Nullable
-    public String getReadAloudText() {
+    public CharSequence getReadAloudText() {
         return null;
     }
 
