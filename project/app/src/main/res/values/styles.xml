@@ -55,7 +55,7 @@
 
     <style name="MaterialAcDisplay.Title" parent="MaterialAcDisplay">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
-        <item name="android:textColor">@color/primary_dark_material_dark</item>
+        <item name="android:textColor">@color/primary_text_material_dark</item>
         <item name="android:textSize">22sp</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
@@ -79,7 +79,7 @@
     </style>
 
     <style name="MaterialAcDisplay.Message" parent="MaterialAcDisplay">
-        <item name="android:textColor">@color/primary_dark_material_dark</item>
+        <item name="android:textColor">@color/primary_text_material_dark</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
         <item name="android:textSize">14sp</item>
