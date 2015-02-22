@@ -37,7 +37,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.graphics.BackgroundFactory;
 import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.Device;
 import com.achep.base.async.AsyncTask;
@@ -161,13 +160,14 @@ public abstract class OpenNotification implements
     @Nullable
     private Bitmap mBackgroundBitmap;
     @Nullable
-    private AsyncTask<Void, Void, Bitmap> mBackgroundWorker;
+    private static WeakReference<IconFactory> sBackgroundFactoryRef;
+    private IconFactory mBackgroundFactory;
     @NonNull
     private final BackgroundFactory.BackgroundAsyncListener mBackgroundCallback =
             new BackgroundFactory.BackgroundAsyncListener() {
                 @Override
                 public void onGenerated(@NonNull Bitmap bitmap) {
-                    mBackgroundWorker = null;
+                    mBackgroundFactory = null;
                     setBackground(bitmap);
                 }
             };
@@ -443,20 +443,25 @@ public abstract class OpenNotification implements
         // Generate new background.
         Bitmap bitmap = mNotification.largeIcon;
         if (isBackgroundFine(bitmap)) {
-            assert bitmap != null;
-            mBackgroundWorker = BackgroundFactory.generateAsync(bitmap, mBackgroundCallback);
+            if (sBackgroundFactoryRef == null || (mBackgroundFactory = sBackgroundFactoryRef.get()) == null) {
+                sBackgroundFactoryRef = new WeakReference<>(mBackgroundFactory = new BackgroundFactory());
+            }
+            //noinspection ConstantConditions
+            mBackgroundFactory.add(null, this, mBackgroundCallback);
         }
     }
 
     /**
-     * Stops the {@link #mBackgroundWorker background loader} and sets the background
+     * Stops the {@link #mBackgroundFactory background loader} and sets the background
      * to {@code null}.
      *
      * @see #loadBackgroundAsync()
      */
     public void clearBackground() {
-        AsyncTask.stop(mBackgroundWorker);
-        mBackgroundWorker = null;
+        if (mBackgroundFactory != null) {
+            mBackgroundFactory.remove(this);
+            mBackgroundFactory = null;
+        }
         setBackground(null);
     }
 
