@@ -135,7 +135,7 @@ public abstract class Widget {
      * @see #onDismiss()
      */
     public boolean isDismissible() {
-        return false;
+        return !isHomeWidget();
     }
 
     /**

@@ -90,7 +90,7 @@ public class NotifyWidget extends Widget implements
      */
     @Override
     public boolean isDismissible() {
-        return mNotification.isDismissible();
+        return mNotification.isDismissible() && super.isDismissible();
     }
 
     @Override
