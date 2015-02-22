@@ -57,7 +57,7 @@ public class TextView extends android.widget.TextView {
                         Build.VERSION_CODES.LOLLIPOP);
 
                 if (!Device.hasTargetApi(maximumSdkVersion)) {
-                    if (fontName.indexOf('.') != -1) fontName += ".ttf";
+                    if (fontName.indexOf('.') == -1) fontName += ".ttf";
                     TypefaceHelper.getInstance().setTypeface(this, "fonts/" + fontName);
                 }
             }
