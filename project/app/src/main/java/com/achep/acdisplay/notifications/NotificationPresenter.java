@@ -147,7 +147,7 @@ public class NotificationPresenter implements
                     break;
                 case Config.KEY_UI_DYNAMIC_BACKGROUND_MODE:
                     enabled = Operator.bitAnd((int) value, Config.DYNAMIC_BG_NOTIFICATION_MASK);
-                    for (OpenNotification notification : mGList) {
+                    for (OpenNotification notification : mLList) {
                         if (enabled) {
                             notification.loadBackgroundAsync();
                         } else {
@@ -422,12 +422,6 @@ public class NotificationPresenter implements
 
             Config config = Config.getInstance();
             n.setEmoticonsEnabled(config.isEmoticonsEnabled());
-            // Selective load exactly what we need and nothing more.
-            // This will reduce RAM consumption for a bit (1% or so.)
-            if (Operator.bitAnd(
-                    config.getDynamicBackgroundMode(),
-                    Config.DYNAMIC_BG_NOTIFICATION_MASK))
-                n.loadBackgroundAsync();
 
             if (groupChild) {
                 globalValid = false;
@@ -562,6 +556,7 @@ public class NotificationPresenter implements
     @Override
     // Not an enter point, should not be synchronized.
     public int onNotificationAdded(@NonNull OpenNotification n) {
+        loadNotificationBackground(n);
         notifyListeners(n, EVENT_POSTED);
         return RESULT_SUCCESS;
     }
@@ -595,6 +590,7 @@ public class NotificationPresenter implements
             }
         }
 
+        loadNotificationBackground(n);
         notifyListeners(n, EVENT_CHANGED);
         return RESULT_SUCCESS;
     }
@@ -608,6 +604,16 @@ public class NotificationPresenter implements
         notifyListeners(n, EVENT_REMOVED);
         n.recycle(); // Free all resources
         return RESULT_SUCCESS;
+    }
+
+    private void loadNotificationBackground(@NonNull OpenNotification notification) {
+        Config config = Config.getInstance();
+        // Selective load exactly what we need and nothing more.
+        // This will reduce RAM consumption for a bit (1% or so.)
+        if (Operator.bitAnd(
+                config.getDynamicBackgroundMode(),
+                Config.DYNAMIC_BG_NOTIFICATION_MASK))
+            notification.loadBackgroundAsync();
     }
 
     //-- NOTIFICATION UTILS ---------------------------------------------------
