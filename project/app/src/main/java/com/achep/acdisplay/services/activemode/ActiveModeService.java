@@ -155,9 +155,9 @@ public class ActiveModeService extends SwitchService implements
 
     @Override
     public void onCreate() {
-        super.onCreate();
         Context context = getContext();
         mSensors = buildAvailableSensorsList(context);
+        super.onCreate();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(App.ACTION_INTERNAL_PING_SENSORS);
