@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
+import com.achep.base.tests.Check;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -47,7 +48,8 @@ public abstract class Widget {
     private ViewGroup mView;
     private View mIconView;
 
-    private boolean mShown;
+    private boolean mAttached;
+    private boolean mStarted;
 
     /**
      * Interface definition for a callback to the host fragment.
@@ -83,7 +85,8 @@ public abstract class Widget {
                 .append(mHostFragment)
                 .append(mView)
                 .append(mIconView)
-                .append(mShown)
+                .append(mAttached)
+                .append(mStarted)
                 .toHashCode();
     }
 
@@ -99,7 +102,8 @@ public abstract class Widget {
 
         Widget widget = (Widget) o;
         return new EqualsBuilder()
-                .append(mShown, widget.mShown)
+                .append(mAttached, widget.mAttached)
+                .append(mStarted, widget.mStarted)
                 .append(mHostFragment, widget.mHostFragment)
                 .append(mView, widget.mView)
                 .append(mIconView, widget.mIconView)
@@ -189,6 +193,22 @@ public abstract class Widget {
 
     //-- LIFE CYCLE -----------------------------------------------------------
 
+    public final void start() {
+        Check.getInstance().isFalse(mStarted);
+        mStarted = true;
+        onStart();
+    }
+
+    public final void stop() {
+        Check.getInstance().isTrue(mStarted);
+        mStarted = false;
+        onStop();
+    }
+
+    public final boolean isStarted() {
+        return mStarted;
+    }
+
     public void onStart() { /* empty */ }
 
     /**
@@ -199,7 +219,8 @@ public abstract class Widget {
      * @see #isViewAttached()
      */
     public void onViewAttached() {
-        mShown = true;
+        Check.getInstance().isFalse(mAttached);
+        mAttached = true;
     }
 
     /**
@@ -209,11 +230,12 @@ public abstract class Widget {
      * @see #isViewAttached()
      */
     public void onViewDetached() {
-        mShown = false;
+        Check.getInstance().isTrue(mAttached);
+        mAttached = false;
     }
 
     public boolean isViewAttached() {
-        return mShown;
+        return mAttached;
     }
 
     public void onStop() { /* empty */ }

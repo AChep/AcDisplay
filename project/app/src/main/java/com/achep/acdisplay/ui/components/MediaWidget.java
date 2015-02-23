@@ -214,7 +214,7 @@ public class MediaWidget extends Widget implements
     private void populateMetadata() {
         if (mIdle) {
             ViewGroup vg = getView();
-            if (Device.hasKitKatApi() && vg.isLaidOut() && !getHostFragment().isPowerSaveMode()) {
+            if (Device.hasKitKatApi() && vg.isLaidOut() && getHostFragment().isAnimatable()) {
                 TransitionManager.beginDelayedTransition(vg);
             }
         }

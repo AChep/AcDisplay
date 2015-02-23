@@ -192,6 +192,8 @@ public class AcDisplayFragment extends Fragment implements
     private boolean mPendingIconsSizeChange;
     private boolean mPendingNotifyChange;
 
+    private boolean mResuming;
+
     private boolean isPinnable() {
         return getConfig().isWidgetPinnable();
     }
@@ -317,7 +319,7 @@ public class AcDisplayFragment extends Fragment implements
             mCircleView.setSupervisor(new CircleView.Supervisor() {
                 @Override
                 public boolean isAnimationEnabled() {
-                    return !isPowerSaveMode();
+                    return isAnimatable();
                 }
 
                 @Override
@@ -347,11 +349,12 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        mResuming = true;
 
         // Start all available widgets.
-        for (Widget widget : mWidgetsMap.values()) widget.onStart();
-        mClockWidget.onStart();
-        mMediaWidget.onStart();
+        for (Widget widget : mWidgetsMap.values()) widget.start();
+        mClockWidget.start();
+        mMediaWidget.start();
 
         // Update notifications list & config.
         if (mPendingNotifyChange) rebuildNotifications();
@@ -364,6 +367,8 @@ public class AcDisplayFragment extends Fragment implements
         mMediaController.start();
         mMediaController.registerListener(this);
         onPlaybackStateChanged(mMediaController.getPlaybackState());
+
+        mResuming = false;
     }
 
     @Override
@@ -378,9 +383,9 @@ public class AcDisplayFragment extends Fragment implements
         mTouchHandler.removeCallbacksAndMessages(null);
 
         // Stop all widgets.
-        for (Widget widget : mWidgetsMap.values()) widget.onStop();
-        mClockWidget.onStop();
-        mMediaWidget.onStop();
+        for (Widget widget : mWidgetsMap.values()) widget.stop();
+        mClockWidget.stop();
+        mMediaWidget.stop();
 
         // Media controller.
         mMediaController.stop();
@@ -456,11 +461,8 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public void requestTimeoutRestart(@NonNull Widget widget) {
-
-        if (isCurrentWidget(widget)) {
-            int timeoutDelay = getConfig().getTimeoutNormal();
-            mTimeout.setTimeoutDelayed(timeoutDelay, true);
-        }
+        Check.getInstance().isTrue(isCurrentWidget(widget));
+        mTimeout.setTimeoutDelayed(mTimeoutNormal, true);
     }
 
     //-- TOUCH HANDLING -------------------------------------------------------
@@ -611,7 +613,7 @@ public class AcDisplayFragment extends Fragment implements
         // ~~    DISMISS      ~~
         // /////////////////////
 
-        if (height > absDeltaY && !isPowerSaveMode()) {
+        if (height > absDeltaY && isAnimatable()) {
             int duration;
             duration = Math.round(1000f /* ms. */ * (height - absDeltaY) / absVelocityX);
             duration = Math.min(duration, 300);
@@ -763,8 +765,6 @@ public class AcDisplayFragment extends Fragment implements
      * @see #showWidget(com.achep.acdisplay.ui.components.Widget)
      */
     protected void showWidget(@NonNull Widget widget, boolean animate) {
-        Check.getInstance().isNonNull(widget);
-
         mHandler.removeMessages(MSG_SHOW_HOME_WIDGET);
         mHasPinnedWidget = false;
 
@@ -783,7 +783,7 @@ public class AcDisplayFragment extends Fragment implements
 
         mSelectedWidget = widget;
         resetSceneContainerParams();
-        animate &= !isPowerSaveMode();
+        animate &= isAnimatableAuto();
 
         SceneCompat scene = findSceneByWidget(mSelectedWidget);
         if (scene == null) scene = mSceneMainClock;
@@ -791,7 +791,7 @@ public class AcDisplayFragment extends Fragment implements
             goScene(scene, animate);
         } else if (animate) {
             final ViewGroup viewGroup = mSelectedWidget.getView();
-            beginDelayedTransition(viewGroup, mTransitionJit);
+            maybeBeginDelayedTransition(viewGroup, mTransitionJit);
         }
 
         mSelectedWidget.onViewAttached();
@@ -832,7 +832,7 @@ public class AcDisplayFragment extends Fragment implements
         boolean visible = view.getVisibility() == View.VISIBLE;
 
         if (visible == visibleNow) return;
-        if (!isPowerSaveMode()) {
+        if (isAnimatable()) {
             final float[] values;
             if (visibleNow) {
                 values = new float[]{
@@ -912,10 +912,10 @@ public class AcDisplayFragment extends Fragment implements
      * @see #showWidget(com.achep.acdisplay.ui.components.Widget)
      */
     @SuppressLint("NewApi")
-    protected final void goScene(@NonNull SceneCompat sceneCompat, boolean animate) {
+    protected synchronized final void goScene(@NonNull SceneCompat sceneCompat, boolean animate) {
         if (mCurrentScene == sceneCompat) return;
         mCurrentScene = sceneCompat;
-        Log.w(TAG, "Going to " + sceneCompat);
+        if (DEBUG) Log.d(TAG, "Going to " + sceneCompat);
 
         if (Device.hasKitKatApi()) animate &= mSceneContainer.isLaidOut();
         if (!animate) {
@@ -966,17 +966,14 @@ public class AcDisplayFragment extends Fragment implements
     //-- DYNAMIC BACKGROUND ---------------------------------------------------
 
     /**
-     * Updates current background if given {@link com.achep.acdisplay.ui.components.Widget}
-     * is currently selected.
-     *
-     * @param widget client, may not be {@code null}.
+     * Updates current background. The widget must be actually selected, otherwise it
+     * will crash.
      */
     @Override
     public void requestBackgroundUpdate(@NonNull Widget widget) {
-        if (isCurrentWidget(widget)) {
-            final int mask = widget.getBackgroundMask();
-            mBackground.dispatchSetBackground(widget.getBackground(), mask);
-        }
+        Check.getInstance().isTrue(isCurrentWidget(widget));
+        final int mask = widget.getBackgroundMask();
+        mBackground.dispatchSetBackground(widget.getBackground(), mask);
     }
 
     //-- MEDIA ----------------------------------------------------------------
@@ -1002,34 +999,35 @@ public class AcDisplayFragment extends Fragment implements
 
     @Override
     public void onPlaybackStateChanged(int state) {
-        if (state == PlaybackStateCompat.STATE_PLAYING) {
-            mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
-            makeMediaWidgetActive();
-        } else if (mMediaWidgetActive) {
-            int delay = 6000; // 6 sec.
-            if (state == PlaybackStateCompat.STATE_NONE) delay = 500;
-            mHandler.sendEmptyMessageDelayed(MSG_HIDE_MEDIA_WIDGET, delay);
+        switch (state) {
+            case PlaybackStateCompat.STATE_PLAYING:
+                mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
+                makeMediaWidgetActive();
+                break;
+            default:
+                if (mMediaWidgetActive) {
+                    int delay = 6000; // 6 sec.
+                    if (state == PlaybackStateCompat.STATE_NONE) delay = 500;
+                    mHandler.sendEmptyMessageDelayed(MSG_HIDE_MEDIA_WIDGET, delay);
+                }
+                break;
         }
     }
 
     private void makeMediaWidgetActive() {
-        if (!mMediaWidgetActive) {
-            mMediaWidgetActive = true;
+        if (mMediaWidgetActive == (mMediaWidgetActive = true)) return;
 
-            // Update home widget if the current widget is
-            // the clock / media widget.
-            if (mSelectedWidget.isHomeWidget()) showHomeWidget();
-        }
+        // Update home widget if the current widget is
+        // the clock / media widget.
+        if (mSelectedWidget.isHomeWidget()) showHomeWidget();
     }
 
     private void makeMediaWidgetInactive() {
-        if (mMediaWidgetActive) {
-            mMediaWidgetActive = false;
+        if (mMediaWidgetActive == (mMediaWidgetActive = false)) return;
 
-            // Update home widget if the current widget
-            // is the media widget.
-            if (isCurrentWidget(mMediaWidget)) showHomeWidget();
-        }
+        // Update home widget if the current widget
+        // is the media widget.
+        if (isCurrentWidget(mMediaWidget)) showHomeWidget();
     }
 
     /**
@@ -1063,6 +1061,14 @@ public class AcDisplayFragment extends Fragment implements
      */
     public boolean isNotDemo() {
         return getActivity() instanceof AcDisplayActivity;
+    }
+
+    public boolean isAnimatable() {
+        return !isPowerSaveMode() && isResumed();
+    }
+
+    public boolean isAnimatableAuto() {
+        return isAnimatable() && !mResuming;
     }
 
     //-- NOTIFICATION HANDLING ------------------------------------------------
@@ -1112,7 +1118,7 @@ public class AcDisplayFragment extends Fragment implements
                     if (DEBUG) Log.d(TAG, "[Event] Updating notification widget...");
                     if (isCurrentWidget(widgetPrev)) {
                         final ViewGroup viewGroup = widgetPrev.getView();
-                        beginDelayedTransition(viewGroup, mTransitionJit);
+                        maybeBeginDelayedTransition(viewGroup, mTransitionJit);
                     }
                     widgetPrev.setNotification(osbn);
                     break;
@@ -1124,7 +1130,7 @@ public class AcDisplayFragment extends Fragment implements
                 // Create new widget and inflate its
                 // icon view.
                 NotifyWidget nw = new NotifyWidget(this, this);
-                nw.onStart();
+                nw.start();
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View iconView = nw.createIconView(inflater, mIconsContainer);
 
@@ -1149,7 +1155,7 @@ public class AcDisplayFragment extends Fragment implements
                 }
 
                 mWidgetsMap.put(iconView, nw);
-                beginDelayedTransition(mIconsContainer, mTransitionJit);
+                maybeBeginDelayedTransition(mIconsContainer, mTransitionJit);
                 mIconsContainer.addView(iconView);
                 break;
             case NotificationPresenter.EVENT_REMOVED:
@@ -1159,7 +1165,7 @@ public class AcDisplayFragment extends Fragment implements
                     iconView = widgetPrev.getIconView();
                     clearWidget(iconView);
                     mWidgetsMap.remove(iconView);
-                    beginDelayedTransition(mIconsContainer, mTransitionJit);
+                    maybeBeginDelayedTransition(mIconsContainer, mTransitionJit);
                     mIconsContainer.removeView(iconView);
 
                     // Remove widget's scene if it's not needed anymore.
@@ -1276,7 +1282,7 @@ public class AcDisplayFragment extends Fragment implements
             if (notifyUsed[i]) continue;
 
             NotifyWidget nw = new NotifyWidget(this, this);
-            nw.onStart();
+            if (isResumed()) nw.start();
 
             View iconView = nw.createIconView(inflater, container);
             ViewUtils.setSize(iconView, iconSize);
@@ -1317,13 +1323,15 @@ public class AcDisplayFragment extends Fragment implements
 
         // Do not animate divider's visibility change on
         // pause/resume, cause it _somehow_ confuses people.
-        boolean animate = !mPendingNotifyChange;
+        boolean animate = !mResuming;
         updateDividerVisibility(animate);
     }
 
     private void clearWidget(@NonNull View iconView) {
-        NotifyWidget nw = (NotifyWidget) findWidgetByIcon(iconView);
-        nw.onStop();
+        if (isResumed()) {
+            NotifyWidget nw = (NotifyWidget) findWidgetByIcon(iconView);
+            nw.stop();
+        }
         mWidgetsMap.remove(iconView);
     }
 
@@ -1338,7 +1346,7 @@ public class AcDisplayFragment extends Fragment implements
         final boolean visible = view.getVisibility() == View.VISIBLE;
         final boolean visibleNow = mIconsContainer.getChildCount() > 0;
 
-        if (animate && !isPowerSaveMode() && isResumed()) {
+        if (animate && isAnimatable()) {
             int visibleInt = MathUtils.bool(visible);
             int visibleNowInt = MathUtils.bool(visibleNow);
             float[] values = {1.0f, 0.1f, 1.0f, 0.5f};
@@ -1367,10 +1375,10 @@ public class AcDisplayFragment extends Fragment implements
     //-- OTHER CLASSES --------------------------------------------------------
 
     @SuppressLint("NewApi")
-    private void beginDelayedTransition(@Nullable ViewGroup sceneRoot,
-                                        @Nullable Transition transition) {
+    private void maybeBeginDelayedTransition(@Nullable ViewGroup sceneRoot,
+                                             @Nullable Transition transition) {
         if (Device.hasKitKatApi()
-                && !isPowerSaveMode()
+                && isAnimatableAuto()
                 && sceneRoot != null
                 && sceneRoot.isLaidOut()) {
             TransitionManager.beginDelayedTransition(sceneRoot, transition);
