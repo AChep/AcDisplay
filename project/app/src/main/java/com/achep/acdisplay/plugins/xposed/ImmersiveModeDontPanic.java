@@ -20,6 +20,8 @@ package com.achep.acdisplay.plugins.xposed;
 
 import android.util.Log;
 
+import com.achep.base.Device;
+
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 
@@ -43,20 +45,36 @@ public class ImmersiveModeDontPanic implements IXposedHookZygoteInit {
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        XC_MethodHook hook = new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                String pkg = (String) param.args[0];
-                if (pkg != null && pkg.startsWith("com.achep.acdisplay")) {
+        if (Device.hasLollipopApi()) {
+            // Unfortunately this removes all immersive panic reports,
+            // not only about AcDisplay.
+            XC_MethodHook hook = new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
                     param.setResult(null);
-
-                    Log.i(TAG, "An unconfirmation of AcDisplay\'s immersive mode passed to hell.");
                 }
-            }
-        };
+            };
 
-        findAndHookMethod("com.android.internal.policy.impl.ImmersiveModeConfirmation", null,
-                "unconfirmPackage", String.class, hook);
+            findAndHookMethod(
+                    "com.android.internal.policy.impl.ImmersiveModeConfirmation", null,
+                    "handlePanic", hook);
+        } else {
+            XC_MethodHook hook = new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
+                    String pkg = (String) param.args[0];
+                    if (pkg != null && pkg.startsWith("com.achep.acdisplay")) {
+                        param.setResult(null);
+
+                        Log.i(TAG, "An unconfirmation of AcDisplay\'s immersive mode passed to hell.");
+                    }
+                }
+            };
+
+            findAndHookMethod(
+                    "com.android.internal.policy.impl.ImmersiveModeConfirmation", null,
+                    "unconfirmPackage", String.class, hook);
+        }
     }
 
 }
