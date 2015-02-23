@@ -33,6 +33,7 @@ import android.util.Log;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.MediaService;
+import com.achep.base.tests.Check;
 
 import java.util.List;
 
@@ -57,12 +58,14 @@ class MediaController2Lollipop extends MediaController2 {
                 @Override
                 public void onMetadataChanged(MediaMetadata metadata) {
                     super.onMetadataChanged(metadata);
+                    Check.getInstance().isInMainThread();
                     updateMetadata(metadata);
                 }
 
                 @Override
                 public void onPlaybackStateChanged(PlaybackState state) {
                     super.onPlaybackStateChanged(state);
+                    Check.getInstance().isInMainThread();
                     updatePlaybackState(state.getState());
                 }
             };
@@ -72,6 +75,8 @@ class MediaController2Lollipop extends MediaController2 {
 
                 @Override
                 public void onActiveSessionsChanged(List<MediaController> controllers) {
+                    Check.getInstance().isInMainThread();
+
                     if (mMediaController != null) {
                         for (MediaController controller : controllers) {
                             if (mMediaController == controller) {

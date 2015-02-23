@@ -28,6 +28,7 @@ import android.view.KeyEvent;
 import com.achep.acdisplay.Atomic;
 import com.achep.base.Device;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.tests.Check;
 
 import java.util.ArrayList;
 
@@ -200,6 +201,7 @@ public abstract class MediaController2 implements
     public abstract void sendMediaAction(int action);
 
     protected void notifyOnMetadataChanged() {
+        Check.getInstance().isInMainThread();
         synchronized (this) {
             for (MediaListener listener : mListeners) {
                 listener.onMetadataChanged(mMetadata);
@@ -213,6 +215,7 @@ public abstract class MediaController2 implements
     }
 
     protected void notifyOnPlaybackStateChanged() {
+        Check.getInstance().isInMainThread();
         synchronized (this) {
             for (MediaListener listener : mListeners) {
                 listener.onPlaybackStateChanged(mPlaybackState);
