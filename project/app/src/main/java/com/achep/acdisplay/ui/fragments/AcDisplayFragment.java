@@ -955,9 +955,9 @@ public class AcDisplayFragment extends Fragment implements
             if (getActivity() != null) {
                 // TODO: Better animation for Jelly Bean users.
                 float density = getResources().getDisplayMetrics().density;
-                getSceneView().setAlpha(0.4f);
-                getSceneView().setRotationX(10f);
-                getSceneView().setTranslationY(10f * density);
+                getSceneView().setAlpha(0.6f);
+                getSceneView().setRotationX(6f);
+                getSceneView().setTranslationY(6f * density);
                 getSceneView().animate().alpha(1).rotationX(0).translationY(0);
             }
         }
