@@ -369,7 +369,7 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onPause() {
         // Back to the home widget.
-        showWidget(mClockWidget);
+        showWidget(mClockWidget, false);
 
         // Clear all ongoing events such as handling media widget,
         // handing pinned widget, handing the touch delay, etc...
