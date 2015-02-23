@@ -101,6 +101,7 @@ public abstract class DynamicBackground {
      * Smoothly sets the background.
      */
     private void dispatchSetBackground(@Nullable Bitmap bitmap) {
+        Log.d("TESTING", "setting the real bg:" + bitmap);
         if (mImageView == null) return;
         if (false) {
             if (DEBUG) Log.d(TAG, "Skipped background change: using default one.");
@@ -180,7 +181,7 @@ public abstract class DynamicBackground {
                     mEnterAnimation.setupEndValues();
                 }
 
-                if (drawablePrev == null) {
+                if (drawablePrev == null || !mFragment.isAnimatableAuto()) {
                     mImageView.setImageDrawable(drawable);
                     mEnterAnimation.start();
                 } else {
