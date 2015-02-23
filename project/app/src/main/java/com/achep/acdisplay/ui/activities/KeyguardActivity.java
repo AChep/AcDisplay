@@ -39,6 +39,7 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.base.Device;
+import com.achep.base.tests.Check;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.utils.LogUtils;
 
@@ -271,6 +272,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
                 }
                 break;
             case Timeout.EVENT_TIMEOUT:
+                Check.getInstance().isFalse(mTimeoutPaused);
                 lock();
                 break;
         }
