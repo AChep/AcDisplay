@@ -63,11 +63,13 @@ public class IconFactory {
 
         private final ConcurrentLinkedQueue<Task> mQueue = new ConcurrentLinkedQueue<>();
         private final IconFactory mFactory;
+        private final Object mMonitor;
 
         private volatile boolean mStopping;
 
-        Worker(IconFactory factory) {
+        Worker(IconFactory factory, @NonNull Object monitor) {
             mFactory = factory;
+            mMonitor = monitor;
         }
 
         @Override
@@ -79,7 +81,7 @@ public class IconFactory {
                 // Get the next task from
                 // queue.
                 final Task task;
-                synchronized (mQueue) {
+                synchronized (mMonitor) {
                     if (mQueue.isEmpty()) {
                         mStopping = true;
                         if (DEBUG) {
@@ -114,20 +116,17 @@ public class IconFactory {
             task.context = context;
             task.notification = notification;
             task.listener = listener;
-            synchronized (mQueue) {
-                Check.getInstance().isFalse(mStopping);
-                mQueue.add(task);
-            }
+
+            Check.getInstance().isFalse(mStopping);
+            mQueue.add(task);
         }
 
         void remove(@NonNull OpenNotification notification) {
-            synchronized (mQueue) {
-                Check.getInstance().isFalse(mStopping);
-                for (Task task : mQueue) {
-                    if (task.notification == notification) {
-                        mQueue.remove(task);
-                        return;
-                    }
+            Check.getInstance().isFalse(mStopping);
+            for (Task task : mQueue) {
+                if (task.notification == notification) {
+                    mQueue.remove(task);
+                    return;
                 }
             }
         }
@@ -137,9 +136,7 @@ public class IconFactory {
          * of incoming tasks, {@code false} otherwise.
          */
         boolean isActive() {
-            synchronized (mQueue) {
-                return !mStopping;
-            }
+            return !mStopping;
         }
 
     }
@@ -149,6 +146,9 @@ public class IconFactory {
 
     @NonNull
     private Handler handler = new Handler(Looper.getMainLooper());
+
+    @NonNull
+    private final Object mMonitor = new Object();
 
     @NonNull
     protected Bitmap onGenerate(@NonNull Context context, @NonNull OpenNotification notification) {
@@ -165,14 +165,16 @@ public class IconFactory {
     public void add(@NonNull Context context,
                     @NonNull OpenNotification notification,
                     @NonNull IconAsyncListener listener) {
-        boolean create = isWorkerInactive();
-        if (create) {
-            mWorker = new Worker(this);
-            mWorker.setPriority(Thread.MAX_PRIORITY);
+        synchronized (mMonitor) {
+            boolean create = isWorkerInactive();
+            if (create) {
+                mWorker = new Worker(this, mMonitor);
+                mWorker.setPriority(Thread.MAX_PRIORITY);
+            }
+            assert mWorker != null;
+            mWorker.add(context, notification, listener);
+            if (create) mWorker.start();
         }
-        assert mWorker != null;
-        mWorker.add(context, notification, listener);
-        if (create) mWorker.start();
     }
 
     /**
@@ -181,13 +183,15 @@ public class IconFactory {
      * @see #add(android.content.Context, OpenNotification, IconFactory.IconAsyncListener)
      */
     public void remove(@NonNull OpenNotification notification) {
-        if (isWorkerInactive()) {
-            // It's too late :(
-            return;
-        }
+        synchronized (mMonitor) {
+            if (isWorkerInactive()) {
+                // It's too late :(
+                return;
+            }
 
-        assert mWorker != null;
-        mWorker.remove(notification);
+            assert mWorker != null;
+            mWorker.remove(notification);
+        }
     }
 
     private boolean isWorkerInactive() {
