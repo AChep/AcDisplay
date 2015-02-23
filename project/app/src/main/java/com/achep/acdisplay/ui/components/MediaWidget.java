@@ -236,7 +236,9 @@ public class MediaWidget extends Widget implements
      * @see #getBackgroundMask()
      */
     private void populateBackground() {
-        mCallback.requestBackgroundUpdate(this);
+        if (isViewAttached()) {
+            mCallback.requestBackgroundUpdate(this);
+        }
     }
 
     @SuppressLint("NewApi")
