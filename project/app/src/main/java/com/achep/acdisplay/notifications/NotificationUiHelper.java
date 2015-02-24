@@ -24,6 +24,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
@@ -569,6 +571,21 @@ public class NotificationUiHelper {
         int size = res.getDimensionPixelSize(R.dimen.notification_action_icon_size);
         icon = icon.mutate();
         icon.setBounds(0, 0, size, size);
+
+        // The matrix is stored in a single array, and its treated as follows:
+        // [ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t ]
+        // When applied to a color [r, g, b, a], the resulting color is computed as (after clamping)
+        //   R' = a*R + b*G + c*B + d*A + e;
+        //   G' = f*R + g*G + h*B + i*A + j;
+        //   B' = k*R + l*G + m*B + n*A + o;
+        //   A' = p*R + q*G + r*B + s*A + t;
+        ColorFilter colorFilter = new ColorMatrixColorFilter(new float[]{
+                0, 0, 0, 0, 255, // Red
+                0, 0, 0, 0, 255, // Green
+                0, 0, 0, 0, 255, // Blue
+                0, 0, 0, 1, 0 //    Alpha
+        });
+        icon.setColorFilter(colorFilter); // force white color
         return icon;
     }
 
