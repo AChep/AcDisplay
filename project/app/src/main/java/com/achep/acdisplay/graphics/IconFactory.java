@@ -98,8 +98,22 @@ public class IconFactory {
         Bitmap icon = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(icon);
 
+        // Calculate scale ratios
+        int drawableWidth = drawable.getIntrinsicWidth();
+        int drawableHeight = drawable.getIntrinsicHeight();
+        float ratioX = Math.min((float) drawableWidth / drawableHeight, 1f);
+        float ratioY = Math.min((float) drawableHeight / drawableWidth, 1f);
+
+        // Calculate new width and height
+        int width = Math.round(size * ratioX);
+        int height = Math.round(size * ratioY);
+        int paddingLeft = (size - width) / 2;
+        int paddingTop = (size - height) / 2;
+
+        // Apply size and draw
+        canvas.translate(paddingLeft, paddingTop);
         drawable = drawable.mutate();
-        drawable.setBounds(0, 0, size, size);
+        drawable.setBounds(0, 0, width, height);
         drawable.draw(canvas);
 
         return icon;
