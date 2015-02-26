@@ -89,7 +89,7 @@ public class NotificationUtils {
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     public static void dismissNotification(@NonNull OpenNotification n) {
-        NotificationPresenter.getInstance().removeNotification(n);
+        NotificationPresenter.getInstance().removeNotification(n, 0);
         StatusBarNotification sbn = n.getStatusBarNotification();
         if (sbn != null && Device.hasJellyBeanMR2Api()) {
             MediaService service = MediaService.sService;

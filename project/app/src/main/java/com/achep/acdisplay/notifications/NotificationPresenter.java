@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
@@ -33,6 +34,7 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.base.AppHeap;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.interfaces.ISubscriptable;
@@ -42,7 +44,9 @@ import com.achep.base.utils.Operator;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -54,6 +58,7 @@ public class NotificationPresenter implements
         ISubscriptable<NotificationPresenter.OnNotificationListChangedListener> {
 
     private static final String TAG = "NotificationPresenter";
+    private static final String WAKE_LOCK_TAG = "Notification pool post/remove lock.";
 
     /**
      * {@code true} to filter the noisy flow of same notifications,
@@ -61,9 +66,12 @@ public class NotificationPresenter implements
      */
     private static final boolean FILTER_NOISY_NOTIFICATIONS = true;
 
+    private static final long POST_REMOVE_POOL_DURATION = 400; // 0.4 sec.
+
     private static final int FRESH_NOTIFICATION_EXPIRY_TIME = 4000; // 4 sec.
 
     public static final int FLAG_SILENCE = 1;
+    public static final int FLAG_IMMEDIATELY = 1 << 1;
 
     public static final int EVENT_BATH = 0;
     public static final int EVENT_POSTED = 1;
@@ -108,6 +116,41 @@ public class NotificationPresenter implements
 
     // Threading
     private final Handler mHandler;
+
+    // Remote posting/removing
+    private boolean mProcessingPRQueue;
+    private final ConcurrentLinkedQueue<PostRemoveEvent> mPRQueue = new ConcurrentLinkedQueue<>();
+    private final Runnable mPRRunnable = new Runnable() {
+        @Override
+        public void run() {
+            synchronized (mPRQueue) {
+                if (DEBUG) Log.d(TAG, "Processing the p&r queue (" + mPRQueue.size() + " events)");
+
+                mProcessingPRQueue = true;
+                // Release all events!
+                PostRemoveEvent event;
+                while ((event = mPRQueue.poll()) != null) {
+                    if (event.posts) {
+                        assert event.context != null;
+                        postNotification(event.context, event.notification, event.flags);
+                    } else {
+                        removeNotification(event.notification, event.flags);
+                    }
+                }
+                mProcessingPRQueue = false;
+            }
+        }
+    };
+
+    private static class PostRemoveEvent {
+        @Nullable
+        public Context context;
+        @NonNull
+        public OpenNotification notification;
+
+        public int flags;
+        public boolean posts;
+    }
 
     //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
 
@@ -334,15 +377,13 @@ public class NotificationPresenter implements
     public void postNotificationFromMain(
             @NonNull final Context context,
             @NonNull final OpenNotification n, final int flags) {
-        if (DEBUG) Log.d(TAG, "Initially posting " + n + " from \'"
-                + Thread.currentThread().getName() + "\' thread.");
+        synchronized (mPRQueue) {
+            if (DEBUG) Log.d(TAG, "Initially posting " + n + " from \'"
+                    + Thread.currentThread().getName() + "\' thread.");
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                postNotification(context, n, flags);
-            }
-        });
+            boolean immediately = Operator.bitAnd(flags, FLAG_IMMEDIATELY) || !n.isClearable();
+            internalAddPREvent(context, n, flags, true /* post */, immediately);
+        }
     }
 
     /**
@@ -362,6 +403,12 @@ public class NotificationPresenter implements
             @NonNull Context context,
             @NonNull OpenNotification n, int flags) {
         Check.getInstance().isInMainThread();
+
+        synchronized (mPRQueue) {
+            // Clean-up all previous event regard this
+            // notification.
+            if (!mProcessingPRQueue) internalRemovePreviousPREvent(n);
+        }
 
         // Check for the test notification.
         if (isInitNotification(context, n)) {
@@ -445,16 +492,14 @@ public class NotificationPresenter implements
         meltListeners();
     }
 
-    public void removeNotificationFromMain(final @NonNull OpenNotification n) {
-        if (DEBUG) Log.d(TAG, "Initially removing " + n + " from \'"
-                + Thread.currentThread().getName() + "\' thread.");
+    public void removeNotificationFromMain(final @NonNull OpenNotification n, final int flags) {
+        synchronized (mPRQueue) {
+            if (DEBUG) Log.d(TAG, "Initially removing " + n + " from \'"
+                    + Thread.currentThread().getName() + "\' thread.");
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                removeNotification(n);
-            }
-        });
+            boolean immediately = Operator.bitAnd(flags, FLAG_IMMEDIATELY) || !n.isClearable();
+            internalAddPREvent(null, n, 0, false /* remove */, immediately);
+        }
     }
 
     /**
@@ -462,8 +507,14 @@ public class NotificationPresenter implements
      * this event to followers. Calling his method will not
      * remove notification from system!
      */
-    public void removeNotification(@NonNull OpenNotification n) {
+    public void removeNotification(@NonNull OpenNotification n, final int flags) {
         Check.getInstance().isInMainThread();
+
+        synchronized (mPRQueue) {
+            // Clean-up all previous event regard this
+            // notification.
+            if (!mProcessingPRQueue) internalRemovePreviousPREvent(n);
+        }
 
         if (n.isGroupSummary()) {
             String groupKey = n.getGroupKey();
@@ -519,6 +570,49 @@ public class NotificationPresenter implements
             notifyListeners(null, EVENT_BATH);
         } else if (size > 0) {
             notifyListeners(changes);
+        }
+    }
+
+    private void internalAddPREvent(
+            @Nullable Context context,
+            @NonNull OpenNotification notification,
+            int flags, boolean posts,
+            boolean immediately) {
+        internalRemovePreviousPREvent(notification);
+        PostRemoveEvent event = new PostRemoveEvent();
+        event.context = context;
+        event.notification = notification;
+        event.flags = flags;
+        event.posts = posts;
+        mPRQueue.add(event);
+
+        final long duration = POST_REMOVE_POOL_DURATION;
+        if (!immediately) {
+            context = AppHeap.getContext(); // that's cheating :(
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG).acquire(duration + 100);
+        }
+
+        mHandler.removeCallbacks(mPRRunnable);
+        mHandler.postDelayed(mPRRunnable, immediately ? 0 : duration);
+    }
+
+    private void internalRemovePreviousPREvent(@NonNull OpenNotification notification) {
+        // Remove all previous events from the queue, since they're not
+        // important at all.
+        boolean found = false;
+        Iterator<PostRemoveEvent> iterator = mPRQueue.iterator();
+        while (iterator.hasNext()) {
+            PostRemoveEvent event = iterator.next();
+            if (NotificationUtils.hasIdenticalIds(event.notification, notification)) {
+                Check.getInstance().isFalse(found);
+                iterator.remove();
+                found = true;
+
+                // I don't want that test to be run on
+                // release build.
+                if (!DEBUG) break;
+            }
         }
     }
 

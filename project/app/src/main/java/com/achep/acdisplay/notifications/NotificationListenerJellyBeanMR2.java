@@ -89,7 +89,7 @@ class NotificationListenerJellyBeanMR2 extends NotificationListener {
                                       @NonNull StatusBarNotification sbn) {
         if (mInitialized || !postActiveNotifications(service)) {
             NotificationPresenter np = NotificationPresenter.getInstance();
-            np.removeNotificationFromMain(OpenNotification.newInstance(sbn));
+            np.removeNotificationFromMain(OpenNotification.newInstance(sbn), 0);
         }
     }
 

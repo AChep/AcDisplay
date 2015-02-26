@@ -55,7 +55,7 @@ class NotificationListenerLollipop extends NotificationListener {
     public void onNotificationRemoved(@NonNull NotificationListenerService service,
                                       @NonNull StatusBarNotification sbn) {
         NotificationPresenter np = NotificationPresenter.getInstance();
-        np.removeNotificationFromMain(OpenNotification.newInstance(sbn));
+        np.removeNotificationFromMain(OpenNotification.newInstance(sbn), 0);
     }
 
     @Override
