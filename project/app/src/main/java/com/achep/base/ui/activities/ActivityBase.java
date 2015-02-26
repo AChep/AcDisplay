@@ -52,10 +52,7 @@ public abstract class ActivityBase extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (mCheckoutRequest) {
-            AppHeap.getCheckoutInternal().requestConnect();
-            mCheckout = Checkout.forActivity(this, AppHeap.getCheckout());
-        }
+        if (mCheckoutRequest) mCheckout = Checkout.forActivity(this, AppHeap.getCheckout());
         mPowerSaveDetector = PowerSaveDetector.newInstance(this);
         super.onCreate(savedInstanceState);
     }
@@ -66,7 +63,10 @@ public abstract class ActivityBase extends ActionBarActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (mCheckout != null) mCheckout.start();
+        if (mCheckout != null) {
+            AppHeap.getCheckoutInternal().requestConnect();
+            mCheckout.start();
+        }
         mPowerSaveDetector.start();
     }
 
@@ -75,17 +75,17 @@ public abstract class ActivityBase extends ActionBarActivity {
      */
     @Override
     public void onStop() {
-        if (mCheckout != null) mCheckout.stop();
+        if (mCheckout != null) {
+            mCheckout.stop();
+            AppHeap.getCheckoutInternal().requestDisconnect();
+        }
         mPowerSaveDetector.stop();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        if (mCheckout != null) {
-            AppHeap.getCheckoutInternal().requestDisconnect();
-            mCheckout = null;
-        }
+        mCheckout = null;
         super.onDestroy();
     }
 
