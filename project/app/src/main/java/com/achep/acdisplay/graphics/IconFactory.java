@@ -34,6 +34,11 @@ import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.base.async.AsyncTask;
 
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static com.achep.base.Build.DEBUG;
 
 /**
@@ -44,6 +49,11 @@ import static com.achep.base.Build.DEBUG;
 public class IconFactory {
 
     private static final String TAG = "IconFactory";
+
+    /**
+     * Cache of icons.
+     */
+    private static volatile Map<String, WeakReference<Bitmap>> sIconCache = new ConcurrentHashMap<>();
 
     public interface IconAsyncListener {
         void onGenerated(@NonNull Bitmap bitmap);
@@ -83,13 +93,30 @@ public class IconFactory {
 
     public static Bitmap generate(final @NonNull Context context,
                                   final @NonNull OpenNotification notification) {
+        final int iconRes = notification.getNotification().icon;
+        String packageName = notification.getPackageName();
+        String cacheKey = packageName + "<drawable>" + iconRes;
+
+        // Check the cache before generating the new icon
+        Bitmap bitmap;
+        WeakReference<Bitmap> cachedBitmap = sIconCache.get(cacheKey);
+        if (cachedBitmap != null && (bitmap = cachedBitmap.get()) != null) {
+            if (DEBUG) Log.d(TAG, "Got the icon of notification from cache: key=" + cacheKey);
+            return bitmap;
+        }
+
         Resources res = context.getResources();
-
-        int iconRes = notification.getNotification().icon;
         Drawable drawable = NotificationUtils.getDrawable(context, notification, iconRes);
-
         final int size = res.getDimensionPixelSize(R.dimen.notification_icon_size);
-        return drawable == null ? createEmptyIcon(res, size) : createIcon(drawable, size);
+        if (drawable != null) {
+            bitmap = createIcon(drawable, size);
+            sIconCache.put(cacheKey, new WeakReference<>(bitmap));
+            if (DEBUG) Log.d(TAG, "Put the icon of notification to cache: key=" + cacheKey);
+        } else {
+            bitmap = createEmptyIcon(res, size);
+        }
+
+        return bitmap;
     }
 
     // TODO: Automatically scale the icon.
