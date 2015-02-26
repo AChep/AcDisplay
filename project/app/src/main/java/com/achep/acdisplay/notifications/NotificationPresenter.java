@@ -19,6 +19,7 @@
 package com.achep.acdisplay.notifications;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -413,6 +414,10 @@ public class NotificationPresenter implements
         // Check for the test notification.
         if (isInitNotification(context, n)) {
             NotificationUtils.dismissNotification(n);
+            // Try with another way, just to be sure.
+            String name = Context.NOTIFICATION_SERVICE;
+            NotificationManager nm = (NotificationManager) context.getSystemService(name);
+            nm.cancel(App.ID_NOTIFY_INIT);
             return;
         }
 
