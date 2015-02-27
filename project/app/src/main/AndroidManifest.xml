@@ -115,6 +115,13 @@
             android:taskAffinity=".settings"
             android:theme="@android:style/Theme.Holo" />
 
+        <activity
+            android:name=".ui.activities.ShakeTestActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.activities.Settings2"
+            android:taskAffinity=".settings"
+            android:theme="@style/Base.MaterialTheme.Fullscreen" />
+
         <!-- This is needed to access notifications and to control music. -->
         <service
             android:name=".services.MediaService"

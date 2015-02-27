@@ -20,6 +20,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_dev_title">
 
+    <Preference
+        android:title="Test shake detector">
+        <intent
+            android:targetClass="com.achep.acdisplay.ui.activities.ShakeTestActivity"
+            android:targetPackage="com.achep.acdisplay" />
+    </Preference>
+
     <CheckBoxPreference
         android:defaultValue="@bool/config_default_dev_sensors_dump"
         android:key="dev_sensors_dump"
