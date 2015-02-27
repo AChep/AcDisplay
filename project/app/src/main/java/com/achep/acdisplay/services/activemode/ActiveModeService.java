@@ -206,8 +206,6 @@ public class ActiveModeService extends SwitchService implements
             sensor.registerCallback(this);
             sensor.onAttached(sensorManager, context);
         }
-
-        pingConsumingSensorsInternal();
     }
 
     @Override
