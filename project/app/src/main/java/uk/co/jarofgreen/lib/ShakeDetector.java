@@ -53,7 +53,7 @@ public class ShakeDetector implements SensorEventListener {
     private static final int IGNORE_EVENTS_AFTER_SHAKE = 1500; // 1.5 sec.
 
     private static final long KEEP_DATA_POINTS_FOR = 1400;
-    private static final long MINIMUM_EACH_DIRECTION = 5;
+    private static final long MINIMUM_EACH_DIRECTION = 7;
     private static final float POSITIVE_COUNTER_THRESHOLD = 2.0f;
     private static final float NEGATIVE_COUNTER_THRESHOLD = -2.0f;
 
