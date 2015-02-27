@@ -54,7 +54,7 @@
   <string name="notification_init_text">Només descarti aquesta notificació.</string>
   <string name="notification_test_message">Això és una notificació d\'exemple.</string>
   <string name="notification_test_message_large">Desplaçar avall per a descartar qualsevol notificació. \nDesplaça cap a qualsevol costat per a desbloquejar.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">Contingut ocult.</string>
   <string name="remote_enable_acdisplay">AcDisplay està activat.</string>
   <string name="remote_disable_acdisplay">AcDisplay està desactivat.</string>
   <string name="service_bath">Serveis d\'AcDisplay</string>

@@ -29,8 +29,8 @@
     <item>Icona di notifica</item>
   </string-array>
   <string-array name="privacy_mode">
-    <item>Nascondere il contenuto delle notifiche</item>
-    <item>Nascondere le azioni delle notifiche</item>
+    <item>Nascondi il contenuto delle notifiche</item>
+    <item>Nascondi le azioni delle notifiche</item>
   </string-array>
   <string-array name="notify_priorities">
     <item>Importanti e urgenti (chiamate perse, indicazioni, avvisi di emergenza)</item>

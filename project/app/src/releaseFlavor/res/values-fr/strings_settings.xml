@@ -35,7 +35,7 @@
   <string name="settings_dev_title">Développement</string>
   <string name="settings_keyguard_description">Utiliser AcDisplay comme écran de verrouillage. Fonctionnalité bêta, peut être instable.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Activer lorsqu\'il n\'y a pas de notifications</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Le lockscreen est activé indépendamment de la présence ou non de notifications.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_on">L\'écran de verrouillage est activé indépendamment de la présence ou non de notifications.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">L\'écran de verrouillage est désactivé indépendamment de la présence ou non de notifications.</string>
   <string name="settings_active_description">Le mode actif utilise les capteurs du téléphone pour le réveiller quand vous en avez besoin. C\'est très pratique quand vous retirez l\'appareil de votre poche pour jeter un œil aux notifications que vous avez reçues. Le mode actif n\'empêche pas la mise en veille du CPU, l\'impact sur la consommation est donc faible.</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Activer quand il n\'y a pas de notifications</string>
