@@ -30,7 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.achep.base.ui.activities.ActivityBase;
-import com.squareup.seismic.ShakeDetector;
+
+import uk.co.jarofgreen.lib.ShakeDetector;
 
 /**
  * Created by Artem Chepurnoy on 27.02.2015.
@@ -40,7 +41,7 @@ public class ShakeTestActivity extends ActivityBase implements View.OnClickListe
     private final ShakeDetector.Listener mShakeDetectorListener =
             new ShakeDetector.Listener() {
                 @Override
-                public void hearShake() {
+                public void onShakeDetected() {
                     mTextView.setBackgroundColor(Color.GREEN);
                 }
             };
