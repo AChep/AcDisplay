@@ -31,6 +31,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
+import com.achep.acdisplay.Atomic;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
@@ -46,6 +47,7 @@ import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.services.switches.ScreenOffSwitch;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.tests.Check;
 import com.achep.base.utils.power.PowerUtils;
 
 import java.util.HashMap;
@@ -80,6 +82,46 @@ public class ActiveModeService extends SwitchService implements
             }
         }
     };
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_BATTERY_CHANGED:
+                    mPluggedAtomic.react(PowerUtils.isPlugged(intent));
+                    break;
+            }
+        }
+    };
+
+    private final Atomic.Callback mPluggedAtomicCallback = new Atomic.Callback() {
+        @Override
+        public void onStart(Object... objects) {
+            if (DEBUG) Log.d(TAG, "Plugged: Start the consuming sensors");
+            for (ActiveModeSensor ams : mSensors) {
+                Check.getInstance().isTrue(ams.isAttached());
+                if (ams instanceof ActiveModeSensor.Consuming) {
+                    ActiveModeSensor.Consuming sensor = (ActiveModeSensor.Consuming) ams;
+                    sensor.start();
+                }
+            }
+        }
+
+        @Override
+        public void onStop(Object... objects) {
+            if (DEBUG) Log.d(TAG, "Unplugged: Stop the consuming sensors");
+            for (ActiveModeSensor ams : mSensors) {
+                Check.getInstance().isTrue(ams.isAttached());
+                if (ams instanceof ActiveModeSensor.Consuming) {
+                    ActiveModeSensor.Consuming sensor = (ActiveModeSensor.Consuming) ams;
+                    sensor.stop();
+                }
+            }
+        }
+    };
+
+    private final Atomic mPluggedAtomic = new Atomic(mPluggedAtomicCallback, TAG + ":Plugged");
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -206,11 +248,21 @@ public class ActiveModeService extends SwitchService implements
             sensor.registerCallback(this);
             sensor.onAttached(sensorManager, context);
         }
+
+        mPluggedAtomic.react(PowerUtils.isPlugged(context));
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        context.registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
     public void onStop(Object... objects) {
         if (DEBUG) Log.d(TAG, "Stopping listening to sensors.");
+
+        Context context = getContext();
+        context.unregisterReceiver(mReceiver);
+        mPluggedAtomic.stop();
 
         for (ActiveModeSensor sensor : mSensors) {
             sensor.onDetached();

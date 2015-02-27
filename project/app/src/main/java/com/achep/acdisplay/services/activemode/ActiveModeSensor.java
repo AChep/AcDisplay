@@ -249,9 +249,25 @@ public abstract class ActiveModeSensor {
         }
 
         public void ping(int remainingTime) {
-            mHandler.sendEmptyMessage(START);
+            start();
             mHandler.removeMessages(STOP);
             mHandler.sendEmptyMessageDelayed(STOP, remainingTime);
+        }
+
+        /**
+         * Starts the consuming sensor 'forever'.
+         * @see #stop()
+         */
+        public void start() {
+            mHandler.sendEmptyMessage(START);
+        }
+
+        /**
+         * Stops the consuming sensor.
+         * @see #stop()
+         */
+        public void stop() {
+            mHandler.sendEmptyMessage(STOP);
         }
 
     }
