@@ -293,11 +293,14 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
 
             JSONObject obj = new JSONObject();
             try {
+                Config config = Config.getInstance();
+
                 // App related stuff
                 obj.put("app_version_code", pi.versionCode);
                 obj.put("app_version_name", pi.versionName);
                 obj.put("app_timestamp", Build.TIME_STAMP);
                 obj.put("app_is_debug", DEBUG);
+                obj.put("app_launch_count", config.getTriggers().getLaunchCount());
 
                 // Device related stuff
                 obj.put("language", Locale.getDefault().getLanguage());
