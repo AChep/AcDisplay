@@ -68,6 +68,14 @@ public final class AccelerometerSensor extends ActiveModeSensor.Consuming implem
         return Sensor.TYPE_ACCELEROMETER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getRemainingTime() {
+        return 15000; // 15 sec.
+    }
+
     @Override
     public void onStart(@NonNull SensorManager sensorManager) {
         if (DEBUG) Log.d(TAG, "Starting accelerometer sensor...");
