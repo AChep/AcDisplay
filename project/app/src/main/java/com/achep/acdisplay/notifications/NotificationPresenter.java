@@ -539,7 +539,7 @@ public class NotificationPresenter implements
                         list.get(i).recycle();
                         list.remove(i);
                     }
-                    break;
+                    return;
                 }
             }
         }
