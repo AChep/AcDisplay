@@ -532,7 +532,7 @@ public class NotificationPresenter implements
                 if (groupKey.equals(n2.getGroupKey())) {
                     Check.getInstance().isTrue(n2.isGroupSummary());
                     assert n2.getGroupNotifications() != null;
-                    n2.getGroupNotifications().remove(n);
+                    ((NotificationList) n2.getGroupNotifications()).removeNotification(n);
                     break;
                 }
             }
