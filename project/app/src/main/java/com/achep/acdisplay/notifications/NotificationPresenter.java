@@ -532,14 +532,25 @@ public class NotificationPresenter implements
                 if (groupKey.equals(n2.getGroupKey())) {
                     Check.getInstance().isTrue(n2.isGroupSummary());
                     assert n2.getGroupNotifications() != null;
-                    ((NotificationList) n2.getGroupNotifications()).removeNotification(n);
+
+                    NotificationList list = (NotificationList) n2.getGroupNotifications();
+                    int i = list.indexOfNotification(n);
+                    if (i != -1) {
+                        list.get(i).recycle();
+                        list.remove(i);
+                    }
                     break;
                 }
             }
         }
 
-        mGList.removeNotification(n);
-        mLList.removeNotification(n);
+        NotificationList list = mGList;
+        int i = list.indexOfNotification(n);
+        if (i != -1) {
+            list.get(i).recycle();
+            list.remove(i);
+            mLList.removeNotification(n);
+        }
     }
 
     /**
@@ -701,7 +712,7 @@ public class NotificationPresenter implements
     // Not an enter point, should not be synchronized.
     public int onNotificationRemoved(@NonNull OpenNotification n) {
         notifyListeners(n, EVENT_REMOVED);
-        n.recycle(); // Free all resources
+        n.clearBackground();
         return RESULT_SUCCESS;
     }
 
