@@ -463,7 +463,7 @@ public class NotificationPresenter implements
                         groupChild = true;
 
                         assert n2.getGroupNotifications() != null;
-                        n2.getGroupNotifications().add(n);
+                        ((NotificationList) n2.getGroupNotifications()).pushNotification(n);
                         notifyListeners(n2, EVENT_CHANGED);
                         break;
                     }
