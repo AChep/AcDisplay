@@ -25,6 +25,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.achep.base.Build;
+import com.achep.base.tests.Check;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -131,6 +132,7 @@ public class CheckoutInternal {
 
     public void requestDisconnect() {
         if (mConnections-- == 1) disconnect();
+        Check.getInstance().isTrue(mConnections >= 0);
     }
 
     /**
