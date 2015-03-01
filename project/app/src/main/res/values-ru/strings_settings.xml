@@ -117,4 +117,8 @@
     <string name="preference_icon_size_message">Измените размер иконок уведомлений:</string>
     <string name="preference_icon_size_dpi">%1$s dpi.</string>
 
+    <!-- Preference: Color picker -->
+    <string name="preference_colorpicker_random_color">Случайные цвета</string>
+    <string name="preference_colorpicker_custom_color">Определенный цвет</string>
+
 </resources>

@@ -37,6 +37,7 @@ import android.view.animation.AccelerateInterpolator;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.ui.preferences.ColorPickerPreference;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.FloatProperty;
@@ -179,13 +180,14 @@ public class CircleView extends View {
         float[] innerHsv = new float[3];
         Color.colorToHSV(mInnerColor, innerHsv);
         float innerHsvValue = innerHsv[2];
+        boolean innerRandomColor = ColorPickerPreference.isRandomEnabled(mInnerColor);
 
         // Load & invert the drawable if needed
         mDrawable = res.getDrawable(R.drawable.ic_settings_keyguard_white);
         mDrawable.setBounds(0, 0,
                 mDrawable.getIntrinsicWidth(),
                 mDrawable.getIntrinsicHeight());
-        if (innerHsvValue > 0.5f) { // inverse the drawable
+        if (innerHsvValue > 0.5f || innerRandomColor) { // inverse the drawable
             final float v = -1;
             final float[] matrix = {
                     v, 0, 0, 0, 0,
@@ -265,6 +267,11 @@ public class CircleView extends View {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 clearAnimation();
+
+                // Update colors
+                Config config = Config.getInstance();
+                mInnerColor = ColorPickerPreference.getColor(config.getCircleInnerColor());
+                mOuterColor = ColorPickerPreference.getColor(config.getCircleOuterColor());
 
                 // Initialize circle
                 mRadiusTargetAimed = false;

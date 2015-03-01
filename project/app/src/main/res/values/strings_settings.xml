@@ -117,4 +117,8 @@
     <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
     <string name="preference_icon_size_dpi">%1$s dpi.</string>
 
+    <!-- Preference: Color picker -->
+    <string name="preference_colorpicker_random_color">Random colors</string>
+    <string name="preference_colorpicker_custom_color">Defined color</string>
+
 </resources>

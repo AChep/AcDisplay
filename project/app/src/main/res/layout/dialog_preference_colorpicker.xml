@@ -17,26 +17,55 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/padding_content"
-    android:layout_width="wrap_content"
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/radios"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.larswerkman.holocolorpicker.ColorPicker
-        android:id="@+id/picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.larswerkman.holocolorpicker.ValueBar
-        android:id="@+id/valuebar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.larswerkman.holocolorpicker.SaturationBar
-        android:id="@+id/saturationbar"
-        android:layout_width="wrap_content"
+    <RadioButton
+        android:id="@+id/random_color"
+        style="@style/padding_content_horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:background="?android:listChoiceBackgroundIndicator"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:text="@string/preference_colorpicker_random_color" />
 
-</LinearLayout>
+    <RadioButton
+        android:id="@+id/custom_color"
+        style="@style/padding_content_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:listChoiceBackgroundIndicator"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:text="@string/preference_colorpicker_custom_color" />
+
+    <LinearLayout
+        android:id="@+id/custom_color_panel"
+        style="@style/padding_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.larswerkman.holocolorpicker.ColorPicker
+            android:id="@+id/picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.larswerkman.holocolorpicker.ValueBar
+            android:id="@+id/valuebar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.larswerkman.holocolorpicker.SaturationBar
+            android:id="@+id/saturationbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</RadioGroup>
