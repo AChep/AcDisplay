@@ -44,6 +44,8 @@
     <string name="permissions_usage_stats">Статистика использования</string>
     <!-- Description of why do we need device admin rights -->
     <string name="permissions_usage_stats_description">Необходимо, чтобы избегать перекрытия таких приложений, как будильник либо приложение звонков.</string>
+    <!-- A big sorry to users, and a big fuck you to the manufacturer -->
+    <string name="permissions_usage_stats_error">Производитель устройства удалил это разрешение из его версии Android. Это невозможно исправить, кроме как ждать исправления от производителя.</string>
 
     <!--
         Actions

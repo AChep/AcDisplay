@@ -114,7 +114,7 @@ public class PermissionUsageStats extends Permission {
      */
     @StringRes
     public int getErrorResource() {
-        return 0; // There's no other way
+        return R.string.permissions_usage_stats_error;
     }
 
 }

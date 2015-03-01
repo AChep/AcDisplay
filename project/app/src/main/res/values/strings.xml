@@ -55,6 +55,8 @@
     <string name="permissions_usage_stats">Usage stats</string>
     <!-- Description of why do we need device admin rights -->
     <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
+    <!-- A big sorry to users, and a big fuck you to the manufacturer -->
+    <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
 
     <!--
         Actions
