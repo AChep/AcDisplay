@@ -19,7 +19,15 @@
 package com.achep.acdisplay;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.notifications.NotificationPresenter;
@@ -27,7 +35,11 @@ import com.achep.acdisplay.permissions.AccessManager;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
+import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.AppHeap;
+import com.achep.base.content.ConfigBase;
+import com.achep.base.permissions.Permission;
+import com.achep.base.permissions.PermissionGroup;
 import com.achep.base.utils.smiley.SmileyParser;
 
 /**
@@ -42,6 +54,7 @@ public class App extends Application {
     public static final int ID_NOTIFY_INIT = 30;
     public static final int ID_NOTIFY_TEST = 40;
     public static final int ID_NOTIFY_BATH = 50;
+    public static final int ID_NOTIFY_APP_AUTO_DISABLED = 60;
 
     public static final String ACTION_BIND_MEDIA_CONTROL_SERVICE = "com.achep.acdisplay.BIND_MEDIA_CONTROL_SERVICE";
 
@@ -81,6 +94,59 @@ public class App extends Application {
                         : null);
 
         super.onCreate();
+
+        // Check the main switch.
+        String divider = getString(R.string.settings_multi_list_divider);
+        Config config = Config.getInstance();
+        if (config.isEnabled()) {
+            StringBuilder sb = new StringBuilder();
+            boolean foundAny = false;
+
+            PermissionGroup pg = getAccessManager().getMasterPermissions();
+            for (Permission permission : pg.permissions) {
+                if (!permission.isActive()) {
+                    if (foundAny) {
+                        sb.append(divider);
+                    } else foundAny = true;
+                    sb.append(getString(permission.getTitleResource()));
+                }
+            }
+
+            if (foundAny) {
+                String list = sb.toString();
+                list = list.charAt(0) + list.substring(1).toLowerCase();
+
+                ConfigBase.Option option = config.getOption(Config.KEY_ENABLED);
+                option.write(config, this, false, null);
+
+                final int id = App.ID_NOTIFY_APP_AUTO_DISABLED;
+                PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                        id, new Intent(this, MainActivity.class),
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                NotificationCompat.BigTextStyle bts = new NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.permissions_auto_disabled))
+                        .setSummaryText(list);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(getString(R.string.permissions_auto_disabled))
+                        .setContentIntent(pendingIntent)
+                        .setLargeIcon(largeIcon)
+                        .setSmallIcon(R.drawable.stat_acdisplay)
+                        .setAutoCancel(true)
+                        .setStyle(bts)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setColor(App.ACCENT_COLOR);
+
+                NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.notify(id, builder.build());
+            }
+        }
+        // Check the keyguard (without the notification).
+        if (config.isKeyguardEnabled() && !getAccessManager().getKeyguardPermissions().isActive()) {
+            ConfigBase.Option option = config.getOption(Config.KEY_KEYGUARD);
+            option.write(config, this, false, null);
+        }
 
         // Launch keyguard and (or) active mode on
         // app launch.
