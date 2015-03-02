@@ -35,6 +35,13 @@ final class CheckImpl extends Check {
     }
 
     @Override
+    public void isTrue(int value) {
+        if (value != 0) {
+            throw new RuntimeException("Should be not zero!");
+        }
+    }
+
+    @Override
     public void isFalse(boolean bool) {
         if (bool) {
             throw new RuntimeException("Should be false!");

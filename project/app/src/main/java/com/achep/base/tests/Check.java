@@ -37,6 +37,8 @@ public abstract class Check {
 
     public abstract void isTrue(boolean bool);
 
+    public abstract void isTrue(int value);
+
     public abstract void isFalse(boolean bool);
 
     public abstract void isNull(@Nullable Object object);
