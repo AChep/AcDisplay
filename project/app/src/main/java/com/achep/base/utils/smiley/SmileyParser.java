@@ -26,6 +26,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 
 import com.achep.acdisplay.R;
+import com.achep.base.tests.Check;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -200,7 +201,10 @@ public class SmileyParser {
         Matcher matcher = mPattern.matcher(text);
         while (matcher.find()) {
             int resId = mSmileyToRes.get(matcher.group());
-            builder.setSpan(new ImageSpan(mContext, resId), matcher.start(), matcher.end(),
+            int start = matcher.start();
+            int end = matcher.end();
+            Check.getInstance().isTrue(end > start);
+            builder.setSpan(new ImageSpan(mContext, resId), start, end,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
