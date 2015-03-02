@@ -22,12 +22,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Created by Artem Chepurnoy on 21.01.2015.
+ * A class for performing <i>oblivious</i> checks.
+ *
+ * @author Artem Chepurnoy
  */
 public abstract class Check {
 
     private static Check sCheck;
 
+    @NonNull
     public static Check getInstance() {
         if (sCheck == null) {
             sCheck = new CheckImpl();
@@ -35,15 +38,55 @@ public abstract class Check {
         return sCheck;
     }
 
+    /**
+     * Does nothing if the incoming param is {@code true}, crashes otherwise.
+     *
+     * @throws java.lang.RuntimeException
+     * @see #isTrue(int)
+     * @see #isFalse(boolean)
+     */
     public abstract void isTrue(boolean bool);
 
+    /**
+     * Does nothing if the incoming param is not zero, crashes otherwise.
+     *
+     * @throws java.lang.RuntimeException
+     * @see #isTrue(boolean)
+     */
     public abstract void isTrue(int value);
 
+    /**
+     * Does nothing if the incoming param is {@code false}, crashes otherwise. It's an opposite
+     * to {@link #isTrue(boolean)}
+     *
+     * @throws java.lang.RuntimeException
+     * @see #isTrue(boolean)
+     */
     public abstract void isFalse(boolean bool);
 
+    /**
+     * Does nothing if the incoming param is {@code null}, crashes otherwise. It's an opposite
+     * to {@link #isTrue(boolean)}
+     *
+     * @throws java.lang.RuntimeException
+     * @see #isNonNull(Object)
+     */
     public abstract void isNull(@Nullable Object object);
 
+    /**
+     * Does nothing if the incoming param is not {@code null}, crashes otherwise. It's an opposite
+     * to {@link #isNull(Object)}
+     *
+     * @throws java.lang.RuntimeException
+     * @see #isNull(Object)
+     */
     public abstract void isNonNull(@NonNull Object object);
 
+    /**
+     * Does nothing if run on the {@link android.os.Looper#getMainLooper() main thread},
+     * crashes otherwise.
+     *
+     * @throws java.lang.RuntimeException
+     */
     public abstract void isInMainThread();
 }
