@@ -33,8 +33,9 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.base.async.AsyncTask;
+import com.achep.base.utils.RefCacheBase;
 
-import java.lang.ref.SoftReference;
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,10 +51,13 @@ public class IconFactory {
 
     private static final String TAG = "IconFactory";
 
-    /**
-     * Cache of icons.
-     */
-    private static volatile Map<String, WeakReference<Bitmap>> sIconCache = new ConcurrentHashMap<>();
+    private static final RefCacheBase<Bitmap> ICONS_CACHE = new RefCacheBase<Bitmap>() {
+        @NonNull
+        @Override
+        protected Reference<Bitmap> onCreateReference(@NonNull Bitmap object) {
+            return new WeakReference<>(object);
+        }
+    };
 
     public interface IconAsyncListener {
         void onGenerated(@NonNull Bitmap bitmap);
@@ -98,9 +102,8 @@ public class IconFactory {
         String cacheKey = packageName + "<drawable>" + iconRes;
 
         // Check the cache before generating the new icon
-        Bitmap bitmap;
-        WeakReference<Bitmap> cachedBitmap = sIconCache.get(cacheKey);
-        if (cachedBitmap != null && (bitmap = cachedBitmap.get()) != null) {
+        Bitmap bitmap = ICONS_CACHE.get(cacheKey);
+        if (bitmap != null) {
             if (DEBUG) Log.d(TAG, "Got the icon of notification from cache: key=" + cacheKey);
             return bitmap;
         }
@@ -110,7 +113,7 @@ public class IconFactory {
         final int size = res.getDimensionPixelSize(R.dimen.notification_icon_size);
         if (drawable != null) {
             bitmap = createIcon(drawable, size);
-            sIconCache.put(cacheKey, new WeakReference<>(bitmap));
+            ICONS_CACHE.put(cacheKey, bitmap);
             if (DEBUG) Log.d(TAG, "Put the icon of notification to cache: key=" + cacheKey);
         } else {
             bitmap = createEmptyIcon(res, size);
