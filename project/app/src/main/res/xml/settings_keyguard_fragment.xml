@@ -26,6 +26,10 @@
 
     <PreferenceCategory android:title="@string/settings">
 
+        <CheckBoxPreference
+            android:defaultValue="@bool/config_default_keyguard_respect_inactive_time"
+            android:key="keyguard_respect_inactive_time"
+            android:title="@string/settings_keyguard_respect_inactive_time_title" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/config_default_keyguard_without_notifies_enabled"

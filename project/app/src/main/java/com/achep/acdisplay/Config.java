@@ -65,10 +65,12 @@ public final class Config extends ConfigBase {
 
     // keyguard
     public static final String KEY_KEYGUARD = "keyguard";
+    public static final String KEY_KEYGUARD_RESPECT_INACTIVE_TIME = "keyguard_respect_inactive_time";
     public static final String KEY_KEYGUARD_WITHOUT_NOTIFICATIONS = "keyguard_without_notifications";
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
+    public static final String KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME = "active_mode_respect_inactive_time";
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
 
     // interface
@@ -109,8 +111,10 @@ public final class Config extends ConfigBase {
 
     private boolean mEnabled;
     private boolean mKeyguardEnabled;
+    private boolean mKeyguardRespectInactiveTime;
     private boolean mKeyguardWithoutNotifies;
     private boolean mActiveMode;
+    private boolean mActiveModeRespectInactiveTime;
     private boolean mActiveModeWithoutNotifies;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
@@ -168,10 +172,14 @@ public final class Config extends ConfigBase {
                 res.getBoolean(R.bool.config_default_enabled));
         mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
                 res.getBoolean(R.bool.config_default_keyguard_enabled));
+        mKeyguardRespectInactiveTime = prefs.getBoolean(KEY_KEYGUARD_RESPECT_INACTIVE_TIME,
+                res.getBoolean(R.bool.config_default_keyguard_respect_inactive_time));
         mKeyguardWithoutNotifies = prefs.getBoolean(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_keyguard_without_notifies_enabled));
         mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
                 res.getBoolean(R.bool.config_default_active_mode_enabled));
+        mActiveModeRespectInactiveTime = prefs.getBoolean(KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME,
+                res.getBoolean(R.bool.config_default_active_mode_respect_inactive_time));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
 
@@ -247,10 +255,14 @@ public final class Config extends ConfigBase {
                 "mEnabled", "setEnabled", "isEnabled", boolean.class));
         hashMap.put(KEY_KEYGUARD, new ConfigBase.Option(
                 "mKeyguardEnabled", null, null, boolean.class));
+        hashMap.put(KEY_KEYGUARD_RESPECT_INACTIVE_TIME, new ConfigBase.Option(
+                "mKeyguardRespectInactiveTime", null, null, boolean.class));
         hashMap.put(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
                 "mKeyguardWithoutNotifies", null, null, boolean.class));
         hashMap.put(KEY_ACTIVE_MODE, new ConfigBase.Option(
                 "mActiveMode", null, null, boolean.class));
+        hashMap.put(KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME, new ConfigBase.Option(
+                "mActiveModeRespectInactiveTime", null, null, boolean.class));
         hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
                 "mActiveModeWithoutNotifies", null, null, boolean.class));
 

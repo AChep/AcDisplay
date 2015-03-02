@@ -32,6 +32,7 @@ import android.util.Log;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.utils.tasks.RunningTasks;
 import com.achep.base.content.ConfigBase;
@@ -141,10 +142,12 @@ public class KeyguardService extends SwitchService {
     @NonNull
     @Override
     public Switch[] onBuildSwitches() {
-        HashMap<String, ConfigBase.Option> map = Config.getInstance().getHashMap();
-        ConfigBase.Option noNotifies = map.get(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
+        Config config = Config.getInstance();
+        ConfigBase.Option noNotifies = config.getOption(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
+        ConfigBase.Option respectIt = config.getOption(Config.KEY_KEYGUARD_RESPECT_INACTIVE_TIME);
         return new Switch[]{
                 new NoNotifiesSwitch(getContext(), this, noNotifies, true),
+                new InactiveTimeSwitch(getContext(), this, respectIt),
         };
     }
 

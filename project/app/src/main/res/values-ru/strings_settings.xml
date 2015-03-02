@@ -41,12 +41,14 @@
 
     <!-- Lockscreen -->
     <string name="settings_keyguard_description">Изменить стандартный экран блокировки на приложение AcDisplay. Эта функция может работать нестабильно.</string>
+    <string name="settings_keyguard_respect_inactive_time_title">Отключить в неактивное время</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_title">Пока нет уведомлений</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен вне зависимости от наличия текущих уведомлений.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, пока текущий список уведомлений пуст.</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Активный режим пробуждает устройство тогда, когда вам это нужно. Вы можете взглянуть на время или уведомления, просто достав устройство из кармана. Эта функция не блокирует переход в спящий режим - вы не должны заметить существенной разницы в потреблении заряда батареи.</string>
+    <string name="settings_active_respect_inactive_time_title">Отключить в неактивное время</string>
     <string name="settings_active_enabled_when_notification_list_empty_title">Пока нет уведомлений</string>
     <string name="settings_active_enabled_when_notification_list_empty_on">Активный режим включен вне зависимости от наличия текущих уведомлений.</string>
     <string name="settings_active_enabled_when_notification_list_empty_off">Активный режим временно отключается, пока текущий список уведомлений пуст.</string>

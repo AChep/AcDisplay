@@ -27,6 +27,11 @@
     <PreferenceCategory android:title="@string/settings">
 
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_active_mode_respect_inactive_time"
+            android:key="active_mode_respect_inactive_time"
+            android:title="@string/settings_active_respect_inactive_time_title" />
+
+        <CheckBoxPreference
             android:defaultValue="@bool/config_default_active_mode_without_notifies_enabled"
             android:key="active_mode_without_notifications"
             android:summaryOff="@string/settings_active_enabled_when_notification_list_empty_off"

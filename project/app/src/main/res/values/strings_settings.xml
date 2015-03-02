@@ -41,12 +41,14 @@
 
     <!-- Lockscreen -->
     <string name="settings_keyguard_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+    <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
+    <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
     <string name="settings_active_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
     <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled when there are no notifications.</string>

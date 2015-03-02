@@ -42,6 +42,7 @@ public class KeyguardSettings extends PreferenceFragment {
         Permission[] permissions = App.getAccessManager().getKeyguardPermissions().permissions;
         requestMasterSwitch(Config.KEY_KEYGUARD, permissions);
         addPreferencesFromResource(R.xml.settings_keyguard_fragment);
+        syncPreference(Config.KEY_KEYGUARD_RESPECT_INACTIVE_TIME);
         syncPreference(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
     }
 

@@ -47,11 +47,14 @@ public final class InactiveTimeSwitch extends Switch implements
     private static final int INACTIVE_HOURS_CHECK_PERIOD = 1000 * 60 * 5; // 5 min.
 
     private final Config mConfig;
+    private final ConfigBase.Option mOption;
     private Timer mTimer;
 
-    public InactiveTimeSwitch(@NonNull Context context, @NonNull Callback callback) {
+    public InactiveTimeSwitch(@NonNull Context context, @NonNull Callback callback,
+                              @NonNull ConfigBase.Option option) {
         super(context, callback);
         mConfig = Config.getInstance();
+        mOption = option;
     }
 
     @Override
@@ -72,8 +75,7 @@ public final class InactiveTimeSwitch extends Switch implements
 
     @Override
     public boolean isActive() {
-        boolean enabled = mConfig.isInactiveTimeEnabled();
-        return !enabled || !InactiveTimeHelper.isInactiveTime(mConfig);
+        return !isEnabled() || !InactiveTimeHelper.isInactiveTime(mConfig);
     }
 
     private void updateState() {
@@ -81,7 +83,7 @@ public final class InactiveTimeSwitch extends Switch implements
             mTimer.cancel();
             mTimer = null;
         }
-        if (mConfig.isInactiveTimeEnabled()) {
+        if (isEnabled()) {
 
             // Start a timer to monitor when inactive time
             // will end or start. This is awful.
@@ -127,12 +129,15 @@ public final class InactiveTimeSwitch extends Switch implements
     public void onConfigChanged(@NonNull ConfigBase configBase,
                                 @NonNull String key,
                                 @NonNull Object value) {
-        Config config = (Config) configBase;
-        boolean enabled = config.isInactiveTimeEnabled();
+        if (mOption.getKey(mConfig).equals(key)) {
+            updateState();
+            return;
+        }
+
         switch (key) {
             case Config.KEY_INACTIVE_TIME_FROM:
             case Config.KEY_INACTIVE_TIME_TO:
-                if (!enabled) {
+                if (!isEnabled()) {
                     break;
                 }
 
@@ -142,4 +147,12 @@ public final class InactiveTimeSwitch extends Switch implements
                 break;
         }
     }
+
+    /**
+     * @return {@code true} if the inactive time is enabled, {@code false} otherwise.
+     */
+    private boolean isEnabled() {
+        return mConfig.isInactiveTimeEnabled() && (boolean) mOption.read(mConfig);
+    }
+
 }

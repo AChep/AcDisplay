@@ -186,11 +186,12 @@ public class ActiveModeService extends SwitchService implements
     @NonNull
     @Override
     public Switch[] onBuildSwitches() {
-        HashMap<String, ConfigBase.Option> map = Config.getInstance().getHashMap();
-        ConfigBase.Option noNotifies = map.get(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
+        Config config = Config.getInstance();
+        ConfigBase.Option noNotifies = config.getOption(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
+        ConfigBase.Option respectIt = config.getOption(Config.KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME);
         return new Switch[]{
                 new ScreenOffSwitch(getContext(), this),
-                new InactiveTimeSwitch(getContext(), this),
+                new InactiveTimeSwitch(getContext(), this, respectIt),
                 new NoNotifiesSwitch(getContext(), this, noNotifies, true),
         };
     }
