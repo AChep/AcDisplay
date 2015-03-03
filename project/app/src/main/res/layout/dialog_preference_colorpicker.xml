@@ -25,46 +25,65 @@
 
     <RadioButton
         android:id="@+id/random_color"
-        style="@style/padding_content_horizontal"
+        style="@style/margin_content_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:listChoiceBackgroundIndicator"
         android:gravity="center_vertical"
         android:minHeight="48dp"
-        android:text="@string/preference_colorpicker_random_color" />
+        android:text="@string/preference_colorpicker_random_color"
+        android:textAppearance="?android:textAppearanceMedium" />
 
     <RadioButton
         android:id="@+id/custom_color"
-        style="@style/padding_content_horizontal"
+        style="@style/margin_content_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:listChoiceBackgroundIndicator"
         android:gravity="center_vertical"
         android:minHeight="48dp"
-        android:text="@string/preference_colorpicker_custom_color" />
+        android:text="@string/preference_colorpicker_custom_color"
+        android:textAppearance="?android:textAppearanceMedium" />
 
     <LinearLayout
         android:id="@+id/custom_color_panel"
-        style="@style/padding_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#4000"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_shadow" />
 
         <com.larswerkman.holocolorpicker.ColorPicker
             android:id="@+id/picker"
+            style="@style/margin_content_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <com.larswerkman.holocolorpicker.ValueBar
             android:id="@+id/valuebar"
+            style="@style/margin_content_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <com.larswerkman.holocolorpicker.SaturationBar
             android:id="@+id/saturationbar"
+            style="@style/margin_content_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_shadow"
+            android:rotation="180" />
 
     </LinearLayout>
 
