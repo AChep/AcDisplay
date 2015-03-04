@@ -52,6 +52,7 @@
     <string name="settings_active_enabled_when_notification_list_empty_title">Пока нет уведомлений</string>
     <string name="settings_active_enabled_when_notification_list_empty_on">Активный режим включен вне зависимости от наличия текущих уведомлений.</string>
     <string name="settings_active_enabled_when_notification_list_empty_off">Активный режим временно отключается, пока текущий список уведомлений пуст.</string>
+    <string name="settings_active_active_charging_title">Постоянно отслеживать движение во время зарядки</string>
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>

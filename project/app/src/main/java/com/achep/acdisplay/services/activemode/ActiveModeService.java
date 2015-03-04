@@ -122,6 +122,7 @@ public class ActiveModeService extends SwitchService implements
     };
 
     private final Atomic mPluggedAtomic = new Atomic(mPluggedAtomicCallback, TAG + ":Plugged");
+    private boolean mActiveChargingEnabled;
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -250,20 +251,25 @@ public class ActiveModeService extends SwitchService implements
             sensor.onAttached(sensorManager, context);
         }
 
-        mPluggedAtomic.react(PowerUtils.isPlugged(context));
+        mActiveChargingEnabled = Config.getInstance().isActiveModeActiveChargingEnabled();
+        if (mActiveChargingEnabled) {
+            mPluggedAtomic.react(PowerUtils.isPlugged(context));
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        context.registerReceiver(mReceiver, intentFilter);
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            context.registerReceiver(mReceiver, intentFilter);
+        }
     }
 
     @Override
     public void onStop(Object... objects) {
         if (DEBUG) Log.d(TAG, "Stopping listening to sensors.");
 
-        Context context = getContext();
-        context.unregisterReceiver(mReceiver);
-        mPluggedAtomic.stop();
+        if (mActiveChargingEnabled) {
+            Context context = getContext();
+            context.unregisterReceiver(mReceiver);
+            mPluggedAtomic.stop();
+        }
 
         for (ActiveModeSensor sensor : mSensors) {
             sensor.onDetached();

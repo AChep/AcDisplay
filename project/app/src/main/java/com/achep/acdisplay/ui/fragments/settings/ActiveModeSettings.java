@@ -41,6 +41,7 @@ public class ActiveModeSettings extends PreferenceFragment {
         addPreferencesFromResource(R.xml.settings_active_fragment);
         syncPreference(Config.KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME);
         syncPreference(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
+        syncPreference(Config.KEY_ACTIVE_MODE_ACTIVE_CHARGING);
     }
 
 }

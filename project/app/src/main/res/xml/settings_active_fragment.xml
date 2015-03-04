@@ -38,5 +38,10 @@
             android:summaryOn="@string/settings_active_enabled_when_notification_list_empty_on"
             android:title="@string/settings_active_enabled_when_notification_list_empty_title" />
 
+        <CheckBoxPreference
+            android:defaultValue="@bool/config_default_active_mode_active_charging"
+            android:key="active_mode_active_charging"
+            android:title="@string/settings_active_active_charging_title" />
+
     </PreferenceCategory>
 </PreferenceScreen>

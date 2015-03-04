@@ -72,6 +72,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_ACTIVE_MODE = "active_mode";
     public static final String KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME = "active_mode_respect_inactive_time";
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
+    public static final String KEY_ACTIVE_MODE_ACTIVE_CHARGING = "active_mode_active_charging";
 
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
@@ -116,6 +117,7 @@ public final class Config extends ConfigBase {
     private boolean mActiveMode;
     private boolean mActiveModeRespectInactiveTime;
     private boolean mActiveModeWithoutNotifies;
+    private boolean mActiveModeActiveCharging;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mFeelWidgetPinnable;
@@ -182,6 +184,8 @@ public final class Config extends ConfigBase {
                 res.getBoolean(R.bool.config_default_active_mode_respect_inactive_time));
         mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
+        mActiveModeActiveCharging = prefs.getBoolean(KEY_ACTIVE_MODE_ACTIVE_CHARGING,
+                res.getBoolean(R.bool.config_default_active_mode_active_charging));
 
         // notifications
         mNotifyMinPriority = prefs.getInt(KEY_NOTIFY_MIN_PRIORITY,
@@ -265,6 +269,8 @@ public final class Config extends ConfigBase {
                 "mActiveModeRespectInactiveTime", null, null, boolean.class));
         hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
                 "mActiveModeWithoutNotifies", null, null, boolean.class));
+        hashMap.put(KEY_ACTIVE_MODE_ACTIVE_CHARGING, new ConfigBase.Option(
+                "mActiveModeActiveCharging", null, null, boolean.class));
 
         // notifications
         hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
@@ -521,6 +527,14 @@ public final class Config extends ConfigBase {
 
     public boolean isActiveModeWithoutNotifiesEnabled() {
         return mActiveModeWithoutNotifies;
+    }
+
+    /**
+     * @return {@code true} if you may always listen to every device's sensors while
+     * it's charging, {@code false} otherwise.
+     */
+    public boolean isActiveModeActiveChargingEnabled() {
+        return mActiveModeActiveCharging;
     }
 
     public boolean isEnabledOnlyWhileCharging() {
