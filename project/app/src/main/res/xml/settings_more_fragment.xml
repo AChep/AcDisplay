@@ -46,6 +46,11 @@
         android:key="timeout"
         android:title="@string/settings_timeout_title" />
 
+    <CheckBoxPreference
+        android:defaultValue="@bool/config_default_double_tap_to_sleep"
+        android:key="double_tap_to_sleep"
+        android:title="@string/settings_double_tap_to_sleep_title" />
+
     <PreferenceCategory android:title="@string/settings_behavior_category">
 
         <CheckBoxPreference

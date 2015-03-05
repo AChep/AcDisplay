@@ -1440,7 +1440,8 @@ public class AcDisplayFragment extends Fragment implements
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                return mListener.onSleepRequest();
+                Config config = Config.getInstance();
+                return config.isDoubleTapToSleepEnabled() && mListener.onSleepRequest();
             }
 
         }

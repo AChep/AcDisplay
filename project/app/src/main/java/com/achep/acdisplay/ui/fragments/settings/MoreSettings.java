@@ -51,6 +51,7 @@ public class MoreSettings extends PreferenceFragment implements ConfigBase.OnCon
                         R.string.settings_privacy_mode_disabled));
         syncPreference(Config.KEY_ONLY_WHILE_CHARGING);
         syncPreference(Config.KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY);
+        syncPreference(Config.KEY_DOUBLE_TAP_TO_SLEEP);
         syncPreference(Config.KEY_FEEL_WIDGET_PINNABLE);
         syncPreference(Config.KEY_FEEL_WIDGET_READABLE);
 

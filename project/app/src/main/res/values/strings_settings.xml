@@ -92,6 +92,7 @@
     <string name="settings_timeout_summary">After %1$s / %2$s seconds of inactivity.</string>
     <string name="settings_icon_size_title">Icon size</string>
     <string name="settings_icon_size_summary">Current size of icons is %1$s dpi.</string>
+    <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
     <!-- Behavior -->
     <string name="settings_behavior_category">Behavior</string>
     <string name="settings_lock_on_dismiss_last_notify_title">Lock on dismiss last notification</string>

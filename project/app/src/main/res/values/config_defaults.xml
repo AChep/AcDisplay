@@ -41,6 +41,7 @@
     <bool name="config_default_keyguard_respect_inactive_time">false</bool>
     <bool name="config_default_active_mode_respect_inactive_time">true</bool>
     <bool name="config_default_active_mode_active_charging">true</bool>
+    <bool name="config_default_double_tap_to_sleep">true</bool>
     <integer name="config_default_timeout_normal">10000</integer>
     <integer name="config_default_timeout_short">5000</integer>
     <integer name="config_default_inactive_time_from">60</integer>

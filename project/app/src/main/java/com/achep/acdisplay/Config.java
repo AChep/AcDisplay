@@ -97,6 +97,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_PRIVACY = "privacy_mode";
     public static final int PRIVACY_HIDE_CONTENT_MASK = 1;
     public static final int PRIVACY_HIDE_ACTIONS_MASK = 2;
+    public static final String KEY_DOUBLE_TAP_TO_SLEEP = "double_tap_to_sleep";
 
     // development
     public static final String KEY_DEV_SENSORS_DUMP = "dev_sensors_dump";
@@ -120,6 +121,7 @@ public final class Config extends ConfigBase {
     private boolean mActiveModeActiveCharging;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
+    private boolean mDoubleTapToSleep;
     private boolean mFeelWidgetPinnable;
     private boolean mFeelWidgetReadable;
     private boolean mNotifyWakeUpOn;
@@ -244,6 +246,8 @@ public final class Config extends ConfigBase {
                 res.getBoolean(R.bool.config_default_feel_widget_readable));
         mPrivacyMode = prefs.getInt(KEY_PRIVACY,
                 res.getInteger(R.integer.config_default_privacy_mode));
+        mDoubleTapToSleep = prefs.getBoolean(KEY_DOUBLE_TAP_TO_SLEEP,
+                res.getBoolean(R.bool.config_default_double_tap_to_sleep));
 
         // triggers
         mTrigHelpRead = prefs.getBoolean(KEY_TRIG_HELP_READ, false);
@@ -331,6 +335,8 @@ public final class Config extends ConfigBase {
                 "mFeelWidgetReadable", null, null, boolean.class));
         hashMap.put(KEY_PRIVACY, new ConfigBase.Option(
                 "mPrivacyMode", null, null, int.class));
+        hashMap.put(KEY_DOUBLE_TAP_TO_SLEEP, new ConfigBase.Option(
+                "mDoubleTapToSleep", null, null, boolean.class));
 
         // triggers
         hashMap.put(KEY_TRIG_DONATION_ASKED, new ConfigBase.Option(
@@ -579,6 +585,10 @@ public final class Config extends ConfigBase {
 
     public boolean isScreenOffAfterLastNotify() {
         return mScreenOffAfterLastNotify;
+    }
+
+    public boolean isDoubleTapToSleepEnabled() {
+        return mDoubleTapToSleep;
     }
 
     public boolean isUnlockAnimationEnabled() {
