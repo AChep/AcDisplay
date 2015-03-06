@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:hint="@string/feedback_dialog_message_hint"
-                android:minHeight="96dip"
+                android:minHeight="96dp"
                 android:textAlignment="viewStart"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textSize="16sp"

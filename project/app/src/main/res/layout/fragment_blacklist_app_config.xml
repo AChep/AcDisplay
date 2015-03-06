@@ -34,10 +34,10 @@
             android:id="@+id/icon"
             android:layout_width="@android:dimen/app_icon_size"
             android:layout_height="@android:dimen/app_icon_size"
-            android:layout_marginStart="6dip"
-            android:layout_marginEnd="6dip"
-            android:layout_marginLeft="6dip"
-            android:layout_marginRight="6dip"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:scaleType="centerInside"
             tools:ignore="ContentDescription" />
 
@@ -45,10 +45,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="2dip"
-            android:layout_marginEnd="6dip"
-            android:layout_marginLeft="2dip"
-            android:layout_marginRight="6dip"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="6dp"
             android:orientation="vertical">
 
             <TextView

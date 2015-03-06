@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|right"
-                android:layout_marginTop="4dip" />
+                android:layout_marginTop="4dp" />
 
         </FrameLayout>
 
@@ -57,7 +57,7 @@
             android:id="@+id/score_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-8dip"
+            android:layout_marginTop="-8dp"
             android:fontFamily="sans-serif-condensed" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:maxWidth="300dip"
+            android:maxWidth="300dp"
             android:textAppearance="?android:textAppearanceMedium" />
     </LinearLayout>
 </ScrollView>
