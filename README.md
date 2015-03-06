@@ -13,6 +13,7 @@ It will inform you about new notifications by showing a minimal, beautiful scree
 
  - **[Join app's community on Google+](http://community.acdisplay.org)** _(Project's news, random spamming and social stuff)_
  - **[Join app's dev channel on freenode](http://webchat.freenode.net?channels=acdisplay)** _(I'm always in to discuss the development process; join, if you're a developer that wants to help us)_
+ - **[The bounty funding service](http://bounty.acdisplay.org)** _(put the bounties on the issues, so everyone is hightly motivated to fix them)_
 
 <a href="http://get.acdisplay.org">
   <img alt="Get AcDisplay on Google Play" vspace="20"
