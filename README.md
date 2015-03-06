@@ -18,6 +18,12 @@ It will inform you about new notifications by showing a minimal, beautiful scree
 <a href="http://get.acdisplay.org">
   <img alt="Get AcDisplay on Google Play" vspace="20"
        src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a> <a href="bitcoin:1GYj49ZnMByKj2f6p7r4f92GQi5pR6BSMz?amount=0.005">
+  <img alt="Bitcoin wallet: 1GYj49ZnMByKj2f6p7r4f92GQi5pR6BSMz" vspace="20" hspace="20"
+       src="https://github.com/AChep/AcDisplay/raw/master/art/btn_bitcoin.png" />
+</a> <a href="http://goo.gl/UrecGo">
+  <img alt="PayPal" vspace="20"
+       src="https://github.com/AChep/AcDisplay/raw/master/art/btn_paypal.png" />
 </a>
 
 Download & Build
