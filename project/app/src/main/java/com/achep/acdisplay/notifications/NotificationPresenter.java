@@ -117,6 +117,7 @@ public class NotificationPresenter implements
 
     // Threading
     private final Handler mHandler;
+    private volatile int mDetectingSyncTroubles;
 
     // Remote posting/removing
     private boolean mProcessingPRQueue;
@@ -404,6 +405,7 @@ public class NotificationPresenter implements
             @NonNull Context context,
             @NonNull OpenNotification n, int flags) {
         Check.getInstance().isInMainThread();
+        mDetectingSyncTroubles = 1;
 
         synchronized (mPRQueue) {
             // Clean-up all previous event regard this
@@ -495,6 +497,10 @@ public class NotificationPresenter implements
         // events.
         if (Operator.bitAnd(flags, FLAG_SILENCE)) mFrozenEvents.clear();
         meltListeners();
+
+        // Try to detect the sync troubles
+        Check.getInstance().isTrue(mDetectingSyncTroubles == 1);
+        mDetectingSyncTroubles = 0;
     }
 
     public void removeNotificationFromMain(final @NonNull OpenNotification n, final int flags) {
@@ -514,6 +520,7 @@ public class NotificationPresenter implements
      */
     public void removeNotification(@NonNull OpenNotification n, final int flags) {
         Check.getInstance().isInMainThread();
+        mDetectingSyncTroubles = 2;
 
         synchronized (mPRQueue) {
             // Clean-up all previous event regard this
@@ -551,6 +558,10 @@ public class NotificationPresenter implements
             list.remove(i);
             mLList.removeNotification(n);
         }
+
+        // Try to detect the sync troubles
+        Check.getInstance().isTrue(mDetectingSyncTroubles == 2);
+        mDetectingSyncTroubles = 0;
     }
 
     /**
