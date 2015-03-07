@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -95,6 +96,7 @@ public class CircleView extends View {
     private boolean mCanceled;
     private float mDarkening;
 
+    private ColorFilter mInverseColorFilter;
     private Drawable mDrawable;
     private Paint mPaint;
 
@@ -172,34 +174,27 @@ public class CircleView extends View {
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        initColorFilter();
 
-        // Load colors
-        Config config = Config.getInstance();
-        mInnerColor = config.getCircleInnerColor();
-        mOuterColor = config.getCircleOuterColor();
-        float[] innerHsv = new float[3];
-        Color.colorToHSV(mInnerColor, innerHsv);
-        float innerHsvValue = innerHsv[2];
-        boolean innerRandomColor = ColorPickerPreference.isRandomEnabled(mInnerColor);
-
-        // Load & invert the drawable if needed
+        // Load the drawable if needed
         mDrawable = res.getDrawable(R.drawable.ic_settings_keyguard_white);
         mDrawable.setBounds(0, 0,
                 mDrawable.getIntrinsicWidth(),
                 mDrawable.getIntrinsicHeight());
-        if (innerHsvValue > 0.5f || innerRandomColor) { // inverse the drawable
-            final float v = -1;
-            final float[] matrix = {
-                    v, 0, 0, 0, 0,
-                    0, v, 0, 0, 0,
-                    0, 0, v, 0, 0,
-                    0, 0, 0, 1, 0,
-            };
-            mDrawable = mDrawable.mutate(); // don't affect the original drawable
-            mDrawable.setColorFilter(new ColorMatrixColorFilter(matrix));
-        }
+        mDrawable = mDrawable.mutate(); // don't affect the original drawable
 
         setRadius(0);
+    }
+
+    private void initColorFilter() {
+        final float v = -1;
+        final float[] matrix = {
+                v, 0, 0, 0, 0,
+                0, v, 0, 0, 0,
+                0, 0, v, 0, 0,
+                0, 0, 0, 1, 0,
+        };
+        mInverseColorFilter = new ColorMatrixColorFilter(matrix);
     }
 
     public void setSupervisor(Supervisor supervisor) {
@@ -249,6 +244,20 @@ public class CircleView extends View {
         super.onDetachedFromWindow();
     }
 
+    private void setInnerColor(int color) {
+        if (mInnerColor == (mInnerColor = color)) return;
+
+        // Inverse the drawable if needed
+        float[] innerHsv = new float[3];
+        Color.colorToHSV(mInnerColor, innerHsv);
+        float innerHsvValue = innerHsv[2];
+        mDrawable.setColorFilter(innerHsvValue > 0.5f ? mInverseColorFilter : null);
+    }
+
+    private void setOuterColor(int color) {
+        mOuterColor = color;
+    }
+
     public boolean sendTouchEvent(@NonNull MotionEvent event) {
         final int action = event.getActionMasked();
 
@@ -270,8 +279,8 @@ public class CircleView extends View {
 
                 // Update colors
                 Config config = Config.getInstance();
-                mInnerColor = ColorPickerPreference.getColor(config.getCircleInnerColor());
-                mOuterColor = ColorPickerPreference.getColor(config.getCircleOuterColor());
+                setInnerColor(ColorPickerPreference.getColor(config.getCircleInnerColor()));
+                setOuterColor(ColorPickerPreference.getColor(config.getCircleOuterColor()));
 
                 // Initialize circle
                 mRadiusTargetAimed = false;
