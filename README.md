@@ -26,6 +26,19 @@ It will inform you about new notifications by showing a minimal, beautiful scree
        src="https://github.com/AChep/AcDisplay/raw/master/art/btn_paypal.png" />
 </a>
 
+Report a bug or request a feature
+----------------
+Before creating a new issue please make sure that same or similar issue is not already created by checking [open issues][2] and [closed issues][3] *(please note that there might be multiple pages)*. If your issue is already there, don't create a new one, but leave a comment under already existing one.
+
+Checklist for creating issues:
+
+- Keep titles short but descriptive.
+- For feature requests leave a clear description about the feature with examples where appropriate.
+- For bug reports leave as much information as possible about your device, android version, etc.
+- For bug reports also write steps to reproduce the issue.
+
+[Create new issue][1]
+
 Download & Build
 ----------------
 Clone the project and come in:
@@ -73,3 +86,7 @@ Import to Android Studio
 - Launch Android Studio.
 - Select: File -> Import project; and choose ./AcDisplay/project directory.
 - Wait until it done.
+
+[1]: https://github.com/AChep/AcDisplay/issues/new
+[2]: https://github.com/AChep/AcDisplay/issues?state=open
+[3]: https://github.com/AChep/AcDisplay/issues?state=closed
