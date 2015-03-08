@@ -20,7 +20,7 @@
 
     <item
         android:id="@android:id/background"
-        android:drawable="?dividerHorizontal" />
+        android:drawable="?android:dividerHorizontal" />
     <item android:id="@android:id/secondaryProgress">
         <shape />
     </item>

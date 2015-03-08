@@ -82,7 +82,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (mConfig.isWallpaperShown()) setTheme(R.style.MaterialTheme_AcDisplay_Wallpaper);
+        if (mConfig.isWallpaperShown()) setTheme(R.style.StockTheme_AcDisplay_Wallpaper);
         super.onCreate(savedInstanceState);
         mPresenter.onCreate(this);
 

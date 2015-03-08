@@ -54,22 +54,48 @@
     </style>
 
     <!--
+        Stock theme
+        -->
+
+    <style name="Base.StockTheme" parent="@android:style/Theme.Holo" >
+        <item name="android:windowContentOverlay">@drawable/bg_window_overlay_dark</item>
+        <item name="android:listSeparatorTextViewStyle">@style/MaterialListSeparator</item>
+    </style>
+
+    <style name="StockTheme" parent="Base.StockTheme">
+        <item name="acDisplayTitle">@style/MaterialAcDisplay.Title</item>
+        <item name="acDisplaySubtitle">@style/MaterialAcDisplay.Subtitle</item>
+        <item name="acDisplayMessage">@style/MaterialAcDisplay.Message</item>
+        <item name="acDisplayAction">@style/MaterialAcDisplay.Action</item>
+        <item name="acDisplayLargeClock">@style/MaterialAcDisplay.LargeClock</item>
+        <item name="acDisplaySmallClock">@style/MaterialAcDisplay.SmallClock</item>
+    </style>
+
+    <style name="Base.StockTheme.Fullscreen" parent="StockTheme" />
+
+    <style name="StockTheme.Fullscreen" parent="Base.StockTheme.Fullscreen">
+        <!-- Theme.Holo.NoActionBar.Fullscreen -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!--
         AcDisplay
         -->
 
-    <style name="Base.MaterialTheme.AcDisplay" parent="MaterialTheme.Fullscreen" />
+    <style name="Base.StockTheme.AcDisplay" parent="StockTheme.Fullscreen" />
 
-    <style name="MaterialTheme.AcDisplay" parent="Base.MaterialTheme.AcDisplay">
+    <style name="StockTheme.AcDisplay" parent="Base.StockTheme.AcDisplay">
         <item name="android:inAnimation">@null</item>
         <item name="android:outAnimation">@null</item>
 
         <item name="android:windowBackground">@color/keyguard_background</item>
         <item name="android:colorBackground">@color/keyguard_background</item>
-        <item name="colorPrimary">@android:color/black</item>
-        <item name="colorPrimaryDark">@android:color/black</item>
     </style>
 
-    <style name="MaterialTheme.AcDisplay.Wallpaper" parent="MaterialTheme.AcDisplay">
+    <style name="StockTheme.AcDisplay.Wallpaper" parent="StockTheme.AcDisplay">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowBackground">@color/keyguard_background_semi</item>
         <item name="android:windowShowWallpaper">true</item>

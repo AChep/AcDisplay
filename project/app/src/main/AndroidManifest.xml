@@ -74,7 +74,7 @@
             android:exported="false"
             android:launchMode="singleInstance"
             android:screenOrientation="nosensor"
-            android:theme="@style/MaterialTheme.AcDisplay" />
+            android:theme="@style/StockTheme.AcDisplay" />
 
         <activity
             android:name=".ui.activities.MainActivity"

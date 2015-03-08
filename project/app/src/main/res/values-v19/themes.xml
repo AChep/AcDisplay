@@ -25,7 +25,13 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="Base.MaterialTheme.AcDisplay" parent="MaterialTheme.Fullscreen" >
+    <!-- All device dependent modification goes here -->
+    <style name="Base.StockTheme.Fullscreen" parent="StockTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="Base.StockTheme.AcDisplay" parent="StockTheme.Fullscreen" >
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
