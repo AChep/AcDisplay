@@ -42,6 +42,7 @@ public class ActiveModeSettings extends PreferenceFragment {
         syncPreference(Config.KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME);
         syncPreference(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
         syncPreference(Config.KEY_ACTIVE_MODE_ACTIVE_CHARGING);
+        syncPreference(Config.KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY);
     }
 
 }

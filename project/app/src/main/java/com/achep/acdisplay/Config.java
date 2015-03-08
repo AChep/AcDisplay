@@ -73,6 +73,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME = "active_mode_respect_inactive_time";
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
     public static final String KEY_ACTIVE_MODE_ACTIVE_CHARGING = "active_mode_active_charging";
+    public static final String KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY = "active_mode_disable_on_low_battery";
 
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
@@ -119,6 +120,7 @@ public final class Config extends ConfigBase {
     private boolean mActiveModeRespectInactiveTime;
     private boolean mActiveModeWithoutNotifies;
     private boolean mActiveModeActiveCharging;
+    private boolean mActiveModeDisableOnLowBattery;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mDoubleTapToSleep;
@@ -188,6 +190,8 @@ public final class Config extends ConfigBase {
                 res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
         mActiveModeActiveCharging = prefs.getBoolean(KEY_ACTIVE_MODE_ACTIVE_CHARGING,
                 res.getBoolean(R.bool.config_default_active_mode_active_charging));
+        mActiveModeDisableOnLowBattery = prefs.getBoolean(KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY,
+                res.getBoolean(R.bool.config_default_active_mode_disable_on_low_battery));
 
         // notifications
         mNotifyMinPriority = prefs.getInt(KEY_NOTIFY_MIN_PRIORITY,
@@ -275,6 +279,8 @@ public final class Config extends ConfigBase {
                 "mActiveModeWithoutNotifies", null, null, boolean.class));
         hashMap.put(KEY_ACTIVE_MODE_ACTIVE_CHARGING, new ConfigBase.Option(
                 "mActiveModeActiveCharging", null, null, boolean.class));
+        hashMap.put(KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY, new ConfigBase.Option(
+                "mActiveModeDisableOnLowBattery", null, null, boolean.class));
 
         // notifications
         hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(

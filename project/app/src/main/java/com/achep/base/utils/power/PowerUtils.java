@@ -78,4 +78,19 @@ public class PowerUtils {
                 : pm.isScreenOn();
     }
 
+    /**
+     * @see #isPlugged(android.content.Context)
+     * @see #isPlugged(android.content.Intent)
+     */
+    @SuppressLint("InlinedApi")
+    public static int getBatteryLevel(@Nullable Intent intent) {
+        if (intent == null) {
+            return 100;
+        }
+
+        final int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        final int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        return level * 100 / scale;
+    }
+
 }

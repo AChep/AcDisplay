@@ -42,6 +42,7 @@
     <!-- Lockscreen -->
     <string name="settings_keyguard_description">Изменить стандартный экран блокировки на приложение AcDisplay. Эта функция может работать нестабильно.</string>
     <string name="settings_keyguard_respect_inactive_time_title">Отключить в неактивное время</string>
+    <string name="settings_active_disable_on_low_battery_title">Отключить при разряженой батареи</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_title">Пока нет уведомлений</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен вне зависимости от наличия текущих уведомлений.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, пока текущий список уведомлений пуст.</string>

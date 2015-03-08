@@ -32,6 +32,11 @@
             android:title="@string/settings_active_respect_inactive_time_title" />
 
         <CheckBoxPreference
+            android:defaultValue="@bool/config_default_active_mode_disable_on_low_battery"
+            android:key="active_mode_disable_on_low_battery"
+            android:title="@string/settings_active_disable_on_low_battery_title" />
+
+        <CheckBoxPreference
             android:defaultValue="@bool/config_default_active_mode_without_notifies_enabled"
             android:key="active_mode_without_notifications"
             android:summaryOff="@string/settings_active_enabled_when_notification_list_empty_off"

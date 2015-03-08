@@ -42,6 +42,7 @@
     <!-- Lockscreen -->
     <string name="settings_keyguard_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
     <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+    <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>

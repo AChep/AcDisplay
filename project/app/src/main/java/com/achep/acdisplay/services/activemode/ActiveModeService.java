@@ -43,6 +43,7 @@ import com.achep.acdisplay.services.SwitchService;
 import com.achep.acdisplay.services.activemode.sensors.AccelerometerSensor;
 import com.achep.acdisplay.services.activemode.sensors.GyroscopeSensor;
 import com.achep.acdisplay.services.activemode.sensors.ProximitySensor;
+import com.achep.acdisplay.services.switches.BatteryOutSwitch;
 import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.services.switches.ScreenOffSwitch;
@@ -190,10 +191,12 @@ public class ActiveModeService extends SwitchService implements
         Config config = Config.getInstance();
         ConfigBase.Option noNotifies = config.getOption(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
         ConfigBase.Option respectIt = config.getOption(Config.KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME);
+        ConfigBase.Option batteryOut = config.getOption(Config.KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY);
         return new Switch[]{
                 new ScreenOffSwitch(getContext(), this),
                 new InactiveTimeSwitch(getContext(), this, respectIt),
                 new NoNotifiesSwitch(getContext(), this, noNotifies, true),
+                new BatteryOutSwitch(getContext(), this, batteryOut, false),
         };
     }
 
