@@ -238,7 +238,7 @@ public class TouchTracker implements View.OnTouchListener{
         }
     }
 
-    private final class UnsetPressedState implements Runnable {
+    private static final class UnsetPressedState implements Runnable {
 
         View target;
 
