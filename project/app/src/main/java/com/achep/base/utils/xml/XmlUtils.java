@@ -1137,19 +1137,19 @@ public class XmlUtils {
         if (tagName.equals("null")) {
             res = null;
         } else if (tagName.equals("string")) {
-            String value = "";
+            StringBuilder value = new StringBuilder("");
             int eventType;
             while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.END_TAG) {
                     if (parser.getName().equals("string")) {
                         name[0] = valueName;
                         //System.out.println("Returning value for " + valueName + ": " + value);
-                        return value;
+                        return value.toString();
                     }
                     throw new XmlPullParserException(
                             "Unexpected end tag in <string>: " + parser.getName());
                 } else if (eventType == XmlPullParser.TEXT) {
-                    value += parser.getText();
+                    value.append(parser.getText());
                 } else if (eventType == XmlPullParser.START_TAG) {
                     throw new XmlPullParserException(
                             "Unexpected start tag in <string>: " + parser.getName());
