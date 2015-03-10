@@ -19,8 +19,10 @@
 package com.achep.base.utils;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.lang.ref.Reference;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,16 +31,46 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class RefCacheBase<T> {
 
+    @NonNull
     private volatile Map<CharSequence, Reference<T>> mCache = new ConcurrentHashMap<>();
 
     public final void put(@NonNull CharSequence key, @NonNull T object) {
-        mCache.put(key, onCreateReference(object));
+        synchronized (this) {
+            mCache.put(key, onCreateReference(object));
+        }
     }
 
+    @Nullable
     public final T get(@NonNull CharSequence key) {
-        Reference<T> ref = mCache.get(key);
-        if (ref == null) return null;
-        return ref.get();
+        synchronized (this) {
+            Reference<T> ref = mCache.get(key);
+            if (ref == null) {
+                cleanDeadEntries();
+                return null;
+            }
+            return ref.get();
+        }
+    }
+
+    private void cleanDeadEntries() {
+        ArrayList<CharSequence> deaths = null;
+
+        // Find empty links
+        for (Map.Entry<CharSequence, Reference<T>> entry : mCache.entrySet()) {
+            if (entry.getValue().get() == null) {
+                if (deaths == null) {
+                    deaths = new ArrayList<>();
+                }
+                deaths.add(entry.getKey());
+            }
+        }
+
+        // Clean-up
+        if (deaths != null) {
+            for (CharSequence key : deaths) {
+                mCache.remove(key);
+            }
+        }
     }
 
     @NonNull
