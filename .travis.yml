@@ -2,12 +2,12 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true
+    - ANDROID_TARGET=android-22  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true
 
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
+    - build-tools-22.0.0
+    - android-22
 
 before_script:
   # Move to project folder before build
