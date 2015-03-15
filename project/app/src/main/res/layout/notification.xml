@@ -23,8 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:actionItemShowIcon="true"
-    app:messageMaxLines="6">
+    app:actionItemShowIcon="true">
 
     <RelativeLayout
         android:id="@+id/content"
@@ -81,16 +80,18 @@
             android:layout_toEndOf="@id/when"
             android:layout_toRightOf="@id/when" />
 
-        <LinearLayout
+        <com.achep.acdisplay.ui.widgets.notification.NotificationMessages
             android:id="@+id/message_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/when"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            app:highlightMessages="true"
+            app:maxLines="6" />
 
     </RelativeLayout>
 
-    <LinearLayout
+    <com.achep.acdisplay.ui.widgets.notification.NotificationActions
         android:id="@+id/actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

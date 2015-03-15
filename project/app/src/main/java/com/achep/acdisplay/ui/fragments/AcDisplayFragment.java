@@ -558,7 +558,11 @@ public class AcDisplayFragment extends Fragment implements
 
                 boolean dismissing = swipeToDismiss();
                 if (!dismissing) {
-                    if (mPressedIconView == null || !isPinnable()) {
+                    if (mSelectedWidget.isSticky()) {
+                        // Disable the default timeout mechanism and let
+                        // the selected widget to stay for a while.
+                        onWidgetStick(mSelectedWidget);
+                    } else if (mPressedIconView == null || !isPinnable()) {
                         showHomeWidget();
                     } else {
                         onWidgetPin(mSelectedWidget);
@@ -873,6 +877,11 @@ public class AcDisplayFragment extends Fragment implements
 
     protected void onWidgetPin(@NonNull Widget widget) {
         mHandler.sendEmptyMessageDelayed(MSG_SHOW_HOME_WIDGET, mConfigWidgetPinDuration);
+        mHasPinnedWidget = true;
+    }
+
+    protected void onWidgetStick(@NonNull Widget widget) {
+        // mHandler.sendEmptyMessageDelayed(MSG_SHOW_HOME_WIDGET, mConfigWidgetPinDuration);
         mHasPinnedWidget = true;
     }
 

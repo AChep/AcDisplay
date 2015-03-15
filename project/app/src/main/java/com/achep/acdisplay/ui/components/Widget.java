@@ -40,7 +40,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public abstract class Widget {
 
     @NonNull
-    private final AcDisplayFragment mHostFragment;
+    private final AcDisplayFragment mFragment;
 
     @NonNull
     protected final Callback mCallback;
@@ -73,7 +73,7 @@ public abstract class Widget {
 
     public Widget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
         mCallback = callback;
-        mHostFragment = fragment;
+        mFragment = fragment;
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class Widget {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(23, 651)
-                .append(mHostFragment)
+                .append(mFragment)
                 .append(mView)
                 .append(mIconView)
                 .append(mAttached)
@@ -104,7 +104,7 @@ public abstract class Widget {
         return new EqualsBuilder()
                 .append(mAttached, widget.mAttached)
                 .append(mStarted, widget.mStarted)
-                .append(mHostFragment, widget.mHostFragment)
+                .append(mFragment, widget.mFragment)
                 .append(mView, widget.mView)
                 .append(mIconView, widget.mIconView)
                 .isEquals();
@@ -114,12 +114,21 @@ public abstract class Widget {
      * @return the host fragment
      */
     @NonNull
-    public AcDisplayFragment getHostFragment() {
-        return mHostFragment;
+    public AcDisplayFragment getFragment() {
+        return mFragment;
     }
 
+    @NonNull
     public Config getConfig() {
-        return mHostFragment.getConfig();
+        return mFragment.getConfig();
+    }
+
+    /**
+     * @return {@code true} if the widget is sticky and overrides default pin-timeout,
+     * {@code false} otherwise.
+     */
+    public boolean isSticky() {
+        return false;
     }
 
     //-- HOME WIDGET ----------------------------------------------------------

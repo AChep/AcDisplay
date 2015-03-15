@@ -41,6 +41,7 @@ import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.Device;
 import com.achep.base.async.AsyncTask;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.utils.Operator;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.smiley.SmileyParser;
 
@@ -102,6 +103,7 @@ public abstract class OpenNotification implements
      */
     public static final int VISIBILITY_SECRET = -1;
 
+    // Events
     public static final int EVENT_ICON = 1;
     public static final int EVENT_READ = 2;
     public static final int EVENT_BACKGROUND = 3;
@@ -542,7 +544,7 @@ public abstract class OpenNotification implements
     /**
      * Clears some notification's resources.
      */
-    public void recycle() {
+    void recycle() {
         clearBackground();
         AsyncTask.stop(mPaletteWorker);
         if (mIconFactory != null) {
@@ -572,8 +574,8 @@ public abstract class OpenNotification implements
      * {@link Notification#FLAG_NO_CLEAR}.
      */
     public boolean isClearable() {
-        return ((mNotification.flags & Notification.FLAG_ONGOING_EVENT) == 0)
-                && ((mNotification.flags & Notification.FLAG_NO_CLEAR) == 0);
+        return Operator.bitAnd(mNotification.flags, Notification.FLAG_ONGOING_EVENT)
+                && Operator.bitAnd(mNotification.flags, Notification.FLAG_NO_CLEAR);
     }
 
     public boolean isContentSecret(@NonNull Context context) {

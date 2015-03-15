@@ -19,6 +19,7 @@
 package com.achep.acdisplay.notifications;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -47,8 +48,9 @@ class NotificationListenerLollipop extends NotificationListener {
     @Override
     public void onNotificationPosted(@NonNull NotificationListenerService service,
                                      @NonNull StatusBarNotification sbn) {
+        Context context = service.getApplicationContext();
         NotificationPresenter np = NotificationPresenter.getInstance();
-        np.postNotificationFromMain(service, OpenNotification.newInstance(sbn), 0);
+        np.postNotificationFromMain(context, OpenNotification.newInstance(sbn), 0);
     }
 
     @Override

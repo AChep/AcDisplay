@@ -41,6 +41,11 @@
         <attr name="actionItemShowIcon" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="NotificationMessages">
+        <attr name="maxLines" format="integer" />
+        <attr name="highlightMessages" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="Theme">
 
         <!-- Dialog styles -->

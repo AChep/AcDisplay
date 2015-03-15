@@ -42,10 +42,12 @@ import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.Operator;
 
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -144,14 +146,31 @@ public class NotificationPresenter implements
         }
     };
 
+    /**
+     * @author Artem Chepurnoy
+     */
     private static class PostRemoveEvent {
+
         @Nullable
-        public Context context;
+        public final Context context;
         @NonNull
-        public OpenNotification notification;
+        public final OpenNotification notification;
+
+        /**
+         * {@code true} if it's a {@link #postNotification(Context, OpenNotification, int) post}
+         * event, {@code false} {@link #removeNotification(OpenNotification, int) otherwise}.
+         */
+        public final boolean posts;
 
         public int flags;
-        public boolean posts;
+
+        PostRemoveEvent(@Nullable Context context, @NonNull OpenNotification notification,
+                        boolean posts, int flags) {
+            this.context = context;
+            this.notification = notification;
+            this.posts = posts;
+            this.flags = flags;
+        }
     }
 
     //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
@@ -308,6 +327,7 @@ public class NotificationPresenter implements
             }
         }
 
+        cleanDeadListeners();
         mListenersRefs.add(new WeakReference<>(listener));
     }
 
@@ -326,6 +346,21 @@ public class NotificationPresenter implements
         Log.w(TAG, "Tried to unregister non-existent listener!");
     }
 
+    /* Ideally this method and the whole weakness thing should not be needed. */
+    private void cleanDeadListeners() {
+        Iterator<WeakReference<OnNotificationListChangedListener>> i = mListenersRefs.iterator();
+        while (i.hasNext()) {
+            WeakReference wr = i.next();
+            if (wr.get() == null) {
+                Log.w(TAG, "Removing the dead listener.");
+                i.remove();
+            }
+        }
+    }
+
+    /**
+     * @author Artem Chepurnoy
+     */
     public interface OnNotificationPostedListener {
 
         /**
@@ -606,12 +641,7 @@ public class NotificationPresenter implements
             int flags, boolean posts,
             boolean immediately) {
         internalRemovePreviousPREvent(notification);
-        PostRemoveEvent event = new PostRemoveEvent();
-        event.context = context;
-        event.notification = notification;
-        event.flags = flags;
-        event.posts = posts;
-        mPRQueue.add(event);
+        mPRQueue.add(new PostRemoveEvent(context, notification, posts, flags));
 
         final long duration = POST_REMOVE_POOL_DURATION;
         if (!immediately) {
@@ -851,7 +881,10 @@ public class NotificationPresenter implements
     // notifications.
     @SuppressLint("NewApi")
     private boolean isValidForGlobal(@NonNull OpenNotification notification) {
-        return true;
+        // I don't want to store more notifications in Android 4.2-'s
+        // global list, cause they only eat memory and almost not
+        // useful.
+        return Device.hasJellyBeanMR2Api() || isValidForLocal(notification);
     }
 
     //-- INITIALIZING ---------------------------------------------------------
@@ -889,6 +922,11 @@ public class NotificationPresenter implements
         Check.getInstance().isInMainThread();
         if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
                 + notifyListeners);
+
+        synchronized (mPRQueue) {
+            mPRQueue.clear();
+            mHandler.removeCallbacks(mPRRunnable);
+        }
 
         mGroupsWithSummaries.clear();
         mGList.clear();

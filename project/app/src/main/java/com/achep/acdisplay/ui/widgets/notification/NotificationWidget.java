@@ -18,10 +18,9 @@
  */
 package com.achep.acdisplay.ui.widgets.notification;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.interfaces.INotificatiable;
-import com.achep.acdisplay.notifications.Action;
 import com.achep.acdisplay.notifications.NotificationUiHelper;
 import com.achep.acdisplay.notifications.OpenNotification;
 
@@ -41,31 +39,23 @@ import com.achep.acdisplay.notifications.OpenNotification;
  *
  * @author Artem Chepurnoy
  */
-public class NotificationWidget extends LinearLayout implements INotificatiable {
-
-    private final int mMessageLayoutRes;
-    private final int mMessageMaxLines;
-    private final int mActionLayoutRes;
-    private final boolean mActionAddIcon;
-
-    private ImageView mIcon;
-    private TextView mTitleTextView;
-    private TextView mWhenTextView;
-    private TextView mSubtextTextView;
-    private ViewGroup mMessageContainer;
-    private ViewGroup mActionsContainer;
-
-    private OnClickListener mOnClickListener;
-    private OpenNotification mNotification;
-    private ViewGroup mContent;
+public class NotificationWidget extends LinearLayout implements
+        INotificatiable, NotificationUiHelper.OnNotificationContentChanged {
 
     private NotificationUiHelper mHelper;
 
-    /**
-     * Interface definition for a callback to be invoked
-     * when a notification's views are clicked.
-     */
-    public interface OnClickListener {
+    // Views
+    private ViewGroup mContent;
+    private ImageView mLargeIcon;
+    private TextView mWhenTextView;
+    private TextView mTitleTextView;
+    private TextView mSubtitleTextView;
+    private NotificationMessages mMessageContainer;
+    private NotificationActions mActionsContainer;
+
+    private Callback mCallback;
+
+    public interface Callback extends NotificationActions.Callback {
 
         /**
          * Called on content view click.
@@ -73,15 +63,8 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
          * @param v clicked view
          * @see NotificationWidget#getNotification()
          */
-        void onClick(NotificationWidget widget, View v);
+        void onContentClick(@NonNull NotificationWidget widget, @NonNull View v);
 
-        /**
-         * Called on action button click.
-         *
-         * @param v      clicked view
-         * @param intent action's intent
-         */
-        void onActionButtonClick(NotificationWidget widget, View v, PendingIntent intent);
     }
 
     public NotificationWidget(Context context, AttributeSet attrs) {
@@ -90,38 +73,29 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
 
     public NotificationWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NotificationWidget);
-        mActionLayoutRes = a.getResourceId(
-                R.styleable.NotificationWidget_actionItemLayout,
-                R.layout.notification_action);
-        mMessageMaxLines = a.getInt(R.styleable.NotificationWidget_messageMaxLines, 4);
-        mMessageLayoutRes = a.getResourceId(
-                R.styleable.NotificationWidget_messageItemLayout,
-                R.layout.notification_message);
-        mActionAddIcon = a.getBoolean(R.styleable.NotificationWidget_actionItemShowIcon, true);
-        a.recycle();
+        mHelper = new NotificationUiHelper(context, this);
+        mHelper.setBig(true);
     }
 
     /**
      * Register a callback to be invoked when notification views are clicked.
-     * If some of them are not clickable, they becomes clickable.
      */
-    public void setOnClickListener(OnClickListener l) {
-        View.OnClickListener listener = l == null
+    public void setCallback(@Nullable Callback callback) {
+        mCallback = callback;
+
+        // Set the callback
+        mActionsContainer.setCallback(callback);
+        mContent.setOnClickListener(callback == null
                 ? null
                 : new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickListener != null) {
+                if (mCallback != null) {
                     NotificationWidget widget = NotificationWidget.this;
-                    mOnClickListener.onClick(widget, v);
+                    mCallback.onContentClick(widget, v);
                 }
             }
-        };
-
-        mOnClickListener = l;
-        mContent.setOnClickListener(listener);
+        });
     }
 
     @Override
@@ -129,46 +103,12 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
         super.onFinishInflate();
 
         mContent = (ViewGroup) findViewById(R.id.content);
-        mIcon = (ImageView) findViewById(R.id.icon);
-        mTitleTextView = (TextView) findViewById(R.id.title);
-        mMessageContainer = (ViewGroup) findViewById(R.id.message_container);
+        mLargeIcon = (ImageView) findViewById(R.id.icon);
         mWhenTextView = (TextView) findViewById(R.id.when);
-        mSubtextTextView = (TextView) findViewById(R.id.subtext);
-        mActionsContainer = (ViewGroup) findViewById(R.id.actions);
-
-        mHelper = onCreateUiHelper();
-    }
-
-    @NonNull
-    protected NotificationUiHelper onCreateUiHelper() {
-        return new NotificationUiHelper(getContext(), onCreateUiHelperData());
-    }
-
-    @NonNull
-    protected NotificationUiHelper.Data onCreateUiHelperData() {
-        return new NotificationUiHelper.Data.Builder()
-                .setBig(true)
-                .setTitleView(mTitleTextView)
-                .setSubtitleView(mSubtextTextView)
-                .setTimestampView(mWhenTextView)
-                .setMessageContainer(mMessageContainer)
-                .setMessageItemLayoutRes(mMessageLayoutRes)
-                .setMessageMaxLines(mMessageMaxLines)
-                .setMessageItemUnderlineFirstLetter(true)
-                .setActionContainer(mActionsContainer)
-                .setActionItemLayoutRes(mActionLayoutRes)
-                .setActionItemIconShown(mActionAddIcon)
-                .setActionClickCallback(new NotificationUiHelper.OnActionClick() {
-                    @Override
-                    public void onActionClick(@NonNull View view, @NonNull Action action) {
-                        if (mOnClickListener != null) {
-                            NotificationWidget widget = NotificationWidget.this;
-                            mOnClickListener.onActionButtonClick(widget, view, action.intent);
-                        }
-                    }
-                })
-                .setLargeIconView(mIcon)
-                .build();
+        mTitleTextView = (TextView) findViewById(R.id.title);
+        mSubtitleTextView = (TextView) findViewById(R.id.subtext);
+        mMessageContainer = (NotificationMessages) findViewById(R.id.message_container);
+        mActionsContainer = (NotificationActions) findViewById(R.id.actions);
     }
 
     @Override
@@ -187,8 +127,35 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
      * {@inheritDoc}
      */
     @Override
+    public void onNotificationContentChanged(@NonNull NotificationUiHelper helper, int event) {
+        switch (event) {
+            case NotificationUiHelper.EVENT_LARGE_ICON_CHANGED:
+                mLargeIcon.setImageBitmap(helper.getLargeIcon());
+                break;
+            case NotificationUiHelper.EVENT_TIMESTAMP_CHANGED:
+                mWhenTextView.setText(helper.getTimestamp());
+                break;
+            case NotificationUiHelper.EVENT_TITLE_CHANGED:
+                mTitleTextView.setText(helper.getTitle());
+                break;
+            case NotificationUiHelper.EVENT_SUBTITLE_CHANGED:
+                mSubtitleTextView.setText(helper.getSubtitle());
+                break;
+            case NotificationUiHelper.EVENT_MESSAGE_CHANGED:
+                mMessageContainer.setMessages(helper.getMessages());
+                break;
+            case NotificationUiHelper.EVENT_ACTIONS_CHANGED:
+                mActionsContainer.setActions(helper.getNotification(), helper.getActions());
+                break;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public OpenNotification getNotification() {
-        return mNotification;
+        return mHelper.getNotification();
     }
 
     /**
@@ -196,7 +163,7 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
      */
     @Override
     public void setNotification(OpenNotification n) {
-        mHelper.setNotification(mNotification = n);
+        mHelper.setNotification(n);
     }
 
 }

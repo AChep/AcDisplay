@@ -18,17 +18,13 @@
  */
 package com.achep.acdisplay.notifications;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
@@ -36,85 +32,97 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.Device;
+import com.achep.acdisplay.interfaces.INotificatiable;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.CsUtils;
 import com.achep.base.utils.NullUtils;
 import com.achep.base.utils.Operator;
-import com.achep.base.utils.ViewUtils;
 
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Artem Chepurnoy on 11.02.2015.
  */
-public class NotificationUiHelper {
+public class NotificationUiHelper implements INotificatiable {
 
+    // Callback events
+    public static final int EVENT_TITLE_CHANGED = 1;
+    public static final int EVENT_MESSAGE_CHANGED = 2;
+    public static final int EVENT_TIMESTAMP_CHANGED = 3;
+    public static final int EVENT_SUBTITLE_CHANGED = 4;
+    public static final int EVENT_ACTIONS_CHANGED = 5;
+    public static final int EVENT_SMALL_ICON_CHANGED = 6;
+    public static final int EVENT_LARGE_ICON_CHANGED = 7;
+
+    // Pending updates
     private static final int PENDING_UPDATE_TITLE = 1;
     private static final int PENDING_UPDATE_SUBTITLE = 1 << 1;
     private static final int PENDING_UPDATE_TIMESTAMP = 1 << 2;
     private static final int PENDING_UPDATE_MESSAGE = 1 << 3;
     private static final int PENDING_UPDATE_ACTIONS = 1 << 4;
-    private static final int PENDING_UPDATE_LARGE_ICON = 1 << 5;
+    private static final int PENDING_UPDATE_ICONS = 1 << 5;
 
     private static SoftReference<CharSequence[]> sSecureContentLabelRef;
+    private static Map<String, SoftReference<Bitmap>> sAppIconCache = new HashMap<>();
 
-    protected OpenNotification mOpenNotification;
-    protected final Data mData;
-    protected final Context mContext;
-    protected final OpenNotification.OnNotificationDataChangedListener mListener =
+    private OpenNotification mNotification;
+    private CharSequence[] mMessages;
+    private CharSequence mTitle;
+    private CharSequence mTimestamp;
+    private CharSequence mSubtitle;
+    private Action[] mActions;
+    private Bitmap mSmallIcon;
+    private Bitmap mLargeIcon;
+
+    private boolean mBig;
+
+    private final Context mContext;
+    private final OnNotificationContentChanged mListener;
+    private final OpenNotification.OnNotificationDataChangedListener mNo =
             new OpenNotification.OnNotificationDataChangedListener() {
                 @Override
                 public void onNotificationDataChanged(
-                        @NonNull OpenNotification notification, int event) {
-                    Check.getInstance().isTrue(notification == mOpenNotification);
+                        @NonNull OpenNotification notification,
+                        int event) {
+                    Check.getInstance().isInMainThread();
                     switch (event) {
                         case OpenNotification.EVENT_ICON:
-                            updateLargeIcon();
+                            updateIcons();
                             break;
                     }
                 }
             };
 
-    private boolean mResumed;
     private int mPendingUpdates;
+    private boolean mResumed;
 
-    public interface OnActionClick {
+    public interface OnNotificationContentChanged {
 
-        void onActionClick(@NonNull View view, @NonNull Action action);
+        /**
+         * @param n
+         * @param event
+         */
+        void onNotificationContentChanged(
+                @NonNull NotificationUiHelper helper,
+                final int event);
 
     }
 
-    public NotificationUiHelper(@NonNull Context context, @NonNull Data data) {
+    public NotificationUiHelper(
+            @NonNull Context context,
+            @NonNull OnNotificationContentChanged listener) {
         mContext = context;
-        mData = data;
-        mData.setHost(this);
-    }
-
-    public void setNotification(@Nullable OpenNotification notification) {
-        unregisterNotificationListener();
-        mOpenNotification = notification;
-        registerNotificationListener();
-
-        updateTitle();
-        updateSubtitle();
-        updateTimestamp();
-        updateMessage();
-        updateActions();
-        updateLargeIcon();
+        mListener = listener;
     }
 
     public void resume() {
+        Check.getInstance().isInMainThread();
         mResumed = true;
 
         if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TITLE)) updateTitle();
@@ -122,88 +130,203 @@ public class NotificationUiHelper {
         if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TIMESTAMP)) updateTimestamp();
         if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_MESSAGE)) updateMessage();
         if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_ACTIONS)) updateActions();
-        if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_LARGE_ICON)) updateLargeIcon();
         mPendingUpdates = 0;
 
         registerNotificationListener();
     }
 
     public void pause() {
+        Check.getInstance().isInMainThread();
         unregisterNotificationListener();
         mResumed = false;
     }
 
+    /**
+     * @param n
+     */
+    public void setNotification(@Nullable OpenNotification n) {
+        Check.getInstance().isInMainThread();
+        unregisterNotificationListener();
+        mNotification = n;
+        registerNotificationListener();
+
+        // Update everything
+        updateTitle();
+        updateTimestamp();
+        updateSubtitle();
+        updateMessage();
+        updateActions();
+        updateIcons();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public OpenNotification getNotification() {
+        return mNotification;
+    }
+
+    /**
+     * Controls the <i>big</i> and <i>small</i> types of the notification
+     * view.
+     */
+    public void setBig(boolean isBig) {
+        mBig = isBig;
+    }
+
     private void registerNotificationListener() {
-        if (mOpenNotification != null) mOpenNotification.registerListener(mListener);
+        if (mNotification != null) mNotification.registerListener(mNo);
     }
 
     private void unregisterNotificationListener() {
-        if (mOpenNotification != null) mOpenNotification.unregisterListener(mListener);
+        if (mNotification != null) mNotification.unregisterListener(mNo);
     }
 
-    protected boolean isSecret(int minVisibility, int privacyMask) {
-        return NotificationUtils.isSecret(mContext, mOpenNotification, minVisibility, privacyMask);
+    private boolean isSecret(int minVisibility, int privacyMask) {
+        return NotificationUtils.isSecret(mContext, mNotification, minVisibility, privacyMask);
     }
 
-    //-- LARGE ICON -----------------------------------------------------------
-
-    protected void updateLargeIcon() {
+    /**
+     * @param mask one of the following:
+     *             {@link #PENDING_UPDATE_TITLE}, {@link #PENDING_UPDATE_SUBTITLE},
+     *             {@link #PENDING_UPDATE_MESSAGE}, {@link #PENDING_UPDATE_ACTIONS},
+     *             {@link #PENDING_UPDATE_TIMESTAMP}, {@link #PENDING_UPDATE_ICONS}.
+     * @return {@code true} if the update should be canceled, {@code false} otherwise.
+     */
+    private boolean isPendingUpdate(int mask) {
         if (!mResumed) {
-            mPendingUpdates |= PENDING_UPDATE_LARGE_ICON;
-            return;
+            mPendingUpdates |= mask;
+            return true;
         }
-        final ImageView largeIconImageView = mData.largeIconImageView;
-        if (largeIconImageView == null) return;
-        if (mOpenNotification == null) {
-            largeIconImageView.setImageDrawable(null);
+        return false;
+    }
+
+    //-- ICONS ----------------------------------------------------------------
+
+    private void updateIcons() {
+        if (isPendingUpdate(PENDING_UPDATE_ICONS)) return;
+        if (mNotification == null) {
+            setLargeIcon(null);
+            setSmallIcon(null);
             return;
         }
 
         final boolean secret = isLargeIconSecret();
 
+        Bitmap bitmap;
         if (secret) {
-            Drawable drawable = getAppIcon();
-            if (drawable != null) {
-                largeIconImageView.setImageDrawable(drawable);
-                largeIconImageView.setVisibility(View.VISIBLE);
-                return;
+            // Load application's icon as the large icon.
+
+            // Store the bitmaps in soft-reference cache map, to
+            // reduce memory usage and improve performance.
+            String packageName = mNotification.getPackageName();
+            SoftReference<Bitmap> cachedBitmap = sAppIconCache.get(packageName);
+            if (cachedBitmap == null || (bitmap = cachedBitmap.get()) == null) {
+                Drawable drawable = getAppIcon(mNotification.getPackageName());
+                if (drawable != null) {
+                    bitmap = Bitmap.createBitmap(
+                            drawable.getIntrinsicWidth(),
+                            drawable.getIntrinsicHeight(),
+                            Bitmap.Config.ARGB_4444);
+                    drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    drawable.draw(new Canvas(bitmap));
+                    sAppIconCache.put(packageName, new SoftReference<>(bitmap));
+                } else {
+                    bitmap = null;
+                    sAppIconCache.remove(packageName);
+                }
             }
+        } else {
+            bitmap = mNotification.getNotification().largeIcon;
         }
 
-        Bitmap bitmap = (Bitmap) NullUtils.whileNotNull(
-                secret ? null : mOpenNotification.getNotification().largeIcon,
-                mOpenNotification.getIcon());
-        largeIconImageView.setImageBitmap(bitmap);
-        ViewUtils.setVisible(largeIconImageView, bitmap != null);
+        if (bitmap == null) {
+            setLargeIcon(mNotification.getIcon());
+            setSmallIcon(null);
+        } else {
+            setLargeIcon(bitmap);
+            setSmallIcon(mNotification.getIcon());
+        }
     }
 
+    /**
+     * @return {@code true} if the large icon is a secret and should not be visible to
+     * user, {@code false} otherwise.
+     */
     protected final boolean isLargeIconSecret() {
-        return isSecret(OpenNotification.VISIBILITY_SECRET, Config.PRIVACY_HIDE_CONTENT_MASK);
+        return isSecret(
+                OpenNotification.VISIBILITY_SECRET,
+                Config.PRIVACY_HIDE_CONTENT_MASK);
     }
 
     @Nullable
-    private Drawable getAppIcon() {
+    private Drawable getAppIcon(@NonNull String packageName) {
         PackageManager pm = mContext.getPackageManager();
         try {
-            ApplicationInfo appInfo = pm.getApplicationInfo(mOpenNotification.getPackageName(), 0);
+            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
             return pm.getApplicationIcon(appInfo);
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
     }
 
-    //-- TITLE ----------------------------------------------------------------
-
-    protected void updateTitle() {
-        if (!mResumed) {
-            mPendingUpdates |= PENDING_UPDATE_TITLE;
+    private void setSmallIcon(@Nullable Bitmap bitmap) {
+        if (sameAs(mSmallIcon, bitmap)) {
+            // No need to notify listeners about this
+            // change.
             return;
         }
-        final TextView titleTextView = mData.titleTextView;
-        if (titleTextView == null) return;
-        if (mOpenNotification == null) {
-            titleTextView.setText("");
-            titleTextView.setVisibility(View.INVISIBLE);
+
+        mSmallIcon = bitmap;
+        mListener.onNotificationContentChanged(this, EVENT_SMALL_ICON_CHANGED);
+    }
+
+    /**
+     * @return the notification's small icon to be displayed.
+     * @see #getLargeIcon()
+     */
+    @Nullable
+    public Bitmap getSmallIcon() {
+        return mSmallIcon;
+    }
+
+    private void setLargeIcon(@Nullable Bitmap bitmap) {
+        if (sameAs(mLargeIcon, bitmap)) {
+            // No need to notify listeners about this
+            // change.
+            return;
+        }
+
+        mLargeIcon = bitmap;
+        mListener.onNotificationContentChanged(this, EVENT_LARGE_ICON_CHANGED);
+    }
+
+    /**
+     * @return the notification's large icon to be displayed.
+     * @see #getSmallIcon()
+     */
+    @Nullable
+    public Bitmap getLargeIcon() {
+        return mLargeIcon;
+    }
+
+    /**
+     * @return {@code true} if both {@link Bitmap bitmaps} are {@code null}
+     * or if the {@link Bitmap bitmaps} are equal according to
+     * {@link android.graphics.Bitmap#sameAs(android.graphics.Bitmap)}, {@code false} otherwise.
+     */
+    private boolean sameAs(@Nullable Bitmap bitmap, @Nullable Bitmap bitmap2) {
+        return bitmap == bitmap2 || bitmap != null && bitmap.sameAs(bitmap2);
+    }
+
+    //-- TITLE ----------------------------------------------------------------
+
+    private void updateTitle() {
+        if (isPendingUpdate(PENDING_UPDATE_TITLE)) return;
+        if (mNotification == null) {
+            setTitle(null);
             return;
         }
 
@@ -211,88 +334,138 @@ public class NotificationUiHelper {
 
         CharSequence title;
         if (secret) {
-            CharSequence appLabel = getAppLabel();
-            title = appLabel != null ? appLabel : "Failed to get the label of application!";
-        } else if (mData.big) {
+            CharSequence appLabel = getAppLabel(mNotification.getPackageName());
+            title = appLabel != null ? appLabel : "Hidden app";
+        } else if (mBig) {
             title = NullUtils.whileNotNull(
-                    mOpenNotification.titleBigText,
-                    mOpenNotification.titleText
+                    mNotification.titleBigText,
+                    mNotification.titleText
             );
         } else {
-            title = mOpenNotification.titleText;
+            title = mNotification.titleText;
         }
 
-        titleTextView.setText(title);
-        titleTextView.setVisibility(View.VISIBLE);
+        setTitle(title);
     }
 
+    /**
+     * @return {@code true} if the title is a secret and should not be visible to
+     * user, {@code false} otherwise.
+     */
     protected final boolean isTitleSecret() {
-        return isSecret(OpenNotification.VISIBILITY_SECRET, Config.PRIVACY_HIDE_CONTENT_MASK);
+        return isSecret(
+                OpenNotification.VISIBILITY_SECRET,
+                Config.PRIVACY_HIDE_CONTENT_MASK);
     }
 
     @Nullable
-    private CharSequence getAppLabel() {
+    private CharSequence getAppLabel(@NonNull String packageName) {
         PackageManager pm = mContext.getPackageManager();
         try {
-            ApplicationInfo appInfo = pm.getApplicationInfo(mOpenNotification.getPackageName(), 0);
+            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
             return pm.getApplicationLabel(appInfo);
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
     }
 
+    private void setTitle(@Nullable CharSequence title) {
+        if (TextUtils.equals(mTitle, title)) {
+            // No need to notify listeners about this
+            // change.
+            return;
+        }
+
+        mTitle = title;
+        mListener.onNotificationContentChanged(this, EVENT_TITLE_CHANGED);
+    }
+
+    /**
+     * @return the notification's title to be displayed.
+     * @see #getMessages()
+     * @see OpenNotification#getVisibility()
+     */
+    @Nullable
+    public CharSequence getTitle() {
+        return mTitle;
+    }
+
     //-- TIMESTAMP ------------------------------------------------------------
 
-    protected void updateTimestamp() {
-        if (!mResumed) {
-            mPendingUpdates |= PENDING_UPDATE_TIMESTAMP;
-            return;
-        }
-        final TextView timestampTextView = mData.timestampTextView;
-        if (timestampTextView == null) return;
-        if (mOpenNotification == null) {
-            timestampTextView.setText("");
-            timestampTextView.setVisibility(View.INVISIBLE);
+    private void updateTimestamp() {
+        if (isPendingUpdate(PENDING_UPDATE_TIMESTAMP)) return;
+        if (mNotification == null) {
+            setTimestamp(null);
             return;
         }
 
-        final long when = mOpenNotification.getNotification().when;
-        CharSequence cs = DateUtils.formatDateTime(mContext, when, DateUtils.FORMAT_SHOW_TIME);
-        timestampTextView.setText(cs);
-        timestampTextView.setVisibility(View.VISIBLE);
+        final long when = mNotification.getNotification().when;
+        setTimestamp(DateUtils.formatDateTime(mContext, when, DateUtils.FORMAT_SHOW_TIME));
+    }
+
+    private void setTimestamp(@Nullable CharSequence timestamp) {
+        if (TextUtils.equals(mTimestamp, timestamp)) {
+            // No need to notify listeners about this
+            // change.
+            return;
+        }
+
+        mTimestamp = timestamp;
+        mListener.onNotificationContentChanged(this, EVENT_TIMESTAMP_CHANGED);
+    }
+
+    /**
+     * @return the notification's timestamp to be displayed.
+     * @see android.app.Notification#when
+     */
+    @Nullable
+    public CharSequence getTimestamp() {
+        return mTimestamp;
     }
 
     //-- SUBTITLE -------------------------------------------------------------
 
     protected void updateSubtitle() {
-        if (!mResumed) {
-            mPendingUpdates |= PENDING_UPDATE_SUBTITLE;
-            return;
-        }
-        final CharSequence subtitleText;
-        final TextView subtitleTextView = mData.subtitleTextView;
-        if (subtitleTextView == null) return;
-        if (mOpenNotification == null || TextUtils.isEmpty(subtitleText =
-                CsUtils.join(" ", mOpenNotification.subText, mOpenNotification.infoText))) {
-            subtitleTextView.setText("");
-            subtitleTextView.setVisibility(View.INVISIBLE);
+        if (isPendingUpdate(PENDING_UPDATE_SUBTITLE)) return;
+        if (mNotification == null) {
+            setSubtitle(null);
             return;
         }
 
-        subtitleTextView.setText(subtitleText);
-        subtitleTextView.setVisibility(View.VISIBLE);
+        setSubtitle(CsUtils.join(" ", mNotification.subText, mNotification.infoText));
+    }
+
+    private void setSubtitle(@Nullable CharSequence subtitle) {
+        if (TextUtils.equals(mSubtitle, subtitle)) {
+            // No need to notify listeners about this
+            // change.
+            return;
+        }
+
+        mSubtitle = subtitle;
+        mListener.onNotificationContentChanged(this, EVENT_SUBTITLE_CHANGED);
+    }
+
+    /**
+     * @return the notification's subtitle to be displayed.
+     */
+    @Nullable
+    public CharSequence getSubtitle() {
+        return mSubtitle;
     }
 
     //-- MESSAGE --------------------------------------------------------------
 
-    protected void updateMessage() {
-        if (!mResumed) {
-            mPendingUpdates |= PENDING_UPDATE_MESSAGE;
-            return;
-        }
-        if (mData.messageContainer == null) return;
-        if (mOpenNotification == null) {
-            rebuildMessageViews((CharSequence[]) null);
+    /**
+     * Updates message from the current {@link #mNotification notificiation}.
+     *
+     * @see #setMessages(CharSequence[])
+     * @see #isMessageSecret()
+     */
+    private void updateMessage() {
+        if (isPendingUpdate(PENDING_UPDATE_MESSAGE)) return;
+        if (mNotification == null) {
+            setMessages(null);
             return;
         }
 
@@ -304,6 +477,7 @@ public class NotificationUiHelper {
             if (sSecureContentLabelRef == null || (messages = sSecureContentLabelRef.get()) == null) {
                 final CharSequence cs = mContext.getString(R.string.privacy_mode_hidden_content);
                 final SpannableString ss = new SpannableString(cs);
+                Check.getInstance().isTrue(ss.length());
                 ss.setSpan(new StyleSpan(Typeface.ITALIC),
                         0 /* start */, ss.length() /* end */,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -312,520 +486,98 @@ public class NotificationUiHelper {
                 sSecureContentLabelRef = new SoftReference<>(messages);
             }
 
-            rebuildMessageViews(messages);
+            setMessages(messages);
         } else {
             CharSequence message;
-            if (mData.big) {
-                if (mOpenNotification.messageTextLines != null) {
-                    rebuildMessageViews(mOpenNotification.messageTextLines);
+            if (mBig) {
+                if (mNotification.messageTextLines != null) {
+                    setMessages(mNotification.messageTextLines);
                     return;
                 }
 
                 message = NullUtils.whileNotNull(
-                        mOpenNotification.messageBigText,
-                        mOpenNotification.messageText
+                        mNotification.messageBigText,
+                        mNotification.messageText
                 );
             } else {
-                message = mOpenNotification.messageText;
+                message = mNotification.messageText;
             }
 
-            rebuildMessageViews(message);
+            setMessages(TextUtils.isEmpty(message) ? null : new CharSequence[]{message});
         }
 
-    }
-
-    protected final boolean isMessageSecret() {
-        return isSecret(OpenNotification.VISIBILITY_PRIVATE, Config.PRIVACY_HIDE_CONTENT_MASK);
-    }
-
-    private void rebuildMessageViews(@Nullable CharSequence message) {
-        rebuildMessageViews(message == null ? null : new CharSequence[]{message});
     }
 
     /**
-     * @param messages an array of non-empty messages.
+     * @return {@code true} if the message is a secret and should not be visible to
+     * user, {@code false} otherwise.
      */
-    private void rebuildMessageViews(final @Nullable CharSequence[] messages) {
-        final ViewGroup container = mData.messageContainer;
-        Check.getInstance().isNonNull(container);
-        assert container != null;
+    protected final boolean isMessageSecret() {
+        return mNotification.isContentSecret(mContext);
+    }
 
-        if (messages == null) {
-            // Free messages' container.
-            container.removeAllViews();
+    private void setMessages(@Nullable CharSequence[] messages) {
+        if (Arrays.equals(mMessages, messages)) {
+            // No need to notify listeners about this
+            // change.
             return;
         }
 
-        final int length = messages.length;
-        int freeLines = mData.messageMaxLines;
-        final int viewCount = Math.min(length, freeLines);
-        final int[] viewMaxLines = new int[length];
-        if (freeLines > length) { // We can reserve more than one line per message
+        mMessages = messages;
+        mListener.onNotificationContentChanged(this, EVENT_MESSAGE_CHANGED);
+    }
 
-            // Initial setup.
-            Arrays.fill(viewMaxLines, 1);
-            freeLines -= length;
-
-            // Build list of lengths, so we don't have
-            // to recalculate it every time.
-            int[] msgLengths = new int[length];
-            for (int i = 0; i < length; i++) {
-                assert messages[i] != null;
-                msgLengths[i] = messages[i].length();
-            }
-
-            while (freeLines > 0) {
-                int pos = 0;
-                float a = 0;
-                for (int i = 0; i < length; i++) {
-                    final float k = (float) msgLengths[i] / viewMaxLines[i];
-                    if (k > a) {
-                        a = k;
-                        pos = i;
-                    }
-                }
-                viewMaxLines[pos]++;
-                freeLines--;
-            }
-        } else {
-            // Show first messages.
-            for (int i = 0; freeLines > 0; freeLines--, i++) {
-                viewMaxLines[i] = 1;
-            }
-        }
-
-        View[] views = new View[viewCount];
-
-        // Find available views.
-        int childCount = container.getChildCount();
-        for (int i = Math.min(childCount, viewCount) - 1; i >= 0; i--) {
-            views[i] = container.getChildAt(i);
-        }
-
-        // Remove redundant views.
-        for (int i = childCount - 1; i >= viewCount; i--) {
-            container.removeViewAt(i);
-        }
-
-        boolean highlightFirstLetter = mData.messageItemUnderlineFirstLetter && viewCount > 1;
-
-        LayoutInflater inflater = null;
-        for (int i = 0; i < viewCount; i++) {
-            View root = views[i];
-
-            if (root == null) {
-                // Initialize layout inflater only when we really need it.
-                if (inflater == null) {
-                    inflater = (LayoutInflater) mContext
-                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    assert inflater != null;
-                }
-
-                root = inflater.inflate(
-                        mData.messageItemLayoutRes,
-                        container, false);
-                // FIXME: ?
-                // We need to keep all IDs unique to make
-                // TransitionManager#beginDelayedTransition(ViewGroup)
-                // work correctly!
-                root.setId(container.getChildCount() + 1);
-                container.addView(root);
-            }
-
-            Check.getInstance().isTrue(messages[i].length() != 0);
-
-            final CharSequence text;
-            final char char_ = messages[i].charAt(0);
-            if (highlightFirstLetter && (Character.isLetter(char_) || Character.isDigit(char_))) {
-                SpannableString spannable = new SpannableString(messages[i]);
-                spannable.setSpan(new UnderlineSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                text = spannable;
-            } else {
-                text = messages[i];
-            }
-
-            // Get message view and apply the content.
-            TextView textView = root instanceof TextView
-                    ? (TextView) root
-                    : (TextView) root.findViewById(android.R.id.message);
-            textView.setMaxLines(viewMaxLines[i]);
-            textView.setText(text);
-        }
+    /**
+     * @return the notification's messages to be displayed.
+     * @see #getTitle()
+     * @see OpenNotification#getVisibility()
+     */
+    @Nullable
+    public CharSequence[] getMessages() {
+        return mMessages;
     }
 
     //-- ACTIONS --------------------------------------------------------------
 
-    protected void updateActions() {
-        if (!mResumed) {
-            mPendingUpdates |= PENDING_UPDATE_ACTIONS;
-            return;
-        }
-        if (mData.actionContainer == null) return;
-        if (mOpenNotification == null) {
-            rebuildActionViews(null);
+    private void updateActions() {
+        if (isPendingUpdate(PENDING_UPDATE_ACTIONS)) return;
+        if (mNotification == null) {
+            setActions(null);
             return;
         }
 
         final boolean secret = isActionsSecret();
-
-        rebuildActionViews(secret || !mData.big ? null : mOpenNotification.getActions());
+        setActions(secret || !mBig ? null : mNotification.getActions());
     }
 
+    /**
+     * @return {@code true} if the actions are secret and should not be visible to
+     * user, {@code false} otherwise.
+     */
     protected final boolean isActionsSecret() {
-        return isSecret(OpenNotification.VISIBILITY_PRIVATE, Config.PRIVACY_HIDE_ACTIONS_MASK);
+        return isSecret(
+                OpenNotification.VISIBILITY_PRIVATE,
+                Config.PRIVACY_HIDE_ACTIONS_MASK);
     }
 
-    @SuppressLint("NewApi")
-    private void rebuildActionViews(@Nullable Action[] actions) {
-        final ViewGroup container = mData.actionContainer;
-        Check.getInstance().isNonNull(container);
-        assert container != null;
-
-        if (actions == null) {
-            // Free actions' container.
-            container.removeAllViews();
+    private void setActions(@Nullable Action[] actions) {
+        if (Arrays.equals(mActions, actions)) {
+            // No need to notify listeners about this
+            // change.
             return;
         }
 
-        int count = actions.length;
-        View[] views = new View[count];
-
-        // Find available views.
-        int childCount = container.getChildCount();
-        int a = Math.min(childCount, count);
-        for (int i = 0; i < a; i++) {
-            views[i] = container.getChildAt(i);
-        }
-
-        // Remove redundant views.
-        for (int i = childCount - 1; i >= count; i--) {
-            container.removeViewAt(i);
-        }
-
-        LayoutInflater inflater = null;
-        for (int i = 0; i < count; i++) {
-            final Action action = actions[i];
-            View root = views[i];
-
-            if (root == null) {
-                // Initialize layout inflater only when we really need it.
-                if (inflater == null) {
-                    inflater = (LayoutInflater) mContext
-                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    assert inflater != null;
-                }
-
-                root = inflater.inflate(
-                        mData.actionItemLayoutRes,
-                        container, false);
-                root = initActionView(root);
-                // We need to keep all IDs unique to make
-                // TransitionManager.beginDelayedTransition(viewGroup, null)
-                // work correctly!
-                root.setId(container.getChildCount() + 1);
-                container.addView(root);
-            }
-
-            if (action.intent != null) {
-                root.setEnabled(true);
-                root.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        assert mData.actionClickCallback != null;
-                        mData.actionClickCallback.onActionClick(v, action);
-                    }
-                });
-            } else {
-                root.setEnabled(false);
-                root.setOnClickListener(null);
-            }
-
-            // Get message view and apply the content.
-            TextView textView = root instanceof TextView
-                    ? (TextView) root
-                    : (TextView) root.findViewById(android.R.id.title);
-            textView.setText(action.title);
-
-            Drawable icon = null;
-            if (mData.actionItemIconShown) {
-                icon = NotificationUtils.getDrawable(mContext, mOpenNotification, action.icon);
-                if (icon != null) icon = initActionIcon(icon);
-            }
-
-            if (Device.hasJellyBeanMR1Api()) {
-                textView.setCompoundDrawablesRelative(icon, null, null, null);
-            } else {
-                textView.setCompoundDrawables(icon, null, null, null);
-            }
-        }
+        mActions = actions;
+        mListener.onNotificationContentChanged(this, EVENT_ACTIONS_CHANGED);
     }
 
-    @NonNull
-    protected View initActionView(@NonNull View view) {
-        return view;
+    /**
+     * @return the notification's actions to be displayed.
+     * @see OpenNotification#getVisibility()
+     */
+    @Nullable
+    public Action[] getActions() {
+        return mActions;
     }
 
-    @NonNull
-    protected Drawable initActionIcon(@NonNull Drawable icon) {
-        Resources res = mContext.getResources();
-        int size = res.getDimensionPixelSize(R.dimen.notification_action_icon_size);
-        icon = icon.mutate();
-        icon.setBounds(0, 0, size, size);
-
-        // The matrix is stored in a single array, and its treated as follows:
-        // [ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t ]
-        // When applied to a color [r, g, b, a], the resulting color is computed as (after clamping)
-        //   R' = a*R + b*G + c*B + d*A + e;
-        //   G' = f*R + g*G + h*B + i*A + j;
-        //   B' = k*R + l*G + m*B + n*A + o;
-        //   A' = p*R + q*G + r*B + s*A + t;
-        ColorFilter colorFilter = new ColorMatrixColorFilter(new float[]{
-                0, 0, 0, 0, 255, // Red
-                0, 0, 0, 0, 255, // Green
-                0, 0, 0, 0, 255, // Blue
-                0, 0, 0, 1, 0 //    Alpha
-        });
-        icon.setColorFilter(colorFilter); // force white color
-        return icon;
-    }
-
-    //-- MESSAGE --------------------------------------------------------------
-
-    public static class Data {
-
-        // Title
-        @Nullable
-        public TextView titleTextView;
-
-        // Subtitle
-        @Nullable
-        public TextView subtitleTextView;
-
-        // Message
-        @Nullable
-        public ViewGroup messageContainer;
-        @LayoutRes
-        public int messageItemLayoutRes;
-        public int messageMaxLines;
-        public boolean messageItemUnderlineFirstLetter;
-
-        // Actions
-        @Nullable
-        public ViewGroup actionContainer;
-        @Nullable
-        public OnActionClick actionClickCallback;
-        @LayoutRes
-        public int actionItemLayoutRes;
-        public boolean actionItemIconShown;
-
-        // Timestamp
-        @Nullable
-        public TextView timestampTextView;
-
-        // Large icon
-        @Nullable
-        public ImageView largeIconImageView;
-
-        // Other
-        public boolean big;
-
-        @NonNull
-        private NotificationUiHelper mHost;
-
-        public Data(@Nullable TextView titleTextView,
-                    @Nullable TextView subtitleTextView,
-                    @Nullable TextView timestampTextView,
-                    @Nullable ViewGroup messageContainer, @LayoutRes int messageItemLayoutRes,
-                    @Nullable ViewGroup actionContainer, @LayoutRes int actionItemLayoutRes,
-                    @Nullable OnActionClick actionClickCallback,
-                    @Nullable ImageView largeIconImageView) {
-            this.titleTextView = titleTextView;
-            this.subtitleTextView = subtitleTextView;
-            this.timestampTextView = timestampTextView;
-            this.messageContainer = messageContainer;
-            this.messageItemLayoutRes = messageItemLayoutRes;
-            this.actionContainer = actionContainer;
-            this.actionClickCallback = actionClickCallback;
-            this.actionItemLayoutRes = actionItemLayoutRes;
-            this.largeIconImageView = largeIconImageView;
-        }
-
-        void setHost(@NonNull NotificationUiHelper host) {
-            mHost = host;
-        }
-
-        /**
-         *
-         */
-        // TODO: Update selectively
-        public void notifyDataChanged() {
-            mHost.updateTitle();
-            mHost.updateSubtitle();
-            mHost.updateTimestamp();
-            mHost.updateMessage();
-            mHost.updateActions();
-            mHost.updateLargeIcon();
-        }
-
-        public static class Builder {
-
-            public Builder() { /* empty */ }
-
-            public Builder(@NonNull Data data) {
-                mTitleTextView = data.titleTextView;
-                mSubtitleTextView = data.subtitleTextView;
-                mTimestampTextView = data.timestampTextView;
-                mMessageContainer = data.messageContainer;
-                mMessageItemLayoutRes = data.messageItemLayoutRes;
-                mMessageMaxLines = data.messageMaxLines;
-                mMessageItemUnderlineFirstLetter = data.messageItemUnderlineFirstLetter;
-                mActionContainer = data.actionContainer;
-                mActionClickCallback = data.actionClickCallback;
-                mActionItemIconShown = data.actionItemIconShown;
-                mActionItemLayoutRes = data.actionItemLayoutRes;
-                mLargeIconImageView = data.largeIconImageView;
-                mBig = data.big;
-            }
-
-            //-- TITLE ----------------------------------------------------------------
-
-            @Nullable
-            private TextView mTitleTextView;
-
-            @NonNull
-            public Builder setTitleView(@Nullable TextView titleView) {
-                mTitleTextView = titleView;
-                return this;
-            }
-
-            //-- SUBTITLE -------------------------------------------------------------
-
-            @Nullable
-            private TextView mSubtitleTextView;
-
-            @NonNull
-            public Builder setSubtitleView(@Nullable TextView subtitleView) {
-                mSubtitleTextView = subtitleView;
-                return this;
-            }
-
-            //-- TIMESTAMP ------------------------------------------------------------
-
-            @Nullable
-            private TextView mTimestampTextView;
-
-            @NonNull
-            public Builder setTimestampView(@Nullable TextView timestampView) {
-                mTimestampTextView = timestampView;
-                return this;
-            }
-
-            //-- MESSAGE --------------------------------------------------------------
-
-            @Nullable
-            private ViewGroup mMessageContainer;
-            @LayoutRes
-            private int mMessageItemLayoutRes;
-            private int mMessageMaxLines;
-            private boolean mMessageItemUnderlineFirstLetter;
-
-            @NonNull
-            public Builder setMessageContainer(@Nullable ViewGroup container) {
-                mMessageContainer = container;
-                return this;
-            }
-
-            @NonNull
-            public Builder setMessageItemLayoutRes(@LayoutRes int layoutRes) {
-                mMessageItemLayoutRes = layoutRes;
-                return this;
-            }
-
-            @NonNull
-            public Builder setMessageMaxLines(int maxLines) {
-                mMessageMaxLines = maxLines;
-                return this;
-            }
-
-            @NonNull
-            public Builder setMessageItemUnderlineFirstLetter(boolean underlineFirstLetter) {
-                mMessageItemUnderlineFirstLetter = underlineFirstLetter;
-                return this;
-            }
-
-            //-- ACTIONS --------------------------------------------------------------
-
-            @Nullable
-            private ViewGroup mActionContainer;
-            @Nullable
-            private OnActionClick mActionClickCallback;
-            @LayoutRes
-            private int mActionItemLayoutRes;
-            private boolean mActionItemIconShown = true;
-
-            @NonNull
-            public Builder setActionContainer(@Nullable ViewGroup container) {
-                mActionContainer = container;
-                return this;
-            }
-
-            @NonNull
-            public Builder setActionClickCallback(@Nullable OnActionClick clickCallback) {
-                mActionClickCallback = clickCallback;
-                return this;
-            }
-
-            @NonNull
-            public Builder setActionItemLayoutRes(@LayoutRes int layoutRes) {
-                mActionItemLayoutRes = layoutRes;
-                return this;
-            }
-
-            @NonNull
-            public Builder setActionItemIconShown(boolean isShown) {
-                mActionItemIconShown = isShown;
-                return this;
-            }
-
-            //-- LARGE ICON -----------------------------------------------------------
-
-            @Nullable
-            private ImageView mLargeIconImageView;
-
-            @NonNull
-            public Builder setLargeIconView(@Nullable ImageView largeIconView) {
-                mLargeIconImageView = largeIconView;
-                return this;
-            }
-
-            //-- OTHER ----------------------------------------------------------------
-
-            private boolean mBig;
-
-            @NonNull
-            public Builder setBig(boolean isBig) {
-                mBig = isBig;
-                return this;
-            }
-
-            @NonNull
-            public Data build() {
-                Check.getInstance().isTrue(mMessageContainer == null || mMessageItemLayoutRes != 0);
-                Check.getInstance().isTrue(mActionContainer == null || mActionItemLayoutRes != 0);
-
-                Data md = new Data(
-                        mTitleTextView,
-                        mSubtitleTextView,
-                        mTimestampTextView,
-                        mMessageContainer, mMessageItemLayoutRes,
-                        mActionContainer, mActionItemLayoutRes, mActionClickCallback,
-                        mLargeIconImageView);
-                md.messageMaxLines = mMessageMaxLines;
-                md.messageItemUnderlineFirstLetter = mMessageItemUnderlineFirstLetter;
-                md.actionItemIconShown = mActionItemIconShown;
-                md.big = mBig;
-                return md;
-            }
-        }
-    }
 }

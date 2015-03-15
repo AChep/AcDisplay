@@ -55,7 +55,7 @@ public class NotificationUtils {
     }
 
     public static boolean isSecret(@NonNull Context context, @NonNull OpenNotification n,
-                            int minVisibility, int privacyMask) {
+                                   int minVisibility, int privacyMask) {
         final int privacyMode = Config.getInstance().getPrivacyMode();
         return n.getVisibility() <= minVisibility
                 && Operator.bitAnd(privacyMode, privacyMask)
