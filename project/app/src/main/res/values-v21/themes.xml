@@ -21,28 +21,4 @@
 
     <style name="Base.MaterialTheme" parent="Theme.AppCompat" />
 
-    <!--
-        Stock theme
-        -->
-
-    <style name="Base.StockTheme" parent="@android:style/Theme.Material" >
-        <item name="android:colorAccent">@color/accent_color</item>
-        <item name="android:colorPrimary">@color/primary_color</item>
-        <item name="android:colorPrimaryDark">@color/primary_color_dark</item>
-        <item name="colorSecondary">@color/secondary_color</item>
-    </style>
-
-    <!--
-        AcDisplay
-        -->
-
-    <style name="Base.StockTheme.AcDisplay" parent="StockTheme.Fullscreen" >
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:colorPrimary">@android:color/black</item>
-        <item name="android:colorPrimaryDark">@android:color/black</item>
-    </style>
-
 </resources>

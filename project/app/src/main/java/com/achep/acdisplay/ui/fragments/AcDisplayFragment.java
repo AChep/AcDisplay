@@ -76,8 +76,8 @@ import com.achep.acdisplay.ui.widgets.CircleView;
 import com.achep.base.Device;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.content.ConfigBase;
-import com.achep.base.interfaces.IActivityBase;
 import com.achep.base.tests.Check;
+import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.FloatProperty;
 import com.achep.base.utils.MathUtils;
@@ -135,7 +135,7 @@ public class AcDisplayFragment extends Fragment implements
     private GridLayout mIconsContainer;
 
     // Main
-    private IActivityBase mActivity;
+    private ActivityBase mActivity;
     private AcDisplayActivity mActivityAcd;
 
     private final HashMap<View, Widget> mWidgetsMap = new HashMap<>();
@@ -224,7 +224,7 @@ public class AcDisplayFragment extends Fragment implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mActivity = (IActivityBase) activity;
+        mActivity = (ActivityBase) activity;
         mActivityAcd = isNotDemo() ? (AcDisplayActivity) activity : null;
     }
 

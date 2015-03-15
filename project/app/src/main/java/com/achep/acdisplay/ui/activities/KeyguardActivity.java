@@ -40,7 +40,7 @@ import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.base.Device;
 import com.achep.base.tests.Check;
-import com.achep.base.ui.activities.ActivityBaseStock;
+import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.utils.LogUtils;
 
 import static com.achep.base.Build.DEBUG;
@@ -49,7 +49,7 @@ import static com.achep.base.Build.DEBUG;
 /**
  * Activity that contains some methods to emulate system keyguard.
  */
-public abstract class KeyguardActivity extends ActivityBaseStock implements
+public abstract class KeyguardActivity extends ActivityBase implements
         Timeout.OnTimeoutEventListener {
 
     private static final String TAG = "KeyguardActivity";
