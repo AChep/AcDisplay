@@ -56,9 +56,9 @@ public class ForwardingLayout extends LinearLayout {
 
     public interface OnForwardedEventListener {
 
-        public void onForwardedEvent(MotionEvent event, int activePointerId);
+        void onForwardedEvent(MotionEvent event, int activePointerId);
 
-        public void onPressedView(MotionEvent event, int activePointerId, View view);
+        void onPressedView(MotionEvent event, int activePointerId, View view);
     }
 
     public void setOnForwardedEventListener(OnForwardedEventListener listener) {

@@ -62,7 +62,7 @@ public class Timeout {
     private long mTimeoutAt;
 
     public interface OnTimeoutEventListener {
-        public void onTimeoutEvent(Timeout timeout, int event);
+        void onTimeoutEvent(Timeout timeout, int event);
     }
 
     public final void registerListener(OnTimeoutEventListener listener) {

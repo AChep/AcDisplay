@@ -49,9 +49,9 @@ public class ProgressBar extends android.widget.ProgressBar {
          * @param progressBar The ProgressBar whose progress has changed
          * @param progress    The current progress level. This will be in the range [0..{@link ProgressBar#getMax()}]
          */
-        public void onProgressChanged(ProgressBar progressBar, int progress);
+        void onProgressChanged(ProgressBar progressBar, int progress);
 
-        public void onMaxChanged(ProgressBar progressBar, int max);
+        void onMaxChanged(ProgressBar progressBar, int max);
     }
 
     public ProgressBar(Context context) {

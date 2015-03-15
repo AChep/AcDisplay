@@ -33,6 +33,6 @@ public interface IOnLowMemory {
      * may be holding on to. The system will perform a garbage collection for you after returning
      * from this method.
      */
-    public void onLowMemory();
+    void onLowMemory();
 
 }

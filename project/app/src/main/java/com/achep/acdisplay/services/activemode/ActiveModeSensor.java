@@ -54,7 +54,7 @@ public abstract class ActiveModeSensor {
         /**
          * Requests to show the AcDisplay.
          */
-        public void onWakeRequested(@NonNull ActiveModeSensor sensor);
+        void onWakeRequested(@NonNull ActiveModeSensor sensor);
 
     }
 

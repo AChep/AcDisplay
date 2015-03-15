@@ -27,6 +27,6 @@ public interface IPermission {
      * @return {@code true} if the permission is active and you may use its power right now,
      * {@code false} otherwise.
      */
-    public abstract boolean isActive();
+    boolean isActive();
 
 }

@@ -345,7 +345,7 @@ public abstract class OpenNotification implements
          * @see #EVENT_ICON
          * @see #EVENT_READ
          */
-        public void onNotificationDataChanged(@NonNull OpenNotification notification, int event);
+        void onNotificationDataChanged(@NonNull OpenNotification notification, int event);
 
     }
 

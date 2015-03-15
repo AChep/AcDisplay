@@ -115,14 +115,14 @@ public class CircleView extends View {
 
     public interface Callback {
 
-        public void onCircleEvent(float radius, float ratio, int event);
+        void onCircleEvent(float radius, float ratio, int event);
     }
 
     public interface Supervisor {
 
-        public boolean isAnimationEnabled();
+        boolean isAnimationEnabled();
 
-        public boolean isAnimationUnlockEnabled();
+        boolean isAnimationUnlockEnabled();
 
     }
 

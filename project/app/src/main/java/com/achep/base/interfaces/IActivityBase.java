@@ -12,16 +12,16 @@ import org.solovyev.android.checkout.ActivityCheckout;
  */
 public interface IActivityBase {
 
-    public void requestCheckout();
+    void requestCheckout();
 
     @Nullable
-    public ActivityCheckout getCheckout();
+    ActivityCheckout getCheckout();
 
     /**
      * @see #isPowerSaveMode()
      */
     @NonNull
-    public PowerSaveDetector getPowerSaveDetector();
+    PowerSaveDetector getPowerSaveDetector();
 
     /**
      * Returns {@code true} if the device is currently in power save mode.
@@ -30,6 +30,6 @@ public interface IActivityBase {
      *
      * @return {@code true} if the device is currently in power save mode, {@code false} otherwise.
      */
-    public boolean isPowerSaveMode();
+    boolean isPowerSaveMode();
 
 }

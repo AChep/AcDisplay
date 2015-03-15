@@ -60,7 +60,7 @@ final class NotificationList extends ArrayList<OpenNotification> {
          *
          * @param n newly added notification
          */
-        public int onNotificationAdded(@NonNull OpenNotification n);
+        int onNotificationAdded(@NonNull OpenNotification n);
 
         /**
          * Called when old notification was replaced with new one.
@@ -68,14 +68,14 @@ final class NotificationList extends ArrayList<OpenNotification> {
          * @param n   newly added notification
          * @param old removed notification
          */
-        public int onNotificationChanged(@NonNull OpenNotification n, @NonNull OpenNotification old);
+        int onNotificationChanged(@NonNull OpenNotification n, @NonNull OpenNotification old);
 
         /**
          * Called when notification was removed from list.
          *
          * @param n removed notification
          */
-        public int onNotificationRemoved(@NonNull OpenNotification n);
+        int onNotificationRemoved(@NonNull OpenNotification n);
 
     }
 

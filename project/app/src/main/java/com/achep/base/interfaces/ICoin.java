@@ -32,21 +32,21 @@ import android.support.annotation.StringRes;
 public interface ICoin {
 
     @DrawableRes
-    public abstract int getIconResource();
+    int getIconResource();
 
     @StringRes
-    public abstract int getNameResource();
+    int getNameResource();
 
     /**
      * @return The receiver's key. It may be an email or just "any string".
      */
     @NonNull
-    public abstract String getPaymentKey();
+    String getPaymentKey();
 
     /**
      * @return The default amount of money.
      */
-    public abstract double getPaymentAmount();
+    double getPaymentAmount();
 
     /**
      * @param amount the amount to send, or if {@code <= 0} blank field.
@@ -55,7 +55,7 @@ public interface ICoin {
      * @see com.achep.base.utils.CoinUtils#getPaymentIntent(ICoin, double)
      */
     @NonNull
-    public abstract Uri getPaymentUri(double amount);
+    Uri getPaymentUri(double amount);
 
     /**
      * @return Uri to page that shows my current money.
@@ -63,7 +63,7 @@ public interface ICoin {
      * @see #getUriTutorial()
      */
     @Nullable
-    public abstract Uri getUriBrowseWallet();
+    Uri getUriBrowseWallet();
 
     /**
      * @return Uri to page that explains the coin.
@@ -71,7 +71,7 @@ public interface ICoin {
      * @see #getUriTutorial()
      */
     @NonNull
-    public abstract Uri getUriWhatIsIt();
+    Uri getUriWhatIsIt();
 
     /**
      * @return Uri to page that explains how to use that coin: send / receive money etc.
@@ -79,6 +79,6 @@ public interface ICoin {
      * @see #getUriBrowseWallet()
      */
     @NonNull
-    public abstract Uri getUriTutorial();
+    Uri getUriTutorial();
 
 }

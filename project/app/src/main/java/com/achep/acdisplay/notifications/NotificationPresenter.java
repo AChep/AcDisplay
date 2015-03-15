@@ -261,7 +261,7 @@ public class NotificationPresenter implements
     }
 
     private interface Comparator {
-        public boolean needsRebuild(@NonNull OpenNotification n);
+        boolean needsRebuild(@NonNull OpenNotification n);
     }
 
     private void rebuildLocalList(@NonNull Comparator comparator) {
@@ -289,9 +289,9 @@ public class NotificationPresenter implements
          * @param isLastEventInSequence {@code true} if this is last of bath changes, {@code false}
          *                              otherwise.
          */
-        public void onNotificationListChanged(@NonNull NotificationPresenter np,
-                                              OpenNotification n, int event,
-                                              boolean isLastEventInSequence);
+        void onNotificationListChanged(@NonNull NotificationPresenter np,
+                                       OpenNotification n, int event,
+                                       boolean isLastEventInSequence);
 
     }
 

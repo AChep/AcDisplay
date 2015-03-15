@@ -27,9 +27,9 @@ import com.achep.acdisplay.notifications.OpenNotification;
  */
 public interface INotificatiable {
 
-    public void setNotification(@Nullable OpenNotification notification);
+    void setNotification(@Nullable OpenNotification notification);
 
     @Nullable
-    public OpenNotification getNotification();
+    OpenNotification getNotification();
 
 }

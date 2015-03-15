@@ -81,14 +81,14 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> implements
          * @param objectOld old object from the list
          * @param diff      the difference between old and new objects (provided by {@link SharedList.Comparator})
          */
-        public void onPut(@NonNull V objectNew, @Nullable V objectOld, int diff);
+        void onPut(@NonNull V objectNew, @Nullable V objectOld, int diff);
 
         /**
          * Called on object removed from the list.
          *
          * @param objectRemoved removed object from the list
          */
-        public void onRemoved(@NonNull V objectRemoved);
+        void onRemoved(@NonNull V objectRemoved);
     }
 
     /**

@@ -1443,7 +1443,7 @@ public class XmlUtils {
          * @throws XmlPullParserException on unrecognized Object type.
          * @throws IOException            on XmlSerializer serialization errors.
          */
-        public void writeUnknownObject(Object v, String name, XmlSerializer out)
+        void writeUnknownObject(Object v, String name, XmlSerializer out)
         ;
     }
 
@@ -1458,7 +1458,7 @@ public class XmlUtils {
          * @throws XmlPullParserException if the START_TAG is not recognized.
          * @throws IOException            on XmlPullParser serialization errors.
          */
-        public Object readThisUnknownObjectXml(XmlPullParser in, String tag)
+        Object readThisUnknownObjectXml(XmlPullParser in, String tag)
         ;
     }
 

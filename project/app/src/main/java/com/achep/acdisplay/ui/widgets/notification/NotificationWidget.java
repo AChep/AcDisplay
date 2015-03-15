@@ -73,7 +73,7 @@ public class NotificationWidget extends LinearLayout implements INotificatiable 
          * @param v clicked view
          * @see NotificationWidget#getNotification()
          */
-        public void onClick(NotificationWidget widget, View v);
+        void onClick(NotificationWidget widget, View v);
 
         /**
          * Called on action button click.

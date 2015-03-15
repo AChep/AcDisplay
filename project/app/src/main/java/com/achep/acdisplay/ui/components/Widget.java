@@ -62,12 +62,12 @@ public abstract class Widget {
          * @see #getBackground()
          * @see #getBackgroundMask()
          */
-        public void requestBackgroundUpdate(@NonNull Widget widget);
+        void requestBackgroundUpdate(@NonNull Widget widget);
 
         /**
          * Requests the fragment to restart the timeout.
          */
-        public void requestTimeoutRestart(@NonNull Widget widget);
+        void requestTimeoutRestart(@NonNull Widget widget);
 
     }
 

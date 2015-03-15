@@ -33,7 +33,7 @@ public class NotifyingLayout extends FrameLayout {
 
     public interface OnPressStateChangedListener {
 
-        public void onPressStateChanged(NotifyingLayout view, boolean pressed);
+        void onPressStateChanged(NotifyingLayout view, boolean pressed);
 
     }
 

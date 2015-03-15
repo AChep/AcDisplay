@@ -91,7 +91,7 @@ public class NotificationUiHelper {
 
     public interface OnActionClick {
 
-        public void onActionClick(@NonNull View view, @NonNull Action action);
+        void onActionClick(@NonNull View view, @NonNull Action action);
 
     }
 

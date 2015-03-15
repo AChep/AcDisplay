@@ -81,7 +81,7 @@ public abstract class ConfigBase implements
          * @param config an instance of config
          * @param value  a new value of changed option
          */
-        public void onConfigChanged(
+        void onConfigChanged(
                 @NonNull ConfigBase config,
                 @NonNull String key,
                 @NonNull Object value);

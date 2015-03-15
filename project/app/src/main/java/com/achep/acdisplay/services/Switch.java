@@ -54,7 +54,7 @@ public abstract class Switch {
          * @see #isActive()
          * @see #requestInactive()
          */
-        public void requestActive();
+        void requestActive();
 
         /**
          * Asks main service to stop <b>something</b>.
@@ -63,7 +63,7 @@ public abstract class Switch {
          * @see #isActive()
          * @see #requestActive()
          */
-        public void requestInactive();
+        void requestInactive();
 
     }
 

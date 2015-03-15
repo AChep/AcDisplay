@@ -45,7 +45,7 @@ public class BatteryMeterView extends TextView {
     public static final int EVENT_LEVEL = 1;
     public static final int EVENT_CHARGING = 2;
 
-    public static enum BatteryMeterMode {
+    public enum BatteryMeterMode {
         BATTERY_METER_ICON_PORTRAIT,
     }
 
@@ -118,7 +118,7 @@ public class BatteryMeterView extends TextView {
          *
          * @param event bit-set of events: {@link #EVENT_LEVEL}, {@link #EVENT_CHARGING} or other.
          */
-        public void onBatteryChanged(BatteryMeterView view, int event);
+        void onBatteryChanged(BatteryMeterView view, int event);
 
     }
 
