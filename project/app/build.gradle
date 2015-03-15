@@ -30,7 +30,7 @@ buildscript {
         //noinspection GradleDynamicVersion
         classpath 'org.robolectric:robolectric-gradle-plugin:0.14.+'
         //noinspection GradleDynamicVersion
-        classpath 'com.android.tools.build:gradle:1.0.+'
+        classpath 'com.android.tools.build:gradle:1.1.+'
         classpath 'commons-codec:commons-codec:1.10'
     }
 }
