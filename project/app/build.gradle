@@ -25,10 +25,9 @@ import java.text.SimpleDateFormat
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
-        //noinspection GradleDynamicVersion
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.+'
         //noinspection GradleDynamicVersion
         classpath 'com.android.tools.build:gradle:1.1.+'
         classpath 'commons-codec:commons-codec:1.10'
@@ -36,10 +35,11 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'robolectric'
+apply plugin: 'findbugs'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 android {
@@ -58,6 +58,12 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
     }
 
     compileOptions {
@@ -128,20 +134,6 @@ android {
     }
 }
 
-// Visit for more info:
-// https://github.com/robolectric/robolectric-gradle-plugin
-robolectric {
-    ignoreFailures true
-
-    // Specify max number of processes (default is 1)
-    maxParallelForks = 4
-
-    // Listen to the test execution results
-    afterTest { descriptor, result ->
-        println "Executing test for ${descriptor.name} with result: ${result.resultType}"
-    }
-}
-
 dependencies {
     // Other libraries.
     //noinspection GradleDynamicVersion
@@ -159,25 +151,9 @@ dependencies {
     compile('com.android.support:recyclerview-v7:22.+')
     compile('com.android.support:support-v13:22.+')
 
-    // Robolectric tests.
-    androidTestCompile('junit:junit:4.11')
-    androidTestCompile('org.robolectric:robolectric:2.3') {
-        exclude module: 'classworlds'
-        exclude module: 'commons-logging'
-        exclude module: 'httpclient'
-        exclude module: 'maven-artifact'
-        exclude module: 'maven-artifact-manager'
-        exclude module: 'maven-error-diagnostics'
-        exclude module: 'maven-model'
-        exclude module: 'maven-project'
-        exclude module: 'maven-settings'
-        exclude module: 'plexus-container-default'
-        exclude module: 'plexus-interpolation'
-        exclude module: 'plexus-utils'
-        exclude module: 'wagon-file'
-        exclude module: 'wagon-http-lightweight'
-        exclude module: 'wagon-provider-api'
-    }
+    // Testing-only dependencies
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
 }
 
 project.task('askForPasswords') << {
@@ -276,4 +252,25 @@ def encryptPublicKeyX(String key, String salt) {
     }
 
     return new String(result);
+}
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "high"
+    //excludeFilter = new File("${project.rootDir}/config/quality/findbugs/findbugs-filter.xml")
+    classes = files("$project.buildDir/intermediates/classes/")
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml {
+            destination "$project.buildDir/reports/findbugs/findbugs.xml"
+            xml.withMessages true
+        }
+    }
+
+    classpath = files()
 }

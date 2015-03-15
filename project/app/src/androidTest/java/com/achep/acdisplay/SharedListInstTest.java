@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,65 +20,39 @@ package com.achep.acdisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.InstrumentationTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
 
 import com.achep.base.content.SharedList;
-import com.achep.base.utils.FileUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
-import static org.junit.Assert.assertTrue;
-
-@Config(manifest = "./src/main/AndroidManifest.xml")
-@RunWith(RobolectricTestRunner.class)
-public class AcDisplayRobolectricTest {
-
-    @Test
-    public void testSomething() {
-        // Placeholder
-    }
+/**
+ * JUnit4 unit tests for the shared list.
+ *
+ * @author Artem Chepurnoy
+ */
+@RunWith(AndroidJUnit4.class)
+@SmallTest
+public class SharedListInstTest extends InstrumentationTestCase {
 
     @Test
-    public void testFileUtils() {
-        Context context = Robolectric.application;
-        File file = new File(context.getFilesDir(), "test_file_utils.txt");
-
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 5000; i++) {
-            sb.append(random.nextInt(10));
-        }
-        String text = sb.toString();
-
-        // Test writing to file.
-        assertTrue(FileUtils.writeToFile(file, text));
-
-        // Test reading from file.
-        assertTrue(text.equals(FileUtils.readTextFile(file)));
-
-        // Test removing file.
-        assertTrue(FileUtils.deleteRecursive(file));
-        assertTrue(!file.exists());
-    }
-
-    @Test
-    public void testSharedList() {
+    public void test() {
         // Create strings data
         final int initialSize = 200;
         ArrayList<String> list = new ArrayList<>(initialSize);
         for (int i = 0; i < initialSize; i++) list.add(Double.toString(Math.random() + i));
 
-        // Initializate the list
-        Context context = Robolectric.application;
+        // Initialize the list
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         SharedListString origin = new SharedListString(context);
         for (String str : list) origin.put(context, str);
-        for (int i = 0, j = 0; i * 4 < initialSize; i++) {
+        for (int i = 0, j; i * 4 < initialSize; i++) {
             j = (int) (Math.random() * list.size());
             origin.remove(context, list.get(j));
             list.remove(j);
