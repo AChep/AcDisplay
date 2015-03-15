@@ -1,6 +1,6 @@
 AcDisplay
 ==========
-[![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/acdisplay/localized.png)](http://translate.acdisplay.org)
+[![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/acdisplay/localized.png)](http://translate.acdisplay.org) [![Bountysource](https://www.bountysource.com/badge/team?team_id=40057&style=bounties_received)](http://bounty.acdisplay.org)
 
 <img alt="Main screen: handling notification" align="right" height="300"
    src="https://github.com/AChep/AcDisplay/raw/master/screenshots/screenshot2.png" />
