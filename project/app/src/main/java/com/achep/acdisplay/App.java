@@ -159,6 +159,7 @@ public class App extends Application {
     public void onLowMemory() {
         Config.getInstance().onLowMemory();
         Blacklist.getInstance().onLowMemory();
+        NotificationPresenter.getInstance().onLowMemory();
         mAccessManager.onLowMemory();
         super.onLowMemory();
     }

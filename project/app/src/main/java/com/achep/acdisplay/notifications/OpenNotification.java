@@ -40,7 +40,9 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.Device;
 import com.achep.base.async.AsyncTask;
+import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.tests.Check;
 import com.achep.base.utils.Operator;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.smiley.SmileyParser;
@@ -53,7 +55,8 @@ import java.util.List;
  * @author Artem Chepurnoy
  */
 public abstract class OpenNotification implements
-        ISubscriptable<OpenNotification.OnNotificationDataChangedListener> {
+        ISubscriptable<OpenNotification.OnNotificationDataChangedListener>,
+        IOnLowMemory {
 
     private static final String TAG = "OpenNotification";
 
@@ -118,6 +121,7 @@ public abstract class OpenNotification implements
     private boolean mEmoticonsEnabled;
     private boolean mMine;
     private boolean mRead;
+    private boolean mRecycled;
     private long mLoadedTimestamp;
     private int mNumber;
 
@@ -219,6 +223,13 @@ public abstract class OpenNotification implements
             mEmoticonsEnabled = false;
             setEmoticonsEnabled(true);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onLowMemory() {
     }
 
     @Nullable
@@ -406,6 +417,11 @@ public abstract class OpenNotification implements
                     appIcon.getMinimumWidth(),
                     appIcon.getMinimumHeight(),
                     Bitmap.Config.ARGB_4444);
+            if (bitmap == null) {
+                // This had happened on somewhat strange
+                // chinese phone.
+                return;
+            }
             appIcon.draw(new Canvas(bitmap));
             AsyncTask.stop(mPaletteWorker);
             mPaletteWorker = Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
@@ -545,12 +561,20 @@ public abstract class OpenNotification implements
      * Clears some notification's resources.
      */
     void recycle() {
+        Check.getInstance().isFalse(mRecycled);
+        mRecycled = true;
+
         clearBackground();
         AsyncTask.stop(mPaletteWorker);
         if (mIconFactory != null) {
             mIconFactory.remove(this);
             mIconFactory = null;
         }
+    }
+
+    /* Only for debug purposes */
+    boolean isRecycled() {
+        return mRecycled;
     }
 
     /**
@@ -574,8 +598,8 @@ public abstract class OpenNotification implements
      * {@link Notification#FLAG_NO_CLEAR}.
      */
     public boolean isClearable() {
-        return Operator.bitAnd(mNotification.flags, Notification.FLAG_ONGOING_EVENT)
-                && Operator.bitAnd(mNotification.flags, Notification.FLAG_NO_CLEAR);
+        return !Operator.bitAnd(mNotification.flags, Notification.FLAG_ONGOING_EVENT)
+                && !Operator.bitAnd(mNotification.flags, Notification.FLAG_NO_CLEAR);
     }
 
     public boolean isContentSecret(@NonNull Context context) {

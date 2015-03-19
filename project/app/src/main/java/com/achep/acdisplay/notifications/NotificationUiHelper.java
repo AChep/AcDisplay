@@ -40,11 +40,12 @@ import com.achep.base.tests.Check;
 import com.achep.base.utils.CsUtils;
 import com.achep.base.utils.NullUtils;
 import com.achep.base.utils.Operator;
+import com.achep.base.utils.RefCacheBase;
 
+import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Artem Chepurnoy on 11.02.2015.
@@ -69,7 +70,13 @@ public class NotificationUiHelper implements INotificatiable {
     private static final int PENDING_UPDATE_ICONS = 1 << 5;
 
     private static SoftReference<CharSequence[]> sSecureContentLabelRef;
-    private static Map<String, SoftReference<Bitmap>> sAppIconCache = new HashMap<>();
+    static RefCacheBase<Bitmap> sAppIconCache = new RefCacheBase<Bitmap>() {
+        @NonNull
+        @Override
+        protected Reference<Bitmap> onCreateReference(@NonNull Bitmap bitmap) {
+            return new WeakReference<>(bitmap);
+        }
+    };
 
     private OpenNotification mNotification;
     private CharSequence[] mMessages;
@@ -222,8 +229,7 @@ public class NotificationUiHelper implements INotificatiable {
             // Store the bitmaps in soft-reference cache map, to
             // reduce memory usage and improve performance.
             String packageName = mNotification.getPackageName();
-            SoftReference<Bitmap> cachedBitmap = sAppIconCache.get(packageName);
-            if (cachedBitmap == null || (bitmap = cachedBitmap.get()) == null) {
+            if ((bitmap = sAppIconCache.get(packageName)) == null) {
                 Drawable drawable = getAppIcon(mNotification.getPackageName());
                 if (drawable != null) {
                     bitmap = Bitmap.createBitmap(
@@ -232,7 +238,7 @@ public class NotificationUiHelper implements INotificatiable {
                             Bitmap.Config.ARGB_4444);
                     drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
                     drawable.draw(new Canvas(bitmap));
-                    sAppIconCache.put(packageName, new SoftReference<>(bitmap));
+                    sAppIconCache.put(packageName, bitmap);
                 } else {
                     bitmap = null;
                     sAppIconCache.remove(packageName);

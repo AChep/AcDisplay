@@ -23,7 +23,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
@@ -35,21 +34,19 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
-import com.achep.base.AppHeap;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.Operator;
 
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -58,7 +55,8 @@ import static com.achep.base.Build.DEBUG;
  */
 public class NotificationPresenter implements
         NotificationList.OnNotificationListChangedListener,
-        ISubscriptable<NotificationPresenter.OnNotificationListChangedListener> {
+        ISubscriptable<NotificationPresenter.OnNotificationListChangedListener>,
+        IOnLowMemory {
 
     private static final String TAG = "NotificationPresenter";
     private static final String WAKE_LOCK_TAG = "Notification pool post/remove lock.";
@@ -68,8 +66,6 @@ public class NotificationPresenter implements
      * {@code false} to handle all notifications' updates normally.
      */
     private static final boolean FILTER_NOISY_NOTIFICATIONS = true;
-
-    private static final long POST_REMOVE_POOL_DURATION = 400; // 0.4 sec.
 
     private static final int FRESH_NOTIFICATION_EXPIRY_TIME = 4000; // 4 sec.
 
@@ -114,66 +110,15 @@ public class NotificationPresenter implements
     private final ArrayList<NotificationListChange> mFrozenEvents;
     private int mFreezeLevel;
 
-    private final Config mConfig;
-    private final Blacklist mBlacklist;
-
     // Threading
     private final Handler mHandler;
     private volatile int mDetectingSyncTroubles;
+    private NotificationPrProxy mProxy;
 
-    // Remote posting/removing
-    private boolean mProcessingPRQueue;
-    private final ConcurrentLinkedQueue<PostRemoveEvent> mPRQueue = new ConcurrentLinkedQueue<>();
-    private final Runnable mPRRunnable = new Runnable() {
-        @Override
-        public void run() {
-            synchronized (mPRQueue) {
-                if (DEBUG) Log.d(TAG, "Processing the p&r queue (" + mPRQueue.size() + " events)");
+    //-- HANDLING CONFIG & BLACKLIST ------------------------------------------
 
-                mProcessingPRQueue = true;
-                // Release all events!
-                PostRemoveEvent event;
-                while ((event = mPRQueue.poll()) != null) {
-                    if (event.posts) {
-                        assert event.context != null;
-                        postNotification(event.context, event.notification, event.flags);
-                    } else {
-                        removeNotification(event.notification, event.flags);
-                    }
-                }
-                mProcessingPRQueue = false;
-            }
-        }
-    };
-
-    /**
-     * @author Artem Chepurnoy
-     */
-    private static class PostRemoveEvent {
-
-        @Nullable
-        public final Context context;
-        @NonNull
-        public final OpenNotification notification;
-
-        /**
-         * {@code true} if it's a {@link #postNotification(Context, OpenNotification, int) post}
-         * event, {@code false} {@link #removeNotification(OpenNotification, int) otherwise}.
-         */
-        public final boolean posts;
-
-        public int flags;
-
-        PostRemoveEvent(@Nullable Context context, @NonNull OpenNotification notification,
-                        boolean posts, int flags) {
-            this.context = context;
-            this.notification = notification;
-            this.posts = posts;
-            this.flags = flags;
-        }
-    }
-
-    //-- HANDLING CONFIG & BLACKLIST CHANGES ----------------------------------
+    private final Config mConfig;
+    private final Blacklist mBlacklist;
 
     // Do not make local!
     private final ConfigListener mConfigListener;
@@ -230,18 +175,15 @@ public class NotificationPresenter implements
 
         private void handleNotifyPriorityChanged(int a, int b) {
             if (a > b) {
-                // This is here to remind me the great times
-                // of programming in the school. Sorry for that :p
-                a -= b *= -1;
-                a -= b += a;
-                // FIXME: Those two codes must do the same thing (proved by gcc).
-                // But definitely Java compiler is broken. I'm scared
-                // now... How can I not trust the compiler?
+                int k = a;
+                a = b;
+                b = k;
+                // FIXME: This swapping method doesn't work on Java, but does work on C++
                 // a -= b += a -= b *= -1;
             }
 
             final int lower = a, higher = b;
-            rebuildLocalList(new Comparator() {
+            rebuildLocalList(new RebuildConfirmatory() {
                 @Override
                 public boolean needsRebuild(@NonNull OpenNotification n) {
                     int priority = n.getNotification().priority;
@@ -270,7 +212,7 @@ public class NotificationPresenter implements
         }
 
         private void handlePackageVisibilityChanged(@NonNull final String packageName) {
-            rebuildLocalList(new Comparator() {
+            rebuildLocalList(new RebuildConfirmatory() {
                 @Override
                 public boolean needsRebuild(@NonNull OpenNotification n) {
                     return n.getPackageName().equals(packageName);
@@ -279,13 +221,13 @@ public class NotificationPresenter implements
         }
     }
 
-    private interface Comparator {
+    private interface RebuildConfirmatory {
         boolean needsRebuild(@NonNull OpenNotification n);
     }
 
-    private void rebuildLocalList(@NonNull Comparator comparator) {
+    private void rebuildLocalList(@NonNull RebuildConfirmatory rebuildConfirmatory) {
         for (OpenNotification n : mGList) {
-            if (comparator.needsRebuild(n)) {
+            if (rebuildConfirmatory.needsRebuild(n)) {
                 rebuildLocalList();
                 break;
             }
@@ -388,6 +330,7 @@ public class NotificationPresenter implements
         mLList = new NotificationList(this);
         mGroupsWithSummaries = new HashSet<>();
         mHandler = new Handler(Looper.getMainLooper());
+        mProxy = new NotificationPrProxy(this, Looper.getMainLooper());
 
         if (!Device.hasJellyBeanMR2Api()) { // pre 4.3 version
             mGList.setMaximumSize(5);
@@ -411,16 +354,18 @@ public class NotificationPresenter implements
         return sNotificationPresenter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onLowMemory() {
+        mGList.onLowMemory(); // It does cover all local list's notifications
+    }
+
     public void postNotificationFromMain(
             @NonNull final Context context,
             @NonNull final OpenNotification n, final int flags) {
-        synchronized (mPRQueue) {
-            if (DEBUG) Log.d(TAG, "Initially posting " + n + " from \'"
-                    + Thread.currentThread().getName() + "\' thread.");
-
-            boolean immediately = Operator.bitAnd(flags, FLAG_IMMEDIATELY) || !n.isClearable();
-            internalAddPREvent(context, n, flags, true /* post */, immediately);
-        }
+        mProxy.postNotification(context, n, flags);
     }
 
     /**
@@ -441,12 +386,7 @@ public class NotificationPresenter implements
             @NonNull OpenNotification n, int flags) {
         Check.getInstance().isInMainThread();
         mDetectingSyncTroubles = 1;
-
-        synchronized (mPRQueue) {
-            // Clean-up all previous event regard this
-            // notification.
-            if (!mProcessingPRQueue) internalRemovePreviousPREvent(n);
-        }
+        mProxy.onPosted(n);
 
         // Check for the test notification.
         if (isInitNotification(context, n)) {
@@ -539,13 +479,7 @@ public class NotificationPresenter implements
     }
 
     public void removeNotificationFromMain(final @NonNull OpenNotification n, final int flags) {
-        synchronized (mPRQueue) {
-            if (DEBUG) Log.d(TAG, "Initially removing " + n + " from \'"
-                    + Thread.currentThread().getName() + "\' thread.");
-
-            boolean immediately = Operator.bitAnd(flags, FLAG_IMMEDIATELY) || !n.isClearable();
-            internalAddPREvent(null, n, 0, false /* remove */, immediately);
-        }
+        mProxy.removeNotification(n, flags);
     }
 
     /**
@@ -556,12 +490,7 @@ public class NotificationPresenter implements
     public void removeNotification(@NonNull OpenNotification n, final int flags) {
         Check.getInstance().isInMainThread();
         mDetectingSyncTroubles = 2;
-
-        synchronized (mPRQueue) {
-            // Clean-up all previous event regard this
-            // notification.
-            if (!mProcessingPRQueue) internalRemovePreviousPREvent(n);
-        }
+        mProxy.onRemoved(n);
 
         if (n.isGroupSummary()) {
             String groupKey = n.getGroupKey();
@@ -578,7 +507,7 @@ public class NotificationPresenter implements
                     NotificationList list = (NotificationList) n2.getGroupNotifications();
                     int i = list.indexOfNotification(n);
                     if (i != -1) {
-                        list.get(i).recycle();
+                        n.recycle();
                         list.remove(i);
                     }
                     return;
@@ -589,7 +518,7 @@ public class NotificationPresenter implements
         NotificationList list = mGList;
         int i = list.indexOfNotification(n);
         if (i != -1) {
-            list.get(i).recycle();
+            n.recycle();
             list.remove(i);
             mLList.removeNotification(n);
         }
@@ -607,70 +536,21 @@ public class NotificationPresenter implements
      * @see #isValidForGlobal(OpenNotification)
      */
     private void rebuildLocalList() {
-        ArrayList<NotificationListChange> changes = new ArrayList<>();
+        freezeListeners();
 
         // Remove not valid notifications
         // from local list.
-        for (int i = 0; i < mLList.size(); i++) {
+        for (int i = mLList.size() - 1; i >= 0; i--) {
             OpenNotification n = mLList.get(i);
-            if (!isValidForLocal(n)) {
-                mLList.remove(i--);
-                changes.add(new NotificationListChange(EVENT_REMOVED, n));
-            }
+            if (!isValidForLocal(n)) mLList.removeNotification(i);
         }
 
         // Add newly valid notifications to local list.
         for (OpenNotification n : mGList) {
-            if (isValidForLocal(n) && mLList.indexOfNotification(n) == -1) {
-                mLList.add(n);
-                changes.add(new NotificationListChange(EVENT_POSTED, n));
-            }
+            if (isValidForLocal(n)) mLList.pushNotification(n, false);
         }
 
-        int size = changes.size();
-        if (size > 4) {
-            notifyListeners(null, EVENT_BATH);
-        } else if (size > 0) {
-            notifyListeners(changes);
-        }
-    }
-
-    private void internalAddPREvent(
-            @Nullable Context context,
-            @NonNull OpenNotification notification,
-            int flags, boolean posts,
-            boolean immediately) {
-        internalRemovePreviousPREvent(notification);
-        mPRQueue.add(new PostRemoveEvent(context, notification, posts, flags));
-
-        final long duration = POST_REMOVE_POOL_DURATION;
-        if (!immediately) {
-            context = AppHeap.getContext(); // that's cheating :(
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG).acquire(duration + 100);
-        }
-
-        mHandler.removeCallbacks(mPRRunnable);
-        mHandler.postDelayed(mPRRunnable, immediately ? 0 : duration);
-    }
-
-    private void internalRemovePreviousPREvent(@NonNull OpenNotification notification) {
-        // Remove all previous events from the queue, since they're not
-        // important at all.
-        boolean found = false;
-        Iterator<PostRemoveEvent> iterator = mPRQueue.iterator();
-        while (iterator.hasNext()) {
-            PostRemoveEvent event = iterator.next();
-            if (NotificationUtils.hasIdenticalIds(event.notification, notification)) {
-                Check.getInstance().isFalse(found);
-                iterator.remove();
-                found = true;
-
-                // I don't want that test to be run on
-                // release build.
-                if (!DEBUG) break;
-            }
-        }
+        meltListeners();
     }
 
     @Nullable
@@ -689,14 +569,20 @@ public class NotificationPresenter implements
     }
 
     /**
-     * @return the number of notifications in local list of notifications.
+     * @return the number of notifications in {@link #getList() local list}.
+     * @see #isEmpty()
      */
     public int size() {
-        return getList().size();
+        return mLList.size();
     }
 
+    /**
+     * @return {@code true} if the {@link #getList() local list} contains no notifications,
+     * {@code false} otherwise.
+     * @see #size()
+     */
     public boolean isEmpty() {
-        return getList().isEmpty();
+        return mLList.isEmpty();
     }
 
     //-- LOCAL LIST'S EVENTS --------------------------------------------------
@@ -707,6 +593,7 @@ public class NotificationPresenter implements
     @Override
     // Not an enter point, should not be synchronized.
     public int onNotificationAdded(@NonNull OpenNotification n) {
+        Check.getInstance().isFalse(n.isRecycled());
         loadNotificationBackground(n);
         notifyListeners(n, EVENT_POSTED);
         return RESULT_SUCCESS;
@@ -718,7 +605,9 @@ public class NotificationPresenter implements
     @Override
     // Not an enter point, should not be synchronized.
     public int onNotificationChanged(@NonNull OpenNotification n, @NonNull OpenNotification old) {
-        if (!FILTER_NOISY_NOTIFICATIONS) return RESULT_SUCCESS;
+        Check.getInstance().isFalse(n.isRecycled());
+        loadNotificationBackground(n);
+        old.clearBackground();
 
         // Prevent god damn notification spam by
         // checking texts' equality.
@@ -730,18 +619,15 @@ public class NotificationPresenter implements
                 && TextUtils.equals(n.titleText, old.titleText)
                 && TextUtils.equals(n.titleBigText, old.titleBigText)
                 && TextUtils.equals(n.messageText, old.messageText)
-                && TextUtils.equals(n.infoText, old.infoText)) {
+                && TextUtils.equals(n.infoText, old.infoText)
+                && !n.isMine() /* i'm not dumb */) {
             // Technically notification was changed, but it was a fault
             // of dumb developer. Mark notification as read, if old one was.
             n.setRead(old.isRead());
-
-            if (!n.isMine()) {
-                notifyListeners(n, EVENT_CHANGED_SPAM);
-                return RESULT_SPAM; // Don't wake up.
-            }
+            notifyListeners(n, EVENT_CHANGED_SPAM);
+            return RESULT_SPAM; // Don't wake up.
         }
 
-        loadNotificationBackground(n);
         notifyListeners(n, EVENT_CHANGED);
         return RESULT_SUCCESS;
     }
@@ -753,7 +639,18 @@ public class NotificationPresenter implements
     // Not an enter point, should not be synchronized.
     public int onNotificationRemoved(@NonNull OpenNotification n) {
         notifyListeners(n, EVENT_REMOVED);
-        n.clearBackground();
+        // You don't have to recycle the notification here, cause
+        // it should be recycled on removing from the global list. Otherwise you
+        // may get unexpected behaviour when this notification will be
+        // added back to the local list.
+        if (!n.isRecycled()) {
+            n.clearBackground();
+        }
+        if (isEmpty()) {
+            // Clean-up static cache
+            if (DEBUG) Log.d(TAG, "Cleaning the ref-cache...");
+            NotificationUiHelper.sAppIconCache.clear();
+        }
         return RESULT_SUCCESS;
     }
 
@@ -898,12 +795,17 @@ public class NotificationPresenter implements
                 clear(false);
 
                 if (DEBUG) Log.d(TAG, "Initializing the notifications list...");
+                // Initialize the notifications list through the proxy to
+                // optimize the process. This is completely not useful on
+                // pre-Lollipop devices due to lack of children notifications.
+                List<NotificationPrTask> list = new ArrayList<>(activeNotifications.length);
                 for (StatusBarNotification sbn : activeNotifications) {
                     OpenNotification n = OpenNotification.newInstance(sbn);
-                    postNotification(context, n, FLAG_SILENCE);
+                    list.add(new NotificationPrTask(context, n, true /* post */, 0));
                 }
-
-                notifyListeners(null, EVENT_BATH);
+                if (Device.hasLollipopApi()) mProxy.optimizePrTasks(list);
+                mProxy.sendPrTasks(list);
+                list.clear(); // This is probably not needed.
             }
         });
     }
@@ -923,11 +825,7 @@ public class NotificationPresenter implements
         if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
                 + notifyListeners);
 
-        synchronized (mPRQueue) {
-            mPRQueue.clear();
-            mHandler.removeCallbacks(mPRRunnable);
-        }
-
+        mProxy.onClear();
         mGroupsWithSummaries.clear();
         mGList.clear();
         mLList.clear();
