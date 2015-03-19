@@ -170,7 +170,7 @@ class NotificationPrProxy {
      * tasks and sorting families.
      */
     public void optimizePrTasks(@NonNull List<NotificationPrTask> list) {
-        if (Build.DEBUG) Log.d(TAG, "Optimizing post/remove tasks...");
+        if (Build.DEBUG) Log.d(TAG, "Optimizing post/remove tasks... " + list.toString());
         int size = list.size();
         //noinspection ConstantConditions
         NotificationPrTask empty = new NotificationPrTask(null, null, false, 0);
@@ -215,6 +215,7 @@ class NotificationPrProxy {
             }
         }
         // 4. Anything else?
+        if (Build.DEBUG) Log.d(TAG, "Done optimizing post/remove tasks... " + list.toString());
     }
 
     /**
