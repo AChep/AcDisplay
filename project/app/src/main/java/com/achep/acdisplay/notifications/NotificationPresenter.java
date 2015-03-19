@@ -114,6 +114,7 @@ public class NotificationPresenter implements
     private final Handler mHandler;
     private volatile int mDetectingSyncTroubles;
     private NotificationPrProxy mProxy;
+    private NotificationSpamFilter mFilter;
 
     //-- HANDLING CONFIG & BLACKLIST ------------------------------------------
 
@@ -331,6 +332,7 @@ public class NotificationPresenter implements
         mGroupsWithSummaries = new HashSet<>();
         mHandler = new Handler(Looper.getMainLooper());
         mProxy = new NotificationPrProxy(this, Looper.getMainLooper());
+        mFilter = new NotificationSpamFilter();
 
         if (!Device.hasJellyBeanMR2Api()) { // pre 4.3 version
             mGList.setMaximumSize(5);
@@ -365,6 +367,10 @@ public class NotificationPresenter implements
     public void postNotificationFromMain(
             @NonNull final Context context,
             @NonNull final OpenNotification n, final int flags) {
+        if (!mFilter.postNotification(n).isValid(n)) {
+            // TODO: Implement a basic spam filter.
+            return;
+        }
         mProxy.postNotification(context, n, flags);
     }
 
