@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+  ~ Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -17,9 +17,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<resources>
-
-    <!-- Notification widget -->
-    <!-- <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen> -->
-
-</resources>
+<Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reply_text"
+    android:layout_width="30dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:minHeight="48dp" />

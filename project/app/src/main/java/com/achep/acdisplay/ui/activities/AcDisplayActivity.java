@@ -19,10 +19,10 @@
 package com.achep.acdisplay.ui.activities;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.achep.acdisplay.Config;
@@ -94,7 +94,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         } else {
 
             // Find fragments.
-            FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getSupportFragmentManager();
             mPocketFragment = (PocketFragment) fm.findFragmentByTag(PocketFragment.TAG);
             // TODO: Maybe remove PocketFragment if active mode is disabled?
         }
@@ -164,7 +164,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
      * Initializes non-UI fragments such as {@link com.achep.acdisplay.ui.fragments.PocketFragment}.
      */
     private void initInternalFragments() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         // Turns screen off inside of your pocket.
         if (mConfig.isActiveModeEnabled()) {

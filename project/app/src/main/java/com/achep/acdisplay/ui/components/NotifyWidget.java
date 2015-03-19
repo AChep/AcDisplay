@@ -18,10 +18,15 @@
  */
 package com.achep.acdisplay.ui.components;
 
+import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.RemoteInput;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +34,15 @@ import android.view.ViewGroup;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.interfaces.INotificatiable;
+import com.achep.acdisplay.notifications.Action;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
+import com.achep.acdisplay.ui.widgets.notification.NotificationActions;
 import com.achep.acdisplay.ui.widgets.notification.NotificationIconWidget;
 import com.achep.acdisplay.ui.widgets.notification.NotificationWidget;
 import com.achep.acdisplay.utils.PendingIntentUtils;
+import com.achep.base.tests.Check;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -49,6 +57,69 @@ public class NotifyWidget extends Widget implements
     private NotificationIconWidget mIconView;
     private OpenNotification mNotification;
     private NotificationWidget mNotifyWidget;
+
+    /**
+     *
+     */
+    private final NotificationWidget.Callback mWidgetCallback = new NotificationWidget.Callback() {
+
+        private AcDisplayFragment mFragment = getFragment();
+
+        @Override
+        public void onRiiStateChanged(@NonNull NotificationActions na, boolean shown) {
+
+        }
+
+        @Override
+        public void onActionClick(@NonNull NotificationActions na,
+                                  @NonNull View view, final @NonNull Action action) {
+            mFragment.unlock(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO: Cancel pending finish if sending pending intent
+                            // has failed.
+                            PendingIntent pi = action.intent;
+                            PendingIntentUtils.sendPendingIntent(pi);
+                        }
+                    }, false);
+        }
+
+        @Override
+        public void onActionClick(@NonNull NotificationActions na,
+                                  @NonNull View view, final @NonNull Action action,
+                                  @NonNull RemoteInput remoteInput,
+                                  @NonNull CharSequence text) {
+            final Intent intent = new Intent();
+            final Bundle bundle = new Bundle();
+            bundle.putCharSequence(remoteInput.getResultKey(), text);
+            RemoteInput.addResultsToIntent(action.remoteInputs, intent, bundle);
+            mFragment.unlock(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO: Cancel pending finish if sending pending intent
+                            // has failed.
+                            PendingIntent pi = action.intent;
+                            Activity activity = mFragment.getActivity();
+                            PendingIntentUtils.sendPendingIntent(pi, activity, intent);
+                        }
+                    }, false);
+        }
+
+        @Override
+        public void onContentClick(@NonNull NotificationWidget widget, @NonNull View v) {
+            final OpenNotification osbn = widget.getNotification();
+            Check.getInstance().isNonNull(osbn);
+            mFragment.unlock(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            osbn.click();
+                        }
+                    }, false);
+        }
+    };
 
     public NotifyWidget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
         super(callback, fragment);
@@ -95,13 +166,13 @@ public class NotifyWidget extends Widget implements
 
     @Override
     public void onDismiss() {
-        assert mNotifyWidget.getNotification() != null;
-        mNotifyWidget.getNotification().dismiss();
+        mNotification.dismiss();
     }
 
     @Override
     public boolean isReadable() {
-        return !mNotification.isContentSecret(getHostFragment().getActivity());
+        Context context = getFragment().getActivity();
+        return !mNotification.isContentSecret(context);
     }
 
     @Override
@@ -133,33 +204,7 @@ public class NotifyWidget extends Widget implements
             return sceneView;
         }
 
-        mNotifyWidget.setOnClickListener(new NotificationWidget.OnClickListener() {
-
-            @Override
-            public void onClick(NotificationWidget widget, View v) {
-                final OpenNotification osbn = widget.getNotification();
-                if (osbn != null) {
-                    getHostFragment().unlock(new Runnable() {
-                        @Override
-                        public void run() {
-                            osbn.click();
-                        }
-                    }, false);
-                }
-            }
-
-            @Override
-            public void onActionButtonClick(NotificationWidget widget, View v, final PendingIntent pendingIntent) {
-                getHostFragment().unlock(new Runnable() {
-                    @Override
-                    public void run() {
-                        PendingIntentUtils.sendPendingIntent(pendingIntent);
-                    }
-                }, false);
-            }
-
-        });
-
+        mNotifyWidget.setCallback(mWidgetCallback);
         return sceneView;
     }
 

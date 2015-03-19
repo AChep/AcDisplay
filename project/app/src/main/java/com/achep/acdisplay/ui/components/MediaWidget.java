@@ -204,7 +204,7 @@ public class MediaWidget extends Widget implements
                 break;
         }
 
-        mButtonPlayPause.setContentDescription(getHostFragment().getString(imageDescId));
+        mButtonPlayPause.setContentDescription(getFragment().getString(imageDescId));
     }
 
     /**
@@ -214,7 +214,7 @@ public class MediaWidget extends Widget implements
     private void populateMetadata() {
         if (mIdle) {
             ViewGroup vg = getView();
-            if (Device.hasKitKatApi() && vg.isLaidOut() && getHostFragment().isAnimatable()) {
+            if (Device.hasKitKatApi() && vg.isLaidOut() && getFragment().isAnimatable()) {
                 TransitionManager.beginDelayedTransition(vg);
             }
         }

@@ -41,6 +41,18 @@ public abstract class RefCacheBase<T> {
     }
 
     @Nullable
+    public final T remove(@NonNull CharSequence key) {
+        synchronized (this) {
+            Reference<T> ref = mCache.remove(key);
+            if (ref == null) {
+                cleanDeadEntries();
+                return null;
+            }
+            return ref.get();
+        }
+    }
+
+    @Nullable
     public final T get(@NonNull CharSequence key) {
         synchronized (this) {
             Reference<T> ref = mCache.get(key);
@@ -70,6 +82,15 @@ public abstract class RefCacheBase<T> {
             for (CharSequence key : deaths) {
                 mCache.remove(key);
             }
+        }
+    }
+
+    /**
+     * Removes all elements from this cache, leaving it empty.
+     */
+    public void clear() {
+        synchronized (this) {
+            mCache.clear();
         }
     }
 

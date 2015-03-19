@@ -21,6 +21,8 @@ package com.achep.acdisplay.notifications;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.achep.base.interfaces.IOnLowMemory;
+
 import java.util.ArrayList;
 
 /**
@@ -29,7 +31,7 @@ import java.util.ArrayList;
  *
  * @author Artem Chepurnoy
  */
-final class NotificationList extends ArrayList<OpenNotification> {
+final class NotificationList extends ArrayList<OpenNotification> implements IOnLowMemory {
 
     /**
      * Default return value of {@link #pushNotification(OpenNotification)}
@@ -48,6 +50,14 @@ final class NotificationList extends ArrayList<OpenNotification> {
      * @see #setMaximumSize(int)
      */
     private int mMaximumSize = Integer.MAX_VALUE;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onLowMemory() {
+        for (OpenNotification n : this) n.onLowMemory();
+    }
 
     /**
      * Interface definition for a callback to be invoked
@@ -113,6 +123,10 @@ final class NotificationList extends ArrayList<OpenNotification> {
      * {@link NotificationList.OnNotificationListChangedListener#onNotificationChanged(OpenNotification n, OpenNotification old)}
      */
     int pushNotification(@NonNull OpenNotification n) {
+        return pushNotification(n, true);
+    }
+
+    int pushNotification(@NonNull OpenNotification n, boolean www) {
         final int index = indexOfNotification(n);
         if (index == -1) {
             if (size() > mMaximumSize) {
@@ -122,13 +136,14 @@ final class NotificationList extends ArrayList<OpenNotification> {
             // Add new notification to the list.
             add(n);
             return notifyListener(EVENT_ADDED, n, null);
-        } else {
+        } else if (www) {
             // Replace old notification with new one.
             OpenNotification old = get(index);
             remove(index);
             add(index, n);
             return notifyListener(EVENT_CHANGED, n, old);
         }
+        return RESULT_DEFAULT;
     }
 
     /**
@@ -139,12 +154,13 @@ final class NotificationList extends ArrayList<OpenNotification> {
      */
     int removeNotification(@NonNull OpenNotification n) {
         final int index = indexOfNotification(n);
-        if (index != -1) {
-            OpenNotification old = get(index);
-            remove(index);
-            return notifyListener(EVENT_REMOVED, old, null);
-        }
-        return RESULT_DEFAULT;
+        return index != -1 ? removeNotification(index) : RESULT_DEFAULT;
+    }
+
+    int removeNotification(int index) {
+        OpenNotification old = get(index);
+        remove(index);
+        return notifyListener(EVENT_REMOVED, old, null);
     }
 
     /**

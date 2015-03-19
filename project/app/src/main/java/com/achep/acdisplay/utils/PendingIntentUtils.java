@@ -19,6 +19,9 @@
 package com.achep.acdisplay.utils;
 
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -30,6 +33,17 @@ public class PendingIntentUtils {
         if (contentIntent != null)
             try {
                 contentIntent.send();
+                return true;
+            } catch (PendingIntent.CanceledException e) { /* unused */ }
+        return false;
+    }
+
+    public static boolean sendPendingIntent(@Nullable PendingIntent pi,
+                                            @NonNull Context context,
+                                            @Nullable Intent intent) {
+        if (pi != null)
+            try {
+                pi.send(context, 0, intent);
                 return true;
             } catch (PendingIntent.CanceledException e) { /* unused */ }
         return false;

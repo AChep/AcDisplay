@@ -52,6 +52,15 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
      * {@inheritDoc}
      */
     @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        for (OpenNotification n : mGroupNotifications) n.onLowMemory();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getVisibility() {
         return getNotification().visibility;
     }

@@ -79,8 +79,9 @@ class NotificationListenerJellyBeanMR2 extends NotificationListener {
     public void onNotificationPosted(@NonNull NotificationListenerService service,
                                      @NonNull StatusBarNotification sbn) {
         if (mInitialized || !postActiveNotifications(service)) {
+            Context context = service.getApplicationContext();
             NotificationPresenter np = NotificationPresenter.getInstance();
-            np.postNotificationFromMain(service, OpenNotification.newInstance(sbn), 0);
+            np.postNotificationFromMain(context, OpenNotification.newInstance(sbn), 0);
         }
     }
 
