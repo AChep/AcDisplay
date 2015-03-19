@@ -20,6 +20,6 @@
 <resources>
 
     <!-- Notification widget -->
-    <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen>
+    <!-- <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen> -->
 
 </resources>
