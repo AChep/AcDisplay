@@ -19,7 +19,6 @@
 package com.achep.acdisplay.ui.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -27,6 +26,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 
 /**
  * Non-UI fragment that listens to the proximity sensor to let us know
