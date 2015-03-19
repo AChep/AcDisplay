@@ -464,6 +464,7 @@ public class NotificationPresenter implements
                 // 'False' here.
             } else {
                 localValid = isValidForLocal(n);
+                if (!Device.hasJellyBeanMR2Api()) globalValid = localValid;
             }
         }
 
@@ -784,10 +785,7 @@ public class NotificationPresenter implements
     // notifications.
     @SuppressLint("NewApi")
     private boolean isValidForGlobal(@NonNull OpenNotification notification) {
-        // I don't want to store more notifications in Android 4.2-'s
-        // global list, cause they only eat memory and almost not
-        // useful.
-        return Device.hasJellyBeanMR2Api() || isValidForLocal(notification);
+        return true;
     }
 
     //-- INITIALIZING ---------------------------------------------------------
