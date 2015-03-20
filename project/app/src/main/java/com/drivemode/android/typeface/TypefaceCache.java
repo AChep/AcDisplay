@@ -17,7 +17,7 @@ import java.util.Hashtable;
 /* package */ final class TypefaceCache {
     private static TypefaceCache sInstance;
 
-    private final Hashtable<String, Typeface> mCache = new Hashtable<String, Typeface>();
+    private final Hashtable<String, Typeface> mCache = new Hashtable<>();
 
     private final Application mApplication;
 

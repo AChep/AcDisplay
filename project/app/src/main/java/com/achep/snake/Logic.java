@@ -288,7 +288,7 @@ public class Logic implements
      * @see #PERIOD_MAX
      */
     private long getFramePeriod() {
-        double scoreMaxPossible = mColumnsNumber * mRowsNumber * 1 / 3;
+        double scoreMaxPossible = mColumnsNumber * mRowsNumber / 3;
         double score = Math.min(mScoreMax, scoreMaxPossible);
         return Math.round(PERIOD_MAX * (1 - score / scoreMaxPossible));
     }

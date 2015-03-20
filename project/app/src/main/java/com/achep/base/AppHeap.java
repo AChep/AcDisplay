@@ -32,6 +32,7 @@ import org.solovyev.android.checkout.ProductTypes;
 import org.solovyev.android.checkout.Products;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by Artem Chepurnoy on 17.02.2015.
@@ -74,7 +75,7 @@ public class AppHeap implements IOnLowMemory {
                     "donation_20",
                     "donation_50",
                     "donation_99"))
-            .add(ProductTypes.SUBSCRIPTION, Arrays.asList(""));
+            .add(ProductTypes.SUBSCRIPTION, Collections.singletonList(""));
 
     /**
      * Application wide {@link org.solovyev.android.checkout.Checkout} instance
