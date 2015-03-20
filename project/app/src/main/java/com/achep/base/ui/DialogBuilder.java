@@ -20,7 +20,6 @@ package com.achep.base.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
@@ -39,6 +38,7 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.base.Device;
+import com.achep.base.utils.ResUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -140,10 +140,9 @@ public class DialogBuilder {
      */
     @NonNull
     public DialogBuilder setIcon(@DrawableRes int drawableResource) {
-        Resources res = mContext.getResources();
         return setIcon(drawableResource == 0
                 ? null
-                : res.getDrawable(drawableResource));
+                : ResUtils.getDrawable(mContext, drawableResource));
     }
 
     /**

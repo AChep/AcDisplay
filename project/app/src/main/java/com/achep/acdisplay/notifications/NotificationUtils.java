@@ -37,6 +37,7 @@ import com.achep.acdisplay.services.MediaService;
 import com.achep.acdisplay.utils.PendingIntentUtils;
 import com.achep.base.Device;
 import com.achep.base.utils.Operator;
+import com.achep.base.utils.ResUtils;
 
 /**
  * Created by Artem on 30.12.13.
@@ -117,7 +118,7 @@ public class NotificationUtils {
         Context pkgContext = createContext(context, n);
         if (pkgContext != null)
             try {
-                return pkgContext.getResources().getDrawable(iconRes);
+                return ResUtils.getDrawable(pkgContext, iconRes);
             } catch (Resources.NotFoundException nfe) { /* unused */ }
         return null;
     }

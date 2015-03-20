@@ -671,6 +671,7 @@ public class RippleDrawable extends Drawable {
         return drawable;
     }
 
+    @SuppressWarnings("deprecation")
     private static void setBackground(View target, Drawable drawable) {
         if (Build.VERSION.SDK_INT > 16) {
             target.setBackground(drawable);

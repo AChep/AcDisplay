@@ -49,6 +49,7 @@ import com.achep.base.Device;
 import com.achep.base.ui.drawables.PlayPauseDrawable;
 import com.achep.base.ui.drawables.RippleDrawable2;
 import com.achep.base.utils.Operator;
+import com.achep.base.utils.ResUtils;
 import com.achep.base.utils.RippleUtils;
 import com.achep.base.utils.ViewUtils;
 
@@ -109,7 +110,7 @@ public class MediaWidget extends Widget implements
         Resources res = fragment.getResources();
         mPlayPauseDrawable = new PlayPauseDrawable();
         mPlayPauseDrawable.setSize(res.getDimensionPixelSize(R.dimen.media_btn_actual_size));
-        mWarningDrawable = res.getDrawable(R.drawable.ic_action_warning_white);
+        mWarningDrawable = ResUtils.getDrawable(fragment.getActivity(), R.drawable.ic_action_warning_white);
     }
 
     /**

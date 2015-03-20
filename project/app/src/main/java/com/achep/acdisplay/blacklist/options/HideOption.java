@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.base.utils.ResUtils;
 
 /**
  * Created by Artem on 28.02.14.
@@ -33,7 +34,7 @@ public class HideOption extends Option {
     public HideOption(Context context, CompoundButton cb,
                       Blacklist blacklist, String packageName) {
         super(context, cb, blacklist, packageName,
-                context.getResources().getDrawable(R.drawable.ic_settings_hide_notifies),
+                ResUtils.getDrawable(context, R.drawable.ic_settings_hide_notifies),
                 context.getResources().getString(R.string.blacklist_app_hide_title),
                 context.getResources().getString(R.string.blacklist_app_hide_summary));
     }

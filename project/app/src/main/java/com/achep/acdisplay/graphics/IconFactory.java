@@ -34,6 +34,7 @@ import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.base.async.AsyncTask;
 import com.achep.base.utils.RefCacheBase;
+import com.achep.base.utils.ResUtils;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -114,7 +115,7 @@ public class IconFactory {
             ICONS_CACHE.put(cacheKey, bitmap);
             if (DEBUG) Log.d(TAG, "Put the icon of notification to cache: key=" + cacheKey);
         } else {
-            bitmap = createEmptyIcon(res, size);
+            bitmap = createEmptyIcon(context, size);
         }
 
         return bitmap;
@@ -148,7 +149,7 @@ public class IconFactory {
     }
 
     @NonNull
-    private static Bitmap createEmptyIcon(@NonNull Resources res, int size) {
+    private static Bitmap createEmptyIcon(@NonNull Context context, int size) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(0xDDCCCCCC); // white gray
@@ -159,7 +160,8 @@ public class IconFactory {
         Canvas canvas = new Canvas(icon);
         canvas.drawCircle(radius, radius, radius, paint);
 
-        Drawable drawable = res.getDrawable(R.drawable.ic_action_warning_white);
+        Drawable drawable = ResUtils.getDrawable(context, R.drawable.ic_action_warning_white);
+        assert drawable != null;
         drawable.setBounds(0, 0, size, size);
         drawable.draw(canvas);
 

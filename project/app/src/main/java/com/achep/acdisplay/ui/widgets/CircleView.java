@@ -42,6 +42,7 @@ import com.achep.acdisplay.ui.preferences.ColorPickerPreference;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.FloatProperty;
+import com.achep.base.utils.ResUtils;
 
 /**
  * Created by achep on 19.04.14.
@@ -177,7 +178,7 @@ public class CircleView extends View {
         initColorFilter();
 
         // Load the drawable if needed
-        mDrawable = res.getDrawable(R.drawable.ic_settings_keyguard_white);
+        mDrawable = ResUtils.getDrawable(getContext(), R.drawable.ic_settings_keyguard_white);
         mDrawable.setBounds(0, 0,
                 mDrawable.getIntrinsicWidth(),
                 mDrawable.getIntrinsicHeight());

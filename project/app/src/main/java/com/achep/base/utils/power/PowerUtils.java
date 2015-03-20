@@ -71,6 +71,7 @@ public class PowerUtils {
         return isScreenOn(pm);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     public static boolean isScreenOn(@NonNull PowerManager pm) {
         return Device.hasKitKatWatchApi()

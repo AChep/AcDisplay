@@ -58,13 +58,13 @@ public class NotificationActions extends LinearLayout {
 
     public interface Callback {
 
-        public void onRiiStateChanged(@NonNull NotificationActions na, boolean shown);
+        void onRiiStateChanged(@NonNull NotificationActions na, boolean shown);
 
         /**
          * Called on action's button click.
          */
-        public void onActionClick(@NonNull NotificationActions na,
-                                  @NonNull View view, @NonNull Action action);
+        void onActionClick(@NonNull NotificationActions na,
+                           @NonNull View view, @NonNull Action action);
 
         /**
          * Called on action's button click.
@@ -72,10 +72,10 @@ public class NotificationActions extends LinearLayout {
          * @param remoteInput the chosen {@link android.support.v4.app.RemoteInput} to reply to
          * @param text        the text of the quick reply
          */
-        public void onActionClick(@NonNull NotificationActions na,
-                                  @NonNull View view, @NonNull Action action,
-                                  @NonNull RemoteInput remoteInput,
-                                  @NonNull CharSequence text);
+        void onActionClick(@NonNull NotificationActions na,
+                           @NonNull View view, @NonNull Action action,
+                           @NonNull RemoteInput remoteInput,
+                           @NonNull CharSequence text);
     }
 
     /**
@@ -398,7 +398,7 @@ public class NotificationActions extends LinearLayout {
             /**
              * Called on {@link #getText()} text has changed.
              */
-            public void onTextChanged(@Nullable CharSequence text);
+            void onTextChanged(@Nullable CharSequence text);
 
         }
 

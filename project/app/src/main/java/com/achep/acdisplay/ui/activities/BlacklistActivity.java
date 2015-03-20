@@ -54,6 +54,7 @@ import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.ui.fragments.BlacklistAppFragment;
 import com.achep.base.utils.MathUtils;
+import com.achep.base.utils.ResUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -497,7 +498,7 @@ public class BlacklistActivity extends PreferenceActivity {
 
             // Set the default icon till the actual app icon is loaded in async task
             //noinspection ResourceType
-            mDefaultImg = context.getResources().getDrawable(android.R.mipmap.sym_def_app_icon);
+            mDefaultImg = ResUtils.getDrawable(context, android.R.mipmap.sym_def_app_icon);
 
             mIcons = new ConcurrentHashMap<>();
 

@@ -59,15 +59,15 @@ public class RemoteController {
 
     public interface OnClientUpdateListener {
 
-        public void onClientChange(boolean clearing);
+        void onClientChange(boolean clearing);
 
-        public void onClientMetadataUpdate(RemoteController.MetadataEditor metadataEditor);
+        void onClientMetadataUpdate(RemoteController.MetadataEditor metadataEditor);
 
-        public void onClientPlaybackStateUpdate(int state, long stateChangeTimeMs, long currentPosMs, float speed);
+        void onClientPlaybackStateUpdate(int state, long stateChangeTimeMs, long currentPosMs, float speed);
 
-        public void onClientPlaybackStateUpdate(int state);
+        void onClientPlaybackStateUpdate(int state);
 
-        public void onClientTransportControlUpdate(int transportControlFlags);
+        void onClientTransportControlUpdate(int transportControlFlags);
 
     }
 }

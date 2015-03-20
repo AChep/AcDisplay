@@ -136,7 +136,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
         assert activity != null;
 
         View view = new DialogBuilder(activity)
-                .setIcon(getResources().getDrawable(R.drawable.ic_action_feedback_white))
+                .setIcon(ResUtils.getDrawable(activity, R.drawable.ic_action_feedback_white))
                 .setTitle(getString(R.string.feedback_dialog_title))
                 .setView(R.layout.feedback_dialog)
                 .createSkeletonView();

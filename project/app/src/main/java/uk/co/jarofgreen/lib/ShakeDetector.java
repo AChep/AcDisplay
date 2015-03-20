@@ -75,7 +75,7 @@ public class ShakeDetector implements SensorEventListener {
         /**
          * Called on shake detected.
          */
-        public void onShakeDetected();
+        void onShakeDetected();
     }
 
     private static class DataPoint {
