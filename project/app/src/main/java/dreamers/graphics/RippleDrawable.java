@@ -24,15 +24,19 @@ public class RippleDrawable extends Drawable {
     /**
      * Constant for automatically determining the maximum ripple radius.
      *
-     * @see #setMaxRadius(int)
      * @hide
+     * @see #setMaxRadius(int)
      */
     public static final int RADIUS_AUTO = -1;
 
-    /** The maximum number of ripples supported. */
+    /**
+     * The maximum number of ripples supported.
+     */
     private static final int MAX_RIPPLES = 10;
 
-    /** Current ripple effect bounds, used to constrain ripple effects. */
+    /**
+     * Current ripple effect bounds, used to constrain ripple effects.
+     */
     private final Rect mHotspotBounds = new Rect();
 
     ColorStateList mColor = ColorStateList.valueOf(Color.MAGENTA);
@@ -41,19 +45,29 @@ public class RippleDrawable extends Drawable {
 
     private Drawable mContent;
 
-    /** The masking layer, e.g. the layer with id R.id.mask. */
+    /**
+     * The masking layer, e.g. the layer with id R.id.mask.
+     */
     private Drawable mMask;
 
-    /** The current background. May be actively animating or pending entry. */
+    /**
+     * The current background. May be actively animating or pending entry.
+     */
     private RippleBackground mBackground;
 
-    /** Whether we expect to draw a background when visible. */
+    /**
+     * Whether we expect to draw a background when visible.
+     */
     private boolean mBackgroundActive;
 
-    /** The current ripple. May be actively animating or pending entry. */
+    /**
+     * The current ripple. May be actively animating or pending entry.
+     */
     private Ripple mRipple;
 
-    /** Whether we expect to draw a ripple when visible. */
+    /**
+     * Whether we expect to draw a ripple when visible.
+     */
     private boolean mRippleActive;
 
     // Hotspot coordinates that are awaiting activation.
@@ -68,16 +82,24 @@ public class RippleDrawable extends Drawable {
     private Ripple[] mExitingRipples;
     private int mExitingRipplesCount = 0;
 
-    /** Paint used to control appearance of ripples. */
+    /**
+     * Paint used to control appearance of ripples.
+     */
     private Paint mRipplePaint;
 
-    /** Paint used to control reveal layer masking. */
+    /**
+     * Paint used to control reveal layer masking.
+     */
     private Paint mMaskingPaint;
 
-    /** Target density of the display into which ripples are drawn. */
+    /**
+     * Target density of the display into which ripples are drawn.
+     */
     private float mDensity = 1.0f;
 
-    /** Whether bounds are being overridden. */
+    /**
+     * Whether bounds are being overridden.
+     */
     private boolean mOverrideBounds;
 
     /**
@@ -97,7 +119,7 @@ public class RippleDrawable extends Drawable {
         setColor(color);
     }
 
-    public RippleDrawable(ColorStateList color, Drawable content){
+    public RippleDrawable(ColorStateList color, Drawable content) {
         this(color);
 
         mContent = content;
@@ -105,7 +127,7 @@ public class RippleDrawable extends Drawable {
 
     @Override
     public void jumpToCurrentState() {
-        if(Build.VERSION.SDK_INT > 11) {
+        if (Build.VERSION.SDK_INT > 11) {
             super.jumpToCurrentState();
         }
 
@@ -332,7 +354,9 @@ public class RippleDrawable extends Drawable {
         onHotspotBoundsChanged();
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     public void getHotspotBounds(Rect outRect) {
         outRect.set(mHotspotBounds);
     }
@@ -596,11 +620,11 @@ public class RippleDrawable extends Drawable {
      * of the drawable bounds (or hotspot bounds, if specified) to a corner.
      *
      * @param maxRadius the maximum ripple radius in pixels or
-     *            {@link #RADIUS_AUTO} to automatically determine the maximum
-     *            radius based on the bounds
+     *                  {@link #RADIUS_AUTO} to automatically determine the maximum
+     *                  radius based on the bounds
+     * @hide
      * @see #getMaxRadius()
      * @see #setHotspotBounds(int, int, int, int)
-     * @hide
      */
     public void setMaxRadius(int maxRadius) {
         if (maxRadius != RADIUS_AUTO && maxRadius < 0) {
@@ -612,9 +636,9 @@ public class RippleDrawable extends Drawable {
 
     /**
      * @return the maximum ripple radius in pixels, or {@link #RADIUS_AUTO} if
-     *         the radius is determined automatically
-     * @see #setMaxRadius(int)
+     * the radius is determined automatically
      * @hide
+     * @see #setMaxRadius(int)
      */
     public int getMaxRadius() {
         return mMaxRadius;
@@ -623,19 +647,19 @@ public class RippleDrawable extends Drawable {
     /**
      * @deprecated
      */
-    public static RippleDrawable createRipple(View target, int color){
+    public static RippleDrawable createRipple(View target, int color) {
         return For(target, color);
     }
 
-    public static RippleDrawable For(View target, int color){
+    public static RippleDrawable For(View target, int color) {
         return makeFor(target, ColorStateList.valueOf(color));
     }
 
-    public static RippleDrawable makeFor(View target, ColorStateList colors){
+    public static RippleDrawable makeFor(View target, ColorStateList colors) {
         return makeFor(target, colors, false);
     }
 
-    public static RippleDrawable makeFor(View target, ColorStateList colors, boolean parentIsScrollContainer){
+    public static RippleDrawable makeFor(View target, ColorStateList colors, boolean parentIsScrollContainer) {
         RippleDrawable drawable = new RippleDrawable(colors, target.getBackground());
 
         TouchTracker tracker = new TouchTracker(drawable);
@@ -647,10 +671,10 @@ public class RippleDrawable extends Drawable {
         return drawable;
     }
 
-    private static void setBackground(View target, Drawable drawable){
-        if(Build.VERSION.SDK_INT > 16){
+    private static void setBackground(View target, Drawable drawable) {
+        if (Build.VERSION.SDK_INT > 16) {
             target.setBackground(drawable);
-        }else{
+        } else {
             target.setBackgroundDrawable(drawable);
         }
     }

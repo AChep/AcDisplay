@@ -15,43 +15,45 @@ import java.util.Hashtable;
  * @author hnakagawa
  */
 /* package */ final class TypefaceCache {
-	private static TypefaceCache sInstance;
+    private static TypefaceCache sInstance;
 
-	private final Hashtable<String, Typeface> mCache = new Hashtable<String, Typeface>();
+    private final Hashtable<String, Typeface> mCache = new Hashtable<String, Typeface>();
 
-	private final Application mApplication;
+    private final Application mApplication;
 
-	private TypefaceCache(Application application) {
-		mApplication = application;
-	}
+    private TypefaceCache(Application application) {
+        mApplication = application;
+    }
 
-	/**
-	 * If the cache has an instance for the typeface name, this will return the instance immediately.
-	 * Otherwise this method will create typeface instance and put it into the cache and return the instance.
-	 * @param name the typeface name.
-	 * @return {@link android.graphics.Typeface} instance.
-	 */
-	public synchronized Typeface get(String name) {
-		Typeface typeface = mCache.get(name);
-		if(typeface == null) {
-			try {
-				typeface = Typeface.createFromAsset(mApplication.getAssets(), name);
-			} catch (Exception exp) {
-				return null;
-			}
-			mCache.put(name, typeface);
-		}
-		return typeface;
-	}
+    /**
+     * If the cache has an instance for the typeface name, this will return the instance immediately.
+     * Otherwise this method will create typeface instance and put it into the cache and return the instance.
+     *
+     * @param name the typeface name.
+     * @return {@link android.graphics.Typeface} instance.
+     */
+    public synchronized Typeface get(String name) {
+        Typeface typeface = mCache.get(name);
+        if (typeface == null) {
+            try {
+                typeface = Typeface.createFromAsset(mApplication.getAssets(), name);
+            } catch (Exception exp) {
+                return null;
+            }
+            mCache.put(name, typeface);
+        }
+        return typeface;
+    }
 
-	/**
-	 * Retrieve this cache.
-	 * @param context the context.
-	 * @return the cache instance.
-	 */
-	public static synchronized TypefaceCache getInstance(Context context) {
-		if (sInstance == null)
-			sInstance = new TypefaceCache((Application)context.getApplicationContext());
-		return sInstance;
-	}
+    /**
+     * Retrieve this cache.
+     *
+     * @param context the context.
+     * @return the cache instance.
+     */
+    public static synchronized TypefaceCache getInstance(Context context) {
+        if (sInstance == null)
+            sInstance = new TypefaceCache((Application) context.getApplicationContext());
+        return sInstance;
+    }
 }

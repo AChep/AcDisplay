@@ -29,19 +29,29 @@ class RippleBackground {
 
     private final RippleDrawable mOwner;
 
-    /** Bounds used for computing max radius. */
+    /**
+     * Bounds used for computing max radius.
+     */
     private final Rect mBounds;
 
-    /** Full-opacity color for drawing this ripple. */
+    /**
+     * Full-opacity color for drawing this ripple.
+     */
     private int mColorOpaque;
 
-    /** Maximum alpha value for drawing this ripple. */
+    /**
+     * Maximum alpha value for drawing this ripple.
+     */
     private int mColorAlpha;
 
-    /** Maximum ripple radius. */
+    /**
+     * Maximum ripple radius.
+     */
     private float mOuterRadius;
 
-    /** Screen density used to adjust pixel-based velocities. */
+    /**
+     * Screen density used to adjust pixel-based velocities.
+     */
     private float mDensity;
 
 
@@ -56,13 +66,19 @@ class RippleBackground {
     private float mOuterX;
     private float mOuterY;
 
-    /** Whether we should be drawing hardware animations. */
+    /**
+     * Whether we should be drawing hardware animations.
+     */
     private boolean mHardwareAnimating;
 
-    /** Whether we can use hardware acceleration for the exit animation. */
+    /**
+     * Whether we can use hardware acceleration for the exit animation.
+     */
     private boolean mCanUseHardware;
 
-    /** Whether we have an explicit maximum radius. */
+    /**
+     * Whether we have an explicit maximum radius.
+     */
     private boolean mHasMaxRadius;
 
     /**
@@ -182,7 +198,7 @@ class RippleBackground {
         final int opacityDuration = (int) (1000 / WAVE_OPACITY_DECAY_VELOCITY + 0.5f);
         final float outerSizeInfluence = constrain(
                 (mOuterRadius - WAVE_OUTER_SIZE_INFLUENCE_MIN * mDensity)
-                / (WAVE_OUTER_SIZE_INFLUENCE_MAX * mDensity), 0, 1);
+                        / (WAVE_OUTER_SIZE_INFLUENCE_MAX * mDensity), 0, 1);
         final float outerOpacityVelocity = Ripple.lerp(WAVE_OUTER_OPACITY_EXIT_VELOCITY_MIN,
                 WAVE_OUTER_OPACITY_EXIT_VELOCITY_MAX, outerSizeInfluence);
 
@@ -229,7 +245,8 @@ class RippleBackground {
             // Outer opacity continues to increase for a bit.
             outerOpacityAnim = ObjectAnimator.ofFloat(this,
                     "outerOpacity", inflectionOpacity / 255.0f);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) outerOpacityAnim.setAutoCancel(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                outerOpacityAnim.setAutoCancel(true);
             outerOpacityAnim.setDuration(inflectionDuration);
             outerOpacityAnim.setInterpolator(LINEAR_INTERPOLATOR);
 
@@ -241,7 +258,8 @@ class RippleBackground {
                     public void onAnimationEnd(Animator animation) {
                         final ObjectAnimator outerFadeOutAnim = ObjectAnimator.ofFloat(
                                 RippleBackground.this, "outerOpacity", 0);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) outerFadeOutAnim.setAutoCancel(true);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                            outerFadeOutAnim.setAutoCancel(true);
                         outerFadeOutAnim.setDuration(outerDuration);
                         outerFadeOutAnim.setInterpolator(LINEAR_INTERPOLATOR);
                         outerFadeOutAnim.addListener(mAnimationListener);
@@ -261,7 +279,8 @@ class RippleBackground {
             }
         } else {
             outerOpacityAnim = ObjectAnimator.ofFloat(this, "outerOpacity", 0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) outerOpacityAnim.setAutoCancel(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                outerOpacityAnim.setAutoCancel(true);
             outerOpacityAnim.setDuration(opacityDuration);
             outerOpacityAnim.addListener(mAnimationListener);
         }

@@ -6,7 +6,7 @@ import android.view.ViewConfiguration;
 
 import java.lang.ref.WeakReference;
 
-public class TouchTracker implements View.OnTouchListener{
+public class TouchTracker implements View.OnTouchListener {
 
     RippleDrawable mHotspotDrawable;
 
@@ -21,13 +21,13 @@ public class TouchTracker implements View.OnTouchListener{
     boolean mPrePressed;
     boolean mInsideScrollContainer;
 
-    public TouchTracker(RippleDrawable hotspot){
+    public TouchTracker(RippleDrawable hotspot) {
         mHotspotDrawable = hotspot;
 
         mTouchSlop = -1;
     }
 
-    public void setInsideScrollContainer(boolean inside){
+    public void setInsideScrollContainer(boolean inside) {
         mInsideScrollContainer = inside;
     }
 
@@ -36,7 +36,7 @@ public class TouchTracker implements View.OnTouchListener{
         final float x = event.getX();
         final float y = event.getY();
 
-        if(v.isClickable() || v.isLongClickable()) {
+        if (v.isClickable() || v.isLongClickable()) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                     if ((mPrePressed && pointInView(v, x, y, mTouchSlop)) || v.isPressed()) {
@@ -154,7 +154,7 @@ public class TouchTracker implements View.OnTouchListener{
         }
     }
 
-    void setPressed(View target, boolean pressed, float x, float y){
+    void setPressed(View target, boolean pressed, float x, float y) {
         target.setPressed(pressed);
         mHotspotDrawable.setHotspot(x, y);
     }
@@ -173,13 +173,13 @@ public class TouchTracker implements View.OnTouchListener{
     }
 
 
-    void removeTapCallback(View target){
-        if(mPendingCheckForTap != null){
+    void removeTapCallback(View target) {
+        if (mPendingCheckForTap != null) {
             target.removeCallbacks(mPendingCheckForTap);
         }
     }
 
-    void removeLongPressCallback(View target){
+    void removeLongPressCallback(View target) {
         if (mPendingCheckForLongPress != null) {
             target.removeCallbacks(mPendingCheckForLongPress);
         }
@@ -195,14 +195,14 @@ public class TouchTracker implements View.OnTouchListener{
 
         @Override
         public void run() {
-            if(target.get() != null){
+            if (target.get() != null) {
                 target.get().performClick();
             }
         }
     }
 
 
-    final class CheckForTap implements Runnable{
+    final class CheckForTap implements Runnable {
 
         View target;
         float x, y;

@@ -37,7 +37,9 @@ public class RemoteController {
         return false;
     }
 
-    public boolean sendMediaKeyEvent(KeyEvent keyEvent) { return true; }
+    public boolean sendMediaKeyEvent(KeyEvent keyEvent) {
+        return true;
+    }
 
     public class MetadataEditor {
 

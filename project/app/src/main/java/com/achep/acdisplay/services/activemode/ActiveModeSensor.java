@@ -256,6 +256,7 @@ public abstract class ActiveModeSensor {
 
         /**
          * Starts the consuming sensor 'forever'.
+         *
          * @see #stop()
          */
         public void start() {
@@ -264,6 +265,7 @@ public abstract class ActiveModeSensor {
 
         /**
          * Stops the consuming sensor.
+         *
          * @see #stop()
          */
         public void stop() {

@@ -27,16 +27,24 @@ class Ripple {
 
     private final RippleDrawable mOwner;
 
-    /** Bounds used for computing max radius. */
+    /**
+     * Bounds used for computing max radius.
+     */
     private final Rect mBounds;
 
-    /** Full-opacity color for drawing this ripple. */
+    /**
+     * Full-opacity color for drawing this ripple.
+     */
     private int mColorOpaque;
 
-    /** Maximum ripple radius. */
+    /**
+     * Maximum ripple radius.
+     */
     private float mOuterRadius;
 
-    /** Screen density used to adjust pixel-based velocities. */
+    /**
+     * Screen density used to adjust pixel-based velocities.
+     */
     private float mDensity;
 
     private float mStartingX;
@@ -63,10 +71,14 @@ class Ripple {
     private float mTweenX = 0;
     private float mTweenY = 0;
 
-    /** Whether we have an explicit maximum radius. */
+    /**
+     * Whether we have an explicit maximum radius.
+     */
     private boolean mHasMaxRadius;
 
-    /** Whether we were canceled externally and should avoid self-removal. */
+    /**
+     * Whether we were canceled externally and should avoid self-removal.
+     */
     private boolean mCanceled;
 
     /**
@@ -284,7 +296,6 @@ class Ripple {
     }
 
 
-
     /**
      * Jump all animations to their end state. The caller is responsible for
      * removing the ripple from the list of animating ripples.
@@ -326,7 +337,8 @@ class Ripple {
 
     private void exitSoftware(int radiusDuration, int opacityDuration) {
         final ObjectAnimator radiusAnim = ObjectAnimator.ofFloat(this, "radiusGravity", 1);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) radiusAnim.setAutoCancel(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            radiusAnim.setAutoCancel(true);
         radiusAnim.setDuration(radiusDuration);
         radiusAnim.setInterpolator(DECEL_INTERPOLATOR);
 
@@ -341,7 +353,8 @@ class Ripple {
         yAnim.setInterpolator(DECEL_INTERPOLATOR);
 
         final ObjectAnimator opacityAnim = ObjectAnimator.ofFloat(this, "opacity", 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) opacityAnim.setAutoCancel(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            opacityAnim.setAutoCancel(true);
         opacityAnim.setDuration(opacityDuration);
         opacityAnim.setInterpolator(LINEAR_INTERPOLATOR);
         opacityAnim.addListener(mAnimationListener);
@@ -408,8 +421,8 @@ class Ripple {
     };
 
     /**
-    * Interpolator with a smooth log deceleration
-    */
+     * Interpolator with a smooth log deceleration
+     */
     private static final class LogInterpolator implements Interpolator {
         @Override
         public float getInterpolation(float input) {
