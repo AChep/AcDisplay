@@ -20,18 +20,19 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_description">AcDisplay היא דרך חדשה לטיפול הודעות באנדרואיד. זה יאפשר לך לדעת על הודעות חדשות על ידי הצגת מסך מינימלית, יפה, המאפשר לך לפתוח ישירות ממסך הנעילה. אם אתה רוצה לראות מה קורה, פשוט תיקח את הטלפון מהכיס שלך כדי להציג את כל הדיווחים האחרונים, באופן מינימליסטי.</string>
-  <string name="plugin_xposed_description">Helps AcDisplay to integrate deeper into Android.</string>
-  <string name="permissions_auto_disabled">AcDisplay has been turned off because it\'s missing some permissions.</string>
-  <string name="permissions_dialog_title">Required permissions:</string>
+  <string name="plugin_xposed_description">מסייע ל-AcDisplay להטמע עמוק יותר בתוך אנדרואיד.</string>
+  <string name="permissions_auto_disabled">AcDisplay כובה מכיוון שחסרות הרשאות מסוימות.</string>
+  <string name="permissions_dialog_title">ההרשאות הנדרשות:</string>
   <string name="permissions_device_admin">מנהל התקן</string>
   <string name="permissions_device_admin_removed">AcDisplay הוסר מן התקן מנהלים.</string>
-  <string name="permissions_device_admin_description">Needed to manage the screen timeout policy.</string>
-  <string name="permissions_device_admin_grant_manually">Go to Settings &gt; Security &gt; Device admins and check AcDisplay on.</string>
+  <string name="permissions_device_admin_description">נדרש כדי לנהל את מדיניות כיבוי המסך.</string>
+  <string name="permissions_device_admin_grant_manually">עבור אל הגדרות &gt; אבטחה &gt; מנהלי התקנים ואפשר את AcDisplay.</string>
   <string name="permissions_notifications">התראות</string>
-  <string name="permissions_notifications_description">Needed to get access to notifications.</string>
-  <string name="permissions_notifications_grant_manually">Go to Settings &gt; Security &gt; Notification access and check AcDisplay on.</string>
-  <string name="permissions_usage_stats">Usage stats</string>
-  <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
+  <string name="permissions_notifications_description">נדרש על מנת לקבל גישה אל ההתראות.</string>
+  <string name="permissions_notifications_grant_manually">עבור אל הגדרות &gt; אבטחה &gt; גישה להתראות ואפשר את AcDisplay.</string>
+  <string name="permissions_usage_stats">סטטיסטיקת שימוש</string>
+  <string name="permissions_usage_stats_description">נדרש כדי להמנע מהצגה מעל שכבת אפליקציות השעון המעורר והטלפון.</string>
+  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
   <string name="action_about">אודות</string>
   <string name="action_donate">תרומה</string>
   <string name="action_feedback">משוב</string>
@@ -45,22 +46,22 @@
   <string name="on">פעיל</string>
   <string name="off">כבוי</string>
   <string name="enabled">מופעל</string>
-  <string name="disabled">מנוטרל</string>
-  <string name="media_prev_description">Previous track button</string>
-  <string name="media_next_description">Next track button</string>
-  <string name="media_pause_description">Pause button</string>
-  <string name="media_play_description">לחצן \' הפעל \'</string>
+  <string name="disabled">מבוטל</string>
+  <string name="media_prev_description">לחצן חזרה לשיר הקודם</string>
+  <string name="media_next_description">לחצן מעבר לשיר הבא</string>
+  <string name="media_pause_description">לחצן השהייה</string>
+  <string name="media_play_description">לחצן ניגון</string>
   <string name="media_stop_description">לחצן עצירה</string>
   <string name="notification_init_text">בטל הודעה זו.</string>
   <string name="notification_test_message">זוהי התראה לדוגמה.</string>
-  <string name="notification_test_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="notification_test_message_large">החלק כלפי מטה לביטול התראות.\nהחלק בכל מקום כדי לבטל את הנעילה.</string>
+  <string name="privacy_mode_hidden_content">תוכן מוסתר.</string>
   <string name="remote_enable_acdisplay">AcDisplay מאופשר.</string>
   <string name="remote_disable_acdisplay">AcDisplay מנוטרל.</string>
-  <string name="service_bath">AcDisplay services</string>
+  <string name="service_bath">שירותי AcDisplay</string>
   <string name="service_bath_keyguard">מסך נעילה</string>
   <string name="service_bath_active_mode">מצב פעיל</string>
-  <string name="service_bath_active_mode_dump">Sensors dumper</string>
+  <string name="service_bath_active_mode_dump">dumper חיישנים</string>
   <string name="status_date_format">EEE, d MMMM</string>
-  <string name="accessibility_battery_level">Battery <xliff:g id="number" example="100">%d</xliff:g> percent.</string>
+  <string name="accessibility_battery_level">אחוז <xliff:g id="number" example="100">%d</xliff:g> סוללה.</string>
 </resources>

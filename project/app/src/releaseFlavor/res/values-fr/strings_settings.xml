@@ -34,10 +34,14 @@
   <string name="settings_more_title">Plus&#8230;</string>
   <string name="settings_dev_title">Développement</string>
   <string name="settings_keyguard_description">Utiliser AcDisplay comme écran de verrouillage. Fonctionnalité bêta, peut être instable.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Désactiver quand inactif</string>
+  <string name="settings_active_disable_on_low_battery_title">Désactiver quand la batterie est faible</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Activer lorsqu\'il n\'y a pas de notifications</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">L\'écran de verrouillage est activé indépendamment de la présence ou non de notifications.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">L\'écran de verrouillage est désactivé indépendamment de la présence ou non de notifications.</string>
+  <string name="settings_active_active_charging_title">Toujours prendre en compte les mouvements pendant le chargement</string>
   <string name="settings_active_description">Le mode actif utilise les capteurs du téléphone pour le réveiller quand vous en avez besoin. C\'est très pratique quand vous retirez l\'appareil de votre poche pour jeter un œil aux notifications que vous avez reçues. Le mode actif n\'empêche pas la mise en veille du CPU, l\'impact sur la consommation est donc faible.</string>
+  <string name="settings_active_respect_inactive_time_title">Désactiver quand inactif</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Activer quand il n\'y a pas de notifications</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Le mode actif est activé qu\'il y aie des notifications ou pas.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Le mode actif est désactivé quand il n\'y a pas de notifications.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Après %1$s / %2$s secondes d\'inactivité.</string>
   <string name="settings_icon_size_title">Taille d\'icônes</string>
   <string name="settings_icon_size_summary">La taille actuelle des icônes est de %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Appui double pour mettre en veille</string>
   <string name="settings_behavior_category">Comportement</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Verrouiller au rejet de la dernière notification</string>
   <string name="settings_lock_on_dismiss_last_notify_on">L\'écran s\'éteint après le rejet de la dernière notification.</string>
@@ -92,4 +97,6 @@ Jusqu\'à :<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_sec">%1$s sec.</string>
   <string name="preference_icon_size_message">Ajuster la taille des icônes de notifications.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Couleurs aléatoires</string>
+  <string name="preference_colorpicker_custom_color">Couleur définie</string>
 </resources>

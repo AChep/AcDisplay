@@ -34,10 +34,14 @@
   <string name="settings_more_title">Mer...</string>
   <string name="settings_dev_title">Utveckling</string>
   <string name="settings_keyguard_description">Använd AcDisplay som låsskärm. Detta är en betafunktion och den kan  vara instabil.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Aktivera när inga meddelanden finns</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Låsskärmen är aktiverad oavsett om det finns meddelanden eller ej.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Låsskärmen är avaktiverad när det inte finns några meddelanden.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Aktivt läge använder enhetens sensorer för att väcka enheten bara när du behöver den. Ta upp din enhet från din ficka för att få en snabb glimt av meddelanden. Aktivt läge håller inte CPU:n igång, så att du inte ska uppleva ökad batteriförbrukning.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Aktivera när inga meddelanden finns</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktivt läge är aktiverat oavsett om det finns meddelanden eller inte.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktivt läge är inaktiverat när det inte finns några meddelanden.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Efter %1$s / %2$s sekunders inaktivitet.</string>
   <string name="settings_icon_size_title">Ikonstorlek</string>
   <string name="settings_icon_size_summary">Aktuella storleken på ikoner är %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">Beteende</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lås vid avvisande av det sista meddelandet</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Skärmen stängs av efter avvisande av det sista meddelandet.</string>
@@ -88,4 +93,6 @@
   <string name="preference_timeout_sec">%1$s sek.</string>
   <string name="preference_icon_size_message">Justera storleken på meddelandeikoner.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>

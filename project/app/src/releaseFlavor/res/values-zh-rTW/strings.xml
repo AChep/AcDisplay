@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">請前往 [設定] &gt; [安全性] &gt; [通知存取]，然後勾選 [AcDisplay]。</string>
   <string name="permissions_usage_stats">使用情況統計資訊</string>
   <string name="permissions_usage_stats_description">避免與鬧鐘和電話應用程式重疊時所需的權限。</string>
+  <string name="permissions_usage_stats_error">很抱歉，此裝置的製造商移除了此 Android 版本的公用權限。除非等待他們釋出修復的更新，否則目前這個問題是無法解決的。</string>
   <string name="action_about">關於</string>
   <string name="action_donate">贊助</string>
   <string name="action_feedback">意見回饋</string>

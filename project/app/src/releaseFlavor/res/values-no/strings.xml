@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Gå til Innstillinger &gt; Sikkerhet &gt; varsling tilgang og slå AcDisplay på.</string>
   <string name="permissions_usage_stats">Bruker-statistikk</string>
   <string name="permissions_usage_stats_description">For å unngå overliggende alarm og telefonen-applikasjoner.</string>
+  <string name="permissions_usage_stats_error">Enhetsprodusenten har fjernet dene offentlige tillatelsen fra sin Android-versjon. Det finnes ingen fiks til dette problemet, bortsett fra å vente på en oppdatering fra produsenten.</string>
   <string name="action_about">Om</string>
   <string name="action_donate">Donere</string>
   <string name="action_feedback">Tilbakemeldinger</string>

@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Μεταβείτε στις Ρυθμίσεις &gt; Ασφάλεια &gt; Πρόσβαση στις ειδοποιήσεις και ενεργοποιήστε το AcDisplay.</string>
   <string name="permissions_usage_stats">Στατιστικά χρήσης</string>
   <string name="permissions_usage_stats_description">Αναγκαίο για την αποφυγή της αντικατάστασης των ειδοποιήσεων και κλήσεων.</string>
+  <string name="permissions_usage_stats_error">Ο κατασκευαστής της συσκευής έχει αφαιρέσει αυτό το δικαίωμα από το λογισμικό Android. Δεν υπάρχει άλλος τρόπος να διορθωθεί αυτό το πρόβλημα, εκτός από το να περιμένετε από τον κατασκευαστή να το διορθώσει.</string>
   <string name="action_about">Σχετικά</string>
   <string name="action_donate">Δωρεά</string>
   <string name="action_feedback">Σχόλια</string>

@@ -33,6 +33,7 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="permissions_notifications_grant_manually">Gehe zu Einstellungen &gt; Sicherheit &gt; Benachrichtigungszugriff und aktiviere AcDisplay.</string>
   <string name="permissions_usage_stats">Nutzungsstatistiken</string>
   <string name="permissions_usage_stats_description">Zur Vermeidung der Überlagerung von Wecker und Telefon-Anwendungen erforderlich.</string>
+  <string name="permissions_usage_stats_error">Der Hersteller hatte diese öffentliche Berechtigung aus seiner Android-Version entfernt. Es gibt keine Möglichkeit, dieses Problem zu beheben, außer auf ein entsprechendes Update vom Hersteller zu warten.</string>
   <string name="action_about">Über</string>
   <string name="action_donate">Spenden</string>
   <string name="action_feedback">Rückmeldung</string>

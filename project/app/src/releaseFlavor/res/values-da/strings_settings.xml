@@ -34,10 +34,14 @@
   <string name="settings_more_title">Mere&#8230;</string>
   <string name="settings_dev_title">Udvikling</string>
   <string name="settings_keyguard_description">Brug AcDisplay som låseskærm. Dette er en betafunktion og kan være ustabil.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Aktiver når der er ingen underretninger</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Aktiv tilstand bruger enhedens sensorer til at vække din enhed op, når du har brug for det. Dette virker fremragende til at tage din enhed op fra din lomme for at få et hurtigt glimt af dine underretninger. Aktiv tilstand holder ikke CPU\'en kørende, så du bør ikke opleve noget stigende batteriforbrug.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Aktiver når der er ingen underretninger</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktiv tilstand er aktiveret, uanset om der er underretninger eller ej.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktiv tilstand er deaktiveret, når der ingen underretninger er.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Efter %1$s / %2$s sekunders inaktivitet.</string>
   <string name="settings_icon_size_title">Ikonstørrelse</string>
   <string name="settings_icon_size_summary">Nuværende ikonstørrelse er %1$s dip.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">Adfærd</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lås efter at have afvist sidste underretning</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Skærmen slukker efter du har afvist sidste underretning.</string>
@@ -92,4 +97,6 @@ til:<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_sec">%1$s sek.</string>
   <string name="preference_icon_size_message">Tilpas størrelsen for underretningsikonerne.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>

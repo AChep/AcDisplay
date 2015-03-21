@@ -34,10 +34,14 @@
   <string name="settings_more_title">Meer&#8230;</string>
   <string name="settings_dev_title">Ontwikkeling</string>
   <string name="settings_keyguard_description">Gebruik AcDisplay als het vergrendelscherm. Dit is een beta functie en kan instabiel zijn.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Uitschakelen tijdens niet actief</string>
+  <string name="settings_active_disable_on_low_battery_title">Uitschakelen bij lage batterij</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Inschakelen wanneer er geen meldingen zijn</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Vergrendelscherm is ingeschakeld ongeacht of er notificaties zijn of niet.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Vergrendelscherm is uitgeschakeld wanneer er geen notificaties zijn.</string>
+  <string name="settings_active_active_charging_title">Altijd beweging detecteren tijdens opladen</string>
   <string name="settings_active_description">Actieve modus gebruikt de sensoren van je toestel om je toestel wakker te maken wanneer je het nodig bent. Dit werkt geweldig wanneer je je toestel uit je zak wilt halen en een vlugge blik wilt werpen op de notificaties die je hebt ontvangen. Actieve modus houdt de processor niet wakker, dus je zou weinig verschil in batterij verbruik moeten zien.</string>
+  <string name="settings_active_respect_inactive_time_title">Uitschakelen tijdens niet actief</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Inschakelen wanneer er geen meldingen zijn</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Actieve modus is ingeschakeld, ongeacht of er meldingen zijn of niet.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Actieve modus is uitgeschakeld wanneer er geen meldingen zijn.</string>
@@ -72,13 +76,14 @@
   <string name="settings_timeout_summary">Na %1$s / %2$s seconden inactiviteit.</string>
   <string name="settings_icon_size_title">Icoon grootte</string>
   <string name="settings_icon_size_summary">Huidige grootte van icoontjes is %1$s dip.</string>
+  <string name="settings_double_tap_to_sleep_title">Dubbel-aanraken om scherm uit te schakelen</string>
   <string name="settings_behavior_category">Gedrag</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Vergrendelen na annuleren van laatste melding</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Scherm wordt uitgeschakeld na het annuleren van de laatste zichtbare melding.</string>
   <string name="settings_lock_on_dismiss_last_notify_off">Scherm blijft aan na het annuleren van de laatste zichtbare melding.</string>
   <string name="settings_widget_pinnable_title">Pinbare meldingen</string>
   <string name="settings_widget_pinnable_on">Melding widget blijft uitgeklapt voor enkele seconden nadat je het hebt aangeraakt.</string>
-  <string name="settings_privacy_mode_title">Privacy (on secure lock)</string>
+  <string name="settings_privacy_mode_title">Privacy (tijdens secure lock)</string>
   <string name="settings_privacy_mode_disabled">Uitgeschakeld</string>
   <string name="preference_inactive_hours_enabled">Inactieve uren ingeschakeld</string>
   <string name="preference_inactive_hours_from"><![CDATA[
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s sec.</string>
   <string name="preference_icon_size_message">De grootte van het bericht-icoon aanpassen.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Willekeurige kleuren</string>
+  <string name="preference_colorpicker_custom_color">Gedefinieerde kleur</string>
 </resources>

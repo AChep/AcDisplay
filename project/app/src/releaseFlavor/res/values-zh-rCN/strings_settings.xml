@@ -34,10 +34,14 @@
   <string name="settings_more_title">更多</string>
   <string name="settings_dev_title">开发</string>
   <string name="settings_keyguard_description">用 AcDisplay 替换默认锁屏界面。这是一项测试功能，可能并不稳定。</string>
+  <string name="settings_keyguard_respect_inactive_time_title">在休眠期间停用</string>
+  <string name="settings_active_disable_on_low_battery_title">在低电量时停用</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">在没有通知时启用</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">无论是否有通知都替换默认锁屏界面</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">在没有通知时不替换默认锁屏界面</string>
+  <string name="settings_active_active_charging_title">在充电时总是侦测动作</string>
   <string name="settings_active_description">主动模式使用光线传感器来唤醒您的设备。当你从口袋里拿出手机，想看看是否有通知时，屏幕会自动唤醒。主动模式不会使 CPU 持续运作，所以设备应当不会有明显耗电。</string>
+  <string name="settings_active_respect_inactive_time_title">在休眠期间停用</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">在没有通知时启用</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">无论是否有通知都主动提示</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">在没有通知时不主动提示</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">在 %1$s 秒的休眠期内 %2$s 秒无操作后恢复到睡眠状态</string>
   <string name="settings_icon_size_title">图标尺寸</string>
   <string name="settings_icon_size_summary">当前图标大小为 %1$s dpi</string>
+  <string name="settings_double_tap_to_sleep_title">轻按两下即可休眠</string>
   <string name="settings_behavior_category">行为</string>
   <string name="settings_lock_on_dismiss_last_notify_title">隐藏最后一条通知后锁定</string>
   <string name="settings_lock_on_dismiss_last_notify_on">在隐藏最后一条通知后锁定屏幕</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s 秒</string>
   <string name="preference_icon_size_message">调整通知图标大小</string>
   <string name="preference_icon_size_dpi">%1$s dpi</string>
+  <string name="preference_colorpicker_random_color">随机颜色</string>
+  <string name="preference_colorpicker_custom_color">自定颜色</string>
 </resources>

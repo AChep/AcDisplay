@@ -29,14 +29,14 @@
     <item>Értesítési ikon</item>
   </string-array>
   <string-array name="privacy_mode">
-    <item>Hide notifications\' content</item>
-    <item>Hide notifications\' actions</item>
+    <item>Értesítés tartalmának elrejtése</item>
+    <item>Értesítési műveletek elrejtése</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
-    <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Fontos és sürgős (nem fogadott hívások, irányok, vészhelyzeti figyelmeztetések)</item>
+    <item>Fontos (kommunikáció, fontos levelek)</item>
+    <item>Normál (+régi alkalmazások értesítései)</item>
+    <item>Nem fontos (szoftverfrissítések, levélszemét)</item>
+    <item>Környezetfüggő és háttér információ (időjárás, lejárt események, javaslatok)</item>
   </string-array>
 </resources>

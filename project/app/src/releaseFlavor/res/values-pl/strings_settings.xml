@@ -34,10 +34,14 @@
   <string name="settings_more_title">Więcej&#8230;</string>
   <string name="settings_dev_title">Rozwój</string>
   <string name="settings_keyguard_description">Użyj AcDisplay jako ekran blokady. Ta funkcja jest w wersji beta i może być niestabilna.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Wyłącz w czasie nieaktywności</string>
+  <string name="settings_active_disable_on_low_battery_title">Wyłącz przy niskim poziomie baterii</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Włącz, gdy nie ma powiadomień</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Ekran blokady jest włączony bez względu na to, czy są powiadomienia, czy nie.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Ekran blokady jest wyłączony gdzy nie ma żadnych powiadomień.</string>
+  <string name="settings_active_active_charging_title">Zawsze monitoruj ruch podczas ładowania</string>
   <string name="settings_active_description">Tryb aktywny używa sensorów urządzenia, aby wybudzić urządzenie wtedy, gdy tego potrzebujesz. To działa świetnie, gdy wyciągasz urządzenie z kieszeni, aby zerknąć na powiadomienia. Tryb aktywny nie używa procesora, więc nie powinno występować zwiększone użycie baterii.</string>
+  <string name="settings_active_respect_inactive_time_title">Wyłącz w czasie nieaktywności</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Włącz, gdy nie ma powiadomień</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Tryb aktywny jest włączony niezależnie od powiadomień.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Tryb aktywny jest wyłączony, gdy nie ma powiadomień.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Po %1$s / %2$s sekundach braku aktywności.</string>
   <string name="settings_icon_size_title">Rozmiar ikony</string>
   <string name="settings_icon_size_summary">Bieżący rozmiar ikon to %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Podwójne dotknięcie ekranu usypia urzadzenie</string>
   <string name="settings_behavior_category">Zachowanie</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Zablokuj po usunięciu ostatniego powiadomienia</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Ekran zostanie wyłączony po usunięciu ostatniego obecnego powiadomienia.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s sek.</string>
   <string name="preference_icon_size_message">Dostosuj rozmiar ikon powiadomień.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Losowe kolory</string>
+  <string name="preference_colorpicker_custom_color">Określony kolor</string>
 </resources>

@@ -34,10 +34,14 @@
   <string name="settings_more_title">Mer&#8230;</string>
   <string name="settings_dev_title">Utvikling</string>
   <string name="settings_keyguard_description">Bruk AcDisplay som låseskjerm. Dette er en beta-funksjon og er ustabilt.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Deaktivere ved inaktivitet</string>
+  <string name="settings_active_disable_on_low_battery_title">Deaktivere ved lavt batterinivå</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Aktiver når det ikke er noen varsler</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Låseskjermen er aktivert uansett om det finnes varsler eller ikke.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Låseskjermen deaktiveres når det ikke er noen varsler.</string>
+  <string name="settings_active_active_charging_title">Alltid lytte til bevegelse under lading</string>
   <string name="settings_active_description">Aktiv modus bruker enhetens sensorer for å vekke enheten akkurat når du trenger den. Dette fungerer for å trekke enheten opp fra lommen å ta en kjapp titt på meldinger. Aktiv modus gjør ikke at CPU kjører, så du ikke bør oppleve økt batteribruk.</string>
+  <string name="settings_active_respect_inactive_time_title">Deaktivere ved inaktivitet</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Aktiver når det ikke er noen varsler</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktiv modus er aktivert uansett om det finnes varsler eller ikke.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktiv modus deaktiveres når det ikke er varsler.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Etter %1$s / %2$s sekunder med inaktivitet.</string>
   <string name="settings_icon_size_title">Ikonstørrelse</string>
   <string name="settings_icon_size_summary">Gjeldende størrelse på ikonene er %1$s PPT.</string>
+  <string name="settings_double_tap_to_sleep_title">Dobbelttapp for å slukke skjerm</string>
   <string name="settings_behavior_category">Atferd</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lås når siste varsel avvises</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Skjermen slås av etter at siste varsling er avvist.</string>
@@ -88,4 +93,6 @@
   <string name="preference_timeout_sec">%1$s sek.</string>
   <string name="preference_icon_size_message">Justere størrelsen på meldingsikoner.</string>
   <string name="preference_icon_size_dpi">%1$s PPT.</string>
+  <string name="preference_colorpicker_random_color">Tilfeldige farger</string>
+  <string name="preference_colorpicker_custom_color">Definerte farge</string>
 </resources>

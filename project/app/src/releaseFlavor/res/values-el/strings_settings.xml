@@ -34,10 +34,14 @@
   <string name="settings_more_title">Περισσότερα&#8230;</string>
   <string name="settings_dev_title">Ανάπτυξη</string>
   <string name="settings_keyguard_description">Χρήση του AcDisplay ως οθόνη κλειδώματως. Αυτό είναι μια δοκιμαστική λειτουργία και μπορεί να είναι ασταθής.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Απενεργοποίηση όταν δεν χρησιμοποιείται</string>
+  <string name="settings_active_disable_on_low_battery_title">Απενεργοποίηση όταν η στάθμη της μπαταρίας είναι χαμηλή</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Ενεργοποίηση όταν δεν υπάρχουν ειδοποιήσεις</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Η οθόνη κλειδώματος είναι ενεργοποιημένη ασχέτως αν υπάρχουν ειδοποιήσεις η όχι.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Η οθόνη κλειδώματος είναι απενεργοποιημένη όταν δεν υπάρχουν ειδοποιήσεις.</string>
+  <string name="settings_active_active_charging_title">Συνεχής παρακολούθηση της κίνησης καθώς φορτίζει</string>
   <string name="settings_active_description">Η ενεργή λειτουργεία χρησιμοποιεί τους αισθητήρες της συσκευής σας για να την αφυπνίσει ακριβώς όταν την χρειάζεστε. Αυτό λειτουργεί τέλεια σε περιπτώσεις όπως όταν βγάζετε τη συσκευή από την τσέπη σας για να δείτε με μια ματιά τις ειδοποιήσεις. Η ενεργή λειτουργεία δεν κρατεί ενεργή την CPU, οπότε δεν τίθεται μεγάλο θέμα κατανάλωσης μπαταρίας.</string>
+  <string name="settings_active_respect_inactive_time_title">Απενεργοποίηση όταν δεν χρησιμοποιείται</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Ενεργοποίηση όταν δεν υπάρχουν ειδοποιήσεις</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Η ενεργή λειτουργία είναι ενεργή ανεξαρτήτως του αν υπάρχουν ειδοποιήσεις ή όχι.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Η ενεργή λειτουργία είναι απενεργοποιημένη όταν δεν υπάρχουν ειδοποιήσεις.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Έπειτα από %1$s / %2$s δευτερόλεπτα αδράνειας.</string>
   <string name="settings_icon_size_title">Μέγεθος εικονιδίων</string>
   <string name="settings_icon_size_summary">Το τρέχον μέγεθος των εικονιδίων είναι %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Διπλό χτύπημα για μετάβαση σε αδράνεια</string>
   <string name="settings_behavior_category">Συμπεριφορά</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Κλείδωμα κατά την αποδέσμευση της τελευταίας ειδοποίησης</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Η οθόνη απενεργοποιείται όταν αποδεσμευθεί η τελευταία παρούσα ειδοποίηση.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s δευτ.</string>
   <string name="preference_icon_size_message">Ρυθμίστε το μέγεθος των εικονιδίων ειδοποιήσεων.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Τυχαία χρώματα</string>
+  <string name="preference_colorpicker_custom_color">Καθορισμένο χρώμα</string>
 </resources>

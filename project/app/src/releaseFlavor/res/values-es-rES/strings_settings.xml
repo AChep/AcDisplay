@@ -34,10 +34,14 @@
   <string name="settings_more_title">Más&#8230;</string>
   <string name="settings_dev_title">Desarrollo</string>
   <string name="settings_keyguard_description">Usar AcDisplay como pantalla de bloqueo. Esta es una característica de prueba y puede ser inestable.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Desactivar en modo inactivo</string>
+  <string name="settings_active_disable_on_low_battery_title">Desactivar con batería baja</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Habilitar cuando no hayan notificaciones</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Se usará la pantalla de bloqueo independientemente de que hayan notificaciones o no.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">La pantalla de bloqueo se desactivará cuando no hayan notificaciones.</string>
+  <string name="settings_active_active_charging_title">Siempre escuchar el movimiento mientras carga</string>
   <string name="settings_active_description">El Modo activo utiliza los sensores del dispositivo para despertar  la pantalla sólo cuando lo necesite. Esto funciona muy bien para sacar el dispositivo de su bolsillo y echar un vistazo rápido a las notificaciones. El Modo activo no mantiene la CPU en funcionamiento constante, así que no debería notar un uso mayor de la batería.</string>
+  <string name="settings_active_respect_inactive_time_title">Desactivar en modo inactivo</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Habilitar cuando no hayan notificaciones</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Modo activo está habilitado independientemente de si hay notificaciones o no.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Modo activo esta deshabilitado cuando no hay notificaciones.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Después de %1$s / %2$s segundos de inactividad.</string>
   <string name="settings_icon_size_title">Tamaño del icono</string>
   <string name="settings_icon_size_summary">El tamaño actual de los iconos es de %1$s DPI.</string>
+  <string name="settings_double_tap_to_sleep_title">Tocar dos veces la pantalla para dormir </string>
   <string name="settings_behavior_category">Comportamiento</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Bloqueo al descartar la última notificación</string>
   <string name="settings_lock_on_dismiss_last_notify_on">La pantalla se apaga después de descartar la presente notificación.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s seg.</string>
   <string name="preference_icon_size_message">Ajustar el tamaño de los iconos de notificación.</string>
   <string name="preference_icon_size_dpi">%1$s DPI.</string>
+  <string name="preference_colorpicker_random_color">Colores aleatorios </string>
+  <string name="preference_colorpicker_custom_color">Define el color </string>
 </resources>

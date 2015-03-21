@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Allez dans Paramètres &gt; Sécurité &gt; Accès aux notifications puis cocher AcDisplay.</string>
   <string name="permissions_usage_stats">Statistiques d\'utilisation</string>
   <string name="permissions_usage_stats_description">Nécessaire pour éviter de masquer les alarmes et les appels téléphoniques.</string>
+  <string name="permissions_usage_stats_error">Le fabricant de votre appareil a retiré cette autorisation de sa version d\'Android. Il n\'y a aucun moyen de résoudre le problème, sauf attendre le correctif du fabricant.</string>
   <string name="action_about">À propos</string>
   <string name="action_donate">Faire un don</string>
   <string name="action_feedback">Commentaires</string>

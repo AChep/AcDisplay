@@ -34,10 +34,14 @@
   <string name="settings_more_title">더보기...</string>
   <string name="settings_dev_title">개발</string>
   <string name="settings_keyguard_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">알림이 없을 때에도 활성화</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">액티브 모드는 당신이 필요할 때 기기의 센서를 이용하여 기기를 켜 줍니다. 주머니에서 기기를 꺼내 잠깐 알림을 볼 때 매우 유용합니다. 액티브 모드는 CPU를 계속해서 사용하지 않으며, 따라서 배터리 소모를 크게 증가시키지 않습니다.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">알림이 없을 때에도 활성화</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">알림의 유무와 상관 없이 액티브 모드를 활성화합니다.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">알림이 없으면 액티브 모드가 활성화되지 않습니다.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">%1$s / %2$s초 동안 아무런 반응이 없으면 자동으로 화면이 꺼집니다.</string>
   <string name="settings_icon_size_title">아이콘 크기</string>
   <string name="settings_icon_size_summary">현재 아이콘 크기는 %1$s dpi입니다.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">동작</string>
   <string name="settings_lock_on_dismiss_last_notify_title">마지막 알림을 해제하면 자동으로 화면 잠금</string>
   <string name="settings_lock_on_dismiss_last_notify_on">마지막 알림을 지우며 화면을 끄게 합니다.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s 초.</string>
   <string name="preference_icon_size_message">알림 아이콘의 크기를 조정 합니다.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>

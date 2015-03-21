@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Ir a ajustes &gt; Seguridad &gt; Acceso a notificaciones y comprueba que AcDisplay está seleccionado.</string>
   <string name="permissions_usage_stats">Estadísticas de uso</string>
   <string name="permissions_usage_stats_description">Necesario para evitar la superposición de aplicaciones despertador y teléfono.</string>
+  <string name="permissions_usage_stats_error">El fabricante del dispositivo a eliminado esta autorización de la versión de Android. No hay manera de arreglar esto, excepto esperar respuesta y arreglo por parte del fabricante.    </string>
   <string name="action_about">Acerca de</string>
   <string name="action_donate">Donar</string>
   <string name="action_feedback">Retroalimentación</string>

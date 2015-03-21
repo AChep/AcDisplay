@@ -34,10 +34,14 @@
   <string name="settings_more_title">その他</string>
   <string name="settings_dev_title">開発</string>
   <string name="settings_keyguard_description">AcDisplayをロック画面に使用します。ベータ機能なので不安定である可能性があります。</string>
+  <string name="settings_keyguard_respect_inactive_time_title">アクティブではない時間に無効にする</string>
+  <string name="settings_active_disable_on_low_battery_title">低バッテリー時に無効にする</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">通知が無い場合も有効にする</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">通知の有無に関わらずロック画面を有効にする</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">通知が無いときにロック画面を無効にする</string>
+  <string name="settings_active_active_charging_title">充電中は常にモーションを検知する</string>
   <string name="settings_active_description">アクティブモードはデバイスのセンサーを使用し、必要に応じてデバイスをウェイクアップさせます。これによりポケットからデバイスを取り出すだけで素早く通知を確認することができます。アクティブモードはCPUの実行を継続しませんのでバッテリーの消費に大きな影響を与えることはありません。</string>
+  <string name="settings_active_respect_inactive_time_title">アクティブではない時間に無効にする</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">通知が無い場合も有効にする</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">通知の有無に関わらずアクティブモードを有効にする</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">通知が無い場合はアクティブモードを無効にする</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary"> %1$s / %2$s 秒後にスリープ</string>
   <string name="settings_icon_size_title">アイコンのサイズ</string>
   <string name="settings_icon_size_summary">現在のアイコンのサイズは %1$s dpi です。</string>
+  <string name="settings_double_tap_to_sleep_title">ダブルタップするとスリープ</string>
   <string name="settings_behavior_category">動作</string>
   <string name="settings_lock_on_dismiss_last_notify_title">最後の通知を閉じるとロック</string>
   <string name="settings_lock_on_dismiss_last_notify_on">最後に表示した通知を閉じた後で画面をオフにします。</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s 秒</string>
   <string name="preference_icon_size_message">通知アイコンのサイズを調整します。</string>
   <string name="preference_icon_size_dpi">%1$s dpi です。</string>
+  <string name="preference_colorpicker_random_color">ランダムな色</string>
+  <string name="preference_colorpicker_custom_color">定義済みの色</string>
 </resources>

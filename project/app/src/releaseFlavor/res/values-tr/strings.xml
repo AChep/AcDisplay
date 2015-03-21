@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Ayarlara gidin &gt; Güvenlik &gt; Bildirimlere erişim ve AcDisplay \'i etkinleştirin.</string>
   <string name="permissions_usage_stats">Kullanım istatistikleri</string>
   <string name="permissions_usage_stats_description">Alarmın ve telefon uygulamalarının fazla yüklenmesinden kaçınılması gerekti.</string>
+  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
   <string name="action_about">Hakkında</string>
   <string name="action_donate">Bağış</string>
   <string name="action_feedback">Geri bildirim</string>

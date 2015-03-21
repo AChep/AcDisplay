@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Ga naar instellingen &gt; Beveiliging &gt; Toegang tot meldingen en zet AcDisplay aan.</string>
   <string name="permissions_usage_stats">Gebruiksstatistieken</string>
   <string name="permissions_usage_stats_description">Nodig om het overlappen van de telefoon en alarm apps te vermijden.</string>
+  <string name="permissions_usage_stats_error">De toestelfabrikant heeft deze publieke toestemming verwijderd van zijn Android versie. Er is geen enkele manier om dit probleem op te lossen, behalve wachten op een oplossing door de fabrikant zelf.</string>
   <string name="action_about">Over</string>
   <string name="action_donate">Doneer</string>
   <string name="action_feedback">Feedback</string>
@@ -54,7 +55,7 @@
   <string name="notification_init_text">Negeer deze melding.</string>
   <string name="notification_test_message">Dit is een test bericht.</string>
   <string name="notification_test_message_large">Sleep omlaag om de melding te verwijderen. \nSleep overal om te ontgrendelen.</string>
-  <string name="privacy_mode_hidden_content">Hidden content.</string>
+  <string name="privacy_mode_hidden_content">Verborgen inhoud.</string>
   <string name="remote_enable_acdisplay">AcDisplay is ingeschakeld.</string>
   <string name="remote_disable_acdisplay">AcDisplay is uitgeschakeld.</string>
   <string name="service_bath">AcDisplay diensten</string>

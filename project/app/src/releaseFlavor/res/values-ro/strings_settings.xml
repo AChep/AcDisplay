@@ -34,10 +34,14 @@
   <string name="settings_more_title">Detalii...</string>
   <string name="settings_dev_title">Dezvoltare</string>
   <string name="settings_keyguard_description">Foloseste AcDisplay ca ecran de blocare. Aceasta este o caracteristica BETA si poate fii instabila.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Activ când nu sunt notificări</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Ecranul de blocare este activat indiferent daca sunt notificari sau nu.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Ecranul de blocare este Inactiv atunci cand nu sunt notificari.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Modul activ utilizează senzorii dispozitivului pentru a-l trezi doar atunci când aveţi nevoie. Funcţionează de minune când aparatul este scos din buzunar pentru o privire rapidă peste notificări. Modul activ nu este intensiv, astfel încât nu ar trebui să consume baterie.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Activ când nu sunt notificări</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Modul activ este activat indiferent dacă sunt notificări sau nu.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Modul activ este dezactivat când nu sunt notificări.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">După %1$s / %2$s secunde de inactivitate.</string>
   <string name="settings_icon_size_title">Dimensiunea icoanei</string>
   <string name="settings_icon_size_summary">Dimensiunea actuala a icoanei este %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">Comportament</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lock on dismiss last notification</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Screen turns off after dismissing last present notification.</string>
@@ -88,4 +93,6 @@
   <string name="preference_timeout_sec">%1$s sec.</string>
   <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>

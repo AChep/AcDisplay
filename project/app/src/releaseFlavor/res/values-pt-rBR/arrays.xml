@@ -20,7 +20,7 @@
   -->
 <resources>
   <string-array name="feedback_types">
-    <item>Erro</item>
+    <item>Problema</item>
     <item>Sugestão</item>
     <item>Outro</item>
   </string-array>
@@ -37,6 +37,6 @@
     <item>Importante (comunicações, email importante)</item>
     <item>Normal (+notificações de apps antigos)</item>
     <item>Não importantes (atualizações de software, lixo eletrônico)</item>
-    <item>Contextual e informações do ambiente (tempo, eventos expirados, sugestões)</item>
+    <item>Informação contextual e de fundo (tempo, eventos expirados, sugestões)</item>
   </string-array>
 </resources>

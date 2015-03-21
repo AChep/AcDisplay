@@ -34,10 +34,14 @@
   <string name="settings_more_title">Ещё&#8230;</string>
   <string name="settings_dev_title">Для разработчиков</string>
   <string name="settings_keyguard_description">Использовать AcDisplay как экран блокировки. Функция находится в состоянии тестирования и может быть нестабильна.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Отключить в неактивное время</string>
+  <string name="settings_active_disable_on_low_battery_title">Отключить при разряженной батареи</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Включить когда нет уведомлений</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен всегда, вне зависимости от наличия текущих уведомлений.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, когда список уведомлений пуст.</string>
+  <string name="settings_active_active_charging_title">Постоянно отслеживать движение во время зарядки</string>
   <string name="settings_active_description">Активный режим включает экран при необходимости. Вы можете взглянуть на время или уведомления, достав устройство из кармана. Эта функция не блокирует переход в спящий режим, потому не увеличит расход батареи.</string>
+  <string name="settings_active_respect_inactive_time_title">Отключить в неактивное время</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Включить когда нет уведомлений</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Активный режим включен всегда, вне зависимости от наличия текущих уведомлений.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Активный режим временно отключается, когда список уведомлений пуст.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">После %1$s / %2$s секунд бездействия.</string>
   <string name="settings_icon_size_title">Размер иконки</string>
   <string name="settings_icon_size_summary">Текущий размер иконок: %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Выключить экран по двойному касанию</string>
   <string name="settings_behavior_category">Поведение</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Выкл. экран после удал. посл. уведомления</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Экран выключается при удалении последнего уведомления.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s сек.</string>
   <string name="preference_icon_size_message">Измените размер иконок уведомлений:</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Случайный цвет</string>
+  <string name="preference_colorpicker_custom_color">Определенный цвет</string>
 </resources>

@@ -34,10 +34,14 @@
   <string name="settings_more_title">Још&#8230;</string>
   <string name="settings_dev_title">Развој</string>
   <string name="settings_keyguard_description">Користи AcDisplay као закључавање екрана. Ово је бета опција и може бити нестабилна.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Активирај када нема обавештења</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Закључавање екрана је активирано без обзира да ли постоје обавештења или не.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Закључавање екрана је деактивирано када нема обавештења.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Активни режим користи сензоре на уређају да би пробудио ваш уређај када је то потребно. Ово је одлично када извадите телефон из џепа и тада можете добити брзи увид у ваша пристигла обавештења. Активни режим не држи процесор у сталном раду, тако да не би требали да искусите повећану потрошњу батерије.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Активирај када нема обавештења</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Активни режим је активиран без обзира да ли постоје обавештења или не.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Активни режим је деактивиран када не постоје обавештења.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">После %1$s / %2$s секунди неактивности.</string>
   <string name="settings_icon_size_title">Величина иконице</string>
   <string name="settings_icon_size_summary">Тренутна величина иконица је %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">Понашање</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Закључај при отказивању последњег обавештења</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екран се гаси после отказивања последње приказаног обавештења.</string>
@@ -90,4 +95,6 @@
   <string name="preference_timeout_sec">%1$s секунди.</string>
   <string name="preference_icon_size_message">Подеси величину иконица обавештења.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>

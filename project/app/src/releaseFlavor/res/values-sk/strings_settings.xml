@@ -34,10 +34,14 @@
   <string name="settings_more_title">Viac&#8230;</string>
   <string name="settings_dev_title">Vývoj</string>
   <string name="settings_keyguard_description">Použiť AcDisplay ako uzamykaciu obrazovku. Táto funkcia je len v beta testovaní a môže byť nestabilná.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Počas neaktívnej doby zakázať</string>
+  <string name="settings_active_disable_on_low_battery_title">Zakázať pri nízkej úrovni batérie</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Povoliť, keď nie sú žiadne oznámenia</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Bez ohľadu na to, či sú oznámenia alebo nie, je Lockscreen povolený.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Ak nie sú žiadne upozornenia, Lockscreen je vypnutý.</string>
+  <string name="settings_active_active_charging_title">Počas nabíjania vždy venovať pozornosť pohybu</string>
   <string name="settings_active_description">Aktívny režim používa senzory zariadenia na jeho prebudenie vtedy, keď to potrebujete. Funguje to skvele pri vytiahnutí zariadenia z vrecka pre získanie rýchleho prehľadu o oznámeniach. Aktívny režim nezaťažuje procesor, takže by ste nemali zaznamenať zvýšené vybíjanie batérie.</string>
+  <string name="settings_active_respect_inactive_time_title">Počas neaktívnej doby zakázať</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Povoliť, keď nie sú žiadne oznámenia</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktívny režim je povolený bez ohľadu na to, či sú k dispozícii oznámenia alebo nie.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktívny režim je vypnutý, keď nie sú k dispozícii žiadne oznámenia.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Po %1$s / %2$s sekundách neaktivity.</string>
   <string name="settings_icon_size_title">Veľkosť ikony</string>
   <string name="settings_icon_size_summary">Aktuálna veľkosť ikony je %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Pre uspanie dvakrát poklepať</string>
   <string name="settings_behavior_category">Správanie</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Zamknúť pri zrušení posledného oznámenia</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Obrazovka sa vypne po odmietnutí posledného oznámenia.</string>
@@ -92,4 +97,6 @@ do:<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_sec">%1$s sekúnd.</string>
   <string name="preference_icon_size_message">Upravte veľkosť ikony oznámenia.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Náhodné farby</string>
+  <string name="preference_colorpicker_custom_color">Definovaná farba</string>
 </resources>

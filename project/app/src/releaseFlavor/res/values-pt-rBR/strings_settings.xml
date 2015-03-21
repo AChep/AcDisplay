@@ -33,11 +33,15 @@
   <string name="settings_interface_title">Interface</string>
   <string name="settings_more_title">Mais&#8230;</string>
   <string name="settings_dev_title">Desenvolvimento</string>
-  <string name="settings_keyguard_description">Use AcDisplay como a Tela de Bloqueio. Isso é uma função beta e pode ser instável.</string>
+  <string name="settings_keyguard_description">Usar AcDisplay como Tela de Bloqueio. Isso é uma função beta e pode ser instável.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Desabilitar quando inativo</string>
+  <string name="settings_active_disable_on_low_battery_title">Desabilitar com bateria baixa</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Habilitar quando não há nenhuma notificação</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Tela de bloqueio está ativado independentemente se há notificações ou não.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Tela de bloqueio é desativado quando não houver nenhuma notificação.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Tela de bloqueio está ativada independente da existência de notificações.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Tela de bloqueio é desativada quando não houver notificações.</string>
+  <string name="settings_active_active_charging_title">Sempre monitorar o movimento ao carregar</string>
   <string name="settings_active_description">O modo ativo usa os sensores do dispositivo para despertar seu dispositivo apenas quando você precisa. Isso funciona muito bem ao retirar o seu dispositivo de bolso para obter uma rápida verificada em suas notificações. O modo ativo não mantém a CPU ativa, então você não deve ter um gasto da bateria.</string>
+  <string name="settings_active_respect_inactive_time_title">Desabilitar quando inativo</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Habilitar quando não há nenhuma notificação</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Modo ativo é habilitado independentemente se há notificações ou não.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Modo ativo é desativado quando não há nenhuma notificação.</string>
@@ -46,7 +50,7 @@
   <string name="settings_notify_max_priority_title">Prioridade máxima</string>
   <string name="settings_full_screen_title">Modo de tela inteira</string>
   <string name="settings_use_wallpaper_title">Usar papel de parede</string>
-  <string name="settings_use_wallpaper_on">Papel de parede da sua tela inicial é usado como plano de fundo.</string>
+  <string name="settings_use_wallpaper_on">Papel de parede da sua tela inicial será usado como plano de fundo.</string>
   <string name="settings_use_wallpaper_off">Fundo preto.</string>
   <string name="settings_dynamic_background_title">Fundo dinâmico</string>
   <string name="settings_dynamic_background_summary">Estas são usadas como imagem de fundo: %1$s</string>
@@ -54,7 +58,7 @@
   <string name="settings_status_battery_always_visible">Sempre mostrar o status da bateria</string>
   <string name="settings_status_battery_always_visible_off">Status da bateria só será mostrado quando com pouca ou carregando.</string>
   <string name="settings_emoticons_title">Emoticons</string>
-  <string name="settings_override_fonts_title">Substituição de fontes do sistema</string>
+  <string name="settings_override_fonts_title">Substituir fontes do sistema</string>
   <string name="settings_circle_category">Desbloquear círculo</string>
   <string name="settings_circle_animation_title">Desbloquear animação</string>
   <string name="settings_circle_color_inner_title">Cor do Círculo</string>
@@ -63,7 +67,7 @@
   <string name="settings_dev_sensors_dump_on">Continuamente salva o estado do dispositivo e dados de sensores para o arquivo no armazenamento.</string>
   <string name="settings_dev_sensors_dump_send_title">Enviar dados salvos</string>
   <string name="settings_only_while_charging_title">Apenas enquanto carrega</string>
-  <string name="settings_only_while_charging_on">AcDisplay só é ativado, enquanto o dispositivo está carregando. Isso se aplica a todas as funcionalidades tais como o modo ativo ou tela de bloqueio.</string>
+  <string name="settings_only_while_charging_on">AcDisplay só ficará ativado enquanto o dispositivo está carregando. Isso se aplica a todas as funcionalidades tais como o modo ativo ou tela de bloqueio.</string>
   <string name="settings_only_while_charging_off">Aplicativo está sempre ativo.</string>
   <string name="settings_inactive_hours_title">Horas de inatividade</string>
   <string name="settings_inactive_hours_disabled">Desabilitado</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Depois de %1$s / %2$s segundos de inatividade.</string>
   <string name="settings_icon_size_title">Tamanho do ícone</string>
   <string name="settings_icon_size_summary">Tamanho atual dos ícones é %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Toque duplo para dormir</string>
   <string name="settings_behavior_category">Comportamento</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Bloquear ao retirar a última notificação</string>
   <string name="settings_lock_on_dismiss_last_notify_on">A tela desligará ao retirar a última notificação recebida.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s seg.</string>
   <string name="preference_icon_size_message">Ajustar o tamanho dos ícones.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Cores aleatórias</string>
+  <string name="preference_colorpicker_custom_color">Cor definida</string>
 </resources>

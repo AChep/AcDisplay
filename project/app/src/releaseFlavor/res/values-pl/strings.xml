@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Przejdź do Ustawienia &gt; Zabezpieczenia &gt; Dostęp do powiadomień i zaznacz AcDisplay.</string>
   <string name="permissions_usage_stats">Statystyki użycia</string>
   <string name="permissions_usage_stats_description">Pozwala uniknąć nakładania się alarmu i aplikacji telefonu.</string>
+  <string name="permissions_usage_stats_error">Producent urządzenia usunął publiczne uprawnienie z jego wersji Androida. Błąd ten może usunąć jedynie producent urządzenia.</string>
   <string name="action_about">O aplikacji</string>
   <string name="action_donate">Wesprzyj</string>
   <string name="action_feedback">Opinie</string>

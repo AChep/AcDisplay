@@ -20,40 +20,40 @@
   -->
 <resources>
   <string name="about_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
-        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+        AcDisplay е безплатно и <a href="http://repo.acdisplay.org">open source</a> приложение.
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Всички права запазени.<br/>
         <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
+        Благодарности за този инструмент с отворен код: %1$s и на всички, които
+        <a href="http://translate.acdisplay.org">помогнаха с превода</a> или дариха.
     ]]></string>
-  <string name="donate_dialog_title">Donate to developers</string>
-  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
-  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
-  <string name="donate_thanks">Thank you very much!</string>
-  <string name="donation_1">An ice cream</string>
-  <string name="donation_4">A cup of coffee</string>
-  <string name="donation_10">Electricity bills</string>
-  <string name="donation_20">The right pillow</string>
-  <string name="donation_50">Solid-state drive</string>
-  <string name="donation_99">Sound system</string>
-  <string name="cry_dialog_title">Support development</string>
+  <string name="donate_dialog_title">Дарете на разработчиците</string>
+  <string name="donate_dialog_message">AcDisplay е свободен и с отворен код софтуер. Можете да покажете благодарност и подкрепа развитието чрез даряване:</string>
+  <string name="donate_alert_no_responsibility">Обърнете внимание, че Google не носи отговорност за този метод на плащане.</string>
+  <string name="donate_billing_not_supported">Покупки от приложението не се поддържат от устройството.</string>
+  <string name="donate_thanks">Много благодаря!</string>
+  <string name="donation_1">Сладолед</string>
+  <string name="donation_4">Чаша кафе</string>
+  <string name="donation_10">Сметки за електричество</string>
+  <string name="donation_20">Правилната възглавницата</string>
+  <string name="donation_50">SSD диск</string>
+  <string name="donation_99">Звукова система</string>
+  <string name="cry_dialog_title">Подпомагане развитието</string>
   <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
+        AcDisplay е безплатен и <a href="http://repo.acdisplay.org">open source</a> софтуер и ние и сме изразходвали
+        много време и ресурси за да го поддържаме актуален. Моля, ако имате желание направете дарение, за да покажете вашата благодарност 
+        и да подкрепите бъдещото развитие.
     ]]></string>
   <string name="help_dialog_title">Помощ</string>
   <string name="feedback_dialog_title">Обратна връзка</string>
-  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
-  <string name="feedback_dialog_attach_log">Attach a log</string>
-  <string name="feedback_dialog_read_help">Frequently asked questions</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
-  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
-  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
-  <string name="compat_dialog_title">Compatibility mode</string>
-  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
-  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
-  <string name="compat_dialog_item_music_widget">No music widget.</string>
+  <string name="feedback_dialog_message_hint">Вашето съобщение. Характеристики на устройството ще бъдат автоматично включени.</string>
+  <string name="feedback_dialog_attach_log">Прикачване на лог</string>
+  <string name="feedback_dialog_read_help">Често задавани въпроси</string>
+  <string name="feedback_error_no_app">Инсталирайте някое от имейл приложения.</string>
+  <string name="feedback_error_msg_too_short">Съобщението трябва да съдържа поне %1$d символи.</string>
+  <string name="feedback_error_accessing_log">Грешка при достъп до лог файла на приложението. Грешката е: %1$s</string>
+  <string name="compat_dialog_title">Режим на съвместимост</string>
+  <string name="compat_dialog_message">AcDisplay се изпълнява в режим на съвместимост за да работи с Андроид %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Защото AcDisplay се използва услугата на достъпност и не може да открие нотификации, които се отхвърлят/актуализират, или да отхвърли нотификация от листа с нотификации.</string>
+  <string name="compat_dialog_item_immersive_mode">Навигационна лента винаги да се показва.</string>
+  <string name="compat_dialog_item_music_widget">Няма музикална джаджа.</string>
 </resources>

@@ -31,13 +31,17 @@
   <string name="settings_app_settings_title">應用程式</string>
   <string name="settings_notification_title">通知</string>
   <string name="settings_interface_title">介面</string>
-  <string name="settings_more_title">更多設定...</string>
+  <string name="settings_more_title">更多</string>
   <string name="settings_dev_title">開發作業</string>
   <string name="settings_keyguard_description">將 AcDisplay 當做鎖定畫面。這項功能仍在測試階段，可能會有不穩定的情況。</string>
+  <string name="settings_keyguard_respect_inactive_time_title">在休息時段時停用</string>
+  <string name="settings_active_disable_on_low_battery_title">在低電量時停用</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">無論是否有通知，一律啟用鎖定畫面。</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">沒有通知時停用鎖定畫面。</string>
+  <string name="settings_active_active_charging_title">在充電時總是偵測動作</string>
   <string name="settings_active_description">主動模式會使用裝置的感應器來喚醒您的裝置。當您從口袋裡拿出手機，想快速查看是否有通知時，螢幕就會自動喚醒。主動模式不會使 CPU 持續運作，因此應該不會發生耗電增加的情形。</string>
+  <string name="settings_active_respect_inactive_time_title">在休息時段時停用</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">不論是否有通知，一律啟用主動模式。</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">沒有通知時停用主動模式。</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">%1$s 過後/%2$s 秒無任何操作後。</string>
   <string name="settings_icon_size_title">圖示大小</string>
   <string name="settings_icon_size_summary">目前圖示大小為 %1$s dpi。</string>
+  <string name="settings_double_tap_to_sleep_title">輕按兩下即可休眠</string>
   <string name="settings_behavior_category">行為</string>
   <string name="settings_lock_on_dismiss_last_notify_title">關閉最後一則通知後鎖定</string>
   <string name="settings_lock_on_dismiss_last_notify_on">隱藏最後一則通知之後關閉螢幕。</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s 秒</string>
   <string name="preference_icon_size_message">調整通知圖示的大小。</string>
   <string name="preference_icon_size_dpi">%1$s dpi。</string>
+  <string name="preference_colorpicker_random_color">隨機顏色</string>
+  <string name="preference_colorpicker_custom_color">自訂顏色</string>
 </resources>

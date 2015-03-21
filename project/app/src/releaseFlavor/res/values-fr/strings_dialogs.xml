@@ -35,7 +35,7 @@
   <string name="cry_dialog_message"><![CDATA[
          AcDisplay est une application gratuite et <a href="http://repo.acdisplay.org">open source</a> et nous passons beaucoup de temps et de ressources pour le développement. S\'il vous plaît, pensez à faire un don si vous appréciez notre travail et ainsi soutenir nos efforts futurs.]]></string>
   <string name="help_dialog_title">Aide</string>
-  <string name="feedback_dialog_title">Commentaires</string>
+  <string name="feedback_dialog_title">Commentaire</string>
   <string name="feedback_dialog_message_hint">Votre message. Les caractéristiques de votre appareil seront incluses automatiquement.</string>
   <string name="feedback_dialog_attach_log">Joindre un rapport d\'erreurs</string>
   <string name="feedback_dialog_read_help">Foire aux questions</string>

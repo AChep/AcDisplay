@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Přejdi do Nastavení &gt; Zabezpečení &gt; Přistup k oznámením a zaškrtni AcDisplay.</string>
   <string name="permissions_usage_stats">Statistiky využití</string>
   <string name="permissions_usage_stats_description">Je zapotřebí k zabránění překrývání budíku a telefonních aplikací.</string>
+  <string name="permissions_usage_stats_error">Výrobce zařízení odstranil toto veřejné oprávnění z jeho verze Android. Neexistuje žádný způsob, jak tento problém vyřešit, kromě samostatné opravy od výrobce.</string>
   <string name="action_about">O aplikaci</string>
   <string name="action_donate">Přispět</string>
   <string name="action_feedback">Zpětná vazba</string>

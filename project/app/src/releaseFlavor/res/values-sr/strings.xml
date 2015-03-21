@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Иди у Подешавања &gt; Безбедност &gt; Приступ обавештењима и штиклирај опцију AcDisplay.</string>
   <string name="permissions_usage_stats">Статистика употребе</string>
   <string name="permissions_usage_stats_description">Потребно да би се избегло преклапање аларма испод закључавања екрана.</string>
+  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
   <string name="action_about">О апликацији</string>
   <string name="action_donate">Донирај</string>
   <string name="action_feedback">Повратна информација</string>

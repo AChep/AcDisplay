@@ -20,11 +20,11 @@
   -->
 <resources>
   <string name="blacklist">רשימה שחורה</string>
-  <string name="blacklist_app_config">הגדרות יישום</string>
+  <string name="blacklist_app_config">הגדרות אפליקציה</string>
   <string name="blacklist_app_hide_title">הסתר</string>
   <string name="blacklist_app_hide_summary">שום התראה מהאפליקציה לא תוצג.</string>
   <string name="blacklist_app_restricted_title">שקט</string>
   <string name="blacklist_app_restricted_summary">לא להעיר המכשיר כאשר מופיעה התראה שלו.</string>
-  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
+  <string name="blacklist_app_non_clearable_title">התראות שלא ניתנות להסרה</string>
+  <string name="blacklist_app_non_clearable_summary">הצג התראות שלא ניתנות להסרה/התראות מתמשכות, כגון אלו של שירותים.</string>
 </resources>

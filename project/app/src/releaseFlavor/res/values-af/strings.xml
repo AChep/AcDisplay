@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Go to Settings &gt; Security &gt; Notification access and check AcDisplay on.</string>
   <string name="permissions_usage_stats">Usage stats</string>
   <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
+  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
   <string name="action_about">Oor</string>
   <string name="action_donate">Skenk</string>
   <string name="action_feedback">Terugvoer</string>

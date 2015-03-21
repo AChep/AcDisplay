@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Prejdite do Nastavenia &gt; Zabezpečenie &gt; Prístup k upozorneniam a potvrďte AcDisplay.</string>
   <string name="permissions_usage_stats">Štatistika využívania</string>
   <string name="permissions_usage_stats_description">Potrebné, kvôli vyhnutiu sa prekrývania alarmu a aplikácií telefónu.</string>
+  <string name="permissions_usage_stats_error">Výrobca zariadenia toto povolenie zo svojej verzie systému odstránil. Tento problém nie je možné odstrániť a je nutné čakať na fix od výrobcu.</string>
   <string name="action_about">O aplikácii</string>
   <string name="action_donate">Darovať</string>
   <string name="action_feedback">Spätná väzba</string>

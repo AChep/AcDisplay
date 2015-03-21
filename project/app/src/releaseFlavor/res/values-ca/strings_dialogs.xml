@@ -38,7 +38,7 @@
   <string name="cry_dialog_title">Apoia al desenvolupament</string>
   <string name="cry_dialog_message"><![CDATA[         AcDisplay és una aplicació gratuïta i de<a href="http://repo.acdisplay.org"> codi obert</a> i invertim un munt de temps i recursos en mantenir-lo amb el temps. Si us plau, consideri un donatiu per mostrar el seu agraïment i més suport al desenvolupament.     ]]></string>
   <string name="help_dialog_title">Ajuda</string>
-  <string name="feedback_dialog_title">Retroalimentació</string>
+  <string name="feedback_dialog_title">Opineu</string>
   <string name="feedback_dialog_message_hint">El seu missatge. Les especificacions del dispositiu s\'inclouran automàticament.</string>
   <string name="feedback_dialog_attach_log">Adjuntar un registre</string>
   <string name="feedback_dialog_read_help">Preguntes freqüents</string>

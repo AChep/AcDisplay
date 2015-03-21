@@ -25,6 +25,6 @@
   <string name="blacklist_app_hide_summary">Известия за това приложение няма да се показват.</string>
   <string name="blacklist_app_restricted_title">Безшумен</string>
   <string name="blacklist_app_restricted_summary">Не събуждай телефона при нови известия.</string>
-  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
+  <string name="blacklist_app_non_clearable_title">Неизтриваеми известия</string>
+  <string name="blacklist_app_non_clearable_summary">Показвай неизтриваеми/текущи известия, като тези от сървизи.</string>
 </resources>

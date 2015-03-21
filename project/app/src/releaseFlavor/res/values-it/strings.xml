@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Vai in impostazioni &gt; Sicurezza &gt; Accesso alle notifiche ed attiva AcDisplay.</string>
   <string name="permissions_usage_stats">Statistiche di utilizzo</string>
   <string name="permissions_usage_stats_description">Necessari per evitare di sovrapporsi con la sveglia e le app del telefono.</string>
+  <string name="permissions_usage_stats_error">Il produttore del dispositivo ha rimosso questo permesso pubblico dalla sua versione di Android. Non c\'è un modo per sistemare questo problema, tranne che aspettare una correzione dal produttore.</string>
   <string name="action_about">Informazioni su</string>
   <string name="action_donate">Fai una donazione</string>
   <string name="action_feedback">Feedback</string>

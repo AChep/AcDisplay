@@ -34,10 +34,14 @@
   <string name="settings_more_title">Більше&#8230;</string>
   <string name="settings_dev_title">Для розробників</string>
   <string name="settings_keyguard_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Вмикати коли немає сповіщень</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Активний режим використовує датчики пристрою, щоб прокидатися коли це дійсно потрібно. Це чудово працює коли ви дістаєте пристрій зі своєї кишені, щоб швидко глянути на годинник або наявні сповіщення. Активний режим не залишає процесор активним весь час, тому ви не повинні відчувати різниці в використанні акумулятора.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Вмикати коли немає сповіщень</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Активний режим ввімкнений незалежно від наявності сповіщень.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Активний режим вимкнено, коли немає нових сповіщень.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Після %1$s / %2$s секунд бездіяльності.</string>
   <string name="settings_icon_size_title">Розмір піктограм</string>
   <string name="settings_icon_size_summary">Current size of icons is %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">Поведінка</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Блокувати екран при відхиленні останнього сповіщення</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екран вимикається після відхилення останнього сповіщення.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s сек.</string>
   <string name="preference_icon_size_message">Налаштувати розмір піктограм сповіщень.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>

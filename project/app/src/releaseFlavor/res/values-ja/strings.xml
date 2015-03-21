@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">設定 &gt; セキュリティ &gt; 通知アクセスに移動し AcDisplay をチェックします。</string>
   <string name="permissions_usage_stats">使用状況の統計</string>
   <string name="permissions_usage_stats_description">アラームと電話アプリのオーバーレイを避けるために必要です。</string>
+  <string name="permissions_usage_stats_error">デバイスの製造元は Android のバージョンからこの公開のアクセス権を削除しました。製造元からの修正を待つ以外に、この問題を解決する方法はありません。</string>
   <string name="action_about">概要</string>
   <string name="action_donate">寄付</string>
   <string name="action_feedback">フィードバック</string>

@@ -21,7 +21,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_description">AcDisplay é uma nova maneira de lidar com suas notificações. Ele permitirá que você saiba sobre novidades, mostrando o mínimo em um belo design e permitindo você abrir o aplicativo diretamente da tela do bloqueio. E se você quiser ver o que está acontecendo, você pode simplesmente retirar o telefone do bolso para ver todas as últimas notificações de uma maneira simplista e prática.</string>
   <string name="plugin_xposed_description">Ajuda AcDisplay a se integrar melhor com o Android.</string>
-  <string name="permissions_auto_disabled">AcDisplay foi desativado por conta de algumas permissões não concedidas.</string>
+  <string name="permissions_auto_disabled">AcDisplay foi desativado porque não possui algumas permissões.</string>
   <string name="permissions_dialog_title">Permissões requeridas:</string>
   <string name="permissions_device_admin">Administrador do dispositivo</string>
   <string name="permissions_device_admin_removed">AcDisplay foi removido dos administradores do dispositivo.</string>
@@ -32,6 +32,7 @@
   <string name="permissions_notifications_grant_manually">Vá para Configurações &gt; Segurança &gt; Acesso às Notificações e selecione AcDisplay.</string>
   <string name="permissions_usage_stats">Estatísticas de uso</string>
   <string name="permissions_usage_stats_description">Necessário para evitar sobreposição de aplicativos como alarme e telefone.</string>
+  <string name="permissions_usage_stats_error">O fabricante do dispositivo tinha removido essa permissão pública da sua versão do Android. Não há nenhuma maneira de corrigir esse problema, a não ser esperar a correção do fabricante.</string>
   <string name="action_about">Sobre</string>
   <string name="action_donate">Doar</string>
   <string name="action_feedback">Feedback</string>
@@ -52,7 +53,7 @@
   <string name="media_play_description">Botão Play</string>
   <string name="media_stop_description">Botão para parar</string>
   <string name="notification_init_text">Apenas retire essa notificação.</string>
-  <string name="notification_test_message">Essa é uma simples notificação.</string>
+  <string name="notification_test_message">Esta é uma notificação de exemplo.</string>
   <string name="notification_test_message_large">Deslize para baixo na notificação para esconder. \nDeslize em qualquer lugar para desbloquear a tela.</string>
   <string name="privacy_mode_hidden_content">conteúdo oculto.</string>
   <string name="remote_enable_acdisplay">AcDisplay está habilitado.</string>
@@ -62,5 +63,5 @@
   <string name="service_bath_active_mode">Modo ativo</string>
   <string name="service_bath_active_mode_dump">Despejo dos sensores</string>
   <string name="status_date_format">EEE, d MMMM</string>
-  <string name="accessibility_battery_level">Bateria em <xliff:g id="number" example="100">%d</xliff:g>.</string>
+  <string name="accessibility_battery_level">Bateria em <xliff:g id="number" example="100">%d</xliff:g> porcento.</string>
 </resources>

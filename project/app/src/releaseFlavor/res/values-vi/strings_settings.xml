@@ -34,10 +34,14 @@
   <string name="settings_more_title">Nhiều hơn&#8230;</string>
   <string name="settings_dev_title">Phát triển</string>
   <string name="settings_keyguard_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Kích hoạt tính năng khi không có thông báo</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Chế độ hoạt động sử dụng của thiết bị cảm biến để đánh thưc thiết bị của bạn khi bạn cần. Nó sẽ rất hiệu quả khi bạn rút điện thoại từ túi của bạn để xem nhanh chóng thông báo. Chế độ này không giữ CPU chạy ngầm, do đó bạn sẽ thấy pin bị hao không đáng kể.</string>
+  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Kích hoạt tính năng khi không có thông báo</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Chế độ Active được kích hoạt bất kể cho dù có thông báo hay không.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Chế độ Active bị vô hiệu hóa khi không có thông báo.</string>
@@ -72,6 +76,7 @@
   <string name="settings_timeout_summary">Sau khoảng %1$s / %2$s giây không hoạt động.</string>
   <string name="settings_icon_size_title">Icon size</string>
   <string name="settings_icon_size_summary">Current size of icons is %1$s dpi.</string>
+  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
   <string name="settings_behavior_category">Cử chỉ</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lock on dismiss last notification</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Screen turns off after dismissing last present notification.</string>
@@ -92,4 +97,6 @@
   <string name="preference_timeout_sec">%1$s giây.</string>
   <string name="preference_icon_size_message">Adjust the size of the notification icons.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_colorpicker_random_color">Random colors</string>
+  <string name="preference_colorpicker_custom_color">Defined color</string>
 </resources>
