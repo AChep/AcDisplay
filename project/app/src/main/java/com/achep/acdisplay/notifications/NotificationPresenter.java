@@ -145,6 +145,9 @@ public class NotificationPresenter implements
             boolean enabled;
             int v;
             switch (key) {
+                case Config.KEY_ENABLED:
+                    rebuildLocalList();
+                    break;
                 case Config.KEY_NOTIFY_MIN_PRIORITY:
                     v = (int) value;
                     handleNotifyPriorityChanged(v, mMinPriority);
@@ -751,6 +754,10 @@ public class NotificationPresenter implements
      * {@code false} otherwise.
      */
     private boolean isValidForLocal(@NonNull OpenNotification notification) {
+        if (!mConfig.isEnabled()) {
+            return false;
+        }
+
         AppConfig config = mBlacklist.getAppConfig(notification.getPackageName());
 
         if (config.isHidden()) {
