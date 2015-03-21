@@ -36,7 +36,7 @@ final class CheckImpl extends Check {
 
     @Override
     public void isTrue(int value) {
-        if (value != 0) {
+        if (value == 0) {
             throw new RuntimeException("Should be not zero!");
         }
     }
