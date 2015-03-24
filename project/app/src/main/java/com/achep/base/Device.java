@@ -60,6 +60,9 @@ public class Device {
             case Build.VERSION_CODES.LOLLIPOP:
                 API_VERSION_NAME_SHORT = "LP";
                 break;
+            case Build.VERSION_CODES.LOLLIPOP_MR1:
+                API_VERSION_NAME_SHORT = "LP1";
+                break;
             default:
                 API_VERSION_NAME_SHORT = "WTF";
         }
@@ -71,6 +74,14 @@ public class Device {
      */
     public static boolean hasTargetApi(int api) {
         return API_VERSION >= api;
+    }
+
+    /**
+     * @return {@code true} if device is running
+     * {@link Build.VERSION_CODES#LOLLIPOP_MR1 Lollipop 5.1} or higher, {@code false} otherwise.
+     */
+    public static boolean hasLollipopMR1Api() {
+        return hasTargetApi(Build.VERSION_CODES.LOLLIPOP_MR1);
     }
 
     /**
