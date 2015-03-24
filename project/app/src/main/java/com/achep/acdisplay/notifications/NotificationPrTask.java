@@ -38,7 +38,7 @@ class NotificationPrTask {
      */
     public final boolean posts;
 
-    public int flags;
+    public volatile int flags;
 
     NotificationPrTask(@Nullable Context context, @NonNull OpenNotification notification,
                        boolean posts, int flags) {

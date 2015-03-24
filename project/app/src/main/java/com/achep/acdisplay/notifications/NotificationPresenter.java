@@ -105,16 +105,17 @@ public class NotificationPresenter implements
     private final NotificationList mLList;
     private final Set<String> mGroupsWithSummaries;
 
-    private OnNotificationPostedListener mMainListener;
+    private volatile OnNotificationPostedListener mMainListener;
     private final ArrayList<WeakReference<OnNotificationListChangedListener>> mListenersRefs;
     private final ArrayList<NotificationListChange> mFrozenEvents;
-    private int mFreezeLevel;
+    private volatile int mFreezeLevel;
 
     // Threading
     private final Handler mHandler;
-    private volatile int mDetectingSyncTroubles;
-    private NotificationPrProxy mProxy;
-    private NotificationSpamFilter mFilter;
+    private final NotificationPrProxy mProxy;
+    private final NotificationSpamFilter mFilter;
+
+    final Object monitor = new Object();
 
     //-- HANDLING CONFIG & BLACKLIST ------------------------------------------
 
@@ -130,8 +131,8 @@ public class NotificationPresenter implements
      */
     private class ConfigListener implements ConfigBase.OnConfigChangedListener {
 
-        private int mMinPriority;
-        private int mMaxPriority;
+        private volatile int mMinPriority;
+        private volatile int mMaxPriority;
 
         public ConfigListener(@NonNull Config config) {
             mMinPriority = config.getNotifyMinPriority();
@@ -142,6 +143,13 @@ public class NotificationPresenter implements
         public void onConfigChanged(@NonNull ConfigBase configBase,
                                     @NonNull String key,
                                     @NonNull Object value) {
+            synchronized (monitor) {
+                Check.getInstance().isInMainThread();
+                onConfigChangedSynced(key, value);
+            }
+        }
+
+        public void onConfigChangedSynced(@NonNull String key, @NonNull Object value) {
             boolean enabled;
             int v;
             switch (key) {
@@ -211,7 +219,10 @@ public class NotificationPresenter implements
 
             // Check if something important has changed.
             if (hiddenNew != hiddenOld || nonClearableEnabledNew != nonClearableEnabledOld) {
-                handlePackageVisibilityChanged(configNew.packageName);
+                synchronized (monitor) {
+                    // TODO: Check.getInstance().isInMainThread();
+                    handlePackageVisibilityChanged(configNew.packageName);
+                }
             }
         }
 
@@ -393,99 +404,96 @@ public class NotificationPresenter implements
     void postNotification(
             @NonNull Context context,
             @NonNull OpenNotification n, int flags) {
-        Check.getInstance().isInMainThread();
-        mDetectingSyncTroubles = 1;
-        mProxy.onPosted(n);
+        synchronized (monitor) {
+            Check.getInstance().isInMainThread();
+            mProxy.onPosted(n);
 
-        // Check for the test notification.
-        if (isInitNotification(context, n)) {
-            NotificationUtils.dismissNotification(n);
-            // Try with another way, just to be sure.
-            String name = Context.NOTIFICATION_SERVICE;
-            NotificationManager nm = (NotificationManager) context.getSystemService(name);
-            nm.cancel(App.ID_NOTIFY_INIT);
-            return;
-        }
-
-        freezeListeners();
-
-        boolean globalValid = isValidForGlobal(n);
-        boolean localValid = false;
-        boolean groupChild = false;
-
-        // If notification will not be added to the
-        // list there's no point of loading its data.
-        if (globalValid) {
-            n.load(context);
-
-            if (n.isGroupSummary()) {
-                String groupKey = n.getGroupKey();
-                assert groupKey != null;
-                mGroupsWithSummaries.add(groupKey);
-
-                // Put all group's children to its summary
-                // notification.
-                for (int i = mGList.size() - 1; i >= 0; i--) {
-                    OpenNotification n2 = mGList.get(i);
-                    if (groupKey.equals(n2.getGroupKey())) {
-                        assert n.getGroupNotifications() != null;
-                        n.getGroupNotifications().add(n2);
-
-                        // Remove this notification from the global list.
-                        mGList.removeNotification(n2);
-                        mLList.removeNotification(n2);
-                    }
-                }
-            } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
-                // Artem Chepurnoy: Not sure if this may happen.
-                if (DEBUG) Log.d(TAG, "Adding a notification to an existent group.");
-
-                String groupKey = n.getGroupKey();
-                assert groupKey != null;
-                for (OpenNotification n2 : mGList) {
-                    if (groupKey.equals(n2.getGroupKey())) {
-                        Check.getInstance().isTrue(n2.isGroupSummary());
-
-                        groupChild = true;
-
-                        assert n2.getGroupNotifications() != null;
-                        ((NotificationList) n2.getGroupNotifications()).pushNotification(n);
-                        notifyListeners(n2, EVENT_CHANGED);
-                        break;
-                    }
-                }
-
-                Check.getInstance().isTrue(groupChild);
+            // Check for the test notification.
+            if (isInitNotification(context, n)) {
+                NotificationUtils.dismissNotification(n);
+                // Try with another way, just to be sure.
+                String name = Context.NOTIFICATION_SERVICE;
+                NotificationManager nm = (NotificationManager) context.getSystemService(name);
+                nm.cancel(App.ID_NOTIFY_INIT);
+                return;
             }
 
-            Config config = Config.getInstance();
-            n.setEmoticonsEnabled(config.isEmoticonsEnabled());
+            freezeListeners();
 
-            if (groupChild) {
-                globalValid = false;
-                // I assume that 'localValid' if
-                // 'False' here.
-            } else {
-                localValid = isValidForLocal(n);
-                if (!Device.hasJellyBeanMR2Api()) globalValid = localValid;
+            boolean globalValid = isValidForGlobal(n);
+            boolean localValid = false;
+            boolean groupChild = false;
+
+            // If notification will not be added to the
+            // list there's no point of loading its data.
+            if (globalValid) {
+                n.load(context);
+
+                if (n.isGroupSummary()) {
+                    String groupKey = n.getGroupKey();
+                    assert groupKey != null;
+                    mGroupsWithSummaries.add(groupKey);
+
+                    // Put all group's children to its summary
+                    // notification.
+                    for (int i = mGList.size() - 1; i >= 0; i--) {
+                        OpenNotification n2 = mGList.get(i);
+                        if (groupKey.equals(n2.getGroupKey())) {
+                            assert n.getGroupNotifications() != null;
+                            n.getGroupNotifications().add(n2);
+
+                            // Remove this notification from the global list.
+                            mGList.removeNotification(n2);
+                            mLList.removeNotification(n2);
+                        }
+                    }
+                } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
+                    // Artem Chepurnoy: Not sure if this may happen.
+                    if (DEBUG) Log.d(TAG, "Adding a notification to an existent group.");
+
+                    String groupKey = n.getGroupKey();
+                    assert groupKey != null;
+                    for (OpenNotification n2 : mGList) {
+                        if (groupKey.equals(n2.getGroupKey())) {
+                            Check.getInstance().isTrue(n2.isGroupSummary());
+
+                            groupChild = true;
+
+                            assert n2.getGroupNotifications() != null;
+                            ((NotificationList) n2.getGroupNotifications()).pushNotification(n);
+                            notifyListeners(n2, EVENT_CHANGED);
+                            break;
+                        }
+                    }
+
+                    Check.getInstance().isTrue(groupChild);
+                }
+
+                Config config = Config.getInstance();
+                n.setEmoticonsEnabled(config.isEmoticonsEnabled());
+
+                if (groupChild) {
+                    globalValid = false;
+                    // I assume that 'localValid' if
+                    // 'False' here.
+                } else {
+                    localValid = isValidForLocal(n);
+                    if (!Device.hasJellyBeanMR2Api()) globalValid = localValid;
+                }
             }
+
+            mGList.pushOrRemoveNotification(n, globalValid);
+            int result = mLList.pushOrRemoveNotification(n, localValid);
+            if (localValid && result == RESULT_SUCCESS && mMainListener != null) {
+                if (DEBUG) Log.d(TAG, "Notification posted: notifying the main listener.");
+                mMainListener.onNotificationPosted(context, n, flags);
+            }
+
+            // Release listeners and send all pending
+            // events.
+            if (Operator.bitAnd(flags, FLAG_SILENCE)) mFrozenEvents.clear();
+            meltListeners();
         }
-
-        mGList.pushOrRemoveNotification(n, globalValid);
-        int result = mLList.pushOrRemoveNotification(n, localValid);
-        if (localValid && result == RESULT_SUCCESS && mMainListener != null) {
-            if (DEBUG) Log.d(TAG, "Notification posted: notifying the main listener.");
-            mMainListener.onNotificationPosted(context, n, flags);
-        }
-
-        // Release listeners and send all pending
-        // events.
-        if (Operator.bitAnd(flags, FLAG_SILENCE)) mFrozenEvents.clear();
-        meltListeners();
-
-        // Try to detect the sync troubles
-        Check.getInstance().isTrue(mDetectingSyncTroubles == 1);
-        mDetectingSyncTroubles = 0;
     }
 
     public void removeNotificationFromMain(final @NonNull OpenNotification n, final int flags) {
@@ -498,44 +506,41 @@ public class NotificationPresenter implements
      * remove notification from system!
      */
     public void removeNotification(@NonNull OpenNotification n, final int flags) {
-        Check.getInstance().isInMainThread();
-        mDetectingSyncTroubles = 2;
-        mProxy.onRemoved(n);
+        synchronized (monitor) {
+            Check.getInstance().isInMainThread();
+            mProxy.onRemoved(n);
 
-        if (n.isGroupSummary()) {
-            String groupKey = n.getGroupKey();
-            assert groupKey != null;
-            mGroupsWithSummaries.remove(groupKey);
-        } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
-            String groupKey = n.getGroupKey();
-            assert groupKey != null;
-            for (OpenNotification n2 : mGList) {
-                if (groupKey.equals(n2.getGroupKey())) {
-                    Check.getInstance().isTrue(n2.isGroupSummary());
-                    assert n2.getGroupNotifications() != null;
+            if (n.isGroupSummary()) {
+                String groupKey = n.getGroupKey();
+                assert groupKey != null;
+                mGroupsWithSummaries.remove(groupKey);
+            } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
+                String groupKey = n.getGroupKey();
+                assert groupKey != null;
+                for (OpenNotification n2 : mGList) {
+                    if (groupKey.equals(n2.getGroupKey())) {
+                        Check.getInstance().isTrue(n2.isGroupSummary());
+                        assert n2.getGroupNotifications() != null;
 
-                    NotificationList list = (NotificationList) n2.getGroupNotifications();
-                    int i = list.indexOfNotification(n);
-                    if (i != -1) {
-                        n.recycle();
-                        list.remove(i);
+                        NotificationList list = (NotificationList) n2.getGroupNotifications();
+                        int i = list.indexOfNotification(n);
+                        if (i != -1) {
+                            n.recycle();
+                            list.remove(i);
+                        }
+                        return;
                     }
-                    return;
                 }
             }
-        }
 
-        NotificationList list = mGList;
-        int i = list.indexOfNotification(n);
-        if (i != -1) {
-            n.recycle();
-            list.remove(i);
-            mLList.removeNotification(n);
+            NotificationList list = mGList;
+            int i = list.indexOfNotification(n);
+            if (i != -1) {
+                n.recycle();
+                list.remove(i);
+                mLList.removeNotification(n);
+            }
         }
-
-        // Try to detect the sync troubles
-        Check.getInstance().isTrue(mDetectingSyncTroubles == 2);
-        mDetectingSyncTroubles = 0;
     }
 
     /**
@@ -545,6 +550,7 @@ public class NotificationPresenter implements
      * @see #isValidForLocal(OpenNotification)
      * @see #isValidForGlobal(OpenNotification)
      */
+    // Must be synced on monitor
     private void rebuildLocalList() {
         freezeListeners();
 
@@ -565,17 +571,21 @@ public class NotificationPresenter implements
 
     @Nullable
     public OpenNotification getFreshNotification() {
-        for (OpenNotification n : getList()) {
-            long delta = Math.max(n.getNotification().priority, 1) * FRESH_NOTIFICATION_EXPIRY_TIME;
-            long past = SystemClock.elapsedRealtime() - delta;
-            if (!n.isRead() && n.getLoadTimestamp() > past) return n;
+        synchronized (monitor) {
+            for (OpenNotification n : getList()) {
+                long delta = Math.max(n.getNotification().priority, 1) * FRESH_NOTIFICATION_EXPIRY_TIME;
+                long past = SystemClock.elapsedRealtime() - delta;
+                if (!n.isRead() && n.getLoadTimestamp() > past) return n;
+            }
+            return null;
         }
-        return null;
     }
 
     @NonNull
     public ArrayList<OpenNotification> getList() {
-        return mLList;
+        synchronized (monitor) {
+            return mLList;
+        }
     }
 
     /**
@@ -583,7 +593,9 @@ public class NotificationPresenter implements
      * @see #isEmpty()
      */
     public int size() {
-        return mLList.size();
+        synchronized (monitor) {
+            return mLList.size();
+        }
     }
 
     /**
@@ -592,7 +604,9 @@ public class NotificationPresenter implements
      * @see #size()
      */
     public boolean isEmpty() {
-        return mLList.isEmpty();
+        synchronized (monitor) {
+            return mLList.isEmpty();
+        }
     }
 
     //-- LOCAL LIST'S EVENTS --------------------------------------------------
@@ -832,15 +846,17 @@ public class NotificationPresenter implements
     }
 
     void clear(final boolean notifyListeners) {
-        Check.getInstance().isInMainThread();
-        if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
-                + notifyListeners);
+        synchronized (monitor) {
+            Check.getInstance().isInMainThread();
+            if (DEBUG) Log.d(TAG, "Clearing the notifications list... notify_listeners="
+                    + notifyListeners);
 
-        mProxy.onClear();
-        mGroupsWithSummaries.clear();
-        mGList.clear();
-        mLList.clear();
-        if (notifyListeners) notifyListeners(null, EVENT_BATH);
+            mProxy.onClear();
+            mGroupsWithSummaries.clear();
+            mGList.clear();
+            mLList.clear();
+            if (notifyListeners) notifyListeners(null, EVENT_BATH);
+        }
     }
 
 }

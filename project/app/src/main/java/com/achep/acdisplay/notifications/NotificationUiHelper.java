@@ -132,11 +132,13 @@ public class NotificationUiHelper implements INotificatiable {
         Check.getInstance().isInMainThread();
         mResumed = true;
 
-        if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TITLE)) updateTitle();
-        if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_SUBTITLE)) updateSubtitle();
-        if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TIMESTAMP)) updateTimestamp();
-        if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_MESSAGE)) updateMessage();
-        if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_ACTIONS)) updateActions();
+        synchronized (NotificationPresenter.getInstance().monitor) {
+            if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TITLE)) updateTitle();
+            if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_SUBTITLE)) updateSubtitle();
+            if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TIMESTAMP)) updateTimestamp();
+            if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_MESSAGE)) updateMessage();
+            if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_ACTIONS)) updateActions();
+        }
         mPendingUpdates = 0;
 
         registerNotificationListener();
@@ -157,13 +159,15 @@ public class NotificationUiHelper implements INotificatiable {
         mNotification = n;
         registerNotificationListener();
 
-        // Update everything
-        updateTitle();
-        updateTimestamp();
-        updateSubtitle();
-        updateMessage();
-        updateActions();
-        updateIcons();
+        synchronized (NotificationPresenter.getInstance().monitor) {
+            // Update everything
+            updateTitle();
+            updateTimestamp();
+            updateSubtitle();
+            updateMessage();
+            updateActions();
+            updateIcons();
+        }
     }
 
     /**

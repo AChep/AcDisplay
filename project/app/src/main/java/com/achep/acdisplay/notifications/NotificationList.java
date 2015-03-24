@@ -49,7 +49,7 @@ final class NotificationList extends ArrayList<OpenNotification> implements IOnL
     /**
      * @see #setMaximumSize(int)
      */
-    private int mMaximumSize = Integer.MAX_VALUE;
+    private volatile int mMaximumSize = Integer.MAX_VALUE;
 
     /**
      * {@inheritDoc}
