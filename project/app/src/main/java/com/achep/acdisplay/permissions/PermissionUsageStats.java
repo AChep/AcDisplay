@@ -45,16 +45,11 @@ import com.achep.base.utils.PackageUtils;
 public class PermissionUsageStats extends Permission {
 
     @NonNull
-    private final AppOpsManager mAppOpsManager;
-    @NonNull
     private final PackageManager mPackageManager;
 
     public PermissionUsageStats(@NonNull Context context) {
         super(context);
         Check.getInstance().isTrue(Device.hasLollipopApi());
-
-        //noinspection ResourceType
-        mAppOpsManager = (AppOpsManager) mContext.getSystemService(Context.APP_OPS_SERVICE);
         mPackageManager = mContext.getPackageManager();
     }
 
@@ -70,8 +65,13 @@ public class PermissionUsageStats extends Permission {
             throw new RuntimeException(e);
         }
 
-        int result = mAppOpsManager.checkOp(AppOpsManager.OPSTR_GET_USAGE_STATS, uid, packageName);
+        int result = getAppOpsManager().checkOp(AppOpsManager.OPSTR_GET_USAGE_STATS, uid, packageName);
         return result == AppOpsManager.MODE_ALLOWED;
+    }
+
+    @NonNull
+    private AppOpsManager getAppOpsManager() {
+        return (AppOpsManager) mContext.getSystemService(Context.APP_OPS_SERVICE);
     }
 
     /**

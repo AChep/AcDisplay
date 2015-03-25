@@ -39,13 +39,10 @@ import com.achep.base.permissions.Permission;
 public class PermissionDeviceAdmin extends Permission {
 
     @NonNull
-    private final DevicePolicyManager mDPM;
-    @NonNull
     private final ComponentName mComponent;
 
     public PermissionDeviceAdmin(@NonNull Context context) {
         super(context);
-        mDPM = (DevicePolicyManager) mContext.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mComponent = new ComponentName(mContext, AdminReceiver.class);
     }
 
@@ -53,7 +50,12 @@ public class PermissionDeviceAdmin extends Permission {
      * {@inheritDoc}
      */
     public boolean isActive() {
-        return mDPM.isAdminActive(mComponent);
+        return getDpmService().isAdminActive(mComponent);
+    }
+
+    @NonNull
+    private DevicePolicyManager getDpmService() {
+        return (DevicePolicyManager) mContext.getSystemService(Context.DEVICE_POLICY_SERVICE);
     }
 
     /**
