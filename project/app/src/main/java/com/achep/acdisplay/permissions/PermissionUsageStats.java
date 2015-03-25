@@ -42,7 +42,7 @@ import com.achep.base.utils.PackageUtils;
  * @see android.app.usage.UsageStatsManager
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class PermissionUsageStats extends Permission {
+public final class PermissionUsageStats extends Permission {
 
     @NonNull
     private final PackageManager mPackageManager;

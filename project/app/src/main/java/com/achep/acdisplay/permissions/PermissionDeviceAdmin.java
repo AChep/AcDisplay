@@ -36,7 +36,7 @@ import com.achep.base.permissions.Permission;
  * @author Artem Chepurnoy
  * @see android.app.admin.DevicePolicyManager
  */
-public class PermissionDeviceAdmin extends Permission {
+public final class PermissionDeviceAdmin extends Permission {
 
     @NonNull
     private final ComponentName mComponent;

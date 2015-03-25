@@ -40,7 +40,7 @@ import com.achep.base.tests.Check;
  * @author Artem Chepurnoy
  * @see com.achep.acdisplay.services.AccessibilityService
  */
-public class PermissionAccessibility extends Permission {
+public final class PermissionAccessibility extends Permission {
 
     private static final String TAG = "PermissionAcbNotify";
 

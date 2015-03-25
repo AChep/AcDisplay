@@ -42,7 +42,7 @@ import com.achep.base.tests.Check;
  * @see android.service.notification.NotificationListenerService
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class PermissionNotificationListener extends Permission {
+public final class PermissionNotificationListener extends Permission {
 
     private static final String KEY = "enabled_notification_listeners";
     private static final String ACTION = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
