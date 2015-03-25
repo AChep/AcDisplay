@@ -26,6 +26,7 @@ import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.base.Device;
@@ -35,6 +36,8 @@ import com.achep.base.tests.Check;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -43,6 +46,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static com.achep.base.Build.DEBUG;
@@ -267,6 +271,61 @@ public abstract class ConfigBase implements
                 l.onConfigChanged(this, key, value);
             }
         }
+    }
+
+    //-- BACKUP ---------------------------------------------------------------
+
+    @Nullable
+    public String toBackupText() {
+        JSONObject json;
+        try {
+            json = new JSONObject();
+            /*
+            // TODO: Should I protect it somehow?
+            json.put("__package__", "");
+            json.put("__version__", "");
+            */
+            // Fill the json with key/value pairs
+            for (Map.Entry<String, Option> entry : getHashMap().entrySet()) {
+                json.put(entry.getKey(), entry.getValue());
+            }
+        } catch (JSONException e) {
+            Log.w(TAG, "Failed to generate JSON: " + e.getMessage());
+            return null;
+        }
+        return json.toString();
+    }
+
+    /**
+     * @return {@code true} if the config was successfully restored, {@code false} otherwise.
+     */
+    public boolean fromBackupText(@NonNull Context context, @NonNull String str) {
+        return fromBackupText(context, str, toBackupText());
+    }
+
+    private boolean fromBackupText(@NonNull Context context,
+                                   @NonNull String str, @NonNull String fallback) {
+        try {
+            JSONObject json = new JSONObject(str);
+            Iterator<String> i = json.keys();
+            while (i.hasNext()) {
+                String key = i.next();
+                Object value = json.get(key);
+                // Apply the value
+                Option option = getHashMap().get(key);
+                if (option != null) {
+                    option.write(this, context, value, null);
+                } else {
+                   Log.w(TAG, "Passed loading an unknown item[" + key + "] from plain text.");
+                }
+            }
+        } catch (Exception e) {
+            // Try to fallback to original settings.
+            if (!TextUtils.equals(str, fallback)) fromBackupText(context, fallback, fallback);
+            // At this point current config may be partially corrupted and un-recoverable.
+            return false;
+        }
+        return true;
     }
 
     //-- SYNCER ---------------------------------------------------------------
