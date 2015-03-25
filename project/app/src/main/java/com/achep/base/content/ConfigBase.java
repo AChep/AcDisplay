@@ -300,7 +300,8 @@ public abstract class ConfigBase implements
      * @return {@code true} if the config was successfully restored, {@code false} otherwise.
      */
     public boolean fromBackupText(@NonNull Context context, @NonNull String str) {
-        return fromBackupText(context, str, toBackupText());
+        String fallback = toBackupText();
+        return fallback != null && fromBackupText(context, str, fallback);
     }
 
     private boolean fromBackupText(@NonNull Context context,
