@@ -32,7 +32,8 @@
   <string name="permissions_notifications_grant_manually">עבור אל הגדרות &gt; אבטחה &gt; גישה להתראות ואפשר את AcDisplay.</string>
   <string name="permissions_usage_stats">סטטיסטיקת שימוש</string>
   <string name="permissions_usage_stats_description">נדרש כדי להמנע מהצגה מעל שכבת אפליקציות השעון המעורר והטלפון.</string>
-  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
+  <string name="permissions_usage_stats_error">יצרן המכשיר הסיר את הגישה הציבורית מגירסאת האנדרואיד הנוכחית.
+אין דרך לתקן את השגיאה, מלבד להמתין לתיקון השגיאה מצד היצרן.</string>
   <string name="action_about">אודות</string>
   <string name="action_donate">תרומה</string>
   <string name="action_feedback">משוב</string>

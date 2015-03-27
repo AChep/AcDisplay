@@ -34,14 +34,14 @@
   <string name="settings_more_title">更多</string>
   <string name="settings_dev_title">開發作業</string>
   <string name="settings_keyguard_description">將 AcDisplay 當做鎖定畫面。這項功能仍在測試階段，可能會有不穩定的情況。</string>
-  <string name="settings_keyguard_respect_inactive_time_title">在休息時段時停用</string>
+  <string name="settings_keyguard_respect_inactive_time_title">在停機時段時停用</string>
   <string name="settings_active_disable_on_low_battery_title">在低電量時停用</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">無論是否有通知，一律啟用鎖定畫面。</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">沒有通知時停用鎖定畫面。</string>
-  <string name="settings_active_active_charging_title">在充電時總是偵測動作</string>
+  <string name="settings_active_active_charging_title">在充電時啟用搖動以喚醒裝置</string>
   <string name="settings_active_description">主動模式會使用裝置的感應器來喚醒您的裝置。當您從口袋裡拿出手機，想快速查看是否有通知時，螢幕就會自動喚醒。主動模式不會使 CPU 持續運作，因此應該不會發生耗電增加的情形。</string>
-  <string name="settings_active_respect_inactive_time_title">在休息時段時停用</string>
+  <string name="settings_active_respect_inactive_time_title">在停機時段時停用</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">不論是否有通知，一律啟用主動模式。</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">沒有通知時停用主動模式。</string>
@@ -69,11 +69,11 @@
   <string name="settings_only_while_charging_title">僅在充電時</string>
   <string name="settings_only_while_charging_on">僅在裝置充電時才啟用 AcDisplay。這麼做會影響所有功能，例如鎖定畫面或主動模式。</string>
   <string name="settings_only_while_charging_off">一律啟用 AcDisplay。</string>
-  <string name="settings_inactive_hours_title">休息時段</string>
+  <string name="settings_inactive_hours_title">停機時段</string>
   <string name="settings_inactive_hours_disabled">已停用</string>
   <string name="settings_inactive_hours_enabled">%1$s 至 %2$s。</string>
   <string name="settings_timeout_title">休眠</string>
-  <string name="settings_timeout_summary">%1$s 過後/%2$s 秒無任何操作後。</string>
+  <string name="settings_timeout_summary">閒置 %1$s 秒鐘後或輕觸後閒置 %2$s 秒鐘後。</string>
   <string name="settings_icon_size_title">圖示大小</string>
   <string name="settings_icon_size_summary">目前圖示大小為 %1$s dpi。</string>
   <string name="settings_double_tap_to_sleep_title">輕按兩下即可休眠</string>
@@ -85,7 +85,7 @@
   <string name="settings_widget_pinnable_on">輕觸之後，通知小工具會持續展開數秒時間。</string>
   <string name="settings_privacy_mode_title">隱私設定 (位於鎖定畫面)</string>
   <string name="settings_privacy_mode_disabled">已停用</string>
-  <string name="preference_inactive_hours_enabled">已啟用休息時段</string>
+  <string name="preference_inactive_hours_enabled">啟用停機時段</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         開始：<br/><b><font color="#ffffff">%1$s</font></b>
     ]]></string>

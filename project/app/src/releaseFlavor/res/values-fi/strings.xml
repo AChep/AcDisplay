@@ -32,7 +32,7 @@
   <string name="permissions_notifications_grant_manually">Mene Asetukset &gt; Suojaus &gt; Pääsy ilmoituksiin ja kytke päälle AcDisplay.</string>
   <string name="permissions_usage_stats">Käyttötiedot</string>
   <string name="permissions_usage_stats_description">Tarvitaan hälytys ja puhelin -sovellusten peittämisen välttämiseksi.</string>
-  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
+  <string name="permissions_usage_stats_error">Laitteen valmistaja on poistanut oikeuden yhteisölle sen Android versiosta. Asiaa ei voi korjata muuten kuin odottaa korjausta suoraan valmistajalta.</string>
   <string name="action_about">Tietoja</string>
   <string name="action_donate">Lahjoita</string>
   <string name="action_feedback">Palaute</string>

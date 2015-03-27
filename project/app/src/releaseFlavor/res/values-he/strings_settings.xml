@@ -34,14 +34,14 @@
   <string name="settings_more_title">עוד...</string>
   <string name="settings_dev_title">פיתוח</string>
   <string name="settings_keyguard_description">שימוש ב-AcDisplay כמסך נעילה. גרסת בטא ועלולה להיות לא יציבה.</string>
-  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
-  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
+  <string name="settings_keyguard_respect_inactive_time_title">נטרל בזמן לא פעיל</string>
+  <string name="settings_active_disable_on_low_battery_title">נטרל כאשר הסוללה חלשה</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">לאפשר כאשר אין התראות</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen מופעל בין אם ישנן הודעות או לא.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen אינו זמין כאשר אין הודעות.</string>
-  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
+  <string name="settings_active_active_charging_title">זהה תזוזה גם בזמן טעינה</string>
   <string name="settings_active_description">מצב פעיל משתמש בחיישני המכשיר כדי להעיר את המכשיר רק בעת הצורך. זה עובד נהדר עבור הוצאת המכשיר מהכיס שלך כדי לקבל הצצה מהירה על הודעות. מצב פעיל לא שומר את ה-CPU פועל, אז אינך צריך לחוות שימוש סוללה מוגברת.</string>
-  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_respect_inactive_time_title">נטרל בזמן לא פעיל</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">אפשור כאשר אין התראות</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">מצב פעיל מופעל בין אם ישנן התראות או לא.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">מצב פעיל אינו מופעל כאשר אין התראות.</string>
@@ -76,7 +76,7 @@
   <string name="settings_timeout_summary">לאחר %1$s / %2$s שניות של אי פעילות.</string>
   <string name="settings_icon_size_title">גודל סמל</string>
   <string name="settings_icon_size_summary">הגודל הנוכחי של סמלי הוא %1$s dpi.</string>
-  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
+  <string name="settings_double_tap_to_sleep_title">הקשה כפולה לכיבוי המסך</string>
   <string name="settings_behavior_category">התנהגות</string>
   <string name="settings_lock_on_dismiss_last_notify_title">נעל מכשיר בביטול הודעה אחרונה</string>
   <string name="settings_lock_on_dismiss_last_notify_on">מסך כבה לאחר ביטול הודעה אחרונה.</string>
@@ -97,6 +97,6 @@
   <string name="preference_timeout_sec">%1$s שניות.</string>
   <string name="preference_icon_size_message">התאם גודל של סמלי ההודעות.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
-  <string name="preference_colorpicker_random_color">Random colors</string>
-  <string name="preference_colorpicker_custom_color">Defined color</string>
+  <string name="preference_colorpicker_random_color">צבעים אקראיים</string>
+  <string name="preference_colorpicker_custom_color">צבע מוגדר</string>
 </resources>
