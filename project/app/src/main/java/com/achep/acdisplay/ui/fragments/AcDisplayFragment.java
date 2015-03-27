@@ -892,8 +892,8 @@ public class AcDisplayFragment extends Fragment implements
      * {@code widget} and provides the "Turn screen off on last widget dismissal" feature.
      */
     protected void onWidgetDismiss(@NonNull Widget widget) {
-        widget.onDismiss();
         internalRemoveWidget(widget);
+        widget.onDismiss();
 
         // The "Turn screen off on last widget dismissal" feature.
         // Previously this feature was working only for notifications.
