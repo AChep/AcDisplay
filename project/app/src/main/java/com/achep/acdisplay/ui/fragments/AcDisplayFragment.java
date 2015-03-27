@@ -888,29 +888,20 @@ public class AcDisplayFragment extends Fragment implements
     protected void onWidgetReadAloud(@NonNull Widget widget) { /* reading aloud */ }
 
     /**
-     * Called when widget is going to be dismissed.
+     * Called on widget's dismissal. The code here {@link #internalRemoveWidget(Widget) removes}
+     * {@code widget} and provides the "Turn screen off on last widget dismissal" feature.
      */
     protected void onWidgetDismiss(@NonNull Widget widget) {
-        boolean preLock = false;
-
-        if (isNotDemo()
-                && getConfig().isScreenOffAfterLastNotify()
-                && widget instanceof NotifyWidget) {
-            preLock = NotificationPresenter.getInstance().size() == 1;
-        }
-
         widget.onDismiss();
+        internalRemoveWidget(widget);
 
-        if (preLock) {
-            // Check is the latest notification is gone.
-            boolean lock = NotificationPresenter.getInstance().isEmpty();
-            if (lock) {
-                mActivityAcd.lock();
-                return;
-            }
+        // The "Turn screen off on last widget dismissal" feature.
+        // Previously this feature was working only for notifications.
+        if (isNotDemo()
+                && getConfig().isScreenOffAfterLastWidget()
+                && mWidgetsMap.isEmpty() /* checking if there are any widgets */) {
+            mActivityAcd.lock();
         }
-
-        if (isCurrentWidget(widget)) showHomeWidget();
     }
 
     //-- SCENES MANAGEMENT ----------------------------------------------------
@@ -1170,24 +1161,7 @@ public class AcDisplayFragment extends Fragment implements
             case NotificationPresenter.EVENT_REMOVED:
                 if (widgetPrev != null) {
                     if (DEBUG) Log.d(TAG, "[Event] Removing notification widget...");
-
-                    iconView = widgetPrev.getIconView();
-                    clearWidget(iconView);
-                    mWidgetsMap.remove(iconView);
-                    maybeBeginDelayedTransition(mIconsContainer, mTransitionJit);
-                    mIconsContainer.removeView(iconView);
-
-                    // Remove widget's scene if it's not needed anymore.
-                    boolean removeScene = true;
-                    name = widgetPrev.getClass().getName();
-                    for (Widget item : mWidgetsMap.values()) {
-                        if (name.equals(item.getClass().getName())) {
-                            removeScene = false;
-                            break;
-                        }
-                    }
-                    if (removeScene) mScenesMap.remove(name);
-                    if (isCurrentWidget(widgetPrev)) showHomeWidget();
+                    internalRemoveWidget(widgetPrev);
                 }
                 break;
             case NotificationPresenter.EVENT_BATH:
@@ -1275,7 +1249,7 @@ public class AcDisplayFragment extends Fragment implements
                     }
                 }
                 removeAllAfter = true;
-                clearWidget(child);
+                internalReleaseWidget(child);
 
                 // Remove widget's icon.
                 container.removeViewAt(i);
@@ -1336,12 +1310,39 @@ public class AcDisplayFragment extends Fragment implements
         updateDividerVisibility(animate);
     }
 
-    private void clearWidget(@NonNull View iconView) {
-        if (isResumed()) {
-            NotifyWidget nw = (NotifyWidget) findWidgetByIcon(iconView);
-            nw.stop();
-        }
+    /**
+     * Stops the widget, which icon view has been passed as parameter, and removes it
+     * from the {@link #mWidgetsMap map}.
+     */
+    private void internalReleaseWidget(@NonNull View iconView) {
+        if (isResumed()) findWidgetByIcon(iconView).stop();
         mWidgetsMap.remove(iconView);
+    }
+
+    /**
+     * Stops the widget and removes it from the {@link #mWidgetsMap map}.
+     */
+    private void internalReleaseWidget(@NonNull Widget widget) {
+        if (isResumed()) widget.stop();
+        mWidgetsMap.remove(widget.getIconView());
+    }
+
+    private void internalRemoveWidget(@NonNull Widget widget) {
+        internalReleaseWidget(widget);
+        maybeBeginDelayedTransition(mIconsContainer, mTransitionJit);
+        mIconsContainer.removeView(widget.getIconView());
+
+        // Remove widget's scene if it's not needed anymore.
+        boolean removeScene = true;
+        String name = widget.getClass().getName();
+        for (Widget item : mWidgetsMap.values()) {
+            if (name.equals(item.getClass().getName())) {
+                removeScene = false;
+                break;
+            }
+        }
+        if (removeScene) mScenesMap.remove(name);
+        if (isCurrentWidget(widget)) showHomeWidget();
     }
 
     /**
@@ -1353,7 +1354,7 @@ public class AcDisplayFragment extends Fragment implements
         final View view = mDividerView;
 
         final boolean visible = view.getVisibility() == View.VISIBLE;
-        final boolean visibleNow = mIconsContainer.getChildCount() > 0;
+        final boolean visibleNow = !mWidgetsMap.isEmpty();
 
         if (animate && isAnimatable()) {
             int visibleInt = MathUtils.bool(visible);

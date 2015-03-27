@@ -589,7 +589,7 @@ public final class Config extends ConfigBase {
         return mUiEmoticons;
     }
 
-    public boolean isScreenOffAfterLastNotify() {
+    public boolean isScreenOffAfterLastWidget() {
         return mScreenOffAfterLastNotify;
     }
 
