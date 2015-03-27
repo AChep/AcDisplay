@@ -488,6 +488,10 @@ public class AcDisplayFragment extends Fragment implements
             case CircleView.ACTION_UNLOCK:
                 mActivityAcd.unlock(null);
             case CircleView.ACTION_CANCELED:
+                // Clear the pinned widget on short tap in emulator
+                // (and probably something in real life too).
+                if (mHasPinnedWidget) showHomeWidget();
+
                 mTimeout.resume();
 
                 int delta = (int) (2200 - mTimeout.getRemainingTime());
