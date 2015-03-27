@@ -148,6 +148,7 @@ public class AcDisplayFragment extends Fragment implements
     private ForwardingListener mSceneForwardingListener;
     private ForwardingListener mIconsForwardingListener;
     private final Handler mTouchHandler = new Handler();
+    private boolean mTouchSticky;
 
     private int mConfigWidgetPinDuration;
     private int mConfigWidgetSelectDelay;
@@ -548,6 +549,7 @@ public class AcDisplayFragment extends Fragment implements
                 // Track the velocity of movement, so we
                 // can do swipe-to-dismiss.
                 mVelocityTracker = VelocityTracker.obtain();
+                mTouchSticky = false;
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
                 populateStdMotion(event);
@@ -558,7 +560,7 @@ public class AcDisplayFragment extends Fragment implements
 
                 boolean dismissing = swipeToDismiss();
                 if (!dismissing) {
-                    if (mSelectedWidget.isSticky()) {
+                    if (mTouchSticky) {
                         // Disable the default timeout mechanism and let
                         // the selected widget to stay for a while.
                         onWidgetStick(mSelectedWidget);
@@ -572,12 +574,19 @@ public class AcDisplayFragment extends Fragment implements
                 mTouchHandler.removeCallbacksAndMessages(null);
                 mVelocityTracker.recycle();
                 mVelocityTracker = null;
+                mTouchSticky = false;
 
                 if (action == MotionEvent.ACTION_CANCEL) {
                     showHomeWidget();
                 }
                 break;
         }
+    }
+
+    @Override
+    public void requestWidgetStick(@NonNull Widget widget) {
+        Check.getInstance().isTrue(isCurrentWidget(widget));
+        mTouchSticky = true;
     }
 
     //-- SWIPE-TO-DISMISS -----------------------------------------------------

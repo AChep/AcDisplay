@@ -69,6 +69,11 @@ public abstract class Widget {
          */
         void requestTimeoutRestart(@NonNull Widget widget);
 
+        /**
+         * Requests the fragment to stick this widget and turn on the special timeout mode.
+         */
+        void requestWidgetStick(@NonNull Widget widget);
+
     }
 
     public Widget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
@@ -121,14 +126,6 @@ public abstract class Widget {
     @NonNull
     public Config getConfig() {
         return mFragment.getConfig();
-    }
-
-    /**
-     * @return {@code true} if the widget is sticky and overrides default pin-timeout,
-     * {@code false} otherwise.
-     */
-    public boolean isSticky() {
-        return false;
     }
 
     //-- HOME WIDGET ----------------------------------------------------------

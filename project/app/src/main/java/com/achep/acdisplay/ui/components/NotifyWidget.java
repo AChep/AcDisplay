@@ -67,7 +67,7 @@ public class NotifyWidget extends Widget implements
 
         @Override
         public void onRiiStateChanged(@NonNull NotificationActions na, boolean shown) {
-
+            if (shown) mCallback.requestWidgetStick(NotifyWidget.this);
         }
 
         @Override
