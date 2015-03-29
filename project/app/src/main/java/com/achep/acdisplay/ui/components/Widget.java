@@ -200,13 +200,13 @@ public abstract class Widget {
     //-- LIFE CYCLE -----------------------------------------------------------
 
     public final void start() {
-        Check.getInstance().isFalse(mStarted);
+        if (mStarted) return;
         mStarted = true;
         onStart();
     }
 
     public final void stop() {
-        Check.getInstance().isTrue(mStarted);
+        if (!mStarted) return;
         mStarted = false;
         onStop();
     }
