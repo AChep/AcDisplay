@@ -29,6 +29,8 @@ import android.view.KeyEvent;
  */
 public class RemoteController {
 
+    public static final int POSITION_SYNCHRONIZATION_CHECK = 1;
+
     public RemoteController(Context context, OnClientUpdateListener l) {
         throw new RuntimeException("Shit happened!");
     }
@@ -39,6 +41,18 @@ public class RemoteController {
 
     public boolean sendMediaKeyEvent(KeyEvent keyEvent) {
         return true;
+    }
+
+    public boolean setSynchronizationMode(int mode) {
+        return true;
+    }
+
+    public boolean seekTo(long pos) {
+        return true;
+    }
+
+    public long getEstimatedMediaPosition() {
+        return 0L;
     }
 
     public class MetadataEditor {
