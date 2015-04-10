@@ -31,6 +31,7 @@ import com.achep.acdisplay.permissions.PermissionUsageStats;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.IPermission;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.utils.IntentUtils;
 
 import java.util.ArrayList;
 
@@ -133,7 +134,10 @@ public abstract class Permission implements
     /**
      * {@inheritDoc}
      */
-    public abstract boolean isActive();
+    @Override
+    public boolean isPossible(@NonNull Context context) {
+        return IntentUtils.hasActivityForThat(context, getIntentSettings());
+    }
 
     /**
      * @return An intent to <i>enable the permission</i> settings' screen.

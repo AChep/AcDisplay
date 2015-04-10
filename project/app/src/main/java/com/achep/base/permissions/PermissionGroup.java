@@ -80,6 +80,16 @@ public class PermissionGroup implements IOnLowMemory, IPermission {
      * {@inheritDoc}
      */
     @Override
+    public boolean isPossible(@NonNull Context context) {
+        for (Permission permission : permissions)
+            if (!permission.isPossible(context)) return false;
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void onLowMemory() {
         for (Permission permission : permissions) {
             permission.onLowMemory();

@@ -18,6 +18,9 @@
  */
 package com.achep.base.interfaces;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 /**
  * Created by Artem Chepurnoy on 27.01.2015.
  */
@@ -28,5 +31,10 @@ public interface IPermission {
      * {@code false} otherwise.
      */
     boolean isActive();
+
+    /**
+     * @return {@code true} if the permission is possible to give, {@code false} otherwise.
+     */
+    boolean isPossible(@NonNull Context context);
 
 }

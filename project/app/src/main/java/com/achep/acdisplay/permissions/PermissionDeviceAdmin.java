@@ -53,6 +53,14 @@ public final class PermissionDeviceAdmin extends Permission {
         return getDpmService().isAdminActive(mComponent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPossible(@NonNull Context context) {
+        return true;
+    }
+
     @NonNull
     private DevicePolicyManager getDpmService() {
         return (DevicePolicyManager) mContext.getSystemService(Context.DEVICE_POLICY_SERVICE);
