@@ -18,6 +18,7 @@
  */
 package com.achep.base.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -87,6 +88,15 @@ public abstract class ActivityBase extends ActionBarActivity implements IActivit
     @Override
     public void requestCheckout() {
         mAbs.requestCheckout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public Activity getActivity() {
+        return mAbs.getActivity();
     }
 
     /**

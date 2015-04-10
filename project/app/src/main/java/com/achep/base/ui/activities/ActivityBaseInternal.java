@@ -19,6 +19,7 @@ import org.solovyev.android.checkout.Checkout;
  */
 final class ActivityBaseInternal implements IActivityBase {
 
+    private Activity mActivity;
     private ActivityCheckout mCheckout;
     private PowerSaveDetector mPowerSaveDetector;
 
@@ -27,6 +28,7 @@ final class ActivityBaseInternal implements IActivityBase {
     void onCreate(Activity activity, Bundle savedInstanceState) {
         if (mCheckoutRequest) mCheckout = Checkout.forActivity(activity, AppHeap.getCheckout());
         mPowerSaveDetector = PowerSaveDetector.newInstance(activity);
+        mActivity = activity;
     }
 
     void onStart() {
@@ -63,6 +65,15 @@ final class ActivityBaseInternal implements IActivityBase {
         Check.getInstance().isFalse(mCheckoutRequest);
         Check.getInstance().isNull(mPowerSaveDetector); // not created yet.
         mCheckoutRequest = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public Activity getActivity() {
+        return mActivity;
     }
 
     /**

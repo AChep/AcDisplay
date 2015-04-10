@@ -1,5 +1,6 @@
 package com.achep.base.interfaces;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -13,6 +14,9 @@ import org.solovyev.android.checkout.ActivityCheckout;
 public interface IActivityBase {
 
     void requestCheckout();
+
+    @NonNull
+    Activity getActivity();
 
     @Nullable
     ActivityCheckout getCheckout();

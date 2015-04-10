@@ -92,6 +92,15 @@ public abstract class ActivityBaseStock extends Activity implements IActivityBas
     /**
      * {@inheritDoc}
      */
+    @NonNull
+    @Override
+    public Activity getActivity() {
+        return mAbs.getActivity();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public ActivityCheckout getCheckout() {
