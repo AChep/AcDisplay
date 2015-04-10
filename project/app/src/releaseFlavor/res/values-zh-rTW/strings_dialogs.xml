@@ -50,6 +50,6 @@
   <string name="compat_dialog_title">相容性模式</string>
   <string name="compat_dialog_message">為支援 Android %1$s: %2$s，AcDisplay 正在相容性模式下執行</string>
   <string name="compat_dialog_item_notification">AcDisplay 正在使用協助工具服務，因此無法偵測已忽略或更新的通知，或是關閉通知列表中的通知。</string>
-  <string name="compat_dialog_item_immersive_mode">一律顯示導航列。</string>
+  <string name="compat_dialog_item_immersive_mode">一律顯示導航列</string>
   <string name="compat_dialog_item_music_widget">找不到音樂小工具。</string>
 </resources>

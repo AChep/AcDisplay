@@ -22,7 +22,7 @@
   <string name="settings">Nastavitve</string>
   <string name="settings_multi_list_divider">,&#160;</string>
   <string name="settings_unknown_value">Neznana vrednost</string>
-  <string name="settings_placeholder_title">----</string>
+  <string name="settings_placeholder_title">Placeholder</string>
   <string name="settings_placeholder_summary">Bodoče možnosti.</string>
   <string name="settings_category_features">Funkcije</string>
   <string name="settings_keyguard_title">Zaklepanje zaslona</string>
@@ -33,7 +33,7 @@
   <string name="settings_interface_title">Vmesnik</string>
   <string name="settings_more_title">Več &#8230;</string>
   <string name="settings_dev_title">Razvoj</string>
-  <string name="settings_keyguard_description">Uporabi AcDisplay za zaklepanje zaslona. To je beta funkcija in bo morda nestabilna.</string>
+  <string name="settings_keyguard_description">Uporabi AcDisplay za zaklepanje zaslona. To je testna funkcija in bo morda nestabilna.</string>
   <string name="settings_keyguard_respect_inactive_time_title">Onemogoči v času neaktivnosti</string>
   <string name="settings_active_disable_on_low_battery_title">Onemogoči ob slabem akumulatorju</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Omogoči, ko ni obvestil</string>
@@ -57,7 +57,7 @@
   <string name="settings_dynamic_background_disabled">Onemogočeno</string>
   <string name="settings_status_battery_always_visible">Ohrani stanje baterije</string>
   <string name="settings_status_battery_always_visible_off">Stanje baterije je prikazano ob nizki napolnjenosti ali ob napajanju.</string>
-  <string name="settings_emoticons_title">Emotikoni</string>
+  <string name="settings_emoticons_title">Simboli</string>
   <string name="settings_override_fonts_title">Preglasi sistemske pisave</string>
   <string name="settings_circle_category">Krog odklepanja</string>
   <string name="settings_circle_animation_title">Animacija odklepanja</string>

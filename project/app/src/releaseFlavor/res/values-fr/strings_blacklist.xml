@@ -21,10 +21,10 @@
 <resources>
   <string name="blacklist">Liste noire</string>
   <string name="blacklist_app_config">Paramètres de l\'application</string>
-  <string name="blacklist_app_hide_title">Cacher</string>
+  <string name="blacklist_app_hide_title">Masquer</string>
   <string name="blacklist_app_hide_summary">Les notifications de cette application ne seront pas affichées.</string>
   <string name="blacklist_app_restricted_title">Silencieux</string>
-  <string name="blacklist_app_restricted_summary">Ne pas réveiller quand une notification de cette application est reçue.</string>
+  <string name="blacklist_app_restricted_summary">Ne pas réveiller quand cette application émet une notification.</string>
   <string name="blacklist_app_non_clearable_title">Notifications permanentes</string>
   <string name="blacklist_app_non_clearable_summary">Afficher les notifications permanentes, telles que celles de services.</string>
 </resources>

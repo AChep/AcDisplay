@@ -20,40 +20,38 @@
   -->
 <resources>
   <string name="about_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
-        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
-        <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
-    ]]></string>
-  <string name="donate_dialog_title">Donate to developers</string>
-  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
-  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
-  <string name="donate_thanks">Thank you very much!</string>
-  <string name="donation_1">An ice cream</string>
-  <string name="donation_4">A cup of coffee</string>
-  <string name="donation_10">Electricity bills</string>
-  <string name="donation_20">The right pillow</string>
-  <string name="donation_50">Solid-state drive</string>
-  <string name="donation_99">Sound system</string>
-  <string name="cry_dialog_title">Support development</string>
+        AcDisplay는 무료이며 <a href="http://repo.acdisplay.org">오픈 소스</a> 앱입니다..
+        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
+        <br/>
+        여러 오픈소스 툴에 감사드립니다: %1$s 그리고 
+        <a href="http://translate.acdisplay.org">번역해주신 분이나 </a> 후원해주신 분들께도 감사드립니다.
+    ]]></string>
+  <string name="donate_dialog_title">개발자를 후원하기</string>
+  <string name="donate_dialog_message">AcDisplay는 무료이며 오픈소스 앱 입니다. 기부를 통해 감사의 표시를 해주시거나 개발을 지원해주실 수 있습니다.</string>
+  <string name="donate_alert_no_responsibility">구글은 이 지불방식에 대해 책임이 없음을 알려드립니다.</string>
+  <string name="donate_billing_not_supported">인앱 결제가 지원되지 않는 기기입니다.</string>
+  <string name="donate_thanks">정말 감사합니다!</string>
+  <string name="donation_1">아이스크림 하나</string>
+  <string name="donation_4">커피 한잔</string>
+  <string name="donation_10">전기세</string>
+  <string name="donation_20">숙면 베개</string>
+  <string name="donation_50">SSD</string>
+  <string name="donation_99">사운드 시스템</string>
+  <string name="cry_dialog_title">개발 지원</string>
   <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
-    ]]></string>
+        AcDisplay는 무료이며 <a href="http://repo.acdisplay.org">오픈 소스</a> 앱 입니다. 그리고 이 앱을 유지하기 위해 많은 시간과 자원을 투자하고 있습니다. 더 나은 개발을 위해 후원을 통해 감사의 표시를 해주세요.
+    ]]></string>
   <string name="help_dialog_title">도움말</string>
   <string name="feedback_dialog_title">피드백</string>
-  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
-  <string name="feedback_dialog_attach_log">Attach a log</string>
-  <string name="feedback_dialog_read_help">Frequently asked questions</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
-  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
-  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
-  <string name="compat_dialog_title">Compatibility mode</string>
-  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
-  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
-  <string name="compat_dialog_item_music_widget">No music widget.</string>
+  <string name="feedback_dialog_message_hint">메시지, 기기 사양이 자동적으로 포함됩니다.</string>
+  <string name="feedback_dialog_attach_log">로그 첨부</string>
+  <string name="feedback_dialog_read_help">자주 묻는 질문</string>
+  <string name="feedback_error_no_app">이메일 앱을 설치하세요.</string>
+  <string name="feedback_error_msg_too_short">메시지에 적어도 %1$d개의 글자가 포함되어야 합니다.</string>
+  <string name="feedback_error_accessing_log">앱의 로그에 액세스 하는 중 오류가 발생 했습니다. 오류: %1$s</string>
+  <string name="compat_dialog_title">호환성 모드</string>
+  <string name="compat_dialog_message">AcDisplay가 안드로이드를 지원하기 위해 호환성 모드에서 실행중입니다  %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">HeadsUp이 접근성 서비스를 사용하기 때문에 알림의 해제/업데이트를 감지할 수 없고, 알림창에서 알림을 지울 수도 없습니다.</string>
+  <string name="compat_dialog_item_immersive_mode">네비게이션바가 항상 표시됩니다.</string>
+  <string name="compat_dialog_item_music_widget">음악 위젯이 없습니다.</string>
 </resources>

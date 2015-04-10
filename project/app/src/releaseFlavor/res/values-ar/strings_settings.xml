@@ -34,14 +34,14 @@
   <string name="settings_more_title">المزيد&#8230;</string>
   <string name="settings_dev_title">تطوير</string>
   <string name="settings_keyguard_description">استخدام AcDisplay كشاشة قفل. هذه ميزة تجريبية وقد تكون غير مستقرة.</string>
-  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
-  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
+  <string name="settings_keyguard_respect_inactive_time_title">تعطيل في الأوقات غير النشطة</string>
+  <string name="settings_active_disable_on_low_battery_title">تعطيل في حالة انخفاض البطارية</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">تفعيل في حالة عدم توفر أية إشعارات</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">شاشة القفل مفعّلة في حال توفُر إشعارات من عدمها.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">شاشة القفل معطلة حين لا تتوفر أية إشعارات.</string>
-  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
+  <string name="settings_active_active_charging_title">تتبع الحركة دائمًا أثناء الشحن</string>
   <string name="settings_active_description">الوضع النشط يستخدم حساسات الجهاز لإيقاظه تمامًا عندما تحتاجه. يعمل ذلك بشكل ممتاز في حالات كإخراج جهازك من جيبك للحصول على لمحة سريعة على الإشعارات. الوضع النشط لا يُبقي معالج الجهاز يعمل، لهذا، يفترض ألّا تواجه زيادة ملحوظة في استخدام البطارية.</string>
-  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_respect_inactive_time_title">تعطيل في الأوقات غير النشطة</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">تفعيل في حالة عدم توفر أية إشعارات</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">الوضع النشط مفعّل في حال توفُر إشعارات من عدمها.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">الوضع النشط معطل حين لا تتوفر أية إشعارات.</string>
@@ -76,7 +76,7 @@
   <string name="settings_timeout_summary">بعد %1$s / %2$s ثانية من عدم النشاط.</string>
   <string name="settings_icon_size_title">حجم الرمز</string>
   <string name="settings_icon_size_summary">الحجم الحالي للرموز هو %1$s نقطة/بوصة.</string>
-  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
+  <string name="settings_double_tap_to_sleep_title">قفل الشاشة عند اللمس المزدوج</string>
   <string name="settings_behavior_category">السلوك</string>
   <string name="settings_lock_on_dismiss_last_notify_title">قفل الشاشة عند استبعاد الإشعار الأخير</string>
   <string name="settings_lock_on_dismiss_last_notify_on">يتم قفل الشاشة بعد استبعاد آخر إشعار موجود.</string>

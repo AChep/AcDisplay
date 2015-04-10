@@ -21,8 +21,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_description">AcDisplay est une nouvelle manière de gérer les notifications sous Android. Il vous informera de vos notifications en affichant une interface minimaliste vous permettant d\'interagir avec les notifications, directement depuis l\'écran de verrouillage. Et si vous pensez avoir raté quelque chose, retirez simplement le téléphone de votre poche, les notifications s\'afficheront d\'elles même.</string>
   <string name="plugin_xposed_description">Permet à AcDisplay de mieux s\'intégrer au sein d\'Android.</string>
-  <string name="permissions_auto_disabled">AcDisplay a été désactivé car il lui manque certaines permissions.</string>
-  <string name="permissions_dialog_title">Permissions requises :</string>
+  <string name="permissions_auto_disabled">AcDisplay a été désactivé car il lui manque certaines autorisations.</string>
+  <string name="permissions_dialog_title">Autorisations requises :</string>
   <string name="permissions_device_admin">Administrateur de l\'appareil</string>
   <string name="permissions_device_admin_removed">AcDisplay a été retiré des administrateurs de l\'appareil.</string>
   <string name="permissions_device_admin_description">Requis pour gérer la stratégie de délai de l\'extinction de l\'écran.</string>
@@ -34,11 +34,11 @@
   <string name="permissions_usage_stats_description">Nécessaire pour éviter de masquer les alarmes et les appels téléphoniques.</string>
   <string name="permissions_usage_stats_error">Le fabricant de votre appareil a retiré cette autorisation de sa version d\'Android. Il n\'y a aucun moyen de résoudre le problème, sauf attendre le correctif du fabricant.</string>
   <string name="action_about">À propos</string>
-  <string name="action_donate">Faire un don</string>
-  <string name="action_feedback">Commentaires</string>
+  <string name="action_donate">Donation</string>
+  <string name="action_feedback">Commentaire</string>
   <string name="action_help">Aide</string>
   <string name="action_settings">Paramètres</string>
-  <string name="action_send_test_notify">Envoyer une notification de test</string>
+  <string name="action_send_test_notify">Envoyer une notification d\'essai</string>
   <string name="action_show_system_apps">Applications système</string>
   <string name="close">Fermer</string>
   <string name="later">Plus tard</string>
@@ -50,19 +50,18 @@
   <string name="media_prev_description">Piste précédente</string>
   <string name="media_next_description">Piste suivante</string>
   <string name="media_pause_description">Pause</string>
-  <string name="media_play_description">Play</string>
-  <string name="media_stop_description">Stop</string>
+  <string name="media_play_description">Lecture</string>
+  <string name="media_stop_description">Arrêter</string>
   <string name="notification_init_text">Rejetez simplement cette notification.</string>
   <string name="notification_test_message">Ceci est un exemple de notification.</string>
-  <string name="notification_test_message_large">Glissez vers le bas pour supprimer la notification.\n
-Glissez partout ailleurs pour déverrouiller.</string>
+  <string name="notification_test_message_large">Glissez vers le bas pour supprimer la notification.\nGlissez partout ailleurs pour déverrouiller.</string>
   <string name="privacy_mode_hidden_content">Contenu masqué.</string>
   <string name="remote_enable_acdisplay">AcDisplay est activé.</string>
   <string name="remote_disable_acdisplay">AcDisplay est désactivé.</string>
   <string name="service_bath">Services d\'AcDisplay</string>
   <string name="service_bath_keyguard">Écran de verrouillage</string>
-  <string name="service_bath_active_mode">Mode actif (Active mode)</string>
+  <string name="service_bath_active_mode">Mode actif</string>
   <string name="service_bath_active_mode_dump">Service moniteur des capteurs</string>
-  <string name="status_date_format">EEE, d MMMM</string>
-  <string name="accessibility_battery_level"><xliff:g id="number" example="100">%d</xliff:g> pourcent(s) de batterie.</string>
+  <string name="status_date_format">EEE. d MMMM</string>
+  <string name="accessibility_battery_level"><xliff:g id="number" example="100">%d</xliff:g> pourcents de batterie.</string>
 </resources>

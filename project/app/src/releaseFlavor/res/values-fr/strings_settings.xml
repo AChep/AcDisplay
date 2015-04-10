@@ -26,7 +26,7 @@
   <string name="settings_placeholder_summary">Emplacement pour de futures options.</string>
   <string name="settings_category_features">Fonctionnalités</string>
   <string name="settings_keyguard_title">Écran de verrouillage</string>
-  <string name="settings_active_title">Active mode</string>
+  <string name="settings_active_title">Mode actif</string>
   <string name="settings_category_settings">Paramètres</string>
   <string name="settings_app_settings_title">Applications</string>
   <string name="settings_notification_title">Notifications</string>
@@ -64,9 +64,9 @@
   <string name="settings_circle_color_inner_title">Couleur du cercle</string>
   <string name="settings_circle_color_outer_title">Fond du cercle</string>
   <string name="settings_dev_sensors_dump_title">Extraire les données en provenance des capteurs</string>
-  <string name="settings_dev_sensors_dump_on">Enregistre continuellement l\'état du périphérique et les données provenant des capteurs dans un fichier.</string>
+  <string name="settings_dev_sensors_dump_on">Enregistre continuellement l\'état de l\'appareil et les données provenant des capteurs dans un fichier.</string>
   <string name="settings_dev_sensors_dump_send_title">Envoyer les données enregistrées</string>
-  <string name="settings_only_while_charging_title">Seulement pendant la charge</string>
+  <string name="settings_only_while_charging_title">Uniquement pendant la charge</string>
   <string name="settings_only_while_charging_on">AcDisplay n\'est actif que lorsque votre appareil est en charge. Cela implique toutes les fonctionnalités telles que l\'écran de verrouillage ou le mode actif.</string>
   <string name="settings_only_while_charging_off">L\'application est tout le temps active.</string>
   <string name="settings_inactive_hours_title">Horaires d\'inactivité</string>
@@ -97,6 +97,6 @@ Jusqu\'à :<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_sec">%1$s sec.</string>
   <string name="preference_icon_size_message">Ajuster la taille des icônes de notifications.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
-  <string name="preference_colorpicker_random_color">Couleurs aléatoires</string>
+  <string name="preference_colorpicker_random_color">Couleur aléatoire</string>
   <string name="preference_colorpicker_custom_color">Couleur définie</string>
 </resources>

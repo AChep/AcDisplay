@@ -35,10 +35,10 @@
   <string name="settings_dev_title">Udvikling</string>
   <string name="settings_keyguard_description">Brug AcDisplay som låseskærm. Dette er en betafunktion og kan være ustabil.</string>
   <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
-  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
+  <string name="settings_active_disable_on_low_battery_title">Deaktiver ved lavt batteri</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Aktiver når der er ingen underretninger</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
-  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_on">Låseskærmen er aktiveret uanset om der er notifikationer eller ej.</string>
+  <string name="settings_keyguard_enabled_when_notification_list_empty_off">Låseskærmen er deaktiveret når der ikke er nogle notifikationer.</string>
   <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
   <string name="settings_active_description">Aktiv tilstand bruger enhedens sensorer til at vække din enhed op, når du har brug for det. Dette virker fremragende til at tage din enhed op fra din lomme for at få et hurtigt glimt af dine underretninger. Aktiv tilstand holder ikke CPU\'en kørende, så du bør ikke opleve noget stigende batteriforbrug.</string>
   <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
@@ -47,7 +47,7 @@
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktiv tilstand er deaktiveret, når der ingen underretninger er.</string>
   <string name="settings_wake_up_on_notification_title">Væk skærm ved underretning</string>
   <string name="settings_notify_min_priority_title">Minimum prioritet</string>
-  <string name="settings_notify_max_priority_title">Maximum priority</string>
+  <string name="settings_notify_max_priority_title">Højeste prioritet</string>
   <string name="settings_full_screen_title">Fuldskærmstilstand</string>
   <string name="settings_use_wallpaper_title">Brug tapet</string>
   <string name="settings_use_wallpaper_on">Din baggrund på hjemmeskærmen bruges som baggrunden.</string>
@@ -58,7 +58,7 @@
   <string name="settings_status_battery_always_visible">Behold batteristatus</string>
   <string name="settings_status_battery_always_visible_off">Status for batteriet vises ved lavt opladningsniveau, eller når oplader er tilsluttet.</string>
   <string name="settings_emoticons_title">Humørikoner</string>
-  <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_override_fonts_title">Tilsidesæt systemskrifttyper</string>
   <string name="settings_circle_category">Lås cirkel op</string>
   <string name="settings_circle_animation_title">Oplåsningsanimation</string>
   <string name="settings_circle_color_inner_title">Cirkel farve</string>
@@ -97,6 +97,6 @@ til:<br/><b><font color="#ffffff">%1$s</font></b>
   <string name="preference_timeout_sec">%1$s sek.</string>
   <string name="preference_icon_size_message">Tilpas størrelsen for underretningsikonerne.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
-  <string name="preference_colorpicker_random_color">Random colors</string>
-  <string name="preference_colorpicker_custom_color">Defined color</string>
+  <string name="preference_colorpicker_random_color">Tilfældige farver</string>
+  <string name="preference_colorpicker_custom_color">Defineret farve</string>
 </resources>
