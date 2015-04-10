@@ -200,6 +200,28 @@ public abstract class MediaController2 implements
      */
     public abstract void sendMediaAction(int action);
 
+    /**
+     * Move to a new location in the media stream.
+     *
+     * @param position Position to move to, in milliseconds.
+     */
+    public abstract void seekTo(long position);
+
+    /**
+     * Get the current buffered position in ms. This is the farthest playback point
+     * that can be reached from the current position using only buffered content.
+     *
+     * @return the current buffered position in ms. or {@code -1} if something went wrong.
+     */
+    public abstract long getPlaybackBufferedPosition();
+
+    /**
+     * Get the current playback position in ms.
+     *
+     * @return the current playback position in ms. or {@code -1} if something went wrong.
+     */
+    public abstract long getPlaybackPosition();
+
     protected void notifyOnMetadataChanged() {
         Check.getInstance().isInMainThread();
         synchronized (this) {

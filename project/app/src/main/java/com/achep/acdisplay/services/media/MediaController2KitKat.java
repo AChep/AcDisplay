@@ -196,6 +196,32 @@ class MediaController2KitKat extends MediaController2 {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public void seekTo(long position) {
+        RemoteController rc = mService.getRemoteController();
+        rc.seekTo(position);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getPlaybackBufferedPosition() {
+        return -1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getPlaybackPosition() {
+        RemoteController rc = mService.getRemoteController();
+        return rc.getEstimatedMediaPosition();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected void updatePlaybackState(int playbackStateRcc) {
         super.updatePlaybackState(mStateSparse.get(playbackStateRcc));
     }

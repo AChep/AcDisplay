@@ -38,4 +38,26 @@ class MediaController2Empty extends MediaController2 {
      */
     public void sendMediaAction(int action) { /* do nothing */ }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void seekTo(long position) { /* do nothing */ }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getPlaybackBufferedPosition() {
+        return -1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getPlaybackPosition() {
+        return -1;
+    }
+
 }

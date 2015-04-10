@@ -227,6 +227,45 @@ class MediaController2Lollipop extends MediaController2 {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void seekTo(long position) {
+        if (mMediaController == null) {
+            // Do nothing or crash?
+            return;
+        }
+
+        mMediaController.getTransportControls().seekTo(position);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getPlaybackBufferedPosition() {
+        if (mMediaController == null) {
+            // Do nothing or crash?
+            return -1;
+        }
+
+        return mMediaController.getPlaybackState().getBufferedPosition();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getPlaybackPosition() {
+        if (mMediaController == null) {
+            // Do nothing or crash?
+            return -1;
+        }
+
+        return mMediaController.getPlaybackState().getPosition();
+    }
+
+    /**
      * Clears {@link #mMetadata metadata}. Same as calling
      * {@link #updateMetadata(MediaMetadata)}
      * with {@code null} parameter.
