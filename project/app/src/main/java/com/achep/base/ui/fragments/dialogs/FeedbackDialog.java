@@ -300,6 +300,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
                 obj.put("app_version_name", pi.versionName);
                 obj.put("app_timestamp", Build.TIME_STAMP);
                 obj.put("app_is_debug", DEBUG);
+                obj.put("app_is_help_read", config.getTriggers().isHelpRead());
                 obj.put("app_launch_count", config.getTriggers().getLaunchCount());
 
                 // Device related stuff
