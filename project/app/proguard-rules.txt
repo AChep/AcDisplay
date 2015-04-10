@@ -94,9 +94,6 @@
 # should be copied to application proguard rules config
 -keep class com.android.vending.billing.**
 
-# RipleDrawable
--keep class dreamers.graphics.** {*;}
-
 -assumenosideeffects class org.solovyev.android.checkout.Billing {
     public static void debug(...);
     public static void warning(...);
@@ -104,5 +101,13 @@
 }
 
 -assumenosideeffects class org.solovyev.android.checkout.Check {
+        *;
+}
+
+######### RipleDrawable rules
+#### Check it there:
+#### https://github.com/ozodrukh/RippleDrawable/blob/master/sample/proguard-rules.pro
+
+-keep class dreamers.graphics.** {
         *;
 }
