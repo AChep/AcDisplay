@@ -39,6 +39,7 @@ import android.widget.TextView;
 import com.achep.acdisplay.R;
 import com.achep.base.Device;
 import com.achep.base.utils.ResUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -296,19 +297,19 @@ public class DialogBuilder {
 
     //-- ALERT DIALOG ---------------------------------------------------------
 
-    public AlertDialog.Builder createAlertDialogBuilder() {
+    public MaterialDialog.Builder createAlertDialogBuilder() {
         return createAlertDialogBuilder(LAYOUT_COMMON);
     }
 
     /**
-     * Creates view and {@link android.app.AlertDialog.Builder#setView(android.view.View) sets}
-     * to new {@link android.app.AlertDialog.Builder}.
+     * Creates view and {@link MaterialDialog.Builder#customView(View, boolean) sets}
+     * to a new {@link MaterialDialog.Builder}.
      *
      * @param type type of container layout
-     * @return AlertDialog.Builder with set custom view
+     * @return MaterialDialog.Builder with set custom view
      */
-    public AlertDialog.Builder createAlertDialogBuilder(int type) {
-        return new AlertDialog.Builder(mContext).setView(createView(type));
+    public MaterialDialog.Builder createAlertDialogBuilder(int type) {
+        return new MaterialDialog.Builder(mContext).customView(createView(type), false);
     }
 
 }

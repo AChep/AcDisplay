@@ -19,7 +19,6 @@
 package com.achep.base.ui.fragments.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -37,9 +36,9 @@ import android.widget.Toast;
 
 import com.achep.acdisplay.R;
 import com.achep.base.Build;
-import com.achep.base.ui.DialogBuilder;
 import com.achep.base.utils.ResUtils;
 import com.achep.base.utils.ToastUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Dialog fragment that shows some info about this application.
@@ -112,13 +111,13 @@ public class AboutDialog extends DialogFragment {
         CharSequence credits = getString(R.string.about_dialog_credits);
         CharSequence message = Html.fromHtml(ResUtils.getString(getResources(), R.string.about_dialog_message, credits, year));
 
-        View view = new DialogBuilder(context)
-                .setIcon(R.drawable.ic_action_about_white)
-                .setTitle(getVersionName(context))
-                .setMessage(message)
-                .createView();
-        View title = view.findViewById(R.id.title);
-        title.setOnClickListener(new View.OnClickListener() {
+        MaterialDialog md = new MaterialDialog.Builder(context)
+                .iconRes(R.drawable.ic_action_about_white)
+                .title(getVersionName(context))
+                .content(message)
+                .negativeText(R.string.close)
+                .build();
+        md.getTitleView().setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -139,11 +138,7 @@ public class AboutDialog extends DialogFragment {
             }
 
         });
-
-        return new AlertDialog.Builder(context)
-                .setView(view)
-                .setNegativeButton(R.string.close, null)
-                .create();
+        return md;
     }
 
 }

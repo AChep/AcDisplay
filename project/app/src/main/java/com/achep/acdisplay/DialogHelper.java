@@ -31,13 +31,13 @@ import android.text.Html;
 import com.achep.base.Device;
 import com.achep.base.permissions.Permission;
 import com.achep.base.tests.Check;
-import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.fragments.dialogs.AboutDialog;
 import com.achep.base.ui.fragments.dialogs.DonateDialog;
 import com.achep.base.ui.fragments.dialogs.FeedbackDialog;
 import com.achep.base.ui.fragments.dialogs.HelpDialog;
 import com.achep.base.ui.fragments.dialogs.PermissionsDialog;
 import com.achep.base.utils.ResUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Helper class for showing fragment dialogs.
@@ -68,13 +68,12 @@ public class DialogHelper {
         Resources res = activity.getResources();
         CharSequence message = Html.fromHtml(res.getString(R.string.cry_dialog_message));
 
-        new DialogBuilder(activity)
-                .setIcon(R.drawable.ic_action_about_white)
-                .setTitle(R.string.cry_dialog_title)
-                .setMessage(message)
-                .createAlertDialogBuilder()
-                .setNegativeButton(R.string.close, null)
-                .create()
+        new MaterialDialog.Builder(activity)
+                .iconRes(R.drawable.ic_action_about_white)
+                .title(R.string.cry_dialog_title)
+                .content(message)
+                .negativeText(R.string.close)
+                .build()
                 .show();
     }
 
@@ -113,13 +112,12 @@ public class DialogHelper {
         }
 
         String message = ResUtils.getString(activity, R.string.compat_dialog_message, Build.VERSION.RELEASE, builder);
-        new DialogBuilder(activity)
-                .setIcon(R.drawable.ic_dialog_compat_white)
-                .setTitle(R.string.compat_dialog_title)
-                .setMessage(message)
-                .createAlertDialogBuilder()
-                .setNegativeButton(R.string.close, null)
-                .create()
+        new MaterialDialog.Builder(activity)
+                .iconRes(R.drawable.ic_dialog_compat_white)
+                .title(R.string.compat_dialog_title)
+                .content(message)
+                .negativeText(R.string.close)
+                .build()
                 .show();
     }
 

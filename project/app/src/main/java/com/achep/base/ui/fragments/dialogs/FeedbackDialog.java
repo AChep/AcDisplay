@@ -19,10 +19,8 @@
 package com.achep.base.ui.fragments.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -36,7 +34,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -49,7 +46,6 @@ import com.achep.base.Build;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.providers.LogsProviderBase;
-import com.achep.base.ui.DialogBuilder;
 import com.achep.base.utils.FileUtils;
 import com.achep.base.utils.IntentUtils;
 import com.achep.base.utils.PackageUtils;
@@ -57,6 +53,7 @@ import com.achep.base.utils.ResUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
 import com.achep.base.utils.logcat.Logcat;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,26 +132,15 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
         Activity activity = getActivity();
         assert activity != null;
 
-        View view = new DialogBuilder(activity)
-                .setIcon(ResUtils.getDrawable(activity, R.drawable.ic_action_feedback_white))
-                .setTitle(getString(R.string.feedback_dialog_title))
-                .setView(R.layout.feedback_dialog)
-                .createSkeletonView();
-        final AlertDialog alertDialog = new AlertDialog.Builder(activity)
-                .setView(view)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(R.string.send, null)
-                .create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button button = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                assert button != null;
-                button.setOnClickListener(new View.OnClickListener() {
-
+        MaterialDialog md = new MaterialDialog.Builder(activity)
+                .iconRes(R.drawable.ic_action_feedback_white)
+                .title(R.string.feedback_dialog_title)
+                .customView(R.layout.feedback_dialog, true)
+                .negativeText(android.R.string.cancel)
+                .positiveText(R.string.send)
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(View view) {
+                    public void onPositive(MaterialDialog dialog) {
                         Context context = getActivity();
                         CharSequence message = mEditText.getText();
 
@@ -173,10 +159,17 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
                             ToastUtils.showShort(context, toastText);
                         }
                     }
-                });
-            }
-        });
 
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        dismiss();
+                    }
+                })
+                .autoDismiss(false)
+                .build();
+
+        View view = md.getCustomView();
+        assert view != null;
         mSpinner = (Spinner) view.findViewById(R.id.type);
         mSpinner.setOnItemSelectedListener(mListener);
         mEditText = (EditText) view.findViewById(R.id.message);
@@ -186,7 +179,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
         Config.Triggers triggers = Config.getInstance().getTriggers();
         if (!triggers.isHelpRead()) initFaqPanel((ViewGroup) view);
 
-        return alertDialog;
+        return md;
     }
 
     /**

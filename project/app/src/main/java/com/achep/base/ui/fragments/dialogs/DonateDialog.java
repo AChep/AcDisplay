@@ -19,31 +19,20 @@
 package com.achep.base.ui.fragments.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.achep.acdisplay.R;
@@ -56,10 +45,10 @@ import com.achep.base.ui.adapters.BetterArrayAdapter;
 import com.achep.base.ui.widgets.HeaderGridView;
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.CoinUtils;
-import com.achep.base.utils.IntentUtils;
 import com.achep.base.utils.RippleUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.BillingRequests;
@@ -118,12 +107,7 @@ public class DonateDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = new DialogBuilder(getActivity())
-                .setIcon(R.drawable.ic_action_donate_white)
-                .setTitle(R.string.donate_dialog_title)
-                .setView(R.layout.dialog_donate)
-                .createSkeletonView();
-
+        MaterialDialog md = initDialog();
         LayoutInflater inflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         FrameLayout frameLayout = new FrameLayout(getActivity()); //
@@ -138,7 +122,7 @@ public class DonateDialog extends DialogFragment {
         mProgressBar = (ProgressBar) phView.findViewById(R.id.progress);
         mEmptyView = (TextView) phView.findViewById(R.id.empty);
 
-        HeaderGridView gv = (HeaderGridView) view.findViewById(R.id.grid);
+        HeaderGridView gv = (HeaderGridView) md.getCustomView().findViewById(R.id.grid);
         gv.addHeaderView(textView, null, false);
         gv.addHeaderView(phView, null, false);
         gv.setAdapter(mAdapter = new SkusAdapter(getActivity(), R.layout.sku));
@@ -150,91 +134,44 @@ public class DonateDialog extends DialogFragment {
             }
         });
 
-        return initDialog(new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setNeutralButton(R.string.close, null));
+        return md;
     }
 
     @NonNull
-    private AlertDialog initDialog(final @NonNull AlertDialog.Builder builder) {
-        if (!getResources().getBoolean(R.bool.config_alternative_payments)) {
-            return builder.create();
+    private MaterialDialog initDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
+                .iconRes(R.drawable.ic_action_donate_white)
+                .title(R.string.donate_dialog_title)
+                .customView(R.layout.dialog_donate, false)
+                .neutralText(R.string.close);
+
+        if (!getResources().getBoolean(R.bool.config_alternative_payments) && false) {
+            return builder.build();
         }
 
         final Bitcoin btc = new Bitcoin();
         final PayPal pp = new PayPal();
-        final AlertDialog alertDialog = builder
-                .setPositiveButton(btc.getNameResource(), null)
-                .setNegativeButton(pp.getNameResource(), null)
-                .create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            final class Data {
-
-                private final Button button;
-                private final Intent intent;
-                private final int titleResource;
-                private final int iconResource;
-
-                private Data(Button button, Intent intent,
-                             @StringRes int titleResource,
-                             @DrawableRes int iconResource) {
-                    this.button = button;
-                    this.intent = intent;
-                    this.titleResource = titleResource;
-                    this.iconResource = iconResource;
-                }
-            }
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Intent intentPp = CoinUtils.getPaymentIntent(pp);
-                Intent intentBtc = CoinUtils.getPaymentIntent(btc);
-                if (!IntentUtils.hasActivityForThat(getActivity(), intentBtc)) {
-                    Uri uri = btc.getUriBrowseWallet();
-                    intentBtc = IntentUtils.createViewIntent(uri);
-                }
-
-                Data[] datas = new Data[]{
-                        new Data(
-                                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE),
-                                intentPp, R.string.paypal, R.drawable.ic_action_paypal),
-                        new Data(
-                                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE),
-                                intentBtc, R.string.bitcoin, R.drawable.ic_action_bitcoin),
-                };
-
-                ImageSpan span;
-                SpannableString text;
-                for (final Data data : datas) {
-                    final Button btn = data.button;
-                    if (btn != null) {
-                        // FIXME: Somehow this doesn't work correctly on lollipop devices
-                        // and some other too.
-                        span = new ImageSpan(getActivity(), data.iconResource);
-
-                        // Replace text with an icon.
-                        // This is a workaround to fix compound button's aligment.
-                        text = new SpannableString(getString(data.titleResource));
-                        text.setSpan(span, 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        btn.setText(text);
-
-                        // Eat default weight.
-                        btn.setLayoutParams(new LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-                        btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startPaymentIntentWithWarningAlertDialog(data.intent);
-                            }
-                        });
+        return builder
+                .positiveText(btc.getNameResource())
+                .negativeText(pp.getNameResource())
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        startPaymentIntentWithWarningAlertDialog(CoinUtils.getPaymentIntent(btc));
                     }
-                }
-            }
-        });
-        return alertDialog;
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        startPaymentIntentWithWarningAlertDialog(CoinUtils.getPaymentIntent(pp));
+                    }
+
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        dismiss();
+                    }
+                })
+                .autoDismiss(false)
+                .build();
     }
 
     @Override
@@ -260,17 +197,18 @@ public class DonateDialog extends DialogFragment {
         new DialogBuilder(getActivity())
                 .setMessage(messageText)
                 .createAlertDialogBuilder()
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.ok)
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onPositive(MaterialDialog dialog) {
                         try {
                             startActivity(intent);
                             dismiss(); // Dismiss main fragment
                         } catch (ActivityNotFoundException e) { /* hell no */ }
                     }
                 })
-                .create()
+                .build()
                 .show();
     }
 

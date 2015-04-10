@@ -28,8 +28,8 @@ import android.text.Html;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.ui.DialogBuilder;
 import com.achep.base.utils.RawReader;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Dialog fragment that shows FAQ.
@@ -45,13 +45,12 @@ public class HelpDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String source = RawReader.readText(getActivity(), R.raw.faq);
         CharSequence message = Html.fromHtml(source);
-        return new DialogBuilder(getActivity())
-                .setIcon(R.drawable.ic_action_help_white)
-                .setTitle(R.string.help_dialog_title)
-                .setMessage(message)
-                .createAlertDialogBuilder()
-                .setNegativeButton(R.string.close, null)
-                .create();
+        return new MaterialDialog.Builder(getActivity())
+                .iconRes(R.drawable.ic_action_help_white)
+                .title(R.string.help_dialog_title)
+                .content(message)
+                .negativeText(R.string.close)
+                .build();
     }
 
     @Override

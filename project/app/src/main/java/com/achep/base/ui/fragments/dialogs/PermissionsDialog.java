@@ -18,7 +18,6 @@
  */
 package com.achep.base.ui.fragments.dialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -35,6 +34,7 @@ import com.achep.base.permissions.Permission;
 import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.adapters.PermissionAdapter;
 import com.achep.base.utils.ToastUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,10 +114,10 @@ public class PermissionsDialog extends DialogFragment {
             }
         });
 
-        return new AlertDialog.Builder(context)
-                .setView(view)
-                .setNeutralButton(R.string.later, null)
-                .create();
+        return new MaterialDialog.Builder(context)
+                .customView(view, false)
+                .neutralText(R.string.later)
+                .build();
     }
 
     @Override
