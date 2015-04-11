@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -37,8 +38,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.achep.acdisplay.Atomic;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.graphics.BackgroundFactory;
@@ -46,6 +49,7 @@ import com.achep.acdisplay.services.media.MediaController2;
 import com.achep.acdisplay.services.media.Metadata;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
 import com.achep.base.Device;
+import com.achep.base.tests.Check;
 import com.achep.base.ui.drawables.PlayPauseDrawable;
 import com.achep.base.ui.drawables.RippleDrawable2;
 import com.achep.base.utils.Operator;
@@ -64,7 +68,7 @@ import static com.achep.base.Build.DEBUG;
 public class MediaWidget extends Widget implements
         MediaController2.MediaListener,
         View.OnClickListener,
-        View.OnLongClickListener {
+        View.OnLongClickListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "MediaWidget";
 
@@ -78,6 +82,11 @@ public class MediaWidget extends Widget implements
     private ImageButton mButtonPrevious;
     private ImageButton mButtonPlayPause;
     private ImageButton mButtonNext;
+    // Seek
+    private ViewGroup mSeekLayout;
+    private TextView mPositionText;
+    private TextView mDurationText;
+    private SeekBar mSeekBar;
 
     private boolean mIdle;
 
@@ -102,6 +111,65 @@ public class MediaWidget extends Widget implements
                     populateBackground();
                 }
             };
+
+    private final Atomic.Callback mSeekAtomicCallback = new Atomic.Callback() {
+
+        private static final int REFRESH_RATE = 1000; // ms.
+
+        @NonNull
+        private final Handler mHandler = new Handler();
+        @NonNull
+        private final Runnable mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mSeekBarTracking) {
+                    // FIXME: Get rid of this workaround by implementing the states of
+                    // AcDisplay fragment.
+                    mCallback.requestTimeoutRestart(MediaWidget.this);
+                } else {
+                    // Update the seek bar.
+                    long position = mMediaController.getPlaybackPosition();
+                    long duration = mMediaController.getMetadata().duration;
+                    Check.getInstance().isTrue(duration > 0);
+                    float ratio = (float) ((double) position / duration);
+                    float progress = mSeekBar.getMax() * ratio;
+                    mSeekBar.setProgress(Math.round(progress));
+                    // Update the playback position text.
+                    mPositionText.setText(formatTime(position));
+                }
+                // Refresh schedule.
+                if (mSeekUiAtomic.isRunning()) {
+                    mHandler.postDelayed(this, REFRESH_RATE);
+                }
+            }
+        };
+
+        @Override
+        public void onStart(Object... objects) {
+            mHandler.post(mRunnable);
+            mSeekLayout.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onStop(Object... objects) {
+            mHandler.removeCallbacks(mRunnable);
+            mSeekLayout.setVisibility(View.GONE);
+            // Workaround for a bug with the transition manager,
+            // which causes seek layout to be semi-transparent,
+            // but not gone.
+            mSeekLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSeekLayout.setVisibility(View.VISIBLE);
+                    mSeekLayout.setVisibility(View.GONE);
+                    mSeekLayout.postInvalidate();
+                }
+            }, 80);
+        }
+    };
+
+    private final Atomic mSeekUiAtomic = new Atomic(mSeekAtomicCallback, "MediaWidget:SeekBar");
+    private boolean mSeekBarTracking;
 
     public MediaWidget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
         super(callback, fragment);
@@ -134,7 +202,14 @@ public class MediaWidget extends Widget implements
     @Override
     public void onViewDetached() {
         mMediaController.unregisterListener(this);
+        mSeekUiAtomic.stop();
         super.onViewDetached();
+    }
+
+    @Override
+    public void onStop() {
+        mSeekUiAtomic.stop();
+        super.onStop();
     }
 
     @Override
@@ -223,6 +298,9 @@ public class MediaWidget extends Widget implements
         Metadata metadata = mMediaController.getMetadata();
         ViewUtils.safelySetText(mTitleView, metadata.title);
         ViewUtils.safelySetText(mSubtitleView, metadata.subtitle);
+        mDurationText.setText(formatTime(metadata.duration));
+        mSeekUiAtomic.stop();
+        mSeekBar.setMax(Math.min(100, (int) (metadata.duration / 1000L)));
         updatePlayPauseButtonColor(Color.WHITE); // Reset color
 
         if (mArtworkView != null) {
@@ -283,21 +361,54 @@ public class MediaWidget extends Widget implements
         }
 
         mArtworkView = (ImageView) sceneView.findViewById(R.id.artwork);
-        mTitleView = (TextView) sceneView.findViewById(R.id.media_title);
-        mSubtitleView = (TextView) sceneView.findViewById(R.id.media_subtitle);
+        ViewGroup infoLayout = (ViewGroup) sceneView.findViewById(R.id.metadata);
+        mTitleView = (TextView) infoLayout.findViewById(R.id.media_title);
+        mSubtitleView = (TextView) infoLayout.findViewById(R.id.media_subtitle);
         mButtonPrevious = (ImageButton) sceneView.findViewById(R.id.previous);
         mButtonPlayPause = (ImageButton) sceneView.findViewById(R.id.play);
         mButtonNext = (ImageButton) sceneView.findViewById(R.id.next);
+        mSeekLayout = (ViewGroup) sceneView.findViewById(R.id.seek_layout);
+        mSeekBar = (SeekBar) mSeekLayout.findViewById(R.id.seek_bar);
+        mPositionText = (TextView) mSeekLayout.findViewById(R.id.playback_position);
+        mDurationText = (TextView) mSeekLayout.findViewById(R.id.duration);
 
         if (!initialize) {
             return sceneView;
         }
 
+        mSeekBar.setOnSeekBarChangeListener(this);
         mButtonPrevious.setOnClickListener(this);
         mButtonPlayPause.setImageDrawable(mPlayPauseDrawable);
         mButtonPlayPause.setOnClickListener(this);
         mButtonPlayPause.setOnLongClickListener(this);
         mButtonNext.setOnClickListener(this);
+
+        // Show the seek-panel on long click.
+        infoLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // Don't allow seeking on a weird song.
+                if (mMediaController.getMetadata().duration <= 0) {
+                    if (mSeekUiAtomic.isRunning()) {
+                        toggleSeekUiVisibility();
+                        return true;
+                    }
+                    return false;
+                }
+
+                toggleSeekUiVisibility();
+                return true;
+            }
+
+            private void toggleSeekUiVisibility() {
+                ViewGroup vg = getView();
+                if (Device.hasKitKatApi() && vg.isLaidOut() && getFragment().isAnimatable()) {
+                    TransitionManager.beginDelayedTransition(vg);
+                }
+                mSeekUiAtomic.react(!mSeekUiAtomic.isRunning());
+                mCallback.requestTimeoutRestart(MediaWidget.this);
+            }
+        });
 
         if (Device.hasLollipopApi()) {
             // FIXME: Ripple doesn't work if the background is set (masked ripple works fine, but ugly).
@@ -344,6 +455,64 @@ public class MediaWidget extends Widget implements
 
         mCallback.requestTimeoutRestart(this);
         return true;
+    }
+
+    //-- SEEKING SONGS --------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+            final long position = getPlaybackSeekPosition();
+            mPositionText.setText(formatTime(position));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        mSeekBarTracking = true;
+        mCallback.requestTimeoutRestart(MediaWidget.this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        if (mSeekBarTracking) {
+            final long position = getPlaybackSeekPosition();
+            if (DEBUG) Log.d(TAG, "Seeking to " + position + " of "
+                    + mMediaController.getMetadata().duration);
+            mMediaController.seekTo(position);
+        }
+        mSeekBarTracking = false;
+    }
+
+    private long getPlaybackSeekPosition() {
+        double pos = mSeekBar.getProgress();
+        double max = mSeekBar.getMax();
+        double ratio = pos / max;
+        long duration = mMediaController.getMetadata().duration;
+        return (long) Math.ceil(duration * ratio);
+    }
+
+    @NonNull
+    private String formatTime(long time) {
+        time /= 1000L; // get rid of millis.
+        int s = (int) (time % 60L);
+        int m = (int) (time / 60L);
+        return formatNumber(m) + ":" + formatNumber(s);
+    }
+
+    @NonNull
+    private String formatNumber(int a) {
+        String str = Integer.toString(a);
+        return a > 9 ? str : "0" + str;
     }
 
 }
