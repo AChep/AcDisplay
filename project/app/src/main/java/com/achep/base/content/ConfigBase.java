@@ -317,7 +317,7 @@ public abstract class ConfigBase implements
                 if (option != null) {
                     option.write(this, context, value, null);
                 } else {
-                   Log.w(TAG, "Passed loading an unknown item[" + key + "] from plain text.");
+                    Log.w(TAG, "Passed loading an unknown item[" + key + "] from plain text.");
                 }
             }
         } catch (Exception e) {
