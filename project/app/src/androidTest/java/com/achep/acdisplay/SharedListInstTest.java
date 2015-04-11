@@ -20,6 +20,7 @@ package com.achep.acdisplay;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.InstrumentationTestCase;
@@ -81,8 +82,11 @@ public class SharedListInstTest extends InstrumentationTestCase {
         /**
          * {@inheritDoc}
          */
+        @NonNull
         @Override
-        public SharedPreferences.Editor put(String string, SharedPreferences.Editor editor, int position) {
+        public SharedPreferences.Editor put(@NonNull String string,
+                                            @NonNull SharedPreferences.Editor editor,
+                                            int position) {
             editor.putString(KEY_STR + position, string);
             return editor;
         }
@@ -91,7 +95,7 @@ public class SharedListInstTest extends InstrumentationTestCase {
          * {@inheritDoc}
          */
         @Override
-        public String get(SharedPreferences prefs, int position) {
+        public String get(@NonNull SharedPreferences prefs, int position) {
             return prefs.getString(KEY_STR + position, null);
         }
 

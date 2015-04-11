@@ -82,6 +82,7 @@ public class AppHeap implements IOnLowMemory {
      * (can be used anywhere in the app). This instance contains all available
      * products in the app.
      */
+    @SuppressWarnings("NullableProblems")
     @NonNull
     private CheckoutInternal mCheckoutInternal;
     private Application mApplication;
