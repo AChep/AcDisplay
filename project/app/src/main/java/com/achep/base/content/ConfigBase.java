@@ -20,6 +20,7 @@ package com.achep.base.content;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.Preference;
@@ -33,6 +34,7 @@ import com.achep.base.Device;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
+import com.achep.base.utils.GzipUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -66,12 +68,12 @@ public abstract class ConfigBase implements
 
     protected static final String PREFERENCES_FILE_NAME = "config";
 
-    private SoftReference<HashMap<String, Option>> mHashMapRef = new SoftReference<>(null);
     private final ArrayList<WeakReference<OnConfigChangedListener>> mListenersRefs = new ArrayList<>(6);
-    private Context mContext;
+    private volatile SoftReference<Map<String, Option>> mMapRef = new SoftReference<>(null);
+    private volatile Context mContext;
 
     // Threading
-    protected Handler mHandler = new Handler(Looper.getMainLooper());
+    protected final Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Interface definition for a callback to be invoked
@@ -97,7 +99,7 @@ public abstract class ConfigBase implements
      */
     @Override
     public void onLowMemory() {
-        mHashMapRef.clear(); // it will be recreated in #getHashMap().
+        mMapRef.clear(); // it will be recreated in #getMap().
     }
 
     /**
@@ -141,22 +143,27 @@ public abstract class ConfigBase implements
     /**
      * @return the {@link java.util.HashMap HashMap} with option's keys as the keys, and
      * its {@link Option data} as the values.
-     * @see #onCreateHashMap(java.util.HashMap)
+     * @see #onCreateMap(java.util.Map)
      */
     @NonNull
-    public final HashMap<String, Option> getHashMap() {
-        HashMap<String, Option> hashMap = mHashMapRef.get();
-        if (hashMap == null) {
-            hashMap = new HashMap<>();
-            onCreateHashMap(hashMap);
-            mHashMapRef = new SoftReference<>(hashMap);
+    public final Map<String, Option> getMap() {
+        Map<String, Option> map = mMapRef.get();
+        if (map == null) {
+            map = new HashMap<>();
+            onCreateMap(map);
+            mMapRef = new SoftReference<>(map);
         }
-        return hashMap;
+        return map;
     }
 
+    /**
+     * @param key The unique key of the option.
+     * @throws RuntimeException if failed to find the corresponding option.
+     * @see #getMap()
+     */
     @NonNull
     public final Option getOption(@NonNull String key) {
-        Option option = getHashMap().get(key);
+        Option option = getMap().get(key);
         if (option != null) return option;
 
         throw new RuntimeException("You have forgotten to put #"
@@ -173,12 +180,6 @@ public abstract class ConfigBase implements
 
     //-- INTERNAL METHODS -----------------------------------------------------
 
-    protected void reset(@NonNull Context context) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        prefs.edit().clear().apply();
-        // TODO: Notify about those changes.
-    }
-
     /**
      * Gets an instance of the shared preferences of {@link #PREFERENCES_FILE_NAME}. By
      * default, the name is {@link #PREFERENCES_FILE_NAME}.
@@ -191,9 +192,9 @@ public abstract class ConfigBase implements
     /**
      * Fills the {@link java.util.HashMap hash map} with config's options.
      *
-     * @see #getHashMap()
+     * @see #getMap()
      */
-    protected abstract void onCreateHashMap(@NonNull HashMap<String, Option> hashMap);
+    protected abstract void onCreateMap(@NonNull Map<String, Option> map);
 
     protected abstract void onOptionChanged(@NonNull Option option, @NonNull String key);
 
@@ -275,6 +276,13 @@ public abstract class ConfigBase implements
 
     //-- BACKUP ---------------------------------------------------------------
 
+    /**
+     * Stores all the values to a JSON string and compresses it
+     * using {@link GzipUtils Gzip}.
+     *
+     * @return the backup string or {@code null} if failed to generate the one.
+     * @see #fromBackupText(Context, String)
+     */
     @Nullable
     public String toBackupText() {
         JSONObject json;
@@ -286,22 +294,32 @@ public abstract class ConfigBase implements
             json.put("__version__", "");
             */
             // Fill the json with key/value pairs
-            for (Map.Entry<String, Option> entry : getHashMap().entrySet()) {
+            for (Map.Entry<String, Option> entry : getMap().entrySet()) {
                 json.put(entry.getKey(), entry.getValue());
             }
         } catch (JSONException e) {
             Log.w(TAG, "Failed to generate JSON: " + e.getMessage());
             return null;
         }
-        return json.toString();
+
+        // We compress the result to protect it from noobs' changes
+        // and to reduce its size. This is still easy to extract if
+        // you know what to do.
+        return GzipUtils.compress(json.toString());
     }
 
     /**
+     * Loads all the settings from previously {@link #toBackupText() generated} backup string.
+     * Technically this may broke current settings, so it's kinda dangerous.
+     *
      * @return {@code true} if the config was successfully restored, {@code false} otherwise.
+     * @see #toBackupText()
      */
-    public boolean fromBackupText(@NonNull Context context, @NonNull String str) {
-        String fallback = toBackupText();
-        return fallback != null && fromBackupText(context, str, fallback);
+    public boolean fromBackupText(@NonNull Context context, @NonNull String input) {
+        String json = GzipUtils.decompress(input);
+        if (json == null) return false;
+        String fallback = toBackupText(); // We can't risk
+        return fallback != null && fromBackupText(context, json, fallback);
     }
 
     private boolean fromBackupText(@NonNull Context context,
@@ -313,7 +331,7 @@ public abstract class ConfigBase implements
                 String key = i.next();
                 Object value = json.get(key);
                 // Apply the value
-                Option option = getHashMap().get(key);
+                Option option = getMap().get(key);
                 if (option != null) {
                     option.write(this, context, value, null);
                 } else {
@@ -329,17 +347,62 @@ public abstract class ConfigBase implements
         return true;
     }
 
+    //-- OTHER ----------------------------------------------------------------
+
+    protected void initInternal(@NonNull Context context) {
+        try {
+            Resources res = context.getResources();
+            SharedPreferences prefs = getSharedPreferences(context);
+            for (Map.Entry<String, Option> entry : getMap().entrySet()) {
+                final String key = entry.getKey();
+                final Option option = entry.getValue();
+
+                // Get the current value.
+                Object value = option.getDefault(res);
+                if (Boolean.class.isAssignableFrom(option.clazz)) {
+                    value = prefs.getBoolean(key, (Boolean) value);
+                } else if (Integer.class.isAssignableFrom(option.clazz)) {
+                    value = prefs.getInt(key, (Integer) value);
+                } else if (Float.class.isAssignableFrom(option.clazz)) {
+                    value = prefs.getFloat(key, (Float) value);
+                } else if (String.class.isAssignableFrom(option.clazz)) {
+                    value = prefs.getString(key, (String) value);
+                } else throw new IllegalArgumentException("Unknown option\'s type.");
+
+                // Set the current value.
+                Field field = getClass().getDeclaredField(option.fieldName);
+                field.setAccessible(true);
+                field.set(this, value);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    protected void resetInternal(@NonNull Context context) {
+        // Reset all values.
+        Resources res = context.getResources();
+        for (Option option : getMap().values()) {
+            Object value = option.getDefault(res);
+            option.write(this, context, value, null);
+        }
+        // Clean the storage.
+        SharedPreferences prefs = getSharedPreferences(context);
+        prefs.edit().clear().apply();
+    }
+
     //-- SYNCER ---------------------------------------------------------------
 
     /**
      * A class that syncs {@link android.preference.Preference} with its
-     * value in config.
+     * value in config. Sample class can be found here:
+     * {@link com.achep.base.ui.fragments.PreferenceFragment}
      *
      * @author Artem Chepurnoy
      */
     public static class Syncer {
 
-        private final ArrayList<Group> mGroups;
+        private final ArrayList<Item> mItems;
         private final Context mContext;
         private final ConfigBase mConfig;
 
@@ -355,19 +418,19 @@ public abstract class ConfigBase implements
                             return true;
                         }
 
-                        Group group = null;
-                        for (Group c : mGroups) {
+                        Item item = null;
+                        for (Item c : mItems) {
                             if (preference == c.preference) {
-                                group = c;
+                                item = c;
                                 break;
                             }
                         }
 
-                        assert group != null;
+                        assert item != null;
 
-                        newValue = group.setter.getValue(newValue);
-                        group.option.write(mConfig, mContext, newValue, mConfigListener);
-                        group.setter.updateSummary(group.preference, group.option, newValue);
+                        newValue = item.setter.getValue(newValue);
+                        item.option.write(mConfig, mContext, newValue, mConfigListener);
+                        item.setter.updateSummary(item.preference, item.option, newValue);
                         return true;
                     }
 
@@ -379,27 +442,27 @@ public abstract class ConfigBase implements
                     @Override
                     public void onConfigChanged(@NonNull ConfigBase config, @NonNull String key,
                                                 @NonNull Object value) {
-                        Group group = null;
-                        for (Group c : mGroups) {
+                        Item item = null;
+                        for (Item c : mItems) {
                             if (key.equals(c.preference.getKey())) {
-                                group = c;
+                                item = c;
                                 break;
                             }
                         }
 
-                        if (group == null) {
+                        if (item == null) {
                             return;
                         }
 
-                        setPreferenceValue(group, value);
+                        setPreferenceValue(item, value);
                     }
 
                 };
 
-        private void setPreferenceValue(@NonNull Group group, @NonNull Object value) {
+        private void setPreferenceValue(@NonNull Item item, @NonNull Object value) {
             mBroadcasting = true;
-            group.setter.setValue(group.preference, group.option, value);
-            group.setter.updateSummary(group.preference, group.option, value);
+            item.setter.setValue(item.preference, item.option, value);
+            item.setter.updateSummary(item.preference, item.option, value);
             mBroadcasting = false;
         }
 
@@ -427,18 +490,18 @@ public abstract class ConfigBase implements
 
         /**
          * A class-merge of {@link android.preference.Preference}
-         * and its {@link ConfigBase.Option}.
+         * and its {@link ConfigBase.Option} and its {@link ConfigBase.Syncer.Setter}.
          *
          * @author Artem Chepurnoy
          */
-        private final static class Group {
+        private final static class Item {
             final Preference preference;
             final Setter setter;
             final Option option;
 
-            public Group(@NonNull ConfigBase config,
-                         @NonNull Preference preference,
-                         @NonNull Setter setter) {
+            public Item(@NonNull ConfigBase config,
+                        @NonNull Preference preference,
+                        @NonNull Setter setter) {
                 this.preference = preference;
                 this.setter = setter;
                 this.option = config.getOption(preference.getKey());
@@ -446,66 +509,58 @@ public abstract class ConfigBase implements
         }
 
         public Syncer(@NonNull Context context, @NonNull ConfigBase config) {
-            mGroups = new ArrayList<>(10);
+            mItems = new ArrayList<>(10);
             mContext = context;
             mConfig = config;
         }
 
-        @NonNull
-        public Syncer addPreference(@Nullable PreferenceScreen preferenceScreen,
-                                    @NonNull Preference preference,
-                                    @NonNull Setter setter) {
-            Group group = new Group(mConfig, preference, setter);
-            addPreference(preferenceScreen, preference, group);
-            return this;
-        }
-
-        private void addPreference(@Nullable PreferenceScreen preferenceScreen,
+        public void syncPreference(@Nullable PreferenceScreen ps,
                                    @NonNull Preference preference,
-                                   Group group) {
-
-            // Remove preference from preference screen
-            // if needed.
-            if (preferenceScreen != null) {
-                if (Device.hasTargetApi(group.option.maxSdkVersion + 1)
-                        || !Device.hasTargetApi(group.option.minSdkVersion)) {
-                    preferenceScreen.removePreference(preference);
+                                   @NonNull Setter setter) {
+            Item item = new Item(mConfig, preference, setter);
+            if (ps != null) {
+                // Remove preference from preference screen
+                // if needed.
+                boolean fitsMax = !Device.hasTargetApi(item.option.maxSdkVersion + 1);
+                boolean fitsMin = Device.hasTargetApi(item.option.minSdkVersion);
+                if (!fitsMax || !fitsMin) {
+                    ps.removePreference(preference);
                     return;
                 }
             }
-
-            mGroups.add(group);
-
-            if (mStarted) {
-                startListeningGroup(group);
-            }
+            // Add preference.
+            mItems.add(item);
+            // Immediately start listening if needed.
+            if (mStarted) startListeningToItem(item);
         }
 
         /**
          * Updates all preferences and starts to listen to the changes.
+         * Don't forget to call {@link #stop()} later!
+         *
+         * @see #stop()
+         * @see #syncPreference(PreferenceScreen, Preference, Setter)
          */
         public void start() {
             mStarted = true;
             mConfig.registerListener(mConfigListener);
-            for (Group group : mGroups) {
-                startListeningGroup(group);
-            }
+            for (Item item : mItems) startListeningToItem(item);
         }
 
-        private void startListeningGroup(@NonNull Group group) {
-            group.preference.setOnPreferenceChangeListener(mPreferenceListener);
-            setPreferenceValue(group, group.option.read(mConfig));
+        private void startListeningToItem(@NonNull Item item) {
+            item.preference.setOnPreferenceChangeListener(mPreferenceListener);
+            setPreferenceValue(item, item.option.read(mConfig));
         }
 
         /**
          * Stops to listen to the changes.
+         *
+         * @see #start()
          */
         public void stop() {
             mStarted = false;
             mConfig.unregisterListener(mConfigListener);
-            for (Group group : mGroups) {
-                group.preference.setOnPreferenceChangeListener(null);
-            }
+            for (Item item : mItems) item.preference.setOnPreferenceChangeListener(null);
         }
     }
 
@@ -523,26 +578,56 @@ public abstract class ConfigBase implements
         @NonNull
         private final Class clazz;
 
-        private final int minSdkVersion;
-        private final int maxSdkVersion;
+        private volatile int minSdkVersion = Integer.MIN_VALUE + 1;
+        private volatile int maxSdkVersion = Integer.MAX_VALUE - 1;
+
+        private volatile int mDefaultRes;
+        private volatile Object mDefault;
 
         public Option(@NonNull String fieldName,
                       @Nullable String setterName,
                       @Nullable String getterName,
                       @NonNull Class clazz) {
-            this(fieldName, setterName, getterName, clazz, 0, Integer.MAX_VALUE - 1);
-        }
-
-        public Option(@NonNull String fieldName,
-                      @Nullable String setterName,
-                      @Nullable String getterName,
-                      @NonNull Class clazz, int minSdkVersion, int maxSdkVersion) {
             this.fieldName = fieldName;
             this.setterName = setterName;
             this.getterName = getterName;
             this.clazz = clazz;
-            this.minSdkVersion = minSdkVersion;
-            this.maxSdkVersion = maxSdkVersion;
+        }
+
+        @NonNull
+        public Option setDefault(Object value) {
+            mDefault = value;
+            return this;
+        }
+
+        @NonNull
+        public Option setDefaultRes(int resource) {
+            mDefaultRes = resource;
+            return this;
+        }
+
+        /**
+         * Sets minimum {@link android.os.Build.VERSION#SDK_INT sdk version} of this
+         * option. This option won't be shown on older systems.
+         *
+         * @see #setMaxSdkVersion(int)
+         */
+        @NonNull
+        public Option setMinSdkVersion(int version) {
+            minSdkVersion = version;
+            return this;
+        }
+
+        /**
+         * Sets maximum {@link android.os.Build.VERSION#SDK_INT sdk version} of this
+         * option. This option won't be shown on newer systems.
+         *
+         * @see #setMinSdkVersion(int)
+         */
+        @NonNull
+        public Option setMaxSdkVersion(int version) {
+            maxSdkVersion = version;
+            return this;
         }
 
         /**
@@ -579,15 +664,41 @@ public abstract class ConfigBase implements
                     .isEquals();
         }
 
+        /**
+         * Extracts and returns the default option's value specified by
+         * {@link #setDefault(Object)} or {@link #setDefaultRes(int)}.
+         *
+         * @see #setDefault(Object)
+         * @see #setDefaultRes(int)
+         */
+        @Nullable
+        public final Object getDefault(@NonNull Resources resources) {
+            if (mDefaultRes != -1) {
+                if (Boolean.class.isAssignableFrom(clazz)) {
+                    return resources.getBoolean(mDefaultRes);
+                } else if (Integer.class.isAssignableFrom(clazz)) {
+                    return resources.getInteger(mDefaultRes);
+                } else if (Float.class.isAssignableFrom(clazz)) {
+                    // Assuming it's a dimension, but not a fraction.
+                    return resources.getDimension(mDefaultRes);
+                } else if (String.class.isAssignableFrom(clazz)) {
+                    return resources.getString(mDefaultRes);
+                } else throw new IllegalArgumentException("Unknown option\'s type.");
+            }
+            return mDefault;
+        }
+
         @NonNull
         public final String getKey(@NonNull ConfigBase config) {
-            for (Map.Entry<String, Option> entry : config.getHashMap().entrySet()) {
+            for (Map.Entry<String, Option> entry : config.getMap().entrySet()) {
                 if (entry.getValue().equals(this)) {
                     return entry.getKey();
                 }
             }
             throw new RuntimeException();
         }
+
+        //-- READING & WRITING ----------------------------------------------------
 
         /**
          * Reads an option from given config instance.</br>

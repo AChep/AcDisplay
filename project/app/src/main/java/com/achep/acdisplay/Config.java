@@ -19,7 +19,6 @@
 package com.achep.acdisplay;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,7 +32,7 @@ import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
 import com.achep.base.content.ConfigBase;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Saves all the configurations for the app.
@@ -41,7 +40,7 @@ import java.util.HashMap;
  * @author Artem Chepurnoy
  * @since 21.01.14
  */
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "unused"})
 public final class Config extends ConfigBase {
 
     private static final String TAG = "Config";
@@ -172,189 +171,142 @@ public final class Config extends ConfigBase {
      * This is called on {@link App app's} create.
      */
     void init(@NonNull Context context) {
-        Resources res = context.getResources();
-        SharedPreferences prefs = getSharedPreferences(context);
-        mEnabled = prefs.getBoolean(KEY_ENABLED,
-                res.getBoolean(R.bool.config_default_enabled));
-        mKeyguardEnabled = prefs.getBoolean(KEY_KEYGUARD,
-                res.getBoolean(R.bool.config_default_keyguard_enabled));
-        mKeyguardRespectInactiveTime = prefs.getBoolean(KEY_KEYGUARD_RESPECT_INACTIVE_TIME,
-                res.getBoolean(R.bool.config_default_keyguard_respect_inactive_time));
-        mKeyguardWithoutNotifies = prefs.getBoolean(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS,
-                res.getBoolean(R.bool.config_default_keyguard_without_notifies_enabled));
-        mActiveMode = prefs.getBoolean(KEY_ACTIVE_MODE,
-                res.getBoolean(R.bool.config_default_active_mode_enabled));
-        mActiveModeRespectInactiveTime = prefs.getBoolean(KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME,
-                res.getBoolean(R.bool.config_default_active_mode_respect_inactive_time));
-        mActiveModeWithoutNotifies = prefs.getBoolean(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS,
-                res.getBoolean(R.bool.config_default_active_mode_without_notifies_enabled));
-        mActiveModeActiveCharging = prefs.getBoolean(KEY_ACTIVE_MODE_ACTIVE_CHARGING,
-                res.getBoolean(R.bool.config_default_active_mode_active_charging));
-        mActiveModeDisableOnLowBattery = prefs.getBoolean(KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY,
-                res.getBoolean(R.bool.config_default_active_mode_disable_on_low_battery));
-
-        // notifications
-        mNotifyMinPriority = prefs.getInt(KEY_NOTIFY_MIN_PRIORITY,
-                res.getInteger(R.integer.config_default_notify_min_priority));
-        mNotifyMaxPriority = prefs.getInt(KEY_NOTIFY_MAX_PRIORITY,
-                res.getInteger(R.integer.config_default_notify_max_priority));
-        mNotifyWakeUpOn = prefs.getBoolean(KEY_NOTIFY_WAKE_UP_ON,
-                res.getBoolean(R.bool.config_default_notify_wake_up_on));
-
-        // timeout
-        mTimeoutNormal = prefs.getInt(KEY_TIMEOUT_NORMAL,
-                res.getInteger(R.integer.config_default_timeout_normal));
-        mTimeoutShort = prefs.getInt(KEY_TIMEOUT_SHORT,
-                res.getInteger(R.integer.config_default_timeout_short));
-
-        // inactive time
-        mInactiveTimeFrom = prefs.getInt(KEY_INACTIVE_TIME_FROM,
-                res.getInteger(R.integer.config_default_inactive_time_from));
-        mInactiveTimeTo = prefs.getInt(KEY_INACTIVE_TIME_TO,
-                res.getInteger(R.integer.config_default_inactive_time_to));
-        mInactiveTimeEnabled = prefs.getBoolean(KEY_INACTIVE_TIME_ENABLED,
-                res.getBoolean(R.bool.config_default_inactive_time_enabled));
-
-        // interface
-        mUiWallpaper = prefs.getBoolean(KEY_UI_WALLPAPER_SHOWN,
-                res.getBoolean(R.bool.config_default_ui_show_wallpaper));
-        mUiDynamicBackground = prefs.getInt(KEY_UI_DYNAMIC_BACKGROUND_MODE,
-                res.getInteger(R.integer.config_default_ui_show_shadow_dynamic_bg));
-        mUiBatterySticky = prefs.getBoolean(KEY_UI_STATUS_BATTERY_STICKY,
-                res.getBoolean(R.bool.config_default_ui_status_battery_sticky));
-        mUiFullScreen = prefs.getBoolean(KEY_UI_FULLSCREEN,
-                res.getBoolean(R.bool.config_default_ui_full_screen));
-        mUiUnlockAnimation = prefs.getBoolean(KEY_UI_UNLOCK_ANIMATION,
-                res.getBoolean(R.bool.config_default_ui_unlock_animation));
-        mUiIconSize = prefs.getInt(KEY_UI_ICON_SIZE,
-                res.getInteger(R.integer.config_default_ui_icon_size_dp));
-        mUiCircleColorInner = prefs.getInt(KEY_UI_CIRCLE_COLOR_INNER, 0xFFF0F0F0);
-        mUiCircleColorOuter = prefs.getInt(KEY_UI_CIRCLE_COLOR_OUTER, 0xFF303030);
-        mUiOverrideFonts = prefs.getBoolean(KEY_UI_OVERRIDE_FONTS,
-                res.getBoolean(R.bool.config_default_ui_override_fonts));
-        mUiEmoticons = prefs.getBoolean(KEY_UI_EMOTICONS,
-                res.getBoolean(R.bool.config_default_ui_emoticons));
-
-        // development
-        mDevSensorsDump = prefs.getBoolean(KEY_DEV_SENSORS_DUMP,
-                res.getBoolean(R.bool.config_default_dev_sensors_dump));
-
-        // other
-        mEnabledOnlyWhileCharging = prefs.getBoolean(KEY_ONLY_WHILE_CHARGING,
-                res.getBoolean(R.bool.config_default_enabled_only_while_charging));
-        mScreenOffAfterLastNotify = prefs.getBoolean(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY,
-                res.getBoolean(R.bool.config_default_feel_screen_off_after_last_notify));
-        mFeelWidgetPinnable = prefs.getBoolean(KEY_FEEL_WIDGET_PINNABLE,
-                res.getBoolean(R.bool.config_default_feel_widget_pinnable));
-        mFeelWidgetReadable = prefs.getBoolean(KEY_FEEL_WIDGET_READABLE,
-                res.getBoolean(R.bool.config_default_feel_widget_readable));
-        mPrivacyMode = prefs.getInt(KEY_PRIVACY,
-                res.getInteger(R.integer.config_default_privacy_mode));
-        mDoubleTapToSleep = prefs.getBoolean(KEY_DOUBLE_TAP_TO_SLEEP,
-                res.getBoolean(R.bool.config_default_double_tap_to_sleep));
-
-        // triggers
-        mTrigHelpRead = prefs.getBoolean(KEY_TRIG_HELP_READ, false);
-        mTrigTranslated = prefs.getBoolean(KEY_TRIG_TRANSLATED, false);
-        mTrigPreviousVersion = prefs.getInt(KEY_TRIG_PREVIOUS_VERSION, 0);
-        mTrigLaunchCount = prefs.getInt(KEY_TRIG_LAUNCH_COUNT, 0);
-        mTrigDonationAsked = prefs.getBoolean(KEY_TRIG_DONATION_ASKED, false);
+        initInternal(context);
     }
 
     @Override
-    protected void onCreateHashMap(@NonNull HashMap<String, ConfigBase.Option> hashMap) {
-        hashMap.put(KEY_ENABLED, new ConfigBase.Option(
-                "mEnabled", "setEnabled", "isEnabled", boolean.class));
-        hashMap.put(KEY_KEYGUARD, new ConfigBase.Option(
-                "mKeyguardEnabled", null, null, boolean.class));
-        hashMap.put(KEY_KEYGUARD_RESPECT_INACTIVE_TIME, new ConfigBase.Option(
-                "mKeyguardRespectInactiveTime", null, null, boolean.class));
-        hashMap.put(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
-                "mKeyguardWithoutNotifies", null, null, boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE, new ConfigBase.Option(
-                "mActiveMode", null, null, boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME, new ConfigBase.Option(
-                "mActiveModeRespectInactiveTime", null, null, boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
-                "mActiveModeWithoutNotifies", null, null, boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE_ACTIVE_CHARGING, new ConfigBase.Option(
-                "mActiveModeActiveCharging", null, null, boolean.class));
-        hashMap.put(KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY, new ConfigBase.Option(
-                "mActiveModeDisableOnLowBattery", null, null, boolean.class));
+    protected void onCreateMap(@NonNull Map<String, Option> map) {
+        map.put(KEY_ENABLED, new ConfigBase.Option(
+                "mEnabled", "setEnabled", "isEnabled", boolean.class)
+                .setDefaultRes(R.bool.config_default_enabled));
+        map.put(KEY_KEYGUARD, new ConfigBase.Option(
+                "mKeyguardEnabled", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_keyguard_enabled));
+        map.put(KEY_KEYGUARD_RESPECT_INACTIVE_TIME, new ConfigBase.Option(
+                "mKeyguardRespectInactiveTime", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_keyguard_respect_inactive_time));
+        map.put(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
+                "mKeyguardWithoutNotifies", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_keyguard_without_notifies_enabled));
+        map.put(KEY_ACTIVE_MODE, new ConfigBase.Option(
+                "mActiveMode", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_active_mode_enabled));
+        map.put(KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME, new ConfigBase.Option(
+                "mActiveModeRespectInactiveTime", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_active_mode_respect_inactive_time));
+        map.put(KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
+                "mActiveModeWithoutNotifies", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_active_mode_without_notifies_enabled));
+        map.put(KEY_ACTIVE_MODE_ACTIVE_CHARGING, new ConfigBase.Option(
+                "mActiveModeActiveCharging", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_active_mode_active_charging));
+        map.put(KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY, new ConfigBase.Option(
+                "mActiveModeDisableOnLowBattery", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_active_mode_disable_on_low_battery));
 
         // notifications
-        hashMap.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
-                "mNotifyWakeUpOn", null, null, boolean.class));
-        hashMap.put(KEY_NOTIFY_MIN_PRIORITY, new ConfigBase.Option(
-                "mNotifyMinPriority", null, null, int.class));
-        hashMap.put(KEY_NOTIFY_MAX_PRIORITY, new ConfigBase.Option(
-                "mNotifyMaxPriority", null, null, int.class));
+        map.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
+                "mNotifyWakeUpOn", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_notify_wake_up_on));
+        map.put(KEY_NOTIFY_MIN_PRIORITY, new ConfigBase.Option(
+                "mNotifyMinPriority", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_notify_min_priority));
+        map.put(KEY_NOTIFY_MAX_PRIORITY, new ConfigBase.Option(
+                "mNotifyMaxPriority", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_notify_max_priority));
 
         // timeout
-        hashMap.put(KEY_TIMEOUT_NORMAL, new ConfigBase.Option(
-                "mTimeoutNormal", null, null, int.class));
-        hashMap.put(KEY_TIMEOUT_SHORT, new ConfigBase.Option(
-                "mTimeoutShort", null, null, int.class));
+        map.put(KEY_TIMEOUT_NORMAL, new ConfigBase.Option(
+                "mTimeoutNormal", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_timeout_normal));
+        map.put(KEY_TIMEOUT_SHORT, new ConfigBase.Option(
+                "mTimeoutShort", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_timeout_short));
 
         // inactive time
-        hashMap.put(KEY_INACTIVE_TIME_ENABLED, new ConfigBase.Option(
-                "mInactiveTimeEnabled", null, null, boolean.class));
-        hashMap.put(KEY_INACTIVE_TIME_FROM, new ConfigBase.Option(
-                "mInactiveTimeFrom", null, null, int.class));
-        hashMap.put(KEY_INACTIVE_TIME_TO, new ConfigBase.Option(
-                "mInactiveTimeTo", null, null, int.class));
+        map.put(KEY_INACTIVE_TIME_ENABLED, new ConfigBase.Option(
+                "mInactiveTimeEnabled", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_inactive_time_enabled));
+        map.put(KEY_INACTIVE_TIME_FROM, new ConfigBase.Option(
+                "mInactiveTimeFrom", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_inactive_time_from));
+        map.put(KEY_INACTIVE_TIME_TO, new ConfigBase.Option(
+                "mInactiveTimeTo", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_inactive_time_to));
 
         // interface
-        hashMap.put(KEY_UI_FULLSCREEN, new ConfigBase.Option(
-                "mUiFullScreen", null, null, boolean.class));
-        hashMap.put(KEY_UI_WALLPAPER_SHOWN, new ConfigBase.Option(
-                "mUiWallpaper", null, null, boolean.class));
-        hashMap.put(KEY_UI_STATUS_BATTERY_STICKY, new ConfigBase.Option(
-                "mUiBatterySticky", null, null, boolean.class));
-        hashMap.put(KEY_UI_DYNAMIC_BACKGROUND_MODE, new ConfigBase.Option(
-                "mUiDynamicBackground", null, null, int.class));
-        hashMap.put(KEY_UI_CIRCLE_COLOR_INNER, new ConfigBase.Option(
-                "mUiCircleColorInner", null, null, int.class));
-        hashMap.put(KEY_UI_CIRCLE_COLOR_OUTER, new ConfigBase.Option(
-                "mUiCircleColorOuter", null, null, int.class));
-        hashMap.put(KEY_UI_UNLOCK_ANIMATION, new ConfigBase.Option(
-                "mUiUnlockAnimation", null, null, boolean.class));
-        hashMap.put(KEY_UI_EMOTICONS, new ConfigBase.Option(
-                "mUiEmoticons", null, null, boolean.class));
-        hashMap.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
-                "mUiOverrideFonts", null, null, boolean.class));
-        hashMap.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
-                "mUiIconSize", null, null, int.class));
+        map.put(KEY_UI_FULLSCREEN, new ConfigBase.Option(
+                "mUiFullScreen", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_full_screen));
+        map.put(KEY_UI_WALLPAPER_SHOWN, new ConfigBase.Option(
+                "mUiWallpaper", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_show_wallpaper));
+        map.put(KEY_UI_STATUS_BATTERY_STICKY, new ConfigBase.Option(
+                "mUiBatterySticky", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_status_battery_sticky));
+        map.put(KEY_UI_DYNAMIC_BACKGROUND_MODE, new ConfigBase.Option(
+                "mUiDynamicBackground", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_ui_show_shadow_dynamic_bg));
+        map.put(KEY_UI_CIRCLE_COLOR_INNER, new ConfigBase.Option(
+                "mUiCircleColorInner", null, null, int.class)
+                .setDefault(0xFFF0F0F0));
+        map.put(KEY_UI_CIRCLE_COLOR_OUTER, new ConfigBase.Option(
+                "mUiCircleColorOuter", null, null, int.class)
+                .setDefault(0xFF303030));
+        map.put(KEY_UI_UNLOCK_ANIMATION, new ConfigBase.Option(
+                "mUiUnlockAnimation", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_unlock_animation));
+        map.put(KEY_UI_EMOTICONS, new ConfigBase.Option(
+                "mUiEmoticons", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_emoticons));
+        map.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
+                "mUiOverrideFonts", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_override_fonts));
+        map.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
+                "mUiIconSize", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_ui_icon_size_dp));
 
         // development
-        hashMap.put(KEY_DEV_SENSORS_DUMP, new ConfigBase.Option(
-                "mDevSensorsDump", null, null, boolean.class));
+        map.put(KEY_DEV_SENSORS_DUMP, new ConfigBase.Option(
+                "mDevSensorsDump", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_dev_sensors_dump));
 
         // other
-        hashMap.put(KEY_ONLY_WHILE_CHARGING, new ConfigBase.Option(
-                "mEnabledOnlyWhileCharging", null, null, boolean.class));
-        hashMap.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new ConfigBase.Option(
-                "mScreenOffAfterLastNotify", null, null, boolean.class));
-        hashMap.put(KEY_FEEL_WIDGET_PINNABLE, new ConfigBase.Option(
-                "mFeelWidgetPinnable", null, null, boolean.class));
-        hashMap.put(KEY_FEEL_WIDGET_READABLE, new ConfigBase.Option(
-                "mFeelWidgetReadable", null, null, boolean.class));
-        hashMap.put(KEY_PRIVACY, new ConfigBase.Option(
-                "mPrivacyMode", null, null, int.class));
-        hashMap.put(KEY_DOUBLE_TAP_TO_SLEEP, new ConfigBase.Option(
-                "mDoubleTapToSleep", null, null, boolean.class));
+        map.put(KEY_ONLY_WHILE_CHARGING, new ConfigBase.Option(
+                "mEnabledOnlyWhileCharging", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_enabled_only_while_charging));
+        map.put(KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY, new ConfigBase.Option(
+                "mScreenOffAfterLastNotify", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_feel_screen_off_after_last_notify));
+        map.put(KEY_FEEL_WIDGET_PINNABLE, new ConfigBase.Option(
+                "mFeelWidgetPinnable", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_feel_widget_pinnable));
+        map.put(KEY_FEEL_WIDGET_READABLE, new ConfigBase.Option(
+                "mFeelWidgetReadable", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_feel_widget_readable));
+        map.put(KEY_PRIVACY, new ConfigBase.Option(
+                "mPrivacyMode", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_privacy_mode));
+        map.put(KEY_DOUBLE_TAP_TO_SLEEP, new ConfigBase.Option(
+                "mDoubleTapToSleep", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_double_tap_to_sleep));
 
         // triggers
-        hashMap.put(KEY_TRIG_DONATION_ASKED, new ConfigBase.Option(
-                "mTrigDonationAsked", null, null, boolean.class));
-        hashMap.put(KEY_TRIG_HELP_READ, new ConfigBase.Option(
-                "mTrigHelpRead", null, null, boolean.class));
-        hashMap.put(KEY_TRIG_LAUNCH_COUNT, new ConfigBase.Option(
-                "mTrigLaunchCount", null, null, int.class));
-        hashMap.put(KEY_TRIG_PREVIOUS_VERSION, new ConfigBase.Option(
-                "mTrigPreviousVersion", null, null, int.class));
-        hashMap.put(KEY_TRIG_TRANSLATED, new ConfigBase.Option(
-                "mTrigTranslated", null, null, boolean.class));
+        map.put(KEY_TRIG_DONATION_ASKED, new ConfigBase.Option(
+                "mTrigDonationAsked", null, null, boolean.class)
+                .setDefault(false));
+        map.put(KEY_TRIG_HELP_READ, new ConfigBase.Option(
+                "mTrigHelpRead", null, null, boolean.class)
+                .setDefault(false));
+        map.put(KEY_TRIG_LAUNCH_COUNT, new ConfigBase.Option(
+                "mTrigLaunchCount", null, null, int.class)
+                .setDefault(0));
+        map.put(KEY_TRIG_PREVIOUS_VERSION, new ConfigBase.Option(
+                "mTrigPreviousVersion", null, null, int.class)
+                .setDefault(0));
+        map.put(KEY_TRIG_TRANSLATED, new ConfigBase.Option(
+                "mTrigTranslated", null, null, boolean.class)
+                .setDefault(false));
     }
 
     @Override
@@ -491,6 +443,13 @@ public final class Config extends ConfigBase {
         return mUiDynamicBackground;
     }
 
+    /**
+     * Gets the current privacy mode.
+     *
+     * @return the bit-mask containing different privacy options.
+     * @see #PRIVACY_HIDE_ACTIONS_MASK
+     * @see #PRIVACY_HIDE_CONTENT_MASK
+     */
     public int getPrivacyMode() {
         return mPrivacyMode;
     }
@@ -509,7 +468,7 @@ public final class Config extends ConfigBase {
      * @see #ICON_SIZE_DP
      * @see #ICON_SIZE_PX
      */
-    public int getIconSize(String type) {
+    public int getIconSize(@NonNull String type) {
         switch (type) {
             case ICON_SIZE_PX:
                 DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();

@@ -135,7 +135,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
      * Synchronizes simple checkbox preference with the config.
      *
      * @param key the key of preference & config's parameter.
-     * @see com.achep.acdisplay.Config#getHashMap()
+     * @see com.achep.acdisplay.Config#getMap()
      */
     protected void syncPreference(@NonNull String key) {
         if (mCheckBoxPreferenceSetter == null)
@@ -148,7 +148,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
      *
      * @param key    the key of preference & config's parameter.
      * @param setter preference's setter
-     * @see com.achep.acdisplay.Config#getHashMap()
+     * @see com.achep.acdisplay.Config#getMap()
      * @see ListPreferenceSetter
      * @see CheckBoxPreferenceSetter
      */
@@ -161,7 +161,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
             return;
         }
 
-        mSyncer.addPreference(preferenceScreen, preference, setter);
+        mSyncer.syncPreference(preferenceScreen, preference, setter);
     }
 
     @Nullable
@@ -177,6 +177,11 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
         return mSwitch;
     }
 
+    /**
+     * The setter for a {@link CheckBoxPreference}.
+     *
+     * @author Artem Chepurnoy
+     */
     protected static class CheckBoxPreferenceSetter implements ConfigBase.Syncer.Setter {
 
         /**
@@ -186,7 +191,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
         public final void updateSummary(@NonNull Preference preference,
                                         @NonNull ConfigBase.Option option,
                                         @NonNull Object value) {
-            // This is non needed, because you should always use
+            // This is unneeded, because you should always use
             //     android:summaryOn=""
             //     android:summaryOff=""
             // attributes.
@@ -214,6 +219,11 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
 
     }
 
+    /**
+     * The setter for a {@link ListPreference}.
+     *
+     * @author Artem Chepurnoy
+     */
     protected static class ListPreferenceSetter implements ConfigBase.Syncer.Setter {
 
         /**
@@ -246,6 +256,12 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
 
     }
 
+    /**
+     * The setter for a {@link MultiSelectListPreference}. To work currently,
+     * its data must be in a bit-mask (bit per selectable item) format.
+     *
+     * @author Artem Chepurnoy
+     */
     protected static class MultiSelectListPreferenceSetter implements ConfigBase.Syncer.Setter {
 
         @NonNull
