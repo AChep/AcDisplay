@@ -31,7 +31,7 @@
         android:gravity="center"
         android:orientation="horizontal" />
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/message"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
         android:layout_marginBottom="4dp"
         android:text="@string/preference_icon_size_message" />
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/info"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"

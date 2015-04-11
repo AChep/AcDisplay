@@ -37,7 +37,7 @@
         android:layout_below="@id/checkbox"
         android:layout_marginTop="8dp">
 
-        <TextView
+        <com.achep.base.ui.widgets.TextView
             android:id="@+id/from"
             style="?android:spinnerStyle"
             android:layout_width="0dp"
@@ -52,7 +52,7 @@
             android:layout_width="16dp"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <com.achep.base.ui.widgets.TextView
             android:id="@+id/to"
             style="?android:spinnerStyle"
             android:layout_width="0dp"

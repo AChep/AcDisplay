@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/normal_timeout_title"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/preference_timeout_normal" />
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/normal_timeout_value"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
         android:layout_toLeftOf="@id/normal_timeout_value"
         android:layout_toStartOf="@id/normal_timeout_value" />
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/short_timeout_title"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/preference_timeout_short" />
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/short_timeout_value"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"

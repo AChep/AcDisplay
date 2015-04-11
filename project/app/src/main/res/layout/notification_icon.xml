@@ -32,7 +32,7 @@
         android:maxWidth="@dimen/notification_icon_size"
         android:scaleType="centerInside" />
 
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

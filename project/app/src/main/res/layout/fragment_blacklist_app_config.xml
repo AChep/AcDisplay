@@ -51,14 +51,14 @@
             android:layout_marginRight="6dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.achep.base.ui.widgets.TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:maxLines="1" />
 
-            <TextView
+            <com.achep.base.ui.widgets.TextView
                 android:id="@+id/summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
