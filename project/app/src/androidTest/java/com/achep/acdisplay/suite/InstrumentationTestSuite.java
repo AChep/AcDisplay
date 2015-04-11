@@ -19,6 +19,7 @@
 package com.achep.acdisplay.suite;
 
 import com.achep.acdisplay.FileUtilsInstTest;
+import com.achep.acdisplay.GzipUtilsInstTest;
 import com.achep.acdisplay.SharedListInstTest;
 
 import org.junit.runner.RunWith;
@@ -28,6 +29,6 @@ import org.junit.runners.Suite;
  * Runs all Junit3 and Junit4 Instrumentation tests.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({FileUtilsInstTest.class, SharedListInstTest.class})
+@Suite.SuiteClasses({FileUtilsInstTest.class, GzipUtilsInstTest.class, SharedListInstTest.class})
 public class InstrumentationTestSuite {
 }
