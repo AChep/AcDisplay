@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.R;
 import com.achep.base.permissions.Permission;
-import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.adapters.PermissionAdapter;
 import com.achep.base.utils.ToastUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -87,16 +86,18 @@ public class PermissionsDialog extends DialogFragment {
         Context context = getActivity();
         assert context != null;
 
-        View view = new DialogBuilder(context)
-                .setTitle(R.string.permissions_dialog_title)
-                .setView(R.layout.dialog_permissions)
-                .createSkeletonView();
+        MaterialDialog md = new MaterialDialog.Builder(context)
+                .title(R.string.permissions_dialog_title)
+                .items(new CharSequence[]{"", ""})
+                .negativeText(R.string.later)
+                .build();
 
         // Make title more red
-        TextView title = (TextView) view.findViewById(R.id.title);
+        TextView title = md.getTitleView();
         title.setTextColor(title.getCurrentTextColor() & 0xFFFF3333 | 0xFF << 16);
 
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = md.getListView();
+        assert listView != null;
         mAdapter = new PermissionAdapter(context, new ArrayList<Permission>());
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,10 +115,7 @@ public class PermissionsDialog extends DialogFragment {
             }
         });
 
-        return new MaterialDialog.Builder(context)
-                .customView(view, false)
-                .neutralText(R.string.later)
-                .build();
+        return md;
     }
 
     @Override

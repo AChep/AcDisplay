@@ -18,7 +18,6 @@
  */
 package com.achep.base.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;

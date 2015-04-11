@@ -39,7 +39,6 @@ import com.achep.acdisplay.R;
 import com.achep.base.AppHeap;
 import com.achep.base.billing.Bitcoin;
 import com.achep.base.billing.PayPal;
-import com.achep.base.ui.DialogBuilder;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.adapters.BetterArrayAdapter;
 import com.achep.base.ui.widgets.HeaderGridView;
@@ -145,7 +144,7 @@ public class DonateDialog extends DialogFragment {
                 .customView(R.layout.dialog_donate, false)
                 .neutralText(R.string.close);
 
-        if (!getResources().getBoolean(R.bool.config_alternative_payments) && false) {
+        if (!getResources().getBoolean(R.bool.config_alternative_payments)) {
             return builder.build();
         }
 
@@ -193,10 +192,8 @@ public class DonateDialog extends DialogFragment {
      * Starts an intent if user is agree with it.
      */
     private void startPaymentIntentWithWarningAlertDialog(final Intent intent) {
-        CharSequence messageText = getString(R.string.donate_alert_no_responsibility);
-        new DialogBuilder(getActivity())
-                .setMessage(messageText)
-                .createAlertDialogBuilder()
+        new MaterialDialog.Builder(getActivity())
+                .content(R.string.donate_alert_no_responsibility)
                 .negativeText(android.R.string.cancel)
                 .positiveText(android.R.string.ok)
                 .callback(new MaterialDialog.ButtonCallback() {

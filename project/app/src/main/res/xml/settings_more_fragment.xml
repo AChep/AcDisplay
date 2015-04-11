@@ -27,7 +27,7 @@
         android:summaryOn="@string/settings_only_while_charging_on"
         android:title="@string/settings_only_while_charging_title" />
 
-    <MultiSelectListPreference
+    <com.afollestad.materialdialogs.prefs.MaterialMultiSelectListPreference
         android:defaultValue="@array/privacy_mode_entries"
         android:entries="@array/privacy_mode"
         android:entryValues="@array/privacy_mode_entries"

@@ -20,8 +20,7 @@ package com.achep.acdisplay.ui.preferences;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.preference.DialogPreference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +32,8 @@ import android.widget.TextView;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.ui.DialogBuilder;
+import com.achep.base.ui.preferences.MaterialDialogPreference;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.lang.ref.SoftReference;
 
@@ -42,13 +42,10 @@ import java.lang.ref.SoftReference;
  *
  * @author Artem Chepurnoy
  */
-public class IconSizePreference extends DialogPreference implements
+public class IconSizePreference extends MaterialDialogPreference implements
         SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "IconSizePreference";
-
-    private final Drawable mIcon;
-    private final CharSequence mTitle;
 
     private final String mValueLabel;
     private SoftReference<String>[] mSoftStoredLabels;
@@ -62,26 +59,18 @@ public class IconSizePreference extends DialogPreference implements
     public IconSizePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // Get data from default dialog and hide it.
-        mIcon = getDialogIcon();
-        mTitle = getDialogTitle();
-        setDialogTitle(null);
-
         mValueLabel = context.getResources().getString(R.string.preference_icon_size_dpi);
     }
 
+    @NonNull
     @Override
-    protected View onCreateDialogView() {
-        Resources res = getContext().getResources();
-
-        final LayoutInflater inflater = (LayoutInflater) getContext()
+    public MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder) {
+        LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View root = new DialogBuilder(getContext())
-                .setIcon(mIcon)
-                .setTitle(mTitle)
-                .setMessage(R.string.preference_icon_size_message)
-                .setContentView(R.layout.preference_dialog_size)
-                .createView();
+        Resources res = getContext().getResources();
+        MaterialDialog md = builder
+                .customView(R.layout.preference_dialog_size, false)
+                .build();
 
         final int max = res.getInteger(R.integer.config_icon_size_max_dp);
         mMin = res.getInteger(R.integer.config_icon_size_min_dp);
@@ -89,6 +78,8 @@ public class IconSizePreference extends DialogPreference implements
 
         Config config = Config.getInstance();
 
+        View root = md.getCustomView();
+        assert root != null;
         mContainer = (LinearLayout) root.findViewById(R.id.container);
         mValueTextView = (TextView) root.findViewById(R.id.info);
         mSeekBar = (SeekBar) root.findViewById(R.id.seek_bar);
@@ -109,7 +100,7 @@ public class IconSizePreference extends DialogPreference implements
 
         onStopTrackingTouch(mSeekBar);
 
-        return root;
+        return md;
     }
 
     @Override

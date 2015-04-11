@@ -20,8 +20,7 @@ package com.achep.acdisplay.ui.preferences;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.preference.DialogPreference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.SeekBar;
@@ -30,7 +29,8 @@ import android.widget.TextView;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
-import com.achep.base.ui.DialogBuilder;
+import com.achep.base.ui.preferences.MaterialDialogPreference;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.lang.ref.SoftReference;
 
@@ -40,15 +40,12 @@ import java.lang.ref.SoftReference;
  *
  * @author Artem Chepurnoy
  */
-public class TimeoutPreference extends DialogPreference implements
+public class TimeoutPreference extends MaterialDialogPreference implements
         SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "TimeoutPreference";
 
     private static final int MULTIPLIER = 500;
-
-    private final Drawable mIcon;
-    private final CharSequence mTitle;
 
     private final String mValueLabel;
     private SoftReference<String>[] mSoftStoredLabels;
@@ -60,25 +57,20 @@ public class TimeoutPreference extends DialogPreference implements
     public TimeoutPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // Get data from default dialog and hide it.
-        mIcon = getDialogIcon();
-        mTitle = getDialogTitle();
-        setDialogTitle(null);
-
         mValueLabel = context.getResources().getString(R.string.preference_timeout_sec);
     }
 
+    @NonNull
     @Override
-    protected View onCreateDialogView() {
+    public MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder) {
         Resources res = getContext().getResources();
-        final Context context = getContext();
-        final View root = new DialogBuilder(context)
-                .setIcon(mIcon)
-                .setTitle(mTitle)
-                .setContentView(R.layout.preference_dialog_timeout)
-                .createView();
+        MaterialDialog md = builder
+                .customView(R.layout.preference_dialog_timeout, false)
+                .build();
 
         Config config = Config.getInstance();
+        View root = md.getCustomView();
+        assert root != null;
 
         mProgresses = new int[2];
         mGroups = new Group[mProgresses.length];
@@ -102,7 +94,7 @@ public class TimeoutPreference extends DialogPreference implements
             group.seekBar.setProgress(progress / MULTIPLIER);
         }
 
-        return root;
+        return md;
     }
 
     @Override

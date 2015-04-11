@@ -20,10 +20,8 @@ package com.achep.acdisplay.ui.preferences;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.preference.DialogPreference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -31,8 +29,9 @@ import android.widget.RadioGroup;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
-import com.achep.base.ui.DialogBuilder;
+import com.achep.base.ui.preferences.MaterialDialogPreference;
 import com.achep.base.utils.ViewUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
@@ -42,7 +41,7 @@ import com.larswerkman.holocolorpicker.ValueBar;
  *
  * @author Artem Chepurnoy
  */
-public class ColorPickerPreference extends DialogPreference {
+public class ColorPickerPreference extends MaterialDialogPreference {
 
     /**
      * @return the original color if {@link #isRandomEnabled(int)} is {@code false},
@@ -96,8 +95,6 @@ public class ColorPickerPreference extends DialogPreference {
 
     private static final String TAG = "ColorPickerPreference";
 
-    private final Drawable mIcon;
-    private final CharSequence mTitle;
     private final ConfigBase.Option mOption;
     private final Config mConfig;
 
@@ -111,26 +108,20 @@ public class ColorPickerPreference extends DialogPreference {
         super(context, attrs);
         mConfig = Config.getInstance();
         mOption = mConfig.getOption(getKey());
-
-        // Get data from default dialog and hide it.
-        mIcon = getDialogIcon();
-        mTitle = getDialogTitle();
-        setDialogTitle(null);
     }
 
+    @NonNull
     @Override
-    protected View onCreateDialogView() {
-        final View root = new DialogBuilder(getContext())
-                .setIcon(mIcon)
-                .setTitle(mTitle)
-                .setContentView(R.layout.dialog_preference_colorpicker)
-                .createView();
+    public MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder) {
+        MaterialDialog md = builder
+                .customView(R.layout.dialog_preference_colorpicker, false)
+                .build();
 
         int color = (int) mOption.read(mConfig);
         boolean randomColor = Color.alpha(color) == RANDOM_COLOR_ALPHA_MASK;
         if (randomColor) color |= Color.argb(255, 0, 0, 0);
 
-        RadioGroup rg = (RadioGroup) root.findViewById(R.id.radios);
+        RadioGroup rg = (RadioGroup) md.getCustomView().findViewById(R.id.radios);
         mColorPanel = (ViewGroup) rg.findViewById(R.id.custom_color_panel);
         mColorPicker = (ColorPicker) mColorPanel.findViewById(R.id.picker);
         mColorPicker.addSaturationBar((SaturationBar) mColorPanel.findViewById(R.id.saturationbar));
@@ -150,7 +141,7 @@ public class ColorPickerPreference extends DialogPreference {
         rg.check(randomColor
                 ? mRadioRandomColor.getId()
                 : mRadioCustomColor.getId());
-        return root;
+        return md;
     }
 
     @Override

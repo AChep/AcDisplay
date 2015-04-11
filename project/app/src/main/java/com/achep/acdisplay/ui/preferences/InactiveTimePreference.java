@@ -20,8 +20,7 @@ package com.achep.acdisplay.ui.preferences;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.preference.DialogPreference;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,20 +30,18 @@ import android.widget.TimePicker;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.ui.DialogBuilder;
+import com.achep.base.ui.preferences.MaterialDialogPreference;
 import com.achep.base.utils.DateUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Preference to configure timeouts.
  *
  * @author Artem Chepurnoy
  */
-public class InactiveTimePreference extends DialogPreference implements View.OnClickListener {
+public class InactiveTimePreference extends MaterialDialogPreference implements View.OnClickListener {
 
     private static final String TAG = "InactiveHoursPreference";
-
-    private final Drawable mIcon;
-    private final CharSequence mTitle;
 
     private CheckBox mEnabled;
 
@@ -72,22 +69,18 @@ public class InactiveTimePreference extends DialogPreference implements View.OnC
 
     public InactiveTimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        // Get data from default dialog and hide it.
-        mIcon = getDialogIcon();
-        mTitle = getDialogTitle();
-        setDialogTitle(null);
     }
 
+    @NonNull
     @Override
-    protected View onCreateDialogView() {
-        final Context context = getContext();
-        final View root = new DialogBuilder(context)
-                .setIcon(mIcon)
-                .setTitle(mTitle)
-                .setContentView(R.layout.preference_dialog_inactive_hours)
-                .createView();
+    public MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder) {
+        Context context = getContext();
+        MaterialDialog md = builder
+                .customView(R.layout.preference_dialog_inactive_hours, false)
+                .build();
 
+        View root = md.getCustomView();
+        assert root != null;
         TextView fromTextView = (TextView) root.findViewById(R.id.from);
         TextView toTextView = (TextView) root.findViewById(R.id.to);
         mEnabled = (CheckBox) root.findViewById(R.id.checkbox);
@@ -104,8 +97,7 @@ public class InactiveTimePreference extends DialogPreference implements View.OnC
         mFrom.setTime(context, config.getInactiveTimeFrom());
         mTo.setTime(context, config.getInactiveTimeTo());
         mEnabled.setChecked(config.isInactiveTimeEnabled());
-
-        return root;
+        return md;
     }
 
     @Override

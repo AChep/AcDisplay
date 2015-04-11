@@ -32,7 +32,7 @@
         android:summaryOn="@string/settings_use_wallpaper_on"
         android:title="@string/settings_use_wallpaper_title" />
 
-    <MultiSelectListPreference
+    <com.afollestad.materialdialogs.prefs.MaterialMultiSelectListPreference
         android:defaultValue="@array/dynamic_background_entries"
         android:entries="@array/dynamic_background"
         android:entryValues="@array/dynamic_background_entries"
