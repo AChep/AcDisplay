@@ -388,7 +388,8 @@ public class MediaWidget extends Widget implements
             @Override
             public boolean onLongClick(View v) {
                 // Don't allow seeking on a weird song.
-                if (mMediaController.getMetadata().duration <= 0) {
+                if (mMediaController.getMetadata().duration <= 0
+                        || mMediaController.getPlaybackPosition() < 0) {
                     if (mSeekUiAtomic.isRunning()) {
                         toggleSeekUiVisibility();
                         return true;
