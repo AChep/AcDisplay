@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.CompoundButton;
 
-import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.ui.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.base.interfaces.ICheckable;
 import com.achep.base.permissions.Permission;

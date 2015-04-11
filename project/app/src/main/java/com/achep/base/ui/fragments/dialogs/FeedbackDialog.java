@@ -39,7 +39,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.ui.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.providers.LogAttachmentProvider;
 import com.achep.base.Build;

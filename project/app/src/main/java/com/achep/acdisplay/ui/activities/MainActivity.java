@@ -41,7 +41,7 @@ import android.widget.CompoundButton;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.DialogHelper;
+import com.achep.acdisplay.ui.DialogHelper;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.permissions.Permission;
