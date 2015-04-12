@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.base.Device;
+import com.achep.base.interfaces.IBackupable;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
@@ -62,7 +63,7 @@ import static com.achep.base.Build.DEBUG;
 @SuppressWarnings("ConstantConditions")
 public abstract class ConfigBase implements
         ISubscriptable<ConfigBase.OnConfigChangedListener>,
-        IOnLowMemory {
+        IOnLowMemory, IBackupable {
 
     private static final String TAG = "Config";
 
@@ -283,6 +284,7 @@ public abstract class ConfigBase implements
      * @return the backup string or {@code null} if failed to generate the one.
      * @see #fromBackupText(Context, String)
      */
+    @Override
     @Nullable
     public String toBackupText() {
         JSONObject json;
@@ -315,6 +317,7 @@ public abstract class ConfigBase implements
      * @return {@code true} if the config was successfully restored, {@code false} otherwise.
      * @see #toBackupText()
      */
+    @Override
     public boolean fromBackupText(@NonNull Context context, @NonNull String input) {
         String json = GzipUtils.decompress(input);
         if (json == null) return false;

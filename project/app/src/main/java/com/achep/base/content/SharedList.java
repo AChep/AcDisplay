@@ -24,12 +24,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.achep.base.interfaces.IBackupable;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
+import com.achep.base.utils.GzipUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import static com.achep.base.Build.DEBUG;
@@ -42,7 +49,7 @@ import static com.achep.base.Build.DEBUG;
  */
 public abstract class SharedList<V, T extends SharedList.Saver<V>> implements
         ISubscriptable<SharedList.OnSharedListChangedListener<V>>,
-        IOnLowMemory, Iterable<V> {
+        IOnLowMemory, Iterable<V>, IBackupable {
 
     private static final String TAG = "SharedList";
 
@@ -403,4 +410,16 @@ public abstract class SharedList<V, T extends SharedList.Saver<V>> implements
         return values().iterator();
     }
 
+    //-- BACKUP ---------------------------------------------------------------
+
+    @Override
+    @Nullable
+    public String toBackupText() {
+        return null;
+    }
+
+    @Override
+    public boolean fromBackupText(@NonNull Context context, @NonNull String input) {
+        return false;
+    }
 }
