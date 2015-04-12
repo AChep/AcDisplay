@@ -145,7 +145,7 @@ public class MediaService extends NotificationListenerService implements
         if (mRegistered) {
             final int size = getResources().getDimensionPixelSize(R.dimen.media_artwork_size);
             mRemoteController.setArtworkConfiguration(size, size);
-            mRemoteController.setSynchronizationMode(RemoteController.POSITION_SYNCHRONIZATION_CHECK);
+//            mRemoteController.setSynchronizationMode(RemoteController.POSITION_SYNCHRONIZATION_CHECK);
         } else {
             Log.e(TAG, "Error while registering RemoteController!");
         }
