@@ -20,6 +20,7 @@ package com.achep.acdisplay.ui.fragments.settings;
 
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceGroup;
 import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.Config;
@@ -75,8 +76,9 @@ public class MoreSettings extends PreferenceFragment implements
         mDataRestorePreference.setOnPreferenceClickListener(this);
 
         if (!DEBUG) {
-            getPreferenceScreen().removePreference(mDataBackupPreference);
-            getPreferenceScreen().removePreference(mDataRestorePreference);
+            PreferenceGroup pg = (PreferenceGroup) findPreference("data_category");
+            pg.removePreference(mDataBackupPreference);
+            pg.removePreference(mDataRestorePreference);
         }
     }
 
