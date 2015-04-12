@@ -359,11 +359,11 @@ public abstract class ConfigBase implements
 
                 // Get the current value.
                 Object value = option.getDefault(res);
-                if (Boolean.class.isAssignableFrom(option.clazz)) {
+                if (boolean.class.isAssignableFrom(option.clazz)) {
                     value = prefs.getBoolean(key, (Boolean) value);
-                } else if (Integer.class.isAssignableFrom(option.clazz)) {
+                } else if (int.class.isAssignableFrom(option.clazz)) {
                     value = prefs.getInt(key, (Integer) value);
-                } else if (Float.class.isAssignableFrom(option.clazz)) {
+                } else if (float.class.isAssignableFrom(option.clazz)) {
                     value = prefs.getFloat(key, (Float) value);
                 } else if (String.class.isAssignableFrom(option.clazz)) {
                     value = prefs.getString(key, (String) value);
@@ -581,7 +581,7 @@ public abstract class ConfigBase implements
         private volatile int minSdkVersion = Integer.MIN_VALUE + 1;
         private volatile int maxSdkVersion = Integer.MAX_VALUE - 1;
 
-        private volatile int mDefaultRes;
+        private volatile int mDefaultRes = -1;
         private volatile Object mDefault;
 
         public Option(@NonNull String fieldName,
@@ -674,11 +674,11 @@ public abstract class ConfigBase implements
         @Nullable
         public final Object getDefault(@NonNull Resources resources) {
             if (mDefaultRes != -1) {
-                if (Boolean.class.isAssignableFrom(clazz)) {
+                if (boolean.class.isAssignableFrom(clazz)) {
                     return resources.getBoolean(mDefaultRes);
-                } else if (Integer.class.isAssignableFrom(clazz)) {
+                } else if (int.class.isAssignableFrom(clazz)) {
                     return resources.getInteger(mDefaultRes);
-                } else if (Float.class.isAssignableFrom(clazz)) {
+                } else if (float.class.isAssignableFrom(clazz)) {
                     // Assuming it's a dimension, but not a fraction.
                     return resources.getDimension(mDefaultRes);
                 } else if (String.class.isAssignableFrom(clazz)) {
