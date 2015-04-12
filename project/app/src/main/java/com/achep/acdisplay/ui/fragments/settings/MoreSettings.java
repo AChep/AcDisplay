@@ -28,14 +28,22 @@ import com.achep.base.content.ConfigBase;
 import com.achep.base.ui.fragments.PreferenceFragment;
 import com.achep.base.utils.DateUtils;
 import com.achep.base.utils.ResUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * Created by Artem on 09.02.14.
  */
-public class MoreSettings extends PreferenceFragment implements ConfigBase.OnConfigChangedListener {
+public class MoreSettings extends PreferenceFragment implements
+        ConfigBase.OnConfigChangedListener,
+        Preference.OnPreferenceClickListener {
 
     private Preference mInactiveHoursPreference;
     private Preference mTimeoutPreference;
+    private Preference mDataRestoreDefaultsPreference;
+    private Preference mDataBackupPreference;
+    private Preference mDataRestorePreference;
 
     @Override
     public Config getConfig() {
@@ -57,6 +65,19 @@ public class MoreSettings extends PreferenceFragment implements ConfigBase.OnCon
 
         mInactiveHoursPreference = findPreference("inactive_hours");
         mTimeoutPreference = findPreference("timeout");
+        // Back-up & restore
+        mDataRestoreDefaultsPreference = findPreference("data_restore_defaults");
+        mDataBackupPreference = findPreference("data_backup");
+        mDataRestorePreference = findPreference("data_restore");
+
+        mDataRestoreDefaultsPreference.setOnPreferenceClickListener(this);
+        mDataBackupPreference.setOnPreferenceClickListener(this);
+        mDataRestorePreference.setOnPreferenceClickListener(this);
+
+        if (!DEBUG) {
+            getPreferenceScreen().removePreference(mDataBackupPreference);
+            getPreferenceScreen().removePreference(mDataRestorePreference);
+        }
     }
 
     @Override
@@ -113,4 +134,33 @@ public class MoreSettings extends PreferenceFragment implements ConfigBase.OnCon
                 Float.toString(config.getTimeoutNormal() / 1000f),
                 Float.toString(config.getTimeoutShort() / 1000f)));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        if (preference == mDataRestoreDefaultsPreference) {
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.settings_restore_defaults_warning_title)
+                    .content(R.string.settings_restore_defaults_warning_message)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            Config.getInstance().reset(getActivity());
+                        }
+                    })
+                    .build()
+                    .show();
+        } else if (preference == mDataBackupPreference) {
+            // TODO: Back up all the things.
+        } else if (preference == mDataRestorePreference) {
+            // TODO: Restore all the things.
+        } else
+            return false;
+        return true;
+    }
+
 }

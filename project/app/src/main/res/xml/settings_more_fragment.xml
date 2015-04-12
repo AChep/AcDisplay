@@ -77,4 +77,24 @@
             -->
 
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_data_category"
+        android:key="data_category">
+
+        <Preference
+            android:key="data_restore_defaults"
+            android:summary="@string/settings_restore_defaults_summary"
+            android:title="@string/settings_restore_defaults_title" />
+
+        <Preference
+            android:key="data_backup"
+            android:title="@string/settings_data_backup_title" />
+
+        <Preference
+            android:key="data_restore"
+            android:title="@string/settings_data_restore_title" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

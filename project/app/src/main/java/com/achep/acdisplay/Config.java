@@ -174,6 +174,10 @@ public final class Config extends ConfigBase {
         initInternal(context);
     }
 
+    public void reset(@NonNull Context context) {
+        resetInternal(context);
+    }
+
     @Override
     protected void onCreateMap(@NonNull Map<String, Option> map) {
         map.put(KEY_ENABLED, new ConfigBase.Option(

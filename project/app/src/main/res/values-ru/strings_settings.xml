@@ -103,6 +103,14 @@
     <string name="settings_widget_pinnable_on">Уведомление остается развернутым на несколько секунд после касания.</string>
     <string name="settings_privacy_mode_title">Приватность (при вкл. блокировке экрана)</string>
     <string name="settings_privacy_mode_disabled">Отключено</string>
+    <!-- Data -->
+    <string name="settings_data_category">Данные</string>
+    <string name="settings_restore_defaults_title">Сбросить настройки</string>
+    <string name="settings_restore_defaults_summary">Очищает все, кроме чёрного списка, пользовательские настройки.</string>
+    <string name="settings_restore_defaults_warning_title">Сбросить настройки?</string>
+    <string name="settings_restore_defaults_warning_message">Все ваши настройки, кроме чёрного списка, будут удалены! Это действие будет невозможно отменить.</string>
+    <string name="settings_data_backup_title">Сохранить настройки</string>
+    <string name="settings_data_restore_title">Загрузить настройки</string>
 
     <!-- Preference: Inactive hours -->
     <string name="preference_inactive_hours_enabled">Использовать неактивное время</string>
