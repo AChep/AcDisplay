@@ -20,14 +20,26 @@ package com.achep.base.ui.preferences;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.DialogPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
+ * A base class for {@link Preference} objects that are
+ * dialog-based. These preferences will, when clicked, open a dialog showing the
+ * actual preference controls.
+ *
  * @author Artem Chepurnoy
  */
 public abstract class MaterialDialogPreference extends DialogPreference {
@@ -65,15 +77,56 @@ public abstract class MaterialDialogPreference extends DialogPreference {
                 .content(getDialogMessage())
                 .positiveText(getPositiveButtonText())
                 .negativeText(getNegativeButtonText())
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        onClick(null, DialogInterface.BUTTON_POSITIVE);
+                    }
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        super.onNegative(dialog);
+                        onClick(null, DialogInterface.BUTTON_NEGATIVE);
+                    }
+                })
                 .dismissListener(this);
+
+        PreferenceManager pm = getPreferenceManager();
+        try {
+            Method method = pm.getClass().getDeclaredMethod(
+                    "registerOnActivityDestroyListener",
+                    PreferenceManager.OnActivityDestroyListener.class);
+            method.setAccessible(true);
+            method.invoke(pm, this);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         mDialog = onBuildDialog(mBuilder);
         if (state != null) mDialog.onRestoreInstanceState(state);
+        if (needInputMethod()) requestInputMethod(mDialog);
         mDialog.show();
     }
 
     @NonNull
     public abstract MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder);
 
+    /**
+     * Sets the required flags on the dialog window to enable input method window to show up.
+     */
+    private void requestInputMethod(Dialog dialog) {
+        Window window = dialog.getWindow();
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    /**
+     * Returns whether the preference needs to display a soft input method when the dialog
+     * is displayed. Default is false. Subclasses should override this method if they need
+     * the soft input method brought up automatically.
+     */
+    protected boolean needInputMethod() {
+        return false;
+    }
 
 }
