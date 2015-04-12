@@ -25,6 +25,6 @@
   <string name="blacklist_app_hide_summary">Ingen underretninger fra denne applikation vil blive vist.</string>
   <string name="blacklist_app_restricted_title">Lydløs</string>
   <string name="blacklist_app_restricted_summary">Væk ikke skærmen, når der modtages nye underretninger.</string>
-  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
+  <string name="blacklist_app_non_clearable_title">Ikke-fjernbare notifikationer</string>
+  <string name="blacklist_app_non_clearable_summary">Vis ikke-fjernbare/igangværende notifikationer, som dem fra tjenester.</string>
 </resources>

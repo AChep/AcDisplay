@@ -32,7 +32,7 @@
   <string name="permissions_notifications_grant_manually">Vá a Definições &gt; Segurança &gt; Administrador de Dispositivo e active o AcDisplay.</string>
   <string name="permissions_usage_stats">Estatísticas de uso</string>
   <string name="permissions_usage_stats_description">Necessário para evitar a sobreposição das aplicações de despertador e telefone.</string>
-  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
+  <string name="permissions_usage_stats_error">O fabricante do dispositivo removeu esta permissão pública da sua versão do Android. Não há nenhuma maneira de corrigir este problema, excepto esperar pela correcção por parte do fabricante.</string>
   <string name="action_about">Sobre</string>
   <string name="action_donate">Doar</string>
   <string name="action_feedback">Feedback</string>
@@ -58,7 +58,7 @@
   <string name="privacy_mode_hidden_content">Conteúdo escondido.</string>
   <string name="remote_enable_acdisplay">AcDisplay está activado.</string>
   <string name="remote_disable_acdisplay">AcDisplay está desactivado.</string>
-  <string name="service_bath">serviços AcDisplay</string>
+  <string name="service_bath">Serviços AcDisplay</string>
   <string name="service_bath_keyguard">Ecrã de bloqueio</string>
   <string name="service_bath_active_mode">Modo Activo</string>
   <string name="service_bath_active_mode_dump">Descarregador de sensores</string>

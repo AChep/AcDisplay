@@ -25,14 +25,14 @@
   <string name="permissions_dialog_title">Nødvendige tilladelser:</string>
   <string name="permissions_device_admin">Enhedsadministrator</string>
   <string name="permissions_device_admin_removed">AcDisplay er fjernet fra Enhedsadministratorer.</string>
-  <string name="permissions_device_admin_description">Needed to manage the screen timeout policy.</string>
+  <string name="permissions_device_admin_description">Nødvendigt for at administrere skærmens timeout politik.</string>
   <string name="permissions_device_admin_grant_manually">Gå til Indstillinger &gt; Sikkerhed &gt; Enhedsadministratorer og marker AcDisplay.</string>
   <string name="permissions_notifications">Underretninger</string>
-  <string name="permissions_notifications_description">Needed to get access to notifications.</string>
-  <string name="permissions_notifications_grant_manually">Go to Settings &gt; Security &gt; Notification access and check AcDisplay on.</string>
+  <string name="permissions_notifications_description">Nødvendigt at få adgang til notifikationer.</string>
+  <string name="permissions_notifications_grant_manually">Gå til Indstillinger &gt; Security &gt; Notifikation tilgængelighed og marker AcDisplay til.</string>
   <string name="permissions_usage_stats">Brugs statistikker</string>
-  <string name="permissions_usage_stats_description">Needed to avoid of overlaying alarm and phone apps.</string>
-  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
+  <string name="permissions_usage_stats_description">Krævet for at undgå overlap af alarm og telefon applikationer.</string>
+  <string name="permissions_usage_stats_error">Enhedsproducenten har fået fjernet offentligt adgang fra Android versionen. Der findes ingen måder at rette op på problemet, end at vente på producentens accept.</string>
   <string name="action_about">Om</string>
   <string name="action_donate">Donér</string>
   <string name="action_feedback">Feedback</string>
@@ -43,8 +43,8 @@
   <string name="close">Luk</string>
   <string name="later">Senere</string>
   <string name="send">Send</string>
-  <string name="on">On</string>
-  <string name="off">Off</string>
+  <string name="on">Til</string>
+  <string name="off">Fra</string>
   <string name="enabled">Aktiveret</string>
   <string name="disabled">Deaktiveret</string>
   <string name="media_prev_description">Forrige nummer knap</string>
@@ -54,14 +54,14 @@
   <string name="media_stop_description">Stop knap</string>
   <string name="notification_init_text">Afvis blot denne notifikation.</string>
   <string name="notification_test_message">Dette er et eksempel på en notifikation.</string>
-  <string name="notification_test_message_large">Swipe down to dismiss notification.\nSwipe anywhere to unlock.</string>
+  <string name="notification_test_message_large">Skub ned for at skjule meddelelsen.\nStrejf et tilfældigt sted for at låse op.</string>
   <string name="privacy_mode_hidden_content">Skjult indhold.</string>
   <string name="remote_enable_acdisplay">AcDisplay er aktiveret.</string>
   <string name="remote_disable_acdisplay">AcDisplay er deaktiveret.</string>
   <string name="service_bath">AcDisplay tjenester</string>
   <string name="service_bath_keyguard">Låseskærm</string>
   <string name="service_bath_active_mode">Aktiv tilstand</string>
-  <string name="service_bath_active_mode_dump">Sensors dumper</string>
+  <string name="service_bath_active_mode_dump">Sensorer dropper</string>
   <string name="status_date_format">EEE, d MMMM</string>
   <string name="accessibility_battery_level">Batteri <xliff:g id="number" example="100">%d</xliff:g> procent.</string>
 </resources>

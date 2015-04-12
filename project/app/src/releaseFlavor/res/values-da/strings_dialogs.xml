@@ -28,27 +28,23 @@
     ]]></string>
   <string name="donate_dialog_title">Donér til udviklerne</string>
   <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
-  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+  <string name="donate_alert_no_responsibility">Bemærk at Google ikke er ansvarlig, for denne betalingsmetode.</string>
+  <string name="donate_billing_not_supported">I-app Køb understøttes ikke på enheden.</string>
   <string name="donate_thanks">Mange tak!</string>
   <string name="donation_1">En is</string>
   <string name="donation_4">En kop kaffe</string>
   <string name="donation_10">El-regninger</string>
   <string name="donation_20">En god pude</string>
   <string name="donation_50">Solid-state drev</string>
-  <string name="donation_99">Sound system</string>
+  <string name="donation_99">Lydsystem</string>
   <string name="cry_dialog_title">Støt udviklingen</string>
-  <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
-    ]]></string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay er en gratis og <a href="http://repo.acdisplay.org"> open source</a> app og vi bruger en masse tid og ressourcer på at holde det med tiden. Overvej en donation til at vise din påskønnelse og at støtte yderligere udvikling.     ]]></string>
   <string name="help_dialog_title">Hjælp</string>
   <string name="feedback_dialog_title">Feedback</string>
   <string name="feedback_dialog_message_hint">Din meddelelse. Enhedens specifikationer vil automatisk blive inkluderet.</string>
   <string name="feedback_dialog_attach_log">Vedhæft en logfil</string>
   <string name="feedback_dialog_read_help">Ofte stillede spørgsmål</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
+  <string name="feedback_error_no_app">Installere nogen af e-mail apps.</string>
   <string name="feedback_error_msg_too_short">Meddelelsen skal indeholde mindst %1$d tegn.</string>
   <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
   <string name="compat_dialog_title">Kompatibilitetstilstand</string>
