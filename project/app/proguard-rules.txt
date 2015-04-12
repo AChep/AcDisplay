@@ -77,7 +77,7 @@
 
 # Keep Config methods to be able to access them using reflections.
 -keepclassmembers public class com.achep.acdisplay.Config {
-   public *** *(...);
+   *;
 }
 
 # Ignore compartability hacks
