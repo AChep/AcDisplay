@@ -73,11 +73,17 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
         } else setBrandColor(getNotification().color | 0xFF000000);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     public String getGroupKey() {
         return getStatusBarNotification().getGroupKey();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NonNull
     @Override
     public List<OpenNotification> getGroupNotifications() {

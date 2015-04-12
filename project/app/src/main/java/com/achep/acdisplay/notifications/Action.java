@@ -76,7 +76,7 @@ public class Action {
      * @return array of {@link com.achep.acdisplay.notifications.Action actions} or {@code null}
      */
     @Nullable
-    public static Action[] makeFor(@NonNull Notification notification) {
+    static Action[] makeFor(@NonNull Notification notification) {
         return getFactory().makeFor(notification);
     }
 

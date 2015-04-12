@@ -32,8 +32,9 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 // TODO: Find the way to get notification's ID and TAG.
 class OpenNotificationJellyBean extends OpenNotification {
 
+    @SuppressWarnings("NullableProblems")
     @NonNull
-    private String mPackageName;
+    private volatile String mPackageName;
 
     OpenNotificationJellyBean(@NonNull Notification n) {
         super(null, n);

@@ -59,6 +59,14 @@ public class IconFactory {
             private IconAsyncListener listener;
             @NonNull
             private OpenNotification notification;
+
+            public Task(@NonNull Context context,
+                        @NonNull IconAsyncListener listener,
+                        @NonNull OpenNotification notification) {
+                this.context = context;
+                this.listener = listener;
+                this.notification = notification;
+            }
         }
 
         private final ConcurrentLinkedQueue<Task> mQueue = new ConcurrentLinkedQueue<>();
@@ -112,11 +120,7 @@ public class IconFactory {
         void add(@NonNull Context context,
                  @NonNull OpenNotification notification,
                  @NonNull IconAsyncListener listener) {
-            Task task = new Task();
-            task.context = context;
-            task.notification = notification;
-            task.listener = listener;
-
+            Task task = new Task(context, listener, notification);
             Check.getInstance().isFalse(mStopping);
             mQueue.add(task);
         }

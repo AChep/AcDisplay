@@ -51,6 +51,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * @author Artem Chepurnoy
  */
@@ -62,7 +64,7 @@ public abstract class OpenNotification implements
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @NonNull
-    public static OpenNotification newInstance(@NonNull StatusBarNotification sbn) {
+    static OpenNotification newInstance(@NonNull StatusBarNotification sbn) {
         Notification n = sbn.getNotification();
         if (Device.hasLollipopApi()) {
             return new OpenNotificationLollipop(sbn, n);
@@ -76,11 +78,31 @@ public abstract class OpenNotification implements
     @NonNull
     public static OpenNotification newInstance(@NonNull Notification n) {
         if (Device.hasJellyBeanMR2Api()) {
-            throw new RuntimeException("Use StatusBarNotification instead!");
+            throw new RuntimeException("You must use the StatusBarNotification!");
         }
 
         return new OpenNotificationJellyBean(n);
     }
+
+    //-- DEBUG ----------------------------------------------------------------
+
+    /* Only for debug purposes! */
+    private final Object dFinalizeWatcher = DEBUG ? new Object() {
+
+        /**
+         * Logs the notifications' removal.
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            try {
+                Log.d(TAG, "Removing the notification[recycled=" + isRecycled()
+                        + "] from the heap: " + OpenNotification.this);
+            } finally {
+                super.finalize();
+            }
+        }
+
+    } : null;
 
     //-- BEGIN ----------------------------------------------------------------
 
@@ -622,13 +644,21 @@ public abstract class OpenNotification implements
         return mLoadedTimestamp;
     }
 
+    //-- GROUPS ---------------------------------------------------------------
+
+    /**
+     * @return a key that indicates the group with which this message ranks,
+     * or a {@code null} on deprecated systems.
+     * @see #getGroupNotifications()
+     */
     @Nullable
     public String getGroupKey() {
         return null;
     }
 
     /**
-     * @return the list of notifications of this group (without its summary)
+     * @return the list of notifications of this group (without its summary),
+     * or a {@code null} on deprecated systems.
      * @see #isGroupChild()
      * @see #isGroupSummary()
      */
@@ -637,10 +667,18 @@ public abstract class OpenNotification implements
         return null;
     }
 
+    /**
+     * @return {@code true} if this notification is a child of the {@link #getGroupKey() group},
+     * {@code false} otherwise.
+     */
     public boolean isGroupChild() {
         return false;
     }
 
+    /**
+     * @return {@code true} if this notification is the summary (short summary of all notifications)
+     * of the {@link #getGroupKey() group}, {@code false} otherwise.
+     */
     public boolean isGroupSummary() {
         return false;
     }
