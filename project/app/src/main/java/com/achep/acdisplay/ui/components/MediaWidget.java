@@ -90,6 +90,7 @@ public class MediaWidget extends Widget implements
 
     private boolean mIdle;
 
+    private int mArtworkColor = Color.WHITE;
     private Bitmap mArtwork;
     private Bitmap mArtworkBackground;
     private AsyncTask<Bitmap, Void, Palette> mPaletteWorker;
@@ -99,8 +100,9 @@ public class MediaWidget extends Widget implements
             new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(@NonNull Palette palette) {
-                    updatePlayPauseButtonColor(palette.getVibrantColor(Color.WHITE));
-                    updateSeekBarColor(palette.getVibrantColor(Color.WHITE));
+                    mArtworkColor = palette.getVibrantColor(Color.WHITE);
+                    updatePlayPauseButtonColor(mArtworkColor);
+                    updateSeekBarColor(mArtworkColor);
                 }
             };
 
@@ -229,9 +231,12 @@ public class MediaWidget extends Widget implements
 
         com.achep.base.async.AsyncTask.stop(mPaletteWorker);
         com.achep.base.async.AsyncTask.stop(mBackgroundWorker);
+        updatePlayPauseButtonColor(Color.WHITE); // Reset color
+        updateSeekBarColor(Color.WHITE); // Reset color
 
         if (bitmap != null) {
             // TODO: Load the vibrant color only.
+            mArtworkColor = Color.WHITE;
             mPaletteWorker = Palette.generateAsync(bitmap, mPaletteCallback);
 
             int dynamicBgMode = getConfig().getDynamicBackgroundMode();
@@ -302,8 +307,6 @@ public class MediaWidget extends Widget implements
         mDurationText.setText(formatTime(metadata.duration));
         mSeekUiAtomic.stop();
         mSeekBar.setMax(Math.min(100, (int) (metadata.duration / 1000L)));
-        updatePlayPauseButtonColor(Color.WHITE); // Reset color
-        updateSeekBarColor(Color.WHITE); // Reset color
 
         if (mArtworkView != null) {
             mArtworkView.setImageBitmap(metadata.bitmap);
@@ -429,6 +432,9 @@ public class MediaWidget extends Widget implements
                     mButtonPlayPause,
                     mButtonPrevious);
         }
+
+        updatePlayPauseButtonColor(mArtworkColor);
+        updateSeekBarColor(mArtworkColor);
 
         return sceneView;
     }
