@@ -100,6 +100,7 @@ public class MediaWidget extends Widget implements
                 @Override
                 public void onGenerated(@NonNull Palette palette) {
                     updatePlayPauseButtonColor(palette.getVibrantColor(Color.WHITE));
+                    updateSeekBarColor(palette.getVibrantColor(Color.WHITE));
                 }
             };
 
@@ -302,6 +303,7 @@ public class MediaWidget extends Widget implements
         mSeekUiAtomic.stop();
         mSeekBar.setMax(Math.min(100, (int) (metadata.duration / 1000L)));
         updatePlayPauseButtonColor(Color.WHITE); // Reset color
+        updateSeekBarColor(Color.WHITE); // Reset color
 
         if (mArtworkView != null) {
             mArtworkView.setImageBitmap(metadata.bitmap);
@@ -328,6 +330,10 @@ public class MediaWidget extends Widget implements
         } else {
             RippleUtils.makeFor(ColorStateList.valueOf(color), false, mButtonPlayPause);
         }
+    }
+
+    private void updateSeekBarColor(int color) {
+        mSeekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
     }
 
     /**
