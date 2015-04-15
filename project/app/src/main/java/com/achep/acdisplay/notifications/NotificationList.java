@@ -138,8 +138,7 @@ final class NotificationList extends ArrayList<OpenNotification> implements IOnL
             return notifyListener(EVENT_ADDED, n, null);
         } else if (www) {
             // Replace old notification with new one.
-            OpenNotification old = get(index);
-            remove(index);
+            OpenNotification old = remove(index);
             add(index, n);
             return notifyListener(EVENT_CHANGED, n, old);
         }
@@ -158,8 +157,7 @@ final class NotificationList extends ArrayList<OpenNotification> implements IOnL
     }
 
     int removeNotification(int index) {
-        OpenNotification old = get(index);
-        remove(index);
+        OpenNotification old = remove(index);
         return notifyListener(EVENT_REMOVED, old, null);
     }
 
