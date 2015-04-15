@@ -28,6 +28,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -46,6 +48,21 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
     OpenNotificationLollipop(@NonNull StatusBarNotification sbn, @NonNull Notification n) {
         super(sbn, n);
         mGroupNotifications = new NotificationList(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasIdenticalIds(@Nullable OpenNotification n) {
+        if (n == null) return false;
+        StatusBarNotification sbn = getStatusBarNotification();
+        StatusBarNotification sbn2 = n.getStatusBarNotification();
+        assert sbn2 != null;
+        return new EqualsBuilder()
+                .append(sbn2.getKey(), sbn.getKey())
+                .append(sbn2.getGroupKey(), sbn.getGroupKey()) // TODO: Is it needed?
+                .isEquals();
     }
 
     /**
