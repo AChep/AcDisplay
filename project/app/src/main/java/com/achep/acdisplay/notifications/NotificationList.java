@@ -130,7 +130,7 @@ final class NotificationList extends ArrayList<OpenNotification> implements IOnL
         final int index = indexOfNotification(n);
         if (index == -1) {
             if (size() > mMaximumSize) {
-                remove(get(0));
+                remove(0);
             }
 
             // Add new notification to the list.
