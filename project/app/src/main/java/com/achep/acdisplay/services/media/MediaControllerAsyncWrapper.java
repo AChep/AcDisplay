@@ -20,6 +20,8 @@ package com.achep.acdisplay.services.media;
 
 import android.support.annotation.NonNull;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -123,11 +125,11 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
      * Represents one single event.
      */
     private static abstract class E implements Runnable {
-        public final MediaController2 mc;
+        public final Reference<MediaController2> mcRef;
         public final String id;
 
         public E(@NonNull MediaController2 mc, @NonNull String id) {
-            this.mc = mc;
+            this.mcRef = new WeakReference<>(mc);
             this.id = id;
         }
     }
@@ -147,6 +149,8 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
 
         @Override
         public void run() {
+            MediaController2 mc = mcRef.get();
+            if (mc == null) return;
             mc.seekTo(position);
         }
     }
@@ -166,6 +170,8 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
 
         @Override
         public void run() {
+            MediaController2 mc = mcRef.get();
+            if (mc == null) return;
             mc.sendMediaAction(action);
         }
     }
