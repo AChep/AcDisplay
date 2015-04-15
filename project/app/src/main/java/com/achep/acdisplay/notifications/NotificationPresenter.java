@@ -466,7 +466,8 @@ public class NotificationPresenter implements
                         }
                     }
 
-                    Check.getInstance().isTrue(groupChild);
+                    if (DEBUG) Check.getInstance().isTrue(groupChild, "Failed to find the " +
+                            "summary of " + n.getGroupKey());
                     mGroupsWithSummaries.remove(n.getGroupKey());
                 }
 
