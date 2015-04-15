@@ -47,6 +47,8 @@ public abstract class Check {
      */
     public abstract void isTrue(boolean bool);
 
+    public abstract void isTrue(boolean bool, @NonNull String message);
+
     /**
      * Does nothing if the incoming param is not zero, crashes otherwise.
      *
@@ -54,6 +56,8 @@ public abstract class Check {
      * @see #isTrue(boolean)
      */
     public abstract void isTrue(int value);
+
+    public abstract void isTrue(int value, @NonNull String message);
 
     /**
      * Does nothing if the incoming param is {@code false}, crashes otherwise. It's an opposite
@@ -64,6 +68,8 @@ public abstract class Check {
      */
     public abstract void isFalse(boolean bool);
 
+    public abstract void isFalse(boolean bool, @NonNull String message);
+
     /**
      * Does nothing if the incoming param is {@code null}, crashes otherwise. It's an opposite
      * to {@link #isTrue(boolean)}
@@ -72,6 +78,8 @@ public abstract class Check {
      * @see #isNonNull(Object)
      */
     public abstract void isNull(@Nullable Object object);
+
+    public abstract void isNull(@Nullable Object object, @NonNull String message);
 
     /**
      * Does nothing if the incoming param is not {@code null}, crashes otherwise. It's an opposite
@@ -82,6 +90,8 @@ public abstract class Check {
      */
     public abstract void isNonNull(@NonNull Object object);
 
+    public abstract void isNonNull(@NonNull Object object, @NonNull String message);
+
     /**
      * Does nothing if run on the {@link android.os.Looper#getMainLooper() main thread},
      * crashes otherwise.
@@ -89,4 +99,6 @@ public abstract class Check {
      * @throws java.lang.RuntimeException
      */
     public abstract void isInMainThread();
+
+    public abstract void isInMainThread(@NonNull String message);
 }

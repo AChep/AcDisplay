@@ -29,43 +29,63 @@ final class CheckImpl extends Check {
 
     @Override
     public void isTrue(boolean bool) {
-        if (!bool) {
-            throw new RuntimeException("Should be true!");
-        }
+        isTrue(bool, "Should be true!");
+    }
+
+    @Override
+    public void isTrue(boolean bool, @NonNull String message) {
+        if (!bool) throw new RuntimeException(message);
     }
 
     @Override
     public void isTrue(int value) {
-        if (value == 0) {
-            throw new RuntimeException("Should be not zero!");
-        }
+        isTrue(value, "Should be not zero!");
+    }
+
+    @Override
+    public void isTrue(int value, @NonNull String message) {
+        if (value == 0) throw new RuntimeException(message);
     }
 
     @Override
     public void isFalse(boolean bool) {
-        if (bool) {
-            throw new RuntimeException("Should be false!");
-        }
+        isFalse(bool, "Should be false!");
+    }
+
+    @Override
+    public void isFalse(boolean bool, @NonNull String message) {
+        if (bool) throw new RuntimeException(message);
     }
 
     @Override
     public void isNull(@Nullable Object object) {
-        if (object != null) {
-            throw new RuntimeException("Should be null!");
-        }
+        isNull(object, "Should be null!");
+    }
+
+    @Override
+    public void isNull(@Nullable Object object, @NonNull String message) {
+        if (object != null) throw new RuntimeException(message);
     }
 
     @Override
     public void isNonNull(@NonNull Object object) {
-        if (object == null) {
-            throw new RuntimeException("Should be not null!");
-        }
+        isNonNull(object, "Should be not null!");
+    }
+
+    @Override
+    public void isNonNull(@NonNull Object object, @NonNull String message) {
+        if (object == null) throw new RuntimeException(message);
     }
 
     @Override
     public void isInMainThread() {
+        isInMainThread("Should be called on the main thread");
+    }
+
+    @Override
+    public void isInMainThread(@NonNull String message) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
-            throw new RuntimeException("Should be called on the main thread");
+            throw new RuntimeException(message);
         }
     }
 
