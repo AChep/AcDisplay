@@ -20,40 +20,36 @@
   -->
 <resources>
   <string name="about_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app.
-        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. All Rights Reserved.<br/>
-        <br/>
-        Many thanks to those open source tools: %1$s and to all who
-        <a href="http://translate.acdisplay.org">helped with translations</a> or donated.
+        AcDisplay là phần mềm <a href="http://repo.acdisplay.org">mã nguồn mở</a> miễn phí.
+        Bản quyền 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Đã được bảo hộ.<br/>
+        <br/>
+        Gửi lời cảm ơn tới tác giả những công cụ miễn phí sau: %1$s và tất cả những người đã giúp
+        <a href="http://translate.acdisplay.org">dịch</a> hoặc quyên góp.
     ]]></string>
-  <string name="donate_dialog_title">Donate to developers</string>
-  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
-  <string name="donate_alert_no_responsibility">Notice that Google is not responsible for this payments method.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
-  <string name="donate_thanks">Thank you very much!</string>
-  <string name="donation_1">An ice cream</string>
-  <string name="donation_4">A cup of coffee</string>
-  <string name="donation_10">Electricity bills</string>
-  <string name="donation_20">The right pillow</string>
-  <string name="donation_50">Solid-state drive</string>
-  <string name="donation_99">Sound system</string>
-  <string name="cry_dialog_title">Support development</string>
-  <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
-    ]]></string>
+  <string name="donate_dialog_title">Quyên góp cho nhà phát triển</string>
+  <string name="donate_dialog_message">AcDisplay là ứng dụng mã nguồn mở miễn phí. Bạn có thể thể hiện sự hài lòng và hỗ trợ nhà phát triển bằng cách quyên góp:</string>
+  <string name="donate_alert_no_responsibility">Chú ý rằng Google không chịu trách nhiệm với phương thức thanh toán này.</string>
+  <string name="donate_billing_not_supported">Thiết bị này không hỗ trợ mua trong ứng dụng.</string>
+  <string name="donate_thanks">Cảm ơn bản rất nhiều!</string>
+  <string name="donation_1">Một cây kem ốc quế</string>
+  <string name="donation_4">Một cốc cà phê</string>
+  <string name="donation_10">Một tháng hóa đơn tiền điện</string>
+  <string name="donation_20">Một cái gối êm</string>
+  <string name="donation_50">Ổ cứng thể rắn</string>
+  <string name="donation_99">Dàn âm thanh</string>
+  <string name="cry_dialog_title">Hỗ trợ phát triển ứng dụng</string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay là một ứng dụng miễn phí và <a href="http://repo.acdisplay.org"> mã nguồn mở</a> và chúng tôi đã dành nhiều thời gian và nguồn lực vào việc giữ nó tiếp tục phát triển. Bạn có thể đóng góp để cho thấy sự đánh giá cao của bạn và để hỗ trợ phát triển ứng dụng hơn nữa.     ]]></string>
   <string name="help_dialog_title">Trợ giúp</string>
-  <string name="feedback_dialog_title">Phản hồi của người dùng</string>
-  <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
-  <string name="feedback_dialog_attach_log">Attach a log</string>
-  <string name="feedback_dialog_read_help">Frequently asked questions</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
-  <string name="feedback_error_msg_too_short">Message must contain at least %1$d symbols.</string>
-  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
-  <string name="compat_dialog_title">Compatibility mode</string>
-  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
-  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
-  <string name="compat_dialog_item_music_widget">No music widget.</string>
+  <string name="feedback_dialog_title">Phản hồi</string>
+  <string name="feedback_dialog_message_hint">Tin nhắn của bạn. Thông số kỹ thuật của thiết bị sẽ được đính kèm tự động.</string>
+  <string name="feedback_dialog_attach_log">Đính kèm một bản báo cáo</string>
+  <string name="feedback_dialog_read_help">Các câu hỏi thường gặp</string>
+  <string name="feedback_error_no_app">Hãy cài đặt ứng dụng email bất kỳ.</string>
+  <string name="feedback_error_msg_too_short">Thông báo phải chứa ít nhất %1$d kí tự.</string>
+  <string name="feedback_error_accessing_log">Lỗi truy cập vào nhật ký ứng dụng. Lỗi là: %1$s</string>
+  <string name="compat_dialog_title">Chế độ tương thích</string>
+  <string name="compat_dialog_message">AcDisplay đang chạy ở chế độ tương thích để hỗ trợ Android %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Vì AcDisplay đang sử dụng dịch vụ tiếp cận, nó không thể phát hiện các thông báo đã được xóa/cập nhật, hoặc thông báo bị xóa từ khu vực thông báo.</string>
+  <string name="compat_dialog_item_immersive_mode">Thanh điều hướng đang luôn hiển thị.</string>
+  <string name="compat_dialog_item_music_widget">Không có widget chơi nhạc.</string>
 </resources>

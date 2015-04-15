@@ -37,6 +37,6 @@
     <item>Importanti (comunicazioni, mail importanti)</item>
     <item>Normali (+notifiche da vecchie applicazioni)</item>
     <item>Non importanti (aggiornamenti software, mail indesiderate)</item>
-    <item>Informazioni contestuali e di sfondo (tempo, eventi scaduti, suggerimenti)</item>
+    <item>Informazioni contestuali e di sfondo (meteo, eventi scaduti, suggerimenti)</item>
   </string-array>
 </resources>

@@ -24,7 +24,7 @@
   <string name="blacklist_app_hide_title">Ẩn</string>
   <string name="blacklist_app_hide_summary">Thông báo của ứng dụng này sẽ không được hiển thị.</string>
   <string name="blacklist_app_restricted_title">Im lặng</string>
-  <string name="blacklist_app_restricted_summary">Không tự bật màn hình trên thông báo mới nhận của ứng dụng này.</string>
-  <string name="blacklist_app_non_clearable_title">Non-clearable notifies</string>
-  <string name="blacklist_app_non_clearable_summary">Show non-clearable/ongoing notifications, such as those from services.</string>
+  <string name="blacklist_app_restricted_summary">Thông báo từ ứng dụng này sẽ không hiện trên AcDisplay.</string>
+  <string name="blacklist_app_non_clearable_title">Thông báo không xóa được</string>
+  <string name="blacklist_app_non_clearable_summary">Hiện thông báo không xóa được/đang hoạt động.</string>
 </resources>

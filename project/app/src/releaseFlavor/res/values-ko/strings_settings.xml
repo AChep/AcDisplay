@@ -40,18 +40,18 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">알림이 있거나 없거나 항상 잠금화면을 활성화 합니다.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">알림이 없을때 잠금화면을 비활성화 합니다.</string>
   <string name="settings_active_active_charging_title">충전중일 때 언제나 움직임을 감지합니다.</string>
-  <string name="settings_active_description">액티브 모드는 당신이 필요할 때 기기의 센서를 이용하여 기기를 켜 줍니다. 주머니에서 기기를 꺼내 잠깐 알림을 볼 때 매우 유용합니다. 액티브 모드는 CPU를 계속해서 사용하지 않으며, 따라서 배터리 소모를 크게 증가시키지 않습니다.</string>
+  <string name="settings_active_description">액티브 모드는 당신이 필요할 때 기기의 센서를 이용하여 필요할 때 기기를 켜 줍니다. 주머니에서 기기를 꺼내 잠깐 알림을 볼 때 매우 유용합니다. 액티브 모드는 CPU를 계속해서 사용하지 않으며, 따라서 배터리 소모를 크게 증가시키지 않습니다.</string>
   <string name="settings_active_respect_inactive_time_title">비활성화 시간에 사용하지 않기</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">알림이 없을 때에도 활성화</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">알림의 유무와 상관 없이 액티브 모드를 활성화합니다.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">알림이 없으면 액티브 모드가 활성화되지 않습니다.</string>
-  <string name="settings_wake_up_on_notification_title">알림이 올 때마다 화면 켜기</string>
+  <string name="settings_wake_up_on_notification_title">알림이 오면 화면 켜기</string>
   <string name="settings_notify_min_priority_title">최소 우선 순위</string>
   <string name="settings_notify_max_priority_title">최대 우선순위</string>
   <string name="settings_full_screen_title">전체 화면 모드</string>
   <string name="settings_use_wallpaper_title">배경하면 사용</string>
-  <string name="settings_use_wallpaper_on">기기 배경화면을 잠금화면 배경화면으로 사용합니다.</string>
-  <string name="settings_use_wallpaper_off">검정 배경하면.</string>
+  <string name="settings_use_wallpaper_on">기기 홈 화면의 배경화면을 사용합니다.</string>
+  <string name="settings_use_wallpaper_off">검은 배경화면을 사용합니다.</string>
   <string name="settings_dynamic_background_title">동적 배경화면</string>
   <string name="settings_dynamic_background_summary">다음 항목이 배경화면으로 사용됩니다: %1$s</string>
   <string name="settings_dynamic_background_disabled">비활성화</string>
@@ -71,7 +71,7 @@
   <string name="settings_only_while_charging_off">앱이 언제나 활성화됩니다.</string>
   <string name="settings_inactive_hours_title">비활성 시간</string>
   <string name="settings_inactive_hours_disabled">비활성화</string>
-  <string name="settings_inactive_hours_enabled">%1$s부터  to %2$s까지 설정됩니다.</string>
+  <string name="settings_inactive_hours_enabled">%1$s부터 %2$s까지 설정됩니다.</string>
   <string name="settings_timeout_title">꺼짐</string>
   <string name="settings_timeout_summary">%1$s / %2$s초 동안 아무런 반응이 없으면 자동으로 화면이 꺼집니다.</string>
   <string name="settings_icon_size_title">아이콘 크기</string>
@@ -79,7 +79,7 @@
   <string name="settings_double_tap_to_sleep_title">두번 탭하여 화면 끄기</string>
   <string name="settings_behavior_category">동작</string>
   <string name="settings_lock_on_dismiss_last_notify_title">마지막 알림을 해제하면 자동으로 화면 잠금</string>
-  <string name="settings_lock_on_dismiss_last_notify_on">마지막 알림을 지우며 화면을 끄게 합니다.</string>
+  <string name="settings_lock_on_dismiss_last_notify_on">마지막 알림을 지우면 화면을 끄게 합니다.</string>
   <string name="settings_lock_on_dismiss_last_notify_off">마지막 알림을 지워도 화면이 켜진 상태로 유지합니다.</string>
   <string name="settings_widget_pinnable_title">알림 고정</string>
   <string name="settings_widget_pinnable_on">알림을 누른 뒤에도 알림이 펴진 상태로 유지합니다.</string>
@@ -94,9 +94,9 @@
     ]]></string>
   <string name="preference_timeout_normal">켜진 후 혹은 알림 선택 후</string>
   <string name="preference_timeout_short">비활성 영역을 누른 후</string>
-  <string name="preference_timeout_sec">%1$s 초.</string>
+  <string name="preference_timeout_sec">%1$s 초</string>
   <string name="preference_icon_size_message">알림 아이콘의 크기를 조정 합니다.</string>
-  <string name="preference_icon_size_dpi">%1$s dpi.</string>
+  <string name="preference_icon_size_dpi">%1$s dpi</string>
   <string name="preference_colorpicker_random_color">무작위 색</string>
   <string name="preference_colorpicker_custom_color">색상 선택</string>
 </resources>

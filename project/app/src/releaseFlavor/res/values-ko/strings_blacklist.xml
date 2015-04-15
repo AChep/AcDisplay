@@ -24,7 +24,7 @@
   <string name="blacklist_app_hide_title">숨기기</string>
   <string name="blacklist_app_hide_summary">이 앱의 알림은 더 이상 표시되지 않습니다.</string>
   <string name="blacklist_app_restricted_title">조용히</string>
-  <string name="blacklist_app_restricted_summary">이 앱의 알림이 표시되어도 화면이 켜지지 않습니다.</string>
+  <string name="blacklist_app_restricted_summary">이 앱의 알림을 받더라도 AcDisplay가 화면을 켜지 않습니다.</string>
   <string name="blacklist_app_non_clearable_title">제거할 수 없는 알림</string>
   <string name="blacklist_app_non_clearable_summary">서비스 알림을 비롯한 제거 불가능한 알림을 표시합니다.</string>
 </resources>
