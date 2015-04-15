@@ -467,6 +467,7 @@ public class NotificationPresenter implements
                     }
 
                     Check.getInstance().isTrue(groupChild);
+                    mGroupsWithSummaries.remove(n.getGroupKey());
                 }
 
                 Config config = Config.getInstance();
