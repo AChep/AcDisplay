@@ -466,8 +466,9 @@ public class NotificationPresenter implements
                         }
                     }
 
-                    if (DEBUG) Check.getInstance().isTrue(groupChild, "Failed to find the " +
-                            "summary of " + n.getGroupKey());
+                    Check.getInstance().isTrue(groupChild, "Failed to find the " +
+                            "summary of " + n.getGroupKey() + ", with the key " +
+                            n.getStatusBarNotification().getKey());
                     mGroupsWithSummaries.remove(n.getGroupKey());
                 }
 
@@ -533,6 +534,11 @@ public class NotificationPresenter implements
                         return;
                     }
                 }
+
+                Check.getInstance().isTrue(false, "Failed to find the " +
+                        "summary of " + n.getGroupKey() + ", with the key " +
+                        n.getStatusBarNotification().getKey());
+                mGroupsWithSummaries.remove(n.getGroupKey());
             }
 
             NotificationList list = mGList;
