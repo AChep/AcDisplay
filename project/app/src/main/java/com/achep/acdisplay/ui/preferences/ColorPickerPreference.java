@@ -114,7 +114,7 @@ public class ColorPickerPreference extends MaterialDialogPreference {
     @Override
     public MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder) {
         MaterialDialog md = builder
-                .customView(R.layout.dialog_preference_colorpicker, false)
+                .customView(R.layout.dialog_preference_colorpicker, true)
                 .build();
 
         int color = (int) mOption.read(mConfig);
