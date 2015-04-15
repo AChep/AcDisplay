@@ -74,6 +74,7 @@ final class CheckImpl extends Check {
 
     @Override
     public void isNonNull(@NonNull Object object, @NonNull String message) {
+        //noinspection ConstantConditions
         if (object == null) throw new RuntimeException(message);
     }
 
