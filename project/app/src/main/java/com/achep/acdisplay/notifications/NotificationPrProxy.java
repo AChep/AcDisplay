@@ -184,7 +184,7 @@ class NotificationPrProxy {
                 if (NotificationUtils.hasIdenticalIds(
                         task.notification,
                         sub.notification)) {
-                    Log.i(TAG, "Removed overridden task on pre-processing tasks list.");
+                    Log.i(TAG, "Removed overridden task on pre-processing tasks list. ");
                     list.set(j, empty);
                 }
             }
@@ -203,9 +203,10 @@ class NotificationPrProxy {
             for (int j = i + 1; j < size; j++) {
                 NotificationPrTask sub = list.get(j);
                 if (sub == empty || !sub.notification.isGroupSummary()) continue;
-                if (NotificationUtils.hasIdenticalIds(
-                        task.notification,
-                        sub.notification)) {
+                String subGroupKey = sub.notification.getGroupKey();
+                String taskGroupKey = task.notification.getGroupKey();
+                assert taskGroupKey != null;
+                if (taskGroupKey.equals(subGroupKey)) {
                     Log.d(TAG, "Swapped two tasks on pre-processing tasks list.");
                     // Swap two tasks.
                     list.set(j, task);
