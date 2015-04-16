@@ -47,4 +47,14 @@ class NotificationPrTask {
         this.posts = posts;
         this.flags = flags;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return String.format("NotificationPrTask(n=%s, is_post_event=%b, flags=%d)",
+                notification.toString(), posts, flags);
+    }
+
 }
