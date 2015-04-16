@@ -418,6 +418,13 @@ public class NotificationPresenter implements
                 return;
             }
 
+            final int prevIndex = mGList.indexOfNotification(n);
+            if (prevIndex != -1) {
+                OpenNotification prev = mGList.get(prevIndex);
+                // Update the summary set, group notifications etc.
+                handleNotificationRemoval(prev);
+            }
+
             freezeListeners();
 
             boolean globalValid = isValidForGlobal(n);
@@ -516,34 +523,8 @@ public class NotificationPresenter implements
             Check.getInstance().isInMainThread();
             mProxy.onRemoved(n);
 
-            if (n.isGroupSummary()) {
-                String groupKey = n.getGroupKey();
-                assert groupKey != null;
-                mGroupsWithSummaries.remove(groupKey);
-            } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
-                String groupKey = n.getGroupKey();
-                assert groupKey != null;
-                for (OpenNotification n2 : mGList) {
-                    if (groupKey.equals(n2.getGroupKey())) {
-                        Check.getInstance().isTrue(n2.isGroupSummary());
-                        assert n2.getGroupNotifications() != null;
-
-                        NotificationList list = (NotificationList) n2.getGroupNotifications();
-                        int i = list.indexOfNotification(n);
-                        if (i != -1) {
-                            n.recycle();
-                            list.remove(i);
-                        }
-                        return;
-                    }
-                }
-
-                // Failed to find the summary of this group, although the
-                // set is indicating its presence. This is possible to happen due to
-                // optimization list of pending events.
-                mGroupsWithSummaries.remove(groupKey);
-                if (DEBUG) Log.d(TAG, "Removed[2] lost group from the set: group=" + groupKey);
-            }
+            // Update the summary set, group notifications etc.
+            handleNotificationRemoval(n);
 
             NotificationList list = mGList;
             int i = list.indexOfNotification(n);
@@ -552,6 +533,37 @@ public class NotificationPresenter implements
                 list.remove(i);
                 mLList.removeNotification(n);
             }
+        }
+    }
+
+    private void handleNotificationRemoval(@NonNull OpenNotification n) {
+        if (n.isGroupSummary()) {
+            String groupKey = n.getGroupKey();
+            assert groupKey != null;
+            mGroupsWithSummaries.remove(groupKey);
+        } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
+            String groupKey = n.getGroupKey();
+            assert groupKey != null;
+            for (OpenNotification n2 : mGList) {
+                if (groupKey.equals(n2.getGroupKey())) {
+                    Check.getInstance().isTrue(n2.isGroupSummary());
+                    assert n2.getGroupNotifications() != null;
+
+                    NotificationList list = (NotificationList) n2.getGroupNotifications();
+                    int i = list.indexOfNotification(n);
+                    if (i != -1) {
+                        n.recycle();
+                        list.remove(i);
+                    }
+                    return;
+                }
+            }
+
+            // Failed to find the summary of this group, although the
+            // set is indicating its presence. This is possible to happen due to
+            // optimization list of pending events.
+            mGroupsWithSummaries.remove(groupKey);
+            if (DEBUG) Log.d(TAG, "Removed[2] lost group from the set: group=" + groupKey);
         }
     }
 

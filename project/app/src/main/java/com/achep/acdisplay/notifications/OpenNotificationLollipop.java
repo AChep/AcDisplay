@@ -54,21 +54,6 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
      * {@inheritDoc}
      */
     @Override
-    public boolean hasIdenticalIds(@Nullable OpenNotification n) {
-        if (n == null) return false;
-        StatusBarNotification sbn = getStatusBarNotification();
-        StatusBarNotification sbn2 = n.getStatusBarNotification();
-        assert sbn2 != null;
-        return new EqualsBuilder()
-                .append(sbn2.getKey(), sbn.getKey())
-                .append(sbn2.getGroupKey(), sbn.getGroupKey()) // TODO: Is it needed?
-                .isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void onLowMemory() {
         super.onLowMemory();
         for (OpenNotification n : mGroupNotifications) n.onLowMemory();
