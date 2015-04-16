@@ -347,6 +347,15 @@ public abstract class OpenNotification implements
      * {@inheritDoc}
      */
     @Override
+    public String toString() {
+        return String.format("OpenNotification(pkg=%s, g_key=%s, g_summary=%b, g_child=%b)",
+                getPackageName(), getGroupKey(), isGroupSummary(), isGroupChild());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public abstract int hashCode();
 
     /**
