@@ -466,10 +466,13 @@ public class NotificationPresenter implements
                         }
                     }
 
-                    Check.getInstance().isTrue(groupChild, "Failed to find the " +
-                            "summary of " + n.getGroupKey() + ", with the key " +
-                            n.getStatusBarNotification().getKey());
-                    mGroupsWithSummaries.remove(n.getGroupKey());
+                    if (!groupChild) {
+                        // Failed to find the summary of this group, although the
+                        // set is indicating its presence. This is possible to happen due to
+                        // optimization list of pending events.
+                        mGroupsWithSummaries.remove(groupKey);
+                        if (DEBUG) Log.d(TAG, "Removed lost group from the set: group=" + groupKey);
+                    }
                 }
 
                 Config config = Config.getInstance();
@@ -535,10 +538,11 @@ public class NotificationPresenter implements
                     }
                 }
 
-                Check.getInstance().isTrue(false, "Failed to find the " +
-                        "summary of " + n.getGroupKey() + ", with the key " +
-                        n.getStatusBarNotification().getKey());
-                mGroupsWithSummaries.remove(n.getGroupKey());
+                // Failed to find the summary of this group, although the
+                // set is indicating its presence. This is possible to happen due to
+                // optimization list of pending events.
+                mGroupsWithSummaries.remove(groupKey);
+                if (DEBUG) Log.d(TAG, "Removed[2] lost group from the set: group=" + groupKey);
             }
 
             NotificationList list = mGList;
