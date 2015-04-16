@@ -83,6 +83,13 @@ class OpenNotificationJellyBeanMR2 extends OpenNotification {
     /**
      * {@inheritDoc}
      */
+    public boolean isClearable() {
+        return getStatusBarNotification().isClearable();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @NonNull
     @Override
     public String getPackageName() {
