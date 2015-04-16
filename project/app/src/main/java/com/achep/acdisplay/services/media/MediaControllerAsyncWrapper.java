@@ -55,7 +55,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
         super.onStart(objects);
         synchronized (monitor) {
             // Init a new thread.
-            mThread = new T();
+            mThread = new T(mMediaController);
             mThread.start();
         }
     }
@@ -80,10 +80,14 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     //-- THREADING ------------------------------------------------------------
 
     private static class T extends Thread {
-
+        private final Reference<MediaController2> mMediaControllerRef;
         private final Queue<E> mQueue = new ConcurrentLinkedQueue<>();
         private boolean mQueueWaiting;
         private boolean mRunning = true;
+
+        public T(@NonNull MediaController2 mc) {
+            mMediaControllerRef = new WeakReference<>(mc);
+        }
 
         @Override
         public void run() {
@@ -110,11 +114,19 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
                     }
                 }
 
+                MediaController2 mc = mMediaControllerRef.get();
+                if (mc == null) {
+                    mRunning = false;
+                    break;
+                }
+
                 Iterator<E> iterator = queue.iterator();
                 while (iterator.hasNext()) {
                     E e = iterator.next();
                     // ~~
-                    e.run();
+                    if (e.id.equals(mc.getMetadata().id)) {
+                        e.run(mc);
+                    }
                     // ~~
                     iterator.remove();
                 }
@@ -134,14 +146,13 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     /**
      * Represents one single event.
      */
-    private static abstract class E implements Runnable {
-        public final Reference<MediaController2> mcRef;
+    private static abstract class E {
         public final String id;
-
-        public E(@NonNull MediaController2 mc, @NonNull String id) {
-            this.mcRef = new WeakReference<>(mc);
+        public E(@NonNull String id) {
             this.id = id;
         }
+
+        public abstract void run(@NonNull MediaController2 mc);
     }
 
     /**
@@ -151,16 +162,13 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
      */
     private static class EventSeekTo extends E {
         public final long position;
-
-        public EventSeekTo(@NonNull MediaController2 mc, @NonNull String id, long position) {
-            super(mc, id);
+        public EventSeekTo(@NonNull String id, long position) {
+            super(id);
             this.position = position;
         }
 
         @Override
-        public void run() {
-            MediaController2 mc = mcRef.get();
-            if (mc == null) return;
+        public void run(@NonNull MediaController2 mc) {
             mc.seekTo(position);
         }
     }
@@ -173,15 +181,13 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     private static class EventMediaAction extends E {
         public final int action;
 
-        public EventMediaAction(@NonNull MediaController2 mc, @NonNull String id, int action) {
-            super(mc, id);
+        public EventMediaAction(@NonNull String id, int action) {
+            super(id);
             this.action = action;
         }
 
         @Override
-        public void run() {
-            MediaController2 mc = mcRef.get();
-            if (mc == null) return;
+        public void run(@NonNull MediaController2 mc) {
             mc.sendMediaAction(action);
         }
     }
@@ -196,7 +202,6 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     public void sendMediaAction(int action) {
         synchronized (monitor) {
             mThread.sendEvent(new EventMediaAction(
-                    mMediaController,
                     mMediaController.getMetadata().id,
                     action));
         }
@@ -209,7 +214,6 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     public void seekTo(long position) {
         synchronized (monitor) {
             mThread.sendEvent(new EventSeekTo(
-                    mMediaController,
                     mMediaController.getMetadata().id,
                     position));
         }
