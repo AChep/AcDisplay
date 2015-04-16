@@ -41,6 +41,16 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     }
 
     @Override
+    public void registerListener(@NonNull MediaListener listener) {
+        mMediaController.registerListener(listener);
+    }
+
+    @Override
+    public void unregisterListener(@NonNull MediaListener listener) {
+        mMediaController.unregisterListener(listener);
+    }
+
+    @Override
     public void onStart(Object... objects) {
         super.onStart(objects);
         synchronized (monitor) {

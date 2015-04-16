@@ -173,7 +173,7 @@ public abstract class MediaController2 implements
      * {@inheritDoc}
      */
     @Override
-    public final void registerListener(@NonNull MediaListener listener) {
+    public void registerListener(@NonNull MediaListener listener) {
         synchronized (this) {
             mListeners.add(listener);
         }
@@ -183,7 +183,7 @@ public abstract class MediaController2 implements
      * {@inheritDoc}
      */
     @Override
-    public final void unregisterListener(@NonNull MediaListener listener) {
+    public void unregisterListener(@NonNull MediaListener listener) {
         synchronized (this) {
             mListeners.remove(listener);
         }
