@@ -49,8 +49,6 @@ public final class PermissionAccessibility extends Permission {
 
     public PermissionAccessibility(@NonNull Context context) {
         super(context);
-        Check.getInstance().isFalse(Device.hasJellyBeanMR2Api());
-
         mComponentString = new ComponentName(mContext, AccessibilityService.class).flattenToString();
     }
 
