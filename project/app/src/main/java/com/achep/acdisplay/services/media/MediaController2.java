@@ -251,7 +251,7 @@ public abstract class MediaController2 implements
      * @return {@link Metadata the metadata} of playing track.
      */
     @NonNull
-    public final Metadata getMetadata() {
+    public Metadata getMetadata() {
         return mMetadata;
     }
 
@@ -270,7 +270,7 @@ public abstract class MediaController2 implements
      * You also may use {@link android.support.v4.media.session.PlaybackStateCompat} to
      * access those values.
      */
-    public final int getPlaybackState() {
+    public int getPlaybackState() {
         return mPlaybackState;
     }
 

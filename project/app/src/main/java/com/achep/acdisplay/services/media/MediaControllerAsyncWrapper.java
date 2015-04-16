@@ -235,4 +235,21 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
         return mMediaController.getPlaybackPosition();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public Metadata getMetadata() {
+        return mMediaController.getMetadata();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPlaybackState() {
+        return mMediaController.getPlaybackState();
+    }
+
 }
