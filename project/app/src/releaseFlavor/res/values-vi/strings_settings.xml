@@ -26,7 +26,7 @@
   <string name="settings_placeholder_summary">Tính năng sẽ có trong tương lai.</string>
   <string name="settings_category_features">Tính năng</string>
   <string name="settings_keyguard_title">Màn hình khóa</string>
-  <string name="settings_active_title">Chế độ Active</string>
+  <string name="settings_active_title">Chế độ hoạt động</string>
   <string name="settings_category_settings">Cài đặt</string>
   <string name="settings_app_settings_title">Ứng dụng</string>
   <string name="settings_notification_title">Thông báo</string>
@@ -40,11 +40,11 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Màn hình khóa luôn bật dù có thông báo hay không.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Màn hình khóa sẽ tắt nếu không có thông báo.</string>
   <string name="settings_active_active_charging_title">Luôn theo dõi chuyển động khi sạc</string>
-  <string name="settings_active_description">Chế độ hoạt động sử dụng của thiết bị cảm biến để đánh thưc thiết bị của bạn khi bạn cần. Nó sẽ rất hiệu quả khi bạn rút điện thoại từ túi của bạn để xem nhanh chóng thông báo. Chế độ này không giữ CPU chạy ngầm, do đó bạn sẽ thấy pin bị hao không đáng kể.</string>
+  <string name="settings_active_description">Chế độ hoạt động sử dụng cảm biến để bật thiết bị của bạn khi bạn cần. Nó sẽ rất hiệu quả khi bạn rút điện thoại từ túi để xem nhanh chóng thông báo. Chế độ này không giữ CPU chạy, do đó pin sẽ không hao đi nhiều.</string>
   <string name="settings_active_respect_inactive_time_title">Tắt trong thời gian không hoạt động</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Kích hoạt tính năng khi không có thông báo</string>
-  <string name="settings_active_enabled_when_notification_list_empty_on">Chế độ Active được kích hoạt bất kể cho dù có thông báo hay không.</string>
-  <string name="settings_active_enabled_when_notification_list_empty_off">Chế độ Active bị vô hiệu hóa khi không có thông báo.</string>
+  <string name="settings_active_enabled_when_notification_list_empty_on">Chế độ hoạt động được kích hoạt dù có thông báo hay không.</string>
+  <string name="settings_active_enabled_when_notification_list_empty_off">Chế độ hoạt động bị vô hiệu hóa khi không có thông báo.</string>
   <string name="settings_wake_up_on_notification_title">Tự bật màn hình khi có thông báo</string>
   <string name="settings_notify_min_priority_title">Ưu tiên thấp nhất</string>
   <string name="settings_notify_max_priority_title">Ưu tiên cao nhất</string>
@@ -52,10 +52,10 @@
   <string name="settings_use_wallpaper_title">Sử dụng hình nền</string>
   <string name="settings_use_wallpaper_on">Sử dụng hình nền của màn hình chính.</string>
   <string name="settings_use_wallpaper_off">Màu đen.</string>
-  <string name="settings_dynamic_background_title">Hình nền dạng Dynamic</string>
+  <string name="settings_dynamic_background_title">Hình nền năng động</string>
   <string name="settings_dynamic_background_summary">Những thứ sau được sử dụng như là hình nền: %1$s</string>
   <string name="settings_dynamic_background_disabled">Tắt</string>
-  <string name="settings_status_battery_always_visible">Giữ trạng thái pin</string>
+  <string name="settings_status_battery_always_visible">Luôn hiện pin</string>
   <string name="settings_status_battery_always_visible_off">Trạng thái pin sẽ hiện khi pin yếu hoặc đang sạc.</string>
   <string name="settings_emoticons_title">Biểu tượng cảm xúc</string>
   <string name="settings_override_fonts_title">Bỏ qua font hệ thống</string>
@@ -72,7 +72,7 @@
   <string name="settings_inactive_hours_title">Giờ ngừng hoạt động</string>
   <string name="settings_inactive_hours_disabled">Tắt</string>
   <string name="settings_inactive_hours_enabled">Từ %1$s đến %2$s.</string>
-  <string name="settings_timeout_title">Ngủ</string>
+  <string name="settings_timeout_title">Tắt màn hình</string>
   <string name="settings_timeout_summary">Sau khoảng %1$s / %2$s giây không hoạt động.</string>
   <string name="settings_icon_size_title">Kích cỡ biểu tượng</string>
   <string name="settings_icon_size_summary">Kích cỡ hiện tại là %1$s dpi.</string>

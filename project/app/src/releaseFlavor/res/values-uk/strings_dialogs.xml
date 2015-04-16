@@ -27,9 +27,9 @@
         <a href="http://translate.acdisplay.org">допоміг з перекладом додатку</a> чи пожертвував на його розвиток.
     ]]></string>
   <string name="donate_dialog_title">Пожертвувати</string>
-  <string name="donate_dialog_message">AcDisplay is a free and open source app. You can show your appreciation and support development by donating:</string>
+  <string name="donate_dialog_message">AcDisplay – це безкоштовний додаток з відкритим вихідним кодом. Ви можете показати свою вдячність, підтримавши розвиток через пожертвування:</string>
   <string name="donate_alert_no_responsibility">Зверніть увагу, що Google не відповідає за цей метод платежів.</string>
-  <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+  <string name="donate_billing_not_supported">Покупки у додатку не підтримуються цією систему.</string>
   <string name="donate_thanks">Вельми дякую!</string>
   <string name="donation_1">Морозиво</string>
   <string name="donation_4">Чашка кави</string>
@@ -48,12 +48,12 @@
   <string name="feedback_dialog_message_hint">Ваше повідомлення. Специфікації пристрою буде додано автоматично.</string>
   <string name="feedback_dialog_attach_log">Прикріпити журнал подій</string>
   <string name="feedback_dialog_read_help">Запитання та відповіді</string>
-  <string name="feedback_error_no_app">Install any of email apps.</string>
+  <string name="feedback_error_no_app">Встановіть додаток для відправлення електронної пошти.</string>
   <string name="feedback_error_msg_too_short">Повідомлення має містити принаймні %1$d символів.</string>
-  <string name="feedback_error_accessing_log">Error accessing app\'s log. The error is: %1$s</string>
+  <string name="feedback_error_accessing_log">Помилка створення журналу подій. Помилка: %1$s</string>
   <string name="compat_dialog_title">Режимі сумісності</string>
-  <string name="compat_dialog_message">AcDisplay is running in a compatibility mode to support Android %1$s: %2$s</string>
+  <string name="compat_dialog_message">AcDisplay працює у режимі сумістності для забезпечення підтримки Android %1$s: %2$s</string>
   <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
-  <string name="compat_dialog_item_immersive_mode">Navigation bar is always shown.</string>
-  <string name="compat_dialog_item_music_widget">No music widget.</string>
+  <string name="compat_dialog_item_immersive_mode">Завжди відображається панель навігації.</string>
+  <string name="compat_dialog_item_music_widget">Немає віджету музики.</string>
 </resources>

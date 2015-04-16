@@ -26,7 +26,7 @@
         <a href="http://translate.acdisplay.org">pomagali s prevodom</a> ali darovali.
     ]]></string>
   <string name="donate_dialog_title">Darujte za razvijalce</string>
-  <string name="donate_dialog_message">AcDisplay je brezplačna in odprtokodna aplikacija. Svoje spoštovanje lahko izkažete z podporo razvoju z darovanjem:</string>
+  <string name="donate_dialog_message">AcDisplay je brezplačna in odprtokodna  aplikacija. Svoje spoštovanje lahko izkažete z podporo razvoju z darovanjem:</string>
   <string name="donate_alert_no_responsibility">Obvestilo: Google ni odgovoren za ta način plačila.</string>
   <string name="donate_billing_not_supported">Naprava ne podpira nakupov v aplikaciji.</string>
   <string name="donate_thanks">Najlepša hvala!</string>
