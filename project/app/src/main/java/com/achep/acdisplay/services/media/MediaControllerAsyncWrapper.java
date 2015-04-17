@@ -26,9 +26,6 @@ import com.achep.base.async.TaskQueueThread;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author Artem Chepurnoy
@@ -68,18 +65,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     public void onStop(Object... objects) {
         synchronized (monitor) {
             // Force stop the thread.
-            if (mThread.isAlive()) {
-                synchronized (mThread.mQueue) {
-                    mThread.mRunning = false;
-                    if (mThread.mQueueWaiting) mThread.mQueue.notifyAll();
-                }
-                while (true) {
-                    try {
-                        mThread.join();
-                        break;
-                    } catch (InterruptedException e) { /* pretty please! */ }
-                }
-            }
+            mThread.finish(true);
         }
         mMediaController.onStop(objects);
     }
@@ -88,75 +74,27 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
 
     private static class T extends TaskQueueThread<E> {
         private final Reference<MediaController2> mMediaControllerRef;
-        private final Queue<E> mQueue = new ConcurrentLinkedQueue<>();
-        private boolean mQueueWaiting;
-        private boolean mRunning = true;
 
         public T(@NonNull MediaController2 mc) {
             mMediaControllerRef = new WeakReference<>(mc);
         }
 
         @Override
-        public void run() {
-            super.run();
-
-            Queue<E> queue = new ConcurrentLinkedQueue<>();
-            while (mRunning) {
-                synchronized (mQueue) {
-                    if (mQueue.isEmpty())
-                        try {
-                            // Wait for a next #sendEvent(Event),
-                            // where this thread will be unlocked.
-                            mQueueWaiting = true;
-                            mQueue.wait();
-                        } catch (InterruptedException ignored) {
-                        } finally {
-                            mQueueWaiting = false;
-                        }
-
-                    // Move all pending events to a local copy, so we don't need
-                    // to block main queue.
-                    while (!mQueue.isEmpty()) {
-                        queue.add(mQueue.poll());
-                    }
-                }
-
-                MediaController2 mc = mMediaControllerRef.get();
-                if (mc == null) {
-                    mRunning = false;
-                    break;
-                }
-
-                Iterator<E> iterator = queue.iterator();
-                while (iterator.hasNext()) {
-                    E e = iterator.next();
-                    // ~~
-                    if (TextUtils.equals(e.id, mc.getMetadata().id)) {
-                        e.run(mc);
-                    }
-                    // ~~
-                    iterator.remove();
-                }
-            }
-        }
-
-        @Override
         protected void onHandleTask(E object) {
+            MediaController2 mc = mMediaControllerRef.get();
+            if (mc == null) {
+                mRunning = false;
+                return;
+            }
 
+            if (TextUtils.equals(object.id, mc.getMetadata().id)) {
+                object.run(mc);
+            }
         }
 
         @Override
         protected boolean isLost() {
             return false;
-        }
-
-        public void sendEvent(@NonNull E e) {
-            synchronized (mQueue) {
-                mQueue.add(e);
-
-                // Release the thread lock if needed.
-                if (mQueueWaiting) mQueue.notifyAll();
-            }
         }
     }
 
@@ -221,7 +159,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     @Override
     public void sendMediaAction(int action) {
         synchronized (monitor) {
-            mThread.sendEvent(new EventMediaAction(
+            mThread.sendTask(new EventMediaAction(
                     mMediaController.getMetadata().id,
                     action));
         }
@@ -233,7 +171,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     @Override
     public void seekTo(long position) {
         synchronized (monitor) {
-            mThread.sendEvent(new EventSeekTo(
+            mThread.sendTask(new EventSeekTo(
                     mMediaController.getMetadata().id,
                     position));
         }
