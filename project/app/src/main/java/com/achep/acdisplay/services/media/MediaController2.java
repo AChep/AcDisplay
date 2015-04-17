@@ -189,6 +189,13 @@ public abstract class MediaController2 implements
         }
     }
 
+    @NonNull
+    public MediaController2 asyncWrap() {
+        return this instanceof MediaControllerAsyncWrapper
+                ? this
+                : new MediaControllerAsyncWrapper(this);
+    }
+
     /**
      * Sends media action. One of the following:
      * <ul>

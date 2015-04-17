@@ -36,6 +36,15 @@ class MediaController2Empty extends MediaController2 {
     /**
      * {@inheritDoc}
      */
+    @NonNull
+    @Override
+    public MediaController2 asyncWrap() {
+        return this; // don't wrap
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void sendMediaAction(int action) { /* do nothing */ }
 
     /**

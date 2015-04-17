@@ -243,7 +243,7 @@ public class AcDisplayFragment extends Fragment implements
         mClockWidget = new ClockWidget(this, this);
 
         // Media widget
-        mMediaController = MediaController2.newInstance(getActivity());
+        mMediaController = MediaController2.newInstance(getActivity()).asyncWrap();
         mMediaWidget = new MediaWidget(this, this);
 
         // Transitions
