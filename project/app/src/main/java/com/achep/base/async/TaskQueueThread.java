@@ -29,9 +29,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by Artem Chepurnoy on 17.04.2015.
  */
-public abstract class TaskQueueThread extends Thread implements IThreadFinishable {
+public abstract class TaskQueueThread<T> extends Thread implements IThreadFinishable {
 
-    private final Queue<Runnable> mQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<T> mQueue = new ConcurrentLinkedQueue<>();
     private boolean mWaiting = false;
     private boolean mRunning = true;
 
@@ -62,7 +62,7 @@ public abstract class TaskQueueThread extends Thread implements IThreadFinishabl
     public void run() {
         super.run();
 
-        Queue<Runnable> queue = new ConcurrentLinkedQueue<>();
+        Queue<T> queue = new ConcurrentLinkedQueue<>();
         while (mRunning) {
             synchronized (this) {
                 if (mQueue.isEmpty())
@@ -88,20 +88,20 @@ public abstract class TaskQueueThread extends Thread implements IThreadFinishabl
                 break;
             }
 
-            Iterator<Runnable> iterator = queue.iterator();
+            Iterator<T> iterator = queue.iterator();
             while (iterator.hasNext()) {
-                Runnable runnable = iterator.next();
+                T object = iterator.next();
                 // ~~
-                runnable.run();
+                onHandleTask(object);
                 // ~~
                 iterator.remove();
             }
         }
     }
 
-    public void sendTask(@NonNull Runnable runnable) {
+    public void sendTask(@NonNull T object) {
         synchronized (this) {
-            mQueue.add(runnable);
+            mQueue.add(object);
 
             // Release the thread lock if needed.
             if (mWaiting) mQueue.notifyAll();
@@ -113,6 +113,8 @@ public abstract class TaskQueueThread extends Thread implements IThreadFinishabl
             mQueue.clear();
         }
     }
+
+    protected abstract void onHandleTask(T object);
 
     protected abstract boolean isLost();
 
