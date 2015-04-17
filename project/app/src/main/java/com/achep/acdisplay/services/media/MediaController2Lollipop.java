@@ -24,17 +24,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadata;
 import android.media.session.MediaController;
+import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.MediaService;
+import com.achep.base.async.TaskQueueThread;
 import com.achep.base.tests.Check;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import static com.achep.base.Build.DEBUG;
@@ -128,6 +135,8 @@ class MediaController2Lollipop extends MediaController2 {
 
             };
 
+    private T mThread;
+
     /**
      * {@inheritDoc}
      */
@@ -144,6 +153,11 @@ class MediaController2Lollipop extends MediaController2 {
     @Override
     public void onStart(Object... objects) {
         super.onStart();
+
+        // Init a new thread.
+        mThread = new T(this);
+        mThread.setPriority(Thread.MIN_PRIORITY);
+        mThread.start();
 
         try {
             mMSManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
@@ -162,6 +176,9 @@ class MediaController2Lollipop extends MediaController2 {
      */
     @Override
     public void onStop(Object... objects) {
+        // Force stop the thread.
+        mThread.finish(true);
+
         if (mSessionListening) {
             mMSManager.removeOnActiveSessionsChangedListener(mSessionListener);
             clearMediaController(true);
@@ -184,11 +201,12 @@ class MediaController2Lollipop extends MediaController2 {
     private void setMediaController(@NonNull MediaController controller) {
         if (DEBUG) Log.d(TAG, "Switching to \'" + controller.getPackageName() + "\' controller.");
 
-        clearMediaController(false);
+        clearMediaController(true);
         mMediaController = controller;
         mMediaController.registerCallback(mCallback);
-        updatePlaybackState(mMediaController.getPlaybackState());
-        updateMetadata(mMediaController.getMetadata());
+        // Get the new metadata and new playback state async-ly
+        // to prevent possible ANRs.
+        mThread.sendTask(new EventUpdateMetadata(mMediaController.getSessionToken()));
     }
 
     /**
@@ -329,4 +347,82 @@ class MediaController2Lollipop extends MediaController2 {
         updatePlaybackState(state == null ? PlaybackState.STATE_NONE : state.getState());
     }
 
+    //-- THREADING ------------------------------------------------------------
+
+    static class T extends TaskQueueThread<E> {
+
+        @NonNull
+        private final Reference<MediaController2> mMediaControllerRef;
+
+        public T(@NonNull MediaController2 mc) {
+            mMediaControllerRef = new WeakReference<>(mc);
+        }
+
+        @Override
+        protected void onHandleTask(E object) {
+            MediaController2 mc = mMediaControllerRef.get();
+            if (mc == null) {
+                mRunning = false;
+                return;
+            }
+
+            object.run(mc);
+        }
+
+        @Override
+        protected boolean isLost() {
+            return false;
+        }
+    }
+
+    /**
+     * Represents one single event.
+     */
+    static abstract class E {
+        public abstract void run(@NonNull MediaController2 mc);
+    }
+
+    /**
+     * An event to seek to song's specific position.
+     *
+     * @author Artem Chepurnoy
+     */
+    private static class EventUpdateMetadata extends E {
+
+        @NonNull
+        private final MediaSession.Token mToken;
+        @NonNull
+        private final Handler mHandler;
+
+        public EventUpdateMetadata(@NonNull MediaSession.Token token) {
+            super();
+            mHandler = new Handler(Looper.getMainLooper());
+            mToken = token;
+        }
+
+        @Override
+        public void run(@NonNull MediaController2 mc) {
+            final MediaController2Lollipop mcl = (MediaController2Lollipop) mc;
+            final MediaController source = mcl.mMediaController;
+
+            if (source != null && mToken.equals(source.getSessionToken())) {
+                long now = SystemClock.elapsedRealtime();
+
+                final MediaMetadata metadata = source.getMetadata();
+                final PlaybackState playbackState = source.getPlaybackState();
+
+                long delta = SystemClock.elapsedRealtime() - now;
+                Log.i(TAG, "Got the new metadata & playback state in " + delta + " millis. "
+                        + "The media controller is " + source.getPackageName());
+
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mcl.updateMetadata(metadata);
+                        mcl.updatePlaybackState(playbackState);
+                    }
+                });
+            }
+        }
+    }
 }
