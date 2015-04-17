@@ -47,7 +47,7 @@ public abstract class TaskQueueThread<T> extends Thread implements IThreadFinish
             if (clearAllTasks) {
                 synchronized (this) {
                     mQueue.clear();
-                    if (mWaiting) mQueue.notifyAll();
+                    if (mWaiting) notifyAll();
                 }
             }
             while (true) {
@@ -105,7 +105,7 @@ public abstract class TaskQueueThread<T> extends Thread implements IThreadFinish
             mQueue.add(object);
 
             // Release the thread lock if needed.
-            if (mWaiting) mQueue.notifyAll();
+            if (mWaiting) notifyAll();
         }
     }
 
