@@ -19,6 +19,8 @@
 package com.achep.acdisplay.services.media;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -52,7 +54,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
 
     @Override
     public void onStart(Object... objects) {
-        super.onStart(objects);
+        mMediaController.onStart(objects);
         synchronized (monitor) {
             // Init a new thread.
             mThread = new T(mMediaController);
@@ -65,8 +67,11 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
         synchronized (monitor) {
             // Force stop the thread.
             if (mThread.isAlive()) {
-                while (true) {
+                synchronized (mThread.mQueue) {
                     mThread.mRunning = false;
+                    if (mThread.mQueueWaiting) mThread.mQueue.notifyAll();
+                }
+                while (true) {
                     try {
                         mThread.join();
                         break;
@@ -74,7 +79,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
                 }
             }
         }
-        super.onStop(objects);
+        mMediaController.onStop(objects);
     }
 
     //-- THREADING ------------------------------------------------------------
@@ -124,7 +129,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
                 while (iterator.hasNext()) {
                     E e = iterator.next();
                     // ~~
-                    if (e.id.equals(mc.getMetadata().id)) {
+                    if (TextUtils.equals(e.id, mc.getMetadata().id)) {
                         e.run(mc);
                     }
                     // ~~
@@ -147,8 +152,10 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
      * Represents one single event.
      */
     private static abstract class E {
+        @Nullable
         public final String id;
-        public E(@NonNull String id) {
+
+        public E(@Nullable String id) {
             this.id = id;
         }
 
@@ -162,7 +169,8 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
      */
     private static class EventSeekTo extends E {
         public final long position;
-        public EventSeekTo(@NonNull String id, long position) {
+
+        public EventSeekTo(@Nullable String id, long position) {
             super(id);
             this.position = position;
         }
@@ -181,7 +189,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     private static class EventMediaAction extends E {
         public final int action;
 
-        public EventMediaAction(@NonNull String id, int action) {
+        public EventMediaAction(@Nullable String id, int action) {
             super(id);
             this.action = action;
         }
