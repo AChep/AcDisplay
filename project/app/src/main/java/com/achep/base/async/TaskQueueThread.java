@@ -109,6 +109,12 @@ public abstract class TaskQueueThread<T> extends Thread implements IThreadFinish
         }
     }
 
+    public void clearTask(@NonNull T object) {
+        synchronized (this) {
+            mQueue.remove(object);
+        }
+    }
+
     public void clearAllTasks() {
         synchronized (this) {
             mQueue.clear();
