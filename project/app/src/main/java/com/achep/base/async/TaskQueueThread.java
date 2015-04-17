@@ -33,7 +33,8 @@ public abstract class TaskQueueThread<T> extends Thread implements IThreadFinish
 
     private final Queue<T> mQueue = new ConcurrentLinkedQueue<>();
     private boolean mWaiting = false;
-    private boolean mRunning = true;
+
+    protected boolean mRunning = true;
 
     @Override
     public void finish() {

@@ -22,6 +22,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.achep.base.async.TaskQueueThread;
+
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -84,7 +86,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
 
     //-- THREADING ------------------------------------------------------------
 
-    private static class T extends Thread {
+    private static class T extends TaskQueueThread<E> {
         private final Reference<MediaController2> mMediaControllerRef;
         private final Queue<E> mQueue = new ConcurrentLinkedQueue<>();
         private boolean mQueueWaiting;
@@ -136,6 +138,16 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
                     iterator.remove();
                 }
             }
+        }
+
+        @Override
+        protected void onHandleTask(E object) {
+
+        }
+
+        @Override
+        protected boolean isLost() {
+            return false;
         }
 
         public void sendEvent(@NonNull E e) {
