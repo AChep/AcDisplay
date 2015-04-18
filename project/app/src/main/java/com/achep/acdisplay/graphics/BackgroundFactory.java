@@ -24,8 +24,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.os.AsyncTaskCompat;
 import android.util.Log;
 
-import com.achep.acdisplay.utils.BitmapUtils;
 import com.achep.base.async.AsyncTask;
+import com.enrique.stackblur.StackBlurManager;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -81,7 +81,8 @@ public class BackgroundFactory {
     }
 
     public static Bitmap generate(@NonNull Bitmap bitmap) {
-        return BitmapUtils.doBlur(bitmap, 3, false);
+        StackBlurManager sbm = new StackBlurManager(bitmap);
+        return sbm.process(3);
     }
 
 }
