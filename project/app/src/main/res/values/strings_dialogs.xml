@@ -29,6 +29,7 @@
     <string name="about_dialog_credits" translatable="false"><![CDATA[
         <a href="http://developer.android.com/tools/support-library/index.html">Android Support Library</a>,
         <a href="http://commons.apache.org/">Apache Commons</a>,
+        <a href="https://github.com/kikoso/android-stackblur">Android StackBlur</a>,
         <a href="http://www.androidicons.com/">Android icons by Opoloo</a>,
         <a href="http://jarofgreen.co.uk/2013/02/android-shake-detection-library/">Shake Detection Library by James Baster</a>,
         <a href="https://github.com/03uk/RippleDrawable">RippleDrawable by 03uk</a>,
