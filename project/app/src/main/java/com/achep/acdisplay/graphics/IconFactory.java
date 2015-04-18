@@ -58,42 +58,6 @@ public class IconFactory {
         }
     };
 
-    public interface IconAsyncListener {
-        void onGenerated(@NonNull Bitmap bitmap);
-    }
-
-    @NonNull
-    public static AsyncTask<Void, Void, Bitmap> generateAsync(final @NonNull Context context,
-                                                              final @NonNull OpenNotification notification,
-                                                              final @NonNull IconAsyncListener listener) {
-        return (AsyncTask<Void, Void, Bitmap>) AsyncTaskCompat.executeParallel(
-                new AsyncTask<Void, Void, Bitmap>() {
-
-                    @Override
-                    protected Bitmap doInBackground(Void... params) {
-                        final long start = SystemClock.elapsedRealtime();
-
-                        Bitmap output = generate(context, notification);
-
-                        if (DEBUG) {
-                            long delta = SystemClock.elapsedRealtime() - start;
-                            Log.d(TAG, "Notification icon created in " + delta + " millis:"
-                                    + " width=" + output.getWidth()
-                                    + " height=" + output.getHeight());
-                        }
-
-                        return output;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Bitmap bitmap) {
-                        super.onPostExecute(bitmap);
-                        listener.onGenerated(bitmap);
-                    }
-
-                });
-    }
-
     public static Bitmap generate(final @NonNull Context context,
                                   final @NonNull OpenNotification notification) {
         final int iconRes = notification.getNotification().icon;
