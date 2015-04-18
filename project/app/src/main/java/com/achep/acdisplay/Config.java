@@ -89,6 +89,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_UI_CIRCLE_COLOR_OUTER = "ui_circle_color_outer";
     public static final String KEY_UI_OVERRIDE_FONTS = "ui_override_fonts";
     public static final String KEY_UI_EMOTICONS = "ui_emoticons";
+    public static final String KEY_UI_CUSTOM_WIDGET = "ui_custom_widget";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -144,6 +145,7 @@ public final class Config extends ConfigBase {
     private boolean mUiWallpaper;
     private boolean mUiBatterySticky;
     private boolean mUiUnlockAnimation;
+    private boolean mUiCustomWidget;
 
     private boolean mDevSensorsDump;
 
@@ -266,6 +268,9 @@ public final class Config extends ConfigBase {
         map.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
                 "mUiOverrideFonts", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_ui_override_fonts));
+        map.put(KEY_UI_CUSTOM_WIDGET, new ConfigBase.Option(
+                "mUiCustomWidget", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_custom_widget));
         map.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
                 "mUiIconSize", null, null, int.class)
                 .setDefaultRes(R.integer.config_default_ui_icon_size_dp));
@@ -566,6 +571,10 @@ public final class Config extends ConfigBase {
 
     public boolean isDevSensorsDumpEnabled() {
         return mDevSensorsDump;
+    }
+
+    public boolean isCustomWidgetEnabled() {
+        return mUiCustomWidget;
     }
 
     // //////////////////////////////////////////
