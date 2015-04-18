@@ -22,13 +22,17 @@ import android.app.Activity;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.appwidget.MyAppWidgetHost;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
 
 /**
@@ -44,14 +48,14 @@ public class HostWidget extends Widget {
 
     private final AppWidgetManager mAppWidgetManager;
     private final AppWidgetHost mAppWidgetHost;
-
     private AppWidgetHostView mHostView;
+    private ViewGroup mHostContainer;
 
     public HostWidget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
         super(callback, fragment);
         Activity activity = fragment.getActivity();
         mAppWidgetManager = AppWidgetManager.getInstance(activity);
-        mAppWidgetHost = new AppWidgetHost(activity, HOST_ID);
+        mAppWidgetHost = new MyAppWidgetHost(activity, HOST_ID);
     }
 
     @Override
@@ -93,12 +97,13 @@ public class HostWidget extends Widget {
             assert sceneView != null;
         }
 
-        mHostView = (AppWidgetHostView) sceneView.findViewById(R.id.host);
+        mHostContainer = (ViewGroup) sceneView.findViewById(R.id.scene);
 
         if (!initialize) {
             return sceneView;
         }
 
+        updateUi();
         return sceneView;
     }
 
@@ -114,5 +119,27 @@ public class HostWidget extends Widget {
     }
 
     //-- APP WIDGET HOST ------------------------------------------------------
+
+    private void updateUi() {
+        int id = getConfig().getCustomWidgetId();
+        if (id < 0) {
+            mHostContainer.removeAllViews();
+            return;
+        }
+
+        // Create the App Widget and get its remote
+        // views.
+        AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
+        mHostContainer.removeAllViews();
+        mHostView = mAppWidgetHost.createView(getFragment().getActivity(), id, appWidget);
+
+        Resources res = getFragment().getActivity().getResources();
+        final int widthMax = res.getDimensionPixelSize(R.dimen.scene_max_width);
+        final int width = Math.min((appWidget.minWidth + appWidget.minResizeWidth) / 2, widthMax);
+        // Add it to the container.
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        mHostContainer.addView(mHostView, lp);
+    }
 
 }

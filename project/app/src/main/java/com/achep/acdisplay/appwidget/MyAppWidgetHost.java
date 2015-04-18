@@ -1,0 +1,70 @@
+/*
+ * Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
+ */
+package com.achep.acdisplay.appwidget;
+
+import android.appwidget.AppWidgetHost;
+import android.appwidget.AppWidgetHostView;
+import android.appwidget.AppWidgetProviderInfo;
+import android.content.Context;
+import android.os.TransactionTooLargeException;
+import android.support.annotation.NonNull;
+
+/**
+ * Specific {@link AppWidgetHost} that creates our {@link MyAppWidgetHostView}
+ * which eats all touch events. This ensures that users can not
+ * bypass the keyguard.
+ *
+ * @author Artem Chepurnoy
+ */
+public class MyAppWidgetHost extends AppWidgetHost {
+
+    public MyAppWidgetHost(@NonNull Context context, int hostId) {
+        super(context, hostId);
+    }
+
+    @NonNull
+    @Override
+    protected AppWidgetHostView onCreateView(@NonNull Context context, int appWidgetId,
+                                             @NonNull AppWidgetProviderInfo appWidget) {
+        return new MyAppWidgetHostView(context);
+    }
+
+    @Override
+    public void startListening() {
+        try {
+            super.startListening();
+        } catch (Exception e) {
+            //noinspection StatementWithEmptyBody
+            if (e.getCause() instanceof TransactionTooLargeException) {
+                // We're willing to let this slide. The exception is being caused by the list of
+                // RemoteViews which is being passed back. The startListening relationship will
+                // have been established by this point, and we will end up populating the
+                // widgets upon bind anyway. See issue 14255011 for more context.
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void stopListening() {
+        super.stopListening();
+        clearViews();
+    }
+}

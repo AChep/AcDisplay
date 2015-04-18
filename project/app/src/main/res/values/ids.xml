@@ -22,6 +22,7 @@
     <item type="id" name="icon_small" />
 
     <!-- AcDisplay -->
+    <item type="id" name="host" />
     <item type="id" name="scene" />
     <item type="id" name="background" />
     <item type="id" name="foreground" />
