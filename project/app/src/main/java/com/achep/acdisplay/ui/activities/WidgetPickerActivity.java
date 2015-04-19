@@ -127,6 +127,7 @@ public class WidgetPickerActivity extends ActivityBase implements
             }
         }
         mHostView = mHost.createView(this, id, appWidget);
+        mHostView.setBackgroundResource(R.drawable.bg_appwidget_preview);
 
         // Add it to the container.
         final int width = getResources().getDimensionPixelSize(R.dimen.scene_max_width);
