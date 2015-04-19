@@ -21,14 +21,12 @@
     android:title="@string/settings_more_title">
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_enabled_only_while_charging"
         android:key="only_while_charging"
         android:summaryOff="@string/settings_only_while_charging_off"
         android:summaryOn="@string/settings_only_while_charging_on"
         android:title="@string/settings_only_while_charging_title" />
 
     <com.afollestad.materialdialogs.prefs.MaterialMultiSelectListPreference
-        android:defaultValue="@array/privacy_mode_entries"
         android:entries="@array/privacy_mode"
         android:entryValues="@array/privacy_mode_entries"
         android:key="privacy_mode"
@@ -47,21 +45,18 @@
         android:title="@string/settings_timeout_title" />
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_double_tap_to_sleep"
         android:key="double_tap_to_sleep"
         android:title="@string/settings_double_tap_to_sleep_title" />
 
     <PreferenceCategory android:title="@string/settings_behavior_category">
 
         <CheckBoxPreference
-            android:defaultValue="@bool/config_default_feel_screen_off_after_last_notify"
             android:key="feel_widget_screen_off_after_last_notify"
             android:summaryOff="@string/settings_lock_on_dismiss_last_notify_off"
             android:summaryOn="@string/settings_lock_on_dismiss_last_notify_on"
             android:title="@string/settings_lock_on_dismiss_last_notify_title" />
 
         <CheckBoxPreference
-            android:defaultValue="@bool/config_default_feel_widget_pinnable"
             android:key="feel_widget_pinnable"
             android:summaryOn="@string/settings_widget_pinnable_on"
             android:title="@string/settings_widget_pinnable_title" />
@@ -72,8 +67,7 @@
             android:dependency="ui_widget_pinnable"
             android:title="@string/settings_shadow_toggle_title"
             android:summaryOn="@string/settings_shadow_toggle_on"
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:defaultValue="@bool/config_default_feel_widget_readable"/>
+            android:layout="?android:attr/preferenceLayoutChild" />
             -->
 
     </PreferenceCategory>

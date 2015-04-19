@@ -21,19 +21,16 @@
     android:title="@string/settings_notification_title">
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_notify_wake_up_on"
         android:key="notify_wake_up_on"
         android:title="@string/settings_wake_up_on_notification_title" />
 
     <com.afollestad.materialdialogs.prefs.MaterialListPreference
-        android:defaultValue="@integer/config_default_notify_min_priority"
         android:entries="@array/notify_priorities"
         android:entryValues="@array/notify_priorities_entries"
         android:key="notify_min_priority"
         android:title="@string/settings_notify_min_priority_title" />
 
     <com.afollestad.materialdialogs.prefs.MaterialListPreference
-        android:defaultValue="@integer/config_default_notify_max_priority"
         android:entries="@array/notify_priorities"
         android:entryValues="@array/notify_priorities_entries"
         android:key="notify_max_priority"

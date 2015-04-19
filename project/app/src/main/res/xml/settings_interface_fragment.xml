@@ -21,12 +21,10 @@
     android:title="@string/settings_interface_title">
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_ui_full_screen"
         android:key="ui_fullscreen"
         android:title="@string/settings_full_screen_title" />
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_ui_show_wallpaper"
         android:key="wallpaper_shown"
         android:summaryOff="@string/settings_use_wallpaper_off"
         android:summaryOn="@string/settings_use_wallpaper_on"
@@ -46,25 +44,21 @@
         android:title="@string/settings_icon_size_title" />
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_ui_status_battery_sticky"
         android:key="ui_status_battery_sticky"
         android:summaryOff="@string/settings_status_battery_always_visible_off"
         android:title="@string/settings_status_battery_always_visible" />
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_ui_emoticons"
         android:key="ui_emoticons"
         android:title="@string/settings_emoticons_title" />
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_ui_override_fonts"
         android:key="ui_override_fonts"
         android:title="@string/settings_override_fonts_title" />
 
     <PreferenceCategory android:title="@string/settings_circle_category">
 
         <CheckBoxPreference
-            android:defaultValue="@bool/config_default_ui_unlock_animation"
             android:key="unlock_animation"
             android:title="@string/settings_circle_animation_title" />
 

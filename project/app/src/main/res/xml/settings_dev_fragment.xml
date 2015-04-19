@@ -28,7 +28,6 @@
     </Preference>
 
     <CheckBoxPreference
-        android:defaultValue="@bool/config_default_dev_sensors_dump"
         android:key="dev_sensors_dump"
         android:summaryOn="@string/settings_dev_sensors_dump_on"
         android:title="@string/settings_dev_sensors_dump_title" />
