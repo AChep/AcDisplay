@@ -69,6 +69,7 @@ public class WidgetPickerActivity extends ActivityBase implements
     private boolean mHasAppWidget;
 
     private SwitchBarPermissible mSwitchPermissible;
+    private MenuItem mConfigureMenuItem;
     private MenuItem mClearMenuItem;
     private Enabler mEnabler;
     private View mEmptyView;
@@ -109,13 +110,10 @@ public class WidgetPickerActivity extends ActivityBase implements
             }
 
             mEmptyView.setVisibility(View.VISIBLE);
+            updateConfigureMenuItem();
             updateClearMenuItem();
             return;
         }
-
-        mHasAppWidget = true;
-        mEmptyView.setVisibility(View.GONE);
-        updateClearMenuItem();
 
         // Create the App Widget and get its remote
         // views.
@@ -135,6 +133,12 @@ public class WidgetPickerActivity extends ActivityBase implements
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER_HORIZONTAL);
         mHostContainer.addView(mHostView, lp);
+
+        // Update other user interface elements.
+        mHasAppWidget = true;
+        mEmptyView.setVisibility(View.GONE);
+        updateConfigureMenuItem();
+        updateClearMenuItem();
     }
 
     @Override
@@ -181,6 +185,8 @@ public class WidgetPickerActivity extends ActivityBase implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.widget_picker, menu);
         mClearMenuItem = menu.findItem(R.id.clear_action);
+        mConfigureMenuItem = menu.findItem(R.id.configure_action);
+        updateConfigureMenuItem();
         updateClearMenuItem();
         return true;
     }
@@ -193,6 +199,16 @@ public class WidgetPickerActivity extends ActivityBase implements
         if (mClearMenuItem != null) mClearMenuItem.setVisible(mHasAppWidget);
     }
 
+    /**
+     * Updates the visibility of {@link #mConfigureMenuItem}. Shows if
+     * the current widget has configure page, hides otherwise.
+     */
+    private void updateConfigureMenuItem() {
+        if (mClearMenuItem == null) return;
+        boolean visible = mHostView != null && mHostView.getAppWidgetInfo().configure != null;
+        mConfigureMenuItem.setVisible(visible);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -200,6 +216,12 @@ public class WidgetPickerActivity extends ActivityBase implements
                 removeAppWidget();
                 // Save the current change.
                 applyAppWidget(-1);
+                break;
+            case R.id.configure_action:
+                Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+                intent.setComponent(mHostView.getAppWidgetInfo().configure);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mHostView.getAppWidgetId());
+                startActivity(intent);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

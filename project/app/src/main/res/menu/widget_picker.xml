@@ -21,6 +21,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/configure_action"
+        android:icon="@drawable/ic_action_edit_white"
+        android:title="@string/action_configure"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/clear_action"
         android:icon="@drawable/ic_action_clear_white"
         android:title="@string/action_clear"
