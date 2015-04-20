@@ -19,21 +19,25 @@
 package com.achep.acdisplay.ui.components;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
+import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.appwidget.MyAppWidgetHost;
+import com.achep.acdisplay.appwidget.MyAppWidgetHostView;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
+import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
 
@@ -42,16 +46,18 @@ import com.achep.base.utils.ViewUtils;
  *
  * @author Artem Chepurnoy
  */
-public class HostWidget extends Widget {
+public class HostWidget extends Widget implements ConfigBase.OnConfigChangedListener {
 
     private static final String TAG = "HostWidget";
 
     public static final int HOST_ID = 1;
 
     private final AppWidgetManager mAppWidgetManager;
-    private final AppWidgetHost mAppWidgetHost;
+    private final MyAppWidgetHost mAppWidgetHost;
     private AppWidgetHostView mHostView;
     private ViewGroup mHostContainer;
+
+    private boolean mHostViewNeedsReInflate;
 
     public HostWidget(@NonNull Callback callback, @NonNull AcDisplayFragment fragment) {
         super(callback, fragment);
@@ -64,11 +70,23 @@ public class HostWidget extends Widget {
     public void onStart() {
         super.onStart();
         mAppWidgetHost.startListening();
+        getConfig().registerListener(this);
+        updateAppWidgetViewIfNeeded();
+    }
+
+    @Override
+    public void onViewAttached() {
+        super.onViewAttached();
+        updateAppWidgetViewIfNeeded();
     }
 
     @Override
     public void onStop() {
+        getConfig().unregisterListener(this);
         mAppWidgetHost.stopListening();
+        mHostViewNeedsReInflate = true;
+        // Stopping listening removes all active views from it,
+        // so we will have to re-inflate them.
         super.onStop();
     }
 
@@ -100,12 +118,6 @@ public class HostWidget extends Widget {
         }
 
         mHostContainer = (ViewGroup) sceneView.findViewById(R.id.scene);
-
-        if (!initialize) {
-            return sceneView;
-        }
-
-        updateUi();
         return sceneView;
     }
 
@@ -122,28 +134,35 @@ public class HostWidget extends Widget {
 
     //-- APP WIDGET HOST ------------------------------------------------------
 
-    private void updateUi() {
+    private void updateAppWidgetViewIfNeeded() {
+        if (!isStarted() || !isViewAttached()) return;
+
         int id = getConfig().getCustomWidgetId();
         if (id < 0) {
             mHostContainer.removeAllViews();
+            mHostViewNeedsReInflate = false;
+            mHostView = null;
             return;
         }
 
-        // Create the App Widget and get its remote
-        // views.
+        Context context = getFragment().getActivity();
+        if (mHostView == null) {
+            mHostView = new MyAppWidgetHostView(context);
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.CENTER_HORIZONTAL);
+            mHostContainer.addView(mHostView, lp);
+        } else if (!mHostViewNeedsReInflate && mHostView.getAppWidgetId() == id) return;
         AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
-        mHostContainer.removeAllViews();
-        mHostView = mAppWidgetHost.createView(getFragment().getActivity(), id, appWidget);
+        mAppWidgetHost.updateView(context, id, appWidget, mHostView);
+        mHostViewNeedsReInflate = false;
+        updateAppWidgetFrameSize();
+    }
 
+    private void updateAppWidgetFrameSize() {
         Resources res = getFragment().getActivity().getResources();
-        final int widthMax = res.getDimensionPixelSize(R.dimen.scene_max_width);
-        final int width = Math.min((appWidget.minWidth + appWidget.minResizeWidth) / 2, widthMax);
-        // Add it to the container.
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        mHostContainer.addView(mHostView, lp);
-
-        // Load the dimensions
         int h = getConfig().getCustomWidgetHeightDp();
         int hMin = res.getDimensionPixelSize(R.dimen.scene_min_height);
         int hMax = res.getDimensionPixelSize(R.dimen.scene_max_height);
@@ -157,4 +176,22 @@ public class HostWidget extends Widget {
                 Math.round(MathUtils.range(h * density, hMin, hMax)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onConfigChanged(@NonNull ConfigBase config,
+                                @NonNull String key,
+                                @NonNull Object value) {
+        switch (key) {
+            case Config.KEY_UI_CUSTOM_WIDGET_ID:
+                mHostViewNeedsReInflate = true;
+                updateAppWidgetViewIfNeeded();
+                break;
+            case Config.KEY_UI_CUSTOM_WIDGET_WIDTH_DP:
+            case Config.KEY_UI_CUSTOM_WIDGET_HEIGHT_DP:
+                if (mHostView != null) updateAppWidgetFrameSize();
+                break;
+        }
+    }
 }
