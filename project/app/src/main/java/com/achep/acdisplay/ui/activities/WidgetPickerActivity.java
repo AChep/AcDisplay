@@ -37,6 +37,7 @@ import android.widget.SeekBar;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.appwidget.MyAppWidgetHost;
+import com.achep.acdisplay.appwidget.MyAppWidgetHostView;
 import com.achep.acdisplay.ui.components.HostWidget;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
@@ -68,7 +69,7 @@ public class WidgetPickerActivity extends ActivityBase implements
 
     private AppWidgetManager mAppWidgetManager;
     private AppWidgetHostView mHostView;
-    private AppWidgetHost mHost;
+    private MyAppWidgetHost mHost;
     private ViewGroup mHostContainer;
     private int mPendingAppWidgetId = -1;
 
@@ -169,16 +170,17 @@ public class WidgetPickerActivity extends ActivityBase implements
         // Create the App Widget and get its remote
         // views.
         AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
-        deleteAppWidgetSafely();
-        mHostView = mHost.createView(this, id, appWidget);
-        mHostView.setBackgroundResource(R.drawable.bg_appwidget_preview);
+        if (mHostView == null) {
+            mHostView = new MyAppWidgetHostView(this);
+            mHostView.setBackgroundResource(R.drawable.bg_appwidget_preview);
 
-        // Add it to the container.
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER_HORIZONTAL);
-        mHostContainer.addView(mHostView, lp);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.CENTER_HORIZONTAL);
+            mHostContainer.addView(mHostView, lp);
+        } else mHost.deleteAppWidgetId(mHostView.getAppWidgetId());
+        mHost.updateView(this, id, appWidget, mHostView);
         updateAppWidgetFrameSize();
 
         // Update views

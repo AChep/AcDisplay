@@ -24,6 +24,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.os.TransactionTooLargeException;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Specific {@link AppWidgetHost} that creates our {@link MyAppWidgetHostView}
@@ -34,15 +35,32 @@ import android.support.annotation.NonNull;
  */
 public class MyAppWidgetHost extends AppWidgetHost {
 
+    @Nullable
+    private AppWidgetHostView mTempView;
+
     public MyAppWidgetHost(@NonNull Context context, int hostId) {
         super(context, hostId);
+    }
+
+    /**
+     * Create the AppWidgetHostView for the given widget.
+     * The AppWidgetHost retains a pointer to the newly-created View.
+     */
+    @NonNull
+    public final AppWidgetHostView updateView(@NonNull Context context, int appWidgetId,
+                                              @NonNull AppWidgetProviderInfo appWidget,
+                                              @Nullable AppWidgetHostView view) {
+        mTempView = view;
+        view = createView(context, appWidgetId, appWidget);
+        mTempView = null;
+        return view;
     }
 
     @NonNull
     @Override
     protected AppWidgetHostView onCreateView(@NonNull Context context, int appWidgetId,
                                              @NonNull AppWidgetProviderInfo appWidget) {
-        return new MyAppWidgetHostView(context);
+        return mTempView != null ? mTempView : new MyAppWidgetHostView(context);
     }
 
     @Override
