@@ -24,4 +24,4 @@
     android:layout_gravity="center"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="8dp" />
+    android:paddingBottom="4dp" />
