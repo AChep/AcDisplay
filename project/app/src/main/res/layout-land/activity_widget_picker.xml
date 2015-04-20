@@ -59,7 +59,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="?actionBarSize"
         android:maxWidth="340dp"
-        android:text="@string/settings_custom_widget_summary"
+        android:text="@string/settings_custom_widget_empty_message"
         style="@style/padding_content" />
 
     <com.melnykov.fab.FloatingActionButton

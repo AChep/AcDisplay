@@ -92,7 +92,7 @@
 
         <activity
             android:name=".ui.activities.WidgetPickerActivity"
-            android:label="@string/settings_custom_widget_title_short"
+            android:label="@string/settings_custom_widget_title"
             android:parentActivityName=".ui.activities.Settings2"
             android:taskAffinity=".settings"
             android:theme="@style/MaterialTheme.WidgetPicker" />

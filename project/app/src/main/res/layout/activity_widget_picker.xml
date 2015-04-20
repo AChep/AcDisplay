@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/settings_custom_widget_summary"
+            android:text="@string/settings_custom_widget_empty_message"
             style="@style/padding_content" />
 
     </RelativeLayout>
