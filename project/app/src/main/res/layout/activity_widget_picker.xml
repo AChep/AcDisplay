@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -18,35 +19,62 @@
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
-        android:orientation="vertical"
-        style="@style/padding_content">
-
-        <TextView
-            android:id="@+id/empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/settings_custom_widget_summary" />
-
-    </FrameLayout>
-
     <!-- Material switch panel -->
     <include
         layout="@layout/widget_switchbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize" />
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end|right"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_action_add_white" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize">
+
+        <include
+            android:id="@+id/panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true"
+            layout="@layout/layout_appwidget_size" />
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_action_add_white" />
+
+        <com.melnykov.fab.ObservableScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/panel">
+
+            <FrameLayout
+                android:id="@+id/appwidget_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/margin_content" />
+        </com.melnykov.fab.ObservableScrollView>
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/settings_custom_widget_summary"
+            style="@style/padding_content" />
+
+    </RelativeLayout>
 
 </merge>

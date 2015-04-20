@@ -91,8 +91,8 @@ public final class Config extends ConfigBase {
     public static final String KEY_UI_EMOTICONS = "ui_emoticons";
     public static final String KEY_UI_CUSTOM_WIDGET = "ui_custom_widget";
     public static final String KEY_UI_CUSTOM_WIDGET_ID = "ui_custom_widget_id";
-    public static final String KEY_UI_CUSTOM_WIDGET_INFO_ID = "id";
-    public static final String KEY_UI_CUSTOM_WIDGET_INFO_PROVIDER = "provider";
+    public static final String KEY_UI_CUSTOM_WIDGET_HEIGHT_DP = "ui_custom_widget_height";
+    public static final String KEY_UI_CUSTOM_WIDGET_WIDTH_DP = "ui_custom_widget_width";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -139,6 +139,8 @@ public final class Config extends ConfigBase {
     private int mUiDynamicBackground;
     private int mUiIconSize; // dp.
     private int mUiCustomWidgetId;
+    private int mUiCustomWidgetWidthDp;
+    private int mUiCustomWidgetHeightDp;
     private int mUiCircleColorInner;
     private int mUiCircleColorOuter;
     private int mPrivacyMode;
@@ -278,6 +280,12 @@ public final class Config extends ConfigBase {
         map.put(KEY_UI_CUSTOM_WIDGET_ID, new ConfigBase.Option(
                 "mUiCustomWidgetId", null, null, int.class)
                 .setDefault(-1));
+        map.put(KEY_UI_CUSTOM_WIDGET_WIDTH_DP, new ConfigBase.Option(
+                "mUiCustomWidgetWidthDp", null, null, int.class)
+                .setDefault(0));
+        map.put(KEY_UI_CUSTOM_WIDGET_HEIGHT_DP, new ConfigBase.Option(
+                "mUiCustomWidgetHeightDp", null, null, int.class)
+                .setDefault(0));
         map.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
                 "mUiIconSize", null, null, int.class)
                 .setDefaultRes(R.integer.config_default_ui_icon_size_dp));
@@ -472,6 +480,14 @@ public final class Config extends ConfigBase {
 
     public int getCustomWidgetId() {
         return mUiCustomWidgetId;
+    }
+
+    public int getCustomWidgetWidthDp() {
+        return mUiCustomWidgetWidthDp;
+    }
+
+    public int getCustomWidgetHeightDp() {
+        return mUiCustomWidgetHeightDp;
     }
 
     /**

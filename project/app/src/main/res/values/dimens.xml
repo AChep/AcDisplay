@@ -39,6 +39,9 @@
 
     <!-- AcDisplay -->
     <dimen name="scene_max_width">256dp</dimen>
+    <dimen name="scene_min_width">96dp</dimen>
+    <dimen name="scene_max_height">256dp</dimen>
+    <dimen name="scene_min_height">56dp</dimen>
 
     <!--
         Snake

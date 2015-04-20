@@ -75,6 +75,8 @@
     <string name="settings_custom_widget_title">Custom widget</string>
     <string name="settings_custom_widget_title_short">Widget</string>
     <string name="settings_custom_widget_summary">No custom widget set yet. Click the button to pick one.</string>
+    <string name="settings_custom_widget_adjust_width">Width:</string>
+    <string name="settings_custom_widget_adjust_height">Height:</string>
     <string name="settings_circle_category">Unlock circle</string>
     <string name="settings_circle_animation_title">Unlock animation</string>
     <string name="settings_circle_color_inner_title">Circle color</string>

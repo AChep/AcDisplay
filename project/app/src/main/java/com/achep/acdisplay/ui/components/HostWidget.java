@@ -34,6 +34,8 @@ import android.widget.FrameLayout;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.appwidget.MyAppWidgetHost;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
+import com.achep.base.utils.MathUtils;
+import com.achep.base.utils.ViewUtils;
 
 /**
  * A widget the hosts {@link android.appwidget.AppWidgetHost}.
@@ -140,6 +142,19 @@ public class HostWidget extends Widget {
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         mHostContainer.addView(mHostView, lp);
+
+        // Load the dimensions
+        int h = getConfig().getCustomWidgetHeightDp();
+        int hMin = res.getDimensionPixelSize(R.dimen.scene_min_height);
+        int hMax = res.getDimensionPixelSize(R.dimen.scene_max_height);
+        int w = getConfig().getCustomWidgetWidthDp();
+        int wMin = res.getDimensionPixelSize(R.dimen.scene_min_width);
+        int wMax = res.getDimensionPixelSize(R.dimen.scene_max_width);
+        float density = res.getDisplayMetrics().density;
+        // Update size
+        ViewUtils.setSize(mHostView,
+                Math.round(MathUtils.range(w * density, wMin, wMax)),
+                Math.round(MathUtils.range(h * density, hMin, hMax)));
     }
 
 }

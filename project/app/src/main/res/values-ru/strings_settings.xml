@@ -75,6 +75,8 @@
     <string name="settings_custom_widget_title">Пользовательский виджет</string>
     <string name="settings_custom_widget_title_short">Виджет</string>
     <string name="settings_custom_widget_summary">Пользовательский виджет не установлен. Нажмите кнопку для его выбора.</string>
+    <string name="settings_custom_widget_adjust_width">Ширина:</string>
+    <string name="settings_custom_widget_adjust_height">Высота:</string>
     <string name="settings_circle_category">Круг разблокировки</string>
     <string name="settings_circle_animation_title">Анимация разблокировки</string>
     <string name="settings_circle_color_inner_title">Цвет круга</string>
