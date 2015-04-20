@@ -20,6 +20,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_interface_title">
 
+    <Preference
+        android:key="ui_custom_widget"
+        android:title="@string/settings_custom_widget_title" >
+        <intent
+            android:targetClass="com.achep.acdisplay.ui.activities.WidgetPickerActivity"
+            android:targetPackage="com.achep.acdisplay" />
+    </Preference>
+
     <CheckBoxPreference
         android:defaultValue="@bool/config_default_ui_full_screen"
         android:key="ui_fullscreen"
@@ -60,14 +68,6 @@
         android:defaultValue="@bool/config_default_ui_override_fonts"
         android:key="ui_override_fonts"
         android:title="@string/settings_override_fonts_title" />
-
-    <Preference
-        android:key="ui_custom_widget"
-        android:title="@string/settings_custom_widget_title" >
-        <intent
-            android:targetClass="com.achep.acdisplay.ui.activities.WidgetPickerActivity"
-            android:targetPackage="com.achep.acdisplay" />
-    </Preference>
 
     <PreferenceCategory android:title="@string/settings_circle_category">
 
