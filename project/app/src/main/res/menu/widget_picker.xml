@@ -17,14 +17,19 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <style name="Base.MaterialTheme" parent="Theme.AppCompat" />
+    <item
+        android:id="@+id/configure_action"
+        android:icon="@drawable/ic_action_edit_white"
+        android:title="@string/action_configure"
+        app:showAsAction="ifRoom" />
 
-    <!--
-        Widget picker
-        -->
+    <item
+        android:id="@+id/clear_action"
+        android:icon="@drawable/ic_action_clear_white"
+        android:title="@string/action_clear"
+        app:showAsAction="ifRoom" />
 
-    <style name="Base.MaterialTheme.WidgetPicker.Wallpaper" parent="MaterialTheme.WidgetPicker" />
-
-</resources>
+</menu>

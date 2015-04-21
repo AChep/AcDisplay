@@ -72,6 +72,10 @@
     <string name="settings_status_battery_always_visible_off">Состояние батареи показывается при зарядке или низком уровне заряда.</string>
     <string name="settings_emoticons_title">Графические смайлы</string>
     <string name="settings_override_fonts_title">Заместить системные шрифты</string>
+    <string name="settings_custom_widget_title">Виджеты</string>
+    <string name="settings_custom_widget_empty_message">Пользовательский виджет не установлен. Нажмите кнопку для его выбора.</string>
+    <string name="settings_custom_widget_adjust_width">Ширина:</string>
+    <string name="settings_custom_widget_adjust_height">Высота:</string>
     <string name="settings_circle_category">Круг разблокировки</string>
     <string name="settings_circle_animation_title">Анимация разблокировки</string>
     <string name="settings_circle_color_inner_title">Цвет круга</string>

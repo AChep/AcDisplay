@@ -89,6 +89,10 @@ public final class Config extends ConfigBase {
     public static final String KEY_UI_CIRCLE_COLOR_OUTER = "ui_circle_color_outer";
     public static final String KEY_UI_OVERRIDE_FONTS = "ui_override_fonts";
     public static final String KEY_UI_EMOTICONS = "ui_emoticons";
+    public static final String KEY_UI_CUSTOM_WIDGET = "ui_custom_widget";
+    public static final String KEY_UI_CUSTOM_WIDGET_ID = "ui_custom_widget_id";
+    public static final String KEY_UI_CUSTOM_WIDGET_HEIGHT_DP = "ui_custom_widget_height";
+    public static final String KEY_UI_CUSTOM_WIDGET_WIDTH_DP = "ui_custom_widget_width";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -134,6 +138,9 @@ public final class Config extends ConfigBase {
     private int mInactiveTimeTo;
     private int mUiDynamicBackground;
     private int mUiIconSize; // dp.
+    private int mUiCustomWidgetId;
+    private int mUiCustomWidgetWidthDp;
+    private int mUiCustomWidgetHeightDp;
     private int mUiCircleColorInner;
     private int mUiCircleColorOuter;
     private int mPrivacyMode;
@@ -144,6 +151,7 @@ public final class Config extends ConfigBase {
     private boolean mUiWallpaper;
     private boolean mUiBatterySticky;
     private boolean mUiUnlockAnimation;
+    private boolean mUiCustomWidget;
 
     private boolean mDevSensorsDump;
 
@@ -266,6 +274,18 @@ public final class Config extends ConfigBase {
         map.put(KEY_UI_OVERRIDE_FONTS, new ConfigBase.Option(
                 "mUiOverrideFonts", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_ui_override_fonts));
+        map.put(KEY_UI_CUSTOM_WIDGET, new ConfigBase.Option(
+                "mUiCustomWidget", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_custom_widget));
+        map.put(KEY_UI_CUSTOM_WIDGET_ID, new ConfigBase.Option(
+                "mUiCustomWidgetId", null, null, int.class)
+                .setDefault(-1));
+        map.put(KEY_UI_CUSTOM_WIDGET_WIDTH_DP, new ConfigBase.Option(
+                "mUiCustomWidgetWidthDp", null, null, int.class)
+                .setDefault(0));
+        map.put(KEY_UI_CUSTOM_WIDGET_HEIGHT_DP, new ConfigBase.Option(
+                "mUiCustomWidgetHeightDp", null, null, int.class)
+                .setDefault(0));
         map.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
                 "mUiIconSize", null, null, int.class)
                 .setDefaultRes(R.integer.config_default_ui_icon_size_dp));
@@ -334,6 +354,23 @@ public final class Config extends ConfigBase {
             case KEY_DEV_SENSORS_DUMP:
                 SensorsDumpService.handleState(getContext());
                 break;
+            /*
+            case KEY_UI_CUSTOM_WIDGET_ID:
+                // Track the current appwidget and delete unused ones.
+                // TODO: Ensure cleaning-up old AppWidgets is required.
+                Object previous = getPreviousValue();
+                if (previous != null) {
+                    final int id = (int) previous;
+                    if (AppWidgetUtils.isValidId(id)) {
+                        // Release previously allocated appwidget to avoid of
+                        // memory leaks and a bad carma.
+                        AppWidgetHost host = new MyAppWidgetHost(getContext(), HostWidget.HOST_ID);
+                        host.deleteAppWidgetId(id);
+                        Log.i(TAG, "Deleted AppWidget[" + id + "]");
+                    }
+                }
+                break;
+                */
         }
     }
 
@@ -458,6 +495,18 @@ public final class Config extends ConfigBase {
         return mPrivacyMode;
     }
 
+    public int getCustomWidgetId() {
+        return mUiCustomWidgetId;
+    }
+
+    public int getCustomWidgetWidthDp() {
+        return mUiCustomWidgetWidthDp;
+    }
+
+    public int getCustomWidgetHeightDp() {
+        return mUiCustomWidgetHeightDp;
+    }
+
     /**
      * @return the size (or height only) of collapsed views in pixels.
      * @see #getIconSize(String)
@@ -566,6 +615,10 @@ public final class Config extends ConfigBase {
 
     public boolean isDevSensorsDumpEnabled() {
         return mDevSensorsDump;
+    }
+
+    public boolean isCustomWidgetEnabled() {
+        return mUiCustomWidget;
     }
 
     // //////////////////////////////////////////

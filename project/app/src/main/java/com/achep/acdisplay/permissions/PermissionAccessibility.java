@@ -30,9 +30,7 @@ import android.util.Log;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.AccessibilityService;
-import com.achep.base.Device;
 import com.achep.base.permissions.Permission;
-import com.achep.base.tests.Check;
 
 /**
  * The Accessibility notification permission.

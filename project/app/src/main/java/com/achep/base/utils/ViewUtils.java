@@ -57,9 +57,13 @@ public class ViewUtils {
     }
 
     public static void setSize(@NonNull View view, int size) {
+        setSize(view, size, size);
+    }
+
+    public static void setSize(@NonNull View view, int width, int height) {
         ViewGroup.LayoutParams lp = view.getLayoutParams();
-        lp.height = size;
-        lp.width = size;
+        lp.height = height;
+        lp.width = width;
         view.requestLayout();
     }
 

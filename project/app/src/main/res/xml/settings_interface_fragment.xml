@@ -20,6 +20,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_interface_title">
 
+    <Preference
+        android:key="ui_custom_widget"
+        android:title="@string/settings_custom_widget_title" >
+        <intent
+            android:targetClass="com.achep.acdisplay.ui.activities.WidgetPickerActivity"
+            android:targetPackage="com.achep.acdisplay" />
+    </Preference>
+
     <CheckBoxPreference
         android:key="ui_fullscreen"
         android:title="@string/settings_full_screen_title" />

@@ -53,8 +53,10 @@
 
     <string name="action_about">О программе</string>
     <string name="action_donate">Пожертвовать</string>
-    <string name="action_feedback">Обратная связь</string>
+    <string name="action_feedback">Обратная связь</string>v
     <string name="action_help">Помощь</string>
+    <string name="action_clear">Очистить</string>
+    <string name="action_configure">Настроить</string>
     <string name="action_settings">Настройки</string>
     <string name="action_send_test_notify">Проверить работу</string>
     <string name="action_show_system_apps">Системные приложения</string>

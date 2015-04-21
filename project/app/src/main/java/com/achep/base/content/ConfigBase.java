@@ -72,6 +72,7 @@ public abstract class ConfigBase implements
     private final ArrayList<WeakReference<OnConfigChangedListener>> mListenersRefs = new ArrayList<>(6);
     private volatile SoftReference<Map<String, Option>> mMapRef = new SoftReference<>(null);
     private volatile Context mContext;
+    private volatile Object mPreviousValue;
 
     // Threading
     protected final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -179,6 +180,15 @@ public abstract class ConfigBase implements
         return mContext;
     }
 
+    /**
+     * You may get the previous value from here only on
+     * {@link ConfigBase.OnConfigChangedListener#onConfigChanged(ConfigBase, String, Object) config change}.
+     */
+    @Nullable
+    public Object getPreviousValue() {
+        return mPreviousValue;
+    }
+
     //-- INTERNAL METHODS -----------------------------------------------------
 
     /**
@@ -223,6 +233,9 @@ public abstract class ConfigBase implements
 
         if (DEBUG) Log.d(TAG, "Writing \"" + key + "=" + value + "\" to config.");
 
+        // Read the current value from an option.
+        mPreviousValue = option.read(this);
+
         // Set the current value to the field.
         try {
             Field field = getClass().getDeclaredField(option.fieldName);
@@ -249,6 +262,7 @@ public abstract class ConfigBase implements
         onOptionChanged(option, key);
         notifyConfigChanged(key, value, listenerToBeIgnored);
         mContext = null;
+        mPreviousValue = null;
     }
 
     /**

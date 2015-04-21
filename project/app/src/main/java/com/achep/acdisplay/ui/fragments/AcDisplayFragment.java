@@ -67,6 +67,7 @@ import com.achep.acdisplay.services.media.Metadata;
 import com.achep.acdisplay.ui.DynamicBackground;
 import com.achep.acdisplay.ui.activities.AcDisplayActivity;
 import com.achep.acdisplay.ui.components.ClockWidget;
+import com.achep.acdisplay.ui.components.HostWidget;
 import com.achep.acdisplay.ui.components.MediaWidget;
 import com.achep.acdisplay.ui.components.NotifyWidget;
 import com.achep.acdisplay.ui.components.Widget;
@@ -160,7 +161,7 @@ public class AcDisplayFragment extends Fragment implements
 
     // Clock widget
     private SceneCompat mSceneMainClock;
-    private ClockWidget mClockWidget;
+    private Widget mClockWidget;
 
     // Media widget
     private SceneCompat mSceneMainMedia;
@@ -240,7 +241,9 @@ public class AcDisplayFragment extends Fragment implements
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
 
         // Clock widget
-        mClockWidget = new ClockWidget(this, this);
+        mClockWidget = getConfig().isCustomWidgetEnabled()
+                ? new HostWidget(this, this)
+                : new ClockWidget(this, this);
 
         // Media widget
         mMediaController = MediaController2.newInstance(getActivity()).asyncWrap();

@@ -72,6 +72,10 @@
     <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
     <string name="settings_emoticons_title">Emoticons</string>
     <string name="settings_override_fonts_title">Override system fonts</string>
+    <string name="settings_custom_widget_title">Widgets</string>
+    <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+    <string name="settings_custom_widget_adjust_width">Width:</string>
+    <string name="settings_custom_widget_adjust_height">Height:</string>
     <string name="settings_circle_category">Unlock circle</string>
     <string name="settings_circle_animation_title">Unlock animation</string>
     <string name="settings_circle_color_inner_title">Circle color</string>

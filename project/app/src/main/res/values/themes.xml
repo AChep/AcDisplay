@@ -86,6 +86,26 @@
     </style>
 
     <!--
+        Widget picker
+        -->
+
+    <style name="Base.MaterialTheme.WidgetPicker" parent="MaterialTheme" />
+
+    <style name="MaterialTheme.WidgetPicker" parent="Base.MaterialTheme.WidgetPicker">
+    </style>
+
+    <style name="Base.MaterialTheme.WidgetPicker.Wallpaper" parent="MaterialTheme.WidgetPicker" />
+
+    <style name="MaterialTheme.WidgetPicker.Wallpaper" parent="Base.MaterialTheme.WidgetPicker.Wallpaper">
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowBackground">@color/keyguard_background_semi</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="colorPrimary">#F000</item>
+        <item name="colorPrimaryDark">#F000</item>
+        <item name="colorSecondary">#8000</item>
+    </style>
+
+    <!--
         Snake
         -->
 
