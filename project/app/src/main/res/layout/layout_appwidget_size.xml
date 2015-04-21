@@ -29,7 +29,6 @@
         android:id="@+id/appwidget_width_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/settings_custom_widget_adjust_width" />
@@ -37,7 +36,8 @@
     <SeekBar
         android:id="@+id/appwidget_width_seek_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
 
     <!--
         Adjust height
@@ -46,7 +46,6 @@
         android:id="@+id/appwidget_height_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/settings_custom_widget_adjust_height" />
@@ -54,6 +53,7 @@
     <SeekBar
         android:id="@+id/appwidget_height_seek_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
 
 </LinearLayout>
