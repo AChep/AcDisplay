@@ -18,14 +18,12 @@
  */
 package com.achep.acdisplay.ui.activities;
 
-import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +44,7 @@ import com.achep.base.ui.SwitchBarPermissible;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.preferences.Enabler;
 import com.achep.base.ui.widgets.SwitchBar;
+import com.achep.base.utils.AppWidgetUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
@@ -62,14 +61,27 @@ public class WidgetPickerActivity extends ActivityBase implements
 
     private static final String KEY_PENDING_APPWIDGET_ID = "achep::pending_app_widget_key";
 
+    /**
+     * A request to open default AppWidget Picker dialog.
+     */
     private static final int REQUEST_APPWIDGET_DISCOVER = 1;
+
+    /**
+     * A request to open the configure activity of an AppWidget.
+     */
     private static final int REQUEST_APPWIDGET_CONFIGURE = 2;
+
+    private static final int APPWIDGET_ID_NONE = -1;
+
+    static {
+        Check.getInstance().isFalse(AppWidgetUtils.isValidId(APPWIDGET_ID_NONE));
+    }
 
     private final Config mConfig = Config.getInstance();
 
     private AppWidgetManager mAppWidgetManager;
     private AppWidgetHostView mHostView;
-    private MyAppWidgetHost mHost;
+    private MyAppWidgetHost mAppWidgetHost;
     private ViewGroup mHostContainer;
     private int mPendingAppWidgetId = -1;
 
@@ -88,6 +100,10 @@ public class WidgetPickerActivity extends ActivityBase implements
     private View mHeightMessageView;
     private int mMinWidth;
     private int mMinHeight;
+    private FloatingActionButton mFab;
+
+    private boolean mHostViewNeedsReInflate;
+    private boolean mActivityResumed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +113,8 @@ public class WidgetPickerActivity extends ActivityBase implements
 
         mContent = (ViewGroup) findViewById(android.R.id.content);
         mEmptyView = findViewById(R.id.empty);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startAppWidgetDiscover();
@@ -107,7 +123,7 @@ public class WidgetPickerActivity extends ActivityBase implements
 
         mAppWidgetManager = AppWidgetManager.getInstance(this);
         mHostContainer = (ViewGroup) findViewById(R.id.appwidget_container);
-        mHost = new MyAppWidgetHost(this, HostWidget.HOST_ID);
+        mAppWidgetHost = new MyAppWidgetHost(this, HostWidget.HOST_ID);
 
         initSwitchBar();
         initSeekBars();
@@ -143,81 +159,21 @@ public class WidgetPickerActivity extends ActivityBase implements
         mHeightMessageView = findViewById(R.id.appwidget_height_label);
     }
 
-    private void onAppWidgetRemoved() {
-        final int id = mConfig.getCustomWidgetId();
-        Check.getInstance().isFalse(id >= 0);
-        // Remove current app widget.
-        deleteAppWidgetSafely();
-
-        if (Device.hasKitKatApi() && !isPowerSaveMode() && mContent.isLaidOut()) {
-            TransitionManager.beginDelayedTransition(mContent);
-        }
-
-        // Update views
-        mEmptyView.setVisibility(View.VISIBLE);
-        mWidthSeekBar.setVisibility(View.GONE);
-        mWidthMessageView.setVisibility(View.GONE);
-        mHeightSeekBar.setVisibility(View.GONE);
-        mHeightMessageView.setVisibility(View.GONE);
-        // Update menu
-        updateConfigureMenuItem();
-        updateClearMenuItem();
-    }
-
-    private void onAppWidgetUpdated(int id) {
-        Check.getInstance().isTrue(id >= 0);
-
-        // Create the App Widget and get its remote
-        // views.
-        AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
-        if (mHostView == null) {
-            mHostView = new MyAppWidgetHostView(this);
-            mHostView.setBackgroundResource(R.drawable.bg_appwidget_preview);
-
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    Gravity.CENTER_HORIZONTAL);
-            mHostContainer.addView(mHostView, lp);
-        } else mHost.deleteAppWidgetId(mHostView.getAppWidgetId());
-        mHost.updateView(this, id, appWidget, mHostView);
-        updateAppWidgetFrameSize();
-
-        // Update views
-        mEmptyView.setVisibility(View.GONE);
-        mWidthSeekBar.setVisibility(View.VISIBLE);
-        mWidthMessageView.setVisibility(View.VISIBLE);
-        mHeightSeekBar.setVisibility(View.VISIBLE);
-        mHeightMessageView.setVisibility(View.VISIBLE);
-        // Update menu
-        updateConfigureMenuItem();
-        updateClearMenuItem();
-    }
-
-    private void updateUi() {
-        final int id = mConfig.getCustomWidgetId();
-        if (mHostView != null && mHostView.getAppWidgetId() == id) return; // do nothing
-        if (id < 0) {
-            onAppWidgetRemoved();
-        } else {
-            onAppWidgetUpdated(id);
-        }
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-        mHost.startListening();
+        mAppWidgetHost.startListening();
+        updateAppWidgetViewIfNeeded();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mActivityResumed = true;
+
         mSwitchPermissible.resume();
         mEnabler.start();
         mConfig.registerListener(this);
-
-        updateUi();
     }
 
     @Override
@@ -225,12 +181,17 @@ public class WidgetPickerActivity extends ActivityBase implements
         mConfig.unregisterListener(this);
         mEnabler.stop();
         mSwitchPermissible.pause();
+
+        mActivityResumed = false;
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        mHost.stopListening();
+        mAppWidgetHost.stopListening();
+        mHostViewNeedsReInflate = true;
+        // Stopping listening removes all active views from it,
+        // so we will have to re-inflate them.
         super.onStop();
     }
 
@@ -279,74 +240,18 @@ public class WidgetPickerActivity extends ActivityBase implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.clear_action:
-                deleteAppWidget();
+                deleteCurrentAppWidget();
                 // Save the current change.
-                applyAppWidget(-1);
+                storeAppWidget(APPWIDGET_ID_NONE);
                 break;
             case R.id.configure_action:
                 Check.getInstance().isNonNull(mHostView.getAppWidgetInfo().configure);
-                Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-                intent.setComponent(mHostView.getAppWidgetInfo().configure);
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mHostView.getAppWidgetId());
-                startActivity(intent);
+                startAppWidgetConfigure(mHostView.getAppWidgetInfo(), mHostView.getAppWidgetId());
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        int id;
-        switch (requestCode) {
-            case REQUEST_APPWIDGET_DISCOVER:
-                id = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
-                if (resultCode == RESULT_OK && id >= 0) {
-                    AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
-                    if (appWidget.configure != null) {
-                        startAppWidgetConfigure(appWidget, id);
-                    } else {
-                        // Just apply the widget.
-                        applyAppWidget(id);
-                    }
-                } else {
-                    // Clean-up allocated id.
-                    mHost.deleteAppWidgetId(id);
-                }
-                break;
-            case REQUEST_APPWIDGET_CONFIGURE:
-                id = mPendingAppWidgetId;
-                mPendingAppWidgetId = -1;
-                if (id < 0) break;
-                if (resultCode == RESULT_OK) {
-                    applyAppWidget(id);
-                } else {
-                    // Clean-up allocated id.
-                    mHost.deleteAppWidgetId(id);
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    /**
-     * Launches the {@link AppWidgetManager#ACTION_APPWIDGET_PICK App Widget picker}
-     * and wait for the result.
-     */
-    private void startAppWidgetDiscover() {
-        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mHost.allocateAppWidgetId());
-        startActivityForResult(intent, REQUEST_APPWIDGET_DISCOVER);
-    }
-
-    private void startAppWidgetConfigure(@NonNull AppWidgetProviderInfo appWidget, int id) {
-        mPendingAppWidgetId = id;
-        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-        intent.setComponent(appWidget.configure);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-        startActivityForResult(intent, REQUEST_APPWIDGET_CONFIGURE);
     }
 
     /**
@@ -358,7 +263,14 @@ public class WidgetPickerActivity extends ActivityBase implements
                                 @NonNull Object value) {
         switch (key) {
             case Config.KEY_UI_CUSTOM_WIDGET_ID:
-                updateUi();
+                final int id = (int) value;
+                if (mActivityResumed) {
+                    // Automatically turn the switch on/off, causing
+                    // terror and murders.
+                    mSwitchPermissible.setChecked(AppWidgetUtils.isValidId(id));
+                }
+                mHostViewNeedsReInflate = true;
+                updateAppWidgetViewIfNeeded();
                 break;
             case Config.KEY_UI_CUSTOM_WIDGET_WIDTH_DP:
             case Config.KEY_UI_CUSTOM_WIDGET_HEIGHT_DP:
@@ -402,18 +314,129 @@ public class WidgetPickerActivity extends ActivityBase implements
      *
      * @param id the id of app widget to add.
      */
-    private void applyAppWidget(int id) {
+    private void storeAppWidget(int id) {
         mConfig.getOption(Config.KEY_UI_CUSTOM_WIDGET_ID).write(mConfig, this, id, null);
     }
 
-    private void deleteAppWidgetSafely() {
-        if (mHostView != null) deleteAppWidget();
+    private void deleteCurrentAppWidgetSafely() {
+        if (mHostView != null) deleteCurrentAppWidget();
     }
 
-    private void deleteAppWidget() {
+    private void deleteCurrentAppWidget() {
         mHostContainer.removeView(mHostView);
-        mHost.deleteAppWidgetId(mHostView.getAppWidgetId());
+        mAppWidgetHost.deleteAppWidgetId(mHostView.getAppWidgetId());
         mHostView = null;
+    }
+
+    //-- DISCOVER and CONFIGURE -----------------------------------------------
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        int id;
+        switch (requestCode) {
+            case REQUEST_APPWIDGET_DISCOVER:
+                mPendingAppWidgetId = APPWIDGET_ID_NONE;
+                id = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
+                if (resultCode == RESULT_OK && AppWidgetUtils.isValidId(id)) {
+                    AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
+                    if (appWidget.configure != null) {
+                        mPendingAppWidgetId = id;
+                        startAppWidgetConfigure(appWidget, id);
+                    } else {
+                        // Just apply the widget.
+                        storeAppWidget(id);
+                    }
+                } else {
+                    // Clean-up allocated id.
+                    mAppWidgetHost.deleteAppWidgetId(id);
+                }
+                break;
+            case REQUEST_APPWIDGET_CONFIGURE:
+                if (!AppWidgetUtils.isValidId(id = mPendingAppWidgetId)) break;
+                mPendingAppWidgetId = APPWIDGET_ID_NONE;
+
+                if (resultCode == RESULT_OK) {
+                    storeAppWidget(id);
+                } else {
+                    // Clean-up allocated id.
+                    mAppWidgetHost.deleteAppWidgetId(id);
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    /**
+     * Launches the {@link AppWidgetManager#ACTION_APPWIDGET_PICK App Widget picker}
+     * and wait for the result.
+     */
+    private void startAppWidgetDiscover() {
+        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetHost.allocateAppWidgetId());
+        startActivityForResult(intent, REQUEST_APPWIDGET_DISCOVER);
+    }
+
+    @SuppressWarnings("NewApi")
+    private void startAppWidgetConfigure(@NonNull AppWidgetProviderInfo appWidget, int id) {
+        if (Device.hasLollipopApi()) {
+            mAppWidgetHost.startAppWidgetConfigureActivityForResult(
+                    this, id, 0, REQUEST_APPWIDGET_CONFIGURE, null);
+        } else {
+            Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+            intent.setComponent(appWidget.configure);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+            startActivityForResult(intent, REQUEST_APPWIDGET_CONFIGURE);
+        }
+    }
+
+    //-- UPDATE USER INTERFACE ------------------------------------------------
+
+    private void updateAppWidgetViewIfNeeded() {
+        int id = mConfig.getCustomWidgetId();
+        if (!AppWidgetUtils.isValidId(id)) {
+            mHostViewNeedsReInflate = false;
+            // Remove current app widget.
+            deleteCurrentAppWidgetSafely();
+
+            // Update views
+            mFab.show();
+            mEmptyView.setVisibility(View.VISIBLE);
+            mWidthSeekBar.setVisibility(View.GONE);
+            mWidthMessageView.setVisibility(View.GONE);
+            mHeightSeekBar.setVisibility(View.GONE);
+            mHeightMessageView.setVisibility(View.GONE);
+            // Update menu
+            updateConfigureMenuItem();
+            updateClearMenuItem();
+            return;
+        }
+
+        if (mHostView == null) {
+            mHostView = new MyAppWidgetHostView(this);
+            mHostView.setBackgroundResource(R.drawable.bg_appwidget_preview);
+
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.CENTER_HORIZONTAL);
+            mHostContainer.addView(mHostView, lp);
+        } else if (!mHostViewNeedsReInflate && mHostView.getAppWidgetId() == id) return;
+        AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
+        mAppWidgetHost.updateView(this, id, appWidget, mHostView);
+        mHostViewNeedsReInflate = false;
+        updateAppWidgetFrameSize();
+
+        // Update views
+        mFab.hide();
+        mEmptyView.setVisibility(View.GONE);
+        mWidthSeekBar.setVisibility(View.VISIBLE);
+        mWidthMessageView.setVisibility(View.VISIBLE);
+        mHeightSeekBar.setVisibility(View.VISIBLE);
+        mHeightMessageView.setVisibility(View.VISIBLE);
+        // Update menu
+        updateConfigureMenuItem();
+        updateClearMenuItem();
     }
 
 }

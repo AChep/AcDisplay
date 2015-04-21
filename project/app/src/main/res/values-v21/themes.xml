@@ -21,4 +21,10 @@
 
     <style name="Base.MaterialTheme" parent="Theme.AppCompat" />
 
+    <!--
+        Widget picker
+        -->
+
+    <style name="Base.MaterialTheme.WidgetPicker.Wallpaper" parent="MaterialTheme.WidgetPicker" />
+
 </resources>

@@ -354,6 +354,23 @@ public final class Config extends ConfigBase {
             case KEY_DEV_SENSORS_DUMP:
                 SensorsDumpService.handleState(getContext());
                 break;
+            /*
+            case KEY_UI_CUSTOM_WIDGET_ID:
+                // Track the current appwidget and delete unused ones.
+                // TODO: Ensure cleaning-up old AppWidgets is required.
+                Object previous = getPreviousValue();
+                if (previous != null) {
+                    final int id = (int) previous;
+                    if (AppWidgetUtils.isValidId(id)) {
+                        // Release previously allocated appwidget to avoid of
+                        // memory leaks and a bad carma.
+                        AppWidgetHost host = new MyAppWidgetHost(getContext(), HostWidget.HOST_ID);
+                        host.deleteAppWidgetId(id);
+                        Log.i(TAG, "Deleted AppWidget[" + id + "]");
+                    }
+                }
+                break;
+                */
         }
     }
 

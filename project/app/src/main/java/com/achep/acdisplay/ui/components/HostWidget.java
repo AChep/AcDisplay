@@ -38,6 +38,7 @@ import com.achep.acdisplay.appwidget.MyAppWidgetHost;
 import com.achep.acdisplay.appwidget.MyAppWidgetHostView;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.utils.AppWidgetUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
 
@@ -138,7 +139,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
         if (!isStarted() || !isViewAttached()) return;
 
         int id = getConfig().getCustomWidgetId();
-        if (id < 0) {
+        if (!AppWidgetUtils.isValidId(id)) {
             mHostContainer.removeAllViews();
             mHostViewNeedsReInflate = false;
             mHostView = null;
