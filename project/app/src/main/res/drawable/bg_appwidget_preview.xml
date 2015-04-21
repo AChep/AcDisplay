@@ -22,8 +22,6 @@
 
     <stroke
         android:color="#8888"
-        android:width="1dp"
-        android:dashWidth="8dp"
-        android:dashGap="4dp" />
+        android:width="1dp" />
 
 </shape>
