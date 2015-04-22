@@ -25,7 +25,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
 import com.achep.acdisplay.R;
@@ -51,19 +51,19 @@ public class DialogHelper {
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
     public static final String TAG_FRAGMENT_FEEDBACK = "dialog_feedback";
 
-    public static void showAboutDialog(@NonNull ActionBarActivity activity) {
+    public static void showAboutDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, AboutDialog.class, TAG_FRAGMENT_ABOUT);
     }
 
-    public static void showHelpDialog(@NonNull ActionBarActivity activity) {
+    public static void showHelpDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, HelpDialog.class, TAG_FRAGMENT_HELP);
     }
 
-    public static void showDonateDialog(@NonNull ActionBarActivity activity) {
+    public static void showDonateDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, DonateDialog.class, TAG_FRAGMENT_DONATION);
     }
 
-    public static void showCryDialog(@NonNull ActionBarActivity activity) {
+    public static void showCryDialog(@NonNull AppCompatActivity activity) {
         Check.getInstance().isInMainThread();
 
         Resources res = activity.getResources();
@@ -78,7 +78,7 @@ public class DialogHelper {
                 .show();
     }
 
-    public static void showCompatDialog(@NonNull ActionBarActivity activity) {
+    public static void showCompatDialog(@NonNull AppCompatActivity activity) {
         Check.getInstance().isInMainThread();
 
         int[] pairs = {
@@ -122,16 +122,16 @@ public class DialogHelper {
                 .show();
     }
 
-    public static void showFeedbackDialog(@NonNull ActionBarActivity activity) {
+    public static void showFeedbackDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, FeedbackDialog.class, TAG_FRAGMENT_FEEDBACK);
     }
 
-    public static void showPermissionsDialog(@NonNull ActionBarActivity activity,
+    public static void showPermissionsDialog(@NonNull AppCompatActivity activity,
                                              @NonNull Permission[] permissions) {
         showDialog(activity, PermissionsDialog.newInstance(permissions), TAG_FRAGMENT_PERMISSIONS);
     }
 
-    private static void showDialog(@NonNull ActionBarActivity activity,
+    private static void showDialog(@NonNull AppCompatActivity activity,
                                    @NonNull Class clazz,
                                    @NonNull String tag) {
         try {
@@ -141,7 +141,7 @@ public class DialogHelper {
         }
     }
 
-    private static void showDialog(@NonNull ActionBarActivity activity,
+    private static void showDialog(@NonNull AppCompatActivity activity,
                                    @NonNull DialogFragment fragment,
                                    @NonNull String tag) {
         Check.getInstance().isInMainThread();

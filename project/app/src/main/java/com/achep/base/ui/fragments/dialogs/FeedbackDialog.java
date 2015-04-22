@@ -29,7 +29,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -191,7 +191,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
         mFaqContainer.findViewById(R.id.faq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActionBarActivity activity = (ActionBarActivity) getActivity();
+                AppCompatActivity activity = (AppCompatActivity) getActivity();
                 DialogHelper.showHelpDialog(activity);
             }
         });

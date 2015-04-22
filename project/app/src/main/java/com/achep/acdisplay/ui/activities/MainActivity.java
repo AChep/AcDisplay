@@ -33,7 +33,7 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,7 +110,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
                     return;
                 }
 
-                ActionBarActivity context = MainActivity.this;
+                AppCompatActivity context = MainActivity.this;
                 mConfig.setEnabled(context, checked, MainActivity.this);
             }
         });
