@@ -47,7 +47,6 @@
 
     <style name="MaterialTheme.Fullscreen" parent="Base.MaterialTheme.Fullscreen">
         <!-- Theme.Holo.NoActionBar.Fullscreen -->
-        <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
