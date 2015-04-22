@@ -455,13 +455,15 @@ public abstract class OpenNotification implements
             }
             appIcon.draw(new Canvas(bitmap));
             AsyncTask.stop(mPaletteWorker);
-            mPaletteWorker = Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-                    setBrandColor(palette.getVibrantColor(Color.WHITE));
-                    bitmap.recycle();
-                }
-            });
+            mPaletteWorker = new Palette.Builder(bitmap)
+                    .maximumColorCount(16)
+                    .generate(new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            setBrandColor(palette.getVibrantColor(Color.WHITE));
+                            bitmap.recycle();
+                        }
+                    });
         } catch (PackageManager.NameNotFoundException e) { /* do nothing */ }
     }
 

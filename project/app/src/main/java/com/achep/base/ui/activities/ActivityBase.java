@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.achep.base.interfaces.IActivityBase;
 import com.achep.base.utils.power.PowerSaveDetector;
@@ -33,7 +34,7 @@ import org.solovyev.android.checkout.ActivityCheckout;
 /**
  * Created by Artem Chepurnoy on 28.12.2014.
  */
-public abstract class ActivityBase extends ActionBarActivity implements IActivityBase {
+public abstract class ActivityBase extends AppCompatActivity implements IActivityBase {
 
     private final ActivityBaseInternal mAbs = new ActivityBaseInternal();
 

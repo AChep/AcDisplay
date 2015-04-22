@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   ~ MA  02110-1301, USA.
   -->
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.AppCompatButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/title"
     style="?acDisplayAction"
     android:layout_width="0dp"

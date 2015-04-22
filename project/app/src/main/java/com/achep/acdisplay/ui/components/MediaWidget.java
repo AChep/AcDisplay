@@ -237,7 +237,9 @@ public class MediaWidget extends Widget implements
         if (bitmap != null) {
             // TODO: Load the vibrant color only.
             mArtworkColor = Color.WHITE;
-            mPaletteWorker = Palette.generateAsync(bitmap, mPaletteCallback);
+            mPaletteWorker = new Palette.Builder(bitmap)
+                    .maximumColorCount(16)
+                    .generate(mPaletteCallback);
 
             int dynamicBgMode = getConfig().getDynamicBackgroundMode();
             if (Operator.bitAnd(dynamicBgMode, getBackgroundMask())) {

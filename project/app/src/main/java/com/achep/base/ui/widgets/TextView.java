@@ -21,6 +21,7 @@ package com.achep.base.ui.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import com.achep.acdisplay.Config;
@@ -31,7 +32,7 @@ import com.drivemode.android.typeface.TypefaceHelper;
 /**
  * Created by Artem on 29.01.14.
  */
-public class TextView extends android.widget.TextView {
+public class TextView extends AppCompatTextView {
 
     private static final String TAG = "TextView";
 

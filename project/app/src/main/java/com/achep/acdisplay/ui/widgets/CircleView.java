@@ -29,6 +29,8 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.ColorUtils;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.HapticFeedbackConstants;
@@ -249,10 +251,8 @@ public class CircleView extends View {
         if (mInnerColor == (mInnerColor = color)) return;
 
         // Inverse the drawable if needed
-        float[] innerHsv = new float[3];
-        Color.colorToHSV(mInnerColor, innerHsv);
-        float innerHsvValue = innerHsv[2];
-        mDrawable.setColorFilter(innerHsvValue > 0.5f ? mInverseColorFilter : null);
+        boolean isBright = ColorUtils.calculateLuminance(color) > 0.5;
+        mDrawable.setColorFilter(isBright ? mInverseColorFilter : null);
     }
 
     private void setOuterColor(int color) {
@@ -366,7 +366,7 @@ public class CircleView extends View {
         clearAnimator();
         if (mSupervisor.isAnimationEnabled()) {
             mAnimator = ObjectAnimator.ofFloat(this, TRANSFORM, from, to);
-            mAnimator.setInterpolator(new AccelerateInterpolator());
+            mAnimator.setInterpolator(new FastOutLinearInInterpolator());
             mAnimator.setDuration(duration);
             mAnimator.start();
         } else {
