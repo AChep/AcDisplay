@@ -25,7 +25,7 @@
     <!--
         Adjust width
         -->
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/appwidget_width_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
     <!--
         Adjust height
         -->
-    <TextView
+    <com.achep.base.ui.widgets.TextView
         android:id="@+id/appwidget_height_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

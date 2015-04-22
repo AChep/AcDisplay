@@ -65,7 +65,7 @@
                 style="@style/margin_content" />
         </com.melnykov.fab.ObservableScrollView>
 
-        <TextView
+        <com.achep.base.ui.widgets.TextView
             android:id="@+id/empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
