@@ -67,7 +67,7 @@ public class MyAppWidgetHostView extends AppWidgetHostView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mTouchable && super.onInterceptTouchEvent(ev); // eat all events
+        return !mTouchable || super.onInterceptTouchEvent(ev); // eat all events
     }
 
     @Override
