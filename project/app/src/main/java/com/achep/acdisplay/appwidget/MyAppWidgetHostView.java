@@ -37,6 +37,8 @@ public class MyAppWidgetHostView extends AppWidgetHostView {
     private Context mContext;
     private int mPreviousOrientation;
 
+    private boolean mTouchable;
+
     public MyAppWidgetHostView(@NonNull Context context) {
         super(context);
         mContext = context;
@@ -50,6 +52,13 @@ public class MyAppWidgetHostView extends AppWidgetHostView {
         super.updateAppWidget(remoteViews);
     }
 
+    /**
+     * Set whether this view can pass touches to the {@link RemoteViews}.
+     */
+    public void setTouchable(boolean touchable) {
+        mTouchable = touchable;
+    }
+
     public boolean isReinflateRequired() {
         // Re-inflate is required if the orientation has changed since last inflated.
         int orientation = mContext.getResources().getConfiguration().orientation;
@@ -58,12 +67,12 @@ public class MyAppWidgetHostView extends AppWidgetHostView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true; // eat all events
+        return mTouchable && super.onInterceptTouchEvent(ev); // eat all events
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        return false;
+        return mTouchable && super.onTouchEvent(event);
     }
 
     @Override
