@@ -19,9 +19,15 @@
 package com.achep.acdisplay.compat;
 
 import android.transition.Scene;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import com.achep.base.Build;
 import com.achep.base.Device;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * This is a restricted {@link android.transition.Scene} compatibility
@@ -30,6 +36,8 @@ import com.achep.base.Device;
  * @author Artem Chepurnoy
  */
 public class SceneCompat {
+
+    private static final String TAG = "SceneCompat";
 
     private final ViewGroup mView;
     private final ViewGroup mParent;
@@ -53,6 +61,13 @@ public class SceneCompat {
 
     public void enter() {
         if (Device.hasKitKatApi()) {
+            // FIXME: This is a workaround that more research.
+            ViewParent vp = mView.getParent();
+            if (vp != null) {
+                if (DEBUG) Log.d(TAG, "Removing the view[" + mView + "] from [" + vp + "]!");
+                ((ViewGroup) vp).removeView(mView);
+            }
+
             mScene.enter();
         } else {
             mParent.removeAllViews();
