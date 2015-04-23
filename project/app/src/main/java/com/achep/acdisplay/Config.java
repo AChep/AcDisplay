@@ -93,6 +93,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_UI_CUSTOM_WIDGET_ID = "ui_custom_widget_id";
     public static final String KEY_UI_CUSTOM_WIDGET_HEIGHT_DP = "ui_custom_widget_height";
     public static final String KEY_UI_CUSTOM_WIDGET_WIDTH_DP = "ui_custom_widget_width";
+    public static final String KEY_UI_CUSTOM_WIDGET_TOUCHABLE = "ui_custom_widget_touchable";
 
     // behavior
     public static final String KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY = "feel_widget_screen_off_after_last_notify";
@@ -152,6 +153,7 @@ public final class Config extends ConfigBase {
     private boolean mUiBatterySticky;
     private boolean mUiUnlockAnimation;
     private boolean mUiCustomWidget;
+    private boolean mUiCustomWidgetTouchable;
 
     private boolean mDevSensorsDump;
 
@@ -286,6 +288,9 @@ public final class Config extends ConfigBase {
         map.put(KEY_UI_CUSTOM_WIDGET_HEIGHT_DP, new ConfigBase.Option(
                 "mUiCustomWidgetHeightDp", null, null, int.class)
                 .setDefault(0));
+        map.put(KEY_UI_CUSTOM_WIDGET_TOUCHABLE, new ConfigBase.Option(
+                "mUiCustomWidgetTouchable", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_ui_custom_widget_touchable));
         map.put(KEY_UI_ICON_SIZE, new ConfigBase.Option(
                 "mUiIconSize", null, null, int.class)
                 .setDefaultRes(R.integer.config_default_ui_icon_size_dp));
@@ -619,6 +624,10 @@ public final class Config extends ConfigBase {
 
     public boolean isCustomWidgetEnabled() {
         return mUiCustomWidget;
+    }
+
+    public boolean isCustomWidgetTouchable() {
+        return mUiCustomWidgetTouchable;
     }
 
     // //////////////////////////////////////////

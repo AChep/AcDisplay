@@ -32,4 +32,8 @@
         android:title="@string/action_clear"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/touchable"
+        android:title="@string/settings_custom_widget_touchable"
+        android:checkable="true" />
+
 </menu>

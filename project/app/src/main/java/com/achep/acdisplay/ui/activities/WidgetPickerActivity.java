@@ -18,7 +18,6 @@
  */
 package com.achep.acdisplay.ui.activities;
 
-import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
@@ -80,13 +79,14 @@ public class WidgetPickerActivity extends ActivityBase implements
     private final Config mConfig = Config.getInstance();
 
     private AppWidgetManager mAppWidgetManager;
-    private AppWidgetHostView mHostView;
+    private MyAppWidgetHostView mHostView;
     private MyAppWidgetHost mAppWidgetHost;
     private ViewGroup mHostContainer;
     private int mPendingAppWidgetId = -1;
 
     private SwitchBarPermissible mSwitchPermissible;
     private MenuItem mConfigureMenuItem;
+    private MenuItem mTouchableMenuItem;
     private MenuItem mClearMenuItem;
     private Enabler mEnabler;
     private ViewGroup mContent;
@@ -212,7 +212,9 @@ public class WidgetPickerActivity extends ActivityBase implements
         getMenuInflater().inflate(R.menu.widget_picker, menu);
         mClearMenuItem = menu.findItem(R.id.clear_action);
         mConfigureMenuItem = menu.findItem(R.id.configure_action);
+        mTouchableMenuItem = menu.findItem(R.id.touchable);
         updateConfigureMenuItem();
+        updateTouchableMenuItem();
         updateClearMenuItem();
         return true;
     }
@@ -236,6 +238,15 @@ public class WidgetPickerActivity extends ActivityBase implements
         mConfigureMenuItem.setVisible(visible);
     }
 
+    /**
+     * Updates the visibility of {@link #mTouchableMenuItem}.
+     */
+    private void updateTouchableMenuItem() {
+        if (mTouchableMenuItem == null) return;
+        boolean visible = mHostView != null;
+        mTouchableMenuItem.setVisible(visible);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -247,6 +258,11 @@ public class WidgetPickerActivity extends ActivityBase implements
             case R.id.configure_action:
                 Check.getInstance().isNonNull(mHostView.getAppWidgetInfo().configure);
                 startAppWidgetConfigure(mHostView.getAppWidgetInfo(), mHostView.getAppWidgetId());
+                break;
+            case R.id.touchable:
+                mConfig
+                        .getOption(Config.KEY_UI_CUSTOM_WIDGET_TOUCHABLE)
+                        .write(mConfig, this, mTouchableMenuItem.isChecked(), null);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -275,6 +291,9 @@ public class WidgetPickerActivity extends ActivityBase implements
             case Config.KEY_UI_CUSTOM_WIDGET_WIDTH_DP:
             case Config.KEY_UI_CUSTOM_WIDGET_HEIGHT_DP:
                 if (mHostView != null) updateAppWidgetFrameSize();
+                break;
+            case Config.KEY_UI_CUSTOM_WIDGET_TOUCHABLE:
+                if (mHostView != null) updateAppWidgetTouchable();
                 break;
         }
     }
@@ -307,6 +326,10 @@ public class WidgetPickerActivity extends ActivityBase implements
         int width = mMinWidth + mWidthSeekBar.getProgress();
         int height = mMinHeight + mHeightSeekBar.getProgress();
         ViewUtils.setSize(mHostView, width, height);
+    }
+
+    private void updateAppWidgetTouchable() {
+        mHostView.setTouchable(mConfig.isCustomWidgetTouchable());
     }
 
     /**
@@ -408,6 +431,7 @@ public class WidgetPickerActivity extends ActivityBase implements
             mHeightMessageView.setVisibility(View.GONE);
             // Update menu
             updateConfigureMenuItem();
+            updateTouchableMenuItem();
             updateClearMenuItem();
             return;
         }
@@ -415,6 +439,7 @@ public class WidgetPickerActivity extends ActivityBase implements
         if (mHostView == null) {
             mHostView = new MyAppWidgetHostView(this);
             mHostView.setBackgroundResource(R.drawable.bg_appwidget_preview);
+            updateAppWidgetTouchable();
 
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -436,6 +461,7 @@ public class WidgetPickerActivity extends ActivityBase implements
         mHeightMessageView.setVisibility(View.VISIBLE);
         // Update menu
         updateConfigureMenuItem();
+        updateTouchableMenuItem();
         updateClearMenuItem();
     }
 

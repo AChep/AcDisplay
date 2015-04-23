@@ -19,7 +19,6 @@
 package com.achep.acdisplay.ui.components;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -55,7 +54,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
 
     private final AppWidgetManager mAppWidgetManager;
     private final MyAppWidgetHost mAppWidgetHost;
-    private AppWidgetHostView mHostView;
+    private MyAppWidgetHostView mHostView;
     private ViewGroup mHostContainer;
 
     private boolean mHostViewNeedsReInflate;
@@ -149,6 +148,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
         Context context = getFragment().getActivity();
         if (mHostView == null) {
             mHostView = new MyAppWidgetHostView(context);
+            updateAppWidgetTouchable();
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -177,6 +177,10 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
                 Math.round(MathUtils.range(h * density, hMin, hMax)));
     }
 
+    private void updateAppWidgetTouchable() {
+        mHostView.setTouchable(getConfig().isCustomWidgetTouchable());
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -192,6 +196,9 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
             case Config.KEY_UI_CUSTOM_WIDGET_WIDTH_DP:
             case Config.KEY_UI_CUSTOM_WIDGET_HEIGHT_DP:
                 if (mHostView != null) updateAppWidgetFrameSize();
+                break;
+            case Config.KEY_UI_CUSTOM_WIDGET_TOUCHABLE:
+                if (mHostView != null) updateAppWidgetTouchable();
                 break;
         }
     }
