@@ -260,6 +260,7 @@ public class WidgetPickerActivity extends ActivityBase implements
                 startAppWidgetConfigure(mHostView.getAppWidgetInfo(), mHostView.getAppWidgetId());
                 break;
             case R.id.touchable:
+                mTouchableMenuItem.setChecked(!mTouchableMenuItem.isChecked());
                 mConfig
                         .getOption(Config.KEY_UI_CUSTOM_WIDGET_TOUCHABLE)
                         .write(mConfig, this, mTouchableMenuItem.isChecked(), null);
