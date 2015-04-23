@@ -33,10 +33,10 @@
     <item>Приховати дії сповіщення</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Critical and urgent (missed calls, directions, emergency alerts)</item>
-    <item>Important (communications, important mail)</item>
-    <item>Normal (+notifications from old apps)</item>
+    <item>Критичні та невідкладні (пропущені дзвінки, вказівки, аварійні оповіщення)</item>
+    <item>Важливі (діалоги, важливі повідомлення)</item>
+    <item>Звичайні (а також сповіщення від старих додатків)</item>
     <item>Non-important (software updates, junk mail)</item>
-    <item>Contextual and background info (weather, expired events, suggestions)</item>
+    <item>Контекстна та фонова інформація (погода, минулі події, поради)</item>
   </string-array>
 </resources>

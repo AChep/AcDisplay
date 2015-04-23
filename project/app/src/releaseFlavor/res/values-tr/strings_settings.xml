@@ -34,14 +34,14 @@
   <string name="settings_more_title">Daha fazla&#8230;</string>
   <string name="settings_dev_title">Geliştirme</string>
   <string name="settings_keyguard_description">AcDisplay\'i kilit ekranı olarak kullan. Bu bir beta özelliktir ve kararsız durumlar olabilir.</string>
-  <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
-  <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
+  <string name="settings_keyguard_respect_inactive_time_title">Etkin olmadığı zaman devre dışı bırak</string>
+  <string name="settings_active_disable_on_low_battery_title">Düşük pil seviyesinde devre dışı bırak</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Hiçbir bildirim olmadığında etkinleştir</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Kilit ekranı bildirimler olsa da olmasa da etkin.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Kilit ekranı bildirim olmadığında kapalı.</string>
-  <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
+  <string name="settings_active_active_charging_title">Hareketli şarj ederken her zaman dinle</string>
   <string name="settings_active_description">Aktif mod, sensörleri kullanarak tam da ihtiyaç duyduğunuzda cihazınızı uyandırır. Cihazınızı cebinizden çıkartarak bildirimlere hızlıca göz atmak için harikadır. Aktif mod işlemciyi çalışır halde tutmaz, bundan dolayı artan batarya kullanımı ile karşılaşmamanız gerekir.</string>
-  <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
+  <string name="settings_active_respect_inactive_time_title">Etkin olmadığı zaman devre dışı bırak</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Hiçbir bildirim olmadığında etkinleştir</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktif mod bildirimlerin olup olmadığından bağımsız olarak etkin.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Hiçbir bildirim olmadığında aktif mod devre dışı.</string>
@@ -76,7 +76,7 @@
   <string name="settings_timeout_summary">%1$s / %2$s saniyelik hareketsizlikten sonra.</string>
   <string name="settings_icon_size_title">Simge Boyutu</string>
   <string name="settings_icon_size_summary">Simgelerin şimdiki boyutu %1$s dpi.</string>
-  <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
+  <string name="settings_double_tap_to_sleep_title">Uyutmak için çift dokunun</string>
   <string name="settings_behavior_category">Davranış</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Son bildirim yok sarıldığında ekranı kilitle</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Ekran, mevcut tüm bildirimler görüntülendikten sonra kapanır.</string>
@@ -97,6 +97,6 @@
   <string name="preference_timeout_sec">%1$s saniye.</string>
   <string name="preference_icon_size_message">Bildirim simgelerinin boyutunu ayarlayın.</string>
   <string name="preference_icon_size_dpi">%1$s dpi.</string>
-  <string name="preference_colorpicker_random_color">Random colors</string>
-  <string name="preference_colorpicker_custom_color">Defined color</string>
+  <string name="preference_colorpicker_random_color">Rasgele renkler</string>
+  <string name="preference_colorpicker_custom_color">Tanımlanmış renk</string>
 </resources>
