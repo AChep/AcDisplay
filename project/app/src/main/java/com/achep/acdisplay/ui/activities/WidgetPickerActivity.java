@@ -234,7 +234,9 @@ public class WidgetPickerActivity extends ActivityBase implements
      */
     private void updateConfigureMenuItem() {
         if (mClearMenuItem == null) return;
-        boolean visible = mHostView != null && mHostView.getAppWidgetInfo().configure != null;
+        boolean visible = mHostView != null
+                && mHostView.getAppWidgetInfo() != null
+                && mHostView.getAppWidgetInfo().configure != null;
         mConfigureMenuItem.setVisible(visible);
     }
 
@@ -461,9 +463,14 @@ public class WidgetPickerActivity extends ActivityBase implements
         mHeightSeekBar.setVisibility(View.VISIBLE);
         mHeightMessageView.setVisibility(View.VISIBLE);
         // Update menu
-        updateConfigureMenuItem();
-        updateTouchableMenuItem();
-        updateClearMenuItem();
+        mHostView.post(new Runnable() {
+            @Override
+            public void run() {
+                updateConfigureMenuItem();
+                updateTouchableMenuItem();
+                updateClearMenuItem();
+            }
+        });
     }
 
 }
