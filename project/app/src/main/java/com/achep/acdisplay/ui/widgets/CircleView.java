@@ -36,7 +36,6 @@ import android.util.Property;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;

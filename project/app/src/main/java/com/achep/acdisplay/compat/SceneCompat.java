@@ -20,11 +20,9 @@ package com.achep.acdisplay.compat;
 
 import android.transition.Scene;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.achep.base.Build;
 import com.achep.base.Device;
 
 import static com.achep.base.Build.DEBUG;
