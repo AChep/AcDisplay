@@ -23,6 +23,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +58,7 @@ import com.melnykov.fab.FloatingActionButton;
 public class WidgetPickerActivity extends ActivityBase implements
         Config.OnConfigChangedListener,
         SeekBar.OnSeekBarChangeListener {
+    private static final String TAG = "WidgetPickerActivity";
 
     private static final String KEY_PENDING_APPWIDGET_ID = "achep::pending_app_widget_key";
 
@@ -362,6 +364,11 @@ public class WidgetPickerActivity extends ActivityBase implements
         switch (requestCode) {
             case REQUEST_APPWIDGET_DISCOVER:
                 mPendingAppWidgetId = APPWIDGET_ID_NONE;
+                if (data == null || data.getExtras() == null) {
+                    Check.getInstance().isFalse(resultCode == RESULT_OK);
+                    Log.i(TAG, "The intent data is empty.");
+                    break;
+                }
                 id = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
                 if (resultCode == RESULT_OK && AppWidgetUtils.isValidId(id)) {
                     AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
