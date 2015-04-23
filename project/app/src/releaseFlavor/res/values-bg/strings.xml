@@ -37,6 +37,8 @@
   <string name="action_donate">Дари</string>
   <string name="action_feedback">Обратна връзка</string>
   <string name="action_help">Помощ</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Настройки</string>
   <string name="action_send_test_notify">Изпрати тестово известие</string>
   <string name="action_show_system_apps">Системни приложения</string>

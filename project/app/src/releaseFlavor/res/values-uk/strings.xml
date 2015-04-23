@@ -37,6 +37,8 @@
   <string name="action_donate">Пожертвувати</string>
   <string name="action_feedback">Зворотній зв\'язок</string>
   <string name="action_help">Допомога</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Налаштування</string>
   <string name="action_send_test_notify">Тестове сповіщення</string>
   <string name="action_show_system_apps">Системні програми</string>

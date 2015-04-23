@@ -37,6 +37,8 @@
   <string name="action_donate">کمک مالی</string>
   <string name="action_feedback">انتقادات و پیشنهادها</string>
   <string name="action_help">کمک</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">تنظیمات</string>
   <string name="action_send_test_notify">Send test notification</string>
   <string name="action_show_system_apps">نرم‌افزارهای سیستمی</string>

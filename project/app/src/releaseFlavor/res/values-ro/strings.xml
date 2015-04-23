@@ -37,6 +37,8 @@
   <string name="action_donate">Donează</string>
   <string name="action_feedback">Feedback</string>
   <string name="action_help">Ajutor</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Setări</string>
   <string name="action_send_test_notify">Send test notification</string>
   <string name="action_show_system_apps">Aplicaţii de sistem</string>

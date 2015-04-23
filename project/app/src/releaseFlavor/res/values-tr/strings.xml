@@ -37,6 +37,8 @@
   <string name="action_donate">Bağış</string>
   <string name="action_feedback">Geri bildirim</string>
   <string name="action_help">Yardım</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Ayarlar</string>
   <string name="action_send_test_notify">Test bildirimi gönder</string>
   <string name="action_show_system_apps">Sistem uygulamaları</string>

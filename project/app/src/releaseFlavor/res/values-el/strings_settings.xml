@@ -59,6 +59,11 @@
   <string name="settings_status_battery_always_visible_off">Η κατάσταση της μπαταρίας θα εμφανίζεται σε χαμηλό επίπεδο φόρτισης ή κατά την διάρκεια της φόρτισης.</string>
   <string name="settings_emoticons_title">Φατσούλες</string>
   <string name="settings_override_fonts_title">Παράκαμψη των γραμματοσειρών του συστήματος</string>
+  <string name="settings_custom_widget_title">Widgets</string>
+  <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_adjust_width">Width:</string>
+  <string name="settings_custom_widget_adjust_height">Height:</string>
+  <string name="settings_custom_widget_touchable">Touchable</string>
   <string name="settings_circle_category">Κύκλος ξεκλειδώματος</string>
   <string name="settings_circle_animation_title">Κίνηση ξεκλειδώματος</string>
   <string name="settings_circle_color_inner_title">Χρώμα κύκλου</string>
@@ -85,6 +90,13 @@
   <string name="settings_widget_pinnable_on">Το widget ειδοποίησης παραμένει σε επέκταση για λίγα δευτερόλεπτα μετά το άγγιγμα.</string>
   <string name="settings_privacy_mode_title">Ιδιωτικότητα (σε ασφαλές κλείδωμα)</string>
   <string name="settings_privacy_mode_disabled">Απενεργοποιημένο</string>
+  <string name="settings_data_category">Data</string>
+  <string name="settings_restore_defaults_title">Restore defaults</string>
+  <string name="settings_restore_defaults_summary">Erases all user\'s settings excluding the blacklist.</string>
+  <string name="settings_restore_defaults_warning_title">Restore default settings?</string>
+  <string name="settings_restore_defaults_warning_message">All your settings excluding the blacklist will be erased! You won\'t be able to cancel this action.</string>
+  <string name="settings_data_backup_title">Back up settings</string>
+  <string name="settings_data_restore_title">Load settings</string>
   <string name="preference_inactive_hours_enabled">Οι ανενεργές ώρες έχουν ενεργοποιηθεί</string>
   <string name="preference_inactive_hours_from"><![CDATA[
 από:<br/><b><font color="#ffffff">%1$s</font></b>

@@ -59,6 +59,11 @@
   <string name="settings_status_battery_always_visible_off">僅在低電量或充電時顯示電池狀態。</string>
   <string name="settings_emoticons_title">表情符號</string>
   <string name="settings_override_fonts_title">覆寫系統字型</string>
+  <string name="settings_custom_widget_title">Widgets</string>
+  <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_adjust_width">Width:</string>
+  <string name="settings_custom_widget_adjust_height">Height:</string>
+  <string name="settings_custom_widget_touchable">Touchable</string>
   <string name="settings_circle_category">解鎖圓圈</string>
   <string name="settings_circle_animation_title">解鎖動畫</string>
   <string name="settings_circle_color_inner_title">圓圈顏色</string>
@@ -85,6 +90,13 @@
   <string name="settings_widget_pinnable_on">輕觸之後，通知小工具會持續展開數秒時間。</string>
   <string name="settings_privacy_mode_title">隱私設定 (位於鎖定畫面)</string>
   <string name="settings_privacy_mode_disabled">已停用</string>
+  <string name="settings_data_category">Data</string>
+  <string name="settings_restore_defaults_title">Restore defaults</string>
+  <string name="settings_restore_defaults_summary">Erases all user\'s settings excluding the blacklist.</string>
+  <string name="settings_restore_defaults_warning_title">Restore default settings?</string>
+  <string name="settings_restore_defaults_warning_message">All your settings excluding the blacklist will be erased! You won\'t be able to cancel this action.</string>
+  <string name="settings_data_backup_title">Back up settings</string>
+  <string name="settings_data_restore_title">Load settings</string>
   <string name="preference_inactive_hours_enabled">啟用停機時段</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         開始：<br/><b><font color="#ffffff">%1$s</font></b>

@@ -59,6 +59,11 @@
   <string name="settings_status_battery_always_visible_off">Состояние батареи отображается при зарядке либо низком уровне заряда.</string>
   <string name="settings_emoticons_title">Графические смайлы</string>
   <string name="settings_override_fonts_title">Заместить системные шрифты</string>
+  <string name="settings_custom_widget_title">Виджеты</string>
+  <string name="settings_custom_widget_empty_message">Пользовательский виджет не установлен. Нажмите кнопку для его выбора.</string>
+  <string name="settings_custom_widget_adjust_width">Ширина:</string>
+  <string name="settings_custom_widget_adjust_height">Высота:</string>
+  <string name="settings_custom_widget_touchable">Реагировать на касание</string>
   <string name="settings_circle_category">Круг разблокировки</string>
   <string name="settings_circle_animation_title">Анимация разблокировки</string>
   <string name="settings_circle_color_inner_title">Цвет круга</string>
@@ -85,6 +90,13 @@
   <string name="settings_widget_pinnable_on">Уведомление остается развернутым на несколько секунд после касания.</string>
   <string name="settings_privacy_mode_title">Приватность (при вкл. блокировке экрана)</string>
   <string name="settings_privacy_mode_disabled">Отключено</string>
+  <string name="settings_data_category">Данные</string>
+  <string name="settings_restore_defaults_title">Сбросить настройки</string>
+  <string name="settings_restore_defaults_summary">Очищает все, кроме чёрного списка, пользовательские настройки.</string>
+  <string name="settings_restore_defaults_warning_title">Сбросить настройки?</string>
+  <string name="settings_restore_defaults_warning_message">Все ваши настройки, кроме чёрного списка, будут удалены! Это действие будет невозможно отменить.</string>
+  <string name="settings_data_backup_title">Сохранить настройки</string>
+  <string name="settings_data_restore_title">Загрузить настройки</string>
   <string name="preference_inactive_hours_enabled">Использовать неактивное время</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         от:<br/><b><font color="#ffffff">%1$s</font></b>

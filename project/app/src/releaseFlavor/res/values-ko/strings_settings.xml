@@ -59,6 +59,11 @@
   <string name="settings_status_battery_always_visible_off">배터리가 얼마 남지 않거나 충전중일 때 배터리 상태가 표시됩니다.</string>
   <string name="settings_emoticons_title">이모티콘</string>
   <string name="settings_override_fonts_title">시스템 글꼴 무시</string>
+  <string name="settings_custom_widget_title">Widgets</string>
+  <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_adjust_width">Width:</string>
+  <string name="settings_custom_widget_adjust_height">Height:</string>
+  <string name="settings_custom_widget_touchable">Touchable</string>
   <string name="settings_circle_category">잠금해제 원형</string>
   <string name="settings_circle_animation_title">잠금해제 애니메이션</string>
   <string name="settings_circle_color_inner_title">원형 색깔</string>
@@ -85,6 +90,13 @@
   <string name="settings_widget_pinnable_on">알림을 누른 뒤에도 알림이 펴진 상태로 유지합니다.</string>
   <string name="settings_privacy_mode_title">보안 (잠금화면에서)</string>
   <string name="settings_privacy_mode_disabled">비활성화</string>
+  <string name="settings_data_category">Data</string>
+  <string name="settings_restore_defaults_title">Restore defaults</string>
+  <string name="settings_restore_defaults_summary">Erases all user\'s settings excluding the blacklist.</string>
+  <string name="settings_restore_defaults_warning_title">Restore default settings?</string>
+  <string name="settings_restore_defaults_warning_message">All your settings excluding the blacklist will be erased! You won\'t be able to cancel this action.</string>
+  <string name="settings_data_backup_title">Back up settings</string>
+  <string name="settings_data_restore_title">Load settings</string>
   <string name="preference_inactive_hours_enabled">비활성 시간 활성화</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         시작:<br/><b><font color="#ffffff">%1$s</font></b>

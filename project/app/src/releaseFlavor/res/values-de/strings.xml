@@ -38,6 +38,8 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="action_donate">Spenden</string>
   <string name="action_feedback">Rückmeldung</string>
   <string name="action_help">Hilfe</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Einstellungen</string>
   <string name="action_send_test_notify">Testbenachrichtigung senden</string>
   <string name="action_show_system_apps">System-Apps</string>

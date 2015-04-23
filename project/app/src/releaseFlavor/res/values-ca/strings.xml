@@ -38,6 +38,8 @@ Si voleu saber què està passant, simplement podeu treure el telèfon de la but
   <string name="action_donate">Donau</string>
   <string name="action_feedback">Opineu</string>
   <string name="action_help">Ajuda</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Configuració</string>
   <string name="action_send_test_notify">Envia una notificació de prova</string>
   <string name="action_show_system_apps">Aplicacions del sistema</string>

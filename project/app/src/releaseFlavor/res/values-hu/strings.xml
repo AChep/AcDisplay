@@ -37,6 +37,8 @@
   <string name="action_donate">Adományozás</string>
   <string name="action_feedback">Visszajelzés</string>
   <string name="action_help">Súgó</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Beállítások</string>
   <string name="action_send_test_notify">Teszt értesítés küldése</string>
   <string name="action_show_system_apps">Rendszer-alkalmazások</string>

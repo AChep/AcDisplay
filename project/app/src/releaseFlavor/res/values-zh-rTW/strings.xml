@@ -37,6 +37,8 @@
   <string name="action_donate">贊助</string>
   <string name="action_feedback">意見回饋</string>
   <string name="action_help">説明</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">設定</string>
   <string name="action_send_test_notify">傳送測試通知</string>
   <string name="action_show_system_apps">系統應用程式</string>

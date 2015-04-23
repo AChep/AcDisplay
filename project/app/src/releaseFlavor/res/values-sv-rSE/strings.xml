@@ -37,6 +37,8 @@
   <string name="action_donate">Donera</string>
   <string name="action_feedback">Feedback</string>
   <string name="action_help">Hjälp</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Inställningar</string>
   <string name="action_send_test_notify">Skicka testmeddelande</string>
   <string name="action_show_system_apps">System appar</string>

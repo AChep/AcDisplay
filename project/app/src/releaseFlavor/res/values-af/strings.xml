@@ -37,6 +37,8 @@
   <string name="action_donate">Skenk</string>
   <string name="action_feedback">Terugvoer</string>
   <string name="action_help">Help</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">Instellings</string>
   <string name="action_send_test_notify">Send test notification</string>
   <string name="action_show_system_apps">Stelsel apps</string>

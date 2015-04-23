@@ -38,6 +38,8 @@
   <string name="action_donate">תרומה</string>
   <string name="action_feedback">משוב</string>
   <string name="action_help">עזרה</string>
+  <string name="action_clear">Clear</string>
+  <string name="action_configure">Configure</string>
   <string name="action_settings">הגדרות</string>
   <string name="action_send_test_notify">שליחת התראת בדיקה</string>
   <string name="action_show_system_apps">יישומי מערכת</string>

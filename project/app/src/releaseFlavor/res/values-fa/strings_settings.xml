@@ -59,6 +59,11 @@
   <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
   <string name="settings_emoticons_title">Emoticons</string>
   <string name="settings_override_fonts_title">Override system fonts</string>
+  <string name="settings_custom_widget_title">Widgets</string>
+  <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_adjust_width">Width:</string>
+  <string name="settings_custom_widget_adjust_height">Height:</string>
+  <string name="settings_custom_widget_touchable">Touchable</string>
   <string name="settings_circle_category">Unlock circle</string>
   <string name="settings_circle_animation_title">Unlock animation</string>
   <string name="settings_circle_color_inner_title">Circle color</string>
@@ -85,6 +90,13 @@
   <string name="settings_widget_pinnable_on">Notification widget stays expanded for some seconds after a touch.</string>
   <string name="settings_privacy_mode_title">Privacy (on secure lock)</string>
   <string name="settings_privacy_mode_disabled">غیرفعال</string>
+  <string name="settings_data_category">Data</string>
+  <string name="settings_restore_defaults_title">Restore defaults</string>
+  <string name="settings_restore_defaults_summary">Erases all user\'s settings excluding the blacklist.</string>
+  <string name="settings_restore_defaults_warning_title">Restore default settings?</string>
+  <string name="settings_restore_defaults_warning_message">All your settings excluding the blacklist will be erased! You won\'t be able to cancel this action.</string>
+  <string name="settings_data_backup_title">Back up settings</string>
+  <string name="settings_data_restore_title">Load settings</string>
   <string name="preference_inactive_hours_enabled">Inactive hours enabled</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         from:<br/><b><font color="#ffffff">%1$s</font></b>
