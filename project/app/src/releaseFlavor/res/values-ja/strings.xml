@@ -37,8 +37,8 @@
   <string name="action_donate">寄付</string>
   <string name="action_feedback">フィードバック</string>
   <string name="action_help">ヘルプ</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">クリア</string>
+  <string name="action_configure">構成</string>
   <string name="action_settings">設定</string>
   <string name="action_send_test_notify">テスト通知を送信</string>
   <string name="action_show_system_apps">システムアプリ</string>

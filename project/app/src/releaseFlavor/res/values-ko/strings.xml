@@ -37,8 +37,8 @@
   <string name="action_donate">후원</string>
   <string name="action_feedback">피드백</string>
   <string name="action_help">도움말</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">모두 지우기</string>
+  <string name="action_configure">구성</string>
   <string name="action_settings">설정</string>
   <string name="action_send_test_notify">테스트 알림 보내기</string>
   <string name="action_show_system_apps">시스템 앱</string>

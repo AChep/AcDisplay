@@ -59,8 +59,8 @@
   <string name="settings_status_battery_always_visible_off">Starea bateriei este afişatã când nivelul de încãrcare este redus sau atunci când se încarcã.</string>
   <string name="settings_emoticons_title">emoticoane</string>
   <string name="settings_override_fonts_title">schimbare fonturi sistem</string>
-  <string name="settings_custom_widget_title">Widgets</string>
-  <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_title">Widget-uri</string>
+  <string name="settings_custom_widget_empty_message">Nu a fost setat niciun widget. Click pe buton pentru a alege unul.</string>
   <string name="settings_custom_widget_adjust_width">Latime:</string>
   <string name="settings_custom_widget_adjust_height">Înălţime:</string>
   <string name="settings_custom_widget_touchable">Tangibil</string>
@@ -91,10 +91,10 @@
   <string name="settings_privacy_mode_title">Confidential (pe blocare securizata)</string>
   <string name="settings_privacy_mode_disabled">Dezactivat</string>
   <string name="settings_data_category">Date</string>
-  <string name="settings_restore_defaults_title">Restore defaults</string>
-  <string name="settings_restore_defaults_summary">Erases all user\'s settings excluding the blacklist.</string>
-  <string name="settings_restore_defaults_warning_title">Restore default settings?</string>
-  <string name="settings_restore_defaults_warning_message">All your settings excluding the blacklist will be erased! You won\'t be able to cancel this action.</string>
+  <string name="settings_restore_defaults_title">Restabilire valori implicite</string>
+  <string name="settings_restore_defaults_summary">Şterge toate setările utilizatorului cu excepţia listei neagre.</string>
+  <string name="settings_restore_defaults_warning_title">Restaureaza setările implicite?</string>
+  <string name="settings_restore_defaults_warning_message">Toate setarile excluzand lista neagra vor fi sterse! Acesta actiune nu poate fi anulata.</string>
   <string name="settings_data_backup_title">Fa o copie de siguranta a setarilor</string>
   <string name="settings_data_restore_title">Incarca setarile</string>
   <string name="preference_inactive_hours_enabled">Activare ore inactiv</string>
