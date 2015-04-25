@@ -310,7 +310,21 @@ class MediaController2Lollipop extends MediaController2 {
             }
             mMetadata.clear();
         } else {
-            final String id = data.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
+            String id;
+            try {
+                id = data.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
+            } catch (RuntimeException e) {
+                // This is weird, but happens on some devices
+                // periodically.
+                try {
+                    // Try again.
+                    id = data.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
+                } catch (RuntimeException e2) {
+                    mMetadata.clear();
+                    notifyOnMetadataChanged();
+                    return;
+                }
+            }
             if (id != null && id.equals(mMetadata.id)) return;
 
             mMetadata.id = id;
