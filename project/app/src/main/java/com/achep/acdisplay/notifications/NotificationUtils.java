@@ -97,13 +97,24 @@ public class NotificationUtils {
             if (service != null) {
                 // FIXME: Should I call the #deleteIntent?
                 PendingIntentUtils.sendPendingIntent(sbn.getNotification().deleteIntent);
-                if (Device.hasLollipopApi()) {
-                    service.cancelNotification(sbn.getKey());
-                } else {
-                    service.cancelNotification(
-                            sbn.getPackageName(),
-                            sbn.getTag(),
-                            sbn.getId());
+                try {
+                    if (Device.hasLollipopApi()) {
+                        service.cancelNotification(sbn.getKey());
+                    } else {
+                        service.cancelNotification(
+                                sbn.getPackageName(),
+                                sbn.getTag(),
+                                sbn.getId());
+                    }
+                } catch (SecurityException e) {
+                    // FIXME: Fix disallowed call from unknown listener exception.
+                    // java.lang.SecurityException: Disallowed call from unknown listener: android.service.notification.INotificationListener$Stub$Proxy@42339520
+                    // at android.os.Parcel.readException(Parcel.java:1465)
+                    // at android.os.Parcel.readException(Parcel.java:1419)
+                    // at android.app.INotificationManager$Stub$Proxy.cancelNotificationFromListener(INotificationManager.java:469)
+                    // at android.service.notification.NotificationListenerService.cancelNotification(NotificationListenerService.java:116)
+                    Log.e(TAG, "Failed to dismiss notification.");
+                    e.printStackTrace();
                 }
             } else {
                 Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
