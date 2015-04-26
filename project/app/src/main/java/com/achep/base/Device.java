@@ -124,4 +124,12 @@ public class Device {
         return hasTargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1);
     }
 
+    /**
+     * @return {@code true} if device is produced by LGE and probably has
+     * buggy software.
+     */
+    public static boolean isLge() {
+        return Build.BRAND.equalsIgnoreCase("lge");
+    }
+
 }
