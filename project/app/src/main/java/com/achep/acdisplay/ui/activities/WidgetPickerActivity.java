@@ -22,6 +22,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,6 +49,9 @@ import com.achep.base.utils.AppWidgetUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An activity for setting the custom App Widget, tweaking it
@@ -407,6 +411,15 @@ public class WidgetPickerActivity extends ActivityBase implements
     private void startAppWidgetDiscover() {
         Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetHost.allocateAppWidgetId());
+        /*
+         * This avoids a bug in the com.android.settings.AppWidgetPickActivity, which is used
+         * to select widgets. This just adds empty extras to the intent, avoiding the bug. See
+         * more: http://code.google.com/p/android/issues/detail?id=4272
+         */
+        ArrayList<Parcelable> customInfo = new ArrayList<>(0);
+        intent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, customInfo);
+        ArrayList<Parcelable> customExtras = new ArrayList<>(0);
+        intent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS, customExtras);
         startActivityForResult(intent, REQUEST_APPWIDGET_DISCOVER);
     }
 
