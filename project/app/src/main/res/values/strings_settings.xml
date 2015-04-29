@@ -41,17 +41,17 @@
 
     <!-- Lockscreen -->
     <string name="settings_keyguard_description">Use AcDisplay as the lockscreen. This is a beta feature and may be unstable.</string>
-    <string name="settings_keyguard_respect_inactive_time_title">Disable on inactive time</string>
+    <string name="settings_keyguard_respect_inactive_time_title">Disable during inactive period</string>
     <string name="settings_active_disable_on_low_battery_title">Disable on low battery</string>
-    <string name="settings_keyguard_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
+    <string name="settings_keyguard_enabled_when_notification_list_empty_title">Enable when no notifications</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
     <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
-    <string name="settings_active_respect_inactive_time_title">Disable on inactive time</string>
-    <string name="settings_active_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
+    <string name="settings_active_respect_inactive_time_title">Disable during inactive period</string>
+    <string name="settings_active_enabled_when_notification_list_empty_title">Enable when no notifications</string>
     <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled when there are no notifications.</string>
 
@@ -63,13 +63,13 @@
     <!-- Interface -->
     <string name="settings_full_screen_title">Full screen mode</string>
     <string name="settings_use_wallpaper_title">Use wallpaper</string>
-    <string name="settings_use_wallpaper_on">Your home screen\'s wallpaper is used as the background.</string>
+    <string name="settings_use_wallpaper_on">Your home screen\'s wallpaper will be used for the background.</string>
     <string name="settings_use_wallpaper_off">Solid black background.</string>
     <string name="settings_dynamic_background_title">Dynamic background</string>
     <string name="settings_dynamic_background_summary">Those are used as background: %1$s</string>
     <string name="settings_dynamic_background_disabled">Disabled</string>
     <string name="settings_status_battery_always_visible">Keep battery status</string>
-    <string name="settings_status_battery_always_visible_off">Status of battery is shown on low charge level or when plugged.</string>
+    <string name="settings_status_battery_always_visible_off">Battery Status is shown when the battery is low or the device is plugged in.</string>
     <string name="settings_emoticons_title">Emoticons</string>
     <string name="settings_override_fonts_title">Override system fonts</string>
     <string name="settings_custom_widget_title">Widgets</string>
@@ -89,8 +89,8 @@
 
     <!-- More… -->
     <string name="settings_only_while_charging_title">Only while charging</string>
-    <string name="settings_only_while_charging_on">App is only active while your device is charging. This applies to all features such as the lockscreen or active mode.</string>
-    <string name="settings_only_while_charging_off">App is always active.</string>
+    <string name="settings_only_while_charging_on">AcDisplay will only be active while your device is charging. This applies to all features, even the lockscreen or active mode.</string>
+    <string name="settings_only_while_charging_off">App is active all the time.</string>
     <string name="settings_inactive_hours_title">Inactive hours</string>
     <string name="settings_inactive_hours_disabled">Disabled</string>
     <string name="settings_inactive_hours_enabled">From %1$s to %2$s.</string>
