@@ -90,8 +90,7 @@ public abstract class TransformationDrawable extends Drawable {
         }
 
         setTransformationTarget(i);
-        mAnimator.cancel();
-        mAnimator.start();
+        if (!mAnimator.isRunning()) mAnimator.start();
     }
 
     /**
