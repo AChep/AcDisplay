@@ -23,14 +23,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.achep.acdisplay.Atomic;
+import com.achep.base.Build;
 import com.achep.base.Device;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
 
 import java.util.ArrayList;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * Allows an app to interact with an ongoing media session. Media buttons and
@@ -231,6 +235,7 @@ public abstract class MediaController2 implements
 
     protected void notifyOnMetadataChanged() {
         Check.getInstance().isInMainThread();
+        if (DEBUG) Log.d(TAG, "Notifying on metadata state changed.");
         synchronized (this) {
             for (MediaListener listener : mListeners) {
                 listener.onMetadataChanged(mMetadata);
@@ -245,6 +250,7 @@ public abstract class MediaController2 implements
 
     protected void notifyOnPlaybackStateChanged() {
         Check.getInstance().isInMainThread();
+        if (DEBUG) Log.d(TAG, "Notifying on playback state changed.");
         synchronized (this) {
             for (MediaListener listener : mListeners) {
                 listener.onPlaybackStateChanged(mPlaybackState);

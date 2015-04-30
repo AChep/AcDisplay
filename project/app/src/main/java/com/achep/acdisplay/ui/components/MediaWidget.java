@@ -48,6 +48,7 @@ import com.achep.acdisplay.graphics.BackgroundFactory;
 import com.achep.acdisplay.services.media.MediaController2;
 import com.achep.acdisplay.services.media.Metadata;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
+import com.achep.base.Build;
 import com.achep.base.Device;
 import com.achep.base.tests.Check;
 import com.achep.base.ui.drawables.PlayPauseDrawable;
@@ -142,6 +143,7 @@ public class MediaWidget extends Widget implements
                 }
                 // Refresh schedule.
                 if (mSeekUiAtomic.isRunning()) {
+                    if (DEBUG) Log.d(TAG, "Seek bar refresh tick.");
                     mHandler.postDelayed(this, REFRESH_RATE);
                 }
             }
