@@ -116,7 +116,7 @@
     <!-- Example: Mon, 7 April -->
     <string name="status_date_format">EEE, d MMMM</string>
 
-    <!-- Content description of the battery level icon for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <!-- Content description of the battery level icon for accessibility (not shown on the screen). [CHAR LIMIT=UNKNOWN] -->
     <string name="accessibility_battery_level">Battery <xliff:g id="number" example="100">%d</xliff:g> percent.</string>
 
 </resources>

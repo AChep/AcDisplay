@@ -20,7 +20,6 @@ package com.achep.acdisplay.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -29,16 +28,14 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.fragments.AcDisplayFragment;
+import com.achep.base.ui.animations.AnimatorListenerAdapter;
 import com.achep.base.utils.Operator;
-
-import static com.achep.base.Build.DEBUG;
 
 /**
  * Created by Artem Chepurnoy on 22.11.2014.
@@ -47,8 +44,10 @@ public abstract class DynamicBackground {
 
     protected static final String TAG = "DynamicBackground";
 
-    public static DynamicBackground newInstance(@NonNull AcDisplayFragment fragment,
-                                                @Nullable ImageView imageView) {
+    @NonNull
+    public static DynamicBackground newInstance(
+            @NonNull AcDisplayFragment fragment,
+            @Nullable ImageView imageView) {
         return new DynamicBackgroundCompat(fragment, imageView);
     }
 
@@ -101,13 +100,7 @@ public abstract class DynamicBackground {
      * Smoothly sets the background.
      */
     private void dispatchSetBackground(@Nullable Bitmap bitmap) {
-        Log.d("TESTING", "setting the real bg:" + bitmap);
         if (mImageView == null) return;
-        if (false) {
-            if (DEBUG) Log.d(TAG, "Skipped background change: using default one.");
-            return;
-        }
-
         if (mFragment.isPowerSaveMode()) { // No animations and no background.
             mImageView.setImageBitmap(null);
         } else {
@@ -156,6 +149,7 @@ public abstract class DynamicBackground {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    if (isCanceled()) return;
                     mImageView.setVisibility(View.GONE);
                     mImageView.setImageDrawable(null);
                 }
@@ -203,6 +197,7 @@ public abstract class DynamicBackground {
             }
         }
 
+        @NonNull
         private Resources getResources() {
             return mFragment.getResources();
         }
