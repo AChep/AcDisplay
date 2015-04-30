@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -48,10 +49,10 @@ import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.AppWidgetUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * An activity for setting the custom App Widget, tweaking it
@@ -425,14 +426,25 @@ public class WidgetPickerActivity extends ActivityBase implements
 
     @SuppressWarnings("NewApi")
     private void startAppWidgetConfigure(@NonNull AppWidgetProviderInfo appWidget, int id) {
-        if (Device.hasLollipopApi()) {
-            mAppWidgetHost.startAppWidgetConfigureActivityForResult(
-                    this, id, 0, REQUEST_APPWIDGET_CONFIGURE, null);
-        } else {
-            Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-            intent.setComponent(appWidget.configure);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-            startActivityForResult(intent, REQUEST_APPWIDGET_CONFIGURE);
+        try {
+            if (Device.hasLollipopApi()) {
+                mAppWidgetHost.startAppWidgetConfigureActivityForResult(
+                        this, id, 0, REQUEST_APPWIDGET_CONFIGURE, null);
+            } else {
+                Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+                intent.setComponent(appWidget.configure);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+                startActivityForResult(intent, REQUEST_APPWIDGET_CONFIGURE);
+            }
+        } catch (Exception e) {
+            if (Device.isLge()) {
+                CharSequence message = Html.fromHtml(getString(R.string.error_dialog_custom_widget_lg));
+                new MaterialDialog.Builder(this)
+                        .title(R.string.error_dialog_title)
+                        .content(message)
+                        .positiveText(android.R.string.ok)
+                        .show();
+            } else throw new RuntimeException(e);
         }
     }
 
