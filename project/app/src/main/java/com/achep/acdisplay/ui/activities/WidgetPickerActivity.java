@@ -488,7 +488,7 @@ public class WidgetPickerActivity extends ActivityBase implements
         updateAppWidgetFrameSize();
 
         // Update views
-        mFab.hide();
+        mFab.hide(hasWindowFocus());
         mEmptyView.setVisibility(View.GONE);
         mWidthSeekBar.setVisibility(View.VISIBLE);
         mWidthMessageView.setVisibility(View.VISIBLE);
