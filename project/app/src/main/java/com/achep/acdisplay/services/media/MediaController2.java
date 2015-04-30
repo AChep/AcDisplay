@@ -27,7 +27,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.achep.acdisplay.Atomic;
-import com.achep.base.Build;
 import com.achep.base.Device;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
