@@ -19,8 +19,6 @@
 package com.achep.base.ui.animations;
 
 import android.animation.Animator;
-import android.support.annotation.NonNull;
-import android.view.animation.Animation;
 
 /**
  * This adapter class provides empty implementations of the methods from {@link android.animation.Animator.AnimatorListener}.

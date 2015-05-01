@@ -167,7 +167,6 @@ public abstract class PreferenceFragmentBase extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPreferenceManager = PreferenceManagerUtils.newInstance(getActivity(), FIRST_REQUEST_CODE);
-        PreferenceManagerUtils.setFragment(mPreferenceManager, this);
     }
 
     @Override
@@ -345,21 +344,12 @@ public abstract class PreferenceFragmentBase extends Fragment implements
         onBindPreferences();
     }
 
-    /**
-     * @hide
-     */
     protected void onBindPreferences() {
     }
 
-    /**
-     * @hide
-     */
     protected void onUnbindPreferences() {
     }
 
-    /**
-     * @hide
-     */
     public ListView getListView() {
         ensureList();
         return mList;

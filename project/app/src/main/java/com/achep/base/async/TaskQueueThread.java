@@ -21,7 +21,6 @@ package com.achep.base.async;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.achep.base.Build;
 import com.achep.base.interfaces.IThreadFinishable;
 
 import java.util.Iterator;

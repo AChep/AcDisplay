@@ -107,18 +107,18 @@ public class SwitchBar extends LinearLayout implements ICheckable {
         });
     }
 
+    /*
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        /*
         post(new Runnable() {
             @Override
             public void run() {
                 // TODO: Somehow update padding left to fit with the title of ActionBar.
             }
         });
-        */
     }
+    */
 
     public void setIconResource(@DrawableRes int resource) {
         mIconView.setImageResource(resource);

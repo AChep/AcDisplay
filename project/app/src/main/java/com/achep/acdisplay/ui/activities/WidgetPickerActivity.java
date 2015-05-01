@@ -96,7 +96,6 @@ public class WidgetPickerActivity extends ActivityBase implements
     private MenuItem mTouchableMenuItem;
     private MenuItem mClearMenuItem;
     private Enabler mEnabler;
-    private ViewGroup mContent;
 
     private View mEmptyView;
 
@@ -118,7 +117,6 @@ public class WidgetPickerActivity extends ActivityBase implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_picker);
 
-        mContent = (ViewGroup) findViewById(android.R.id.content);
         mEmptyView = findViewById(R.id.empty);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
