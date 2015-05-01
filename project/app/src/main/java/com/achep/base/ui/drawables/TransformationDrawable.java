@@ -68,7 +68,7 @@ public abstract class TransformationDrawable extends Drawable {
             };
 
     protected TransformationDrawable(@NonNull float[][]... vertex) {
-        mVertexFrom = new float[2][vertex[0].length];
+        mVertexFrom = new float[2][vertex[0][0].length];
         mVertex = vertex;
         mProgress = 1f;
 
