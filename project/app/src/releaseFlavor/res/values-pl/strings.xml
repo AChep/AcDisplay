@@ -37,8 +37,8 @@
   <string name="action_donate">Wesprzyj</string>
   <string name="action_feedback">Opinie</string>
   <string name="action_help">Pomoc</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Wyczyść</string>
+  <string name="action_configure">Konfigurować</string>
   <string name="action_settings">Ustawienia</string>
   <string name="action_send_test_notify">Wyślij testowe powiadomienie</string>
   <string name="action_show_system_apps">Aplikacje systemowe</string>

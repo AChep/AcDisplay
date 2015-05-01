@@ -37,8 +37,8 @@
   <string name="action_donate">Lahjoita</string>
   <string name="action_feedback">Palaute</string>
   <string name="action_help">Apua</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Tyhjennä</string>
+  <string name="action_configure">Konfiguroi</string>
   <string name="action_settings">Asetukset</string>
   <string name="action_send_test_notify">Lähetä testi-ilmoitus</string>
   <string name="action_show_system_apps">Järjestelmän sovellukset</string>

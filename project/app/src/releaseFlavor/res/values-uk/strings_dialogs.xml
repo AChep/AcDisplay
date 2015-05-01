@@ -20,16 +20,16 @@
   -->
 <resources>
   <string name="about_dialog_message"><![CDATA[
-        AcDisplay — це безкоштовний додаток з <a href="http://repo.acdisplay.org">відкритими ісходниками</a>.
-        Авторське право 2013-%2$s <a href="http://artemchep.com">Артем Чепурний</a>. Всі права захищені.<br/>
+        AcDisplay — це безкоштовний додаток з <a href="http://repo.acdisplay.org">відкритим сирцевим кодом</a>.
+        Авторське право 2013-%2$s <a href="http://artemchep.com">Артем Чепурний</a>. Усі права захищені.<br/>
         <br/>
         Велике спасибі цим відкритим інструментам: %1$s, а також всім, хто
         <a href="http://translate.acdisplay.org">допоміг з перекладом додатку</a> чи пожертвував на його розвиток.
     ]]></string>
   <string name="donate_dialog_title">Пожертвувати</string>
-  <string name="donate_dialog_message">AcDisplay – це безкоштовний додаток з відкритим вихідним кодом. Ви можете показати свою вдячність, підтримавши розвиток через пожертвування:</string>
+  <string name="donate_dialog_message">AcDisplay – це безкоштовний додаток з відкритим сирцевим кодом. Ви можете показати свою вдячність, підтримавши розвиток через пожертвування:</string>
   <string name="donate_alert_no_responsibility">Зверніть увагу, що Google не відповідає за цей метод платежів.</string>
-  <string name="donate_billing_not_supported">Покупки у додатку не підтримуються цією систему.</string>
+  <string name="donate_billing_not_supported">Покупки у додатку не підтримуються цим пристроєм.</string>
   <string name="donate_thanks">Вельми дякую!</string>
   <string name="donation_1">Морозиво</string>
   <string name="donation_4">Чашка кави</string>
@@ -38,14 +38,13 @@
   <string name="donation_50">SSD</string>
   <string name="donation_99">Звукова система</string>
   <string name="cry_dialog_title">Підтримати розробку</string>
-  <string name="cry_dialog_message"><![CDATA[
-        AcDisplay is a free and <a href="http://repo.acdisplay.org">open source</a> app and we spend
-        a lot of time and resources on keeping it with time. Please, consider a donation to show your
-        appreciation and to support further development.
-    ]]></string>
+  <string name="cry_dialog_message"><![CDATA[        AcDisplay це безкоштовна та <a href="http://repo.acdisplay.org">відкрита</a> програма, та ми докладаємо
+        багато зусиль та часу для її підтримки. Будь ласка, розгляньте можливість пожертви аби показати вашу
+        вдячність та допомогти подальшій розробці.
+    ]]></string>
   <string name="help_dialog_title">Допомога</string>
-  <string name="feedback_dialog_title">Зворотній зв\'язок</string>
-  <string name="feedback_dialog_message_hint">Ваше повідомлення. Специфікації пристрою буде додано автоматично.</string>
+  <string name="feedback_dialog_title">Зворотній зв’язок</string>
+  <string name="feedback_dialog_message_hint">Ваше повідомлення. Характеристики пристрою будуть додані автоматично.</string>
   <string name="feedback_dialog_attach_log">Прикріпити журнал подій</string>
   <string name="feedback_dialog_read_help">Запитання та відповіді</string>
   <string name="feedback_error_no_app">Встановіть додаток для відправлення електронної пошти.</string>
@@ -53,7 +52,7 @@
   <string name="feedback_error_accessing_log">Помилка створення журналу подій. Помилка: %1$s</string>
   <string name="compat_dialog_title">Режимі сумісності</string>
   <string name="compat_dialog_message">AcDisplay працює у режимі сумістності для забезпечення підтримки Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Because AcDisplay is using the accessibility service, it cannot detect notifications being dismissed/updated, or dismiss notifications from the notifications drawer.</string>
+  <string name="compat_dialog_item_notification">AcDisplay використовує сервіс доступності, через це вона не може визначати змін/відхилень повідомлень чи відхиляти повідомлення з драйверу повідомлень.</string>
   <string name="compat_dialog_item_immersive_mode">Завжди відображається панель навігації.</string>
   <string name="compat_dialog_item_music_widget">Немає віджету музики.</string>
 </resources>

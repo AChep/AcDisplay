@@ -37,10 +37,10 @@
   <string name="action_donate">Donation</string>
   <string name="action_feedback">Commentaire</string>
   <string name="action_help">Aide</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Effacer</string>
+  <string name="action_configure">Configurer</string>
   <string name="action_settings">Paramètres</string>
-  <string name="action_send_test_notify">Envoyer une notification d\'essai</string>
+  <string name="action_send_test_notify">Notification d\'essai</string>
   <string name="action_show_system_apps">Applications système</string>
   <string name="close">Fermer</string>
   <string name="later">Plus tard</string>
@@ -54,8 +54,8 @@
   <string name="media_pause_description">Pause</string>
   <string name="media_play_description">Lecture</string>
   <string name="media_stop_description">Arrêter</string>
-  <string name="notification_init_text">Rejetez simplement cette notification.</string>
-  <string name="notification_test_message">Ceci est un exemple de notification.</string>
+  <string name="notification_init_text">Rejeter cette notification.</string>
+  <string name="notification_test_message">Exemple de notification.</string>
   <string name="notification_test_message_large">Glissez vers le bas pour supprimer la notification.\nGlissez partout ailleurs pour déverrouiller.</string>
   <string name="privacy_mode_hidden_content">Contenu masqué.</string>
   <string name="remote_enable_acdisplay">AcDisplay est activé.</string>
