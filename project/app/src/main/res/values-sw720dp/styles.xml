@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<resources>
+
+    <style name="MaterialAcDisplay.LargeClock" parent="MaterialAcDisplay" >
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">100sp</item>
+        <item name="android:maxLines">1</item>
+
+        <!-- Use custom font on Android KitKat or lower. -->
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="font">roboto_thin</item>
+        <item name="font_beforeApi">21</item>
+    </style>
+
+</resources>
