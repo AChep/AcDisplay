@@ -156,8 +156,8 @@ class MediaController2Lollipop extends MediaController2 {
 
         // Init a new thread.
         mThread = new T(this);
-        mThread.setPriority(Thread.MIN_PRIORITY);
-        mThread.start();
+//        mThread.setPriority(Thread.MIN_PRIORITY);
+//        mThread.start();
 
         try {
             mMSManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
@@ -177,7 +177,7 @@ class MediaController2Lollipop extends MediaController2 {
     @Override
     public void onStop(Object... objects) {
         // Force stop the thread.
-        mThread.finish(true);
+//        mThread.finish(true);
 
         if (mSessionListening) {
             mMSManager.removeOnActiveSessionsChangedListener(mSessionListener);
@@ -381,6 +381,11 @@ class MediaController2Lollipop extends MediaController2 {
             }
 
             object.run(mc);
+        }
+
+        @Override
+        public void sendTask(@NonNull E object) {
+            onHandleTask(object);
         }
 
         @Override
