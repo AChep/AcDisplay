@@ -57,7 +57,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
         synchronized (monitor) {
             // Init a new thread.
             mThread = new T(mMediaController);
-            mThread.start();
+//            mThread.start();
         }
     }
 
@@ -65,7 +65,7 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
     public void onStop(Object... objects) {
         synchronized (monitor) {
             // Force stop the thread.
-            mThread.finish(true);
+//            mThread.finish(true);
         }
         mMediaController.onStop(objects);
     }
@@ -90,6 +90,11 @@ public class MediaControllerAsyncWrapper extends MediaController2 {
             if (TextUtils.equals(object.id, mc.getMetadata().id)) {
                 object.run(mc);
             }
+        }
+
+        @Override
+        public void sendTask(@NonNull E object) {
+            onHandleTask(object);
         }
 
         @Override

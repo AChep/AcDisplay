@@ -24,4 +24,16 @@
     android:layout_gravity="center"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="4dp" />
+    android:paddingBottom="4dp">
+
+    <com.achep.base.ui.widgets.TextView
+        android:id="@+id/empty"
+        style="?acDisplaySubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:maxLines="1000"
+        android:maxWidth="@dimen/scene_max_width"
+        android:text="@string/settings_custom_widget_empty_message_acdisplay" />
+
+</LinearLayout>

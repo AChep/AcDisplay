@@ -69,14 +69,6 @@ public final class PreferenceManagerUtils {
     }
 
     /**
-     * Sets the owning preference fragment
-     */
-    public static void setFragment(@NonNull PreferenceManager manager,
-                                   PreferenceFragmentBase fragment) {
-        // stub
-    }
-
-    /**
      * Sets the callback to be invoked when a {@link android.preference.Preference} in the
      * hierarchy rooted at this {@link android.preference.PreferenceManager} is clicked.
      *

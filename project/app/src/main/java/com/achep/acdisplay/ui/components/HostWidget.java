@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -56,6 +57,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
     private final MyAppWidgetHost mAppWidgetHost;
     private MyAppWidgetHostView mHostView;
     private ViewGroup mHostContainer;
+    private View mEmptyView;
 
     private boolean mHostViewNeedsReInflate;
 
@@ -118,6 +120,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
         }
 
         mHostContainer = (ViewGroup) sceneView.findViewById(R.id.scene);
+        mEmptyView = sceneView.findViewById(R.id.empty);
         return sceneView;
     }
 
@@ -139,9 +142,13 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
 
         int id = getConfig().getCustomWidgetId();
         if (!AppWidgetUtils.isValidId(id)) {
-            mHostContainer.removeAllViews();
-            mHostViewNeedsReInflate = false;
-            mHostView = null;
+            if (mHostView != null) {
+                ViewUtils.removeFromParent(mHostView);
+                mEmptyView.setVisibility(View.VISIBLE);
+
+                mHostViewNeedsReInflate = false;
+                mHostView = null;
+            }
             return;
         }
 
@@ -155,6 +162,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER_HORIZONTAL);
             mHostContainer.addView(mHostView, lp);
+            mEmptyView.setVisibility(View.GONE);
         } else if (!mHostViewNeedsReInflate && mHostView.getAppWidgetId() == id) return;
         AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
         mAppWidgetHost.updateView(context, id, appWidget, mHostView);

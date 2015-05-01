@@ -37,8 +37,8 @@
   <string name="action_donate">Донирај</string>
   <string name="action_feedback">Повратна информација</string>
   <string name="action_help">Помоћ</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Обриши</string>
+  <string name="action_configure">Подеси</string>
   <string name="action_settings">Подешавања</string>
   <string name="action_send_test_notify">Пошаљи тест обавештења</string>
   <string name="action_show_system_apps">Системске апликације</string>

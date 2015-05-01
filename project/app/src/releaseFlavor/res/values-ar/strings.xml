@@ -37,8 +37,8 @@
   <string name="action_donate">تبرع</string>
   <string name="action_feedback">إبلاغ أو اقتراح</string>
   <string name="action_help">مساعدة</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">حذف</string>
+  <string name="action_configure">ضبط</string>
   <string name="action_settings">الإعدادات</string>
   <string name="action_send_test_notify">إرسال إشعار اختباري</string>
   <string name="action_show_system_apps">تطبيقات النظام</string>

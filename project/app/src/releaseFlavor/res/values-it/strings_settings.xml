@@ -63,7 +63,7 @@
   <string name="settings_custom_widget_empty_message">Nessun widget impostato. Premi il bottone per selezionarne uno.</string>
   <string name="settings_custom_widget_adjust_width">Larghezza:</string>
   <string name="settings_custom_widget_adjust_height">Altezza:</string>
-  <string name="settings_custom_widget_touchable">Toccabile</string>
+  <string name="settings_custom_widget_touchable">Tocco</string>
   <string name="settings_circle_category">Cerchio di sblocco</string>
   <string name="settings_circle_animation_title">Animazione di sblocco</string>
   <string name="settings_circle_color_inner_title">Colore del cerchio</string>

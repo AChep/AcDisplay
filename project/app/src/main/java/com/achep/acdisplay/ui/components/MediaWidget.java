@@ -142,6 +142,7 @@ public class MediaWidget extends Widget implements
                 }
                 // Refresh schedule.
                 if (mSeekUiAtomic.isRunning()) {
+                    if (DEBUG) Log.d(TAG, "Seek bar refresh tick.");
                     mHandler.postDelayed(this, REFRESH_RATE);
                 }
             }

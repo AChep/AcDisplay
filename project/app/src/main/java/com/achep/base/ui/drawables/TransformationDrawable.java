@@ -29,6 +29,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Property;
 
 import com.achep.base.utils.FloatProperty;
@@ -45,11 +46,11 @@ public abstract class TransformationDrawable extends Drawable {
     private final Path mPath;
     private final Paint mPaint;
     private final float[][][] mVertex;
+    private final float[][] mVertexFrom;
 
     private int mSize = Integer.MAX_VALUE;
 
     private float mProgress;
-    private int mFromShape;
     private int mToShape;
 
     private final Animator mAnimator = ObjectAnimator.ofFloat(this, TRANSFORM, 0f, 1f);
@@ -67,7 +68,9 @@ public abstract class TransformationDrawable extends Drawable {
             };
 
     protected TransformationDrawable(@NonNull float[][]... vertex) {
+        mVertexFrom = new float[2][vertex[0].length];
         mVertex = vertex;
+        mProgress = 1f;
 
         mPath = new Path();
         mPath.setFillType(Path.FillType.WINDING);
@@ -78,20 +81,16 @@ public abstract class TransformationDrawable extends Drawable {
         mPaint.setStyle(Paint.Style.FILL);
     }
 
-    public void setColor(int color) {
-        mPaint.setColor(color);
-        invalidateSelf();
+    public void transformToShape(int i) {
+        transformToShape(i, true);
     }
 
-    public void transformToShape(int i) {
-        if (mToShape == i) {
-            // Otherwise this will not be animated.
-            return;
+    public void transformToShape(int i, boolean animate) {
+        if (setTargetShape(i) && animate && !mAnimator.isRunning()) {
+            // If the target shape is new, then we probably should animate the
+            // change.
+            mAnimator.start();
         }
-
-        setTransformationTarget(i);
-        mAnimator.cancel();
-        mAnimator.start();
     }
 
     /**
@@ -103,9 +102,11 @@ public abstract class TransformationDrawable extends Drawable {
         mSize = size;
     }
 
-    public void setTransformationTarget(int i) {
-        mFromShape = mToShape;
+    public boolean setTargetShape(int i) {
+        if (mToShape == i) return false;
+        updateVertexFrom();
         mToShape = i;
+        return true;
     }
 
     public void setTransformation(float progress) {
@@ -137,9 +138,21 @@ public abstract class TransformationDrawable extends Drawable {
     }
 
     private float calcTransformation(int type, int i, float progress, float size) {
-        float v0 = mVertex[mFromShape][type][i] * (1f - progress);
+        float v0 = mVertexFrom[type][i] * (1f - progress);
         float v1 = mVertex[mToShape][type][i] * progress;
         return (v0 + v1) * size;
+    }
+
+    /**
+     * Updates the current `init` state of the icon. While animating, the icon will go
+     * from this state to one of the defined {@link #mVertex by vertexes}.
+     */
+    private void updateVertexFrom() {
+        int length = mVertexFrom[0].length;
+        for (int i = 0; i < length; i++) {
+            mVertexFrom[0][i] = calcTransformation(0, i, mProgress, 1f);
+            mVertexFrom[1][i] = calcTransformation(1, i, mProgress, 1f);
+        }
     }
 
     /**
@@ -172,8 +185,22 @@ public abstract class TransformationDrawable extends Drawable {
      * {@inheritDoc}
      */
     @Override
-    public void setColorFilter(ColorFilter cf) {
+    public void setColorFilter(@Nullable ColorFilter cf) {
         mPaint.setColorFilter(cf);
+        invalidateSelf();
+    }
+
+    /**
+     * Specify an optional color filter for the drawable. Note that the color
+     * is an int containing alpha as well as r,g,b. This 32bit value is not
+     * pre-multiplied, meaning that its alpha can be any value, regardless
+     * of the values of r,g,b. See the {@link Color Color class} for more details.
+     *
+     * @param color the color to be set
+     * @see #setColorFilter(ColorFilter)
+     */
+    public void setColor(int color) {
+        mPaint.setColor(color);
         invalidateSelf();
     }
 

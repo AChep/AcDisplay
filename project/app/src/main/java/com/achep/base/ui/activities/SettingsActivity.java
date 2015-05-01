@@ -208,7 +208,7 @@ public abstract class SettingsActivity extends ActivityBase implements
 
         setContentView(R.layout.settings_main_dashboard);
 
-        mContent = (ViewGroup) findViewById(R.id.main_content);
+        mContent = (ViewGroup) findViewById(android.R.id.content);
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);
 
@@ -414,7 +414,7 @@ public abstract class SettingsActivity extends ActivityBase implements
 
         Fragment f = Fragment.instantiate(this, fragmentName, args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_content, f);
+        transaction.replace(android.R.id.content, f);
 
         if (withTransition && Device.hasKitKatApi())
             TransitionManager.beginDelayedTransition(mContent);

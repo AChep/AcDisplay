@@ -35,6 +35,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Created by Artem on 21.01.14.
  */
@@ -46,6 +48,13 @@ public class ViewUtils {
     private static final MotionEventHandler MOTION_EVENT_HANDLER = Device.hasKitKatApi()
             ? new MotionEventHandlerReflective()
             : new MotionEventHandlerReflectiveCompat();
+
+    public static void removeFromParent(@NonNull View view) {
+        ViewGroup vg = (ViewGroup) view.getParent();
+        if (vg != null) {
+            vg.removeView(view);
+        } else if (DEBUG) LogUtils.v(TAG, "Tried to remove parent of an orphan view.", 3);
+    }
 
     public static boolean isTouchPointInView(@NonNull View view, float x, float y) {
         final int[] coordinates = new int[3];

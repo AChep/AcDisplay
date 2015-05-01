@@ -38,8 +38,8 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="action_donate">Spenden</string>
   <string name="action_feedback">Rückmeldung</string>
   <string name="action_help">Hilfe</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Löschen</string>
+  <string name="action_configure">Konfigurieren</string>
   <string name="action_settings">Einstellungen</string>
   <string name="action_send_test_notify">Testbenachrichtigung senden</string>
   <string name="action_show_system_apps">System-Apps</string>
@@ -50,11 +50,11 @@ Wenn sie neue Nachrichten sehen möchten müssen sie Ihr Telefon nur aus der Tas
   <string name="off">Ausgeschaltet</string>
   <string name="enabled">Aktiviert</string>
   <string name="disabled">Deaktiviert</string>
-  <string name="media_prev_description">Vorheriger-Titel-Taste</string>
-  <string name="media_next_description">Nächster-Titel-Taste</string>
+  <string name="media_prev_description">Vorheriger-Titel-Knopf</string>
+  <string name="media_next_description">Nächster Titel Taste</string>
   <string name="media_pause_description">Pause-Taste</string>
-  <string name="media_play_description">Play-Taste</string>
-  <string name="media_stop_description">Stopp-Taste</string>
+  <string name="media_play_description">Play-Knopf</string>
+  <string name="media_stop_description">Stopp-Knopf</string>
   <string name="notification_init_text">Verwerfe diese Benachrichtigung ganz einfach.</string>
   <string name="notification_test_message">Dies ist eine Testbenachrichtigung.</string>
   <string name="notification_test_message_large">Wische nach unten um die Benachrichtigung auszublenden.\n Wische irgendwo zum entsperren.</string>

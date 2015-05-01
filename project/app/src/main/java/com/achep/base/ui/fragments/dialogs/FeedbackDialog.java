@@ -203,8 +203,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
      * After calling this method you no longer able to get panel back.
      */
     private void recycleFaqPanel() {
-        ViewGroup viewGroup = (ViewGroup) mFaqContainer.getParent();
-        viewGroup.removeView(mFaqContainer);
+        ViewUtils.removeFromParent(mFaqContainer);
         mFaqContainer = null;
     }
 

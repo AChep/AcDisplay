@@ -26,6 +26,7 @@ import android.view.accessibility.AccessibilityEvent;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.base.Device;
+import com.achep.base.permissions.Permission;
 
 /**
  * Created by Artem Chepurnoy on 06.09.2014.
@@ -49,7 +50,9 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
                 Parcelable parcelable = event.getParcelableData();
                 if (parcelable instanceof Notification) {
-                    if (Device.hasJellyBeanMR2Api()) {
+                    if (Device.hasJellyBeanMR2Api() && Permission
+                            .newInstance(this, Permission.PERMISSION_NOTIFICATION_LISTENER)
+                            .isActive()) {
                         // No need to use the accessibility service
                         // instead of NotificationListener.
                         return;
