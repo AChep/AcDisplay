@@ -39,7 +39,7 @@ import com.achep.acdisplay.R;
 import com.achep.base.AppHeap;
 import com.achep.base.billing.Bitcoin;
 import com.achep.base.billing.PayPal;
-import com.achep.base.ui.activities.ActivityBase;
+import com.achep.base.interfaces.IActivityBase;
 import com.achep.base.ui.adapters.BetterArrayAdapter;
 import com.achep.base.ui.widgets.HeaderGridView;
 import com.achep.base.ui.widgets.TextView;
@@ -87,14 +87,16 @@ public class DonateDialog extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof ActivityBase) {
-            ActivityBase ma = (ActivityBase) activity;
+        if (activity instanceof IActivityBase) {
+            IActivityBase ma = (IActivityBase) activity;
             mCheckout = ma.getCheckout();
 
-            if (mCheckout == null) throw new RuntimeException("You must call #requestCheckout()" +
-                    " on the activity before!");
+            if (mCheckout == null) {
+                String message = "You must call #requestCheckout() on the activity before!";
+                throw new RuntimeException(message);
+            }
         } else throw new RuntimeException("Host activity must be an " +
-                "instance of ActivityBase.class!");
+                "instance of IActivityBase.class!");
     }
 
     @Override
