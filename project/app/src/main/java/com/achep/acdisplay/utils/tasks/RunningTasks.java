@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 
 import com.achep.base.Device;
 
+import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 
 /**
@@ -32,7 +33,7 @@ import java.lang.ref.SoftReference;
 public abstract class RunningTasks {
 
     @NonNull
-    private static SoftReference<RunningTasks> sFactoryRef = new SoftReference<>(null);
+    private static Reference<RunningTasks> sFactoryRef = new SoftReference<>(null);
 
     @NonNull
     public static RunningTasks getInstance() {
