@@ -32,7 +32,7 @@
   <string name="permissions_notifications_grant_manually">Gå till Inställningar &gt; Säkerhet &gt; Åtkomst till meddelanden och aktivera AcDisplay.</string>
   <string name="permissions_usage_stats">Användarstatistik</string>
   <string name="permissions_usage_stats_description">Behövs för att undvika överliggande larm och telefonapplikationer.</string>
-  <string name="permissions_usage_stats_error">The device manufacturer had removed this public permission from his Android version. There\'s no way to fix this issue, except waiting for the fix from the manufacturer.</string>
+  <string name="permissions_usage_stats_error">The device manufacturer has removed this public permission from their Android version. There\'s no way to fix this issue, except waiting for a fix from the manufacturer.</string>
   <string name="action_about">Om</string>
   <string name="action_donate">Donera</string>
   <string name="action_feedback">Feedback</string>

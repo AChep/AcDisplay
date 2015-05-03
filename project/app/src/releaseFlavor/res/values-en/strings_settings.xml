@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled regardless of whether there are notifications or not.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled when there are no notifications.</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">Override system fonts</string>
   <string name="settings_custom_widget_title">Widgets</string>
   <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">Width:</string>
   <string name="settings_custom_widget_adjust_height">Height:</string>
   <string name="settings_custom_widget_touchable">Touchable</string>

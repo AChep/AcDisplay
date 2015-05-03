@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">אפשור כאשר אין התראות</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">מצב פעיל מופעל בין אם ישנן התראות או לא.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">מצב פעיל אינו מופעל כאשר אין התראות.</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">הער מכשיר בהתראה</string>
   <string name="settings_notify_min_priority_title">עדיפות מינימלית</string>
   <string name="settings_notify_max_priority_title">עדיפות מקסימלית</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">עקוף גופני מערכת</string>
   <string name="settings_custom_widget_title">וידג\'אט</string>
   <string name="settings_custom_widget_empty_message">אין עדיין וידג\'ט מותאם אישית. לחץ על הכפתור לבחור אחד.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">רוחב:</string>
   <string name="settings_custom_widget_adjust_height">גובה:</string>
   <string name="settings_custom_widget_touchable">אפשר לגעת</string>

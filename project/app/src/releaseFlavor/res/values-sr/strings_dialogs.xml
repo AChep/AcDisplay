@@ -54,4 +54,9 @@ All Rights Reserved.<br/>
   <string name="compat_dialog_item_notification">Зато што AcDisplay користи сервис доступности, не може детектовати да ли је обавештење отказано/ажурирано,  или одбаци обавештења са панела обавештења.</string>
   <string name="compat_dialog_item_immersive_mode">Навигациони дугмићи су увек видљиви.</string>
   <string name="compat_dialog_item_music_widget">Нема widget-а за музику.</string>
+  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>

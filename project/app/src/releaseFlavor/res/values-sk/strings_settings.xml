@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Povoliť, keď nie sú žiadne oznámenia</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktívny režim je povolený bez ohľadu na to, či sú k dispozícii oznámenia alebo nie.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktívny režim je vypnutý, keď nie sú k dispozícii žiadne oznámenia.</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">Prebudiť pri novom oznámení</string>
   <string name="settings_notify_min_priority_title">Najnižšia priorita</string>
   <string name="settings_notify_max_priority_title">Najvyššia priorita</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">Prepísanie systémových písiem</string>
   <string name="settings_custom_widget_title">Widgets</string>
   <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">Width:</string>
   <string name="settings_custom_widget_adjust_height">Height:</string>
   <string name="settings_custom_widget_touchable">Touchable</string>

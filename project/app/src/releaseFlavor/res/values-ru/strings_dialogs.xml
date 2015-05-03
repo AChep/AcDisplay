@@ -56,4 +56,9 @@
   <string name="compat_dialog_item_notification">Из-за того, что приложение вынуждено использовать сервис дополнительных возможностей, оно не может узнать об очистке либо обновлении уведомлений, а также не может очистить уведомление из панели уведомлений.</string>
   <string name="compat_dialog_item_immersive_mode">Панель навигации всегда отображается.</string>
   <string name="compat_dialog_item_music_widget">Нет виджета музыки.</string>
+  <string name="error_dialog_title">Что-то пошло не так</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Из-за ошибки в программном обеспечении от LG, пользовательский виджет не может быть установлен.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Узнать больше</a>.
+    ]]></string>
 </resources>

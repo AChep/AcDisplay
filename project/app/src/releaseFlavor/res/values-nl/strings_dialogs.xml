@@ -49,4 +49,9 @@
   <string name="compat_dialog_item_notification">Omdat AcDisplay de toegankelheids-service aan het gebruiken is, kunnen geüpdatete/gesloten notificaties niet gedetecteerd worden, of notificaties van het notificatie paneel niet gesloten worden.</string>
   <string name="compat_dialog_item_immersive_mode">Navigatiebalk is altijd zichtbaar.</string>
   <string name="compat_dialog_item_music_widget">Geen muziekwidget.</string>
+  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>

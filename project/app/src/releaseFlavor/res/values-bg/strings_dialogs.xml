@@ -56,4 +56,9 @@
   <string name="compat_dialog_item_notification">Защото AcDisplay се използва услугата на достъпност и не може да открие нотификации, които се отхвърлят/актуализират, или да отхвърли нотификация от листа с нотификации.</string>
   <string name="compat_dialog_item_immersive_mode">Навигационна лента винаги да се показва.</string>
   <string name="compat_dialog_item_music_widget">Няма музикална джаджа.</string>
+  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>
