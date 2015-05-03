@@ -40,7 +40,7 @@
   <string name="action_clear">Очистити</string>
   <string name="action_configure">Налаштувати</string>
   <string name="action_settings">Налаштування</string>
-  <string name="action_send_test_notify">Тестове сповіщення</string>
+  <string name="action_send_test_notify">Тестове повідомлення</string>
   <string name="action_show_system_apps">Системні програми</string>
   <string name="close">Закрити</string>
   <string name="later">Пізніше</string>

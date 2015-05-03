@@ -33,7 +33,7 @@
   <string name="settings_interface_title">Інтерфейс</string>
   <string name="settings_more_title">Більше&#8230;</string>
   <string name="settings_dev_title">Для розробників</string>
-  <string name="settings_keyguard_description">Використовувати AcDisplay у якості екрану блокування. Це пробна функція і вона що може бути нестабільною.</string>
+  <string name="settings_keyguard_description">Використовувати AcDisplay у якості екрану блокування. Це пробна функція і вона може бути нестабільною.</string>
   <string name="settings_keyguard_respect_inactive_time_title">Вимикати під час неактивності</string>
   <string name="settings_active_disable_on_low_battery_title">Вимикати при низькому заряді аккумулятора</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Вмикати коли немає сповіщень</string>

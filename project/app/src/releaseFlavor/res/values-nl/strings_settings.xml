@@ -88,7 +88,7 @@
   <string name="settings_lock_on_dismiss_last_notify_off">Scherm blijft aan na het annuleren van de laatste zichtbare melding.</string>
   <string name="settings_widget_pinnable_title">Pinbare meldingen</string>
   <string name="settings_widget_pinnable_on">Melding widget blijft uitgeklapt voor enkele seconden nadat je het hebt aangeraakt.</string>
-  <string name="settings_privacy_mode_title">Privacy (tijdens secure lock)</string>
+  <string name="settings_privacy_mode_title">Privacy (tijdens beveiligde vergrendeling)</string>
   <string name="settings_privacy_mode_disabled">Uitgeschakeld</string>
   <string name="settings_data_category">Data</string>
   <string name="settings_restore_defaults_title">Restore defaults</string>
