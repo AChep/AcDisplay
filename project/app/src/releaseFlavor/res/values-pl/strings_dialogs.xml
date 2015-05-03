@@ -51,4 +51,9 @@ Podziękowania dla tych narzędzi o otwartym kodzie źródłowym: %1$s i wszystk
   <string name="compat_dialog_item_notification">Ponieważ AcDisplay używa usługi Dostępności, nie może wykryć aktualizacji lub usunięcia powiadomienia, ani nie może też usunąć powiadomień.</string>
   <string name="compat_dialog_item_immersive_mode">Pasek nawigacji jest zawsze wyświetlany.</string>
   <string name="compat_dialog_item_music_widget">Brak widżetu muzyki.</string>
+  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>

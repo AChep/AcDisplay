@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">تفعيل في حالة عدم توفر أية إشعارات</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">الوضع النشط مفعّل في حال توفُر إشعارات من عدمها.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">الوضع النشط معطل حين لا تتوفر أية إشعارات.</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">إيقاظ عند وصول إشعار</string>
   <string name="settings_notify_min_priority_title">الأولوية الدنيا</string>
   <string name="settings_notify_max_priority_title">الأولوية القصوى</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">استبدال خطوط النظام</string>
   <string name="settings_custom_widget_title">الأدوات</string>
   <string name="settings_custom_widget_empty_message">لا توجد أدوات مخصصة بعد. استخدم الزر لاختيار واحدة.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">العرض:</string>
   <string name="settings_custom_widget_adjust_height">الطول:</string>
   <string name="settings_custom_widget_touchable">قابل للّمس</string>

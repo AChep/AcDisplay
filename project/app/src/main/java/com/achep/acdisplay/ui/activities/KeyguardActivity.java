@@ -61,7 +61,6 @@ public abstract class KeyguardActivity extends ActivityBase implements
     private BroadcastReceiver mScreenOffReceiver;
     private KeyguardManager mKeyguardManager;
     private long mUnlockingTime;
-    private boolean mAttachedToWindow;
     private boolean mResumed;
 
     private boolean mTimeoutPaused = true;
@@ -149,7 +148,6 @@ public abstract class KeyguardActivity extends ActivityBase implements
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mAttachedToWindow = true;
 
         // Handle intents
         if (hasWakeUpExtra()) {
@@ -158,7 +156,6 @@ public abstract class KeyguardActivity extends ActivityBase implements
     }
 
     private void acquireWakeUpLock() {
-        Check.getInstance().isTrue(mAttachedToWindow);
         int flags = PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK;
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(flags, "Turn the keyguard on.");
@@ -184,7 +181,6 @@ public abstract class KeyguardActivity extends ActivityBase implements
 
     @Override
     public void onDetachedFromWindow() {
-        mAttachedToWindow = false;
         if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
         super.onDetachedFromWindow();
     }

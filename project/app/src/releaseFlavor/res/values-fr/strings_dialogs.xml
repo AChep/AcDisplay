@@ -47,4 +47,9 @@
   <string name="compat_dialog_item_notification">AcDisplay utilise le service de l\'accessibilité, il ne peut donc pas détecter des notifications rejetées/mises à jour, ou fermer les notifications.</string>
   <string name="compat_dialog_item_immersive_mode">La barre de navigation est toujours affichée.</string>
   <string name="compat_dialog_item_music_widget">Aucun widget musique.</string>
+  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>

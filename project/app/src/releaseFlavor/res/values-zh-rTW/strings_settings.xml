@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">不論是否有通知，一律啟用主動模式。</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">沒有通知時停用主動模式。</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">有通知時喚醒裝置</string>
   <string name="settings_notify_min_priority_title">最低優先順序</string>
   <string name="settings_notify_max_priority_title">最高優先順序</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">覆寫系統字型</string>
   <string name="settings_custom_widget_title">小工具</string>
   <string name="settings_custom_widget_empty_message">尚未設定自訂的小工具。輕觸下方的按鈕來挑一個喜歡的吧。</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">寬度</string>
   <string name="settings_custom_widget_adjust_height">高度</string>
   <string name="settings_custom_widget_touchable">可點擊操作</string>

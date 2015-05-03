@@ -48,4 +48,9 @@ AcDisplay este o aplicatie gratuita şi <a href="http://repo.acdisplay.org"> ope
   <string name="compat_dialog_item_notification">Deoarece AcDisplay Foloseste serviciul de accesibilitate, nu poate detecta notificări eliminate/actualizate, sau sa respinga comunicările din zona de notificari.</string>
   <string name="compat_dialog_item_immersive_mode">Bara de navigatie este afisata intotdeauna.</string>
   <string name="compat_dialog_item_music_widget">Fara widget de muzica.</string>
+  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>

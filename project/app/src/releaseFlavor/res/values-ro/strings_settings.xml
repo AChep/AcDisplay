@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Activ când nu sunt notificări</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Modul activ este activat indiferent dacă sunt notificări sau nu.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Modul activ este dezactivat când nu sunt notificări.</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">Trezire la notificare</string>
   <string name="settings_notify_min_priority_title">Prioritate minima</string>
   <string name="settings_notify_max_priority_title">Prioritate maxima</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">schimbare fonturi sistem</string>
   <string name="settings_custom_widget_title">Widget-uri</string>
   <string name="settings_custom_widget_empty_message">Nu a fost setat niciun widget. Click pe buton pentru a alege unul.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">Latime:</string>
   <string name="settings_custom_widget_adjust_height">Înălţime:</string>
   <string name="settings_custom_widget_touchable">Tangibil</string>

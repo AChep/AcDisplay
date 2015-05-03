@@ -45,6 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Activer quand il n\'y a pas de notifications</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Le mode actif est activé qu\'il y aie des notifications ou pas.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Le mode actif est désactivé quand il n\'y a pas de notifications.</string>
+  <string name="settings_advanced_category">Advanced</string>
+  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">Réveiller à la réception d\'une notification</string>
   <string name="settings_notify_min_priority_title">Priorité minimale</string>
   <string name="settings_notify_max_priority_title">Priorité maximale</string>
@@ -61,6 +65,7 @@
   <string name="settings_override_fonts_title">Remplacer les polices système</string>
   <string name="settings_custom_widget_title">Widgets</string>
   <string name="settings_custom_widget_empty_message">Aucun widget personnalisé encore défini. Appuyez sur le bouton pour en choisir un.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
   <string name="settings_custom_widget_adjust_width">Largeur :</string>
   <string name="settings_custom_widget_adjust_height">Hauteur :</string>
   <string name="settings_custom_widget_touchable">Palpable</string>

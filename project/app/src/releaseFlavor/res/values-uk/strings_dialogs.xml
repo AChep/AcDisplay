@@ -55,4 +55,9 @@
   <string name="compat_dialog_item_notification">AcDisplay використовує сервіс доступності, через це вона не може визначати змін/відхилень повідомлень чи відхиляти повідомлення з драйверу повідомлень.</string>
   <string name="compat_dialog_item_immersive_mode">Завжди відображається панель навігації.</string>
   <string name="compat_dialog_item_music_widget">Немає віджету музики.</string>
+  <string name="error_dialog_title">Щось пішло не так</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[
+        Due to a software mistake in LG\'s software, custom widget can\'t be set.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+    ]]></string>
 </resources>
