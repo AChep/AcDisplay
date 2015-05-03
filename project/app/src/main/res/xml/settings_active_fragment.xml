@@ -43,6 +43,14 @@
         <CheckBoxPreference
             android:key="active_mode_active_charging"
             android:title="@string/settings_active_active_charging_title" />
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/settings_advanced_category">
+        <Preference
+            android:title="@string/settings_proximity_sensor_title" >
+            <intent
+                android:targetClass="com.achep.acdisplay.ui.activities.SettingsProximitySensorActivity"
+                android:targetPackage="com.achep.acdisplay" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

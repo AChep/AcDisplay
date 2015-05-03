@@ -99,6 +99,12 @@
             android:theme="@style/MaterialTheme.WidgetPicker" />
 
         <activity
+            android:name=".ui.activities.SettingsProximitySensorActivity"
+            android:label="@string/settings_proximity_sensor_title"
+            android:parentActivityName=".ui.activities.Settings2"
+            android:taskAffinity=".settings" />
+
+        <activity
             android:name=".ui.activities.BlacklistActivity"
             android:label="@string/blacklist"
             android:launchMode="singleTask"
