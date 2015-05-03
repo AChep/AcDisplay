@@ -57,6 +57,8 @@
     <!-- Advanced -->
     <string name="settings_advanced_category">Продвинутые</string>
     <string name="settings_proximity_sensor_title">Датчик приближения</string>
+    <string name="settings_active_wave_to_wake_title">Жест включения экрана</string>
+    <string name="settings_active_wave_to_wake_on">Медленно закройте, а потом откройте датчик приближения, чтобы включить экран.</string>
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>

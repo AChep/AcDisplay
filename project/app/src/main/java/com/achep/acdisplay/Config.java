@@ -73,6 +73,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS = "active_mode_without_notifications";
     public static final String KEY_ACTIVE_MODE_ACTIVE_CHARGING = "active_mode_active_charging";
     public static final String KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY = "active_mode_disable_on_low_battery";
+    public static final String KEY_ACTIVE_MODE_WAVE_TO_WAKE = "active_mode_wave_to_wake";
 
     // interface
     public static final String KEY_UI_FULLSCREEN = "ui_fullscreen";
@@ -125,6 +126,7 @@ public final class Config extends ConfigBase {
     private boolean mActiveModeWithoutNotifies;
     private boolean mActiveModeActiveCharging;
     private boolean mActiveModeDisableOnLowBattery;
+    private boolean mActiveModeWave2Wake;
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mDoubleTapToSleep;
@@ -217,6 +219,9 @@ public final class Config extends ConfigBase {
         map.put(KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY, new ConfigBase.Option(
                 "mActiveModeDisableOnLowBattery", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_active_mode_disable_on_low_battery));
+        map.put(KEY_ACTIVE_MODE_WAVE_TO_WAKE, new ConfigBase.Option(
+                "mActiveModeWave2Wake", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_active_mode_wave_to_wake));
 
         // notifications
         map.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
@@ -628,6 +633,10 @@ public final class Config extends ConfigBase {
 
     public boolean isCustomWidgetTouchable() {
         return mUiCustomWidgetTouchable;
+    }
+
+    public boolean isActiveModeWaveToWakeEnabled() {
+        return mActiveModeWave2Wake;
     }
 
     // //////////////////////////////////////////

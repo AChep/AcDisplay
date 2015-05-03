@@ -45,6 +45,7 @@
     <bool name="config_default_active_mode_disable_on_low_battery">false</bool>
     <bool name="config_default_ui_custom_widget">false</bool>
     <bool name="config_default_ui_custom_widget_touchable">false</bool>
+    <bool name="config_default_active_mode_wave_to_wake">false</bool>
     <integer name="config_default_timeout_normal">10000</integer>
     <integer name="config_default_timeout_short">5000</integer>
     <integer name="config_default_inactive_time_from">60</integer>

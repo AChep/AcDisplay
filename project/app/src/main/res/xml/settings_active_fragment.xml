@@ -43,6 +43,11 @@
         <CheckBoxPreference
             android:key="active_mode_active_charging"
             android:title="@string/settings_active_active_charging_title" />
+
+        <CheckBoxPreference
+            android:key="active_mode_wave_to_wake"
+            android:summaryOn="@string/settings_active_wave_to_wake_on"
+            android:title="@string/settings_active_wave_to_wake_title" />
     </PreferenceCategory>
 
     <!--
