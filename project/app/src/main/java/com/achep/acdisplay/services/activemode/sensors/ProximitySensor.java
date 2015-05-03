@@ -246,8 +246,8 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 .build();
         mWave2WakeProgram = new Program.Builder()
                 .begin(true, 200) /*        is near at least for 200 millis */
-                .add(0, 1000) /* and after: is far  not more than 1 second  */
-                .add(0, 1000) /* and after: is near not more than 1 second  */
+                .add(0, 1500) /* and after: is far  not more than 1 second  */
+                .add(0, 1500) /* and after: is near not more than 1 second  */
                 .end(0)       /* and after: is far  at least for  0 second  */
                 .build();
 
