@@ -20,8 +20,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.achep.acdisplay"
-    android:versionCode="64"
-    android:versionName="3.4.4">
+    android:versionCode="65"
+    android:versionName="3.4.5">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -97,6 +97,12 @@
             android:parentActivityName=".ui.activities.Settings2"
             android:taskAffinity=".settings"
             android:theme="@style/MaterialTheme.WidgetPicker" />
+
+        <activity
+            android:name=".ui.activities.SettingsProximitySensorActivity"
+            android:label="@string/settings_proximity_sensor_title"
+            android:parentActivityName=".ui.activities.Settings2"
+            android:taskAffinity=".settings" />
 
         <activity
             android:name=".ui.activities.BlacklistActivity"

@@ -24,25 +24,30 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.achep.base.tests.Check;
+
 /**
  * Created by Artem on 02.01.14.
  */
 public class PendingIntentUtils {
 
-    public static boolean sendPendingIntent(@Nullable PendingIntent contentIntent) {
-        if (contentIntent != null)
-            try {
-                contentIntent.send();
-                return true;
-            } catch (PendingIntent.CanceledException e) { /* unused */ }
-        return false;
+    /**
+     * Perform the operation associated with this PendingIntent.
+     */
+    public static boolean sendPendingIntent(@Nullable PendingIntent pi) {
+        return sendPendingIntent(pi, null, null);
     }
 
-    public static boolean sendPendingIntent(@Nullable PendingIntent pi,
-                                            @NonNull Context context,
-                                            @Nullable Intent intent) {
+    /**
+     * Perform the operation associated with this PendingIntent.
+     */
+    public static boolean sendPendingIntent(@Nullable PendingIntent pi, Context context, Intent intent) {
         if (pi != null)
             try {
+                // The Context of the caller may be null if
+                // <var>intent</var> is also null.
+                Check.getInstance().isTrue(context != null || intent == null);
+                //noinspection ConstantConditions
                 pi.send(context, 0, intent);
                 return true;
             } catch (PendingIntent.CanceledException e) { /* unused */ }

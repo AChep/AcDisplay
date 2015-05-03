@@ -160,7 +160,7 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
         //      `---------'
         pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG).acquire(1000);
 
-        kill();
+        //kill();
         context.startActivity(new Intent(context, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_NO_USER_ACTION

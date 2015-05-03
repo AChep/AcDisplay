@@ -61,12 +61,15 @@ public abstract class KeyguardActivity extends ActivityBase implements
     private BroadcastReceiver mScreenOffReceiver;
     private KeyguardManager mKeyguardManager;
     private long mUnlockingTime;
+    private boolean mAttachedToWindow;
     private boolean mResumed;
 
     private boolean mTimeoutPaused = true;
     private final Timeout mTimeout = new Timeout();
     private final Handler mTimeoutHandler = new Handler();
     private final Handler mHandler = new Handler();
+
+    private PowerManager.WakeLock mWakeLock;
 
     @Override
     public void onWindowFocusChanged(boolean windowHasFocus) {
@@ -119,11 +122,8 @@ public abstract class KeyguardActivity extends ActivityBase implements
         int flags = 0;
 
         // Handle intents
-        Intent intent = getIntent();
-        if (intent != null) {
-            // Turns screen on.
-            if (intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false))
-                flags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
+        if (hasWakeUpExtra()) {
+            flags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
         }
 
         // FIXME: Android dev team broke the DISMISS_KEYGUARD flag.
@@ -135,6 +135,58 @@ public abstract class KeyguardActivity extends ActivityBase implements
                     // Show activity above the system keyguard.
                     WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // Handle intents
+        if (hasWakeUpExtra(intent)) {
+            acquireWakeUpLock();
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mAttachedToWindow = true;
+
+        // Handle intents
+        if (hasWakeUpExtra()) {
+            acquireWakeUpFlags();
+        }
+    }
+
+    private void acquireWakeUpLock() {
+        Check.getInstance().isTrue(mAttachedToWindow);
+        int flags = PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK;
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(flags, "Turn the keyguard on.");
+        mWakeLock.acquire(500); // 0.5 sec.
+    }
+
+    private void acquireWakeUpFlags() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+    }
+
+    /**
+     * @return {@code true} if the {@link #getIntent() intent} includes the
+     * {@link #EXTRA_TURN_SCREEN_ON} set to {@code true}, {@code false}
+     * otherwise.
+     */
+    private boolean hasWakeUpExtra() {
+        return hasWakeUpExtra(getIntent());
+    }
+
+    private boolean hasWakeUpExtra(@Nullable Intent intent) {
+        return intent != null && intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false);
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        mAttachedToWindow = false;
+        if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+        super.onDetachedFromWindow();
     }
 
     @Override

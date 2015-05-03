@@ -54,6 +54,9 @@
     <string name="settings_active_enabled_when_notification_list_empty_title">Enable when no notifications</string>
     <string name="settings_active_enabled_when_notification_list_empty_on">Active mode is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_active_enabled_when_notification_list_empty_off">Active mode is disabled when there are no notifications.</string>
+    <!-- Advanced -->
+    <string name="settings_advanced_category">Advanced</string>
+    <string name="settings_proximity_sensor_title">Proximity sensor</string>
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
