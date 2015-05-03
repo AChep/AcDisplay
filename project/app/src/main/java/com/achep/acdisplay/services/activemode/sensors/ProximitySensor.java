@@ -28,6 +28,9 @@ import android.util.Log;
 
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -83,10 +86,66 @@ public final class ProximitySensor extends ActiveModeSensor implements
                 this.timeMin = timeMin;
                 this.timeMax = timeMax;
             }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int hashCode() {
+                return new HashCodeBuilder(31, 3615)
+                        .append(isNear)
+                        .append(timeMin)
+                        .append(timeMax)
+                        .toHashCode();
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean equals(Object o) {
+                if (o == this)
+                    return true;
+                if (!(o instanceof Data))
+                    return false;
+
+                Data data = (Data) o;
+                return new EqualsBuilder()
+                        .append(isNear, data.isNear)
+                        .append(timeMin, data.timeMin)
+                        .append(timeMax, data.timeMax)
+                        .isEquals();
+            }
         }
 
         public Program(@NonNull Data[] dataArray) {
             this.dataArray = dataArray;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(2369, 31)
+                    .append(dataArray)
+                    .toHashCode();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (o == this)
+                return true;
+            if (!(o instanceof Program))
+                return false;
+
+            Program program = (Program) o;
+            return new EqualsBuilder()
+                    .append(dataArray, program.dataArray)
+                    .isEquals();
         }
 
         public static int fits(@NonNull Program program, @NonNull ArrayList<Event> history) {
