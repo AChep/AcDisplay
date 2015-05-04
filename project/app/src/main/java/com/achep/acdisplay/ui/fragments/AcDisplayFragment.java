@@ -64,6 +64,7 @@ import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.media.MediaController2;
 import com.achep.acdisplay.services.media.Metadata;
+import com.achep.acdisplay.ui.CornerHelper;
 import com.achep.acdisplay.ui.DynamicBackground;
 import com.achep.acdisplay.ui.activities.AcDisplayActivity;
 import com.achep.acdisplay.ui.components.ClockWidget;
@@ -472,7 +473,7 @@ public class AcDisplayFragment extends Fragment implements
     //-- TOUCH HANDLING -------------------------------------------------------
 
     @Override
-    public void onCircleEvent(float radius, float ratio, int event) {
+    public void onCircleEvent(float radius, float ratio, int event, final int actionId) {
         switch (event) {
             case CircleView.ACTION_START:
                 if (mHasPinnedWidget) {
@@ -489,7 +490,14 @@ public class AcDisplayFragment extends Fragment implements
                 mActivityAcd.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
                 break;
             case CircleView.ACTION_UNLOCK:
-                mActivityAcd.unlock(null);
+                mActivityAcd.unlock(new Runnable() {
+                    @Override
+                    public void run() {
+                        Context context = getActivity();
+                        assert context != null;
+                        CornerHelper.perform(context, actionId);
+                    }
+                });
             case CircleView.ACTION_CANCELED:
                 // Clear the pinned widget on short tap in emulator
                 // (and probably something in real life too).

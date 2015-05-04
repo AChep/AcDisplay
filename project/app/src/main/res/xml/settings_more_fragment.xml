@@ -48,6 +48,38 @@
         android:key="double_tap_to_sleep"
         android:title="@string/settings_double_tap_to_sleep_title" />
 
+    <PreferenceCategory android:title="@string/settings_corner_actions_category">
+
+        <Preference
+            android:enabled="false"
+            android:summary="@string/settings_corner_actions_summary" />
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:entries="@array/corners_actions"
+            android:entryValues="@array/corners_actions_entries"
+            android:key="corner_action_left_top"
+            android:title="@string/settings_corner_left_top_title" />
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:entries="@array/corners_actions"
+            android:entryValues="@array/corners_actions_entries"
+            android:key="corner_action_right_top"
+            android:title="@string/settings_corner_right_top_title" />
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:entries="@array/corners_actions"
+            android:entryValues="@array/corners_actions_entries"
+            android:key="corner_action_left_bottom"
+            android:title="@string/settings_corner_left_bottom_title" />
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:entries="@array/corners_actions"
+            android:entryValues="@array/corners_actions_entries"
+            android:key="corner_action_right_bottom"
+            android:title="@string/settings_corner_right_bottom_title" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/settings_behavior_category">
 
         <CheckBoxPreference
@@ -73,8 +105,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/settings_data_category"
-        android:key="data_category">
+        android:key="data_category"
+        android:title="@string/settings_data_category">
 
         <Preference
             android:key="data_restore_defaults"

@@ -28,10 +28,12 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Property;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -39,16 +41,25 @@ import android.view.View;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.ui.CornerHelper;
 import com.achep.acdisplay.ui.preferences.ColorPickerPreference;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.FloatProperty;
+import com.achep.base.utils.RefCacheBase;
 import com.achep.base.utils.ResUtils;
+
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * Created by achep on 19.04.14.
  */
 public class CircleView extends View {
+
+    private static final String TAG = "CircleView";
 
     public static final int ACTION_START = 0;
     public static final int ACTION_UNLOCK = 1;
@@ -98,9 +109,19 @@ public class CircleView extends View {
     private boolean mCanceled;
     private float mDarkening;
 
+    @DrawableRes
+    private int mDrawableResourceId = -1;
     private ColorFilter mInverseColorFilter;
     private Drawable mDrawable;
     private Paint mPaint;
+    @NonNull
+    private RefCacheBase<Drawable> mDrawableCache = new RefCacheBase<Drawable>() {
+        @NonNull
+        @Override
+        protected Reference<Drawable> onCreateReference(@NonNull Drawable object) {
+            return new WeakReference<>(object);
+        }
+    };
 
     // animation
     private ObjectAnimator mAnimator;
@@ -114,10 +135,11 @@ public class CircleView extends View {
 
     private int mInnerColor;
     private int mOuterColor;
+    private int mCornerActionId;
 
     public interface Callback {
 
-        void onCircleEvent(float radius, float ratio, int event);
+        void onCircleEvent(float radius, float ratio, int event, int actionId);
     }
 
     public interface Supervisor {
@@ -146,7 +168,7 @@ public class CircleView extends View {
                 case ACTION_UNLOCK_CANCEL:
                 case ACTION_CANCELED:
                     if (cv.mCallback != null) {
-                        cv.mCallback.onCircleEvent(cv.mRadius, cv.calculateRatio(), msg.what);
+                        cv.mCallback.onCircleEvent(cv.mRadius, cv.calculateRatio(), msg.what, cv.mCornerActionId);
                     }
                     break;
             }
@@ -177,13 +199,6 @@ public class CircleView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         initColorFilter();
-
-        // Load the drawable if needed
-        mDrawable = ResUtils.getDrawable(getContext(), R.drawable.ic_settings_keyguard_white);
-        mDrawable.setBounds(0, 0,
-                mDrawable.getIntrinsicWidth(),
-                mDrawable.getIntrinsicHeight());
-        mDrawable = mDrawable.mutate(); // don't affect the original drawable
 
         setRadius(0);
     }
@@ -243,11 +258,12 @@ public class CircleView extends View {
     protected void onDetachedFromWindow() {
         clearAnimator();
         mHandler.removeCallbacksAndMessages(null);
+        mDrawableCache.clear();
         super.onDetachedFromWindow();
     }
 
-    private void setInnerColor(int color) {
-        if (mInnerColor == (mInnerColor = color)) return;
+    private void setInnerColor(int color, boolean needsColorReset) {
+        if (mInnerColor == (mInnerColor = color) && !needsColorReset) return;
 
         // Inverse the drawable if needed
         boolean isBright = ColorUtils.calculateLuminance(color) > 0.5;
@@ -256,6 +272,42 @@ public class CircleView extends View {
 
     private void setOuterColor(int color) {
         mOuterColor = color;
+    }
+
+    /**
+     * Updates the icon in center of the circle, to the once corresponding
+     * with the current action.
+     *
+     * @see CornerHelper
+     */
+    private boolean updateIcon() {
+        final int res = CornerHelper.getIconResource(mCornerActionId);
+        if (res == mDrawableResourceId) return false; // No need to update
+        mDrawableResourceId = res;
+
+        label:
+        {
+            // Try to get from the cache.
+            final CharSequence key = Integer.toString(res);
+            mDrawable = mDrawableCache.get(key);
+            if (mDrawable != null) {
+                if (DEBUG) Log.d(TAG, "Got an icon<" + key + "> from the cache.");
+                break label;
+            }
+
+            // Load from resources.
+            mDrawable = ResUtils.getDrawable(getContext(), res);
+            assert mDrawable != null;
+            mDrawable.setBounds(0, 0,
+                    mDrawable.getIntrinsicWidth(),
+                    mDrawable.getIntrinsicHeight());
+            mDrawable = mDrawable.mutate(); // don't affect the original drawable
+            mDrawableCache.put(key, mDrawable);
+        }
+        // Update alpha
+        float ratio = calculateRatio();
+        mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
+        return true;
     }
 
     public boolean sendTouchEvent(@NonNull MotionEvent event) {
@@ -276,10 +328,28 @@ public class CircleView extends View {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 clearAnimation();
-
-                // Update colors
                 Config config = Config.getInstance();
-                setInnerColor(ColorPickerPreference.getColor(config.getCircleInnerColor()));
+
+                // Corner actions
+                int width = getWidth();
+                int height = getHeight();
+                int half = Math.min(width, height) / 2;
+                if (isInCircle(x, y, 0, 0, half)) { // Top left
+                    mCornerActionId = config.getCornerActionLeftTop();
+                } else if (isInCircle(x, y, -width, 0, half)) { // Top right
+                    mCornerActionId = config.getCornerActionRightTop();
+                } else if (isInCircle(x, y, 0, -height, half)) { // Bottom left
+                    mCornerActionId = config.getCornerActionLeftBottom();
+                } else if (isInCircle(x, y, -width, -height, half)) { // Bottom right
+                    mCornerActionId = config.getCornerActionRightBottom();
+                } else {
+                    // The default action is unlocking.
+                    mCornerActionId = Config.CORNER_UNLOCK;
+                }
+
+                // Update colors and icon drawable.
+                boolean needsColorReset = updateIcon();
+                setInnerColor(ColorPickerPreference.getColor(config.getCircleInnerColor()), needsColorReset);
                 setOuterColor(ColorPickerPreference.getColor(config.getCircleOuterColor()));
 
                 // Initialize circle
@@ -312,6 +382,20 @@ public class CircleView extends View {
                 break;
         }
         return true;
+    }
+
+    /**
+     * Using a simple formula of the circle, returns {@code true} when the
+     *
+     * @param x
+     * @param y
+     * @param x0
+     * @param y0
+     * @param r
+     * @return
+     */
+    private boolean isInCircle(float x, float y, float x0, float y0, float r) {
+        return (x0 += x) * x0 + (y0 += y) * y0 < r * r;
     }
 
     private void clearAnimator() {
@@ -410,8 +494,10 @@ public class CircleView extends View {
         }
 
         // Update unlock icon's transparency.
-        float ratio = calculateRatio();
-        mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
+        if (mDrawable != null) {
+            float ratio = calculateRatio();
+            mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
+        }
 
         // Update the size of the unlock circle.
         radius = (float) Math.sqrt(mRadius / 50f) * 50f;

@@ -62,6 +62,18 @@
         <item>-2</item>
     </string-array>
 
+    <!-- Corners' actions -->
+    <string-array name="corners_actions">
+        <item>Unlock</item>
+        <item>Launch a camera</item>
+        <item>Launch a dialer</item>
+    </string-array>
+    <string-array name="corners_actions_entries" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <!-- BatteryMeterView parameters -->
     <array name="batterymeter_color_levels" translatable="false">
         <item>4</item>

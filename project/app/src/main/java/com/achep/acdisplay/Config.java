@@ -104,6 +104,22 @@ public final class Config extends ConfigBase {
     public static final int PRIVACY_HIDE_CONTENT_MASK = 1;
     public static final int PRIVACY_HIDE_ACTIONS_MASK = 2;
     public static final String KEY_DOUBLE_TAP_TO_SLEEP = "double_tap_to_sleep";
+    public static final String KEY_CORNER_ACTION_LEFT_TOP = "corner_action_left_top";
+    public static final String KEY_CORNER_ACTION_RIGHT_TOP = "corner_action_right_top";
+    public static final String KEY_CORNER_ACTION_LEFT_BOTTOM = "corner_action_left_bottom";
+    public static final String KEY_CORNER_ACTION_RIGHT_BOTTOM = "corner_action_right_bottom";
+    /**
+     * The default corner's action. Simply unlocks the device.
+     */
+    public static final int CORNER_UNLOCK = 0;
+    /**
+     * Launches a camera.
+     */
+    public static final int CORNER_LAUNCH_CAMERA = 1;
+    /**
+     * Launches a dialer.
+     */
+    public static final int CORNER_LAUNCH_DIALER = 2;
 
     // development
     public static final String KEY_DEV_SENSORS_DUMP = "dev_sensors_dump";
@@ -147,6 +163,10 @@ public final class Config extends ConfigBase {
     private int mUiCircleColorInner;
     private int mUiCircleColorOuter;
     private int mPrivacyMode;
+    private int mCornerActionLeftTop;
+    private int mCornerActionRightTop;
+    private int mCornerActionLeftBottom;
+    private int mCornerActionRightBottom;
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
     private boolean mUiOverrideFonts;
@@ -324,6 +344,18 @@ public final class Config extends ConfigBase {
         map.put(KEY_DOUBLE_TAP_TO_SLEEP, new ConfigBase.Option(
                 "mDoubleTapToSleep", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_double_tap_to_sleep));
+        map.put(KEY_CORNER_ACTION_LEFT_TOP, new ConfigBase.Option(
+                "mCornerActionLeftTop", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_corner_left_top));
+        map.put(KEY_CORNER_ACTION_RIGHT_TOP, new ConfigBase.Option(
+                "mCornerActionRightTop", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_corner_right_top));
+        map.put(KEY_CORNER_ACTION_LEFT_BOTTOM, new ConfigBase.Option(
+                "mCornerActionLeftBottom", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_corner_left_bottom));
+        map.put(KEY_CORNER_ACTION_RIGHT_BOTTOM, new ConfigBase.Option(
+                "mCornerActionRightBottom", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_corner_right_bottom));
 
         // triggers
         map.put(KEY_TRIG_DONATION_ASKED, new ConfigBase.Option(
@@ -515,6 +547,38 @@ public final class Config extends ConfigBase {
 
     public int getCustomWidgetHeightDp() {
         return mUiCustomWidgetHeightDp;
+    }
+
+    /**
+     * @return an action of the left top corner of the screen.
+     * @see com.achep.acdisplay.ui.CornerHelper
+     */
+    public int getCornerActionLeftTop() {
+        return mCornerActionLeftTop;
+    }
+
+    /**
+     * @return an action of the right top corner of the screen.
+     * @see com.achep.acdisplay.ui.CornerHelper
+     */
+    public int getCornerActionRightTop() {
+        return mCornerActionRightTop;
+    }
+
+    /**
+     * @return an action of the left bottom corner of the screen.
+     * @see com.achep.acdisplay.ui.CornerHelper
+     */
+    public int getCornerActionLeftBottom() {
+        return mCornerActionLeftBottom;
+    }
+
+    /**
+     * @return an action of the right bottom corner of the screen.
+     * @see com.achep.acdisplay.ui.CornerHelper
+     */
+    public int getCornerActionRightBottom() {
+        return mCornerActionRightBottom;
     }
 
     /**

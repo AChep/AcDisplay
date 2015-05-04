@@ -47,4 +47,11 @@
         <item>Контекстная и фоновая информация (погода, старые события, советы)</item>
     </string-array>
 
+    <!-- Corners' actions -->
+    <string-array name="corners_actions">
+        <item>Разблокировать</item>
+        <item>Запустить камеру</item>
+        <item>Запустить звонилку</item>
+    </string-array>
+
 </resources>

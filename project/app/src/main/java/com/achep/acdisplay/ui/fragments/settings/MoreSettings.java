@@ -19,6 +19,7 @@
 package com.achep.acdisplay.ui.fragments.settings;
 
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.support.annotation.NonNull;
@@ -39,6 +40,20 @@ public class MoreSettings extends BaseSettings implements
         ConfigBase.OnConfigChangedListener,
         Preference.OnPreferenceClickListener {
 
+    private final ListPreferenceSetter mListPreferenceCornerActionSetter =
+            new ListPreferenceSetter() {
+
+                @Override
+                public void updateSummary(@NonNull Preference preference,
+                                          @NonNull Config.Option option,
+                                          @NonNull Object value) {
+                    int pos = (int) value;
+                    ListPreference cbp = (ListPreference) preference;
+                    cbp.setSummary(cbp.getEntries()[pos]);
+                }
+
+            };
+
     private Preference mInactiveHoursPreference;
     private Preference mTimeoutPreference;
     private Preference mDataRestoreDefaultsPreference;
@@ -57,6 +72,10 @@ public class MoreSettings extends BaseSettings implements
         syncPreference(Config.KEY_DOUBLE_TAP_TO_SLEEP);
         syncPreference(Config.KEY_FEEL_WIDGET_PINNABLE);
         syncPreference(Config.KEY_FEEL_WIDGET_READABLE);
+        syncPreference(Config.KEY_CORNER_ACTION_LEFT_TOP, mListPreferenceCornerActionSetter);
+        syncPreference(Config.KEY_CORNER_ACTION_LEFT_BOTTOM, mListPreferenceCornerActionSetter);
+        syncPreference(Config.KEY_CORNER_ACTION_RIGHT_TOP, mListPreferenceCornerActionSetter);
+        syncPreference(Config.KEY_CORNER_ACTION_RIGHT_BOTTOM, mListPreferenceCornerActionSetter);
 
         mInactiveHoursPreference = findPreference("inactive_hours");
         mTimeoutPreference = findPreference("timeout");

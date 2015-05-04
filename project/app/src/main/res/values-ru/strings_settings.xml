@@ -105,6 +105,13 @@
     <string name="settings_icon_size_title">Размер иконок</string>
     <string name="settings_icon_size_summary">Текущий размер иконок: %1$s dpi.</string>
     <string name="settings_double_tap_to_sleep_title">Выключить экран по двойному касанию</string>
+    <!-- Corner action -->
+    <string name="settings_corner_actions_category">Угловые жесты</string>
+    <string name="settings_corner_actions_summary">Выберите что делать при свайпе от одного из углов к центру экрана.</string>
+    <string name="settings_corner_left_top_title">От верхнего левого угла</string>
+    <string name="settings_corner_right_top_title">От верхнего правого угла</string>
+    <string name="settings_corner_left_bottom_title">От нижнего левого угла</string>
+    <string name="settings_corner_right_bottom_title">От нижнего правого угла</string>
     <!-- Behavior -->
     <string name="settings_behavior_category">Поведение</string>
     <string name="settings_lock_on_dismiss_last_notify_title">Выкл. экран после удал. посл. уведомления</string>

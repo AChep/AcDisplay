@@ -55,5 +55,9 @@
     <integer name="config_default_notify_min_priority">0</integer>
     <integer name="config_default_notify_max_priority">2</integer>
     <integer name="config_default_privacy_mode">0</integer>
+    <integer name="config_default_corner_left_top">0</integer>
+    <integer name="config_default_corner_right_top">0</integer>
+    <integer name="config_default_corner_left_bottom">0</integer>
+    <integer name="config_default_corner_right_bottom">0</integer>
 
 </resources>
