@@ -22,11 +22,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.Config;
@@ -50,8 +50,11 @@ public class KeyguardService extends SwitchService {
 
     private static final String TAG = "KeyguardService";
 
+    /**
+     * {@code true} if the {@link KeyguardService keyguard service is running}
+     * and functioning, {@code false} otherwise.
+     */
     public static boolean isActive = false;
-    private String mPackageName;
 
     /**
      * Starts or stops this service as required by settings and device's state.
@@ -74,7 +77,7 @@ public class KeyguardService extends SwitchService {
     private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
 
     private ActivityMonitorThread mActivityMonitorThread;
-    private PowerManager mPowerManager;
+    private String mPackageName;
 
     private final Presenter mPresenter = Presenter.getInstance();
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -156,17 +159,22 @@ public class KeyguardService extends SwitchService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        mPackageName = PackageUtils.getName(getContext());
+    }
+
+    @Override
     public void onStart(@Nullable Object... objects) {
-        Context context = getContext();
-        mPackageName = PackageUtils.getName(context);
-        mPowerManager = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+        final Context context = getContext();
+        // Register receiver
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
         context.registerReceiver(mReceiver, intentFilter);
 
-        if (!PowerUtils.isScreenOn(mPowerManager)) {
+        if (!PowerUtils.isScreenOn(context)) {
             // Make sure the app is launched
             startGuiGhost();
         }
@@ -176,11 +184,11 @@ public class KeyguardService extends SwitchService {
 
     @Override
     public void onStop(@Nullable Object... objects) {
-        Context context = getContext();
+        final Context context = getContext();
         context.unregisterReceiver(mReceiver);
         stopMonitorThread();
 
-        if (!PowerUtils.isScreenOn(mPowerManager)) {
+        if (!PowerUtils.isScreenOn(context)) {
             // Make sure that the app is not
             // waiting in the shade.
             mPresenter.kill();
@@ -206,55 +214,74 @@ public class KeyguardService extends SwitchService {
     }
 
     /**
-     * Thread that monitors current top activity.
-     * This is needed to prevent launching AcDisplay above any other
-     * activity which launched with
-     * {@link android.view.WindowManager.LayoutParams#FLAG_TURN_SCREEN_ON} flag.
+     * Thread that monitors the current top activity.
+     *
+     * @author Artem Chepurnoy
      */
     private static class ActivityMonitorThread extends Thread {
 
-        private static final long MONITORING_PERIOD = 15 * 60 * 1000; // 15 min.
+        /**
+         * How frequently should we check top running activity. The
+         * values is in millis.
+         */
+        private static final long PERIOD = 15 * 60 * 1000; // 15 min.
 
         public volatile long topActivityTime;
         public volatile String topActivityName;
         public volatile boolean running = true;
 
+        @NonNull
         private final Context mContext;
 
         public ActivityMonitorThread(@NonNull Context context) {
+            if (DEBUG) Log.d(TAG, "Activity monitor thread has been initiated.");
             mContext = context;
         }
 
         @Override
         public void run() {
             super.run();
-            try {
-                while (running) {
-                    monitor();
-                    Thread.sleep(MONITORING_PERIOD);
-                }
-            } catch (InterruptedException e) { /* unused */ }
+            while (running) {
+                monitor();
+
+                try {
+                    Thread.sleep(PERIOD);
+                } catch (InterruptedException e) { /* unused */ }
+            }
         }
 
         /**
          * Checks what activity is the latest.
          */
-        public void monitor() {
-            synchronized (this) {
-                String topActivity = RunningTasks.getInstance().getRunningTasksTop(mContext);
-                if (topActivity != null && !topActivity.equals(topActivityName)) {
+        public synchronized void monitor() {
+            String topActivity = RunningTasks.getInstance().getRunningTasksTop(mContext);
+            if (TextUtils.equals(topActivity, topActivityName)) {
+                return;
+            }
 
-                    // Update time if it's not first try.
-                    if (topActivityName != null) {
-                        topActivityTime = SystemClock.elapsedRealtime();
-                    }
+            topActivityName = topActivity;
+            topActivityTime = SystemClock.elapsedRealtime();
+            Log.i(TAG, "New top activity is " + topActivityName);
+        }
 
-                    topActivityName = topActivity;
+        //-- DEBUG ----------------------------------------------------------------
 
-                    if (DEBUG) Log.d(TAG, "Current top activity is " + topActivityName);
+        /* Only for debug purposes! */
+        private final Object dFinalizeWatcher = DEBUG ? new Object() {
+
+            /**
+             * Logs the notifications' removal.
+             */
+            @Override
+            protected void finalize() throws Throwable {
+                try {
+                    Log.d(TAG, "Activity monitor thread has died.");
+                } finally {
+                    super.finalize();
                 }
             }
-        }
+
+        } : null;
     }
 
 }
