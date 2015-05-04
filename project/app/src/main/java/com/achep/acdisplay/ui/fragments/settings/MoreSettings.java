@@ -26,7 +26,6 @@ import android.support.annotation.NonNull;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
-import com.achep.base.ui.fragments.PreferenceFragment;
 import com.achep.base.utils.DateUtils;
 import com.achep.base.utils.ResUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,7 +35,7 @@ import static com.achep.base.Build.DEBUG;
 /**
  * Created by Artem on 09.02.14.
  */
-public class MoreSettings extends PreferenceFragment implements
+public class MoreSettings extends BaseSettings implements
         ConfigBase.OnConfigChangedListener,
         Preference.OnPreferenceClickListener {
 
@@ -45,11 +44,6 @@ public class MoreSettings extends PreferenceFragment implements
     private Preference mDataRestoreDefaultsPreference;
     private Preference mDataBackupPreference;
     private Preference mDataRestorePreference;
-
-    @Override
-    public Config getConfig() {
-        return Config.getInstance();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

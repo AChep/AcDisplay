@@ -25,12 +25,11 @@ import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.ui.fragments.PreferenceFragment;
 
 /**
  * Created by Artem on 09.02.14.
  */
-public class NotificationSettings extends PreferenceFragment {
+public class NotificationSettings extends BaseSettings {
 
     private final ListPreferenceSetter mListPreferenceNotifyPrioritySetter =
             new ListPreferenceSetter() {
@@ -45,11 +44,6 @@ public class NotificationSettings extends PreferenceFragment {
                 }
 
             };
-
-    @Override
-    public Config getConfig() {
-        return Config.getInstance();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

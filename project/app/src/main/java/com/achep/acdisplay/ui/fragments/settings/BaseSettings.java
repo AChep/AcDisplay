@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,26 +18,17 @@
  */
 package com.achep.acdisplay.ui.fragments.settings;
 
-import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.R;
+import com.achep.base.ui.fragments.PreferenceFragment;
 
-/**
- * Created by Artem on 09.02.14.
- */
-public class ActiveModeSettings extends BaseSettings {
+abstract class BaseSettings extends PreferenceFragment {
 
+    @NonNull
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestMasterSwitch(Config.KEY_ACTIVE_MODE);
-        addPreferencesFromResource(R.xml.settings_active_fragment);
-        syncPreference(Config.KEY_ACTIVE_MODE_RESPECT_INACTIVE_TIME);
-        syncPreference(Config.KEY_ACTIVE_MODE_WITHOUT_NOTIFICATIONS);
-        syncPreference(Config.KEY_ACTIVE_MODE_ACTIVE_CHARGING);
-        syncPreference(Config.KEY_ACTIVE_MODE_DISABLE_ON_LOW_BATTERY);
-        syncPreference(Config.KEY_ACTIVE_MODE_WAVE_TO_WAKE);
+    public Config getConfig() {
+        return Config.getInstance();
     }
 
 }

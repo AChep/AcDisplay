@@ -24,17 +24,11 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.permissions.Permission;
-import com.achep.base.ui.fragments.PreferenceFragment;
 
 /**
  * Created by Artem on 09.02.14.
  */
-public class KeyguardSettings extends PreferenceFragment {
-
-    @Override
-    public Config getConfig() {
-        return Config.getInstance();
-    }
+public class KeyguardSettings extends BaseSettings {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

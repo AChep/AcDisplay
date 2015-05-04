@@ -25,7 +25,6 @@ import android.support.annotation.NonNull;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
-import com.achep.base.ui.fragments.PreferenceFragment;
 import com.achep.base.utils.ResUtils;
 
 /**
@@ -33,15 +32,10 @@ import com.achep.base.utils.ResUtils;
  *
  * @author Artem Chepurnoy
  */
-public class InterfaceSettings extends PreferenceFragment implements
+public class InterfaceSettings extends BaseSettings implements
         ConfigBase.OnConfigChangedListener {
 
     private Preference mIconSizePreference;
-
-    @Override
-    public Config getConfig() {
-        return Config.getInstance();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

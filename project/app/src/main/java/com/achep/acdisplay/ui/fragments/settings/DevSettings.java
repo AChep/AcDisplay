@@ -23,23 +23,16 @@ import android.preference.Preference;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.content.ConfigBase;
-import com.achep.base.ui.fragments.PreferenceFragment;
 
 /**
  * Development settings fragment.
  *
  * @author Artem Chepurnoy
  */
-public class DevSettings extends PreferenceFragment implements
+public class DevSettings extends BaseSettings implements
         Preference.OnPreferenceClickListener {
 
     private Preference mSensorsDumpSendPreference;
-
-    @Override
-    public ConfigBase getConfig() {
-        return Config.getInstance();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
