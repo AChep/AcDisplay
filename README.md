@@ -39,6 +39,15 @@ Checklist for creating issues:
 
 [Create new issue][1]
 
+Creating your AcDisplay
+----------------
+We welcome all developers to use our source code to create applications on our platform.
+There are several things we require from **all developers** for the moment:
+
+1. Please **do not** use the name AcDisplay for your app — or make sure your users understand that it is unofficial.
+2. Kindly **do not** use our standard logo as your app's logo.
+3. Please remember to read and follow the [license][4].
+
 Download & Build
 ----------------
 Clone the project and come in:
@@ -90,3 +99,4 @@ Import to Android Studio
 [1]: https://github.com/AChep/AcDisplay/issues/new
 [2]: https://github.com/AChep/AcDisplay/issues?state=open
 [3]: https://github.com/AChep/AcDisplay/issues?state=closed
+[4]: https://github.com/AChep/AcDisplay/blob/master/LICENSE
