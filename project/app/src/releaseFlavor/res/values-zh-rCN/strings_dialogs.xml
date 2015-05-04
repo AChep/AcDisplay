@@ -46,9 +46,7 @@
   <string name="compat_dialog_item_notification">因为 AcDisplay 所使用的辅助功能服务无法检测通知是否被消失、更新或是从通知抽屉中滑除。</string>
   <string name="compat_dialog_item_immersive_mode">总是显示导航栏</string>
   <string name="compat_dialog_item_music_widget">无音乐小部件</string>
-  <string name="error_dialog_title">Something went wrong</string>
-  <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+  <string name="error_dialog_title">出错了</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[由于 LG 的软件错误导致无法设置桌面小部件，
+<a href="https://github.com/AChep/AcDisplay/issues/76">了解详情</a>。]]></string>
 </resources>

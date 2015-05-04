@@ -46,9 +46,7 @@
   <string name="compat_dialog_item_notification">Da AcDisplay den Eingabehilfen-Dienst verwendet, kann nicht es erkennen, ob Benachrichtigungen entfernt oder aktualisiert wurden.</string>
   <string name="compat_dialog_item_immersive_mode">Navigations-Leiste wird immer angezeigt.</string>
   <string name="compat_dialog_item_music_widget">Kein Musik Widget.</string>
-  <string name="error_dialog_title">Something went wrong</string>
-  <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+  <string name="error_dialog_title">Etwas ist schiefgelaufen</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[Wegen einem Fehlern in LG\'s Software können keine Custom Widget\'s gesetzt werden.
+<a href="https://github.com/AChep/AcDisplay/issues/76">Mehr erfahren</a>.]]></string>
 </resources>

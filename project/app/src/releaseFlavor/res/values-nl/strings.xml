@@ -37,8 +37,8 @@
   <string name="action_donate">Doneer</string>
   <string name="action_feedback">Feedback</string>
   <string name="action_help">Help</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Wissen</string>
+  <string name="action_configure">Configureren</string>
   <string name="action_settings">Instellingen</string>
   <string name="action_send_test_notify">Stuur test melding</string>
   <string name="action_show_system_apps">Systeem apps</string>
