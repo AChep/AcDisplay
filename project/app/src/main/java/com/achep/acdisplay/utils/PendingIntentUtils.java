@@ -26,6 +26,9 @@ import android.support.annotation.Nullable;
 
 import com.achep.base.tests.Check;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * Created by Artem on 02.01.14.
  */
@@ -52,6 +55,23 @@ public class PendingIntentUtils {
                 return true;
             } catch (PendingIntent.CanceledException e) { /* unused */ }
         return false;
+    }
+
+    /**
+     * Check whether this PendingIntent will launch an Activity.
+     */
+    public static boolean isActivity(@NonNull PendingIntent pi) {
+        Method method;
+        try {
+            method = PendingIntent.class.getDeclaredMethod("isActivity");
+            method.setAccessible(true);
+            return (boolean) method.invoke(pi);
+        } catch (NoSuchMethodException
+                | InvocationTargetException
+                | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return true; // We must use `true` ss the fallback value
     }
 
 }
