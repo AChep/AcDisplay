@@ -333,14 +333,14 @@ public class CircleView extends View {
                 // Corner actions
                 int width = getWidth();
                 int height = getHeight();
-                int half = Math.min(width, height) / 2;
-                if (isInCircle(x, y, 0, 0, half)) { // Top left
+                int radius = Math.min(width, height) / 3;
+                if (isInCircle(x, y, 0, 0, radius)) { // Top left
                     mCornerActionId = config.getCornerActionLeftTop();
-                } else if (isInCircle(x, y, -width, 0, half)) { // Top right
+                } else if (isInCircle(x, y, -width, 0, radius)) { // Top right
                     mCornerActionId = config.getCornerActionRightTop();
-                } else if (isInCircle(x, y, 0, -height, half)) { // Bottom left
+                } else if (isInCircle(x, y, 0, -height, radius)) { // Bottom left
                     mCornerActionId = config.getCornerActionLeftBottom();
-                } else if (isInCircle(x, y, -width, -height, half)) { // Bottom right
+                } else if (isInCircle(x, y, -width, -height, radius)) { // Bottom right
                     mCornerActionId = config.getCornerActionRightBottom();
                 } else {
                     // The default action is unlocking.
