@@ -122,6 +122,30 @@ public class NotificationUtils {
         }
     }
 
+    @SuppressLint("NewApi")
+    public static void dismissAllNotifications() {
+        NotificationPresenter.getInstance().clear(true);
+        if (Device.hasJellyBeanMR2Api()) {
+            MediaService service = MediaService.sService;
+            if (service != null) {
+                try {
+                    service.cancelAllNotifications();
+                } catch (SecurityException e) {
+                    // FIXME: Fix disallowed call from unknown listener exception.
+                    // java.lang.SecurityException: Disallowed call from unknown listener: android.service.notification.INotificationListener$Stub$Proxy@42339520
+                    // at android.os.Parcel.readException(Parcel.java:1465)
+                    // at android.os.Parcel.readException(Parcel.java:1419)
+                    // at android.app.INotificationManager$Stub$Proxy.cancelNotificationFromListener(INotificationManager.java:469)
+                    // at android.service.notification.NotificationListenerService.cancelNotification(NotificationListenerService.java:116)
+                    Log.e(TAG, "Failed to dismiss notification.");
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(TAG, "Failed to dismiss notification because notification service is offline.");
+            }
+        }
+    }
+
     @Nullable
     public static Drawable getDrawable(@NonNull Context context,
                                        @NonNull OpenNotification n,
