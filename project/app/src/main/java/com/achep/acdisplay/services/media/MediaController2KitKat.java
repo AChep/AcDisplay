@@ -33,6 +33,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.KeyEvent;
 
@@ -168,6 +169,11 @@ class MediaController2KitKat extends MediaController2 {
      * {@inheritDoc}
      */
     public void sendMediaAction(int action) {
+        if (mService == null) {
+            Log.w(TAG, "Sending a media action on stopped controller.");
+            return;
+        }
+
         int keyCode;
         switch (action) {
             case ACTION_PLAY_PAUSE:
@@ -198,6 +204,11 @@ class MediaController2KitKat extends MediaController2 {
      */
     @Override
     public void seekTo(long position) {
+        if (mService == null) {
+            Log.w(TAG, "Seeking a media on stopped controller.");
+            return;
+        }
+
         RemoteController rc = mService.getRemoteController();
         rc.seekTo(position);
     }
@@ -215,6 +226,11 @@ class MediaController2KitKat extends MediaController2 {
      */
     @Override
     public long getPlaybackPosition() {
+        if (mService == null) {
+            Log.w(TAG, "Getting a playback position on stopped controller.");
+            return -1;
+        }
+
         RemoteController rc = mService.getRemoteController();
         return rc.getEstimatedMediaPosition();
     }
