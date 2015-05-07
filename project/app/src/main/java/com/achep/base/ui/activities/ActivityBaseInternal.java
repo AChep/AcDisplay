@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.achep.base.AppHeap;
@@ -37,16 +38,49 @@ import org.solovyev.android.checkout.Checkout;
 
 import java.lang.reflect.Method;
 
+import static com.achep.base.Build.DEBUG;
+
 /**
  * Created by Artem Chepurnoy on 08.03.2015.
  */
 final class ActivityBaseInternal implements IActivityBase {
+
+    private static final String TAG = "ActivityBaseInternal";
+
+    //-- DEBUG ----------------------------------------------------------------
+
+    private static int sInstancesCount = 0;
+
+    /* Only for debug purposes! */
+    private final Object dFinalizeWatcher = DEBUG ? new Object() {
+
+        /**
+         * Logs the notifications' removal.
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            try {
+                Log.d(TAG, "Finalizing the instance=" + this + " n=" + --sInstancesCount);
+            } finally {
+                super.finalize();
+            }
+        }
+
+    } : null;
+
+    //-- BEGIN ----------------------------------------------------------------
 
     private Activity mActivity;
     private ActivityCheckout mCheckout;
     private PowerSaveDetector mPowerSaveDetector;
 
     private boolean mCheckoutRequest;
+
+    public ActivityBaseInternal() {
+        if (DEBUG) Log.d(TAG, "Creating an instance=" + this
+                + " watcher=" + dFinalizeWatcher
+                + " n=" + ++sInstancesCount);
+    }
 
     void onCreate(Activity activity, Bundle savedInstanceState) {
         if (mCheckoutRequest) mCheckout = Checkout.forActivity(activity, AppHeap.getCheckout());
