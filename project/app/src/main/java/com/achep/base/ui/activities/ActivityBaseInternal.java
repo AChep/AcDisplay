@@ -19,10 +19,13 @@
 package com.achep.base.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IActivityBase;
@@ -31,6 +34,8 @@ import com.achep.base.utils.power.PowerSaveDetector;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.Checkout;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by Artem Chepurnoy on 08.03.2015.
@@ -67,6 +72,16 @@ final class ActivityBaseInternal implements IActivityBase {
 
     void onDestroy() {
         mCheckout = null;
+        /**
+         * Just in case fix for memory leak:
+         * http://code.google.com/p/android/issues/detail?id=34731
+         */
+        Object imm = mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        Reflector.TypedObject windowToken = new Reflector.TypedObject(
+                mActivity.getWindow().getDecorView().getWindowToken(), IBinder.class);
+        Reflector.invokeMethodExceptionSafe(imm, "windowDismissed", windowToken);
+        Reflector.TypedObject view = new Reflector.TypedObject(null, View.class);
+        Reflector.invokeMethodExceptionSafe(imm, "startGettingWindowFocus", view);
     }
 
     boolean onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -118,5 +133,56 @@ final class ActivityBaseInternal implements IActivityBase {
     @Override
     public boolean isPowerSaveMode() {
         return mPowerSaveDetector.isPowerSaveMode();
+    }
+
+    //-- OTHER ----------------------------------------------------------------
+
+    private static class Reflector {
+
+        public static final class TypedObject {
+
+            private final Object object;
+            private final Class type;
+
+            public TypedObject(@Nullable Object object, @Nullable Class type) {
+                this.object = object;
+                this.type = type;
+            }
+
+            @Nullable
+            private Object getObject() {
+                return object;
+            }
+
+            @Nullable
+            private Class getType() {
+                return type;
+            }
+        }
+
+        public static void invokeMethodExceptionSafe(final Object methodOwner, final String method,
+                                                     final TypedObject... arguments) {
+            if (methodOwner == null) return;
+            try {
+                final Class<?>[] types;
+                final Object[] objects;
+                if (arguments != null) {
+                    int length = arguments.length;
+                    types = new Class[length];
+                    objects = new Object[length];
+                    for (int i = 0; i < length; i++) {
+                        types[i] = arguments[i].getType();
+                        objects[i] = arguments[i].getObject();
+                    }
+                } else {
+                    types = new Class[0];
+                    objects = new Object[0];
+                }
+
+                final Method declaredMethod = methodOwner.getClass().getDeclaredMethod(method, types);
+                declaredMethod.setAccessible(true);
+                declaredMethod.invoke(methodOwner, objects);
+            } catch (Throwable ignored) { /* unused */ }
+        }
     }
 }
