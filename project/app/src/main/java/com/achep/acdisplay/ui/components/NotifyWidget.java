@@ -73,16 +73,16 @@ public class NotifyWidget extends Widget implements
         @Override
         public void onActionClick(@NonNull NotificationActions na,
                                   @NonNull View view, final @NonNull Action action) {
-            mFragment.unlock(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // TODO: Cancel pending finish if sending pending intent
-                            // has failed.
-                            PendingIntent pi = action.intent;
-                            PendingIntentUtils.sendPendingIntent(pi);
-                        }
-                    }, false);
+            final PendingIntent pi = action.intent;
+            if (pi == null) throw new IllegalStateException("The button should have been disabled");
+            if (PendingIntentUtils.isActivity(pi)) {
+                mFragment.unlock(new Runnable() {
+                    @Override
+                    public void run() {
+                        PendingIntentUtils.sendPendingIntent(pi);
+                    }
+                }, false /* unlock carefully */);
+            } else PendingIntentUtils.sendPendingIntent(pi);
         }
 
         @Override
