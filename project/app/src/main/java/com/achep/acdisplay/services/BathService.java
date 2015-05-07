@@ -20,7 +20,6 @@ package com.achep.acdisplay.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,13 +28,13 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.interfaces.IOnLowMemory;
 
@@ -277,16 +276,7 @@ public class BathService extends Service {
             intent = new Intent(this, MainActivity.class);
         }
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                App.ID_NOTIFY_BATH, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.service_bath))
-                .setContentText(contentText)
-                .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.stat_acdisplay)
-                .setPriority(Notification.PRIORITY_MIN)
-                .setColor(App.ACCENT_COLOR);
-        return builder.build();
+        return NotificationHelper.buildNotification(this, App.ID_NOTIFY_BATH, contentText, intent);
     }
 
     @Override

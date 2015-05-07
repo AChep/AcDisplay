@@ -18,21 +18,15 @@
  */
 package com.achep.acdisplay.ui.activities;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -42,6 +36,7 @@ import android.widget.CompoundButton;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.ui.DialogHelper;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.permissions.Permission;
@@ -56,30 +51,6 @@ import com.achep.base.utils.PackageUtils;
 public class MainActivity extends ActivityBase implements ConfigBase.OnConfigChangedListener {
 
     private static final String TAG = "MainActivity";
-
-    private static void sendTestNotification(@NonNull Context context) {
-        final int id = App.ID_NOTIFY_TEST;
-        final Resources res = context.getResources();
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                id, new Intent(context, MainActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.BigTextStyle bts = new NotificationCompat.BigTextStyle()
-                .bigText(res.getString(R.string.notification_test_message_large));
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setContentTitle(res.getString(R.string.app_name))
-                .setContentText(res.getString(R.string.notification_test_message))
-                .setContentIntent(pendingIntent)
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
-                .setSmallIcon(R.drawable.stat_acdisplay)
-                .setAutoCancel(true)
-                .setStyle(bts)
-                .setColor(App.ACCENT_COLOR)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(id, builder.build());
-    }
 
     private SwitchBarPermissible mSwitchPermission;
     private MenuItem mSendTestNotificationMenuItem;
@@ -233,7 +204,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
     private void startAcDisplayTest(boolean cheat) {
         if (cheat) {
             startActivity(new Intent(this, AcDisplayActivity.class));
-            sendTestNotification(this);
+            NotificationHelper.sendNotification(this, App.ID_NOTIFY_TEST);
             return;
         }
 
@@ -254,7 +225,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
 
                 @Override
                 public void run() {
-                    sendTestNotification(context);
+                    NotificationHelper.sendNotification(context, App.ID_NOTIFY_TEST);
                 }
             }, delay);
         } catch (SecurityException e) {

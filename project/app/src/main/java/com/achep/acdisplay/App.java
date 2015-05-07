@@ -19,23 +19,15 @@
 package com.achep.acdisplay;
 
 import android.app.Application;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.permissions.AccessManager;
 import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
-import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.AppHeap;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.permissions.Permission;
@@ -119,27 +111,7 @@ public class App extends Application {
                 ConfigBase.Option option = config.getOption(Config.KEY_ENABLED);
                 option.write(config, this, false, null);
 
-                final int id = App.ID_NOTIFY_APP_AUTO_DISABLED;
-                PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                        id, new Intent(this, MainActivity.class),
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-                Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-                NotificationCompat.BigTextStyle bts = new NotificationCompat.BigTextStyle()
-                        .bigText(getString(R.string.permissions_auto_disabled))
-                        .setSummaryText(list);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(getString(R.string.permissions_auto_disabled))
-                        .setContentIntent(pendingIntent)
-                        .setLargeIcon(largeIcon)
-                        .setSmallIcon(R.drawable.stat_acdisplay)
-                        .setAutoCancel(true)
-                        .setStyle(bts)
-                        .setPriority(Notification.PRIORITY_HIGH)
-                        .setColor(App.ACCENT_COLOR);
-
-                NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                nm.notify(id, builder.build());
+                NotificationHelper.sendNotification(this, App.ID_NOTIFY_APP_AUTO_DISABLED, list);
             }
         }
         // Check the keyguard (without the notification).

@@ -19,19 +19,14 @@
 package com.achep.acdisplay.notifications;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.MediaService;
 
 /**
@@ -54,19 +49,7 @@ class NotificationListenerJellyBeanMR2 extends NotificationListener {
             public void run() {
                 MediaService service = MediaService.sService;
                 if (service == null) return;
-
-                Resources res = service.getResources();
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(service)
-                        .setContentTitle(res.getString(R.string.app_name))
-                        .setContentText(res.getString(R.string.notification_init_text))
-                        .setSmallIcon(R.drawable.stat_notify)
-                        .setPriority(Notification.PRIORITY_MIN)
-                        .setAutoCancel(true)
-                        .setColor(App.ACCENT_COLOR);
-
-                String name = Context.NOTIFICATION_SERVICE;
-                NotificationManager nm = (NotificationManager) service.getSystemService(name);
-                nm.notify(App.ID_NOTIFY_INIT, builder.build());
+                NotificationHelper.sendNotification(service, App.ID_NOTIFY_INIT);
             }
         }, 2000);
     }
