@@ -49,7 +49,7 @@ import java.lang.ref.WeakReference;
 @TargetApi(Build.VERSION_CODES.KITKAT)
 class MediaController2KitKat extends MediaController2 {
 
-    private static WeakReference<SparseIntArray> sStateSparse = new WeakReference<>(null);
+    static WeakReference<SparseIntArray> sStateSparse = new WeakReference<>(null);
 
     @Nullable
     private MediaService mService;
@@ -119,21 +119,25 @@ class MediaController2KitKat extends MediaController2 {
 
         SparseIntArray cachedStateSparse = sStateSparse.get();
         if (cachedStateSparse == null) {
-            mStateSparse = new SparseIntArray();
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_BUFFERING, PlaybackStateCompat.STATE_BUFFERING);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_PLAYING, PlaybackStateCompat.STATE_PLAYING);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_PAUSED, PlaybackStateCompat.STATE_PAUSED);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_ERROR, PlaybackStateCompat.STATE_ERROR);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_REWINDING, PlaybackStateCompat.STATE_REWINDING);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_FAST_FORWARDING, PlaybackStateCompat.STATE_FAST_FORWARDING);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_NEXT);
-            mStateSparse.put(RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS);
-
-            // Cache sparse array
+            mStateSparse = generatePlaybackCompatSparse();
             sStateSparse = new WeakReference<>(mStateSparse);
         } else {
             mStateSparse = cachedStateSparse;
         }
+    }
+
+    @NonNull
+    static SparseIntArray generatePlaybackCompatSparse() {
+        SparseIntArray sia = new SparseIntArray();
+        sia.put(RemoteControlClient.PLAYSTATE_BUFFERING, PlaybackStateCompat.STATE_BUFFERING);
+        sia.put(RemoteControlClient.PLAYSTATE_PLAYING, PlaybackStateCompat.STATE_PLAYING);
+        sia.put(RemoteControlClient.PLAYSTATE_PAUSED, PlaybackStateCompat.STATE_PAUSED);
+        sia.put(RemoteControlClient.PLAYSTATE_ERROR, PlaybackStateCompat.STATE_ERROR);
+        sia.put(RemoteControlClient.PLAYSTATE_REWINDING, PlaybackStateCompat.STATE_REWINDING);
+        sia.put(RemoteControlClient.PLAYSTATE_FAST_FORWARDING, PlaybackStateCompat.STATE_FAST_FORWARDING);
+        sia.put(RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_NEXT);
+        sia.put(RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS, PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS);
+        return sia;
     }
 
     /**
