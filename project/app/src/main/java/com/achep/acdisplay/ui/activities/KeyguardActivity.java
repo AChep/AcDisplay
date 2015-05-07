@@ -42,6 +42,7 @@ import com.achep.base.Device;
 import com.achep.base.tests.Check;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.utils.LogUtils;
+import com.achep.base.utils.ToastUtils;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -340,6 +341,10 @@ public abstract class KeyguardActivity extends ActivityBase implements
             dpm.lockNow();
             return true;
         } catch (SecurityException e) {
+            String msg = "Failed to lock the screen due to a security exception.";
+            Log.e(TAG, msg);
+            ToastUtils.showLong(this, msg);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             return false; // Screw you owner!
         }
     }
