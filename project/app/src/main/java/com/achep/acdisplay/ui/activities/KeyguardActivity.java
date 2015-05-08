@@ -43,6 +43,7 @@ import com.achep.base.tests.Check;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.ToastUtils;
+import com.achep.base.utils.power.PowerUtils;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -268,6 +269,27 @@ public abstract class KeyguardActivity extends ActivityBase implements
         mHandler.removeCallbacksAndMessages(null);
 
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Workarounds this bug:
+        //
+        // This annoying bug is driving me crazy! After any AcDisplay notification,
+        // no matter how much time I wait, when I press the power button I will
+        // directly go to launcher. Only if I turn the screen off and on again
+        // I will get the lockscreen (as it should always be).
+        //
+        // Read more: https://plus.google.com/110348136204265282325/posts/ZYfWURptt2V
+        if (Device.hasLollipopApi() /* only Lollipop need the FLAG_DISMISS_KEYGUARD flag      */
+                && !isFinishing() /* otherwise flags can not be set, case it'd turn screen on */
+                && !KeyguardService.isActive /* otherwise it's fine to leave device unlocked  */
+                && !PowerUtils.isScreenOn(this) /* screen is off and it WILL kill us later    */) {
+            if (DEBUG) Log.d(TAG, "Clearing the FLAG_DISMISS_KEYGUARD flag.");
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        }
     }
 
     /**
