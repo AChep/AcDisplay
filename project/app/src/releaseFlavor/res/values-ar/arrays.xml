@@ -39,4 +39,9 @@
     <item>غير مهمة (تحديثات البرامج، البريد المزعج)</item>
     <item>معلومات خلفية وسياقية (معلومات الطقس، أحداث منتهية الصلاحية، اقتراحات)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Unlock</item>
+    <item>Launch camera</item>
+    <item>Launch dialer</item>
+  </string-array>
 </resources>

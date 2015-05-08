@@ -45,10 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Povolit bez oznámení</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktivní režim je povolen bez ohledu na to, zda jsou k dispozici oznámení nebo ne.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktivní režim je zakázán, pokud nejsou k dispozici žádná oznámení.</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_advanced_category">Pokročilé</string>
+  <string name="settings_proximity_sensor_title">Senzor přiblížení</string>
+  <string name="settings_active_wave_to_wake_title">Probudit přeletem ruky</string>
+  <string name="settings_active_wave_to_wake_on">Pomalu zavřete a otevřete senzor přiblížení pro zapnutí obrazovky.</string>
   <string name="settings_wake_up_on_notification_title">Probudit při příchozím oznámení</string>
   <string name="settings_notify_min_priority_title">Minimální priorita</string>
   <string name="settings_notify_max_priority_title">Maximální priorita</string>
@@ -65,7 +65,7 @@
   <string name="settings_override_fonts_title">Přepsat systémová písma</string>
   <string name="settings_custom_widget_title">Widgety</string>
   <string name="settings_custom_widget_empty_message">Není nastaven žádný vlastní widget. Klikněte na tlačítko pro jeho výběr.</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">Vlastní widget nenastaven.</string>
   <string name="settings_custom_widget_adjust_width">Šířka:</string>
   <string name="settings_custom_widget_adjust_height">Výška:</string>
   <string name="settings_custom_widget_touchable">Dotykový</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Velikost ikony</string>
   <string name="settings_icon_size_summary">Aktuální velikost ikon je %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Dvojitě poklepat pro uspání</string>
+  <string name="settings_corner_actions_category">Rohová gesta</string>
+  <string name="settings_corner_actions_summary">Zvolte, co dělat, když budete táhnout z rohu do středu obrazovky.</string>
+  <string name="settings_corner_left_top_title">Levý horní roh</string>
+  <string name="settings_corner_right_top_title">Pravý horní roh</string>
+  <string name="settings_corner_left_bottom_title">Levý spodní roh</string>
+  <string name="settings_corner_right_bottom_title">Pravý spodní roh</string>
   <string name="settings_behavior_category">Vlastnosti</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Zamknout po odmítnutí poslední notifikace</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Obrazovka se vypne po odmítnutí posledního oznámení.</string>

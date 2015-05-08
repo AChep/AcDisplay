@@ -39,4 +39,9 @@
     <item>Non importanti (aggiornamenti software, mail indesiderate)</item>
     <item>Informazioni contestuali e di sfondo (meteo, eventi scaduti, suggerimenti)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Sblocca</item>
+    <item>Avvia fotocamera</item>
+    <item>Avvia tastierino numerico</item>
+  </string-array>
 </resources>

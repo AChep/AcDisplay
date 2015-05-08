@@ -45,8 +45,8 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">不論是否有通知，一律啟用主動模式。</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">沒有通知時停用主動模式。</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_advanced_category">進階</string>
+  <string name="settings_proximity_sensor_title">趨近感應器</string>
   <string name="settings_active_wave_to_wake_title">Wave to wake</string>
   <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">有通知時喚醒裝置</string>
@@ -65,7 +65,7 @@
   <string name="settings_override_fonts_title">覆寫系統字型</string>
   <string name="settings_custom_widget_title">小工具</string>
   <string name="settings_custom_widget_empty_message">尚未設定自訂的小工具。輕觸下方的按鈕來挑一個喜歡的吧。</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">尚未設定自訂小工具。</string>
   <string name="settings_custom_widget_adjust_width">寬度</string>
   <string name="settings_custom_widget_adjust_height">高度</string>
   <string name="settings_custom_widget_touchable">可點擊操作</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">圖示大小</string>
   <string name="settings_icon_size_summary">目前圖示大小為 %1$s dpi。</string>
   <string name="settings_double_tap_to_sleep_title">輕按兩下即可休眠</string>
+  <string name="settings_corner_actions_category">角落手勢捷徑</string>
+  <string name="settings_corner_actions_summary">選擇當您於角落輕掃時所執行的動作。</string>
+  <string name="settings_corner_left_top_title">左上角</string>
+  <string name="settings_corner_right_top_title">右上角</string>
+  <string name="settings_corner_left_bottom_title">左下角</string>
+  <string name="settings_corner_right_bottom_title">右下角</string>
   <string name="settings_behavior_category">行為</string>
   <string name="settings_lock_on_dismiss_last_notify_title">關閉最後一則通知後鎖定</string>
   <string name="settings_lock_on_dismiss_last_notify_on">隱藏最後一則通知之後關閉螢幕。</string>

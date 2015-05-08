@@ -35,8 +35,13 @@
   <string-array name="notify_priorities">
     <item>Vital i urgent (trucades perdudes, adreces, alertes d\'emergència)</item>
     <item>Important (comunicacions, correus importants)</item>
-    <item>Normal (+notificacions d\'aplicacions antigues)</item>
+    <item>Normal (i notificacions d\'aplicacions antigues)</item>
     <item>Sense importància (actualitzacions de software, correu no desitjat)</item>
     <item>Informació contextual i en segon pla (el temps, esdeveniments passats, suggerències)</item>
+  </string-array>
+  <string-array name="corners_actions">
+    <item>Desbloqueja</item>
+    <item>Obre la càmara</item>
+    <item>Obre el marcador telefònic</item>
   </string-array>
 </resources>

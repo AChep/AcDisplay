@@ -39,4 +39,9 @@
     <item>Non-important (mises à jour, e-mails indésirables)</item>
     <item>Information contextuelle (météo, événements passés, suggestions)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Déverrouiller</item>
+    <item>Lancer l\'appareil photo</item>
+    <item>Lancer le composeur</item>
+  </string-array>
 </resources>

@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Symbolgröße</string>
   <string name="settings_icon_size_summary">Die aktuelle Größe der Icons ist %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Doppeltippen zum Schlafen</string>
+  <string name="settings_corner_actions_category">Ecke Gesten</string>
+  <string name="settings_corner_actions_summary">Entscheiden Sie, was Sie tun wollen, wenn Sie von einer Ecke in die Mitte des Bildschirms zu ziehen.</string>
+  <string name="settings_corner_left_top_title">Oberen linken Ecke</string>
+  <string name="settings_corner_right_top_title">Oberen rechten Ecke</string>
+  <string name="settings_corner_left_bottom_title">Unten links</string>
+  <string name="settings_corner_right_bottom_title">Unteren rechten Ecke</string>
   <string name="settings_behavior_category">Verhalten</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Bildschirm wird nach dem Entfernen der letzten Benachrichtigung gesperrt</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Bildschirm schaltet sich nach dem Entfernen der letzten Benachrichtigung aus.</string>

@@ -45,10 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Активирај када нема обавештења</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Активни режим је активиран без обзира да ли постоје обавештења или не.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Активни режим је деактивиран када не постоје обавештења.</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_advanced_category">Напредно</string>
+  <string name="settings_proximity_sensor_title">Сензор близине</string>
+  <string name="settings_active_wave_to_wake_title">Махни да би пробудио екран</string>
+  <string name="settings_active_wave_to_wake_on">Полако затвори и после отвори сензор близине да би пробудио екран.</string>
   <string name="settings_wake_up_on_notification_title">Пробуди се са обавештењем</string>
   <string name="settings_notify_min_priority_title">Минимални приоритет</string>
   <string name="settings_notify_max_priority_title">Максимални приоритет</string>
@@ -65,7 +65,7 @@
   <string name="settings_override_fonts_title">Промени фонт система</string>
   <string name="settings_custom_widget_title">Widgets</string>
   <string name="settings_custom_widget_empty_message">Још увек нисте изабрали widget. Притисните дугме да бисте изабрали неки од њих.</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">Није изабран widget.</string>
   <string name="settings_custom_widget_adjust_width">Ширина:</string>
   <string name="settings_custom_widget_adjust_height">Висина:</string>
   <string name="settings_custom_widget_touchable">Реагуј на додир</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Величина иконице</string>
   <string name="settings_icon_size_summary">Тренутна величина иконица је %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Два пута додирни да угасиш екран</string>
+  <string name="settings_corner_actions_category">Угаони гестови</string>
+  <string name="settings_corner_actions_summary">Изабери шта ће се десити при превлачењу прста од угла до средине екрана.</string>
+  <string name="settings_corner_left_top_title">Горњи леви угао</string>
+  <string name="settings_corner_right_top_title">Горњи десни угао</string>
+  <string name="settings_corner_left_bottom_title">Доњи леви угао</string>
+  <string name="settings_corner_right_bottom_title">Доњи десни угао</string>
   <string name="settings_behavior_category">Понашање</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Закључај при отказивању последњег обавештења</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екран се гаси после отказивања последње приказаног обавештења.</string>

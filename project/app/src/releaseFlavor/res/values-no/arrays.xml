@@ -39,4 +39,9 @@
     <item>Uviktige (program-oppdateringer, søppel-epost)</item>
     <item>Kontekst og bakgrunns-info (vær, utløpte avtaler, forslag)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Lås opp</item>
+    <item>Åpne kamera</item>
+    <item>Åpne ringeapp</item>
+  </string-array>
 </resources>

@@ -39,4 +39,9 @@
     <item>Neimportante (actualizări software, mail spam)</item>
     <item>Informații contextuale și de fond (vreme, evenimente trecute, sugestii)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Unlock</item>
+    <item>Launch camera</item>
+    <item>Launch dialer</item>
+  </string-array>
 </resources>

@@ -36,24 +36,24 @@ Podziękowania dla tych narzędzi o otwartym kodzie źródłowym: %1$s i wszystk
   <string name="donation_20">Dobra poduszka</string>
   <string name="donation_50">Nośnik SSD</string>
   <string name="donation_99">System nagłośnienia</string>
-  <string name="cry_dialog_title">Wspieranie rozwoju</string>
+  <string name="cry_dialog_title">Wesprzyj rozwój</string>
   <string name="cry_dialog_message"><![CDATA[         AcDisplay jest darmową aplikacją o <a href="http://repo.acdisplay.org"> otwartym kodzie źródłowym</a> i poświęcamy dużo czasu oraz zasobów na jej utrzymanie. Rozważ dotację, aby pokazać swoje uznanie i wsparcie dla dalszego rozwoju.     ]]></string>
   <string name="help_dialog_title">Pomoc</string>
   <string name="feedback_dialog_title">Opinie</string>
   <string name="feedback_dialog_message_hint">Treść wiadomości. Specyfikacja urządzenia zostanie automatycznie uwzględniona.</string>
   <string name="feedback_dialog_attach_log">Dołącz plik dziennika aplikacji</string>
   <string name="feedback_dialog_read_help">Często zadawane pytania</string>
-  <string name="feedback_error_no_app">Zainstaluj jakąkolwiek aplikację do poczty elektronicznej.</string>
-  <string name="feedback_error_msg_too_short">Wiadomość musi zawierać co najmniej %1$d symboli.</string>
+  <string name="feedback_error_no_app">Zainstaluj jakąkolwiek aplikację poczty elektronicznej.</string>
+  <string name="feedback_error_msg_too_short">Wiadomość musi zawierać co najmniej %1$d znaków.</string>
   <string name="feedback_error_accessing_log">Wystąpił błąd podczas uzyskiwania dostępu do dziennika aplikacji. Ten błąd to: %1$s</string>
   <string name="compat_dialog_title">Tryb zgodności</string>
-  <string name="compat_dialog_message">AcDisplay działa w trybie zgodności, aby współpracować z Androidem %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Ponieważ AcDisplay używa usługi Dostępności, nie może wykryć aktualizacji lub usunięcia powiadomienia, ani nie może też usunąć powiadomień.</string>
+  <string name="compat_dialog_message">AcDisplay działa w trybie zgodności, żeby współpracować z Androidem %1$s: %2$s</string>
+  <string name="compat_dialog_item_notification">Ponieważ AcDisplay używa usługi Dostępności, nie może wykryć aktualizacji lub usunięcia powiadomienia, nie może też usunąć powiadomień.</string>
   <string name="compat_dialog_item_immersive_mode">Pasek nawigacji jest zawsze wyświetlany.</string>
   <string name="compat_dialog_item_music_widget">Brak widżetu muzyki.</string>
-  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_title">Coś poszło nie tak</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+       Ze względu na błąd w oprogramowaniu firmy LG, niestandardowy widżet nie może być ustawiony. 
+       <a href="https://github.com/AChep/AcDisplay/issues/76"> Czytaj więcej</a>.
     ]]></string>
 </resources>

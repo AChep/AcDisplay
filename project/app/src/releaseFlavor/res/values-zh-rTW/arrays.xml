@@ -39,4 +39,9 @@
     <item>不重要的通知 (軟體更新、垃圾郵件)</item>
     <item>內容相關與背景資訊 (天氣、過期的活動、建議)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>解除鎖定</item>
+    <item>啟動相機</item>
+    <item>啟動電話</item>
+  </string-array>
 </resources>

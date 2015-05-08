@@ -45,10 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Habilitar cuando no hayan notificaciones</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Modo activo está habilitado independientemente de si hay notificaciones o no.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Modo activo esta deshabilitado cuando no hay notificaciones.</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_advanced_category">Avanzado</string>
+  <string name="settings_proximity_sensor_title">Sensor de proximidad</string>
+  <string name="settings_active_wave_to_wake_title">Pase para despertar</string>
+  <string name="settings_active_wave_to_wake_on">Tape lentamente y luego destape el sensor de proximidad para encender la pantalla.</string>
   <string name="settings_wake_up_on_notification_title">Despertar con una notificación</string>
   <string name="settings_notify_min_priority_title">Prioridad mínima</string>
   <string name="settings_notify_max_priority_title">Máxima prioridad</string>
@@ -65,7 +65,7 @@
   <string name="settings_override_fonts_title">Reemplazar fuentes del sistema</string>
   <string name="settings_custom_widget_title">Widgets</string>
   <string name="settings_custom_widget_empty_message">Aún no hay un widget personalizado activo. Presiona el botón para elegir uno.</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">Ningun widget personalizado configurado.</string>
   <string name="settings_custom_widget_adjust_width">Ancho:</string>
   <string name="settings_custom_widget_adjust_height">Alto:</string>
   <string name="settings_custom_widget_touchable">Tocable</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Tamaño del icono</string>
   <string name="settings_icon_size_summary">El tamaño actual de los iconos es de %1$s DPI.</string>
   <string name="settings_double_tap_to_sleep_title">Tocar dos veces la pantalla para dormir </string>
+  <string name="settings_corner_actions_category">Gestos de esquina</string>
+  <string name="settings_corner_actions_summary">Seleccione que se ará cuando deslice desde una esquina hasta el centro de la pantalla.</string>
+  <string name="settings_corner_left_top_title">Esquina de arriba en la mano izquierda</string>
+  <string name="settings_corner_right_top_title">Esquina de arriba en la mano derecha</string>
+  <string name="settings_corner_left_bottom_title">Esquina de abajo en la mano izquierda</string>
+  <string name="settings_corner_right_bottom_title">Esquina de abajo en la mano derecha</string>
   <string name="settings_behavior_category">Comportamiento</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Bloqueo al descartar la última notificación</string>
   <string name="settings_lock_on_dismiss_last_notify_on">La pantalla se apaga después de descartar la presente notificación.</string>

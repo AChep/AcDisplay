@@ -39,4 +39,9 @@
     <item>Неважни (софтуерни актуализации, нежелана поща)</item>
     <item>Контекстна и на заден фон информация (времето, изтекли събития, предложения)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Unlock</item>
+    <item>Launch camera</item>
+    <item>Launch dialer</item>
+  </string-array>
 </resources>

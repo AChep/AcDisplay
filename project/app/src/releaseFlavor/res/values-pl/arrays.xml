@@ -36,7 +36,12 @@
     <item>Krytyczne i pilne (nieodebrane połączenia, wskazówki, komunikaty alarmowe)</item>
     <item>Ważne (komunikacja, ważne wiadomości)</item>
     <item>Normalne (+ powiadomienia od starych aplikacji)</item>
-    <item>Nieważne (aktualizacje oprogramowania, spam)</item>
-    <item>Informacje kontekstowe (pogoda, zakończone wydarzenia, sugestie)</item>
+    <item>Mniej istotne (aktualizacje oprogramowania, spam)</item>
+    <item>Informacje w tle (pogoda, zakończone wydarzenia, sugestie)</item>
+  </string-array>
+  <string-array name="corners_actions">
+    <item>Odblokuj</item>
+    <item>Uruchom aparat</item>
+    <item>Uruchom aplikację Telefon</item>
   </string-array>
 </resources>

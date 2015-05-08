@@ -19,36 +19,46 @@
   ~ MA  02110-1301, USA.
   -->
 <resources>
-  <string name="about_dialog_message"><![CDATA[         AcDisplay er en gratis og <a href="http://repo.acdisplay.org"> åpen kildekode</a> app.         Copyright 2013-%2$s <a href="http://artemchep.com"> Artem Chepurnoy</a>. Alle rettigheter forbeholdt. <br/>         <br/> Mange takk til alle åpne kilde verktøy: %1$s og til alle som <a href="http://translate.acdisplay.org"> hjalp til med oversettelser</a> eller har donert.     ]]></string>
+  <string name="about_dialog_message"><![CDATA[
+         AcDisplay er en gratis og <a href="http://repo.acdisplay.org">åpen kildekode</a> app.
+         Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Alle rettigheter forbeholdt.<br/>
+         <br/>
+         Mange takk til disse åpne kildeverktøyene: %1$s og til alle som
+         <a href="http://translate.acdisplay.org">hjalp til med oversettelser</a> eller har donert.
+    ]]></string>
   <string name="donate_dialog_title">Donere til utviklere</string>
-  <string name="donate_dialog_message">AcDisplay er en gratis og åpen kildekode app. Du kan vise din takknemlighet og støtte utvikling ved å donere:</string>
-  <string name="donate_alert_no_responsibility">Legg merke til at Google ikke er ansvarlig for denne betalinges-metoden.</string>
-  <string name="donate_billing_not_supported">Kjøp i appen støttes ikke på enheten.</string>
+  <string name="donate_dialog_message">AcDisplay er en app som er gratis og har åpen kildekode. Du kan vise din takknemlighet og støtte utvikling ved å donere:</string>
+  <string name="donate_alert_no_responsibility">Legg merke til at Google ikke er ansvarlig for denne betalingsmetoden.</string>
+  <string name="donate_billing_not_supported">Kjøp i appen støttes ikke på denne enheten.</string>
   <string name="donate_thanks">Tusen takk!</string>
   <string name="donation_1">En iskrem</string>
   <string name="donation_4">En kopp kaffe</string>
-  <string name="donation_10">Strømregning</string>
+  <string name="donation_10">Strømregninger</string>
   <string name="donation_20">Den rette puten</string>
   <string name="donation_50">Solid-state drive</string>
   <string name="donation_99">Lydanlegg</string>
-  <string name="cry_dialog_title">Støtte utvikling</string>
-  <string name="cry_dialog_message"><![CDATA[         AcDisplay er en gratis og <a href="http://repo.acdisplay.org"> åpen kildekode</a> app, og vi bruker mye tid og ressurser på å holde det oppdatert. Vennligst vurdere en donasjon og vis din takknemlighet ved å støtte videre utvikling.     ]]></string>
+  <string name="cry_dialog_title">Støtt utvikling</string>
+  <string name="cry_dialog_message"><![CDATA[
+         AcDisplay er en app som er gratis og har <a href="http://repo.acdisplay.org">åpen kildekode</a>,
+         og vi bruker mye tid og ressurser på å holde den oppdatert. Vennligst vurder en donasjon og vis
+         din takknemlighet ved å støtte videre utvikling.
+    ]]></string>
   <string name="help_dialog_title">Hjelp</string>
   <string name="feedback_dialog_title">Tilbakemeldinger</string>
-  <string name="feedback_dialog_message_hint">Din meldingen. Enheten spesifikasjoner inkluderes automatisk.</string>
+  <string name="feedback_dialog_message_hint">Din melding. Enhetens spesifikasjoner inkluderes automatisk.</string>
   <string name="feedback_dialog_attach_log">Legg ved en logg</string>
   <string name="feedback_dialog_read_help">Vanlige spørsmål</string>
-  <string name="feedback_error_no_app">Installere epost-applikasjoner.</string>
+  <string name="feedback_error_no_app">Installer en epost-applikasjon.</string>
   <string name="feedback_error_msg_too_short">Meldingen må inneholde minst %1$d tegn.</string>
-  <string name="feedback_error_accessing_log">Feil ved tilgang til app loggen. Feilen er: %1$s</string>
+  <string name="feedback_error_accessing_log">Feil ved tilgang til appen sin logg. Feilen er: %1$s</string>
   <string name="compat_dialog_title">Kompatibilitetsmodus</string>
   <string name="compat_dialog_message">AcDisplay kjøres i kompatibilitetsmodus for å støtte Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Fordi AcDisplay bruker tjenesten tilgjengelighet, kan den ikke oppdage meldinger som blir avvist/oppdatert, eller avvise meldinger fra meldings-linjen.</string>
+  <string name="compat_dialog_item_notification">Fordi AcDisplay bruker tjenesten tilgjengelighet, kan den ikke oppdage meldinger som blir avvist/oppdatert, eller avvise meldinger fra varselslinjen.</string>
   <string name="compat_dialog_item_immersive_mode">Navigasjonsfelt vises alltid.</string>
-  <string name="compat_dialog_item_music_widget">Ingen musikk widget.</string>
-  <string name="error_dialog_title">Something went wrong</string>
+  <string name="compat_dialog_item_music_widget">Ingen musikk-widget.</string>
+  <string name="error_dialog_title">Noe har gått galt</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+        På grunn av en feil i LG sin programvare, kan ikke en tilpasset widget legges til.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Les mer</a>.
     ]]></string>
 </resources>

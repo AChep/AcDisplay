@@ -23,22 +23,22 @@
   <string name="plugin_xposed_description">Hjelper AcDisplay å integrere dypere i Android.</string>
   <string name="permissions_auto_disabled">AcDisplay er deaktivert fordi den mangler enkelte tillatelser.</string>
   <string name="permissions_dialog_title">Nødvendige tillatelser:</string>
-  <string name="permissions_device_admin">Enhets administrator</string>
-  <string name="permissions_device_admin_removed">AcDisplay er fjernet som enhets administrator.</string>
+  <string name="permissions_device_admin">Enhetsadministrator</string>
+  <string name="permissions_device_admin_removed">AcDisplay er fjernet som enhetsadministrator.</string>
   <string name="permissions_device_admin_description">For å administrere skjerm av og på.</string>
   <string name="permissions_device_admin_grant_manually">Gå til Innstillinger &gt; Sikkerhet &gt; enhets-adminstrasjon og slå AcDisplay på.</string>
   <string name="permissions_notifications">Varsler</string>
-  <string name="permissions_notifications_description">For å få tilgang til varslinger.</string>
-  <string name="permissions_notifications_grant_manually">Gå til Innstillinger &gt; Sikkerhet &gt; varsling tilgang og slå AcDisplay på.</string>
-  <string name="permissions_usage_stats">Bruker-statistikk</string>
-  <string name="permissions_usage_stats_description">For å unngå overliggende alarm og telefonen-applikasjoner.</string>
-  <string name="permissions_usage_stats_error">Enhetsprodusenten har fjernet dene offentlige tillatelsen fra sin Android-versjon. Det finnes ingen fiks til dette problemet, bortsett fra å vente på en oppdatering fra produsenten.</string>
+  <string name="permissions_notifications_description">For å få tilgang til varsler.</string>
+  <string name="permissions_notifications_grant_manually">Gå til Innstillinger &gt; Sikkerhet &gt; enhetsadministratorer og slå AcDisplay på.</string>
+  <string name="permissions_usage_stats">Bruksstatistikk</string>
+  <string name="permissions_usage_stats_description">For å unngå overliggende alarm og telefon-applikasjoner.</string>
+  <string name="permissions_usage_stats_error">Enhetsprodusenten har fjernet denne offentlige tillatelsen fra sin Android-versjon. Det finnes ingen løsning til dette problemet, bortsett fra å vente på en oppdatering fra produsenten.</string>
   <string name="action_about">Om</string>
   <string name="action_donate">Donere</string>
   <string name="action_feedback">Tilbakemeldinger</string>
   <string name="action_help">Hjelp</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Fjern</string>
+  <string name="action_configure">Konfigurer</string>
   <string name="action_settings">Innstillinger</string>
   <string name="action_send_test_notify">Sende test-varsling</string>
   <string name="action_show_system_apps">System-applikasjoner</string>
@@ -51,7 +51,7 @@
   <string name="disabled">Deaktivert</string>
   <string name="media_prev_description">Forrige spor-knapp</string>
   <string name="media_next_description">Neste spor-knapp</string>
-  <string name="media_pause_description">Pause-knappen</string>
+  <string name="media_pause_description">Pause-knapp</string>
   <string name="media_play_description">Spill av-knapp</string>
   <string name="media_stop_description">Stopp-knapp</string>
   <string name="notification_init_text">Bare avvis dette varselet.</string>
@@ -60,10 +60,10 @@
   <string name="privacy_mode_hidden_content">Skjult innhold.</string>
   <string name="remote_enable_acdisplay">AcDisplay er aktivert.</string>
   <string name="remote_disable_acdisplay">AcDisplay er deaktivert.</string>
-  <string name="service_bath">AcDisplay tjenester</string>
+  <string name="service_bath">AcDisplay-tjenester</string>
   <string name="service_bath_keyguard">Låseskjerm</string>
   <string name="service_bath_active_mode">Aktiv modus</string>
-  <string name="service_bath_active_mode_dump">Sensors dumper</string>
+  <string name="service_bath_active_mode_dump">Sensor-lagrer</string>
   <string name="status_date_format">EEE, d MMMM</string>
   <string name="accessibility_battery_level">Batteri <xliff:g id="number" example="100">%d </xliff:g> prosent.</string>
 </resources>

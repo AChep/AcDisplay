@@ -45,10 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Käytä vaikka uusia ilmoituksia ei olisi</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">Aktiivitila on käytössä vaikka uusia ilmoituksia ei olisikaan.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Aktiivitila on pois päältä jos ilmoituksia ei ole.</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_advanced_category">Kehittyneet</string>
+  <string name="settings_proximity_sensor_title">Etäisyystunnistin</string>
+  <string name="settings_active_wave_to_wake_title">Herätä kättä heilauttamalla</string>
+  <string name="settings_active_wave_to_wake_on">Avaa näyttö hitaasti peittämällä ja vapauttamalla etäisyystunnistin.</string>
   <string name="settings_wake_up_on_notification_title">Herätä ilmoituksen saapuessa</string>
   <string name="settings_notify_min_priority_title">Vähimmäisprioriteetti</string>
   <string name="settings_notify_max_priority_title">Enimmäisprioriteetti</string>
@@ -65,7 +65,7 @@
   <string name="settings_override_fonts_title">Ohita järjestelmän fontit</string>
   <string name="settings_custom_widget_title">Widgetit</string>
   <string name="settings_custom_widget_empty_message">Mukautettua widgettiä ei vielä asetettu. Napauta painiketta valitaksesi yksi.</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">Mukautettua widgettiä ei ole asetettu.</string>
   <string name="settings_custom_widget_adjust_width">Leveys:</string>
   <string name="settings_custom_widget_adjust_height">Korkeus:</string>
   <string name="settings_custom_widget_touchable">Kosketettava</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Kuvakkeen koko</string>
   <string name="settings_icon_size_summary">Kuvakkeiden koko on %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Unitila kaksoisnapauttamalla</string>
+  <string name="settings_corner_actions_category">Kulmaeleet</string>
+  <string name="settings_corner_actions_summary">Valitse mitä tapahtuu, kun pyyhkäiset kulmasta näytön keskelle.</string>
+  <string name="settings_corner_left_top_title">Vasen yläkulma</string>
+  <string name="settings_corner_right_top_title">Oikea yläkulma</string>
+  <string name="settings_corner_left_bottom_title">Vasen alakulma</string>
+  <string name="settings_corner_right_bottom_title">Oikea yläkulma</string>
   <string name="settings_behavior_category">Käyttäytyminen</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Lukitse kun viimeinen ilmoitus on poistettu</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Näyttö sammuu kun viimeinen ilmoitus on poistettu.</string>

@@ -45,10 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">Habilita quan no hi hagi notificacions</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">El mode actiu s\'habilita independentment de si hi ha notificacions o no.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">El mode actiu s\'inhabilita quan no hi ha notificacions.</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_advanced_category">Avançat</string>
+  <string name="settings_proximity_sensor_title">Sensor de proximitat</string>
   <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_active_wave_to_wake_on">Tanca lentament i despres obre el sensor de proximitat per a encendre la pantalla.</string>
   <string name="settings_wake_up_on_notification_title">Despertar amb una notificació</string>
   <string name="settings_notify_min_priority_title">Prioritat mínima</string>
   <string name="settings_notify_max_priority_title">Prioritat màxima</string>
@@ -64,11 +64,11 @@
   <string name="settings_emoticons_title">Emoticones</string>
   <string name="settings_override_fonts_title">Sobreescriu les fonts del sistema</string>
   <string name="settings_custom_widget_title">Widgets</string>
-  <string name="settings_custom_widget_empty_message">No custom widget set yet. Click the button to pick one.</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
-  <string name="settings_custom_widget_adjust_width">Width:</string>
-  <string name="settings_custom_widget_adjust_height">Height:</string>
-  <string name="settings_custom_widget_touchable">Touchable</string>
+  <string name="settings_custom_widget_empty_message">No s\'ha establert un Widget encara. Clica el botó per escollir un.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">No s\'ha establert un Widget.</string>
+  <string name="settings_custom_widget_adjust_width">Amplada:</string>
+  <string name="settings_custom_widget_adjust_height">Alçada:</string>
+  <string name="settings_custom_widget_touchable">Tàctil</string>
   <string name="settings_circle_category">Cercle de desbloqueig</string>
   <string name="settings_circle_animation_title">Animació de desbloqueig</string>
   <string name="settings_circle_color_inner_title">Color de cercle</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Mida de l\'icona</string>
   <string name="settings_icon_size_summary">La mida actual de les icones és %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Toca dos cops seguits per suspendre</string>
+  <string name="settings_corner_actions_category">Gestos de cantonades</string>
+  <string name="settings_corner_actions_summary">Escull que fer quan despalces des de una cantonada de la pantalla.</string>
+  <string name="settings_corner_left_top_title">Cantonada superior esquerre</string>
+  <string name="settings_corner_right_top_title">Cantonada superior dreta</string>
+  <string name="settings_corner_left_bottom_title">Cantonada inferior esquerre</string>
+  <string name="settings_corner_right_bottom_title">Cantonada inferior dreta</string>
   <string name="settings_behavior_category">Comportament</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Bloqueja al descartar la última notificació</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Pantalla s\'apaga després de descartar la última notificació present.</string>
@@ -95,13 +101,13 @@
   <string name="settings_widget_pinnable_on">El widget de notificació es queda ampliat per alguns segons després d\'un toc.</string>
   <string name="settings_privacy_mode_title">Privacitat (amb bloqueig de seguretat)</string>
   <string name="settings_privacy_mode_disabled">Desactivat</string>
-  <string name="settings_data_category">Data</string>
-  <string name="settings_restore_defaults_title">Restore defaults</string>
-  <string name="settings_restore_defaults_summary">Erases all user\'s settings excluding the blacklist.</string>
-  <string name="settings_restore_defaults_warning_title">Restore default settings?</string>
-  <string name="settings_restore_defaults_warning_message">All your settings excluding the blacklist will be erased! You won\'t be able to cancel this action.</string>
-  <string name="settings_data_backup_title">Back up settings</string>
-  <string name="settings_data_restore_title">Load settings</string>
+  <string name="settings_data_category">Dades</string>
+  <string name="settings_restore_defaults_title">Restablir els valors per defecte</string>
+  <string name="settings_restore_defaults_summary">Esborra totes les configuracions de l\'usuari excepte la llista negre.</string>
+  <string name="settings_restore_defaults_warning_title">Restablir els valors per defecte?</string>
+  <string name="settings_restore_defaults_warning_message">Tota la teva configuració menys la llista negre s\'esborrarà! No podràs cancel·lar aquesta opció.</string>
+  <string name="settings_data_backup_title">Restaurar les opcions</string>
+  <string name="settings_data_restore_title">Carregar les opcions</string>
   <string name="preference_inactive_hours_enabled">Activar hores inactives</string>
   <string name="preference_inactive_hours_from"><![CDATA[         des de: <br/> <b><font color="#ffffff">%1$s</font></b>     ]]></string>
   <string name="preference_inactive_hours_to"><![CDATA[         a: <br/> <b><font color="#ffffff">%1$s</font></b>     ]]></string>

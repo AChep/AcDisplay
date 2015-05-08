@@ -39,4 +39,9 @@
     <item>Не важные (обновления ПО, нежелательная почта)</item>
     <item>Контекстная и фоновая информация (погода, прошедшие события, советы)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Разблокировать</item>
+    <item>Запустить камеру</item>
+    <item>Запустить звонилку</item>
+  </string-array>
 </resources>

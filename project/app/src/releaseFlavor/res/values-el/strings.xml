@@ -37,8 +37,8 @@
   <string name="action_donate">Δωρεά</string>
   <string name="action_feedback">Σχόλια</string>
   <string name="action_help">Βοήθεια</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Σαφές</string>
+  <string name="action_configure">Ρύθμιση παραμέτρων</string>
   <string name="action_settings">Ρυθμίσεις</string>
   <string name="action_send_test_notify">Αποστολή δοκιμαστικής ειδοποίησης</string>
   <string name="action_show_system_apps">Εφαρμογές συστήματος</string>

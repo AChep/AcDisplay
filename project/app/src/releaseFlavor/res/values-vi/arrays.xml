@@ -39,4 +39,9 @@
     <item>Không quan trọng (cập nhật phần mềm, thư rác)</item>
     <item>Thông tin ngữ cảnh và nền (thời tiết, sự kiện đã qua, gợi ý)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Mở khóa</item>
+    <item>Mở máy ảnh</item>
+    <item>Launch dialer</item>
+  </string-array>
 </resources>

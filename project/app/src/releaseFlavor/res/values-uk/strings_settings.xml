@@ -46,9 +46,9 @@
   <string name="settings_active_enabled_when_notification_list_empty_on">Активний режим ввімкнений незалежно від наявності сповіщень.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">Активний режим вимкнено, коли немає нових сповіщень.</string>
   <string name="settings_advanced_category">Розширені</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
+  <string name="settings_proximity_sensor_title">Сенсор наближення</string>
   <string name="settings_active_wave_to_wake_title">Жест увімкнення екрану</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_active_wave_to_wake_on">Повільно закрийте та відкрийте сенсор наближення для увімкнення екрану.</string>
   <string name="settings_wake_up_on_notification_title">Прокидатися під час надходження сповіщеня</string>
   <string name="settings_notify_min_priority_title">Мінімальний пріоритет</string>
   <string name="settings_notify_max_priority_title">Максимальний пріоритет</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Розмір піктограм</string>
   <string name="settings_icon_size_summary">Поточний розмір значків %1$s точок на дюйм.</string>
   <string name="settings_double_tap_to_sleep_title">Засинати по подвійному тапу</string>
+  <string name="settings_corner_actions_category">Жести з кутів</string>
+  <string name="settings_corner_actions_summary">Оберіть дію для свайпу з кута у центр екрану.</string>
+  <string name="settings_corner_left_top_title">З лівого верхнього кута</string>
+  <string name="settings_corner_right_top_title">З правого верхнього кута</string>
+  <string name="settings_corner_left_bottom_title">З нижнього лівого кута</string>
+  <string name="settings_corner_right_bottom_title">З нижнього правого кута</string>
   <string name="settings_behavior_category">Поведінка</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Блокувати екран при відхиленні останнього сповіщення</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екран вимикається після відхилення останнього сповіщення.</string>

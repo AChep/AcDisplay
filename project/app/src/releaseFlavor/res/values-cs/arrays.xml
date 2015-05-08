@@ -39,4 +39,9 @@
     <item>Nedůležité (softwarové aktualizace, spam)</item>
     <item>Informace místní a na pozadí (počasí, předešlé události, návrhy)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Odemknout</item>
+    <item>Spustit fotoaparát</item>
+    <item>Spustit telefon</item>
+  </string-array>
 </resources>

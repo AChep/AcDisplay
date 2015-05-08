@@ -39,4 +39,9 @@
     <item>Nicht wichtig (Software-Aktualisierungen, Spam-Mails)</item>
     <item>Kontext- und Hintergrundinformationen (Wetter, abgelaufene Termine, Vorschläge)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Entsperren</item>
+    <item>Starten Sie eine Kamera</item>
+    <item>Starten Sie einen dialer</item>
+  </string-array>
 </resources>

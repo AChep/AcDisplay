@@ -39,4 +39,9 @@
     <item>Icke-viktigt (programuppdateringar, skräppost)</item>
     <item>Sammanhangsbaserade och bakgrunds info (väder, passerat evenemang, förslag)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Lås upp</item>
+    <item>Starta kameran</item>
+    <item>Starta nummerväljaren</item>
+  </string-array>
 </resources>

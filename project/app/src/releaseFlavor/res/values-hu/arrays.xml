@@ -39,4 +39,9 @@
     <item>Nem fontos (szoftverfrissítések, levélszemét)</item>
     <item>Környezetfüggő és háttér információ (időjárás, lejárt események, javaslatok)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Felold</item>
+    <item>Kamera indítása</item>
+    <item>Tárcsázó indítása</item>
+  </string-array>
 </resources>

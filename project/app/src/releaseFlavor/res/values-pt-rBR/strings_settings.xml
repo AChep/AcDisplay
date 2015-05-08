@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Tamanho do ícone</string>
   <string name="settings_icon_size_summary">Tamanho atual dos ícones é %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Toque duplo para dormir</string>
+  <string name="settings_corner_actions_category">Gestos de canto</string>
+  <string name="settings_corner_actions_summary">Escolha o que fazer quando deslizar o dedo do canto para o centro da tela.</string>
+  <string name="settings_corner_left_top_title">Canto superior esquerdo</string>
+  <string name="settings_corner_right_top_title">Canto superior direito</string>
+  <string name="settings_corner_left_bottom_title">Canto inferior esquerdo</string>
+  <string name="settings_corner_right_bottom_title">Canto inferior direito</string>
   <string name="settings_behavior_category">Comportamento</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Bloquear ao retirar a última notificação</string>
   <string name="settings_lock_on_dismiss_last_notify_on">A tela desligará ao retirar a última notificação recebida.</string>

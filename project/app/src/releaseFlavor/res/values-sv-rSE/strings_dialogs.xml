@@ -46,9 +46,7 @@
   <string name="compat_dialog_item_notification">Eftersom AcDisplay använder tillgänglighetstjänsten, kan den inte upptäcka notifikationer som ogillade/uppdateras, eller avstyra notifikationer från notifikationsfältet.</string>
   <string name="compat_dialog_item_immersive_mode">Navigeringsfältet visas alltid.</string>
   <string name="compat_dialog_item_music_widget">Ingen musikwidget.</string>
-  <string name="error_dialog_title">Something went wrong</string>
-  <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+  <string name="error_dialog_title">Något gick fel</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[På grund av ett fel i LGs mjukvara kan inte widgeten appliceras.
+<a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.]]></string>
 </resources>

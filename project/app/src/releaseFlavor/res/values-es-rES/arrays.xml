@@ -39,4 +39,9 @@
     <item>Sin importancia (actualizaciones de software, correo no deseado)</item>
     <item>Informaciones e información de fondo (Clima, eventos expirados, sugerencias)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Desbloquear</item>
+    <item>Iniciar la camara </item>
+    <item>Iniciar el telefono</item>
+  </string-array>
 </resources>

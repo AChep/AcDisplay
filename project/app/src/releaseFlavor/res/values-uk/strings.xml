@@ -19,7 +19,7 @@
   ~ MA  02110-1301, USA.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="app_description">AcDisplay — це новий спосіб керування повідомленнями в Android. Він повідомить про нові повідомлення через чудовий мінімальний інтерес, одночасно надаючи можливість легко керувати ними. Якщо ви бажаєте знати що діється  — просто дістаньте телефон з кишені.</string>
+  <string name="app_description">AcDisplay — це новий спосіб керування повідомленнями в Android. Він повідомить про нові повідомлення через чудовий мінімалістський інтерфейс, одночасно надаючи можливість легко керувати ними. Якщо ви бажаєте знати що діється  — просто дістаньте телефон з кишені.</string>
   <string name="plugin_xposed_description">Допомагає AcDisplay інтегруватися глибше в Android.</string>
   <string name="permissions_auto_disabled">AcDisplay не має деяких дозволів і через це буде вимкнута.</string>
   <string name="permissions_dialog_title">Необхідні дозволи:</string>

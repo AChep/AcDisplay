@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Dimensiunea icoanei</string>
   <string name="settings_icon_size_summary">Dimensiunea actuala a icoanei este %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">dubla atingere pentru sleep</string>
+  <string name="settings_corner_actions_category">Corner gestures</string>
+  <string name="settings_corner_actions_summary">Choose what to do when swiping from a corner to the center of the screen.</string>
+  <string name="settings_corner_left_top_title">Upper left-hand corner</string>
+  <string name="settings_corner_right_top_title">Upper right-hand corner</string>
+  <string name="settings_corner_left_bottom_title">Bottom left-hand corner</string>
+  <string name="settings_corner_right_bottom_title">Bottom right-hand corner</string>
   <string name="settings_behavior_category">Comportament</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Blocheaza dupa eliminarea ultimei notificari</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Ecranul se opreste dupa eliminarea ultimei notificari.</string>

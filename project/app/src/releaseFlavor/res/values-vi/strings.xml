@@ -37,8 +37,8 @@
   <string name="action_donate">Quyên góp</string>
   <string name="action_feedback">Phản hồi của người dùng</string>
   <string name="action_help">Trợ giúp</string>
-  <string name="action_clear">Clear</string>
-  <string name="action_configure">Configure</string>
+  <string name="action_clear">Xóa</string>
+  <string name="action_configure">Cấu hình</string>
   <string name="action_settings">Cài đặt</string>
   <string name="action_send_test_notify">Gửi thông báo thử</string>
   <string name="action_show_system_apps">Ứng dụng hệ thống</string>

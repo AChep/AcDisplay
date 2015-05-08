@@ -39,4 +39,9 @@
     <item>Nepodstatné (aktualizácie softvéru, spam)</item>
     <item>Kontextové a informácie bežiace na pozadí (počasie, skončené udalosti, návrhy)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Odomknúť</item>
+    <item>Spustiť kameru</item>
+    <item>Spustiť vytáčanie</item>
+  </string-array>
 </resources>

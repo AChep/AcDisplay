@@ -55,9 +55,9 @@
   <string name="compat_dialog_item_notification">Siccome AcDisplay sta usando il servizio di accessibilità, non può rilevare le notifiche che vengono respinte/aggiornate, o le notifiche respinte dalla tendina delle notifiche.</string>
   <string name="compat_dialog_item_immersive_mode">La barra di navigazione è sempre visibile.</string>
   <string name="compat_dialog_item_music_widget">Nessun widget di musica.</string>
-  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_title">Qualcosa è andato storto</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+        A causa di un problema del software LG non è possibile impostare widget personalizzati.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">Leggi di più</a>.
     ]]></string>
 </resources>

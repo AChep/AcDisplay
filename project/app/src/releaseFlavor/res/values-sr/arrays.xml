@@ -21,7 +21,7 @@
 <resources>
   <string-array name="feedback_types">
     <item>Проблем</item>
-    <item>Предлози</item>
+    <item>Предлог</item>
     <item>Остало</item>
   </string-array>
   <string-array name="dynamic_background">
@@ -33,10 +33,15 @@
     <item>Не приказуј додатне опције обавештења</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Критично и хитно (пропуштени позиви, праваци, хитна упозорења)</item>
+    <item>Критично и хитно (пропуштени позиви, инструкције, хитна упозорења)</item>
     <item>Важно (комуникација, важна пошта)</item>
-    <item>Нормално (+обавештења од старих апликација)</item>
+    <item>Нормално (укључујући обавештења од старих апликација)</item>
     <item>Неважно (ажурирање апликација, отпадна пошта)</item>
     <item>Додатне и позадинске информације (временска прогноза, прошли догађаји, предлози)</item>
+  </string-array>
+  <string-array name="corners_actions">
+    <item>Откључај</item>
+    <item>Покрени камеру</item>
+    <item>Покрени бројчаник</item>
   </string-array>
 </resources>

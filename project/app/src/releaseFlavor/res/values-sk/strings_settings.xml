@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Veľkosť ikony</string>
   <string name="settings_icon_size_summary">Aktuálna veľkosť ikony je %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Pre uspanie dvakrát poklepať</string>
+  <string name="settings_corner_actions_category">Rohové gestá</string>
+  <string name="settings_corner_actions_summary">Vybrať, čo AcDisplay spraví, keď potiahnete prstom z rohu do stredu obrazovky.</string>
+  <string name="settings_corner_left_top_title">Horný ľavý roh</string>
+  <string name="settings_corner_right_top_title">Horný pravý roh</string>
+  <string name="settings_corner_left_bottom_title">Dolný ľavý roh</string>
+  <string name="settings_corner_right_bottom_title">Dolný pravý roh</string>
   <string name="settings_behavior_category">Správanie</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Zamknúť pri zrušení posledného oznámenia</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Obrazovka sa vypne po odmietnutí posledného oznámenia.</string>

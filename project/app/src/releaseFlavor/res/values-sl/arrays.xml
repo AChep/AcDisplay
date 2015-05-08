@@ -39,4 +39,9 @@
     <item>Zanemarljivo (posodobitve, neželena pošta)</item>
     <item>Kontekstne in druge informacije (vreme, potekli dogodki, predlogi)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Odklepanje</item>
+    <item>Zaženi kamero</item>
+    <item>Zaženi Telefon</item>
+  </string-array>
 </resources>

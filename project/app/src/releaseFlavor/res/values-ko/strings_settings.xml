@@ -45,10 +45,10 @@
   <string name="settings_active_enabled_when_notification_list_empty_title">알림이 없을 때에도 활성화</string>
   <string name="settings_active_enabled_when_notification_list_empty_on">알림의 유무와 상관 없이 액티브 모드를 활성화합니다.</string>
   <string name="settings_active_enabled_when_notification_list_empty_off">알림이 없으면 액티브 모드가 활성화되지 않습니다.</string>
-  <string name="settings_advanced_category">Advanced</string>
-  <string name="settings_proximity_sensor_title">Proximity sensor</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_advanced_category">고급</string>
+  <string name="settings_proximity_sensor_title">근접 센서</string>
+  <string name="settings_active_wave_to_wake_title">흔들어서 깨우기</string>
+  <string name="settings_active_wave_to_wake_on">근접 센서를 천천히 가렸다 때면 화면이 켜집니다. (근접 센서 위를 손으로 천천히 왔다갔다 하세요)</string>
   <string name="settings_wake_up_on_notification_title">알림이 오면 화면 켜기</string>
   <string name="settings_notify_min_priority_title">최소 우선 순위</string>
   <string name="settings_notify_max_priority_title">최대 우선순위</string>
@@ -65,7 +65,7 @@
   <string name="settings_override_fonts_title">시스템 글꼴 무시</string>
   <string name="settings_custom_widget_title">위젯</string>
   <string name="settings_custom_widget_empty_message">사용자 위젯 설정이 아직 없습니다. 버튼을 클릭하여 지정하세요.</string>
-  <string name="settings_custom_widget_empty_message_acdisplay">No custom widget set.</string>
+  <string name="settings_custom_widget_empty_message_acdisplay">커스텀 위젯이 없습니다.</string>
   <string name="settings_custom_widget_adjust_width">넓이</string>
   <string name="settings_custom_widget_adjust_height">높이</string>
   <string name="settings_custom_widget_touchable">터치 가능 여부</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">아이콘 크기</string>
   <string name="settings_icon_size_summary">현재 아이콘 크기는 %1$s dpi입니다.</string>
   <string name="settings_double_tap_to_sleep_title">두번 탭하여 화면 끄기</string>
+  <string name="settings_corner_actions_category">모서리 제스쳐</string>
+  <string name="settings_corner_actions_summary">모서리에서부터 화면 중앙으로 스와이프 했을 때 무엇을 할 지 지정하세요.</string>
+  <string name="settings_corner_left_top_title">왼쪽 상단 모서리</string>
+  <string name="settings_corner_right_top_title">오른쪽 위 모서리</string>
+  <string name="settings_corner_left_bottom_title">왼쪽 아래 모서리</string>
+  <string name="settings_corner_right_bottom_title">하단 오른쪽 모서리</string>
   <string name="settings_behavior_category">동작</string>
   <string name="settings_lock_on_dismiss_last_notify_title">마지막 알림을 해제하면 자동으로 화면 잠금</string>
   <string name="settings_lock_on_dismiss_last_notify_on">마지막 알림을 지우면 화면을 끄게 합니다.</string>

@@ -52,9 +52,7 @@
   <string name="compat_dialog_item_notification">Vì AcDisplay đang sử dụng dịch vụ tiếp cận, nó không thể phát hiện các thông báo đã được xóa/cập nhật, hoặc thông báo bị xóa từ khu vực thông báo.</string>
   <string name="compat_dialog_item_immersive_mode">Thanh điều hướng đang luôn hiển thị.</string>
   <string name="compat_dialog_item_music_widget">Không có widget chơi nhạc.</string>
-  <string name="error_dialog_title">Something went wrong</string>
-  <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+  <string name="error_dialog_title">Có lỗi xảy ra</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[Do lỗi phần mềm của LG, không thể thiết lập được tùy chỉnh tiện ích.
+<a href="https://github.com/AChep/AcDisplay/issues/76">Đọc thêm</a>.]]></string>
 </resources>

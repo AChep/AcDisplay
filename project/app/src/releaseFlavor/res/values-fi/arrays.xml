@@ -39,4 +39,9 @@
     <item>Ei-tärkeät (järjestelmäpäivitykset, roskaposti)</item>
     <item>Kontekstuaaliset ja taustatiedot (sää, vanhentuneet tapahtumat, ehdotukset)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Avaa lukitus</item>
+    <item>Käynnistä kamera</item>
+    <item>Soita puhelu</item>
+  </string-array>
 </resources>

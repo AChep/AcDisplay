@@ -35,7 +35,7 @@
   <string name="settings_dev_title">Для разработчиков</string>
   <string name="settings_keyguard_description">Использовать AcDisplay как экран блокировки. Функция находится в состоянии тестирования и может быть нестабильна.</string>
   <string name="settings_keyguard_respect_inactive_time_title">Отключить в неактивное время</string>
-  <string name="settings_active_disable_on_low_battery_title">Отключить при разряженной батареи</string>
+  <string name="settings_active_disable_on_low_battery_title">Отключить при разряженной батарее</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Включить когда нет уведомлений</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен всегда, вне зависимости от наличия текущих уведомлений.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, когда список уведомлений пуст.</string>
@@ -43,8 +43,8 @@
   <string name="settings_active_description">Активный режим включает экран при необходимости. Вы можете взглянуть на время или уведомления, достав устройство из кармана. Эта функция не блокирует переход в спящий режим, потому не увеличит расход батареи.</string>
   <string name="settings_active_respect_inactive_time_title">Отключить в неактивное время</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Включить когда нет уведомлений</string>
-  <string name="settings_active_enabled_when_notification_list_empty_on">Активный режим включен всегда, вне зависимости от наличия текущих уведомлений.</string>
-  <string name="settings_active_enabled_when_notification_list_empty_off">Активный режим временно отключается, когда список уведомлений пуст.</string>
+  <string name="settings_active_enabled_when_notification_list_empty_on">Активный режим включен вне зависимости от наличия текущих уведомлений.</string>
+  <string name="settings_active_enabled_when_notification_list_empty_off">Активный режим временно отключается, пока текущий список уведомлений пуст.</string>
   <string name="settings_advanced_category">Расширенные</string>
   <string name="settings_proximity_sensor_title">Датчик приближения</string>
   <string name="settings_active_wave_to_wake_title">Жест включения экрана</string>
@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Размер иконки</string>
   <string name="settings_icon_size_summary">Текущий размер иконок: %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Выключить экран по двойному касанию</string>
+  <string name="settings_corner_actions_category">Угловые жесты</string>
+  <string name="settings_corner_actions_summary">Выберите что делать при свайпе от одного из углов к центру экрана.</string>
+  <string name="settings_corner_left_top_title">От верхнего левого угла</string>
+  <string name="settings_corner_right_top_title">От верхнего правого угла</string>
+  <string name="settings_corner_left_bottom_title">От нижнего левого угла</string>
+  <string name="settings_corner_right_bottom_title">От нижнего правого угла</string>
   <string name="settings_behavior_category">Поведение</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Выкл. экран после удал. посл. уведомления</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Экран выключается при удалении последнего уведомления.</string>

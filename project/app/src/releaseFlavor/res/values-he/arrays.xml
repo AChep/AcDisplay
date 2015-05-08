@@ -39,4 +39,9 @@
     <item>לא-חשוב (עדכוני תוכנה, דואר זבל)</item>
     <item>מידע הקשרי ורקע (מזג אויר, שפג תוקפו אירועים, הצעות)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>לבטל את הנעילה</item>
+    <item>להפעיל את המצלמה</item>
+    <item>להפעיל את החייגן</item>
+  </string-array>
 </resources>

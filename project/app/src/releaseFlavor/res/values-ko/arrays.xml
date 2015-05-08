@@ -35,8 +35,13 @@
   <string-array name="notify_priorities">
     <item>긴급(부재중 전화, 지시, 긴급알림)</item>
     <item>중요(메신저, 중요한 메일)</item>
-    <item>보통(+ 오래된 앱으로부터의 알림)</item>
+    <item>보통(오래된 앱들의 알림도 포함)</item>
     <item>중요하지 않은 알림(소프트웨어 업데이트, 스팸 메일)</item>
     <item>백그라운드 정보(날씨, 지난 일정, 제안)</item>
+  </string-array>
+  <string-array name="corners_actions">
+    <item>잠금 해제</item>
+    <item>카메라 실행</item>
+    <item>전화 실행</item>
   </string-array>
 </resources>

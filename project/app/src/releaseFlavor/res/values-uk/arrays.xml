@@ -39,4 +39,9 @@
     <item>Неважливі (оновлення програм, небажана пошта)</item>
     <item>Контекстна та фонова інформація (погода, минулі події, поради)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Розблокувати</item>
+    <item>Запустити камеру</item>
+    <item>Запустити додаток дзвінків</item>
+  </string-array>
 </resources>

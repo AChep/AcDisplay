@@ -54,9 +54,9 @@ AcDisplay は、フリーの <a href="http://repo.acdisplay.org">オープン �
   <string name="compat_dialog_item_notification">AcDisplay はアクセシビリティ サービスを使用しているため、却下/更新されている通知を検出できません。また通知ドロワーから通知を消すことはできません。</string>
   <string name="compat_dialog_item_immersive_mode">ナビゲーションバーは、常に表示されます。</string>
   <string name="compat_dialog_item_music_widget">音楽ウィジェットがありません。</string>
-  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_title">何か問題が発生しました</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
+LG のソフトウェア誤りのためカスタム ウィジェットが設定できません。
+<a href="https://github.com/AChep/AcDisplay/issues/76">詳細を見る</a>
     ]]></string>
 </resources>

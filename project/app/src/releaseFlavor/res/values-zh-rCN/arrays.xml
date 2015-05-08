@@ -39,4 +39,9 @@
     <item>非重要（软件更新、垃圾邮件）</item>
     <item>环境相关和后台信息（天气、过期事件、建议）</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>解锁</item>
+    <item>启动相机</item>
+    <item>启动拨号</item>
+  </string-array>
 </resources>

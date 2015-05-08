@@ -54,9 +54,9 @@
   <string name="compat_dialog_item_notification">HeadsUp이 접근성 서비스를 사용하기 때문에 알림의 해제/업데이트를 감지할 수 없고, 알림창에서 알림을 지울 수도 없습니다.</string>
   <string name="compat_dialog_item_immersive_mode">네비게이션바가 항상 표시됩니다.</string>
   <string name="compat_dialog_item_music_widget">음악 위젯이 없습니다.</string>
-  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_title">무엇인가 잘못 되었습니다</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+        LG의 소프트웨어적인 잘못으로 커스텀 위젯을 설정할 수 없습니다.
+        <a href="https://github.com/AChep/AcDisplay/issues/76">더 많은 정보를 원하신다면 여기를 눌러주세요</a>.
+    ]]></string>
 </resources>

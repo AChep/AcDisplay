@@ -39,4 +39,9 @@
     <item>Ikke-vigtige (Software opdateringer, junk mails)</item>
     <item>Kontekstuelle og baggrunds info (vejret, udløbet aktiviteter, forslag)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Oplås</item>
+    <item>Åben kamera</item>
+    <item>Åben nummerblok</item>
+  </string-array>
 </resources>

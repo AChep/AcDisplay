@@ -39,4 +39,9 @@
     <item>重要でない (ソフトウェアの更新、迷惑メール)</item>
     <item>文脈および背景の情報 (天気、期限切れイベント、提案)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>ロックを解除</item>
+    <item>カメラを起動</item>
+    <item>ダイヤラーを起動</item>
+  </string-array>
 </resources>

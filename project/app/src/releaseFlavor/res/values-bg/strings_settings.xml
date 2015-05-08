@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">Размер на икони</string>
   <string name="settings_icon_size_summary">Текущ размер на иконите е %1$s DPI.</string>
   <string name="settings_double_tap_to_sleep_title">Двукратно натискане за заспиване</string>
+  <string name="settings_corner_actions_category">Corner gestures</string>
+  <string name="settings_corner_actions_summary">Choose what to do when swiping from a corner to the center of the screen.</string>
+  <string name="settings_corner_left_top_title">Upper left-hand corner</string>
+  <string name="settings_corner_right_top_title">Upper right-hand corner</string>
+  <string name="settings_corner_left_bottom_title">Bottom left-hand corner</string>
+  <string name="settings_corner_right_bottom_title">Bottom right-hand corner</string>
   <string name="settings_behavior_category">Поведение</string>
   <string name="settings_lock_on_dismiss_last_notify_title">Заключване при отхвъряне на последното известие</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екранът се изключва при изчистване на последното известие.</string>

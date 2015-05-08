@@ -39,4 +39,9 @@
     <item>Niet belangrijk (software updates, junk mail)</item>
     <item>Contextuele en achtergrond informatie (weer, oude evenementen, suggesties)</item>
   </string-array>
+  <string-array name="corners_actions">
+    <item>Ontgrendelen</item>
+    <item>Start de camera</item>
+    <item>Start de dialer</item>
+  </string-array>
 </resources>

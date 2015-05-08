@@ -87,6 +87,12 @@
   <string name="settings_icon_size_title">גודל סמל</string>
   <string name="settings_icon_size_summary">הגודל הנוכחי של סמלים הוא %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">הקשה כפולה לכיבוי המסך</string>
+  <string name="settings_corner_actions_category">מחווה מהפינה</string>
+  <string name="settings_corner_actions_summary">בחור מה לעשות כאשר ומחליקים אצבע מפינה למרכז המסך.</string>
+  <string name="settings_corner_left_top_title">בפינה השמאלית העליונה</string>
+  <string name="settings_corner_right_top_title">בפינה הימנית העליונה</string>
+  <string name="settings_corner_left_bottom_title">בפינה השמאלית התחתונה</string>
+  <string name="settings_corner_right_bottom_title">בפינה הימנית התחתונה</string>
   <string name="settings_behavior_category">התנהגות</string>
   <string name="settings_lock_on_dismiss_last_notify_title">נעל מכשיר בביטול הודעה אחרונה</string>
   <string name="settings_lock_on_dismiss_last_notify_on">המסך כבה לאחר ביטול ההודעה האחרונה.</string>
