@@ -34,7 +34,7 @@ public interface IRemoteControlDisplay {
 
         public abstract void setAllMetadata(int generationId, Bundle metadata, Bitmap bitmap);
 
-        public abstract void setArtwork(int generationId, Bitmap bitmap)l
+        public abstract void setArtwork(int generationId, Bitmap bitmap);
 
         public abstract void setCurrentClientId(int clientGeneration, PendingIntent mediaIntent,
                                                 boolean clearing) throws RemoteException;
