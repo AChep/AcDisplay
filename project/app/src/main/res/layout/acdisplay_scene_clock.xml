@@ -26,11 +26,6 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!--
-        IF YOU WANT TO CHANGE TOP/BOTTOM MARGINS:
-        don't forget to check its style code - you probably
-        will need to compensate font margins.
-    -->
     <com.achep.acdisplay.ui.widgets.TimeView
         android:id="@+id/time"
         style="?acDisplayLargeClock"
