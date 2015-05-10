@@ -32,8 +32,7 @@
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:clipToPadding="false"
         android:drawSelectorOnTop="false"
