@@ -33,7 +33,6 @@ import com.achep.acdisplay.R;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.utils.PreferenceManagerUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -388,9 +387,7 @@ public abstract class PreferenceFragmentBase extends Fragment implements
                             View.class, int.class, KeyEvent.class);
                     method.setAccessible(true);
                     return (boolean) method.invoke(pref, selectedView, keyCode, event);
-                } catch (NoSuchMethodException
-                        | InvocationTargetException
-                        | IllegalAccessException ignored) { /* unused*/ }
+                } catch (Exception ignored) { /* unused*/ }
             }
             return false;
         }
