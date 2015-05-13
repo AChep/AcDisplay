@@ -22,9 +22,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- Size of icons in Jelly Bean launchers. -->
-    <dimen name="launcher_icon_size">@android:dimen/app_icon_size</dimen>
-
     <!-- Settings -->
     <dimen name="preference_header_icon_width">28dp</dimen>
 
@@ -42,6 +39,18 @@
     <dimen name="scene_min_width">96dp</dimen>
     <dimen name="scene_max_height">256dp</dimen>
     <dimen name="scene_min_height">56dp</dimen>
+
+    <!-- Status bar battery icons dimensions -->
+    <dimen name="status_bar_battery_height">16dp</dimen>
+    <dimen name="status_bar_battery_width">10.5dp</dimen>
+
+    <!--
+        Appwidget
+        -->
+
+    <!-- Size of icons in Jelly Bean launchers. -->
+    <dimen name="appwidget_icon_size">@android:dimen/app_icon_size</dimen>
+    <dimen name="appwidget_icon_margin">4dp</dimen>
 
     <!--
         Snake
@@ -63,16 +72,14 @@
     <!-- The width of media widget -->
     <dimen name="media_scene_width">236dp</dimen>
 
-    <!-- Status bar battery icons dimensions -->
-    <dimen name="status_bar_battery_height">16dp</dimen>
-    <dimen name="status_bar_battery_width">10.5dp</dimen>
+    <!--
+        Settings
+        -->
 
     <!-- Preference fragment padding, bottom -->
     <dimen name="preference_fragment_padding_bottom">0dp</dimen>
     <!-- Preference fragment padding, sides -->
     <dimen name="preference_fragment_padding_side">16dp</dimen>
-
-    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer> <!-- outsideOverlay -->
 
     <!--
         Dashboard
@@ -104,5 +111,6 @@
     <!-- Dashboard tile image margin start / end -->
     <dimen name="dashboard_tile_image_margin_start">16dp</dimen>
     <dimen name="dashboard_tile_image_margin_end">32dp</dimen>
+    <dimen name="circle_corner_margin">8dp</dimen>
 
 </resources>

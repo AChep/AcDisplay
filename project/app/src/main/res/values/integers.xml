@@ -19,8 +19,20 @@
   -->
 <resources>
 
+    <integer name="icons_columns_count">5</integer>
+
+    <!--
+        Settings
+        -->
+
+    <!-- outsideOverlay -->
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer>
+
+    <!--
+        Dashboard
+        -->
+
     <!-- Dashboard number of columns -->
     <integer name="dashboard_num_columns">1</integer>
 
-    <integer name="icons_columns_count">5</integer>
 </resources>

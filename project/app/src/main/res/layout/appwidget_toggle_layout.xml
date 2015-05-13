@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="@dimen/launcher_icon_size"
-        android:layout_height="@dimen/launcher_icon_size"
+        android:layout_width="@dimen/appwidget_icon_size"
+        android:layout_height="@dimen/appwidget_icon_size"
         android:src="@mipmap/ic_launcher"
         tools:ignore="ContentDescription" />
 
@@ -37,7 +37,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/appwidget_icon_margin"
         android:ellipsize="marquee"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center_horizontal"
