@@ -42,6 +42,7 @@ import android.view.View;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.CornerHelper;
+import com.achep.acdisplay.ui.drawables.CornerIconDrawable;
 import com.achep.acdisplay.ui.preferences.ColorPickerPreference;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
@@ -109,9 +110,14 @@ public class CircleView extends View {
     private boolean mCanceled;
     private float mDarkening;
 
+    private float mCornerMargin;
     @DrawableRes
     private int mDrawableResourceId = -1;
     private ColorFilter mInverseColorFilter;
+    private CornerIconDrawable mDrawableLeftTopCorner;
+    private CornerIconDrawable mDrawableRightTopCorner;
+    private CornerIconDrawable mDrawableLeftBottomCorner;
+    private CornerIconDrawable mDrawableRightBottomCorner;
     private Drawable mDrawable;
     private Paint mPaint;
     @NonNull
@@ -191,10 +197,16 @@ public class CircleView extends View {
 
     private void init() {
         Resources res = getResources();
+        mCornerMargin = res.getDimension(R.dimen.circle_corner_margin);
         mRadiusTarget = res.getDimension(R.dimen.circle_radius_target);
         mRadiusDecreaseThreshold = res.getDimension(R.dimen.circle_radius_decrease_threshold);
         mShortAnimTime = res.getInteger(android.R.integer.config_shortAnimTime);
         mMediumAnimTime = res.getInteger(android.R.integer.config_mediumAnimTime);
+
+        mDrawableLeftTopCorner = new CornerIconDrawable(Config.KEY_CORNER_ACTION_LEFT_TOP);
+        mDrawableRightTopCorner = new CornerIconDrawable(Config.KEY_CORNER_ACTION_RIGHT_TOP);
+        mDrawableLeftBottomCorner = new CornerIconDrawable(Config.KEY_CORNER_ACTION_LEFT_BOTTOM);
+        mDrawableRightBottomCorner = new CornerIconDrawable(Config.KEY_CORNER_ACTION_RIGHT_BOTTOM);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -223,10 +235,26 @@ public class CircleView extends View {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        // Update corner icons
+        mDrawableLeftTopCorner.start(getContext());
+        mDrawableRightTopCorner.start(getContext());
+        mDrawableLeftBottomCorner.start(getContext());
+        mDrawableRightBottomCorner.start(getContext());
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         final float ratio = calculateRatio();
+
+        // Draw all corners
+        drawCorner(canvas, mDrawableLeftTopCorner, 0, 0);
+        drawCorner(canvas, mDrawableRightTopCorner, 1, 0);
+        drawCorner(canvas, mDrawableLeftBottomCorner, 0, 1);
+        drawCorner(canvas, mDrawableRightBottomCorner, 1, 1);
 
         // Darkening background
         int alpha = (int) (mDarkening * 255);
@@ -254,11 +282,27 @@ public class CircleView extends View {
         }
     }
 
+    private void drawCorner(@NonNull Canvas canvas, @NonNull Drawable drawable, int xm, int ym) {
+        int width = getMeasuredWidth() - drawable.getBounds().width();
+        int height = getMeasuredHeight() - drawable.getBounds().height();
+        float margin = (1 - 2 * xm) * mCornerMargin;
+        // Draw
+        canvas.save();
+        canvas.translate(xm * width + margin, ym * height + margin);
+        drawable.draw(canvas);
+        canvas.restore();
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         clearAnimator();
         mHandler.removeCallbacksAndMessages(null);
         mDrawableCache.clear();
+
+        mDrawableLeftTopCorner.stop();
+        mDrawableRightTopCorner.stop();
+        mDrawableLeftBottomCorner.stop();
+        mDrawableRightBottomCorner.stop();
         super.onDetachedFromWindow();
     }
 
@@ -492,12 +536,21 @@ public class CircleView extends View {
                 performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY); // vibrate
             }
         }
+        final float ratio = calculateRatio();
+        int alpha;
 
         // Update unlock icon's transparency.
         if (mDrawable != null) {
-            float ratio = calculateRatio();
-            mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
+            alpha = (int) (255 * Math.pow(ratio, 3));
+            mDrawable.setAlpha(alpha);
         }
+
+        // Update corners' icons transparency.
+        alpha = (int) (50f * Math.pow(1f - ratio, 0.3f));
+        mDrawableLeftTopCorner.setAlpha(alpha);
+        mDrawableRightTopCorner.setAlpha(alpha);
+        mDrawableLeftBottomCorner.setAlpha(alpha);
+        mDrawableRightBottomCorner.setAlpha(alpha);
 
         // Update the size of the unlock circle.
         radius = (float) Math.sqrt(mRadius / 50f) * 50f;
