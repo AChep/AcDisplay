@@ -80,6 +80,7 @@ import com.achep.base.async.WeakHandler;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.tests.Check;
 import com.achep.base.ui.activities.ActivityBase;
+import com.achep.base.ui.fragments.leakcanary.LeakWatchFragment;
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.FloatProperty;
 import com.achep.base.utils.MathUtils;
@@ -96,7 +97,7 @@ import static com.achep.base.Build.DEBUG;
  * This is main fragment of ActiveDisplay app.
  */
 // TODO: Put main scene inside of widget.
-public class AcDisplayFragment extends Fragment implements
+public class AcDisplayFragment extends LeakWatchFragment implements
         NotificationPresenter.OnNotificationListChangedListener,
         ForwardingLayout.OnForwardedEventListener,
         View.OnTouchListener,

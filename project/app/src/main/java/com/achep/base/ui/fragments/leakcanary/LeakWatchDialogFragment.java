@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,12 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.base.ui.fragments.dialogs;
+package com.achep.base.ui.fragments.leakcanary;
 
-import com.achep.base.ui.fragments.leakcanary.LeakWatchDialogFragment;
+import android.support.v4.app.DialogFragment;
+
+import com.achep.base.AppHeap;
+import com.squareup.leakcanary.RefWatcher;
 
 /**
- * Created by Artem Chepurnoy on 25.10.2014.
+ * Created by Artem Chepurnoy on 15.05.2015.
  */
-public abstract class DialogFragment extends LeakWatchDialogFragment {
+public class LeakWatchDialogFragment extends DialogFragment {
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AppHeap.getRefWatcher();
+        refWatcher.watch(this);
+    }
+
 }

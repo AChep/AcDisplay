@@ -28,6 +28,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 
+import com.achep.base.ui.fragments.leakcanary.LeakWatchFragment;
+
 /**
  * Non-UI fragment that listens to the proximity sensor to let us know
  * when to turn screen off.
@@ -40,7 +42,7 @@ import android.support.v4.app.Fragment;
  * @author Artem Chepurnoy
  * @see #setListener(PocketFragment.OnSleepRequestListener)
  */
-public class PocketFragment extends Fragment implements SensorEventListener {
+public class PocketFragment extends LeakWatchFragment implements SensorEventListener {
 
     public static final String TAG = "PocketFragment";
 

@@ -31,6 +31,7 @@ import android.widget.ListView;
 
 import com.achep.acdisplay.R;
 import com.achep.base.async.WeakHandler;
+import com.achep.base.ui.fragments.leakcanary.LeakWatchFragment;
 import com.achep.base.utils.PreferenceManagerUtils;
 
 import java.lang.reflect.Method;
@@ -105,7 +106,7 @@ import java.lang.reflect.Method;
  * @see android.preference.Preference
  * @see android.preference.PreferenceScreen
  */
-public abstract class PreferenceFragmentBase extends Fragment implements
+public abstract class PreferenceFragmentBase extends LeakWatchFragment implements
         PreferenceManagerUtils.OnPreferenceTreeClickListener {
 
     private static final String PREFERENCES_TAG = "android:preferences";

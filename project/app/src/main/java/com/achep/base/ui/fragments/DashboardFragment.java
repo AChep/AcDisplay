@@ -35,13 +35,14 @@ import com.achep.base.async.WeakHandler;
 import com.achep.base.dashboard.DashboardCategory;
 import com.achep.base.dashboard.DashboardTile;
 import com.achep.base.ui.activities.SettingsActivity;
+import com.achep.base.ui.fragments.leakcanary.LeakWatchFragment;
 import com.achep.base.ui.widgets.DashboardTileView;
 
 import java.util.List;
 
 import static com.achep.base.Build.DEBUG;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends LeakWatchFragment {
 
     private static final String TAG = "DashboardFragment";
 
