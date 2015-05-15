@@ -27,6 +27,7 @@ import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.tests.Check;
 import com.drivemode.android.typeface.TypefaceHelper;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.ProductTypes;
@@ -68,6 +69,12 @@ public class AppHeap implements IOnLowMemory {
     }
 
     @NonNull
+    public static RefWatcher getRefWatcher() {
+        Check.getInstance().isNonNull(getInstance().mApplication);
+        return getInstance().mRefWatcher;
+    }
+
+    @NonNull
     private static final Products sProducts = Products.create()
             .add(ProductTypes.IN_APP, Arrays.asList(
                     "donation_1",
@@ -87,12 +94,13 @@ public class AppHeap implements IOnLowMemory {
     @NonNull
     private CheckoutInternal mCheckoutInternal;
     private Application mApplication;
+    private RefWatcher mRefWatcher;
 
     /**
      * Must be called at {@link android.app.Application#onCreate()}
      */
     public void init(@NonNull Application application) {
-        LeakCanary.install(application);
+        mRefWatcher = LeakCanary.install(application);
 
         mCheckoutInternal = new CheckoutInternal(application, sProducts);
         mApplication = application;
