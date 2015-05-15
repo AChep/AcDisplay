@@ -155,6 +155,12 @@ dependencies {
     compile('com.android.support:recyclerview-v7:22.+')
     compile('com.android.support:support-v13:22.+')
 
+    // Leak canary
+    //noinspection GradleDynamicVersion
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    //noinspection GradleDynamicVersion
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+
     // Testing-only dependencies
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'

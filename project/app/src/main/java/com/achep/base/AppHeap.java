@@ -26,6 +26,7 @@ import com.achep.base.billing.CheckoutInternal;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.tests.Check;
 import com.drivemode.android.typeface.TypefaceHelper;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.ProductTypes;
@@ -91,6 +92,8 @@ public class AppHeap implements IOnLowMemory {
      * Must be called at {@link android.app.Application#onCreate()}
      */
     public void init(@NonNull Application application) {
+        LeakCanary.install(application);
+
         mCheckoutInternal = new CheckoutInternal(application, sProducts);
         mApplication = application;
 
