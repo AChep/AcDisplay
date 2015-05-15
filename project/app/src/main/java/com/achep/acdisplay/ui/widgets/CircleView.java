@@ -43,16 +43,17 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.CornerHelper;
 import com.achep.acdisplay.ui.drawables.CornerIconDrawable;
-import com.achep.acdisplay.ui.preferences.ColorPickerPreference;
 import com.achep.base.async.WeakHandler;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.FloatProperty;
+import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.RefCacheBase;
 import com.achep.base.utils.ResUtils;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
+import static com.achep.acdisplay.ui.preferences.ColorPickerPreference.getColor;
 import static com.achep.base.Build.DEBUG;
 
 /**
@@ -69,9 +70,10 @@ public class CircleView extends View {
     public static final int ACTION_CANCELED = 4;
 
     private static final int MSG_CANCEL = -1;
-    private static final Property<CircleView, Float> TRANSFORM =
-            new FloatProperty<CircleView>("setRadius") {
 
+    @NonNull
+    private static final Property<CircleView, Float> RADIUS_PROPERTY =
+            new FloatProperty<CircleView>("setRadius") {
                 @Override
                 public void setValue(CircleView cv, float value) {
                     cv.setRadius(value);
@@ -81,18 +83,12 @@ public class CircleView extends View {
                 public Float get(CircleView cv) {
                     return cv.mRadius;
                 }
-
             };
 
+    /**
+     * The current touch point.
+     */
     private float[] mPoint = new float[2];
-
-    // Target
-    private boolean mRadiusTargetAimed;
-    private float mRadiusTarget;
-
-    // Decreasing detection
-    private float mRadiusDecreaseThreshold;
-    private float mRadiusMaxPeak;
 
     /**
      * Real radius of the circle, measured by touch.
@@ -105,7 +101,12 @@ public class CircleView extends View {
      * @see #setRadiusDrawn(float)
      */
     private float mRadiusDrawn;
-
+    // Target
+    private float mRadiusTarget;
+    private boolean mRadiusTargetAimed;
+    // Decreasing detection
+    private float mRadiusMaxPeak;
+    private float mRadiusDecreaseThreshold;
 
     private boolean mCanceled;
     private float mDarkening;
@@ -156,32 +157,6 @@ public class CircleView extends View {
 
     }
 
-    private static class H extends WeakHandler<CircleView> {
-
-        public H(@NonNull CircleView cv) {
-            super(cv);
-        }
-
-        @Override
-        protected void onHandleMassage(@NonNull CircleView cv, Message msg) {
-            switch (msg.what) {
-                case MSG_CANCEL:
-                    cv.cancelCircle();
-                    break;
-                case ACTION_START:
-                case ACTION_UNLOCK:
-                case ACTION_UNLOCK_START:
-                case ACTION_UNLOCK_CANCEL:
-                case ACTION_CANCELED:
-                    if (cv.mCallback != null) {
-                        cv.mCallback.onCircleEvent(cv.mRadius, cv.calculateRatio(), msg.what, cv.mCornerActionId);
-                    }
-                    break;
-            }
-        }
-
-    }
-
     public CircleView(Context context) {
         this(context, null);
     }
@@ -210,12 +185,12 @@ public class CircleView extends View {
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        initColorFilter();
+        initInverseColorFilter();
 
         setRadius(0);
     }
 
-    private void initColorFilter() {
+    private void initInverseColorFilter() {
         final float v = -1;
         final float[] matrix = {
                 v, 0, 0, 0, 0,
@@ -223,6 +198,7 @@ public class CircleView extends View {
                 0, 0, v, 0, 0,
                 0, 0, 0, 1, 0,
         };
+
         mInverseColorFilter = new ColorMatrixColorFilter(matrix);
     }
 
@@ -237,24 +213,23 @@ public class CircleView extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        // Update corner icons
-        mDrawableLeftTopCorner.start(getContext());
-        mDrawableRightTopCorner.start(getContext());
-        mDrawableLeftBottomCorner.start(getContext());
-        mDrawableRightBottomCorner.start(getContext());
+        // Start tracking the corners' icons.
+        Context context = getContext();
+        mDrawableLeftTopCorner.start(context);
+        mDrawableRightTopCorner.start(context);
+        mDrawableLeftBottomCorner.start(context);
+        mDrawableRightBottomCorner.start(context);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
         final float ratio = calculateRatio();
 
         // Draw all corners
-        drawCorner(canvas, mDrawableLeftTopCorner, 0, 0);
-        drawCorner(canvas, mDrawableRightTopCorner, 1, 0);
-        drawCorner(canvas, mDrawableLeftBottomCorner, 0, 1);
-        drawCorner(canvas, mDrawableRightBottomCorner, 1, 1);
+        drawCornerIcon(canvas, mDrawableLeftTopCorner, 0, 0 /* left top */);
+        drawCornerIcon(canvas, mDrawableRightTopCorner, 1, 0 /* right top */);
+        drawCornerIcon(canvas, mDrawableLeftBottomCorner, 0, 1 /* left bottom */);
+        drawCornerIcon(canvas, mDrawableRightBottomCorner, 1, 1 /* right bottom */);
 
         // Darkening background
         int alpha = (int) (mDarkening * 255);
@@ -282,7 +257,7 @@ public class CircleView extends View {
         }
     }
 
-    private void drawCorner(@NonNull Canvas canvas, @NonNull Drawable drawable, int xm, int ym) {
+    private void drawCornerIcon(@NonNull Canvas canvas, @NonNull Drawable drawable, int xm, int ym) {
         int width = getMeasuredWidth() - drawable.getBounds().width();
         int height = getMeasuredHeight() - drawable.getBounds().height();
         float margin = (1 - 2 * xm) * mCornerMargin;
@@ -295,7 +270,7 @@ public class CircleView extends View {
 
     @Override
     protected void onDetachedFromWindow() {
-        clearAnimator();
+        cancelAndClearAnimator();
         mHandler.removeCallbacksAndMessages(null);
         mDrawableCache.clear();
 
@@ -378,13 +353,13 @@ public class CircleView extends View {
                 int width = getWidth();
                 int height = getHeight();
                 int radius = Math.min(width, height) / 3;
-                if (isInCircle(x, y, 0, 0, radius)) { // Top left
+                if (MathUtils.isInCircle(x, y, 0, 0, radius)) { // Top left
                     mCornerActionId = config.getCornerActionLeftTop();
-                } else if (isInCircle(x, y, -width, 0, radius)) { // Top right
+                } else if (MathUtils.isInCircle(x, y, -width, 0, radius)) { // Top right
                     mCornerActionId = config.getCornerActionRightTop();
-                } else if (isInCircle(x, y, 0, -height, radius)) { // Bottom left
+                } else if (MathUtils.isInCircle(x, y, 0, -height, radius)) { // Bottom left
                     mCornerActionId = config.getCornerActionLeftBottom();
-                } else if (isInCircle(x, y, -width, -height, radius)) { // Bottom right
+                } else if (MathUtils.isInCircle(x, y, -width, -height, radius)) { // Bottom right
                     mCornerActionId = config.getCornerActionRightBottom();
                 } else {
                     // The default action is unlocking.
@@ -393,8 +368,8 @@ public class CircleView extends View {
 
                 // Update colors and icon drawable.
                 boolean needsColorReset = updateIcon();
-                setInnerColor(ColorPickerPreference.getColor(config.getCircleInnerColor()), needsColorReset);
-                setOuterColor(ColorPickerPreference.getColor(config.getCircleOuterColor()));
+                setInnerColor(getColor(config.getCircleInnerColor()), needsColorReset);
+                setOuterColor(getColor(config.getCircleOuterColor()));
 
                 // Initialize circle
                 mRadiusTargetAimed = false;
@@ -422,45 +397,35 @@ public class CircleView extends View {
                     break;
                 }
 
-                unlockCircle();
+                startUnlock();
                 break;
         }
         return true;
     }
 
-    /**
-     * Using a simple formula of the circle, returns {@code true} when the
-     *
-     * @param x
-     * @param y
-     * @param x0
-     * @param y0
-     * @param r
-     * @return
-     */
-    private boolean isInCircle(float x, float y, float x0, float y0, float r) {
-        return (x0 += x) * x0 + (y0 += y) * y0 < r * r;
-    }
-
-    private void clearAnimator() {
-        if (mAnimator != null) {
-            mAnimator.cancel();
-            mAnimator = null;
-        }
-    }
-
     private void cancelCircle() {
+        cancelCircle(mSupervisor.isAnimationUnlockEnabled());
+    }
+
+    private void cancelCircle(boolean animate) {
         Check.getInstance().isFalse(mCanceled);
 
         mCanceled = true;
         mHandler.removeCallbacksAndMessages(null);
         mHandler.sendEmptyMessage(ACTION_CANCELED);
-        startAnimator(mRadius, 0f, mMediumAnimTime);
+
+        if (animate) {
+            startAnimatorBy(mRadius, 0f, mMediumAnimTime);
+        } else {
+            setRadius(0f);
+        }
     }
 
-    private void unlockCircle() {
-        boolean animate = mSupervisor.isAnimationUnlockEnabled();
+    private void startUnlock() {
+        startUnlock(mSupervisor.isAnimationUnlockEnabled());
+    }
 
+    private void startUnlock(boolean animate) {
         if (animate) {
             // Calculate longest distance between center of
             // the circle and view's corners.
@@ -479,29 +444,30 @@ public class CircleView extends View {
             }
 
             distance = (float) (Math.pow(distance / 50f, 2) * 50f);
-            startAnimator(mRadius, distance, mShortAnimTime);
+            startAnimatorBy(mRadius, distance, mShortAnimTime);
         }
 
+        final int delayUnlock = animate ? mShortAnimTime - 10 : 0;
         mHandler.removeCallbacksAndMessages(null);
         mHandler.sendEmptyMessage(ACTION_UNLOCK_START);
-        mHandler.sendEmptyMessageDelayed(ACTION_UNLOCK, animate
-                ? mShortAnimTime - 10
-                : 0);
+        mHandler.sendEmptyMessageDelayed(ACTION_UNLOCK, delayUnlock);
     }
 
-    private void startAnimator(float from, float to, int duration) {
-        clearAnimator();
-        if (mSupervisor.isAnimationEnabled()) {
-            mAnimator = ObjectAnimator.ofFloat(this, TRANSFORM, from, to);
-            mAnimator.setInterpolator(new FastOutLinearInInterpolator());
-            mAnimator.setDuration(duration);
-            mAnimator.start();
-        } else {
-            setRadius(to);
+    private void startAnimatorBy(float from, float to, int duration) {
+        cancelAndClearAnimator();
+        // Animate the circle
+        mAnimator = ObjectAnimator.ofFloat(this, RADIUS_PROPERTY, from, to);
+        mAnimator.setInterpolator(new FastOutLinearInInterpolator());
+        mAnimator.setDuration(duration);
+        mAnimator.start();
+    }
+
+    private void cancelAndClearAnimator() {
+        if (mAnimator != null) {
+            mAnimator.cancel();
+            mAnimator = null;
         }
     }
-
-    //-- BASICS ---------------------------------------------------------------
 
     private float calculateRatio() {
         return Math.min(mRadius / mRadiusTarget, 1f);
@@ -533,7 +499,8 @@ public class CircleView extends View {
             boolean aimed = mRadius >= mRadiusTarget;
             if (mRadiusTargetAimed != aimed) {
                 mRadiusTargetAimed = aimed;
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY); // vibrate
+                // Vibrate if the user is interacting with the device.
+                if (isInTouchMode()) performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         }
         final float ratio = calculateRatio();
@@ -560,6 +527,36 @@ public class CircleView extends View {
     private void setRadiusDrawn(float radius) {
         mRadiusDrawn = radius;
         postInvalidateOnAnimation();
+    }
+
+    private static class H extends WeakHandler<CircleView> {
+
+        public H(@NonNull CircleView cv) {
+            super(cv);
+        }
+
+        @Override
+        protected void onHandleMassage(@NonNull CircleView cv, Message msg) {
+            switch (msg.what) {
+                case MSG_CANCEL:
+                    cv.cancelCircle();
+                    break;
+                case ACTION_START:
+                case ACTION_UNLOCK:
+                case ACTION_UNLOCK_START:
+                case ACTION_UNLOCK_CANCEL:
+                case ACTION_CANCELED:
+                    if (cv.mCallback != null) {
+                        final float ratio = cv.calculateRatio();
+                        final int actionId = cv.mCornerActionId;
+                        cv.mCallback.onCircleEvent(cv.mRadius, ratio, msg.what, actionId);
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
     }
 
 }

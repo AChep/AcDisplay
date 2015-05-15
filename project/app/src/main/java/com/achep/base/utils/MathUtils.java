@@ -23,6 +23,14 @@ package com.achep.base.utils;
  */
 public class MathUtils {
 
+    /**
+     * Using a simple circle formula, returns {@code true} if the
+     * point is in it, {@code false} otherwise.
+     */
+    public static boolean isInCircle(float x, float y, float x0, float y0, float r) {
+        return (x0 += x) * x0 + (y0 += y) * y0 < r * r;
+    }
+
     public static float range(float a, float min, float max) {
         return a < min ? min : a > max ? max : a;
     }
