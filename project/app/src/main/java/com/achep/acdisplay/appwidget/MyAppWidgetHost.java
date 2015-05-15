@@ -39,7 +39,7 @@ public class MyAppWidgetHost extends AppWidgetHost {
     private AppWidgetHostView mTempView;
 
     public MyAppWidgetHost(@NonNull Context context, int hostId) {
-        super(context, hostId);
+        super(context.getApplicationContext(), hostId);
     }
 
     /**
