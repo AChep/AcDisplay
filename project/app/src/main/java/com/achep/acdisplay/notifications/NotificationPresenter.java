@@ -34,12 +34,14 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.blacklist.AppConfig;
 import com.achep.acdisplay.blacklist.Blacklist;
+import com.achep.base.AppHeap;
 import com.achep.base.Device;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.Operator;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -532,6 +534,8 @@ public class NotificationPresenter implements
                 n.recycle();
                 list.remove(i);
                 mLList.removeNotification(n);
+                // Watch for the memory leaks
+                AppHeap.getRefWatcher().watch(n);
             }
         }
     }
@@ -554,6 +558,8 @@ public class NotificationPresenter implements
                     if (i != -1) {
                         n.recycle();
                         list.remove(i);
+                        // Watch for the memory leaks
+                        AppHeap.getRefWatcher().watch(n);
                     }
                     return;
                 }
