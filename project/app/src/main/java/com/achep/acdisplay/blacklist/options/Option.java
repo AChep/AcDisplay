@@ -82,7 +82,7 @@ public abstract class Option extends Blacklist.OnBlacklistChangedListener implem
     }
 
     public void pause() {
-        mBlacklist.registerListener(this);
+        mBlacklist.unregisterListener(this);
         mCompoundButton.setOnCheckedChangeListener(null);
     }
 
