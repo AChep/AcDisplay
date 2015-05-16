@@ -41,8 +41,8 @@
     <item>İçerik ve arka plan bilgisi (Hava, süresi dolmuş olaylar, öneriler)</item>
   </string-array>
   <string-array name="corners_actions">
-    <item>Unlock</item>
-    <item>Launch camera</item>
-    <item>Launch dialer</item>
+    <item>Kilidi Aç</item>
+    <item>Kamerayı Başlat</item>
+    <item>Arama Yap</item>
   </string-array>
 </resources>

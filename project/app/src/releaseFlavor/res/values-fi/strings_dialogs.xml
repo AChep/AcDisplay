@@ -20,17 +20,17 @@
   -->
 <resources>
   <string name="about_dialog_message"><![CDATA[
-        AcDisplay on ilmainen ja href="http://repo.acdisplay.org">avoimen lähdekoodin</a> sovellus.
-        Copyright 2013-%2$s <a href="http://artemchep.com">Artem Chepurnoy</a>. Kaikki oikeudet pidätetään<br/>
-        <br/>
-       Suuret kiitokset avaimen lähdekoodin työkaluille: %1$s ja niille, jotka
-        <a href="http://translate.acdisplay.org">auttoivat käännöksissä </a> tai lahjoittivat.
+        AcDisplay on ilmainen ja <a href="http://repo.acdisplay.org"> avoimen lähdekoodin</a>sovellus.
+        Tekijänoikeus 2013-%2$s<a href="http://artemchep.com">Artem Chepurnoy</a>. Kaikki oikeudet pidätetään.<br/>
+        <br/>
+        Suuret kiitokset avoimen lähdekoodin työkaluille:%1$s ja kaikille jotka
+        <a href="http://translate.acdisplay.org">auttoivat käännöksissä</a> tai lahjoittivat.
     ]]></string>
   <string name="donate_dialog_title">Lahjoita kehittäjille</string>
   <string name="donate_dialog_message">AcDisplay on ilmainen avoimen lähdekoodin sovellus. Voit näyttää arvostuksesi ja tukea kehitystä lahjoittamalla:</string>
   <string name="donate_alert_no_responsibility">Huomaa että Google ei ole vastuussa tästä maksutavasta.</string>
   <string name="donate_billing_not_supported">Sovellusten sisäisiä ostoksia ei tueta tällä laitteella.</string>
-  <string name="donate_thanks">Kiitoksia paljon!</string>
+  <string name="donate_thanks">Kiitos paljon!</string>
   <string name="donation_1">Jäätelöä</string>
   <string name="donation_4">Kuppia kahvia</string>
   <string name="donation_10">Sähkölaskut</string>

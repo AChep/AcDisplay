@@ -48,7 +48,7 @@
   <string name="settings_advanced_category">Pokročilé</string>
   <string name="settings_proximity_sensor_title">Senzor priblíženia</string>
   <string name="settings_active_wave_to_wake_title">Vlnou prebudiť</string>
-  <string name="settings_active_wave_to_wake_on">Pomaly sa priblížiť a potom pomocou senzor priblíženia zapnúť obrozovku.</string>
+  <string name="settings_active_wave_to_wake_on">Pomaly sa priblíž a potiahni ruku pred senzorom priblíženia na zapnutie obrazovky.</string>
   <string name="settings_wake_up_on_notification_title">Prebudiť pri novom oznámení</string>
   <string name="settings_notify_min_priority_title">Najnižšia priorita</string>
   <string name="settings_notify_max_priority_title">Najvyššia priorita</string>

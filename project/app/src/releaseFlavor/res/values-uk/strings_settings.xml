@@ -89,8 +89,8 @@
   <string name="settings_double_tap_to_sleep_title">Засинати по подвійному тапу</string>
   <string name="settings_corner_actions_category">Жести з кутів</string>
   <string name="settings_corner_actions_summary">Оберіть дію для свайпу з кута у центр екрану.</string>
-  <string name="settings_corner_left_top_title">З лівого верхнього кута</string>
-  <string name="settings_corner_right_top_title">З правого верхнього кута</string>
+  <string name="settings_corner_left_top_title">З верхнього лівого кута</string>
+  <string name="settings_corner_right_top_title">З верхнього правого кута</string>
   <string name="settings_corner_left_bottom_title">З нижнього лівого кута</string>
   <string name="settings_corner_right_bottom_title">З нижнього правого кута</string>
   <string name="settings_behavior_category">Поведінка</string>

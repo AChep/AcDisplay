@@ -39,7 +39,7 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_title">Käytä vaikka uusia ilmoituksia ei olisi</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lukitusnäyttö on käytössä riippumatta siitä, onko ilmoituksia vai ei.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lukitusnäyttö on poistettu käytöstä, kun ilmoituksia ei ole.</string>
-  <string name="settings_active_active_charging_title">Seuraa aina liikettä, kun akkua ladataan</string>
+  <string name="settings_active_active_charging_title">Seuraa liikettä aina kun akkua ladataan</string>
   <string name="settings_active_description">Aktiivitila käyttää laitteen sensoreita herättääkseen laitteen kun sitä tarvitset. Tätä käytetään kun nostat laitteen taskustasi nähdäksesi saapuneet ilmoitukset. Aktiivitila ei pidä suoritin käynnissä, joten sen ei pitäisi vaikuttaa akunkestoon.</string>
   <string name="settings_active_respect_inactive_time_title">Pois käytöstä inaktiivisina aikoina</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Käytä vaikka uusia ilmoituksia ei olisi</string>
@@ -121,5 +121,5 @@
   <string name="preference_icon_size_message">Säädä ilmoituskuvakkeiden kokoa.</string>
   <string name="preference_icon_size_dpi">%1$s dpi</string>
   <string name="preference_colorpicker_random_color">Satunnaisia värejä</string>
-  <string name="preference_colorpicker_custom_color">Määristä väri</string>
+  <string name="preference_colorpicker_custom_color">Valittu väri</string>
 </resources>

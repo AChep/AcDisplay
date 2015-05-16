@@ -26,5 +26,5 @@
   <string name="blacklist_app_restricted_title">Hiljainen</string>
   <string name="blacklist_app_restricted_summary">Tämän sovelluksen ilmoitukset eivät herätä AcDisplaytä.</string>
   <string name="blacklist_app_non_clearable_title">Pysyvät ilmoitukset</string>
-  <string name="blacklist_app_non_clearable_summary">Näyttää pysyvät ilmoitukset, esimerkiksi palveluista.</string>
+  <string name="blacklist_app_non_clearable_summary">Näyttää pysyvät ilmoitukset, kuten palveluista.</string>
 </resources>

@@ -56,9 +56,9 @@
   <string name="compat_dialog_item_notification">لأن AcDisplay يستخدم خدمات «إمكانية الدخول»، فإنه لا يمكنه كشف الإشعارات في حالة تحديثها أو استبعادها، أو استبعاد إشعارات من نافذة الإشعارات.</string>
   <string name="compat_dialog_item_immersive_mode">شريط التنقل ظاهر دائمًا.</string>
   <string name="compat_dialog_item_music_widget">لا تتوفر أداة للموسيقى.</string>
-  <string name="error_dialog_title">Something went wrong</string>
+  <string name="error_dialog_title">حدث خطأ ما</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+        بسبب خطأ في نظام LG فإن التطبيق المصغر المخصص لا يمكن إنشاؤه
+        <a href="https://github.com/AChep/AcDisplay/issues/76">لمعرفة المزيد</a>.    
+    ]]></string>
 </resources>
