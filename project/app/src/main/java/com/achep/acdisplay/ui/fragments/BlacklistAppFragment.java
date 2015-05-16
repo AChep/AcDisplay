@@ -38,13 +38,12 @@ import com.achep.acdisplay.blacklist.options.HideOption;
 import com.achep.acdisplay.blacklist.options.NonClearableOption;
 import com.achep.acdisplay.blacklist.options.Option;
 import com.achep.acdisplay.blacklist.options.RestrictOption;
-import com.achep.base.ui.fragments.leakcanary.LeakWatchFragment;
 import com.achep.base.utils.ViewUtils;
 
 /**
  * Created by Artem on 09.02.14.
  */
-public class BlacklistAppFragment extends LeakWatchFragment {
+public class BlacklistAppFragment extends Fragment {
 
     public static final String ARGS_PACKAGE_NAME = "package_name";
 
