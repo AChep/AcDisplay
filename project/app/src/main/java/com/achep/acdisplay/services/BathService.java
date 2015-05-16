@@ -36,7 +36,9 @@ import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.ui.activities.MainActivity;
+import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IOnLowMemory;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -221,6 +223,9 @@ public class BathService extends Service {
         unregisterReceiver(mReceiver);
         // Make sure that notification does not exists.
         mNotificationManager.cancel(App.ID_NOTIFY_BATH);
+
+        // Leaks canary
+        AppHeap.getRefWatcher().watch(this);
     }
 
     private void stopMySelf() {

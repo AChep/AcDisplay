@@ -34,6 +34,7 @@ import android.util.Log;
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationListener;
+import com.achep.base.AppHeap;
 import com.achep.base.Device;
 
 /**
@@ -133,6 +134,8 @@ public class MediaService extends NotificationListenerService implements
         if (isRemoteControllerSupported()) {
             setRemoteControllerDisabled();
         }
+
+        AppHeap.getRefWatcher().watch(this);
     }
 
     public void setRemoteControllerEnabled() {
