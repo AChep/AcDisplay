@@ -72,6 +72,8 @@ public abstract class KeyguardActivity extends ActivityBase implements
 
     private PowerManager.WakeLock mWakeLock;
 
+    private boolean mKeyguardDismissed;
+
     @Override
     public void onWindowFocusChanged(boolean windowHasFocus) {
         super.onWindowFocusChanged(windowHasFocus);
@@ -131,6 +133,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
         // https://code.google.com/p/android-developer-preview/issues/detail?id=1902
         if (Device.hasLollipopApi() /* bugs monster */ && !mKeyguardManager.isKeyguardSecure()) {
             getWindow().addFlags(flags | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+            mKeyguardDismissed = true;
         } else {
             getWindow().addFlags(flags |
                     // Show activity above the system keyguard.
@@ -283,7 +286,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
         // I will get the lockscreen (as it should always be).
         //
         // Read more: https://plus.google.com/110348136204265282325/posts/ZYfWURptt2V
-        if (Device.hasLollipopApi() /* only Lollipop need the FLAG_DISMISS_KEYGUARD flag      */
+        if (mKeyguardDismissed /* only after setting the FLAG_DISMISS_KEYGUARD flag           */
                 && !isFinishing() /* otherwise flags can not be set, case it'd turn screen on */
                 && !KeyguardService.isActive /* otherwise it's fine to leave device unlocked  */
                 && !PowerUtils.isScreenOn(this) /* screen is off and it WILL kill us later    */) {
@@ -396,6 +399,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
 
         mUnlockingTime = now;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        mKeyguardDismissed = true;
 
         mHandler.post(new Runnable() {
 
