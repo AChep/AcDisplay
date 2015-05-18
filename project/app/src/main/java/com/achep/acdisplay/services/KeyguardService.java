@@ -35,6 +35,7 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.utils.tasks.RunningTasks;
+import com.achep.base.AppHeap;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.power.PowerUtils;
@@ -195,6 +196,14 @@ public class KeyguardService extends SwitchService {
         }
 
         isActive = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Watch for the leaks
+        AppHeap.getRefWatcher().watch(this);
     }
 
     private void startMonitorThread() {

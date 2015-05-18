@@ -33,6 +33,7 @@ import android.util.Log;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
+import com.achep.base.AppHeap;
 import com.achep.base.utils.FileUtils;
 import com.achep.base.utils.power.PowerUtils;
 
@@ -131,6 +132,9 @@ public class SensorsDumpService extends BathService.ChildService implements
     public void onDestroy() {
         getContext().unregisterReceiver(mReceiver);
         stopListening();
+
+        // Watch for the leaks
+        AppHeap.getRefWatcher().watch(this);
     }
 
     @Override

@@ -47,9 +47,11 @@ import com.achep.acdisplay.services.switches.BatteryOutSwitch;
 import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.services.switches.ScreenOffSwitch;
+import com.achep.base.AppHeap;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.power.PowerUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import static com.achep.base.Build.DEBUG;
 
@@ -216,6 +218,9 @@ public class ActiveModeService extends SwitchService implements
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mLocalReceiver);
         NotificationPresenter.getInstance().unregisterListener(this);
         super.onDestroy();
+
+        // Watch for the leaks
+        AppHeap.getRefWatcher().watch(this);
     }
 
     @Override
