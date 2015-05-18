@@ -143,7 +143,7 @@ public abstract class MediaController2 implements
     protected int mPlaybackState;
 
     protected MediaController2(@NonNull Context context) {
-        mContext = context.getApplicationContext();
+        mContext = context;
 
         mListeners = new ArrayList<>();
         mMetadata = new Metadata();
