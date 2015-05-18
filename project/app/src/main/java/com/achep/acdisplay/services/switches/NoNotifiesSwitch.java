@@ -38,6 +38,7 @@ public final class NoNotifiesSwitch extends Switch.Optional implements
         NotificationPresenter.OnNotificationListChangedListener {
 
     private NotificationPresenter mNotificationPresenter;
+    private boolean mTriggerCallPending;
 
     public NoNotifiesSwitch(
             @NonNull Context context,
@@ -68,18 +69,24 @@ public final class NoNotifiesSwitch extends Switch.Optional implements
     public void onNotificationListChanged(@NonNull NotificationPresenter np,
                                           OpenNotification osbn,
                                           int event, boolean isLastEventInSequence) {
-        switch (event) {
-            case NotificationPresenter.EVENT_BATH:
-            case NotificationPresenter.EVENT_POSTED:
-            case NotificationPresenter.EVENT_REMOVED:
-                if (isLastEventInSequence) {
-                    if (isActiveInternal()) {
-                        requestActiveInternal();
-                    } else {
-                        requestInactiveInternal();
-                    }
-                }
-                break;
+        if (event == NotificationPresenter.EVENT_BATH
+                || event == NotificationPresenter.EVENT_POSTED
+                || event == NotificationPresenter.EVENT_REMOVED) {
+            if (isLastEventInSequence) {
+                triggerNotification();
+            } else mTriggerCallPending = true;
+        } else if (isLastEventInSequence && mTriggerCallPending) {
+            triggerNotification();
+        }
+    }
+
+    private void triggerNotification() {
+        mTriggerCallPending = false;
+        // Update the state
+        if (isActiveInternal()) {
+            requestActiveInternal();
+        } else {
+            requestInactiveInternal();
         }
     }
 
