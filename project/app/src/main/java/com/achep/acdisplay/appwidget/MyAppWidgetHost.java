@@ -26,6 +26,8 @@ import android.os.TransactionTooLargeException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.achep.base.Device;
+
 /**
  * Specific {@link AppWidgetHost} that creates our {@link MyAppWidgetHostView}
  * which eats all touch events. This ensures that users can not
@@ -39,7 +41,12 @@ public class MyAppWidgetHost extends AppWidgetHost {
     private AppWidgetHostView mTempView;
 
     public MyAppWidgetHost(@NonNull Context context, int hostId) {
-        super(context.getApplicationContext(), hostId);
+        super(Device.hasLollipopMR1Api()
+                // Up to Android 5.1 app widget host has a bug, that
+                // holds the context reference.
+                // See the fix: https://github.com/android/platform_frameworks_base/commit/7a96f3c917e0001ee739b65da37b2fadec7d7765
+                ? context
+                : context.getApplicationContext(), hostId);
     }
 
     /**
