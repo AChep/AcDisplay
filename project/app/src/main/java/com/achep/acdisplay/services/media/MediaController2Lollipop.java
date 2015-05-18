@@ -58,7 +58,7 @@ class MediaController2Lollipop extends MediaController2 {
     private boolean mSessionListening;
 
     private final ComponentName mComponent;
-    private final MediaSessionManager mMSManager;
+    private MediaSessionManager mMediaSessionManager;
     private final MediaController.Callback mCallback =
             new MediaController.Callback() {
 
@@ -143,7 +143,6 @@ class MediaController2Lollipop extends MediaController2 {
     protected MediaController2Lollipop(@NonNull Context context) {
         super(context);
 
-        mMSManager = (MediaSessionManager) mContext.getSystemService(Context.MEDIA_SESSION_SERVICE);
         mComponent = new ComponentName(context, MediaService.class);
     }
 
@@ -159,16 +158,24 @@ class MediaController2Lollipop extends MediaController2 {
 //        mThread.setPriority(Thread.MIN_PRIORITY);
 //        mThread.start();
 
+        mMediaSessionManager = (MediaSessionManager) mContext
+                .getSystemService(Context.MEDIA_SESSION_SERVICE);
+
         try {
-            mMSManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
-            mSessionListener.onActiveSessionsChanged(mMSManager.getActiveSessions(mComponent));
+            mMediaSessionManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
             mSessionListening = true;
         } catch (SecurityException exception) {
             Log.w(TAG, "Failed to start Lollipop media controller: " + exception.getMessage());
+            // Try to unregister it, just it case.
+            mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
             mSessionListening = false;
             // Media controller needs notification listener service
             // permissions to be granted.
+            return;
         }
+
+        List<MediaController> controllers = mMediaSessionManager.getActiveSessions(mComponent);
+        mSessionListener.onActiveSessionsChanged(controllers);
     }
 
     /**
@@ -180,10 +187,11 @@ class MediaController2Lollipop extends MediaController2 {
 //        mThread.finish(true);
 
         if (mSessionListening) {
-            mMSManager.removeOnActiveSessionsChangedListener(mSessionListener);
+            mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
             clearMediaController(true);
         }
         super.onStop();
+        mMediaSessionManager = null;
     }
 
     private void clearMediaController(boolean clear) {
