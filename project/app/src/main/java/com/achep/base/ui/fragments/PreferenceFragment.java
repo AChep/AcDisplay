@@ -21,11 +21,11 @@ package com.achep.base.ui.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.preference.TwoStatePreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -62,7 +62,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
     private ConfigBase mConfig;
     private ConfigBase.Syncer mSyncer;
 
-    private CheckBoxPreferenceSetter mCheckBoxPreferenceSetter;
+    private TwoStatePreferenceSetter mTwoStatePreferenceSetter;
 
     public abstract ConfigBase getConfig();
 
@@ -138,9 +138,9 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
      * @see com.achep.acdisplay.Config#getMap()
      */
     protected void syncPreference(@NonNull String key) {
-        if (mCheckBoxPreferenceSetter == null)
-            mCheckBoxPreferenceSetter = new CheckBoxPreferenceSetter();
-        syncPreference(key, mCheckBoxPreferenceSetter);
+        if (mTwoStatePreferenceSetter == null)
+            mTwoStatePreferenceSetter = new TwoStatePreferenceSetter();
+        syncPreference(key, mTwoStatePreferenceSetter);
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
      * @param setter preference's setter
      * @see com.achep.acdisplay.Config#getMap()
      * @see ListPreferenceSetter
-     * @see CheckBoxPreferenceSetter
+     * @see TwoStatePreferenceSetter
      */
     protected void syncPreference(@NonNull String key, @NonNull ConfigBase.Syncer.Setter setter) {
         Preference preference = findPreference(key);
@@ -178,11 +178,11 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
     }
 
     /**
-     * The setter for a {@link CheckBoxPreference}.
+     * The setter for a {@link TwoStatePreference}.
      *
      * @author Artem Chepurnoy
      */
-    protected static class CheckBoxPreferenceSetter implements ConfigBase.Syncer.Setter {
+    protected static class TwoStatePreferenceSetter implements ConfigBase.Syncer.Setter {
 
         /**
          * {@inheritDoc}
@@ -204,7 +204,7 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
         public void setValue(@NonNull Preference preference,
                              @NonNull ConfigBase.Option option,
                              @NonNull Object value) {
-            CheckBoxPreference cbp = (CheckBoxPreference) preference;
+            TwoStatePreference cbp = (TwoStatePreference) preference;
             cbp.setChecked((Boolean) value);
         }
 
