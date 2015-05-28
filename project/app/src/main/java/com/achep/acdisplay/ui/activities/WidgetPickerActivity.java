@@ -375,7 +375,12 @@ public class WidgetPickerActivity extends ActivityBase implements
                 id = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
                 if (resultCode == RESULT_OK && AppWidgetUtils.isValidId(id)) {
                     AppWidgetProviderInfo appWidget = mAppWidgetManager.getAppWidgetInfo(id);
-                    if (appWidget.configure != null) {
+                    if (appWidget == null) {
+                        // Clean-up allocated id. This is probably not needed,
+                        // cause we don't have an access to the widget.
+                        mAppWidgetHost.deleteAppWidgetId(id);
+                        // TODO: Toast a user about this incident.
+                    } else if (appWidget.configure != null) {
                         mPendingAppWidgetId = id;
                         startAppWidgetConfigure(appWidget, id);
                     } else {
