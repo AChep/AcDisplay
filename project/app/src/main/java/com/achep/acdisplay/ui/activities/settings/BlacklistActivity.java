@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.acdisplay.ui.activities;
+package com.achep.acdisplay.ui.activities.settings;
 
 import android.app.Activity;
 import android.content.ComponentName;

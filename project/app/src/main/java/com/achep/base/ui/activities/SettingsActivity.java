@@ -41,7 +41,7 @@ import android.util.Xml;
 import android.view.ViewGroup;
 
 import com.achep.acdisplay.R;
-import com.achep.acdisplay.ui.activities.Settings2;
+import com.achep.acdisplay.ui.activities.settings.Settings2;
 import com.achep.base.Device;
 import com.achep.base.dashboard.DashboardCategory;
 import com.achep.base.dashboard.DashboardTile;

@@ -38,23 +38,23 @@ import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.ui.DialogHelper;
+import com.achep.acdisplay.ui.activities.base.BaseActivity;
+import com.achep.acdisplay.ui.activities.settings.Settings2;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.permissions.Permission;
 import com.achep.base.ui.SwitchBarPermissible;
-import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.PackageUtils;
 
 /**
  * Created by Artem on 21.01.14.
  */
-public class MainActivity extends ActivityBase implements ConfigBase.OnConfigChangedListener {
+public class MainActivity extends BaseActivity implements ConfigBase.OnConfigChangedListener {
 
     private static final String TAG = "MainActivity";
 
     private SwitchBarPermissible mSwitchPermission;
     private MenuItem mSendTestNotificationMenuItem;
-    private Config mConfig;
 
     private boolean mBroadcasting;
 
@@ -63,15 +63,12 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
         requestCheckout();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-        mConfig = Config.getInstance();
-        mConfig.registerListener(this);
-
+        getConfig().registerListener(this);
 
         Permission[] permissions = App.getAccessManager().getMasterPermissions().permissions;
         SwitchBar switchBar = (SwitchBar) findViewById(R.id.switch_bar);
         mSwitchPermission = new SwitchBarPermissible(this, switchBar, permissions);
-        mSwitchPermission.setChecked(mConfig.isEnabled());
+        mSwitchPermission.setChecked(getConfig().isEnabled());
         mSwitchPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -82,11 +79,11 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
                 }
 
                 AppCompatActivity context = MainActivity.this;
-                mConfig.setEnabled(context, checked, MainActivity.this);
+                getConfig().setEnabled(context, checked, MainActivity.this);
             }
         });
 
-        Config.Triggers triggers = mConfig.getTriggers();
+        Config.Triggers triggers = getConfig().getTriggers();
         if (!triggers.isDonationAsked() && triggers.getLaunchCount() >= 15) {
             triggers.setDonationAsked(this, true, this);
             DialogHelper.showCryDialog(this);
@@ -104,7 +101,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
             return;
         }
 
-        Config.Triggers triggers = mConfig.getTriggers();
+        Config.Triggers triggers = getConfig().getTriggers();
 
         final int versionCode = pi.versionCode;
         final int versionCodeOld = triggers.getPreviousVersion();
@@ -119,9 +116,8 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
     }
 
     private void updateSendTestNotificationMenuItem() {
-        if (mSendTestNotificationMenuItem != null) {
-            mSendTestNotificationMenuItem.setVisible(mSwitchPermission.isChecked());
-        }
+        if (mSendTestNotificationMenuItem == null) return;
+        mSendTestNotificationMenuItem.setVisible(mSwitchPermission.isChecked());
     }
 
     @Override
@@ -139,7 +135,7 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mConfig.unregisterListener(this);
+        getConfig().unregisterListener(this);
     }
 
     @Override
@@ -233,5 +229,4 @@ public class MainActivity extends ActivityBase implements ConfigBase.OnConfigCha
             wakeLock.release();
         }
     }
-
 }

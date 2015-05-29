@@ -55,7 +55,7 @@
         <Preference
             android:title="@string/settings_proximity_sensor_title" >
             <intent
-                android:targetClass="com.achep.acdisplay.ui.activities.SettingsProximitySensorActivity"
+                android:targetClass="com.achep.acdisplay.ui.activities.settings.SettingsProximitySensorActivity"
                 android:targetPackage="com.achep.acdisplay" />
         </Preference>
     </PreferenceCategory>

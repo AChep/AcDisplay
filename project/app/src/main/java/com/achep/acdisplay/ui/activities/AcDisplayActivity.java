@@ -41,7 +41,6 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
     private static final String TAG = "AcDisplayActivity";
 
-    private final Config mConfig = Config.getInstance();
     private final Presenter mPresenter = Presenter.getInstance();
 
 
@@ -62,7 +61,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LOW_PROFILE;
 
-            if (mConfig.isFullScreen()) {
+            if (getConfig().isFullScreen()) {
                 // Hide status bar if fullscreen mode is enabled.
                 visibilityUi = visibilityUi
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -82,7 +81,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (mConfig.isWallpaperShown()) setTheme(R.style.MaterialTheme_AcDisplay_Wallpaper);
+        if (getConfig().isWallpaperShown()) setTheme(R.style.MaterialTheme_AcDisplay_Wallpaper);
         super.onCreate(savedInstanceState);
         mPresenter.onCreate(this);
 
@@ -113,7 +112,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         super.onStart();
         mPresenter.onStart();
 
-        mConfig.getTriggers().incrementLaunchCount(this, null);
+        getConfig().getTriggers().incrementLaunchCount(this, null);
     }
 
     @Override
@@ -167,7 +166,7 @@ public class AcDisplayActivity extends KeyguardActivity implements
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         // Turns screen off inside of your pocket.
-        if (mConfig.isActiveModeEnabled()) {
+        if (getConfig().isActiveModeEnabled()) {
             mPocketFragment = PocketFragment.newInstance();
             ft.add(mPocketFragment, PocketFragment.TAG);
         }
@@ -187,10 +186,6 @@ public class AcDisplayActivity extends KeyguardActivity implements
             return lock();
         }
         return false;
-    }
-
-    public Config getConfig() {
-        return mConfig;
     }
 
 }

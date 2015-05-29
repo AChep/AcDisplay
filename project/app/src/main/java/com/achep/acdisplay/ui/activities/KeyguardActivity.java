@@ -34,13 +34,12 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.achep.acdisplay.App;
-import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.Timeout;
 import com.achep.acdisplay.services.KeyguardService;
+import com.achep.acdisplay.ui.activities.base.BaseActivity;
 import com.achep.base.Device;
 import com.achep.base.tests.Check;
-import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.power.PowerUtils;
@@ -49,8 +48,10 @@ import static com.achep.base.Build.DEBUG;
 
 /**
  * Activity that contains some methods to emulate system keyguard.
+ *
+ * @author Artem Chepurnoy
  */
-public abstract class KeyguardActivity extends ActivityBase implements
+public abstract class KeyguardActivity extends BaseActivity implements
         Timeout.OnTimeoutEventListener {
 
     private static final String TAG = "KeyguardActivity";
@@ -99,7 +100,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
 
     private void populateFlags(boolean manualControl) {
         int windowFlags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-        int timeoutDelay = Config.getInstance().getTimeoutNormal();
+        int timeoutDelay = getConfig().getTimeoutNormal();
 
         if (manualControl) {
             getWindow().addFlags(windowFlags);
@@ -432,8 +433,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
                 if (finish) {
                     finish();
 
-                    Config config = Config.getInstance();
-                    boolean animate = config.isUnlockAnimationEnabled() && !isPowerSaveMode();
+                    boolean animate = getConfig().isUnlockAnimationEnabled() && !isPowerSaveMode();
                     overridePendingTransition(0, animate
                             ? R.anim.activity_unlock
                             : 0);

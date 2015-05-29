@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2015 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,26 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.acdisplay.ui.activities;
+package com.achep.acdisplay.ui.activities.tests;
 
-import android.os.Bundle;
-
-import com.achep.acdisplay.R;
-import com.achep.base.ui.activities.ActivityBase;
+import com.achep.acdisplay.ui.activities.base.BaseActivity;
 
 /**
- * An activity for tweaking the
- * {@link com.achep.acdisplay.services.activemode.sensors.ProximitySensor proximity sensor}.
- *
  * @author Artem Chepurnoy
  */
-public class SettingsProximitySensorActivity extends ActivityBase {
-    private static final String TAG = "SettingsProximitySensorActivity";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_proximity_sensor_programs);
-    }
-
+abstract class TestActivity extends BaseActivity {
 }

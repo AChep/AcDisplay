@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.acdisplay.ui.activities;
+package com.achep.acdisplay.ui.activities.tests;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -29,15 +29,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.achep.base.ui.activities.ActivityBase;
-
 import uk.co.jarofgreen.lib.ShakeDetector;
 
 /**
- * Created by Artem Chepurnoy on 27.02.2015.
+ * An activity for testing and debugging the shake algorithms. The background is
+ * red in idle mode and green if shake-d.
+ *
+ * @author Artem Chepurnoy
  */
-public class ShakeTestActivity extends ActivityBase implements View.OnClickListener {
+public class ShakeTestActivity extends TestActivity implements View.OnClickListener {
 
+    @NonNull
     private final ShakeDetector.Listener mShakeDetectorListener =
             new ShakeDetector.Listener() {
                 @Override
@@ -45,7 +47,9 @@ public class ShakeTestActivity extends ActivityBase implements View.OnClickListe
                     mTextView.setBackgroundColor(Color.GREEN);
                 }
             };
-    private final ShakeDetector mShakeDetector = new ShakeDetector(mShakeDetectorListener);
+    @NonNull
+    private final ShakeDetector mShakeDetector =
+            new ShakeDetector(mShakeDetectorListener);
 
     private TextView mTextView;
 
@@ -80,10 +84,10 @@ public class ShakeTestActivity extends ActivityBase implements View.OnClickListe
     }
 
     @NonNull
-    public TextView onCreateTextView() {
+    private TextView onCreateTextView() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                0);
+                0 /* weight = 1 */);
         lp.weight = 1;
         TextView textView = new TextView(this);
         textView.setLayoutParams(lp);
@@ -100,4 +104,5 @@ public class ShakeTestActivity extends ActivityBase implements View.OnClickListe
     public void onClick(View v) {
         v.setBackgroundColor(Color.RED);
     }
+
 }

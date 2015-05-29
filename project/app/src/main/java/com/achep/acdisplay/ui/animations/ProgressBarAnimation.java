@@ -18,20 +18,24 @@
  */
 package com.achep.acdisplay.ui.animations;
 
+import android.support.annotation.NonNull;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ProgressBar;
 
 /**
- * Created by Artem on 29.03.2014.
+ * Defines a simple from-to animation.
+ *
+ * @author Artem Chepurnoy
  */
 public class ProgressBarAnimation extends Animation {
 
+    @NonNull
     private final ProgressBar mProgressBar;
     private int from;
     private int to;
 
-    public ProgressBarAnimation(ProgressBar progressBar, int from, int to) {
+    public ProgressBarAnimation(@NonNull ProgressBar progressBar, int from, int to) {
         super();
         mProgressBar = progressBar;
         this.from = from;

@@ -38,7 +38,6 @@ import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IOnLowMemory;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.util.HashMap;
 import java.util.Map;

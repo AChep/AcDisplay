@@ -26,7 +26,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 
 import com.achep.base.ui.fragments.leakcanary.LeakWatchFragment;
 

@@ -60,7 +60,6 @@ public class App extends Application {
     public static final String ACTION_INTERNAL_TIMEOUT = "TIMEOUT";
     public static final String ACTION_INTERNAL_PING_SENSORS = "PING_SENSORS";
 
-    @NonNull
     private AccessManager mAccessManager;
 
     @NonNull
@@ -138,6 +137,7 @@ public class App extends Application {
 
     @NonNull
     public static AccessManager getAccessManager() {
+        assert instance.mAccessManager != null;
         return instance.mAccessManager;
     }
 

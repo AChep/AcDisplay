@@ -51,10 +51,18 @@ public class DialogHelper {
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
     public static final String TAG_FRAGMENT_FEEDBACK = "dialog_feedback";
 
+    /**
+     * Shows the "About" dialog that contains some info about the program,
+     * developers and used libraries and tools.
+     */
     public static void showAboutDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, AboutDialog.class, TAG_FRAGMENT_ABOUT);
     }
 
+    /**
+     * Shows the "Help" dialog that contains some frequently asked questions
+     * and some answers on them. This is the dialog that nobody reads :(
+     */
     public static void showHelpDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, HelpDialog.class, TAG_FRAGMENT_HELP);
     }
@@ -131,14 +139,18 @@ public class DialogHelper {
         showDialog(activity, PermissionsDialog.newInstance(permissions), TAG_FRAGMENT_PERMISSIONS);
     }
 
+    //-- INTERNAL -------------------------------------------------------------
+
     private static void showDialog(@NonNull AppCompatActivity activity,
                                    @NonNull Class clazz,
                                    @NonNull String tag) {
+        DialogFragment df;
         try {
-            showDialog(activity, (DialogFragment) clazz.newInstance(), tag);
-        } catch (InstantiationException | IllegalAccessException e) {
+            df = (DialogFragment) clazz.newInstance();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        showDialog(activity, df, tag);
     }
 
     private static void showDialog(@NonNull AppCompatActivity activity,
@@ -149,9 +161,7 @@ public class DialogHelper {
         FragmentManager fm = activity.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag(tag);
-        if (prev != null) {
-            ft.remove(prev);
-        }
+        if (prev != null) ft.remove(prev);
         ft.addToBackStack(null);
         fragment.show(ft, tag);
     }

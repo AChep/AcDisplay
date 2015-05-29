@@ -31,7 +31,6 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.transition.ChangeBounds;
 import android.transition.Fade;

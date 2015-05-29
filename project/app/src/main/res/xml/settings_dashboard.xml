@@ -71,7 +71,7 @@
             app:dashboard_id="@+id/app_settings"
             app:dashboard_title="@string/settings_app_settings_title">
             <intent
-                android:targetClass="com.achep.acdisplay.ui.activities.BlacklistActivity"
+                android:targetClass="com.achep.acdisplay.ui.activities.settings.BlacklistActivity"
                 android:targetPackage="com.achep.acdisplay" />
         </dashboard-tile>
 
