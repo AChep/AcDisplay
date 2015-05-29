@@ -25,23 +25,23 @@
     <item>Други</item>
   </string-array>
   <string-array name="dynamic_background">
-    <item>Фон</item>
+    <item>Обложка</item>
     <item>Икона за известие</item>
   </string-array>
   <string-array name="privacy_mode">
     <item>Скрий съдържанието на известието</item>
-    <item>Скрий действията с известието</item>
+    <item>Скрий действията на известието</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Критични и спешни (пропуснати обаждания, направление, аварийни съобщения)</item>
+    <item>Критични и спешни (пропуснати обаждания, направления, аварийни съобщения)</item>
     <item>Важни (комуникации, важни е-мейли)</item>
-    <item>Нормален (+ уведомления от старите приложения)</item>
+    <item>Нормален (вкл. известия от старите приложения)</item>
     <item>Неважни (софтуерни актуализации, нежелана поща)</item>
-    <item>Контекстна и на заден фон информация (времето, изтекли събития, предложения)</item>
+    <item>Контекстна или на заден фон информация (времето, изтекли събития, предложения)</item>
   </string-array>
   <string-array name="corners_actions">
-    <item>Unlock</item>
-    <item>Launch camera</item>
-    <item>Launch dialer</item>
+    <item>Отключване</item>
+    <item>Стартиране на камерата</item>
+    <item>Набиране на номер</item>
   </string-array>
 </resources>

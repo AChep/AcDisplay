@@ -27,38 +27,38 @@
         <a href="http://translate.acdisplay.org">помогнаха с превода</a> или дариха.
     ]]></string>
   <string name="donate_dialog_title">Дарете на разработчиците</string>
-  <string name="donate_dialog_message">AcDisplay е свободен и с отворен код софтуер. Можете да покажете благодарност и подкрепа развитието чрез даряване:</string>
+  <string name="donate_dialog_message">AcDisplay е свободен и с отворен код софтуер. Можете да изразите благодарност и подкрепа развитието чрез дарение:</string>
   <string name="donate_alert_no_responsibility">Обърнете внимание, че Google не носи отговорност за този метод на плащане.</string>
-  <string name="donate_billing_not_supported">Покупки от приложението не се поддържат от устройството.</string>
-  <string name="donate_thanks">Много благодаря!</string>
+  <string name="donate_billing_not_supported">Покупки в приложението не се поддържат от това устройство.</string>
+  <string name="donate_thanks">Много благодарим!</string>
   <string name="donation_1">Сладолед</string>
   <string name="donation_4">Чаша кафе</string>
   <string name="donation_10">Сметки за електричество</string>
   <string name="donation_20">Правилната възглавницата</string>
   <string name="donation_50">SSD диск</string>
   <string name="donation_99">Звукова система</string>
-  <string name="cry_dialog_title">Подпомагане развитието</string>
+  <string name="cry_dialog_title">Подпомагане на разработката</string>
   <string name="cry_dialog_message"><![CDATA[
         AcDisplay е безплатен и <a href="http://repo.acdisplay.org">open source</a> софтуер и ние и сме изразходвали
         много време и ресурси за да го поддържаме актуален. Моля, ако имате желание направете дарение, за да покажете вашата благодарност 
         и да подкрепите бъдещото развитие.
     ]]></string>
   <string name="help_dialog_title">Помощ</string>
-  <string name="feedback_dialog_title">Обратна връзка</string>
-  <string name="feedback_dialog_message_hint">Вашето съобщение. Характеристики на устройството ще бъдат автоматично включени.</string>
-  <string name="feedback_dialog_attach_log">Прикачване на лог</string>
+  <string name="feedback_dialog_title">Отзив</string>
+  <string name="feedback_dialog_message_hint">Вашето съобщение. Характеристиките на устройството ще бъдат включени автоматично.</string>
+  <string name="feedback_dialog_attach_log">Прикачване на регистрационен файл</string>
   <string name="feedback_dialog_read_help">Често задавани въпроси</string>
-  <string name="feedback_error_no_app">Инсталирайте някое от имейл приложения.</string>
-  <string name="feedback_error_msg_too_short">Съобщението трябва да съдържа поне %1$d символи.</string>
-  <string name="feedback_error_accessing_log">Грешка при достъп до лог файла на приложението. Грешката е: %1$s</string>
+  <string name="feedback_error_no_app">Инсталирайте приложение за електронна поща.</string>
+  <string name="feedback_error_msg_too_short">Съобщението трябва да съдържа поне %1$d символа.</string>
+  <string name="feedback_error_accessing_log">Грешка при достъп до регистрационния файл на приложението. Грешката е: %1$s</string>
   <string name="compat_dialog_title">Режим на съвместимост</string>
   <string name="compat_dialog_message">AcDisplay се изпълнява в режим на съвместимост за да работи с Андроид %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Защото AcDisplay се използва услугата на достъпност и не може да открие нотификации, които се отхвърлят/актуализират, или да отхвърли нотификация от листа с нотификации.</string>
-  <string name="compat_dialog_item_immersive_mode">Навигационна лента винаги да се показва.</string>
+  <string name="compat_dialog_item_notification">Тъй като AcDisplay използва услугата за достъпност не може да открие известията, които се отхвърлят/актуализират, или да отхвърли известия от списъка.</string>
+  <string name="compat_dialog_item_immersive_mode">Винаги да се показва навигационната лента.</string>
   <string name="compat_dialog_item_music_widget">Няма музикална джаджа.</string>
-  <string name="error_dialog_title">Something went wrong</string>
-  <string name="error_dialog_custom_widget_lg"><![CDATA[
-        Due to a software mistake in LG\'s software, custom widget can\'t be set.
-        <a href="https://github.com/AChep/AcDisplay/issues/76">Read more</a>.
-    ]]></string>
+  <string name="error_dialog_title">Нещо се обърка</string>
+  <string name="error_dialog_custom_widget_lg"><![CDATA[         
+Поради софтуерна грешка на LG не е възможно задаване на потребителски джаджи.       
+  <a href="https://github.com/AChep/AcDisplay/issues/76"> Прочети повече</a>.
+]]></string>
 </resources>

@@ -41,7 +41,7 @@
         agradecimiento y apoyo para continuar el desarrollo.
     ]]></string>
   <string name="help_dialog_title">Ayuda</string>
-  <string name="feedback_dialog_title">Retroalimentación</string>
+  <string name="feedback_dialog_title">Comentarios</string>
   <string name="feedback_dialog_message_hint">Tu mensaje. Las especificaciones de su dispositivo serán incluidas automáticamente.</string>
   <string name="feedback_dialog_attach_log">Adjuntar un registro</string>
   <string name="feedback_dialog_read_help">Preguntas frecuentes</string>

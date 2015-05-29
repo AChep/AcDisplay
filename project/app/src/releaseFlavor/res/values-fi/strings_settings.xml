@@ -79,7 +79,7 @@
   <string name="settings_only_while_charging_title">Vain latauksen aikana</string>
   <string name="settings_only_while_charging_on">AcDisplay on käytössä vain kun laitteen akkua ladataan. Tämä koskee toimintoja lukitusnäyttö ja aktiivitila.</string>
   <string name="settings_only_while_charging_off">AcDisplay on aina käytössä.</string>
-  <string name="settings_inactive_hours_title">Käyttämättömät tunnit</string>
+  <string name="settings_inactive_hours_title">Inaktiiviset tunnit</string>
   <string name="settings_inactive_hours_disabled">Poissa käytöstä</string>
   <string name="settings_inactive_hours_enabled">Välillä %1$s - %2$s.</string>
   <string name="settings_timeout_title">Lepotila</string>
@@ -108,7 +108,7 @@
   <string name="settings_restore_defaults_warning_message">Kaikki asetuksesi mustaa listaa lukuun ottamatta poistetaan! Et voi peruuttaa tätä toimintoa.</string>
   <string name="settings_data_backup_title">Varmuuskopioi asetukset</string>
   <string name="settings_data_restore_title">Palauta asetukset</string>
-  <string name="preference_inactive_hours_enabled">Ominaisuus käytössä</string>
+  <string name="preference_inactive_hours_enabled">Inaktiiviset tunnit käytössä</string>
   <string name="preference_inactive_hours_from"><![CDATA[
         alkaa:<br/><b><font color="#ffffff">%1$s</font></b>
     ]]></string>
@@ -116,7 +116,7 @@
        päättyy:<br/><b><font color="#ffffff">%1$s</font></b>
     ]]></string>
   <string name="preference_timeout_normal">Heräämisen tai ilmoituksen valitsemisen jälkeen</string>
-  <string name="preference_timeout_short">Koskettaessa aluetta, joka ei ole aktiivinen</string>
+  <string name="preference_timeout_short">Koskettaessa inaktiivista aluetta</string>
   <string name="preference_timeout_sec">%1$s sekuntia</string>
   <string name="preference_icon_size_message">Säädä ilmoituskuvakkeiden kokoa.</string>
   <string name="preference_icon_size_dpi">%1$s dpi</string>

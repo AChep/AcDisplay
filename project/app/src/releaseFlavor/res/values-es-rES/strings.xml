@@ -35,7 +35,7 @@
   <string name="permissions_usage_stats_error">El fabricante del dispositivo a eliminado esta autorización de la versión de Android. No hay manera de arreglar esto, excepto esperar respuesta y arreglo por parte del fabricante.    </string>
   <string name="action_about">Acerca de</string>
   <string name="action_donate">Donar</string>
-  <string name="action_feedback">Retroalimentación</string>
+  <string name="action_feedback">Comentarios</string>
   <string name="action_help">Ayuda</string>
   <string name="action_clear">Limpiar</string>
   <string name="action_configure">Configurar</string>
@@ -52,7 +52,7 @@
   <string name="media_prev_description">Botón de pista anterior</string>
   <string name="media_next_description">Botón de pista siguiente</string>
   <string name="media_pause_description">Botón de pausa</string>
-  <string name="media_play_description">Botón de Play</string>
+  <string name="media_play_description">Botón de reproducir </string>
   <string name="media_stop_description">Botón de detener</string>
   <string name="notification_init_text">Sólo descarte esta notificación.</string>
   <string name="notification_test_message">Esta es una notificación de ejemplo.</string>
