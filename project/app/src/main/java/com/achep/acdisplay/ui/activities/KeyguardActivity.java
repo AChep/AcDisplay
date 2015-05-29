@@ -47,7 +47,6 @@ import com.achep.base.utils.power.PowerUtils;
 
 import static com.achep.base.Build.DEBUG;
 
-
 /**
  * Activity that contains some methods to emulate system keyguard.
  */
@@ -55,6 +54,12 @@ public abstract class KeyguardActivity extends ActivityBase implements
         Timeout.OnTimeoutEventListener {
 
     private static final String TAG = "KeyguardActivity";
+
+    /**
+     * An optional extra that contains the reason of this
+     * wake up.
+     */
+    public static final String EXTRA_CAUSE = "cause";
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
 
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
@@ -64,13 +69,13 @@ public abstract class KeyguardActivity extends ActivityBase implements
     private KeyguardManager mKeyguardManager;
     private long mUnlockingTime;
     private boolean mResumed;
+    private int mExtraCause;
 
     private boolean mTimeoutPaused = true;
     private final Timeout mTimeout = new Timeout();
-    private final Handler mTimeoutHandler = new Handler();
     private final Handler mHandler = new Handler();
 
-    private PowerManager.WakeLock mWakeLock;
+    private PowerManager.WakeLock mWakeUpLock;
 
     private boolean mKeyguardDismissed;
 
@@ -100,7 +105,6 @@ public abstract class KeyguardActivity extends ActivityBase implements
             getWindow().addFlags(windowFlags);
 
             mTimeoutPaused = false;
-            mTimeoutHandler.removeCallbacksAndMessages(null);
 
             mTimeout.resume();
             mTimeout.setTimeoutDelayed(timeoutDelay, true);
@@ -125,15 +129,19 @@ public abstract class KeyguardActivity extends ActivityBase implements
         int flags = 0;
 
         // Handle intents
-        if (hasWakeUpExtra()) {
-            flags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
+        final Intent intent = getIntent();
+        if (intent != null) {
+            if (hasWakeUpExtra(intent)) flags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
+            mExtraCause = intent.getIntExtra(EXTRA_CAUSE, 0);
         }
 
         // FIXME: Android dev team broke the DISMISS_KEYGUARD flag.
         // https://code.google.com/p/android-developer-preview/issues/detail?id=1902
-        if (Device.hasLollipopApi() /* bugs monster */ && !mKeyguardManager.isKeyguardSecure()) {
-            getWindow().addFlags(flags | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-            mKeyguardDismissed = true;
+        if (Device.hasLollipopApi()
+                && !Device.hasMuffinsApi() // Should be fine now
+                && !mKeyguardManager.isKeyguardSecure()) {
+            getWindow().addFlags(flags);
+            requestDismissSystemKeyguard();
         } else {
             getWindow().addFlags(flags |
                     // Show activity above the system keyguard.
@@ -145,26 +153,35 @@ public abstract class KeyguardActivity extends ActivityBase implements
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         // Handle intents
-        if (hasWakeUpExtra(intent)) {
-            acquireWakeUpLock();
-        }
+        if (hasWakeUpExtra(intent)) acquireWakeUpLock();
+        mExtraCause = intent.getIntExtra(EXTRA_CAUSE, 0);
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-
         // Handle intents
-        if (hasWakeUpExtra()) {
-            acquireWakeUpFlags();
-        }
+        if (hasWakeUpExtra(getIntent())) acquireWakeUpFlags();
     }
 
+    /**
+     * @see #releaseWakeUpLock()
+     */
     private void acquireWakeUpLock() {
         int flags = PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK;
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(flags, "Turn the keyguard on.");
-        mWakeLock.acquire(500); // 0.5 sec.
+        mWakeUpLock = pm.newWakeLock(flags, "Turn the keyguard on.");
+        mWakeUpLock.acquire(500); // 0.5 sec.
+    }
+
+    /**
+     * Releases previously acquired {@link #mWakeUpLock wake up lock}, does
+     * nothing if it's {@code null} or not held.
+     *
+     * @see #acquireWakeUpLock()
+     */
+    private void releaseWakeUpLock() {
+        if (mWakeUpLock != null && mWakeUpLock.isHeld()) mWakeUpLock.release();
     }
 
     private void acquireWakeUpFlags() {
@@ -172,21 +189,17 @@ public abstract class KeyguardActivity extends ActivityBase implements
     }
 
     /**
-     * @return {@code true} if the {@link #getIntent() intent} includes the
+     * @return {@code true} if the passed intent is not {@code null} and includes the
      * {@link #EXTRA_TURN_SCREEN_ON} set to {@code true}, {@code false}
      * otherwise.
      */
-    private boolean hasWakeUpExtra() {
-        return hasWakeUpExtra(getIntent());
-    }
-
     private boolean hasWakeUpExtra(@Nullable Intent intent) {
         return intent != null && intent.getBooleanExtra(EXTRA_TURN_SCREEN_ON, false);
     }
 
     @Override
     public void onDetachedFromWindow() {
-        if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+        releaseWakeUpLock();
         super.onDetachedFromWindow();
     }
 
@@ -292,6 +305,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
                 && !PowerUtils.isScreenOn(this) /* screen is off and it WILL kill us later    */) {
             if (DEBUG) Log.d(TAG, "Clearing the FLAG_DISMISS_KEYGUARD flag.");
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+            mKeyguardDismissed = false;
         }
     }
 
@@ -337,7 +351,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
             case Timeout.EVENT_CHANGED:
             case Timeout.EVENT_RESUMED:
                 if (mTimeoutPaused) {
-                    mTimeoutHandler.post(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             mTimeout.pause();
@@ -366,9 +380,11 @@ public abstract class KeyguardActivity extends ActivityBase implements
             dpm.lockNow();
             return true;
         } catch (SecurityException e) {
-            String msg = "Failed to lock the screen due to a security exception.";
-            Log.e(TAG, msg);
-            ToastUtils.showLong(this, msg);
+            String errorMessage = "Failed to lock the screen due to a security exception.";
+            ToastUtils.showLong(this, errorMessage);
+            Log.e(TAG, errorMessage);
+            // Clear the FLAG_KEEP_SCREEN_ON flag to prevent the situation when
+            // AcDisplay stays forever on. Normally this should never happen.
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             return false; // Screw you owner!
         }
@@ -398,8 +414,7 @@ public abstract class KeyguardActivity extends ActivityBase implements
         final long now = SystemClock.elapsedRealtime();
 
         mUnlockingTime = now;
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        mKeyguardDismissed = true;
+        requestDismissSystemKeyguard();
 
         mHandler.post(new Runnable() {
 
@@ -425,6 +440,15 @@ public abstract class KeyguardActivity extends ActivityBase implements
                 }
             }
         });
+    }
+
+    /**
+     * Sets the {@link WindowManager.LayoutParams#FLAG_DISMISS_KEYGUARD} flag
+     * and marks the {@link #mKeyguardDismissed} as {@code true}.
+     */
+    private void requestDismissSystemKeyguard() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        mKeyguardDismissed = true;
     }
 
     /**
@@ -454,6 +478,10 @@ public abstract class KeyguardActivity extends ActivityBase implements
      */
     public boolean isUnlocking() {
         return SystemClock.elapsedRealtime() - mUnlockingTime <= PF_MAX_TIME;
+    }
+
+    public int getCause() {
+        return mExtraCause;
     }
 
     @NonNull

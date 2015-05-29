@@ -137,7 +137,8 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
     public boolean tryStartGuiCauseNotification(
             @NonNull Context context,
             @NonNull OpenNotification n) {
-        return checkNotification(context, n) && checkBasics(context) && start(context);
+        final int hash = n.hashCode();
+        return checkNotification(context, n) && checkBasics(context) && start(context, hash);
     }
 
     public boolean tryStartGuiCauseSensor(@NonNull Context context) {
@@ -147,6 +148,10 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
     //-- START-UP -------------------------------------------------------------
 
     public boolean start(@NonNull Context context) {
+        return start(context, 0);
+    }
+
+    public boolean start(@NonNull Context context, int notification) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
         // Wake up from possible deep sleep.
@@ -166,6 +171,7 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
                         | Intent.FLAG_ACTIVITY_NO_USER_ACTION
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_FROM_BACKGROUND)
+                .putExtra(KeyguardActivity.EXTRA_CAUSE, notification)
                 .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true));
 
         if (DEBUG) Log.i(TAG, "Launching AcDisplay activity.");
