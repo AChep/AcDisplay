@@ -156,6 +156,10 @@ public class AcDisplayFragment extends LeakWatchFragment implements
     private int mConfigWidgetPinDuration;
     private int mConfigWidgetSelectDelay;
 
+    // Quick glance
+    private int mNotificationHashGlanced;
+    private long mNotificationHashTime;
+
     // Animations and transitions
     private TransitionSet mTransitionJit;
     private Transition mTransitionSwitchScene;
@@ -373,6 +377,40 @@ public class AcDisplayFragment extends LeakWatchFragment implements
         mMediaController.start();
         mMediaController.registerListener(this);
         onPlaybackStateChanged(mMediaController.getPlaybackState());
+
+        // Show the notification that is the cause of AcDisplay being shown. This
+        // allows user to see that damn notification in no time.
+        if (isNotDemo() && getConfig().isNotifyGlanceEnabled()) {
+            long now = SystemClock.elapsedRealtime();
+            int hash = mActivityAcd.getCause();
+            if (hash != 0 && (hash != mNotificationHashGlanced || now - mNotificationHashTime < 1000)) {
+                // Find the appropriate notification widget.
+                for (Widget widget : mWidgetsMap.values()) {
+                    if (widget instanceof NotifyWidget) {
+                        NotifyWidget nw = (NotifyWidget) widget;
+                        OpenNotification n = nw.getNotification();
+                        if (n != null && n.hashCode() == hash) {
+                            mNotificationHashGlanced = hash;
+                            if (!n.isContentSecret(getActivity())) {
+                                // Show the appropriate widget.
+                                if (DEBUG) Log.d(TAG, "Doing the quick glance on " + nw);
+                                showWidget(widget);
+                                onWidgetPin(widget);
+                            } // Otherwise there's nothing helpful to show.
+                            break;
+                        }
+                    }
+                }
+            }
+            // Avoid of an issue when the #onResume() is being called
+            // twice.
+            mNotificationHashTime = now;
+            // Logs
+            if (mNotificationHashGlanced != hash) {
+                mNotificationHashGlanced = hash;
+                Log.w(TAG, "The glance notification was not shown!");
+            }
+        }
 
         mResuming = false;
     }

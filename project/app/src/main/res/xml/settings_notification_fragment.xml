@@ -20,9 +20,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_notification_title">
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="notify_wake_up_on"
         android:title="@string/settings_wake_up_on_notification_title" />
+
+    <SwitchPreference
+        android:dependency="notify_wake_up_on"
+        android:key="notify_glance"
+        android:layout="?android:attr/preferenceLayoutChild"
+        android:summary="@string/settings_notify_glance_summary"
+        android:title="@string/settings_notify_glance_title" />
 
     <com.afollestad.materialdialogs.prefs.MaterialListPreference
         android:entries="@array/notify_priorities"

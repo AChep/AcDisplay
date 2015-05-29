@@ -62,6 +62,8 @@
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
+    <string name="settings_notify_glance_title">Quick glance</string>
+    <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
     <string name="settings_notify_min_priority_title">Minimum priority</string>
     <string name="settings_notify_max_priority_title">Maximum priority</string>
 

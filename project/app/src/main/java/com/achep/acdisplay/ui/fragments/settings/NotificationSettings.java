@@ -52,6 +52,7 @@ public class NotificationSettings extends BaseSettings {
         syncPreference(Config.KEY_NOTIFY_MIN_PRIORITY, mListPreferenceNotifyPrioritySetter);
         syncPreference(Config.KEY_NOTIFY_MAX_PRIORITY, mListPreferenceNotifyPrioritySetter);
         syncPreference(Config.KEY_NOTIFY_WAKE_UP_ON);
+        syncPreference(Config.KEY_NOTIFY_GLANCE);
     }
 
 }

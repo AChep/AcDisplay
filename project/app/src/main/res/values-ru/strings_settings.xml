@@ -62,6 +62,8 @@
 
     <!-- Notifications -->
     <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>
+    <string name="settings_notify_glance_title">Быстрый взгляд</string>
+    <string name="settings_notify_glance_summary">Просыпаться с открытым пришедшим уведомлением</string>
     <string name="settings_notify_min_priority_title">Минимальный приоритет</string>
     <string name="settings_notify_max_priority_title">Максимальный приоритет</string>
 

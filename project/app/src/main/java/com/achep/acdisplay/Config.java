@@ -52,6 +52,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_NOTIFY_MIN_PRIORITY = "notify_min_priority";
     public static final String KEY_NOTIFY_MAX_PRIORITY = "notify_max_priority";
     public static final String KEY_NOTIFY_WAKE_UP_ON = "notify_wake_up_on";
+    public static final String KEY_NOTIFY_GLANCE = "notify_glance";
 
     // inactive time
     public static final String KEY_INACTIVE_TIME_FROM = "inactive_time_from";
@@ -149,6 +150,7 @@ public final class Config extends ConfigBase {
     private boolean mFeelWidgetPinnable;
     private boolean mFeelWidgetReadable;
     private boolean mNotifyWakeUpOn;
+    private boolean mNotifyGlance;
     private int mNotifyMinPriority;
     private int mNotifyMaxPriority;
     private int mTimeoutNormal;
@@ -247,6 +249,9 @@ public final class Config extends ConfigBase {
         map.put(KEY_NOTIFY_WAKE_UP_ON, new ConfigBase.Option(
                 "mNotifyWakeUpOn", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_notify_wake_up_on));
+        map.put(KEY_NOTIFY_GLANCE, new ConfigBase.Option(
+                "mNotifyGlance", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_notify_glance));
         map.put(KEY_NOTIFY_MIN_PRIORITY, new ConfigBase.Option(
                 "mNotifyMinPriority", null, null, int.class)
                 .setDefaultRes(R.integer.config_default_notify_min_priority));
@@ -641,6 +646,10 @@ public final class Config extends ConfigBase {
 
     public boolean isNotifyWakingUp() {
         return mNotifyWakeUpOn;
+    }
+
+    public boolean isNotifyGlanceEnabled() {
+        return mNotifyGlance;
     }
 
     public boolean isWallpaperShown() {
