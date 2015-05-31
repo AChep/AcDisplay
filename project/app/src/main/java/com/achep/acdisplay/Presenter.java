@@ -179,6 +179,13 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
     }
 
     public boolean tryStartGuiCauseKeyguard(@NonNull Context context) {
+        if ((mActivityState == STATE_RESUMED
+                || mActivityState == STATE_PAUSED)
+                && !isFinishing()) {
+            Log.i(TAG, "Passed the AcDisplay keyguard launch cause it\'s showing");
+            return true;
+        }
+
         context.startActivity(new Intent(context, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION));
@@ -213,6 +220,14 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
     public void onDestroy() {
         mActivity = null;
         mActivityState = STATE_DESTROYED;
+    }
+
+    /**
+     * @return {@code true} if the activity is present and finishing,
+     * {@code false} otherwise.
+     */
+    private boolean isFinishing() {
+        return mActivity != null && mActivity.isFinishing();
     }
 
     //-- OTHER ----------------------------------------------------------------
