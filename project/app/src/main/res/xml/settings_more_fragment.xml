@@ -49,7 +49,7 @@
 
     <SwitchPreference
         android:key="media_widget"
-        android:summaryOn="@string/settings_media_widget_summary"
+        android:summary="@string/settings_media_widget_summary"
         android:title="@string/settings_media_widget_title" />
 
     <PreferenceCategory android:title="@string/settings_corner_actions_category">
