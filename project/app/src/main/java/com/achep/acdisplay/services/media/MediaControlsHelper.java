@@ -69,7 +69,7 @@ public class MediaControlsHelper implements
     public void start() {
         Config.getInstance().registerListener(this);
         mMediaController.registerListener(this);
-        if (mEnabled) mMediaController.start();
+        if (mEnabled = Config.getInstance().isMediaWidgetEnabled()) mMediaController.start();
         mStarted = true;
 
         // Initialize
