@@ -105,6 +105,7 @@ public final class Config extends ConfigBase {
     public static final int PRIVACY_HIDE_CONTENT_MASK = 1;
     public static final int PRIVACY_HIDE_ACTIONS_MASK = 2;
     public static final String KEY_DOUBLE_TAP_TO_SLEEP = "double_tap_to_sleep";
+    public static final String KEY_MEDIA_WIDGET = "media_widget";
     public static final String KEY_CORNER_ACTION_LEFT_TOP = "corner_action_left_top";
     public static final String KEY_CORNER_ACTION_RIGHT_TOP = "corner_action_right_top";
     public static final String KEY_CORNER_ACTION_LEFT_BOTTOM = "corner_action_left_bottom";
@@ -147,6 +148,7 @@ public final class Config extends ConfigBase {
     private boolean mEnabledOnlyWhileCharging;
     private boolean mScreenOffAfterLastNotify;
     private boolean mDoubleTapToSleep;
+    private boolean mMediaWidget;
     private boolean mFeelWidgetPinnable;
     private boolean mFeelWidgetReadable;
     private boolean mNotifyWakeUpOn;
@@ -349,6 +351,9 @@ public final class Config extends ConfigBase {
         map.put(KEY_DOUBLE_TAP_TO_SLEEP, new ConfigBase.Option(
                 "mDoubleTapToSleep", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_double_tap_to_sleep));
+        map.put(KEY_MEDIA_WIDGET, new ConfigBase.Option(
+                "mMediaWidget", null, null, boolean.class)
+                .setDefaultRes(R.bool.config_default_media_widget));
         map.put(KEY_CORNER_ACTION_LEFT_TOP, new ConfigBase.Option(
                 "mCornerActionLeftTop", null, null, int.class)
                 .setDefaultRes(R.integer.config_default_corner_left_top));
@@ -690,6 +695,10 @@ public final class Config extends ConfigBase {
 
     public boolean isDoubleTapToSleepEnabled() {
         return mDoubleTapToSleep;
+    }
+
+    public boolean isMediaWidgetEnabled() {
+        return mMediaWidget;
     }
 
     public boolean isUnlockAnimationEnabled() {

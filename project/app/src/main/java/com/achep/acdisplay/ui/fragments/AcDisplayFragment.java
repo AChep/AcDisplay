@@ -31,7 +31,6 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Scene;
@@ -62,7 +61,7 @@ import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.NotificationUtils;
 import com.achep.acdisplay.notifications.OpenNotification;
 import com.achep.acdisplay.services.media.MediaController2;
-import com.achep.acdisplay.services.media.Metadata;
+import com.achep.acdisplay.services.media.MediaControlsHelper;
 import com.achep.acdisplay.ui.CornerHelper;
 import com.achep.acdisplay.ui.DynamicBackground;
 import com.achep.acdisplay.ui.activities.AcDisplayActivity;
@@ -102,7 +101,6 @@ public class AcDisplayFragment extends LeakWatchFragment implements
         View.OnTouchListener,
         Widget.Callback,
         ConfigBase.OnConfigChangedListener,
-        MediaController2.MediaListener,
         CircleView.Callback {
 
     private static final String TAG = "AcDisplayFragment";
@@ -170,7 +168,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
 
     // Media widget
     private SceneCompat mSceneMainMedia;
-    private MediaController2 mMediaController;
+    private MediaControlsHelper mMediaControlsHelper;
     private MediaWidget mMediaWidget;
     private boolean mMediaWidgetActive;
 
@@ -251,7 +249,16 @@ public class AcDisplayFragment extends LeakWatchFragment implements
                 : new ClockWidget(this, this);
 
         // Media widget
-        mMediaController = MediaController2.newInstance(getActivity()).asyncWrap();
+        MediaController2 mc = MediaController2.newInstance(getActivity()).asyncWrap();
+        mMediaControlsHelper = new MediaControlsHelper(mc);
+        mMediaControlsHelper.registerListener(new MediaControlsHelper.Callback() {
+            @Override
+            public void onStateChanged(boolean showing) {
+                if (showing) {
+                    makeMediaWidgetActive();
+                } else makeMediaWidgetInactive();
+            }
+        });
         mMediaWidget = new MediaWidget(this, this);
 
         // Transitions
@@ -373,9 +380,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
         mPendingIconsSizeChange = false;
 
         // Media controller.
-        mMediaController.start();
-        mMediaController.registerListener(this);
-        onPlaybackStateChanged(mMediaController.getPlaybackState());
+        mMediaControlsHelper.start();
 
         // Show the notification that is the cause of AcDisplay being shown. This
         // allows user to see that damn notification in no time.
@@ -431,8 +436,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
         mMediaWidget.stop();
 
         // Media controller.
-        mMediaController.stop();
-        mMediaController.unregisterListener(this);
+        mMediaControlsHelper.stop();
         super.onPause();
     }
 
@@ -1051,30 +1055,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
      */
     @NonNull
     public MediaController2 getMediaController2() {
-        return mMediaController;
-    }
-
-    @Override
-    public void onMetadataChanged(@NonNull Metadata metadata) {
-        // This event is handled by
-        // the media widget.
-    }
-
-    @Override
-    public void onPlaybackStateChanged(int state) {
-        switch (state) {
-            case PlaybackStateCompat.STATE_PLAYING:
-                mHandler.removeMessages(MSG_HIDE_MEDIA_WIDGET);
-                makeMediaWidgetActive();
-                break;
-            default:
-                if (mMediaWidgetActive) {
-                    int delay = 6000; // 6 sec.
-                    if (state == PlaybackStateCompat.STATE_NONE) delay = 500;
-                    mHandler.sendEmptyMessageDelayed(MSG_HIDE_MEDIA_WIDGET, delay);
-                }
-                break;
-        }
+        return mMediaControlsHelper.getMediaController();
     }
 
     private void makeMediaWidgetActive() {

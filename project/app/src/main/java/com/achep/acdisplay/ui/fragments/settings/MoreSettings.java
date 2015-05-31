@@ -70,6 +70,7 @@ public class MoreSettings extends BaseSettings implements
         syncPreference(Config.KEY_ONLY_WHILE_CHARGING);
         syncPreference(Config.KEY_FEEL_SCREEN_OFF_AFTER_LAST_NOTIFY);
         syncPreference(Config.KEY_DOUBLE_TAP_TO_SLEEP);
+        syncPreference(Config.KEY_MEDIA_WIDGET);
         syncPreference(Config.KEY_FEEL_WIDGET_PINNABLE);
         syncPreference(Config.KEY_FEEL_WIDGET_READABLE);
         syncPreference(Config.KEY_CORNER_ACTION_LEFT_TOP, mListPreferenceCornerActionSetter);

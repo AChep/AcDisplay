@@ -107,6 +107,8 @@
     <string name="settings_icon_size_title">Icon size</string>
     <string name="settings_icon_size_summary">Current size of icons is %1$s dpi.</string>
     <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
+    <string name="settings_media_widget_title">Media widget</string>
+    <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
     <!-- Corner gestures -->
     <string name="settings_corner_actions_category">Corner gestures</string>
     <string name="settings_corner_actions_summary">Choose what to do when swiping from a corner to the center of the screen.</string>

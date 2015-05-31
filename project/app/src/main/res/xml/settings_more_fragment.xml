@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -47,6 +46,11 @@
     <CheckBoxPreference
         android:key="double_tap_to_sleep"
         android:title="@string/settings_double_tap_to_sleep_title" />
+
+    <SwitchPreference
+        android:key="media_widget"
+        android:summaryOn="@string/settings_media_widget_summary"
+        android:title="@string/settings_media_widget_title" />
 
     <PreferenceCategory android:title="@string/settings_corner_actions_category">
 
