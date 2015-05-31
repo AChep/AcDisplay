@@ -174,7 +174,7 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
                 .putExtra(KeyguardActivity.EXTRA_CAUSE, notification)
                 .putExtra(KeyguardActivity.EXTRA_TURN_SCREEN_ON, true));
 
-        if (DEBUG) Log.i(TAG, "Launching AcDisplay activity.");
+        if (DEBUG) Log.i(TAG, "Launching AcDisplay activity; state=" + mActivityState);
         return true;
     }
 
@@ -182,6 +182,8 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
         context.startActivity(new Intent(context, AcDisplayActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_NO_ANIMATION));
+
+        if (DEBUG) Log.i(TAG, "Launching[kg] AcDisplay activity; state=" + mActivityState);
         return true;
     }
 
