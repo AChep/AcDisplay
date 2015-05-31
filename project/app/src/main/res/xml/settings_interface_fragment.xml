@@ -24,7 +24,7 @@
         android:key="ui_custom_widget"
         android:title="@string/settings_custom_widget_title" >
         <intent
-            android:targetClass="com.achep.acdisplay.ui.activities.WidgetPickerActivity"
+            android:targetClass="com.achep.acdisplay.ui.activities.settings.WidgetPickerActivity"
             android:targetPackage="com.achep.acdisplay" />
     </Preference>
 
