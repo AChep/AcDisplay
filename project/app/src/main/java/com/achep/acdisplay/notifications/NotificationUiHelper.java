@@ -328,7 +328,7 @@ public class NotificationUiHelper implements INotificatiable {
      * {@link android.graphics.Bitmap#sameAs(android.graphics.Bitmap)}, {@code false} otherwise.
      */
     private boolean sameAs(@Nullable Bitmap bitmap, @Nullable Bitmap bitmap2) {
-        return bitmap == bitmap2 || bitmap != null && bitmap.sameAs(bitmap2);
+        return bitmap == bitmap2 || bitmap != null && bitmap2 != null && bitmap.sameAs(bitmap2);
     }
 
     //-- TITLE ----------------------------------------------------------------
