@@ -45,12 +45,12 @@ import com.achep.base.tests.Check;
 import com.achep.base.ui.SwitchBarPermissible;
 import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.preferences.Enabler;
-import com.achep.base.ui.widgets.FloatingActionButton;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.AppWidgetUtils;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ViewUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 

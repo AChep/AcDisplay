@@ -32,44 +32,46 @@
 
         <include
             android:id="@+id/panel"
-            layout="@layout/layout_appwidget_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginStart="16dp" />
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true"
+            layout="@layout/layout_appwidget_size" />
 
-        <android.support.design.widget.CoordinatorLayout
+        <com.melnykov.fab.ObservableScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/panel">
 
             <FrameLayout
                 android:id="@+id/appwidget_container"
-                style="@style/margin_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.achep.base.ui.widgets.TextView
-                android:id="@+id/empty"
-                style="@style/padding_content"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/settings_custom_widget_empty_message" />
+                style="@style/margin_content" />
+        </com.melnykov.fab.ObservableScrollView>
 
-            <com.achep.base.ui.widgets.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end|right"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_action_add_white" />
+        <com.achep.base.ui.widgets.TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/settings_custom_widget_empty_message"
+            style="@style/padding_content" />
 
-        </android.support.design.widget.CoordinatorLayout>
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_action_add_white" />
 
     </RelativeLayout>
 
