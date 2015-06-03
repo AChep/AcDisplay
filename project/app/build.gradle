@@ -137,8 +137,6 @@ android {
 dependencies {
     // Other libraries.
     //noinspection GradleDynamicVersion
-    compile 'com.melnykov:floatingactionbutton:1.+'
-    //noinspection GradleDynamicVersion
     compile 'com.larswerkman:HoloColorPicker:1.4'
     //noinspection GradleDynamicVersion
     compile 'me.grantland:autofittextview:0.2.+'
