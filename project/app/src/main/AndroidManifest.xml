@@ -112,6 +112,14 @@
             android:theme="@android:style/Theme.Holo" />
 
         <activity
+            android:name="com.achep.base.ui.activities.AllAppsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="App selector"
+            android:taskAffinity=".settings"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Holo" />
+
+        <activity
             android:name=".ui.activities.settings.SubBlacklistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/blacklist_app_config"

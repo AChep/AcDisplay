@@ -18,15 +18,18 @@
  */
 package com.achep.acdisplay.ui.fragments.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.ui.activities.AllAppsActivity;
 import com.achep.base.utils.DateUtils;
 import com.achep.base.utils.ResUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -118,16 +121,22 @@ public class MoreSettings extends BaseSettings implements
                                 @NonNull String key,
                                 @NonNull Object value) {
         Config config = (Config) configBase;
+        if(key.contains("corner_action") && value instanceof Integer && (int) value == Config.CORNER_CUSTOM_APP) {
+            Intent intent = new Intent(getActivity(), AllAppsActivity.class);
+            intent.putExtra("corner", key);
+            getActivity().startActivity(intent);
+        }
+
         switch (key) {
-            case Config.KEY_INACTIVE_TIME_ENABLED:
-            case Config.KEY_INACTIVE_TIME_FROM:
-            case Config.KEY_INACTIVE_TIME_TO:
-                updateInactiveHoursSummary(config);
-                break;
-            case Config.KEY_TIMEOUT_NORMAL:
-            case Config.KEY_TIMEOUT_SHORT:
-                updateTimeoutSummary(config);
-                break;
+        case Config.KEY_INACTIVE_TIME_ENABLED:
+        case Config.KEY_INACTIVE_TIME_FROM:
+        case Config.KEY_INACTIVE_TIME_TO:
+            updateInactiveHoursSummary(config);
+            break;
+        case Config.KEY_TIMEOUT_NORMAL:
+        case Config.KEY_TIMEOUT_SHORT:
+            updateTimeoutSummary(config);
+            break;
         }
     }
 

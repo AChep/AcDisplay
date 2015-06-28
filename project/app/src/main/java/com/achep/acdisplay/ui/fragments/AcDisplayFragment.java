@@ -515,7 +515,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
     //-- TOUCH HANDLING -------------------------------------------------------
 
     @Override
-    public void onCircleEvent(float radius, float ratio, int event, final int actionId) {
+    public void onCircleEvent(float radius, float ratio, int event, final int actionId, final int corner) {
         switch (event) {
             case CircleView.ACTION_START:
                 if (mHasPinnedWidget) {
@@ -537,7 +537,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
                     public void run() {
                         Context context = getActivity();
                         assert context != null;
-                        CornerHelper.perform(context, actionId);
+                        CornerHelper.perform(context, actionId, corner);
                     }
                 });
             case CircleView.ACTION_CANCELED:

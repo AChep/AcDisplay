@@ -20,6 +20,7 @@ package com.achep.acdisplay.ui.widgets;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -35,6 +36,7 @@ import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
+import android.util.StateSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -112,6 +114,7 @@ public class CircleView extends View {
     private float mDarkening;
 
     private float mCornerMargin;
+    private int mCorner = -1;
     @DrawableRes
     private int mDrawableResourceId = -1;
     private ColorFilter mInverseColorFilter;
@@ -146,7 +149,7 @@ public class CircleView extends View {
 
     public interface Callback {
 
-        void onCircleEvent(float radius, float ratio, int event, int actionId);
+        void onCircleEvent(float radius, float ratio, int event, int actionId, int corner);
     }
 
     public interface Supervisor {
@@ -282,7 +285,7 @@ public class CircleView extends View {
     }
 
     private void setInnerColor(int color, boolean needsColorReset) {
-        if (mInnerColor == (mInnerColor = color) && !needsColorReset) return;
+        if  ((mInnerColor == (mInnerColor = color) && !needsColorReset) || mCornerActionId == Config.CORNER_CUSTOM_APP) return;
 
         // Inverse the drawable if needed
         boolean isBright = ColorUtils.calculateLuminance(color) > 0.5;
@@ -300,33 +303,66 @@ public class CircleView extends View {
      * @see CornerHelper
      */
     private boolean updateIcon() {
-        final int res = CornerHelper.getIconResource(mCornerActionId);
-        if (res == mDrawableResourceId) return false; // No need to update
-        mDrawableResourceId = res;
+        if (mCornerActionId != Config.CORNER_CUSTOM_APP) {
+            final int res = CornerHelper.getIconResource(mCornerActionId);
+            if (res == mDrawableResourceId) return false; // No need to update
+            mDrawableResourceId = res;
 
-        label:
-        {
-            // Try to get from the cache.
-            final CharSequence key = Integer.toString(res);
-            mDrawable = mDrawableCache.get(key);
-            if (mDrawable != null) {
-                if (DEBUG) Log.d(TAG, "Got an icon<" + key + "> from the cache.");
-                break label;
+            label:
+            {
+                // Try to get from the cache.
+                final CharSequence key = Integer.toString(res);
+                mDrawable = mDrawableCache.get(key);
+                if (mDrawable != null) {
+                    if (DEBUG) Log.d(TAG, "Got an icon<" + key + "> from the cache.");
+                    break label;
+                }
+
+                // Load from resources.
+                mDrawable = ResUtils.getDrawable(getContext(), res);
+                assert mDrawable != null;
+                mDrawable.setBounds(0, 0,
+                        mDrawable.getIntrinsicWidth(),
+                        mDrawable.getIntrinsicHeight());
+                mDrawable = mDrawable.mutate(); // don't affect the original drawable
+                mDrawableCache.put(key, mDrawable);
             }
-
-            // Load from resources.
-            mDrawable = ResUtils.getDrawable(getContext(), res);
+            // Update alpha
+            float ratio = calculateRatio();
+            mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
+            return true;
+        }else{
+            try {
+                switch (mCorner) {
+                    case 0:
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppLeftTop());
+                        break;
+                    case 1:
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppRightTop());
+                        break;
+                    case 2:
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppLeftBottom());
+                        break;
+                    case 3:
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppRightBottom());
+                        break;
+                    case -1:
+                        throw new IllegalArgumentException("Corner:" + mCorner);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Icon not found");
+                e.printStackTrace();
+            }
             assert mDrawable != null;
             mDrawable.setBounds(0, 0,
                     mDrawable.getIntrinsicWidth(),
                     mDrawable.getIntrinsicHeight());
             mDrawable = mDrawable.mutate(); // don't affect the original drawable
-            mDrawableCache.put(key, mDrawable);
+            // Update alpha
+            float ratio = calculateRatio();
+            mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
+            return true;
         }
-        // Update alpha
-        float ratio = calculateRatio();
-        mDrawable.setAlpha((int) (255 * Math.pow(ratio, 3)));
-        return true;
     }
 
     public boolean sendTouchEvent(@NonNull MotionEvent event) {
@@ -355,12 +391,16 @@ public class CircleView extends View {
                 int radius = Math.min(width, height) / 3;
                 if (MathUtils.isInCircle(x, y, 0, 0, radius)) { // Top left
                     mCornerActionId = config.getCornerActionLeftTop();
+                    mCorner = 0;
                 } else if (MathUtils.isInCircle(x, y, -width, 0, radius)) { // Top right
                     mCornerActionId = config.getCornerActionRightTop();
+                    mCorner = 1;
                 } else if (MathUtils.isInCircle(x, y, 0, -height, radius)) { // Bottom left
                     mCornerActionId = config.getCornerActionLeftBottom();
+                    mCorner = 2;
                 } else if (MathUtils.isInCircle(x, y, -width, -height, radius)) { // Bottom right
                     mCornerActionId = config.getCornerActionRightBottom();
+                    mCorner = 3;
                 } else {
                     // The default action is unlocking.
                     mCornerActionId = Config.CORNER_UNLOCK;
@@ -549,7 +589,7 @@ public class CircleView extends View {
                     if (cv.mCallback != null) {
                         final float ratio = cv.calculateRatio();
                         final int actionId = cv.mCornerActionId;
-                        cv.mCallback.onCircleEvent(cv.mRadius, ratio, msg.what, actionId);
+                        cv.mCallback.onCircleEvent(cv.mRadius, ratio, msg.what, actionId, cv.mCorner);
                     }
                     break;
                 default:
