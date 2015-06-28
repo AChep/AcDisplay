@@ -19,7 +19,6 @@
 package com.achep.base.content;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Handler;
@@ -32,13 +31,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.achep.acdisplay.Config;
-import com.achep.acdisplay.R;
 import com.achep.base.Device;
 import com.achep.base.interfaces.IBackupable;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.tests.Check;
-import com.achep.base.ui.activities.AllAppsActivity;
 import com.achep.base.utils.GzipUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -235,6 +232,10 @@ public abstract class ConfigBase implements
         String key = option.getKey(ConfigBase.this);
 
         if (DEBUG) Log.d(TAG, "Writing \"" + key + "=" + value + "\" to config.");
+
+
+        // Read the current value from an option.
+        mPreviousValue = option.read(this);
 
         // Set the current value to the field.
         try {

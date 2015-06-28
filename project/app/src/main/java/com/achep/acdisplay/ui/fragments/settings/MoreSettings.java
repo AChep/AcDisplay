@@ -24,7 +24,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
@@ -128,15 +127,15 @@ public class MoreSettings extends BaseSettings implements
         }
 
         switch (key) {
-        case Config.KEY_INACTIVE_TIME_ENABLED:
-        case Config.KEY_INACTIVE_TIME_FROM:
-        case Config.KEY_INACTIVE_TIME_TO:
-            updateInactiveHoursSummary(config);
-            break;
-        case Config.KEY_TIMEOUT_NORMAL:
-        case Config.KEY_TIMEOUT_SHORT:
-            updateTimeoutSummary(config);
-            break;
+            case Config.KEY_INACTIVE_TIME_ENABLED:
+            case Config.KEY_INACTIVE_TIME_FROM:
+            case Config.KEY_INACTIVE_TIME_TO:
+                updateInactiveHoursSummary(config);
+                break;
+            case Config.KEY_TIMEOUT_NORMAL:
+            case Config.KEY_TIMEOUT_SHORT:
+                updateTimeoutSummary(config);
+                break;
         }
     }
 
