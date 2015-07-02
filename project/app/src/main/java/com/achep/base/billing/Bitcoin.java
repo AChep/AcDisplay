@@ -103,7 +103,7 @@ public class Bitcoin implements ICoin {
     @NonNull
     @Override
     public Uri getUriWhatIsIt() {
-        return Uri.parse("http://www.youtube.com/watch?v=Um63OQz3bjo");
+        return Uri.parse("http://www.youtube.com/watch?v=Gc2en3nHxA4");
     }
 
     /**
