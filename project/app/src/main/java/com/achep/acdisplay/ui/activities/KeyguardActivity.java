@@ -255,6 +255,12 @@ public abstract class KeyguardActivity extends BaseActivity implements
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        sendBroadcast(App.ACTION_STATE_START);
+    }
+
+    @Override
     protected void onResume() {
         if (DEBUG) Log.d(TAG, "Resuming keyguard activity...");
         super.onResume();
@@ -274,10 +280,14 @@ public abstract class KeyguardActivity extends BaseActivity implements
             mSystemScreenOffTimeout = -1;
         }
         */
+
+        sendBroadcast(App.ACTION_STATE_RESUME);
     }
 
     @Override
     protected void onPause() {
+        sendBroadcast(App.ACTION_STATE_PAUSE);
+
         if (DEBUG) Log.d(TAG, "Pausing keyguard activity...");
         mResumed = false;
         populateFlags(false);
@@ -308,6 +318,8 @@ public abstract class KeyguardActivity extends BaseActivity implements
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
             mKeyguardDismissed = false;
         }
+
+        sendBroadcast(App.ACTION_STATE_STOP);
     }
 
     /**
@@ -320,10 +332,16 @@ public abstract class KeyguardActivity extends BaseActivity implements
      * @see #sendBroadcast(android.content.Intent)
      */
     private void overrideHomePress(boolean override) {
-        Intent intent = new Intent(override
+        sendBroadcast(override
                 ? App.ACTION_EAT_HOME_PRESS_START
                 : App.ACTION_EAT_HOME_PRESS_STOP);
-        sendBroadcast(intent);
+    }
+
+    /**
+     * Same as calling {@code sendBroadcast(new Intent(action))}.
+     */
+    private void sendBroadcast(@NonNull String action) {
+        sendBroadcast(new Intent(action));
     }
 
     @Override

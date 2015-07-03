@@ -54,6 +54,11 @@ public class App extends Application {
     public static final String ACTION_DISABLE = "com.achep.acdisplay.DISABLE";
     public static final String ACTION_TOGGLE = "com.achep.acdisplay.TOGGLE";
 
+    public static final String ACTION_STATE_START = "com.achep.acdisplay.STATE_START";
+    public static final String ACTION_STATE_RESUME = "com.achep.acdisplay.STATE_RESUME";
+    public static final String ACTION_STATE_PAUSE = "com.achep.acdisplay.STATE_PAUSE";
+    public static final String ACTION_STATE_STOP = "com.achep.acdisplay.STATE_STOP";
+
     public static final String ACTION_EAT_HOME_PRESS_START = "com.achep.acdisplay.EAT_HOME_PRESS_START";
     public static final String ACTION_EAT_HOME_PRESS_STOP = "com.achep.acdisplay.EAT_HOME_PRESS_STOP";
 
