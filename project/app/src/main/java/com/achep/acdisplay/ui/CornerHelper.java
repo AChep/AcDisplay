@@ -18,7 +18,6 @@
  */
 package com.achep.acdisplay.ui;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,10 +37,15 @@ public class CornerHelper {
 
     private static final String TAG = "CornerHelper";
 
+    private static final int CORNER_LEFT_TOP = 0;
+    private static final int CORNER_RIGHT_TOP = 1;
+    private static final int CORNER_LEFT_BOTTOM = 2;
+    private static final int CORNER_RIGHT_BOTTOM = 3;
+
     private static final int[] ICON_IDS = {
             R.drawable.ic_corner_unlock_white,
             R.drawable.ic_corner_launch_photo_camera_white,
-            R.drawable.ic_corner_launch_dialer_white
+            R.drawable.ic_corner_launch_dialer_white,
     };
 
     /**
@@ -79,35 +83,35 @@ public class CornerHelper {
                     e.printStackTrace();
                 }
                 break;
-            case Config.CORNER_CUSTOM_APP:
+            case Config.CORNER_CUSTOM_APP: {
                 PackageManager packageManager = context.getPackageManager();
-                try
-                {
-                    Intent intent = null;
-                    switch(corner){
-                        case 0:
-                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppLeftTop());
-                            break;
-                        case 1:
-                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppRightTop());
-                            break;
-                        case 2:
-                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppLeftBottom());
-                            break;
-                        case 3:
-                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppRightBottom());
-                            break;
-                    }
-                    if(null != intent) { context.startActivity(intent); }
+                Config config = Config.getInstance();
+
+                // Get package name
+                String packageName;
+                switch (corner) {
+                    case CORNER_LEFT_TOP:
+                        packageName = config.getCornerActionLeftTopCustomApp();
+                        break;
+                    case CORNER_RIGHT_TOP:
+                        packageName = config.getCornerActionRightTopCustomApp();
+                        break;
+                    case CORNER_LEFT_BOTTOM:
+                        packageName = config.getCornerActionLeftBottomCustomApp();
+                        break;
+                    case CORNER_RIGHT_BOTTOM:
+                        packageName = config.getCornerActionRightBottomCustomApp();
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
                 }
-                catch (ActivityNotFoundException e)
-                {
-                    Log.i(TAG, "Unable to launch custom app.");
-                    e.printStackTrace();
-                }
+
+                Intent intent = packageManager.getLaunchIntentForPackage(packageName);
+                if (intent != null) context.startActivity(intent);
                 break;
+            }
             default:
-                throw new IllegalArgumentException("ID:" + actionId);
+                throw new IllegalArgumentException();
         }
     }
 

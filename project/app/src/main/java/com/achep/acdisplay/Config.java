@@ -110,10 +110,14 @@ public final class Config extends ConfigBase {
     public static final String KEY_CORNER_ACTION_RIGHT_TOP = "corner_action_right_top";
     public static final String KEY_CORNER_ACTION_LEFT_BOTTOM = "corner_action_left_bottom";
     public static final String KEY_CORNER_ACTION_RIGHT_BOTTOM = "corner_action_right_bottom";
-    public static final String KEY_CORNER_ACTION_LEFT_TOP_CUSTOM_APP = KEY_CORNER_ACTION_LEFT_TOP + "_custom_app";
-    public static final String KEY_CORNER_ACTION_RIGHT_TOP_CUSTOM_APP = KEY_CORNER_ACTION_RIGHT_TOP + "_custom_app";
-    public static final String KEY_CORNER_ACTION_LEFT_BOTTOM_CUSTOM_APP = KEY_CORNER_ACTION_LEFT_BOTTOM + "_custom_app";
-    public static final String KEY_CORNER_ACTION_RIGHT_BOTTOM_CUSTOM_APP = KEY_CORNER_ACTION_RIGHT_BOTTOM + "_custom_app";
+    public static final String KEY_CORNER_ACTION_LEFT_TOP_CUSTOM_APP =
+            KEY_CORNER_ACTION_LEFT_TOP + "_custom_app";
+    public static final String KEY_CORNER_ACTION_RIGHT_TOP_CUSTOM_APP =
+            KEY_CORNER_ACTION_RIGHT_TOP + "_custom_app";
+    public static final String KEY_CORNER_ACTION_LEFT_BOTTOM_CUSTOM_APP =
+            KEY_CORNER_ACTION_LEFT_BOTTOM + "_custom_app";
+    public static final String KEY_CORNER_ACTION_RIGHT_BOTTOM_CUSTOM_APP =
+            KEY_CORNER_ACTION_RIGHT_BOTTOM + "_custom_app";
     /**
      * The default corner's action. Simply unlocks the device.
      */
@@ -180,6 +184,10 @@ public final class Config extends ConfigBase {
     private int mCornerActionRightTop;
     private int mCornerActionLeftBottom;
     private int mCornerActionRightBottom;
+    private String mCornerActionLeftTopPkg;
+    private String mCornerActionRightTopPkg;
+    private String mCornerActionLeftBottomPkg;
+    private String mCornerActionRightBottomPkg;
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
     private boolean mUiOverrideFonts;
@@ -191,11 +199,6 @@ public final class Config extends ConfigBase {
     private boolean mUiCustomWidgetTouchable;
 
     private boolean mDevSensorsDump;
-
-    private String leftTopCustomApp;
-    private String rightTopCustomApp;
-    private String leftBottomCustomApp;
-    private String rightBottomCustomApp;
 
     private final Triggers mTriggers;
     private int mTrigPreviousVersion;
@@ -382,17 +385,17 @@ public final class Config extends ConfigBase {
                 .setDefaultRes(R.integer.config_default_corner_right_bottom));
 
         // custom app
-        map.put(KEY_CORNER_ACTION_LEFT_BOTTOM_CUSTOM_APP, new ConfigBase.Option(
-                "leftBottomCustomApp", null, null, String.class)
-                .setDefault(""));
-        map.put(KEY_CORNER_ACTION_RIGHT_BOTTOM_CUSTOM_APP, new ConfigBase.Option(
-                "rightBottomCustomApp", null, null, String.class)
-                .setDefault(""));
         map.put(KEY_CORNER_ACTION_LEFT_TOP_CUSTOM_APP, new ConfigBase.Option(
-                "leftTopCustomApp", null, null, String.class)
+                "mCornerActionLeftTopPkg", null, null, String.class)
                 .setDefault(""));
         map.put(KEY_CORNER_ACTION_RIGHT_TOP_CUSTOM_APP, new ConfigBase.Option(
-                "rightTopCustomApp", null, null, String.class)
+                "mCornerActionRightTopPkg", null, null, String.class)
+                .setDefault(""));
+        map.put(KEY_CORNER_ACTION_LEFT_BOTTOM_CUSTOM_APP, new ConfigBase.Option(
+                "mCornerActionLeftBottomPkg", null, null, String.class)
+                .setDefault(""));
+        map.put(KEY_CORNER_ACTION_RIGHT_BOTTOM_CUSTOM_APP, new ConfigBase.Option(
+                "mCornerActionLeftBottomPkg", null, null, String.class)
                 .setDefault(""));
 
         // triggers
@@ -474,21 +477,24 @@ public final class Config extends ConfigBase {
         writeFromMain(context, getOption(KEY_ENABLED), enabled, listener);
     }
 
-    public void setCustomAppLeftBottom(@NonNull Context context, String customApp,
-                                       @Nullable OnConfigChangedListener listener) {
-        writeFromMain(context, getOption(KEY_CORNER_ACTION_LEFT_BOTTOM_CUSTOM_APP), customApp, listener);
-    }
-    public void setCustomAppRightBottom(@NonNull Context context, String customApp,
-                                        @Nullable OnConfigChangedListener listener) {
-        writeFromMain(context, getOption(KEY_CORNER_ACTION_RIGHT_BOTTOM_CUSTOM_APP), customApp, listener);
-    }
-    public void setCustomAppLeftTop(@NonNull Context context, String customApp,
-                           @Nullable OnConfigChangedListener listener) {
+    public void setCornerActionLeftTopCustomApp(@NonNull Context context, String customApp,
+                                                @Nullable OnConfigChangedListener listener) {
         writeFromMain(context, getOption(KEY_CORNER_ACTION_LEFT_TOP_CUSTOM_APP), customApp, listener);
     }
-    public void setCustomAppRightTop(@NonNull Context context, String customApp,
-                                    @Nullable OnConfigChangedListener listener) {
+
+    public void setCornerActionRightTopCustomApp(@NonNull Context context, String customApp,
+                                                 @Nullable OnConfigChangedListener listener) {
         writeFromMain(context, getOption(KEY_CORNER_ACTION_RIGHT_TOP_CUSTOM_APP), customApp, listener);
+    }
+
+    public void setCornerActionLeftBottomCustomApp(@NonNull Context context, String customApp,
+                                                   @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_CORNER_ACTION_LEFT_BOTTOM_CUSTOM_APP), customApp, listener);
+    }
+
+    public void setCornerActionRightBottomCustomApp(@NonNull Context context, String customApp,
+                                                    @Nullable OnConfigChangedListener listener) {
+        writeFromMain(context, getOption(KEY_CORNER_ACTION_RIGHT_BOTTOM_CUSTOM_APP), customApp, listener);
     }
 
     /**
@@ -766,11 +772,25 @@ public final class Config extends ConfigBase {
         return mActiveModeWave2Wake;
     }
 
-    // gets the custom app string
-    public String getCustomAppLeftBottom() { return leftBottomCustomApp; }
-    public String getCustomAppRightBottom() { return rightBottomCustomApp; }
-    public String getCustomAppLeftTop() { return leftTopCustomApp; }
-    public String getCustomAppRightTop() { return rightTopCustomApp; }
+    @NonNull
+    public String getCornerActionLeftTopCustomApp() {
+        return mCornerActionLeftTopPkg;
+    }
+
+    @NonNull
+    public String getCornerActionRightTopCustomApp() {
+        return mCornerActionRightTopPkg;
+    }
+
+    @NonNull
+    public String getCornerActionLeftBottomCustomApp() {
+        return mCornerActionLeftBottomPkg;
+    }
+
+    @NonNull
+    public String getCornerActionRightBottomCustomApp() {
+        return mCornerActionRightBottomPkg;
+    }
 
     // //////////////////////////////////////////
     // //////////// -- TRIGGERS -- //////////////

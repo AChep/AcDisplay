@@ -36,7 +36,6 @@ import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
-import android.util.StateSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -335,16 +334,16 @@ public class CircleView extends View {
             try {
                 switch (mCorner) {
                     case 0:
-                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppLeftTop());
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCornerActionLeftTopCustomApp());
                         break;
                     case 1:
-                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppRightTop());
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCornerActionRightTopCustomApp());
                         break;
                     case 2:
-                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppLeftBottom());
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCornerActionLeftBottomCustomApp());
                         break;
                     case 3:
-                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCustomAppRightBottom());
+                        mDrawable = getContext().getPackageManager().getApplicationIcon(Config.getInstance().getCornerActionRightBottomCustomApp());
                         break;
                     case -1:
                         throw new IllegalArgumentException("Corner:" + mCorner);

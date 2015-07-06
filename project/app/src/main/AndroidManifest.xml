@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -115,8 +114,8 @@
             android:name="com.achep.base.ui.activities.AllAppsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="App selector"
-            android:taskAffinity=".settings"
             android:launchMode="singleTask"
+            android:taskAffinity=".settings"
             android:theme="@android:style/Theme.Holo" />
 
         <activity

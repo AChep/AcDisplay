@@ -1,24 +1,17 @@
 package com.achep.base.ui.activities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import android.app.AlertDialog;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -54,19 +47,19 @@ public class AllAppsActivity extends ListActivity {
                 Config config = Config.getInstance();
                 switch (corner) {
                     case "corner_action_left_top":
-                        Config.getInstance().setCustomAppLeftTop(this, intent.getPackage(), null);
+                        Config.getInstance().setCornerActionLeftTopCustomApp(this, intent.getPackage(), null);
 
                         break;
                     case "corner_action_right_top":
-                        Config.getInstance().setCustomAppRightTop(this, intent.getPackage(), null);
+                        Config.getInstance().setCornerActionRightTopCustomApp(this, intent.getPackage(), null);
 
                         break;
                     case "corner_action_left_bottom":
-                        Config.getInstance().setCustomAppLeftBottom(this, intent.getPackage(), null);
+                        Config.getInstance().setCornerActionLeftBottomCustomApp(this, intent.getPackage(), null);
 
                         break;
                     case "corner_action_right_bottom":
-                        Config.getInstance().setCustomAppRightBottom(this, intent.getPackage(), null);
+                        Config.getInstance().setCornerActionRightBottomCustomApp(this, intent.getPackage(), null);
                         break;
                     default:
                         throw new IllegalArgumentException("AllsAppsActivity Corner:" + corner);
