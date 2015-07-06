@@ -32,6 +32,7 @@ import android.util.Log;
 import com.achep.acdisplay.Config;
 import com.achep.acdisplay.Presenter;
 import com.achep.acdisplay.R;
+import com.achep.acdisplay.services.switches.AlarmSwitch;
 import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
 import com.achep.acdisplay.utils.tasks.RunningTasks;
@@ -79,6 +80,23 @@ public class KeyguardService extends SwitchService {
 
     private ActivityMonitorThread mActivityMonitorThread;
     private String mPackageName;
+
+    /**
+     * Transfer callback.
+     */
+    @NonNull
+    private final Switch.Callback mAlarmSwitchCallback = new Switch.Callback() {
+        @Override
+        public void requestActive() {
+            KeyguardService.this.requestActive();
+        }
+
+        @Override
+        public void requestInactive() {
+            mPresenter.kill(); // Make sure lock is hidden.
+            KeyguardService.this.requestInactive();
+        }
+    };
 
     private final Presenter mPresenter = Presenter.getInstance();
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -148,6 +166,7 @@ public class KeyguardService extends SwitchService {
         ConfigBase.Option noNotifies = config.getOption(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
         ConfigBase.Option respectIt = config.getOption(Config.KEY_KEYGUARD_RESPECT_INACTIVE_TIME);
         return new Switch[]{
+                new AlarmSwitch(getContext(), mAlarmSwitchCallback),
                 new NoNotifiesSwitch(getContext(), this, noNotifies, true),
                 new InactiveTimeSwitch(getContext(), this, respectIt),
         };
