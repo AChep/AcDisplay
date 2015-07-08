@@ -81,23 +81,6 @@ public class KeyguardService extends SwitchService {
     private ActivityMonitorThread mActivityMonitorThread;
     private String mPackageName;
 
-    /**
-     * Transfer callback.
-     */
-    @NonNull
-    private final Switch.Callback mAlarmSwitchCallback = new Switch.Callback() {
-        @Override
-        public void requestActive() {
-            KeyguardService.this.requestActive();
-        }
-
-        @Override
-        public void requestInactive() {
-            mPresenter.kill(); // Make sure lock is hidden.
-            KeyguardService.this.requestInactive();
-        }
-    };
-
     private final Presenter mPresenter = Presenter.getInstance();
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -166,7 +149,7 @@ public class KeyguardService extends SwitchService {
         ConfigBase.Option noNotifies = config.getOption(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
         ConfigBase.Option respectIt = config.getOption(Config.KEY_KEYGUARD_RESPECT_INACTIVE_TIME);
         return new Switch[]{
-                new AlarmSwitch(getContext(), mAlarmSwitchCallback),
+                new AlarmSwitch(getContext(), this),
                 new NoNotifiesSwitch(getContext(), this, noNotifies, true),
                 new InactiveTimeSwitch(getContext(), this, respectIt),
         };
