@@ -118,11 +118,6 @@ public class App extends Application {
                 NotificationHelper.sendNotification(this, App.ID_NOTIFY_APP_AUTO_DISABLED, list);
             }
         }
-        // Check the keyguard (without the notification).
-        if (config.isKeyguardEnabled() && !getAccessManager().getKeyguardPermissions().isActive()) {
-            ConfigBase.Option option = config.getOption(Config.KEY_KEYGUARD);
-            option.write(config, this, false, null);
-        }
 
         // Launch keyguard and (or) active mode on
         // app launch.
