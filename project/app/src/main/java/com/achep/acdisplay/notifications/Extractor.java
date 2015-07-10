@@ -25,10 +25,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,9 +71,14 @@ final class Extractor {
     @Nullable
     private static CharSequence removeColorSpans(@Nullable CharSequence cs) {
         if (cs == null) return null;
+        if (cs instanceof Spanned) {
+            cs = new SpannableStringBuilder(cs);
+        }
         if (cs instanceof Spannable) {
             CharacterStyle[] styles;
             Spannable spanned = (Spannable) cs;
+            styles = spanned.getSpans(0, spanned.length(), TextAppearanceSpan.class);
+            for (CharacterStyle style : styles) spanned.removeSpan(style);
             styles = spanned.getSpans(0, spanned.length(), ForegroundColorSpan.class);
             for (CharacterStyle style : styles) spanned.removeSpan(style);
             styles = spanned.getSpans(0, spanned.length(), BackgroundColorSpan.class);
