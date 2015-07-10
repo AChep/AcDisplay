@@ -37,4 +37,14 @@
             android:title="@string/settings_keyguard_enabled_when_notification_list_empty_title" />
 
     </PreferenceCategory>
+
+    <!--
+    <PreferenceCategory android:title="@string/settings_security_category">
+
+        <Preference
+            android:enabled="false"
+            android:summary="@string/settings_security_disclaimer" />
+
+    </PreferenceCategory>
+    -->
 </PreferenceScreen>
