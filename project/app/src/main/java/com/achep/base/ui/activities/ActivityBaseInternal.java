@@ -75,19 +75,28 @@ final class ActivityBaseInternal implements IActivityBase {
     private PowerSaveDetector mPowerSaveDetector;
 
     private boolean mCheckoutRequest;
+    private boolean mInputMethodResetRequest;
+
+    private boolean mCreated;
 
     public ActivityBaseInternal() {
+        // Logs the current number of the Activities and
+        // increases its count. Check `dFinalizeWatcher` field
+        // for more information.
         if (DEBUG) Log.d(TAG, "Creating an instance=" + this
                 + " watcher=" + dFinalizeWatcher
                 + " n=" + ++sInstancesCount);
     }
 
+    /* Mirrors Activity#onCreate(...) */
     void onCreate(Activity activity, Bundle savedInstanceState) {
         if (mCheckoutRequest) mCheckout = Checkout.forActivity(activity, AppHeap.getCheckout());
         mPowerSaveDetector = PowerSaveDetector.newInstance(activity);
         mActivity = activity;
+        mCreated = true;
     }
 
+    /* Mirrors Activity#onStart(...) */
     void onStart() {
         if (mCheckout != null) {
             AppHeap.getCheckoutInternal().requestConnect();
@@ -96,6 +105,7 @@ final class ActivityBaseInternal implements IActivityBase {
         mPowerSaveDetector.start();
     }
 
+    /* Mirrors Activity#onStop(...) */
     void onStop() {
         if (mCheckout != null) {
             mCheckout.stop();
@@ -104,12 +114,16 @@ final class ActivityBaseInternal implements IActivityBase {
         mPowerSaveDetector.stop();
     }
 
+    /* Mirrors Activity#onDestroy(...) */
     void onDestroy() {
         mCheckout = null;
-        /**
-         * Just in case fix for memory leak:
-         * http://code.google.com/p/android/issues/detail?id=34731
-         */
+        if (mInputMethodResetRequest) performInputMethodServiceReset();
+    }
+
+    /**
+     * @see #requestInputMethodReset()
+     */
+    private void performInputMethodServiceReset() {
         Object imm = mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         Reflector.TypedObject windowToken = new Reflector.TypedObject(
                 mActivity.getWindow().getDecorView().getWindowToken(), IBinder.class);
@@ -118,6 +132,7 @@ final class ActivityBaseInternal implements IActivityBase {
         Reflector.invokeMethodExceptionSafe(imm, "startGettingWindowFocus", view);
     }
 
+    /* Mirrors Activity#onActivityResult(...) */
     boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         return mCheckout != null && mCheckout.onActivityResult(requestCode, resultCode, data);
     }
@@ -130,8 +145,16 @@ final class ActivityBaseInternal implements IActivityBase {
     @Override
     public void requestCheckout() {
         Check.getInstance().isFalse(mCheckoutRequest);
-        Check.getInstance().isNull(mPowerSaveDetector); // not created yet.
+        Check.getInstance().isFalse(mCreated); // not created yet.
         mCheckoutRequest = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void requestInputMethodReset() {
+        mInputMethodResetRequest = true;
     }
 
     /**

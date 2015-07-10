@@ -35,6 +35,7 @@ import org.solovyev.android.checkout.ActivityCheckout;
  */
 public abstract class ActivityBase extends AppCompatActivity implements IActivityBase {
 
+    @NonNull
     private final ActivityBaseInternal mAbs = new ActivityBaseInternal();
 
     /**
@@ -88,6 +89,14 @@ public abstract class ActivityBase extends AppCompatActivity implements IActivit
     @Override
     public void requestCheckout() {
         mAbs.requestCheckout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void requestInputMethodReset() {
+        mAbs.requestInputMethodReset();
     }
 
     /**

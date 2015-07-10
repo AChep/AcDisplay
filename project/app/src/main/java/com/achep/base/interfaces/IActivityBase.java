@@ -31,7 +31,17 @@ import org.solovyev.android.checkout.ActivityCheckout;
  */
 public interface IActivityBase {
 
+    /**
+     * Requests to load the {@link org.solovyev.android.checkout.Checkout} on activity
+     * create. <b>Must be called from {@link Activity#onCreate(...)}!</b>
+     */
     void requestCheckout();
+
+    /**
+     * Requests the activity to apply this workaround on activity destroy:
+     * http://code.google.com/p/android/issues/detail?id=34731
+     */
+    void requestInputMethodReset();
 
     @NonNull
     Activity getActivity();
