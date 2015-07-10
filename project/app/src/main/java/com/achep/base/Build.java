@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
+ * Copyright (C) 2013 AChep@xda <artemchep@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ import com.achep.acdisplay.BuildConfig;
 public final class Build {
 
     /**
-     * Is the current build <b>debug</b> or not.
+     * Defines if the current build <b>debug</b> or not.
      */
     public static final boolean DEBUG =
             BuildConfig.MY_DEBUG;
@@ -45,7 +45,8 @@ public final class Build {
             BuildConfig.MY_TIME_STAMP;
 
     /**
-     * Uncrypted Google Play's public key.
+     * Encrypted public key of my dev account in Google Play. The key is encrypted on
+     * build and should not be hardcoded.
      *
      * @see #GOOGLE_PLAY_PUBLIC_KEY_SALT
      */
@@ -54,7 +55,8 @@ public final class Build {
             BuildConfig.MY_GOOGLE_PLAY_PUBLIC_KEY;
 
     /**
-     * Salt for {@link #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED}
+     * Salt for {@link #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED}. The salt is generated on
+     * build and should not be hardcoded.
      *
      * @see #GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED
      */
@@ -63,8 +65,8 @@ public final class Build {
             BuildConfig.MY_GOOGLE_PLAY_PUBLIC_KEY_SALT;
 
     /**
-     * The oficial e-mail for tons of complains, billions of
-     * "How to uninistall?" screams and one or two useful emails.
+     * The official e-mail for tons of complains, billions of
+     * "How to uninstall?" screams and one or two useful emails.
      */
     @NonNull
     public static final String SUPPORT_EMAIL =

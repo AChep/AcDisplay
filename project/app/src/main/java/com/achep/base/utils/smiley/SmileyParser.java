@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.achep.base.utils.smiley;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,15 +37,22 @@ import java.util.regex.Pattern;
  * to graphical ones.
  */
 public class SmileyParser {
-    // Singleton stuff
+
     private static SmileyParser sInstance;
 
+    @NonNull
     public static SmileyParser getInstance() {
+        Check.getInstance().isNonNull(sInstance);
         return sInstance;
     }
 
+    /**
+     * Initializes the whole smileys parses thing and saves it into
+     * a static reference. This method should be called from
+     * {@link Application#onCreate()}.
+     */
     public static void init(@NonNull Context context) {
-        sInstance = new SmileyParser(context);
+        sInstance = new SmileyParser(context.getApplicationContext());
     }
 
     private final Context mContext;
@@ -140,7 +147,6 @@ public class SmileyParser {
     };
 
     public static final int DEFAULT_SMILEY_TEXTS = R.array.default_smiley_texts;
-//    public static final int DEFAULT_SMILEY_NAMES = R.array.default_smiley_names;
 
     /**
      * Builds the hashtable we use for mapping the string version

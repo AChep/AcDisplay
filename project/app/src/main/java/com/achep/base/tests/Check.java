@@ -28,6 +28,7 @@ import android.support.annotation.Nullable;
  */
 public abstract class Check {
 
+    @Nullable
     private static Check sCheck;
 
     @NonNull

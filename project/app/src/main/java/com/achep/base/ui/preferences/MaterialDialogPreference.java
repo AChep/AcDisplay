@@ -18,9 +18,11 @@
  */
 package com.achep.base.ui.preferences;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.preference.Preference;
@@ -45,6 +47,7 @@ public abstract class MaterialDialogPreference extends DialogPreference {
 
     private MaterialDialog mDialog;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public MaterialDialogPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -57,6 +60,7 @@ public abstract class MaterialDialogPreference extends DialogPreference {
         super(context, attrs);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public MaterialDialogPreference(Context context) {
         super(context);
     }

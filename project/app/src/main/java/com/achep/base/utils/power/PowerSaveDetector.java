@@ -34,12 +34,14 @@ import com.achep.base.Device;
  */
 public abstract class PowerSaveDetector {
 
+    @NonNull
     public static PowerSaveDetector newInstance(@NonNull Context context) {
         return Device.hasLollipopApi()
                 ? new PowerSaveLollipop(context)
                 : new PowerSaveCompat(context);
     }
 
+    @NonNull
     protected final Context mContext;
     protected boolean mPowerSaveMode;
 
