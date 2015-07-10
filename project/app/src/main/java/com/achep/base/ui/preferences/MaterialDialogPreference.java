@@ -32,7 +32,6 @@ import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -99,7 +98,7 @@ public abstract class MaterialDialogPreference extends DialogPreference {
                     PreferenceManager.OnActivityDestroyListener.class);
             method.setAccessible(true);
             method.invoke(pm, this);
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
