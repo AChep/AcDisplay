@@ -74,6 +74,20 @@
         <item>2</item>
     </string-array>
 
+    <!-- Keyguard delays -->
+    <string-array name="keyguard_lock_delay">
+        <item>No delay</item>
+        <item>5 seconds</item>
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+    </string-array>
+    <string-array name="keyguard_lock_delay_entries" translatable="false">
+        <item>0</item>
+        <item>5000</item>
+        <item>15000</item>
+        <item>30000</item>
+    </string-array>
+
     <!-- BatteryMeterView parameters -->
     <array name="batterymeter_color_levels" translatable="false">
         <item>4</item>

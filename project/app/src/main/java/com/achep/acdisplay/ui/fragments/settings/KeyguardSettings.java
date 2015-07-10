@@ -20,6 +20,9 @@ package com.achep.acdisplay.ui.fragments.settings;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.App;
 import com.achep.acdisplay.Config;
@@ -30,6 +33,27 @@ import com.achep.base.permissions.PermissionGroup;
  * Created by Artem on 09.02.14.
  */
 public class KeyguardSettings extends BaseSettings {
+
+    @NonNull
+    private final ListPreferenceSetter mDelayPreferenceSetter = new ListPreferenceSetter() {
+
+        @Override
+        public void updateSummary(@NonNull Preference preference,
+                                  @NonNull Config.Option option,
+                                  @NonNull Object value) {
+            ListPreference cbp = (ListPreference) preference;
+            final CharSequence valueStr = Integer.toString((Integer) value);
+            final CharSequence[] values = cbp.getEntryValues();
+            final int length = values.length;
+            for (int i = 0; i < length; i++) {
+                if (valueStr.equals(values[i])) {
+                    cbp.setSummary(cbp.getEntries()[i]);
+                    break;
+                }
+            }
+
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +68,7 @@ public class KeyguardSettings extends BaseSettings {
         addPreferencesFromResource(R.xml.settings_keyguard_fragment);
         syncPreference(Config.KEY_KEYGUARD_RESPECT_INACTIVE_TIME);
         syncPreference(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
+        syncPreference(Config.KEY_KEYGUARD_LOCK_DELAY, mDelayPreferenceSetter);
     }
 
 }

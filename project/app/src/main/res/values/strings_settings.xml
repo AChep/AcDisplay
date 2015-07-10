@@ -47,6 +47,7 @@
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
     <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
+    <string name="settings_keyguard_lock_delay_title">Lock delay</string>
     <string name="settings_security_category">Security</string>
     <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info…\n\nTODO</string>
 

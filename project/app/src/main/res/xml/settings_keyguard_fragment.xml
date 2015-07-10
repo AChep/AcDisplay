@@ -26,6 +26,12 @@
 
     <PreferenceCategory android:title="@string/settings">
 
+        <ListPreference
+            android:entries="@array/keyguard_lock_delay"
+            android:entryValues="@array/keyguard_lock_delay_entries"
+            android:key="keyguard_lock_delay"
+            android:title="@string/settings_keyguard_lock_delay_title" />
+
         <CheckBoxPreference
             android:key="keyguard_respect_inactive_time"
             android:title="@string/settings_keyguard_respect_inactive_time_title" />

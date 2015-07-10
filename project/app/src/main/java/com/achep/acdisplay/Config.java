@@ -67,6 +67,7 @@ public final class Config extends ConfigBase {
     public static final String KEY_KEYGUARD = "keyguard";
     public static final String KEY_KEYGUARD_RESPECT_INACTIVE_TIME = "keyguard_respect_inactive_time";
     public static final String KEY_KEYGUARD_WITHOUT_NOTIFICATIONS = "keyguard_without_notifications";
+    public static final String KEY_KEYGUARD_LOCK_DELAY = "keyguard_lock_delay";
 
     // active mode
     public static final String KEY_ACTIVE_MODE = "active_mode";
@@ -171,6 +172,7 @@ public final class Config extends ConfigBase {
     private int mCornerActionRightTop;
     private int mCornerActionLeftBottom;
     private int mCornerActionRightBottom;
+    private int mKeyguardLockDelay;
     private boolean mInactiveTimeEnabled;
     private boolean mUiFullScreen;
     private boolean mUiOverrideFonts;
@@ -228,6 +230,9 @@ public final class Config extends ConfigBase {
         map.put(KEY_KEYGUARD_WITHOUT_NOTIFICATIONS, new ConfigBase.Option(
                 "mKeyguardWithoutNotifies", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_keyguard_without_notifies_enabled));
+        map.put(KEY_KEYGUARD_LOCK_DELAY, new ConfigBase.Option(
+                "mKeyguardLockDelay", null, null, int.class)
+                .setDefaultRes(R.integer.config_default_keyguard_lock_delay));
         map.put(KEY_ACTIVE_MODE, new ConfigBase.Option(
                 "mActiveMode", null, null, boolean.class)
                 .setDefaultRes(R.bool.config_default_active_mode_enabled));
@@ -480,6 +485,13 @@ public final class Config extends ConfigBase {
     public void setIconSizeDp(@NonNull Context context, int size,
                               @Nullable OnConfigChangedListener listener) {
         writeFromMain(context, getOption(KEY_UI_ICON_SIZE), size, listener);
+    }
+
+    /**
+     * @return the delay between turning screen off  and actual locking, in millis
+     */
+    public int getKeyguardLockDelayMillis() {
+        return mKeyguardLockDelay;
     }
 
     /**

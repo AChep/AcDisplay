@@ -46,6 +46,7 @@
     <string name="settings_keyguard_enabled_when_notification_list_empty_title">Пока нет уведомлений</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен вне зависимости от наличия текущих уведомлений.</string>
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, пока текущий список уведомлений пуст.</string>
+    <string name="settings_keyguard_lock_delay_title">Задержка блокировки</string>
     <string name="settings_security_category">Безопасность</string>
     <string name="settings_security_disclaimer">Внимание! Эти опции разработаны только для защиты от случайных разблокировок. Больше информации в разделе помощь…\n\nTODO</string>
 

@@ -54,4 +54,12 @@
         <item>Запустить звонилку</item>
     </string-array>
 
+    <!-- Keyguard delays -->
+    <string-array name="keyguard_lock_delay">
+        <item>Нет задержки</item>
+        <item>5 секунд</item>
+        <item>15 секунд</item>
+        <item>30 секунд</item>
+    </string-array>
+
 </resources>

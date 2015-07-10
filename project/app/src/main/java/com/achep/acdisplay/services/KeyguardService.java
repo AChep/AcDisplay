@@ -22,10 +22,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -35,9 +36,11 @@ import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.switches.AlarmSwitch;
 import com.achep.acdisplay.services.switches.InactiveTimeSwitch;
 import com.achep.acdisplay.services.switches.NoNotifiesSwitch;
+import com.achep.acdisplay.services.switches.PhoneCallSwitch;
 import com.achep.acdisplay.utils.tasks.RunningTasks;
 import com.achep.base.AppHeap;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.tests.Check;
 import com.achep.base.utils.PackageUtils;
 import com.achep.base.utils.power.PowerUtils;
 
@@ -78,6 +81,7 @@ public class KeyguardService extends SwitchService {
 
     private static final int ACTIVITY_LAUNCH_MAX_TIME = 1000;
 
+    private PhoneCallSwitch mPhoneCallSwitch;
     private ActivityMonitorThread mActivityMonitorThread;
     private String mPackageName;
 
@@ -86,11 +90,11 @@ public class KeyguardService extends SwitchService {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            final boolean isCall = ts.getCallState() != TelephonyManager.CALL_STATE_IDLE;
-
+            mScreenReceiver.onReceive(context, intent);
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
+                    cancelLockWithDelay();
+
                     String activityName = null;
                     long activityChangeTime = 0;
                     if (mActivityMonitorThread != null) {
@@ -104,34 +108,69 @@ public class KeyguardService extends SwitchService {
 
                     stopMonitorThread();
 
+                    if (mPhoneCallSwitch.isCalling()) {
+                        mPresenter.kill();
+                        return;
+                    }
+
                     long now = SystemClock.elapsedRealtime();
                     boolean becauseOfActivityLaunch =
                             now - activityChangeTime < ACTIVITY_LAUNCH_MAX_TIME
                                     && activityName != null
                                     && !activityName.startsWith(mPackageName);
 
-                    if (DEBUG) Log.d(TAG, "Screen is on: is_call=" + isCall +
-                            " activity_flag=" + becauseOfActivityLaunch);
-
-                    if (isCall) {
-                        return;
-                    }
+                    if (DEBUG) Log.d(TAG, "Screen is on: activity_flag=" + becauseOfActivityLaunch);
 
                     if (becauseOfActivityLaunch) {
 
                         // Finish AcDisplay activity so it won't shown
                         // after exiting from newly launched one.
                         mPresenter.kill();
-                    } else startGui(); // Normal launch
+                    } else if (mLocked) startGui(); // Normal launch
                     break;
                 case Intent.ACTION_SCREEN_OFF:
-                    if (!isCall) startGuiGhost(); // Ghost launch
-
-                    startMonitorThread();
+                    mLocked = false;
+                    performLockWithDelay();
                     break;
             }
         }
 
+    };
+
+    private boolean mLocked;
+
+    /**
+     * {@code true} if the screen if actually off,
+     * {@code false} otherwise.
+     */
+    private boolean mScreenOff;
+
+    /**
+     * The {@link SystemClock#elapsedRealtime()} of when the screen has
+     * been turned off.
+     */
+    private long mScreenOffTimestamp;
+
+    @Nullable
+    private AsyncTask<Void, Void, Void> mDelayedLockTask;
+
+    @NonNull
+    private final BroadcastReceiver mScreenReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_SCREEN_ON:
+                    if (DEBUG) Log.i(TAG, "Screen on");
+                    mScreenOffTimestamp = 0;
+                    mScreenOff = false;
+                    break;
+                case Intent.ACTION_SCREEN_OFF:
+                    if (DEBUG) Log.i(TAG, "Screen off");
+                    mScreenOffTimestamp = SystemClock.elapsedRealtime();
+                    mScreenOff = true;
+                    break;
+            }
+        }
     };
 
     private void startGuiGhost() {
@@ -142,6 +181,64 @@ public class KeyguardService extends SwitchService {
         Presenter.getInstance().tryStartGuiCauseKeyguard(getContext());
     }
 
+    private void performLockWithDelay() {
+        if (DEBUG) Log.i(TAG, "Trying to perform the delayed lock...");
+
+        final long now = SystemClock.elapsedRealtime();
+        final int d = Config.getInstance().getKeyguardLockDelayMillis();
+        final int delay = d - (int) (now - mScreenOffTimestamp);
+        final int delayMax = 30000;
+        if (delay <= 0 || delay > delayMax) {
+            performLock();
+        } else if (delay > delayMax) {
+            // TODO: Allow delays more than 5/30s without lags.
+            // I can do it using the Android Alarm system.
+        } else mDelayedLockTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                if (DEBUG) Log.i(TAG, "Starting the delay thread...");
+                if (delay > delayMax) throw new RuntimeException(); // Do you really want it?
+                // Don't let the OS to go into a deep sleep until we
+                // finish our job.
+                PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+                pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Delayed lock.").acquire(delay + 100);
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) { /* totally fine */ }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void v) {
+                super.onPostExecute(v);
+                Check.getInstance().isTrue(mScreenOff);
+                performLock();
+            }
+
+        }.execute();
+    }
+
+    private void performLock() {
+        if (DEBUG) Log.i(TAG, "Trying to perform the lock: screen_off=" + mScreenOff);
+
+        if (mScreenOff) {
+            mLocked = true;
+
+            startGuiGhost();
+            startMonitorThread();
+        }
+    }
+
+    private void cancelLockWithDelay() {
+        if (mDelayedLockTask != null) mDelayedLockTask.cancel(true);
+    }
+
     @NonNull
     @Override
     public Switch[] onBuildSwitches() {
@@ -149,7 +246,9 @@ public class KeyguardService extends SwitchService {
         ConfigBase.Option noNotifies = config.getOption(Config.KEY_KEYGUARD_WITHOUT_NOTIFICATIONS);
         ConfigBase.Option respectIt = config.getOption(Config.KEY_KEYGUARD_RESPECT_INACTIVE_TIME);
         return new Switch[]{
+                mPhoneCallSwitch = new PhoneCallSwitch(getContext(), this),
                 new AlarmSwitch(getContext(), this),
+                // Options
                 new NoNotifiesSwitch(getContext(), this, noNotifies, true),
                 new InactiveTimeSwitch(getContext(), this, respectIt),
         };
@@ -164,7 +263,17 @@ public class KeyguardService extends SwitchService {
     @Override
     public void onCreate() {
         super.onCreate();
-        mPackageName = PackageUtils.getName(getContext());
+        final Context context = getContext();
+        mPackageName = PackageUtils.getName(context);
+        mScreenOff = !PowerUtils.isScreenOn(context);
+        // Register base receiver that is watching ACTION_SCREEN_ON,
+        // ACTION_SCREEN_OFF and does completely nothing except
+        // saving the screen off timestamp.
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
+        context.registerReceiver(mScreenReceiver, intentFilter);
     }
 
     @Override
@@ -177,9 +286,9 @@ public class KeyguardService extends SwitchService {
         intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // highest priority
         context.registerReceiver(mReceiver, intentFilter);
 
-        if (!PowerUtils.isScreenOn(context)) {
+        if (mScreenOff) {
             // Make sure the app is launched
-            startGuiGhost();
+            performLockWithDelay();
         }
 
         isActive = true;
@@ -190,8 +299,9 @@ public class KeyguardService extends SwitchService {
         final Context context = getContext();
         context.unregisterReceiver(mReceiver);
         stopMonitorThread();
+        cancelLockWithDelay();
 
-        if (!PowerUtils.isScreenOn(context)) {
+        if (mScreenOff) {
             // Make sure that the app is not
             // waiting in the shade.
             mPresenter.kill();
@@ -202,6 +312,9 @@ public class KeyguardService extends SwitchService {
 
     @Override
     public void onDestroy() {
+        final Context context = getContext();
+        context.unregisterReceiver(mScreenReceiver);
+
         super.onDestroy();
 
         // Watch for the leaks
