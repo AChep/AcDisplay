@@ -21,7 +21,6 @@ package com.achep.acdisplay.ui.activities.settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.XmlRes;
 
-import com.achep.acdisplay.App;
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
 import com.achep.acdisplay.ui.fragments.settings.ActiveModeSettings;
@@ -68,8 +67,6 @@ public class Settings2 extends SettingsActivity {
         switch ((int) tile.id) {
             case R.id.dev_settings:
                 return DEBUG;
-            case R.id.keyguard_settings:
-                return App.getAccessManager().getKeyguardPermissions().isPossible(this);
             case R.id.active_settings:
                 return ActiveModeService.isSupported(this);
         }
