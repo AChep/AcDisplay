@@ -56,6 +56,7 @@
         android:icon="@mipmap/ic_launcher"
         android:isGame="false"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/MaterialTheme"
         tools:ignore="UnusedAttribute">
