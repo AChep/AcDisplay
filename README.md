@@ -48,6 +48,17 @@ There are several things we require from **all developers** for the moment:
 2. Kindly **do not** use our standard logo as your app's logo.
 3. Please remember to read and follow the [license][4].
 
+Versioning
+----------------
+For transparency in a release cycle and in striving to maintain backward compatibility, a project should be maintained under the Semantic Versioning guidelines. Sometimes we screw up, but we should adhere to these rules whenever possible.
+
+Releases will be numbered with the following format: `<major>.<minor>.<patch>` and constructed with the following guidelines:
+- Breaking backward compatibility bumps the major while resetting minor and patch
+- New additions without breaking backward compatibility bumps the minor while resetting the patch
+- Bug fixes and misc changes bumps only the patch
+
+For more information on SemVer, please visit http://semver.org/.
+
 Download & Build
 ----------------
 Clone the project and come in:
