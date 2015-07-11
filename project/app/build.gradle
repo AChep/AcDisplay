@@ -158,9 +158,9 @@ dependencies {
 
     // Leak canary
     //noinspection GradleDynamicVersion
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     //noinspection GradleDynamicVersion
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
     // Testing-only dependencies
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
