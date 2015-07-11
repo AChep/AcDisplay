@@ -48,7 +48,7 @@
     <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, пока текущий список уведомлений пуст.</string>
     <string name="settings_keyguard_lock_delay_title">Задержка блокировки</string>
     <string name="settings_security_category">Безопасность</string>
-    <string name="settings_security_disclaimer">Внимание! Эти опции разработаны только для защиты от случайных разблокировок. Больше информации в разделе помощь…\n\nTODO</string>
+    <string name="settings_security_disclaimer">Внимание! Эти опции разработаны только для защиты от случайных разблокировок. Больше информации в разделе помощь…</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Активный режим пробуждает устройство тогда, когда вам это нужно. Вы можете взглянуть на время или уведомления, просто достав устройство из кармана. Эта функция не блокирует переход в спящий режим - вы не должны заметить существенной разницы в потреблении заряда батареи.</string>

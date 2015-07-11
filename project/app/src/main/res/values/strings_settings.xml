@@ -49,7 +49,7 @@
     <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
     <string name="settings_keyguard_lock_delay_title">Lock delay</string>
     <string name="settings_security_category">Security</string>
-    <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info…\n\nTODO</string>
+    <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info…</string>
 
     <!-- Active mode -->
     <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
