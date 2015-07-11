@@ -46,7 +46,7 @@
     <bool name="config_default_ui_custom_widget">false</bool>
     <bool name="config_default_ui_custom_widget_touchable">false</bool>
     <bool name="config_default_active_mode_wave_to_wake">false</bool>
-    <bool name="config_default_notify_glance">true</bool>
+    <bool name="config_default_notify_glance">false</bool>
     <bool name="config_default_media_widget">true</bool>
     <integer name="config_default_timeout_normal">10000</integer>
     <integer name="config_default_timeout_short">5000</integer>
