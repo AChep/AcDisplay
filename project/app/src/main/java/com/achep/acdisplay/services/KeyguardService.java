@@ -129,7 +129,7 @@ public class KeyguardService extends SwitchService {
                     } else if (mLocked) startGui(); // Normal launch
                     break;
                 case Intent.ACTION_SCREEN_OFF:
-                    mLocked = false;
+                    mLocked = mPresenter.isLocked();
                     performLockWithDelay();
                     break;
             }
@@ -288,6 +288,7 @@ public class KeyguardService extends SwitchService {
 
         if (mScreenOff) {
             // Make sure the app is launched
+            mLocked = mPresenter.isLocked();
             performLockWithDelay();
         }
 

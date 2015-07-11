@@ -48,12 +48,12 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
     private static final String TAG = "AcDisplayPresenter";
     private static final String WAKE_LOCK_TAG = "AcDisplay launcher.";
 
-    private static final int STATE_CREATED = 5;
-    private static final int STATE_STARTED = 4;
-    private static final int STATE_RESUMED = 3;
-    private static final int STATE_PAUSED = 2;
-    private static final int STATE_STOPPED = 1;
-    private static final int STATE_DESTROYED = 0;
+    public static final int STATE_CREATED = 5;
+    public static final int STATE_STARTED = 4;
+    public static final int STATE_RESUMED = 3;
+    public static final int STATE_PAUSED = 2;
+    public static final int STATE_STOPPED = 1;
+    public static final int STATE_DESTROYED = 0;
 
     private static Presenter sPresenter;
 
@@ -228,6 +228,10 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
      */
     private boolean isFinishing() {
         return mActivity != null && mActivity.isFinishing();
+    }
+
+    public boolean isLocked() {
+        return mActivityState == STATE_RESUMED;
     }
 
     //-- OTHER ----------------------------------------------------------------
