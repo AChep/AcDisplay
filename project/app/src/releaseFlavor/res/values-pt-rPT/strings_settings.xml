@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Ecrã de bloqueio fica activo independentemente de existirem notificações ou não.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Ecrã de bloqueio é desactivado quando não há notificações.</string>
   <string name="settings_active_active_charging_title">Detectar sempre movimento enquanto carrega a bateria</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">O Modo Activo usa os sensores do dispositivo para acordar o seu dispositivo apenas quando precisa dele. Isto permite tirar o seu dispositivo do seu bolso para ter uma visão rápida das notificações. O modo activo não mantém o CPU a trabalhar, pelo que não deve sentir um aumento do uso da bateria.</string>
   <string name="settings_active_respect_inactive_time_title">Desactivar durante tempo inactivo</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Activar quando não há notificações</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Acenar para acordar</string>
   <string name="settings_active_wave_to_wake_on">Feche e abra o sensor de proximidade lentamente para ativar a tela.</string>
   <string name="settings_wake_up_on_notification_title">Acordar com notificação</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Prioridade Mínima</string>
   <string name="settings_notify_max_priority_title">Prioridade Máxima</string>
   <string name="settings_full_screen_title">Modo ecrã inteiro</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Tamanho do ícone</string>
   <string name="settings_icon_size_summary">Actual tamanho dos icons é %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Duplo toque para desligar ecrã</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Gestos de canto</string>
   <string name="settings_corner_actions_summary">Escolha o que fazer quando deslizar de um canto para o centro da tela.</string>
   <string name="settings_corner_left_top_title">Canto superior esquerdo</string>

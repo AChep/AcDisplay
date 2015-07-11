@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen is enabled regardless of whether there are notifications or not.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen is disabled when there are no notifications.</string>
   <string name="settings_active_active_charging_title">Always listen to motion while charging</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">Active mode uses the device\'s sensors to wake your device up just when you need it. This works great for pulling your device from your pocket to get a quick glimpse at notifications. Active mode doesn\'t keep the CPU running, so you shouldn\'t experience increased battery use.</string>
   <string name="settings_active_respect_inactive_time_title">Disable during inactive period</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Enable when there are no notifications</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Wave to wake</string>
   <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">Wake up on notification</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Minimum priority</string>
   <string name="settings_notify_max_priority_title">Maximum priority</string>
   <string name="settings_full_screen_title">Full screen mode</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Icon size</string>
   <string name="settings_icon_size_summary">Current size of icons is %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Double-tap to sleep</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Corner gestures</string>
   <string name="settings_corner_actions_summary">Choose what to do when swiping from a corner to the center of the screen.</string>
   <string name="settings_corner_left_top_title">Upper left-hand corner</string>

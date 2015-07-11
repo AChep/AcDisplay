@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Låseskærmen er aktiveret uanset om der er notifikationer eller ej.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Låseskærmen er deaktiveret når der ikke er nogle notifikationer.</string>
   <string name="settings_active_active_charging_title">Altid lyt til bevægelse under opladning</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">Aktiv tilstand bruger enhedens sensorer til at vække din enhed op, når du har brug for det. Dette virker fremragende til at tage din enhed op fra din lomme for at få et hurtigt glimt af dine underretninger. Aktiv tilstand holder ikke CPU\'en kørende, så du bør ikke opleve noget stigende batteriforbrug.</string>
   <string name="settings_active_respect_inactive_time_title">Deaktiver på inaktiv tid</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Aktiver når der er ingen underretninger</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Vink for at vække</string>
   <string name="settings_active_wave_to_wake_on">Langsomt lukke og derefter åbne for nærhedssensoren for at tænde skærmen.</string>
   <string name="settings_wake_up_on_notification_title">Væk skærm ved underretning</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Minimum prioritet</string>
   <string name="settings_notify_max_priority_title">Højeste prioritet</string>
   <string name="settings_full_screen_title">Fuldskærmstilstand</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Ikonstørrelse</string>
   <string name="settings_icon_size_summary">Nuværende ikonstørrelse er %1$s dip.</string>
   <string name="settings_double_tap_to_sleep_title">Dobbelttryk for at sove</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Hjørne fagter</string>
   <string name="settings_corner_actions_summary">Vælg hvad der skal gøres, når man stryger fra et hjørne til midten af skærmen.</string>
   <string name="settings_corner_left_top_title">Øverste venstre hjørne</string>

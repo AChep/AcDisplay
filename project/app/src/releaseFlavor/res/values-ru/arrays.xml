@@ -44,4 +44,10 @@
     <item>Запустить камеру</item>
     <item>Запустить звонилку</item>
   </string-array>
+  <string-array name="keyguard_lock_delay">
+    <item>Без задержки</item>
+    <item>5 секунд</item>
+    <item>15 секунд</item>
+    <item>30 секунд</item>
+  </string-array>
 </resources>

@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">無論是否有通知，一律啟用鎖定畫面。</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">沒有通知時停用鎖定畫面。</string>
   <string name="settings_active_active_charging_title">在充電時啟用搖動以喚醒裝置</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">主動模式會使用裝置的感應器來喚醒您的裝置。當您從口袋裡拿出手機，想快速查看是否有通知時，螢幕就會自動喚醒。主動模式不會使 CPU 持續運作，因此應該不會發生耗電增加的情形。</string>
   <string name="settings_active_respect_inactive_time_title">在停機時段時停用</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">沒有通知時仍啟用</string>
@@ -47,9 +50,11 @@
   <string name="settings_active_enabled_when_notification_list_empty_off">沒有通知時停用主動模式。</string>
   <string name="settings_advanced_category">進階</string>
   <string name="settings_proximity_sensor_title">趨近感應器</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
-  <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
+  <string name="settings_active_wave_to_wake_title">揮動喚醒</string>
+  <string name="settings_active_wave_to_wake_on">慢慢關閉，然後打開接近感應器重新打開螢幕。</string>
   <string name="settings_wake_up_on_notification_title">有通知時喚醒裝置</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">最低優先順序</string>
   <string name="settings_notify_max_priority_title">最高優先順序</string>
   <string name="settings_full_screen_title">全螢幕模式</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">圖示大小</string>
   <string name="settings_icon_size_summary">目前圖示大小為 %1$s dpi。</string>
   <string name="settings_double_tap_to_sleep_title">輕按兩下即可休眠</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">角落手勢捷徑</string>
   <string name="settings_corner_actions_summary">選擇當您於角落輕掃時所執行的動作。</string>
   <string name="settings_corner_left_top_title">左上角</string>

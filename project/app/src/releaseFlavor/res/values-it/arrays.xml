@@ -44,4 +44,10 @@
     <item>Avvia fotocamera</item>
     <item>Avvia tastierino numerico</item>
   </string-array>
+  <string-array name="keyguard_lock_delay">
+    <item>No delay</item>
+    <item>5 seconds</item>
+    <item>15 seconds</item>
+    <item>30 seconds</item>
+  </string-array>
 </resources>

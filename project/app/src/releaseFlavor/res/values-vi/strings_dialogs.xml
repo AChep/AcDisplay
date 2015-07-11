@@ -26,19 +26,19 @@
         Gửi lời cảm ơn tới tác giả những công cụ miễn phí sau: %1$s và tất cả những người đã giúp
         <a href="http://translate.acdisplay.org">dịch</a> hoặc quyên góp.
     ]]></string>
-  <string name="donate_dialog_title">Quyên góp cho nhà phát triển</string>
-  <string name="donate_dialog_message">AcDisplay là ứng dụng mã nguồn mở miễn phí. Bạn có thể thể hiện sự hài lòng và hỗ trợ nhà phát triển bằng cách quyên góp:</string>
+  <string name="donate_dialog_title">Đóng góp cho nhà phát triển</string>
+  <string name="donate_dialog_message">AcDisplay là ứng dụng mã nguồn mở miễn phí. Bạn có thể đóng góp cho nhà phát triển để hỗ trợ việc phát triển:</string>
   <string name="donate_alert_no_responsibility">Chú ý rằng Google không chịu trách nhiệm với phương thức thanh toán này.</string>
   <string name="donate_billing_not_supported">Thiết bị này không hỗ trợ mua trong ứng dụng.</string>
-  <string name="donate_thanks">Cảm ơn bản rất nhiều!</string>
+  <string name="donate_thanks">Cảm ơn bạn rất nhiều!</string>
   <string name="donation_1">Một cây kem ốc quế</string>
   <string name="donation_4">Một cốc cà phê</string>
-  <string name="donation_10">Một tháng hóa đơn tiền điện</string>
+  <string name="donation_10">Hóa đơn tiền điện một tháng</string>
   <string name="donation_20">Một cái gối êm</string>
   <string name="donation_50">Ổ cứng thể rắn</string>
-  <string name="donation_99">Dàn âm thanh</string>
+  <string name="donation_99">Hệ thống âm thanh</string>
   <string name="cry_dialog_title">Hỗ trợ phát triển ứng dụng</string>
-  <string name="cry_dialog_message"><![CDATA[         AcDisplay là một ứng dụng miễn phí và <a href="http://repo.acdisplay.org"> mã nguồn mở</a> và chúng tôi đã dành nhiều thời gian và nguồn lực vào việc giữ nó tiếp tục phát triển. Bạn có thể đóng góp để cho thấy sự đánh giá cao của bạn và để hỗ trợ phát triển ứng dụng hơn nữa.     ]]></string>
+  <string name="cry_dialog_message"><![CDATA[         AcDisplay là một ứng dụng miễn phí và <a href="http://repo.acdisplay.org"> mã nguồn mở</a> và chúng tôi đã dành nhiều thời gian và nguồn lực vào việc giữ nó tiếp tục phát triển. Bạn có thể đóng góp để cho thấy sự quan tâm của bạn và hỗ trợ phát triển ứng dụng hơn nữa.     ]]></string>
   <string name="help_dialog_title">Trợ giúp</string>
   <string name="feedback_dialog_title">Phản hồi</string>
   <string name="feedback_dialog_message_hint">Tin nhắn của bạn. Thông số kỹ thuật của thiết bị sẽ được đính kèm tự động.</string>
@@ -49,8 +49,8 @@
   <string name="feedback_error_accessing_log">Lỗi truy cập vào nhật ký ứng dụng. Lỗi là: %1$s</string>
   <string name="compat_dialog_title">Chế độ tương thích</string>
   <string name="compat_dialog_message">AcDisplay đang chạy ở chế độ tương thích để hỗ trợ Android %1$s: %2$s</string>
-  <string name="compat_dialog_item_notification">Vì AcDisplay đang sử dụng dịch vụ tiếp cận, nó không thể phát hiện các thông báo đã được xóa/cập nhật, hoặc thông báo bị xóa từ khu vực thông báo.</string>
-  <string name="compat_dialog_item_immersive_mode">Thanh điều hướng đang luôn hiển thị.</string>
+  <string name="compat_dialog_item_notification">Vì AcDisplay đang sử dụng dịch vụ truy cập, nó không thể phát hiện các thông báo đã được xóa/cập nhật, hoặc thông báo bị xóa từ khu vực thông báo.</string>
+  <string name="compat_dialog_item_immersive_mode">Thanh điều hướng luôn được hiển thị.</string>
   <string name="compat_dialog_item_music_widget">Không có widget chơi nhạc.</string>
   <string name="error_dialog_title">Có lỗi xảy ra</string>
   <string name="error_dialog_custom_widget_lg"><![CDATA[Do lỗi phần mềm của LG, không thể thiết lập được tùy chỉnh tiện ích.

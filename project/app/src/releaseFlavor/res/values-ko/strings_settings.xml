@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">알림이 있거나 없거나 항상 잠금화면을 활성화 합니다.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">알림이 없을때 잠금화면을 비활성화 합니다.</string>
   <string name="settings_active_active_charging_title">충전중일 때 언제나 움직임을 감지합니다.</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">액티브 모드는 당신이 필요할 때 기기의 센서를 이용하여 필요할 때 기기를 켜 줍니다. 주머니에서 기기를 꺼내 잠깐 알림을 볼 때 매우 유용합니다. 액티브 모드는 CPU를 계속해서 사용하지 않으며, 따라서 배터리 소모를 크게 증가시키지 않습니다.</string>
   <string name="settings_active_respect_inactive_time_title">비활성화 시간에 사용하지 않기</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">알림이 없을 때에도 활성화</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">흔들어서 깨우기</string>
   <string name="settings_active_wave_to_wake_on">근접 센서를 천천히 가렸다 때면 화면이 켜집니다. (근접 센서 위를 손으로 천천히 왔다갔다 하세요)</string>
   <string name="settings_wake_up_on_notification_title">알림이 오면 화면 켜기</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">최소 우선 순위</string>
   <string name="settings_notify_max_priority_title">최대 우선순위</string>
   <string name="settings_full_screen_title">전체 화면 모드</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">아이콘 크기</string>
   <string name="settings_icon_size_summary">현재 아이콘 크기는 %1$s dpi입니다.</string>
   <string name="settings_double_tap_to_sleep_title">두번 탭하여 화면 끄기</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">모서리 제스쳐</string>
   <string name="settings_corner_actions_summary">모서리에서부터 화면 중앙으로 스와이프 했을 때 무엇을 할 지 지정하세요.</string>
   <string name="settings_corner_left_top_title">왼쪽 상단 모서리</string>

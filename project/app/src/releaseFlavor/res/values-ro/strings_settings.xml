@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Ecranul de blocare este activat indiferent daca sunt notificari sau nu.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Ecranul de blocare este Inactiv atunci cand nu sunt notificari.</string>
   <string name="settings_active_active_charging_title">întotdeauna asculti la miscare in timp ce se incarca</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">Modul activ utilizează senzorii dispozitivului pentru a-l trezi doar atunci când aveţi nevoie. Funcţionează de minune când aparatul este scos din buzunar pentru o privire rapidă peste notificări. Modul activ nu este intensiv, astfel încât nu ar trebui să consume baterie.</string>
   <string name="settings_active_respect_inactive_time_title">dezactivat dupa un timp inactiv</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Activ când nu sunt notificări</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Wave to wake</string>
   <string name="settings_active_wave_to_wake_on">Slowly close and then open the proximity sensor to turn the screen on.</string>
   <string name="settings_wake_up_on_notification_title">Trezire la notificare</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Prioritate minima</string>
   <string name="settings_notify_max_priority_title">Prioritate maxima</string>
   <string name="settings_full_screen_title">Mod ecran complet</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Dimensiunea icoanei</string>
   <string name="settings_icon_size_summary">Dimensiunea actuala a icoanei este %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">dubla atingere pentru sleep</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Corner gestures</string>
   <string name="settings_corner_actions_summary">Choose what to do when swiping from a corner to the center of the screen.</string>
   <string name="settings_corner_left_top_title">Upper left-hand corner</string>

@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">通知の有無に関わらずロック画面を有効にする</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">通知が無いときにロック画面を無効にする</string>
   <string name="settings_active_active_charging_title">充電中は常にモーションを検知する</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">アクティブモードはデバイスのセンサーを使用し、必要に応じてデバイスをウェイクアップさせます。これによりポケットからデバイスを取り出すだけで素早く通知を確認することができます。アクティブモードはCPUの実行を継続しませんのでバッテリーの消費に大きな影響を与えることはありません。</string>
   <string name="settings_active_respect_inactive_time_title">アクティブではない時間に無効にする</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">通知が無い場合も有効にする</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">ウェーブでウェイク</string>
   <string name="settings_active_wave_to_wake_on">近接センサーをゆっくりと閉じて、そして開くと、画面をオンにします。</string>
   <string name="settings_wake_up_on_notification_title">通知時にウェイクアップ</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">最小優先度</string>
   <string name="settings_notify_max_priority_title">最大優先度</string>
   <string name="settings_full_screen_title">フルスクリーンモード</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">アイコンのサイズ</string>
   <string name="settings_icon_size_summary">現在のアイコンのサイズは %1$s dpi です。</string>
   <string name="settings_double_tap_to_sleep_title">ダブルタップするとスリープ</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">画面隅のジェスチャー</string>
   <string name="settings_corner_actions_summary">画面の隅から中央にスワイプしたときに何を実行するか選択します。</string>
   <string name="settings_corner_left_top_title">左上隅</string>

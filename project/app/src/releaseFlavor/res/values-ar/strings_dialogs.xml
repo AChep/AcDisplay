@@ -31,7 +31,7 @@
   <string name="donate_alert_no_responsibility">لاحظ أن Google ليست مسؤولة عن طريقة الدفع هذه.</string>
   <string name="donate_billing_not_supported">خاصية الشراء ضمن التطبيق غير مدعومة في هذا الجهاز.</string>
   <string name="donate_thanks">شكرًا جزيلًا لك!</string>
-  <string name="donation_1">آيس كريم</string>
+  <string name="donation_1">بوظة</string>
   <string name="donation_4">فنجان قهوة</string>
   <string name="donation_10">فواتير الكهرباء</string>
   <string name="donation_20">وسادة مناسبة</string>
@@ -52,7 +52,7 @@
   <string name="feedback_error_msg_too_short">يجب أن تحتوي الرسالة على الأقل على %1$d رمز.</string>
   <string name="feedback_error_accessing_log">خطأ في الوصول إلى سجل التطبيق. الخطأ: %1$s</string>
   <string name="compat_dialog_title">وضعية التوافق</string>
-  <string name="compat_dialog_message">تطبيق AcDisplay يعمل حاليًا على وضعية التوافق لدعم %1$s: %2$s</string>
+  <string name="compat_dialog_message">تطبيق AcDisplay يعمل حاليًا على وضعية التوافق لدعم  أندرويد %1$s: %2$s</string>
   <string name="compat_dialog_item_notification">لأن AcDisplay يستخدم خدمات «إمكانية الدخول»، فإنه لا يمكنه كشف الإشعارات في حالة تحديثها أو استبعادها، أو استبعاد إشعارات من نافذة الإشعارات.</string>
   <string name="compat_dialog_item_immersive_mode">شريط التنقل ظاهر دائمًا.</string>
   <string name="compat_dialog_item_music_widget">لا تتوفر أداة للموسيقى.</string>

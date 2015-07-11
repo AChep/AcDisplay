@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">La Lockscreen è abilitata indipendentemente dal fatto che ci siano o no delle notifiche.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">La Lockscreen è disabilitata quando non ci sono notifiche.</string>
   <string name="settings_active_active_charging_title">Usa il movimento anche durante la ricarica</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">Active mode utilizza i sensori del dispositivo per risvegliarlo solo quando ne avete bisogno. È l\'ideale per dare un\'occhiata veloce alle notifiche quando si estrae il dispositivo dalla tasca. Active mode non tiene attiva la CPU, così non si avranno inutili consumi di batteria.</string>
   <string name="settings_active_respect_inactive_time_title">Disabilita con tempo di inattività</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Abilitato quando non ci sono notifiche</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Scuoti per svegliare</string>
   <string name="settings_active_wave_to_wake_on">Copri lentamente e poi scopri il sensore di prossimità per accendere lo schermo.</string>
   <string name="settings_wake_up_on_notification_title">Accendi lo schermo quando arriva una notifica</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Priorità minima</string>
   <string name="settings_notify_max_priority_title">Priorità massima</string>
   <string name="settings_full_screen_title">Modalità a schermo intero</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Dimensione delle icone</string>
   <string name="settings_icon_size_summary">La dimensione corrente delle icone è di %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Doppio tap per spegnere</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Gesti sugli angoli</string>
   <string name="settings_corner_actions_summary">Scegli cosa fare quando strisci da un angolo verso il centro dello schermo.</string>
   <string name="settings_corner_left_top_title">Angolo superiore sinistro</string>

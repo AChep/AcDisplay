@@ -55,7 +55,7 @@
   <string name="media_play_description">زر التشغيل</string>
   <string name="media_stop_description">زر الإيقاف</string>
   <string name="notification_init_text">استبعد هذا الإشعار فقط.</string>
-  <string name="notification_test_message">هذا مثال لإشعار.</string>
+  <string name="notification_test_message">هذا عينة للإشعار</string>
   <string name="notification_test_message_large">اسحب لأسفل لاستبعاد الإشعار.\nاسحب في أي مكان آخر لفتح القفل.</string>
   <string name="privacy_mode_hidden_content">محتوى مخفي.</string>
   <string name="remote_enable_acdisplay">AcDisplay مفعل.</string>

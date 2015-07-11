@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">S\'utilitzarà la pantalla de bloqueig independentment de que hi hagi notificacions o no.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">La pantalla de bloqueig s\'inhabilita quan no hi ha cap notificació.</string>
   <string name="settings_active_active_charging_title">Llegeix els valors de moviment sempe que s\'estigui carregant</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">El mode actiu utilitza els sensors del dispositiu per despertar-lo només quan sigui necessari. Això va molt bé per donar un cop d\'ull ràpid a les notificacions només treient-ho de la butxaca. El mode actiu no manté la CPU activa, així que no hauria d\'experimentar cap increment d\'ús de bateria.</string>
   <string name="settings_active_respect_inactive_time_title">Desactiva en estar inactiu</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Habilita quan no hi hagi notificacions</string>
@@ -47,9 +50,11 @@
   <string name="settings_active_enabled_when_notification_list_empty_off">El mode actiu s\'inhabilita quan no hi ha notificacions.</string>
   <string name="settings_advanced_category">Avançat</string>
   <string name="settings_proximity_sensor_title">Sensor de proximitat</string>
-  <string name="settings_active_wave_to_wake_title">Wave to wake</string>
+  <string name="settings_active_wave_to_wake_title">Ona per despertar</string>
   <string name="settings_active_wave_to_wake_on">Tanca lentament i despres obre el sensor de proximitat per a encendre la pantalla.</string>
   <string name="settings_wake_up_on_notification_title">Despertar amb una notificació</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Prioritat mínima</string>
   <string name="settings_notify_max_priority_title">Prioritat màxima</string>
   <string name="settings_full_screen_title">Mode de pantalla completa</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Mida de l\'icona</string>
   <string name="settings_icon_size_summary">La mida actual de les icones és %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Toca dos cops seguits per suspendre</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Gestos de cantonades</string>
   <string name="settings_corner_actions_summary">Escull que fer quan despalces des de una cantonada de la pantalla.</string>
   <string name="settings_corner_left_top_title">Cantonada superior esquerre</string>

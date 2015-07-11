@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Екран блокування увімкнено незалежно від наявності повідомлень.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Екран блокування вимкнено коли немає повідомлень.</string>
   <string name="settings_active_active_charging_title">Завжди контролювати рух під час заряджання</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">Активний режим використовує датчики пристрою, щоб прокидатися коли це дійсно потрібно. Це чудово працює коли ви дістаєте пристрій зі своєї кишені, щоб швидко глянути на годинник або наявні сповіщення. Активний режим не залишає процесор активним весь час, тому ви не повинні відчувати різниці в використанні акумулятора.</string>
   <string name="settings_active_respect_inactive_time_title">Вимикати під час неактивності</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Вмикати коли немає сповіщень</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Жест увімкнення екрану</string>
   <string name="settings_active_wave_to_wake_on">Повільно закрийте та відкрийте сенсор наближення для увімкнення екрану.</string>
   <string name="settings_wake_up_on_notification_title">Прокидатися під час надходження сповіщеня</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Мінімальний пріоритет</string>
   <string name="settings_notify_max_priority_title">Максимальний пріоритет</string>
   <string name="settings_full_screen_title">Повноекранний режим</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Розмір піктограм</string>
   <string name="settings_icon_size_summary">Поточний розмір значків %1$s точок на дюйм.</string>
   <string name="settings_double_tap_to_sleep_title">Засинати по подвійному тапу</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Жести з кутів</string>
   <string name="settings_corner_actions_summary">Оберіть дію для свайпу з кута у центр екрану.</string>
   <string name="settings_corner_left_top_title">З верхнього лівого кута</string>
@@ -97,7 +104,7 @@
   <string name="settings_lock_on_dismiss_last_notify_title">Блокувати екран при відхиленні останнього сповіщення</string>
   <string name="settings_lock_on_dismiss_last_notify_on">Екран вимикається після відхилення останнього сповіщення.</string>
   <string name="settings_lock_on_dismiss_last_notify_off">Екран залишається ввімкненим після відхилення останнього сповіщення.</string>
-  <string name="settings_widget_pinnable_title">Прикріплювальні сповіщення</string>
+  <string name="settings_widget_pinnable_title">Прикріплювальні повідомлення</string>
   <string name="settings_widget_pinnable_on">Віджет сповіщень залишається розширеним декілька секунд після натискання.</string>
   <string name="settings_privacy_mode_title">Конфіденційність (під час безпечного блокування)</string>
   <string name="settings_privacy_mode_disabled">Вимкнено</string>

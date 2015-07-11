@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Lockscreen ist aktiviert, unabhängig davon, ob Benachrichtigungen vorhanden sind oder nicht.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Lockscreen ist deaktiviert, wenn keine Benachrichtigungen vorliegen.</string>
   <string name="settings_active_active_charging_title">Auch während des Ladevorgangs auf Bewegungen reagieren</string>
+  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
+  <string name="settings_security_category">Security</string>
+  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">Der Aktivmodus verwendet die Gerätesensoren um das Gerät aufzuwecken, wenn Sie es benötigen. Das funktioniert gut, wenn Sie das Gerät aus der Tasche nehmen um einen kurzen Blick auf ihre Benachrichtigungen zu erhalten. Der Aktivmodus benötigt keine extra Rechenleistung, es sollte also kein erhöhter Akkuverbrauch auftreten.</string>
   <string name="settings_active_respect_inactive_time_title">Deaktivieren während inaktiver Zeit</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Aktivieren, wenn es keine Benachrichtigungen gibt</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Winkem zum wecken</string>
   <string name="settings_active_wave_to_wake_on">Langsam den Annäherungs Sensor decken und öffnen um Bildschirm zu Aktiviren.</string>
   <string name="settings_wake_up_on_notification_title">Schalte den Bildschirm bei einer Benachrichtigung an</string>
+  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Minimale Priorität</string>
   <string name="settings_notify_max_priority_title">Höchste Priorität</string>
   <string name="settings_full_screen_title">Vollbild-Modus</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Symbolgröße</string>
   <string name="settings_icon_size_summary">Die aktuelle Größe der Icons ist %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Doppeltippen zum Schlafen</string>
+  <string name="settings_media_widget_title">Media widget</string>
+  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
   <string name="settings_corner_actions_category">Ecke Gesten</string>
   <string name="settings_corner_actions_summary">Entscheiden Sie, was Sie tun wollen, wenn Sie von einer Ecke in die Mitte des Bildschirms zu ziehen.</string>
   <string name="settings_corner_left_top_title">Oberen linken Ecke</string>

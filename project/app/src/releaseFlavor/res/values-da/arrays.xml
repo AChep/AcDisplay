@@ -26,22 +26,28 @@
   </string-array>
   <string-array name="dynamic_background">
     <item>Illustrationer</item>
-    <item>Underretningsikon</item>
+    <item>Notifikationsikon</item>
   </string-array>
   <string-array name="privacy_mode">
-    <item>Gem notifikations indhold</item>
-    <item>Gem notifikations aktiviteter</item>
+    <item>Skjul notifikationsindhold</item>
+    <item>Skjul notifikationsaktiviteter</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Vigtige og nødvendige (ubesvarede opkald, retninger, nødsituations opkald)</item>
+    <item>Kritiske og presserende (ubesvarede opkald, rutevejledninger, nødsituationsadvarsler)</item>
     <item>Vigtige (kommunikationer, vigtige mails)</item>
-    <item>Normale (+notifikationer fra ældre applikationer)</item>
+    <item>Normale (inkl. notifikationer fra ældre apps)</item>
     <item>Ikke-vigtige (Software opdateringer, junk mails)</item>
-    <item>Kontekstuelle og baggrunds info (vejret, udløbet aktiviteter, forslag)</item>
+    <item>Kontekstuel og baggrundsinfo (vejr, overskredne begivenheder, forslag)</item>
   </string-array>
   <string-array name="corners_actions">
     <item>Oplås</item>
-    <item>Åben kamera</item>
-    <item>Åben nummerblok</item>
+    <item>Åbn kamera</item>
+    <item>Åbn opkaldstastatur</item>
+  </string-array>
+  <string-array name="keyguard_lock_delay">
+    <item>No delay</item>
+    <item>5 seconds</item>
+    <item>15 seconds</item>
+    <item>30 seconds</item>
   </string-array>
 </resources>

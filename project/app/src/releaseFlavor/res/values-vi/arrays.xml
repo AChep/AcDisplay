@@ -33,15 +33,21 @@
     <item>Ẩn hành động của thông báo</item>
   </string-array>
   <string-array name="notify_priorities">
-    <item>Tối quan trọng và khẩn cấp (cuộc gọi lỡ, chỉ dẫn, thông báo khẩn)</item>
+    <item>Quan trọng và khẩn cấp (cuộc gọi lỡ, chỉ dẫn, thông báo khẩn)</item>
     <item>Quan trọng (liên lạc, mail quan trọng)</item>
-    <item>Thông thường (+thông báo cũ)</item>
+    <item>Thông thường (bao gồm thông báo từ ứng dụng cũ)</item>
     <item>Không quan trọng (cập nhật phần mềm, thư rác)</item>
     <item>Thông tin ngữ cảnh và nền (thời tiết, sự kiện đã qua, gợi ý)</item>
   </string-array>
   <string-array name="corners_actions">
     <item>Mở khóa</item>
     <item>Mở máy ảnh</item>
-    <item>Launch dialer</item>
+    <item>Mở trình quay số</item>
+  </string-array>
+  <string-array name="keyguard_lock_delay">
+    <item>No delay</item>
+    <item>5 seconds</item>
+    <item>15 seconds</item>
+    <item>30 seconds</item>
   </string-array>
 </resources>

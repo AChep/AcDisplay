@@ -40,6 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Экран блокировки включен всегда, вне зависимости от наличия текущих уведомлений.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Экран блокировки временно отключается, когда список уведомлений пуст.</string>
   <string name="settings_active_active_charging_title">Постоянно отслеживать движение во время зарядки</string>
+  <string name="settings_keyguard_lock_delay_title">Задержка блокировки</string>
+  <string name="settings_security_category">Безопасность</string>
+  <string name="settings_security_disclaimer">Внимание! Эти опции предназначены только для защиты от случайных разблокировок. Больше информации в разделе помощь&#8230;</string>
   <string name="settings_active_description">Активный режим включает экран при необходимости. Вы можете взглянуть на время или уведомления, достав устройство из кармана. Эта функция не блокирует переход в спящий режим, потому не увеличит расход батареи.</string>
   <string name="settings_active_respect_inactive_time_title">Отключить в неактивное время</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Включить когда нет уведомлений</string>
@@ -50,6 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Жест включения экрана</string>
   <string name="settings_active_wave_to_wake_on">Медленно закройте, а потом откройте датчик приближения, чтобы включить экран.</string>
   <string name="settings_wake_up_on_notification_title">Просыпаться от уведомления</string>
+  <string name="settings_notify_glance_title">Быстрый взгляд</string>
+  <string name="settings_notify_glance_summary">Просыпаться с открытым пришедшим уведомлением</string>
   <string name="settings_notify_min_priority_title">Минимальный приоритет</string>
   <string name="settings_notify_max_priority_title">Максимальный приоритет</string>
   <string name="settings_full_screen_title">Полноэкранный режим</string>
@@ -87,6 +92,8 @@
   <string name="settings_icon_size_title">Размер иконки</string>
   <string name="settings_icon_size_summary">Текущий размер иконок: %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Выключить экран по двойному касанию</string>
+  <string name="settings_media_widget_title">Виджет медиа</string>
+  <string name="settings_media_widget_summary">Показывать виджет медиа во время проигрывания музыки (отключите для увеличения стабильности)</string>
   <string name="settings_corner_actions_category">Угловые жесты</string>
   <string name="settings_corner_actions_summary">Выберите что делать при свайпе от одного из углов к центру экрана.</string>
   <string name="settings_corner_left_top_title">От верхнего левого угла</string>
