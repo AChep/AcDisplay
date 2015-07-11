@@ -143,7 +143,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     compile 'me.grantland:autofittextview:0.2.+'
     //noinspection GradleDynamicVersion
-    compile 'org.solovyev.android:checkout:0.6.+@aar'
+    compile 'org.solovyev.android:checkout:0.7.+@aar'
     //noinspection GradleDynamicVersion
     compile 'com.afollestad:material-dialogs:0.7.+'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
