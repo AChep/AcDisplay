@@ -129,9 +129,8 @@ public class Presenter implements NotificationPresenter.OnNotificationPostedList
      * Checks if the screen if off and call state is idle.
      */
     public boolean checkBasics(@NonNull Context context) {
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         TelephonyManager ts = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return !PowerUtils.isScreenOn(pm) && ts.getCallState() == TelephonyManager.CALL_STATE_IDLE;
+        return !PowerUtils.isScreenOn(context) && ts.getCallState() == TelephonyManager.CALL_STATE_IDLE;
     }
 
     public boolean tryStartGuiCauseNotification(

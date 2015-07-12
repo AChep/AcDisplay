@@ -22,12 +22,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.display.DisplayManager;
 import android.os.BatteryManager;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.Display;
 
 import com.achep.base.Device;
+
+import static com.achep.base.Build.DEBUG;
 
 /**
  * Helper class with utils related to power.
@@ -35,6 +40,8 @@ import com.achep.base.Device;
  * @author Artem Chepurnoy
  */
 public class PowerUtils {
+
+    private static final String TAG = "PowerUtils";
 
     /**
      * @return true is device is plugged at this moment, false otherwise.
@@ -61,20 +68,31 @@ public class PowerUtils {
                 || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
     }
 
-    /**
-     * Gets Power Manager by context and checks if screen is on.
-     *
-     * @return True if screen is on atm, False otherwise.
-     */
+    @SuppressLint("NewApi")
     public static boolean isScreenOn(@NonNull Context context) {
+        display_api:
+        if (Device.hasKitKatWatchApi()) {
+            DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+            Display[] displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+            if (displays == null || displays.length == 0) {
+                break display_api;
+            } else if (displays.length > 1) {
+                if (DEBUG) Log.i(TAG, "The number of logical displays is " + displays.length);
+            }
+
+            return displays[0].getState() == Display.STATE_ON;
+        }
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        return isScreenOn(pm);
+        return isInteractive(pm);
     }
 
+    /**
+     * Returns {@code true} if the device is in an interactive state.
+     */
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
-    public static boolean isScreenOn(@NonNull PowerManager pm) {
-        return Device.hasKitKatWatchApi()
+    public static boolean isInteractive(@NonNull PowerManager pm) {
+        return Device.hasLollipopApi()
                 ? pm.isInteractive()
                 : pm.isScreenOn();
     }

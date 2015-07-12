@@ -22,7 +22,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.PowerManager;
 import android.support.annotation.NonNull;
 
 import com.achep.acdisplay.services.Switch;
@@ -35,8 +34,6 @@ import com.achep.base.utils.power.PowerUtils;
  * @author Artem Chepurnoy
  */
 public final class ScreenOffSwitch extends Switch {
-
-    private PowerManager mPowerManager;
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -60,7 +57,6 @@ public final class ScreenOffSwitch extends Switch {
 
     @Override
     public void onCreate() {
-        mPowerManager = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -71,12 +67,11 @@ public final class ScreenOffSwitch extends Switch {
     @Override
     public void onDestroy() {
         getContext().unregisterReceiver(mReceiver);
-        mPowerManager = null;
     }
 
     @Override
     public boolean isActive() {
-        return !PowerUtils.isScreenOn(mPowerManager);
+        return !PowerUtils.isScreenOn(getContext());
     }
 
 }
