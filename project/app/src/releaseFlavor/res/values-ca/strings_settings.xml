@@ -41,7 +41,7 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">La pantalla de bloqueig s\'inhabilita quan no hi ha cap notificació.</string>
   <string name="settings_active_active_charging_title">Llegeix els valors de moviment sempe que s\'estigui carregant</string>
   <string name="settings_keyguard_lock_delay_title">Lock delay</string>
-  <string name="settings_security_category">Security</string>
+  <string name="settings_security_category">Seguretat</string>
   <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
   <string name="settings_active_description">El mode actiu utilitza els sensors del dispositiu per despertar-lo només quan sigui necessari. Això va molt bé per donar un cop d\'ull ràpid a les notificacions només treient-ho de la butxaca. El mode actiu no manté la CPU activa, així que no hauria d\'experimentar cap increment d\'ús de bateria.</string>
   <string name="settings_active_respect_inactive_time_title">Desactiva en estar inactiu</string>

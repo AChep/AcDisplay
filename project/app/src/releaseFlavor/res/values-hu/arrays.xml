@@ -45,9 +45,9 @@
     <item>Tárcsázó indítása</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>Nincs késés</item>
+    <item>5 másodperc</item>
+    <item>15 másodperc</item>
+    <item>30 másodperc</item>
   </string-array>
 </resources>

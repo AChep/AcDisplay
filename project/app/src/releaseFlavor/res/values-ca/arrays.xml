@@ -45,9 +45,9 @@
     <item>Obre el marcador telefònic</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>Cap retard</item>
+    <item>5 segons</item>
+    <item>15 segons</item>
+    <item>30 segons</item>
   </string-array>
 </resources>

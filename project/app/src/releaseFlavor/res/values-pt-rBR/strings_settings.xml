@@ -40,9 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Tela de bloqueio está ativada independente da existência de notificações.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Tela de bloqueio é desativada quando não houver notificações.</string>
   <string name="settings_active_active_charging_title">Sempre monitorar o movimento ao carregar</string>
-  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
-  <string name="settings_security_category">Security</string>
-  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
+  <string name="settings_keyguard_lock_delay_title">Atraso de fechamento</string>
+  <string name="settings_security_category">Segurança</string>
+  <string name="settings_security_disclaimer">Aviso! Essas opções são projetadas para evitar acidental só desbloqueia. Leia a ajuda para obter mais informações...</string>
   <string name="settings_active_description">O modo ativo usa os sensores do dispositivo para despertar seu dispositivo apenas quando você precisa. Isso funciona muito bem ao retirar o seu dispositivo de bolso para obter uma rápida verificada em suas notificações. O modo ativo não mantém a CPU ativa, então você não deve ter um gasto da bateria.</string>
   <string name="settings_active_respect_inactive_time_title">Desabilitar quando inativo</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Habilitar quando não há nenhuma notificação</string>
@@ -53,8 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Acenar para acordar </string>
   <string name="settings_active_wave_to_wake_on">Lentamente, feche e abra o sensor de proximidade para ativar a tela.</string>
   <string name="settings_wake_up_on_notification_title">Liga a tela ao receber notificação</string>
-  <string name="settings_notify_glance_title">Quick glance</string>
-  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
+  <string name="settings_notify_glance_title">Relance rápido</string>
+  <string name="settings_notify_glance_summary">Acordar com uma notificação abriu</string>
   <string name="settings_notify_min_priority_title">Prioridade mínima</string>
   <string name="settings_notify_max_priority_title">Prioridade máxima</string>
   <string name="settings_full_screen_title">Modo de tela inteira</string>
@@ -92,8 +92,8 @@
   <string name="settings_icon_size_title">Tamanho do ícone</string>
   <string name="settings_icon_size_summary">Tamanho atual dos ícones é %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Toque duplo para dormir</string>
-  <string name="settings_media_widget_title">Media widget</string>
-  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
+  <string name="settings_media_widget_title">Widget do Media</string>
+  <string name="settings_media_widget_summary">Mostrar um widget de mídia durante a reprodução de música (disable para aumentar a estabilidade)</string>
   <string name="settings_corner_actions_category">Gestos de canto</string>
   <string name="settings_corner_actions_summary">Escolha o que fazer quando deslizar o dedo do canto para o centro da tela.</string>
   <string name="settings_corner_left_top_title">Canto superior esquerdo</string>

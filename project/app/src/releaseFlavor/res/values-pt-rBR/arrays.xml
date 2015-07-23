@@ -45,9 +45,9 @@
     <item>Abrir o discador</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>Sem demora</item>
+    <item>5 segundos</item>
+    <item>15 segundos</item>
+    <item>30 segundos</item>
   </string-array>
 </resources>

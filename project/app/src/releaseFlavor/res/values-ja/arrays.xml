@@ -45,9 +45,9 @@
     <item>ダイヤラーを起動</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>遅延なし</item>
+    <item>5 秒</item>
+    <item>15 秒</item>
+    <item>30 秒</item>
   </string-array>
 </resources>

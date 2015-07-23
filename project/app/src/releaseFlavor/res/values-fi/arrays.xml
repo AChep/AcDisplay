@@ -45,9 +45,9 @@
     <item>Soita puhelu</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>Ei viivettä</item>
+    <item>5 sekuntia</item>
+    <item>15 sekuntia</item>
+    <item>30 sekuntia</item>
   </string-array>
 </resources>

@@ -40,9 +40,9 @@
   <string name="settings_keyguard_enabled_when_notification_list_empty_on">Ekran blokady jest włączony bez względu na to, czy są powiadomienia, czy nie.</string>
   <string name="settings_keyguard_enabled_when_notification_list_empty_off">Ekran blokady jest wyłączony gdzy nie ma żadnych powiadomień.</string>
   <string name="settings_active_active_charging_title">Zawsze monitoruj ruch podczas ładowania</string>
-  <string name="settings_keyguard_lock_delay_title">Lock delay</string>
-  <string name="settings_security_category">Security</string>
-  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
+  <string name="settings_keyguard_lock_delay_title">Opóźnienie blokady</string>
+  <string name="settings_security_category">Zabezpieczenia</string>
+  <string name="settings_security_disclaimer">Uwaga! Te opcje są przeznaczone tylko do zapobiegania przed przypadkowym odblokowaniem. Przeczytaj pomoc po więcej informacji&#8230;</string>
   <string name="settings_active_description">Tryb aktywny używa sensorów urządzenia, aby wybudzić urządzenie wtedy, gdy tego potrzebujesz. To działa świetnie, gdy wyciągasz urządzenie z kieszeni, aby zerknąć na powiadomienia. Tryb aktywny nie używa procesora, więc nie powinno występować zwiększone użycie baterii.</string>
   <string name="settings_active_respect_inactive_time_title">Wyłącz w czasie nieaktywności</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Włącz, gdy nie ma powiadomień</string>
@@ -53,7 +53,7 @@
   <string name="settings_active_wave_to_wake_title">Pomachaj, żeby wybudzić</string>
   <string name="settings_active_wave_to_wake_on">Zamknij powoli i potem uruchom czujnik zbliżeniowy, żeby włączyć ekran.</string>
   <string name="settings_wake_up_on_notification_title">Wybudź po powiadomieniu</string>
-  <string name="settings_notify_glance_title">Quick glance</string>
+  <string name="settings_notify_glance_title">Szybki przeglad</string>
   <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
   <string name="settings_notify_min_priority_title">Minimalny priorytet</string>
   <string name="settings_notify_max_priority_title">Maksymalny priorytet</string>
@@ -92,8 +92,8 @@
   <string name="settings_icon_size_title">Rozmiar ikony</string>
   <string name="settings_icon_size_summary">Bieżący rozmiar ikon to %1$s dpi.</string>
   <string name="settings_double_tap_to_sleep_title">Podwójne dotknięcie ekranu usypia urządzenie</string>
-  <string name="settings_media_widget_title">Media widget</string>
-  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
+  <string name="settings_media_widget_title">Widżet mediów</string>
+  <string name="settings_media_widget_summary">Pokaż widget mediów podczas odtwarzania muzyki (Wyłącz aby zwiększyć stabilność)</string>
   <string name="settings_corner_actions_category">Gesty w rogach ekranu</string>
   <string name="settings_corner_actions_summary">Wybierz akcję do wykonania po przesunięciu z rogu ekranu do jego centrum.</string>
   <string name="settings_corner_left_top_title">Górny lewy róg</string>
