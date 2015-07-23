@@ -93,8 +93,6 @@ public class KeyguardService extends SwitchService {
             mScreenReceiver.onReceive(context, intent);
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
-                    cancelLockWithDelay();
-
                     String activityName = null;
                     long activityChangeTime = 0;
                     if (mActivityMonitorThread != null) {
@@ -163,6 +161,7 @@ public class KeyguardService extends SwitchService {
                     if (DEBUG) Log.i(TAG, "Screen on");
                     mScreenOffTimestamp = 0;
                     mScreenOff = false;
+                    cancelLockWithDelay();
                     break;
                 case Intent.ACTION_SCREEN_OFF:
                     if (DEBUG) Log.i(TAG, "Screen off");
