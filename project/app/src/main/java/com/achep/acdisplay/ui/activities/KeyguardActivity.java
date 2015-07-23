@@ -42,7 +42,6 @@ import com.achep.base.Device;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.ToastUtils;
-import com.achep.base.utils.keyguard.HomeKeyLocker;
 import com.achep.base.utils.power.PowerUtils;
 
 import static com.achep.base.Build.DEBUG;
@@ -66,12 +65,6 @@ public abstract class KeyguardActivity extends BaseActivity implements
 
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
     private static final int PF_MAX_TIME = 2000; // ms.
-
-    /**
-     * Disables home button on some devices.
-     */
-    @NonNull
-    private final HomeKeyLocker mHomeKeyLocker = new HomeKeyLocker();
 
     private BroadcastReceiver mScreenOffReceiver;
     private KeyguardManager mKeyguardManager;
@@ -277,13 +270,6 @@ public abstract class KeyguardActivity extends BaseActivity implements
         populateFlags(true);
         overrideHomePress(true);
 
-        if (!Device.hasKitKatApi()) {
-            // This Android version does not support the immersive mode, so
-            // we can try to disable the home button. This is just like super hacky
-            // and works only for a few devices.
-            mHomeKeyLocker.lock(this);
-        }
-
         /*
         // Read the system's screen off timeout setting.
         try {
@@ -301,8 +287,6 @@ public abstract class KeyguardActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         sendBroadcast(App.ACTION_STATE_PAUSE);
-
-        mHomeKeyLocker.unlock();
 
         if (DEBUG) Log.d(TAG, "Pausing keyguard activity...");
         mResumed = false;
