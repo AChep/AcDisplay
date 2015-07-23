@@ -20,13 +20,13 @@ package com.achep.base.ui;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.ui.DialogHelper;
 import com.achep.base.interfaces.ICheckable;
 import com.achep.base.permissions.Permission;
-import com.achep.base.ui.activities.ActivityBase;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.ViewUtils;
 
@@ -36,7 +36,7 @@ import com.achep.base.utils.ViewUtils;
 public class SwitchBarPermissible implements Permission.OnPermissionStateChanged, ICheckable {
 
     @NonNull
-    private final ActivityBase mActivity;
+    private final AppCompatActivity mActivity;
     @NonNull
     private final SwitchBar mSwitchBar;
     @Nullable
@@ -45,7 +45,7 @@ public class SwitchBarPermissible implements Permission.OnPermissionStateChanged
     @Nullable
     private CompoundButton.OnCheckedChangeListener mListener;
 
-    public SwitchBarPermissible(@NonNull ActivityBase activity, @NonNull SwitchBar switchBar,
+    public SwitchBarPermissible(@NonNull AppCompatActivity activity, @NonNull SwitchBar switchBar,
                                 @Nullable Permission[] permissions) {
         mActivity = activity;
         mPermissions = permissions;

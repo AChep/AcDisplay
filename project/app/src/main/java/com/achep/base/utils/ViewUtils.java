@@ -49,20 +49,22 @@ public class ViewUtils {
             ? new MotionEventHandlerReflective()
             : new MotionEventHandlerReflectiveCompat();
 
-    public static void removeFromParent(@NonNull View view) {
+    @NonNull
+    public static View removeViewParent(@NonNull View view) {
+        return removeViewParent(view, 1);
+    }
+
+    @NonNull
+    public static View removeViewParent(@NonNull View view, int n) {
+        for (int i = 1; i < n; i++) {
+            view = (View) view.getParent();
+        }
+        // Kick out the parent
         ViewGroup vg = (ViewGroup) view.getParent();
         if (vg != null) {
             vg.removeView(view);
         } else if (DEBUG) LogUtils.v(TAG, "Tried to remove parent of an orphan view.", 3);
-    }
-
-    public static boolean isTouchPointInView(@NonNull View view, float x, float y) {
-        final int[] coordinates = new int[3];
-        view.getLocationInWindow(coordinates);
-        int left = coordinates[0];
-        int top = coordinates[1];
-        return x >= left && x <= left + view.getWidth() &&
-                y >= top && y <= top + view.getHeight();
+        return view;
     }
 
     public static void setSize(@NonNull View view, int size) {

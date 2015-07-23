@@ -143,7 +143,7 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
         int id = getConfig().getCustomWidgetId();
         if (!AppWidgetUtils.isValidId(id)) {
             if (mHostView != null) {
-                ViewUtils.removeFromParent(mHostView);
+                ViewUtils.removeViewParent(mHostView);
                 mEmptyView.setVisibility(View.VISIBLE);
 
                 mHostViewNeedsReInflate = false;

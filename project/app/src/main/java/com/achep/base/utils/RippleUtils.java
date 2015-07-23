@@ -25,7 +25,7 @@ import android.view.View;
 
 import com.achep.acdisplay.R;
 import com.achep.base.Device;
-import com.achep.base.ui.activities.ActivityBase;
+import com.achep.base.interfaces.IActivityBase;
 
 import dreamers.graphics.RippleDrawable;
 
@@ -58,8 +58,8 @@ public class RippleUtils {
             // Do not create ripple effect if in power save mode, because
             // this will drain more energy.
             Context context = views[0].getContext();
-            if (context instanceof ActivityBase) {
-                ActivityBase activityBase = (ActivityBase) context;
+            if (context instanceof IActivityBase) {
+                IActivityBase activityBase = (IActivityBase) context;
                 if (activityBase.isPowerSaveMode()) {
                     return true;
                 }
