@@ -31,6 +31,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.achep.acdisplay.App;
@@ -62,6 +63,12 @@ public abstract class KeyguardActivity extends BaseActivity implements
      */
     public static final String EXTRA_CAUSE = "cause";
     public static final String EXTRA_TURN_SCREEN_ON = "turn_screen_on";
+
+    /**
+     * This constant is CyanogenMod specific and should do nothing on a
+     * stock Android.
+     */
+    private static final int PREVENT_POWER_KEY = 0x80000000;
 
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
     private static final int PF_MAX_TIME = 2000; // ms.
@@ -270,6 +277,8 @@ public abstract class KeyguardActivity extends BaseActivity implements
         populateFlags(true);
         overrideHomePress(true);
 
+        getWindow().addFlags(PREVENT_POWER_KEY);
+
         /*
         // Read the system's screen off timeout setting.
         try {
@@ -287,6 +296,8 @@ public abstract class KeyguardActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         sendBroadcast(App.ACTION_STATE_PAUSE);
+
+        getWindow().clearFlags(PREVENT_POWER_KEY);
 
         if (DEBUG) Log.d(TAG, "Pausing keyguard activity...");
         mResumed = false;
@@ -361,6 +372,15 @@ public abstract class KeyguardActivity extends BaseActivity implements
             }
         }
         */
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_POWER) {
+            if (DEBUG) performUnlock();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -449,15 +469,22 @@ public abstract class KeyguardActivity extends BaseActivity implements
 
                 if (runnable != null) runOnUiThread(runnable);
                 if (finish) {
-                    finish();
-
-                    boolean animate = getConfig().isUnlockAnimationEnabled() && !isPowerSaveMode();
-                    overridePendingTransition(0, animate
-                            ? R.anim.activity_unlock
-                            : 0);
+                    performUnlock();
                 }
             }
         });
+    }
+
+    private void performUnlock() {
+        mUnlockingTime = SystemClock.elapsedRealtime();
+        mKeyguardDismissed = false;
+
+        finish();
+
+        boolean animate = getConfig().isUnlockAnimationEnabled() && !isPowerSaveMode();
+        overridePendingTransition(0, animate
+                ? R.anim.activity_unlock
+                : 0);
     }
 
     /**
