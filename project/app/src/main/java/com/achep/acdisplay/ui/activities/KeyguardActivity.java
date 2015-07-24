@@ -41,6 +41,7 @@ import com.achep.acdisplay.services.KeyguardService;
 import com.achep.acdisplay.ui.activities.base.BaseActivity;
 import com.achep.base.Device;
 import com.achep.base.tests.Check;
+import com.achep.base.utils.KeyguardUtils;
 import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.power.PowerUtils;
@@ -497,12 +498,13 @@ public abstract class KeyguardActivity extends BaseActivity implements
     }
 
     /**
-     * Return whether the keyguard requires a password to unlock.
+     * Returns whether the device is currently locked and requires a PIN,
+     * pattern or password to unlock.
      *
-     * @return {@code true} is keyguard is secure, {@code false} otherwise.
+     * @return {@code true} if device is locked, {@code false} otherwise.
      */
     public boolean isSecure() {
-        return mKeyguardManager.isKeyguardSecure();
+        return KeyguardUtils.isDeviceLocked(mKeyguardManager);
     }
 
     /**
