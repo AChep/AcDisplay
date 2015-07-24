@@ -61,6 +61,6 @@
     <integer name="config_default_corner_right_top">0</integer>
     <integer name="config_default_corner_left_bottom">0</integer>
     <integer name="config_default_corner_right_bottom">0</integer>
-    <integer name="config_default_keyguard_lock_delay">5000</integer>
+    <integer name="config_default_keyguard_lock_delay">0</integer>
 
 </resources>
