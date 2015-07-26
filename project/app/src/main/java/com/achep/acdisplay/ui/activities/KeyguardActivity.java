@@ -32,6 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.achep.acdisplay.App;
@@ -71,6 +72,13 @@ public abstract class KeyguardActivity extends BaseActivity implements
      */
     private static final int PREVENT_POWER_KEY = 0x80000000;
 
+    private static final int SYSTEM_UI_BASIC_FLAGS =
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
     private static final int PF_MAX_TIME = 2000; // ms.
 
@@ -104,6 +112,10 @@ public abstract class KeyguardActivity extends BaseActivity implements
         if (mResumed) {
             populateFlags(windowHasFocus);
         }
+
+        // Update system ui visibility: hide nav bar and optionally the
+        // status bar.
+        setSystemUiVisibilityFake();
     }
 
     private void populateFlags(boolean manualControl) {
@@ -156,6 +168,44 @@ public abstract class KeyguardActivity extends BaseActivity implements
                     // Show activity above the system keyguard.
                     WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         }
+
+        // Update system ui visibility: hide nav bar and optionally the
+        // status bar.
+        final View decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener(
+                new View.OnSystemUiVisibilityChangeListener() {
+                    public final void onSystemUiVisibilityChange(int f) {
+                        setSystemUiVisibilityFake();
+                        decorView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                int visibility = SYSTEM_UI_BASIC_FLAGS
+                                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                                if (getConfig().isFullScreen()) {
+                                    visibility |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+                                }
+                                decorView.setSystemUiVisibility(visibility);
+                            }
+                        }, 100);
+                    }
+                }
+        );
+    }
+
+    public void setSystemUiVisibilityFake() {
+        final View decorView = getWindow().getDecorView();
+        if (decorView == null) {
+            Log.d(TAG, "No decor view yet.");
+            return;
+        }
+
+        int visibility = SYSTEM_UI_BASIC_FLAGS
+                | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        if (getConfig().isFullScreen()) {
+            visibility |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        }
+
+        decorView.setSystemUiVisibility(visibility);
     }
 
     @Override
