@@ -35,7 +35,7 @@
   <string-array name="notify_priorities">
     <item>关键和紧急（未接来电、导航、紧急警报）</item>
     <item>重要（即时信息、重要邮件）</item>
-    <item>一般（包含旧应用的通知）</item>
+    <item>一般（包括老应用的通知）</item>
     <item>非重要（软件更新、垃圾邮件）</item>
     <item>环境相关和后台信息（天气、过期事件、建议）</item>
   </string-array>
@@ -45,9 +45,9 @@
     <item>启动拨号</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>无延迟</item>
+    <item>5 秒</item>
+    <item>15 秒</item>
+    <item>30 秒</item>
   </string-array>
 </resources>
