@@ -72,12 +72,15 @@ public abstract class KeyguardActivity extends BaseActivity implements
      */
     private static final int PREVENT_POWER_KEY = 0x80000000;
 
-    private static final int SYSTEM_UI_BASIC_FLAGS =
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+    private static final int SYSTEM_UI_BASIC_FLAGS;
+    static {
+        final int f = Device.hasKitKatApi() ? View.SYSTEM_UI_FLAG_HIDE_NAVIGATION : 0;
+        SYSTEM_UI_BASIC_FLAGS = f
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+    }
 
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
     private static final int PF_MAX_TIME = 2000; // ms.
