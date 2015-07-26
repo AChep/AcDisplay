@@ -73,13 +73,14 @@ public abstract class KeyguardActivity extends BaseActivity implements
     private static final int PREVENT_POWER_KEY = 0x80000000;
 
     private static final int SYSTEM_UI_BASIC_FLAGS;
+
     static {
         final int f = Device.hasKitKatApi() ? View.SYSTEM_UI_FLAG_HIDE_NAVIGATION : 0;
         SYSTEM_UI_BASIC_FLAGS = f
-                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+                | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
     }
 
     private static final int UNLOCKING_MAX_TIME = 150; // ms.
@@ -98,6 +99,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
     private PowerManager.WakeLock mWakeUpLock;
 
     private boolean mKeyguardDismissed;
+    private View.OnSystemUiVisibilityChangeListener mSystemUiListener;
 
     @Override
     public void onWindowFocusChanged(boolean windowHasFocus) {
@@ -148,7 +150,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
 
         mTimeout.registerListener(this);
         mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        registerScreenOffReceiver();
+        registerScreenEventsReceiver();
 
         int flags = 0;
 
@@ -176,7 +178,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
         // status bar.
         final View decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(
-                new View.OnSystemUiVisibilityChangeListener() {
+                mSystemUiListener = new View.OnSystemUiVisibilityChangeListener() {
                     public final void onSystemUiVisibilityChange(int f) {
                         setSystemUiVisibilityFake();
                         decorView.postDelayed(new Runnable() {
@@ -196,19 +198,12 @@ public abstract class KeyguardActivity extends BaseActivity implements
     }
 
     public void setSystemUiVisibilityFake() {
-        final View decorView = getWindow().getDecorView();
-        if (decorView == null) {
-            Log.d(TAG, "No decor view yet.");
-            return;
-        }
-
-        int visibility = SYSTEM_UI_BASIC_FLAGS
-                | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        int visibility = SYSTEM_UI_BASIC_FLAGS | View.SYSTEM_UI_FLAG_IMMERSIVE;
         if (getConfig().isFullScreen()) {
             visibility |= View.SYSTEM_UI_FLAG_FULLSCREEN;
         }
 
-        decorView.setSystemUiVisibility(visibility);
+        getWindow().getDecorView().setSystemUiVisibility(visibility);
     }
 
     @Override
@@ -269,7 +264,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
     protected void onDestroy() {
         if (DEBUG) Log.d(TAG, "Destroying keyguard activity...");
 
-        unregisterScreenOffReceiver();
+        unregisterScreenEventsReceiver();
 
         mTimeout.unregisterListener(this);
         mTimeout.clear();
@@ -278,27 +273,40 @@ public abstract class KeyguardActivity extends BaseActivity implements
     }
 
     /**
-     * Registers a receiver to finish activity when screen goes off.
-     * You will need to {@link #unregisterScreenOffReceiver() unregister} it
-     * later.
+     * Registers a receiver to finish activity when screen goes off and to
+     * refresh window flags on screen on. You will need to
+     * {@link #unregisterScreenEventsReceiver() unregister} it later.
      *
-     * @see #unregisterScreenOffReceiver()
+     * @see #unregisterScreenEventsReceiver()
      */
-    private void registerScreenOffReceiver() {
+    private void registerScreenEventsReceiver() {
         mScreenOffReceiver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (!KeyguardService.isActive) {
-                    PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                    pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Finalize the keyguard.").acquire(200);
-                    KeyguardActivity.this.finish();
+                switch (intent.getAction()) {
+                    case Intent.ACTION_SCREEN_ON:
+                        if (mResumed) {
+                            // Fake system ui visibility state change to
+                            // update flags again.
+                            mSystemUiListener.onSystemUiVisibilityChange(0);
+                        }
+                        break;
+                    case Intent.ACTION_SCREEN_OFF:
+                        if (!KeyguardService.isActive) {
+                            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                            pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Finalize the keyguard.").acquire(200);
+                            KeyguardActivity.this.finish();
+                        }
+                        break;
                 }
             }
 
         };
 
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY - 1); // max allowed priority
         registerReceiver(mScreenOffReceiver, intentFilter);
     }
@@ -306,9 +314,9 @@ public abstract class KeyguardActivity extends BaseActivity implements
     /**
      * Unregisters the screen off receiver if it was registered previously.
      *
-     * @see #registerScreenOffReceiver()
+     * @see #registerScreenEventsReceiver()
      */
-    private void unregisterScreenOffReceiver() {
+    private void unregisterScreenEventsReceiver() {
         if (mScreenOffReceiver != null) {
             unregisterReceiver(mScreenOffReceiver);
             mScreenOffReceiver = null;
