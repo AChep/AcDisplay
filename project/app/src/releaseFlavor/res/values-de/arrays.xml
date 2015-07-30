@@ -45,9 +45,9 @@
     <item>Starten Sie einen dialer</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>Keine Verzögerung</item>
+    <item>5 Sekunden</item>
+    <item>15 Sekunden</item>
+    <item>30 Sekunden</item>
   </string-array>
 </resources>

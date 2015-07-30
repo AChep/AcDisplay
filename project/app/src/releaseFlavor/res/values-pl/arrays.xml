@@ -45,9 +45,9 @@
     <item>Uruchom aplikację Telefon</item>
   </string-array>
   <string-array name="keyguard_lock_delay">
-    <item>No delay</item>
-    <item>5 seconds</item>
-    <item>15 seconds</item>
-    <item>30 seconds</item>
+    <item>Bez opóźnienia</item>
+    <item>5 sekund</item>
+    <item>15 sekund</item>
+    <item>30 sekund</item>
   </string-array>
 </resources>

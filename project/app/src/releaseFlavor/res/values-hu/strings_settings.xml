@@ -42,7 +42,7 @@
   <string name="settings_active_active_charging_title">Mindig figyeljen a mozgásra töltés közben</string>
   <string name="settings_keyguard_lock_delay_title">Zárolási késleltetés</string>
   <string name="settings_security_category">Biztonság</string>
-  <string name="settings_security_disclaimer">Warning! Those options are designed to prevent accidental unlocks only. Read help for more info&#8230;</string>
+  <string name="settings_security_disclaimer">Figyelem! Ezeket a lehetőségeket úgy tervezték, hogy csak a véletlen feloldásokat akadályozzák meg. További információkért olvassa el a súgót&#8230;</string>
   <string name="settings_active_description">Az Aktív üzemmód a készülék szenzorait használja a készülék ébresztéséhez, amikor szükség van rá. Ez remekül működik, ha a készüléket a zsebedből kivéve a fogadott értesítésekre szeretnél egy gyors pillantást vetni. Az Aktív üzemmód nem pörgeti fel a CPU-t, így nem fogsz nagy változást észlelni az akkumulátor használatban.</string>
   <string name="settings_active_respect_inactive_time_title">Kikapcsolás inaktív idő esetén</string>
   <string name="settings_active_enabled_when_notification_list_empty_title">Engedélyezve, ha nincs értesítés</string>
@@ -53,8 +53,8 @@
   <string name="settings_active_wave_to_wake_title">Intéssel ébresztés</string>
   <string name="settings_active_wave_to_wake_on">Lassan húzd el a kezed a távolság érzékelő előtt a képernyő bekapcsolásához.</string>
   <string name="settings_wake_up_on_notification_title">Értesítésre ébreszt</string>
-  <string name="settings_notify_glance_title">Quick glance</string>
-  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
+  <string name="settings_notify_glance_title">Gyors pillantás</string>
+  <string name="settings_notify_glance_summary">Ébredés az értesítés megnyitásával</string>
   <string name="settings_notify_min_priority_title">Minimális prioritás</string>
   <string name="settings_notify_max_priority_title">Maximális prioritás</string>
   <string name="settings_full_screen_title">Teljes képernyős mód</string>
@@ -92,8 +92,8 @@
   <string name="settings_icon_size_title">Ikon méret</string>
   <string name="settings_icon_size_summary">Ikonok jelenlegi mérete %1$s dip.</string>
   <string name="settings_double_tap_to_sleep_title">Alvás dupla érintésre</string>
-  <string name="settings_media_widget_title">Media widget</string>
-  <string name="settings_media_widget_summary">Show a media widget while playing music (disable to increase the stability)</string>
+  <string name="settings_media_widget_title">Média modul</string>
+  <string name="settings_media_widget_summary">Média modul megjelenítése zene lejátszása közben (tiltsa le a stabilitás növelése érdekében)</string>
   <string name="settings_corner_actions_category">Sarok mozdulatok</string>
   <string name="settings_corner_actions_summary">Válassza ki mi történjen, ha egy sarokból a képernyő közepe felé simít.</string>
   <string name="settings_corner_left_top_title">Bal felső sarokból</string>

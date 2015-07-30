@@ -54,7 +54,7 @@
   <string name="settings_active_wave_to_wake_on">Zamknij powoli i potem uruchom czujnik zbliżeniowy, żeby włączyć ekran.</string>
   <string name="settings_wake_up_on_notification_title">Wybudź po powiadomieniu</string>
   <string name="settings_notify_glance_title">Szybki przeglad</string>
-  <string name="settings_notify_glance_summary">Wake up with a notification opened</string>
+  <string name="settings_notify_glance_summary">Wybudź z otwartym powiadomieniem</string>
   <string name="settings_notify_min_priority_title">Minimalny priorytet</string>
   <string name="settings_notify_max_priority_title">Maksymalny priorytet</string>
   <string name="settings_full_screen_title">Tryb pełnoekranowy</string>
