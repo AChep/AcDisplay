@@ -31,7 +31,6 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -339,7 +338,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
         populateFlags(true);
         overrideHomePress(true);
 
-        getWindow().addFlags(PREVENT_POWER_KEY);
+//        getWindow().addFlags(PREVENT_POWER_KEY);
 
         /*
         // Read the system's screen off timeout setting.
@@ -359,7 +358,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
     protected void onPause() {
         sendBroadcast(App.ACTION_STATE_PAUSE);
 
-        getWindow().clearFlags(PREVENT_POWER_KEY);
+//        getWindow().clearFlags(PREVENT_POWER_KEY);
 
         if (DEBUG) Log.d(TAG, "Pausing keyguard activity...");
         mResumed = false;
@@ -434,15 +433,6 @@ public abstract class KeyguardActivity extends BaseActivity implements
             }
         }
         */
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_POWER) {
-            if (DEBUG) performUnlock();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override
