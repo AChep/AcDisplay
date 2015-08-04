@@ -138,6 +138,7 @@ public class NotificationUiHelper implements INotificatiable {
             if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_TIMESTAMP)) updateTimestamp();
             if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_MESSAGE)) updateMessage();
             if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_ACTIONS)) updateActions();
+            if (Operator.bitAnd(mPendingUpdates, PENDING_UPDATE_ICONS)) updateIcons();
         }
         mPendingUpdates = 0;
 
