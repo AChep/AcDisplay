@@ -342,7 +342,35 @@ public class NotificationPresenter implements
     private NotificationPresenter() {
         mFrozenEvents = new ArrayList<>();
         mListenersRefs = new ArrayList<>();
-        mGList = new NotificationList(null);
+        mGList = new NotificationList(new NotificationList.OnNotificationListChangedListener() {
+
+            @Override
+            public int onNotificationAdded(@NonNull OpenNotification n) {
+                return NotificationList.RESULT_DEFAULT;
+            }
+
+            @Override
+            public int onNotificationChanged(
+                    @NonNull OpenNotification n,
+                    @NonNull OpenNotification old) {
+                if (n.isGroupSummary() && old.isGroupSummary()) {
+                    // Copy-paste all children from old notification to the
+                    // new one.
+                    List<OpenNotification> children = n.getGroupNotifications();
+                    List<OpenNotification> aged = old.getGroupNotifications();
+                    assert children != null;
+                    assert aged != null;
+                    Check.getInstance().isTrue(children.isEmpty());
+                    children.addAll(aged);
+                }
+                return NotificationList.RESULT_DEFAULT;
+            }
+
+            @Override
+            public int onNotificationRemoved(@NonNull OpenNotification n) {
+                return NotificationList.RESULT_DEFAULT;
+            }
+        });
         mLList = new NotificationList(this);
         mGroupsWithSummaries = new HashSet<>();
         mHandler = new Handler(Looper.getMainLooper());
@@ -419,13 +447,6 @@ public class NotificationPresenter implements
                 return;
             }
 
-            final int prevIndex = mGList.indexOfNotification(n);
-            if (prevIndex != -1) {
-                OpenNotification prev = mGList.get(prevIndex);
-                // Update the summary set, group notifications etc.
-                handleNotificationRemoval(prev);
-            }
-
             freezeListeners();
 
             boolean globalValid = isValidForGlobal(n);
@@ -442,17 +463,23 @@ public class NotificationPresenter implements
                     assert groupKey != null;
                     mGroupsWithSummaries.add(groupKey);
 
-                    // Put all group's children to its summary
-                    // notification.
-                    for (int i = mGList.size() - 1; i >= 0; i--) {
-                        OpenNotification n2 = mGList.get(i);
-                        if (groupKey.equals(n2.getGroupKey())) {
-                            assert n.getGroupNotifications() != null;
-                            n.getGroupNotifications().add(n2);
+                    //noinspection StatementWithEmptyBody
+                    if (mGroupsWithSummaries.contains(groupKey)) {
+                    } else {
+                        mGroupsWithSummaries.add(groupKey);
 
-                            // Remove this notification from the global list.
-                            mGList.removeNotification(n2);
-                            mLList.removeNotification(n2);
+                        // Put all group's children to its summary
+                        // notification.
+                        for (int i = mGList.size() - 1; i >= 0; i--) {
+                            OpenNotification n2 = mGList.get(i);
+                            if (groupKey.equals(n2.getGroupKey())) {
+                                assert n.getGroupNotifications() != null;
+                                n.getGroupNotifications().add(n2);
+
+                                // Remove this notification from the global list.
+                                mGList.removeNotification(n2);
+                                mLList.removeNotification(n2);
+                            }
                         }
                     }
                 } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {

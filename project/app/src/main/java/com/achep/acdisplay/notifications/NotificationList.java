@@ -37,7 +37,7 @@ final class NotificationList extends ArrayList<OpenNotification> implements IOnL
      * Default return value of {@link #pushNotification(OpenNotification)}
      * or {@link #removeNotification(OpenNotification)} methods.
      */
-    private static final int RESULT_DEFAULT = 0;
+    static final int RESULT_DEFAULT = 0;
 
     private static final int EVENT_ADDED = 0;
     private static final int EVENT_CHANGED = 1;
