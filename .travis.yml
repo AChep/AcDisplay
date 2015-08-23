@@ -13,6 +13,8 @@ android:
     - extra-android-m2repository
     - extra-android-support
     - extra-google-m2repository
+    # Emulator
+    - sys-img-armeabi-v7a-android-22
 
 before_script:
   # Move to project folder before build
