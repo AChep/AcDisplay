@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         //noinspection GradleDynamicVersion
-        classpath 'com.android.tools.build:gradle:1.2.+'
+        classpath 'com.android.tools.build:gradle:1.3.+'
         classpath 'commons-codec:commons-codec:1.10'
     }
 }
@@ -43,8 +43,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.0'
 
     lintOptions {
         checkReleaseBuilds true
@@ -57,7 +57,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -150,11 +150,11 @@ dependencies {
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
 
     // Android support libs.
-    compile('com.android.support:palette-v7:+')
-    compile('com.android.support:appcompat-v7:22.+')
-    compile('com.android.support:recyclerview-v7:22.+')
-    compile('com.android.support:support-v13:22.+')
-    compile('com.android.support:design:22.2.0')
+    compile('com.android.support:palette-v7:23.+')
+    compile('com.android.support:appcompat-v7:23.+')
+    compile('com.android.support:recyclerview-v7:23.+')
+    compile('com.android.support:support-v13:23.+')
+    compile('com.android.support:design:23.+')
 
     // Leak canary
     //noinspection GradleDynamicVersion
@@ -163,8 +163,11 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
     // Testing-only dependencies
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    //noinspection GradleDynamicVersion
+    androidTestCompile 'com.android.support:support-annotations:23.+'
+    androidTestCompile 'com.android.support.test:runner:0.3'
+    androidTestCompile 'com.android.support.test:rules:0.3'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
 }
 
 project.task('askForPasswords') << {
