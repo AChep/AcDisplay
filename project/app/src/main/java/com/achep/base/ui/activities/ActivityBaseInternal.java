@@ -192,6 +192,14 @@ final class ActivityBaseInternal implements IActivityBase {
         return mPowerSaveDetector.isPowerSaveMode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNotPowerSaveMode() {
+        return mPowerSaveDetector.isNotPowerSaveMode();
+    }
+
     //-- OTHER ----------------------------------------------------------------
 
     private static class Reflector {

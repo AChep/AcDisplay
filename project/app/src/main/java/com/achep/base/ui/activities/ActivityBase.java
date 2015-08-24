@@ -134,4 +134,12 @@ public abstract class ActivityBase extends AppCompatActivity implements IActivit
         return mAbs.isPowerSaveMode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNotPowerSaveMode() {
+        return mAbs.isNotPowerSaveMode();
+    }
+
 }

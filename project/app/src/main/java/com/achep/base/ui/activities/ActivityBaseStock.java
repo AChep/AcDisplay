@@ -133,4 +133,12 @@ public abstract class ActivityBaseStock extends Activity implements IActivityBas
         return mAbs.isPowerSaveMode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNotPowerSaveMode() {
+        return mAbs.isNotPowerSaveMode();
+    }
+
 }
