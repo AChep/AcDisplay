@@ -45,7 +45,6 @@ import org.json.JSONObject;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -241,7 +240,7 @@ public abstract class ConfigBase implements
             Field field = getClass().getDeclaredField(option.fieldName);
             field.setAccessible(true);
             field.set(this, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (Exception e) {
             throw new IllegalStateException("");
         }
 
@@ -391,7 +390,7 @@ public abstract class ConfigBase implements
                 field.setAccessible(true);
                 field.set(this, value);
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
@@ -736,7 +735,7 @@ public abstract class ConfigBase implements
                 Field field = config.getClass().getDeclaredField(fieldName);
                 field.setAccessible(true);
                 return field.get(config);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to access the " + clazz.getName() + "#" + fieldName + " field.");
             }
         }
@@ -748,7 +747,7 @@ public abstract class ConfigBase implements
                 Method method = config.getClass().getDeclaredMethod(getterName);
                 method.setAccessible(true);
                 return method.invoke(config);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to access the " + clazz.getName() + "#" + getterName + " method.");
             }
         }
@@ -780,7 +779,7 @@ public abstract class ConfigBase implements
                         ConfigBase.OnConfigChangedListener.class);
                 method.setAccessible(true);
                 method.invoke(config, context, newValue, listener);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to access " + clazz.getName() + "#" + setterName + "(***) method.");
             }
         }
