@@ -32,6 +32,7 @@ import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IActivityBase;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.power.PowerSaveDetector;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.Checkout;
@@ -118,6 +119,9 @@ final class ActivityBaseInternal implements IActivityBase {
     void onDestroy() {
         mCheckout = null;
         if (mInputMethodResetRequest) performInputMethodServiceReset();
+        // Watch for the activity to detect possible leaks.
+        RefWatcher refWatcher = AppHeap.getRefWatcher();
+        refWatcher.watch(this);
     }
 
     /**
