@@ -29,6 +29,7 @@ import com.achep.acdisplay.BuildConfig;
  * @author Artem Chepurnoy
  */
 /* The first class of the AcDisplay, dated by 30.12.2013 */
+@SuppressWarnings("PointlessBooleanExpression")
 public final class Build {
 
     /**
@@ -36,6 +37,12 @@ public final class Build {
      */
     public static final boolean DEBUG =
             BuildConfig.MY_DEBUG;
+
+    /**
+     * {@code true}, to force-enable the power-saving mode, {@code false}
+     * to check the state of the system.
+     */
+    public static final boolean DEBUG_POWER_SAVING = false && DEBUG;
 
     /**
      * The timestamp of build in {@code EEE MMMM dd HH:mm:ss zzz yyyy} format.

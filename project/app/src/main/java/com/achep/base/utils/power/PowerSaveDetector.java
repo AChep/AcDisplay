@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA  02110-1301, USA.
- */
 package com.achep.base.utils.power;
 
 import android.annotation.TargetApi;
@@ -27,12 +9,23 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 
+import com.achep.acdisplay.Atomic;
 import com.achep.base.Device;
+import com.achep.base.interfaces.IPowerSave;
+import com.achep.base.interfaces.ISubscriptable;
+
+import java.util.ArrayList;
+
+import static com.achep.base.Build.DEBUG_POWER_SAVING;
 
 /**
- * Created by Artem Chepurnoy on 22.11.2014.
+ * @author Artem Chepurnoy
  */
-public abstract class PowerSaveDetector {
+public abstract class PowerSaveDetector implements
+        ISubscriptable<PowerSaveDetector.OnPowerSaveChanged>,
+        IPowerSave {
+
+    private static boolean sPowerSaveMode;
 
     @NonNull
     public static PowerSaveDetector newInstance(@NonNull Context context) {
@@ -41,18 +34,6 @@ public abstract class PowerSaveDetector {
                 : new PowerSaveCompat(context);
     }
 
-    @NonNull
-    protected final Context mContext;
-    protected boolean mPowerSaveMode;
-
-    private PowerSaveDetector(@NonNull Context context) {
-        mContext = context;
-    }
-
-    public abstract void start();
-
-    public abstract void stop();
-
     /**
      * Returns {@code true} if the device is currently in power save mode.
      * When in this mode, applications should reduce their functionality
@@ -60,10 +41,90 @@ public abstract class PowerSaveDetector {
      *
      * @return {@code true} if the device is currently in power save mode, {@code false} otherwise.
      */
+    public static boolean isPowerSaving() {
+        return sPowerSaveMode;
+    }
+
+    /**
+     * Inverse function to {@link #isPowerSaveMode()}
+     */
+    /*
+     * I hate using `if (!...)` construction so this
+     * method was created
+     */
+    public static boolean isNotPowerSaving() {
+        return !isPowerSaving();
+    }
+
+    protected final ArrayList<OnPowerSaveChanged> mListeners;
+    protected final Context mContext;
+    protected boolean mPowerSaveMode;
+
+    /**
+     * @author Artem Chepurnoy
+     */
+    public interface OnPowerSaveChanged {
+
+        void onPowerSaveChanged(boolean powerSaving);
+    }
+
+    private PowerSaveDetector(@NonNull Context context) {
+        mListeners = new ArrayList<>();
+        mContext = context;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerListener(@NonNull OnPowerSaveChanged listener) {
+        mListeners.add(listener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unregisterListener(@NonNull OnPowerSaveChanged listener) {
+        mListeners.remove(listener);
+    }
+
+    public abstract void start();
+
+    public abstract void stop();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isPowerSaveMode() {
         return mPowerSaveMode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNotPowerSaveMode() {
+        return !isNotPowerSaving();
+    }
+
+    protected void setPowerSaveMode(boolean psm) {
+        if (DEBUG_POWER_SAVING) psm = true;
+        if (mPowerSaveMode == psm) return;
+        sPowerSaveMode = mPowerSaveMode = psm;
+        notifyListeners();
+    }
+
+    private void notifyListeners() {
+        for (OnPowerSaveChanged listener : mListeners) {
+            listener.onPowerSaveChanged(mPowerSaveMode);
+        }
+    }
+
+    /**
+     * @author Artem Chepurnoy
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static class PowerSaveLollipop extends PowerSaveDetector {
 
@@ -74,11 +135,27 @@ public abstract class PowerSaveDetector {
                     public void onReceive(Context context, Intent intent) {
                         switch (intent.getAction()) {
                             case PowerManager.ACTION_POWER_SAVE_MODE_CHANGED:
-                                mPowerSaveMode = mPowerManager.isPowerSaveMode();
+                                setPowerSaveMode(mPowerManager.isPowerSaveMode());
                                 break;
                         }
                     }
                 };
+
+        @NonNull
+        private final Atomic mAtomic = new Atomic(new Atomic.Callback() {
+            @Override
+            public void onStart(Object... objects) {
+                IntentFilter intentFilter = new IntentFilter();
+                intentFilter.addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED);
+                mContext.registerReceiver(mReceiver, intentFilter);
+                setPowerSaveMode(mPowerManager.isPowerSaveMode());
+            }
+
+            @Override
+            public void onStop(Object... objects) {
+                mContext.unregisterReceiver(mReceiver);
+            }
+        });
 
         public PowerSaveLollipop(@NonNull Context context) {
             super(context);
@@ -87,20 +164,18 @@ public abstract class PowerSaveDetector {
 
         @Override
         public void start() {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED);
-            mContext.registerReceiver(mReceiver, intentFilter);
-            mPowerSaveMode = mPowerManager.isPowerSaveMode();
+            mAtomic.start();
         }
 
         @Override
         public void stop() {
-            mContext.unregisterReceiver(mReceiver);
+            mAtomic.stop();
         }
-
     }
 
-    // TODO: Support some other vendor's pre-Lollipop software.
+    /**
+     * @author Artem Chepurnoy
+     */
     private static class PowerSaveCompat extends PowerSaveDetector {
 
         public PowerSaveCompat(@NonNull Context context) {
@@ -108,14 +183,10 @@ public abstract class PowerSaveDetector {
         }
 
         @Override
-        public void start() {
-
-        }
+        public void start() { /* empty */ }
 
         @Override
-        public void stop() {
-
-        }
+        public void stop() { /* empty */ }
 
     }
 
