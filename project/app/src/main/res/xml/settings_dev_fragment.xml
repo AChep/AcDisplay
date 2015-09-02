@@ -23,7 +23,7 @@
     <Preference
         android:title="Test shake detector">
         <intent
-            android:targetClass="com.achep.acdisplay.ui.activities.ShakeTestActivity"
+            android:targetClass="com.achep.acdisplay.ui.activities.tests.ShakeTestActivity"
             android:targetPackage="com.achep.acdisplay" />
     </Preference>
 
