@@ -197,6 +197,7 @@ class NotificationPrProxy {
         }
         size = list.size();
         // 3. Sort families.
+        // FIXME: Check if it works correctly.
         for (int i = 0; i < size; i++) {
             NotificationPrTask task = list.get(i);
             if (task == empty || !task.notification.isGroupChild()) continue;

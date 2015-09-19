@@ -489,9 +489,7 @@ public class NotificationPresenter implements
                     String groupKey = n.getGroupKey();
                     assert groupKey != null;
                     for (OpenNotification n2 : mGList) {
-                        if (groupKey.equals(n2.getGroupKey())) {
-                            Check.getInstance().isTrue(n2.isGroupSummary());
-
+                        if (groupKey.equals(n2.getGroupKey()) && n2.isGroupSummary()) {
                             groupChild = true;
 
                             assert n2.getGroupNotifications() != null;
