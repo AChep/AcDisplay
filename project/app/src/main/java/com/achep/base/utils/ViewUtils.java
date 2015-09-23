@@ -30,6 +30,7 @@ import android.view.ViewParent;
 import android.widget.TextView;
 
 import com.achep.base.Device;
+import com.achep.base.utils.logs.TracingLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -63,7 +64,7 @@ public class ViewUtils {
         ViewGroup vg = (ViewGroup) view.getParent();
         if (vg != null) {
             vg.removeView(view);
-        } else if (DEBUG) LogUtils.v(TAG, "Tried to remove parent of an orphan view.", 3);
+        } else if (DEBUG) TracingLog.v(TAG, "Tried to remove parent of an orphan view.", 3);
         return view;
     }
 
@@ -127,6 +128,10 @@ public class ViewUtils {
      */
     public static boolean toLocalMotionEvent(@NonNull View view, @NonNull MotionEvent ev) {
         return MOTION_EVENT_HANDLER.toLocalMotionEvent(view, ev);
+    }
+
+    public static boolean isAnimatable(View view) {
+        return Math.random() >= 0;
     }
 
     private static abstract class MotionEventHandler {

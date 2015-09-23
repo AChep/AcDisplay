@@ -52,13 +52,12 @@ import static com.achep.base.Build.DEBUG;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class MediaController2Lollipop extends MediaController2 {
 
-    @Nullable
-    private MediaController mMediaController;
-
-    private boolean mSessionListening;
-
+    @NonNull
     private final ComponentName mComponent;
-    private MediaSessionManager mMediaSessionManager;
+    @NonNull
+    private final OnActiveSessionsChangedListener mSessionListener =
+            new OnActiveSessionsChangedListener();
+    @NonNull
     private final MediaController.Callback mCallback =
             new MediaController.Callback() {
 
@@ -70,71 +69,90 @@ class MediaController2Lollipop extends MediaController2 {
                 }
 
                 @Override
-                public void onPlaybackStateChanged(PlaybackState state) {
+                public void onPlaybackStateChanged(@NonNull PlaybackState state) {
                     super.onPlaybackStateChanged(state);
                     Check.getInstance().isInMainThread();
                     updatePlaybackState(state.getState());
                 }
             };
 
-    private final MediaSessionManager.OnActiveSessionsChangedListener mSessionListener =
-            new MediaSessionManager.OnActiveSessionsChangedListener() {
+    /**
+     * @author Artem Chepurnoy
+     */
+    private static class OnActiveSessionsChangedListener implements
+            MediaSessionManager.OnActiveSessionsChangedListener {
 
-                @Override
-                public void onActiveSessionsChanged(List<MediaController> controllers) {
-                    Check.getInstance().isInMainThread();
+        @NonNull
+        private Reference<MediaController2Lollipop> mMediaControllerRef = new WeakReference<>(null);
 
-                    if (mMediaController != null) {
-                        for (MediaController controller : controllers) {
-                            if (mMediaController == controller) {
-                                // Current media controller is still alive.
-                                return;
-                            }
-                        }
+        public void setMediaController(@Nullable MediaController2Lollipop mc) {
+            if (mc == null) {
+                mMediaControllerRef.clear();
+                return;
+            }
+
+            mMediaControllerRef = new WeakReference<>(mc);
+        }
+
+        @Override
+        public void onActiveSessionsChanged(List<MediaController> controllers) {
+            MediaController2Lollipop p = mMediaControllerRef.get();
+            if (p == null) return;
+
+            if (p.mMediaController != null) {
+                for (MediaController controller : controllers) {
+                    if (p.mMediaController == controller) {
+                        // Current media controller is still alive.
+                        return;
                     }
+                }
+            }
 
-                    MediaController mc = pickBestMediaController(controllers);
-                    if (mc != null) {
-                        setMediaController(mc);
-                    } else {
-                        clearMediaController(true);
+            MediaController mc = pickBestMediaController(controllers);
+            if (mc != null) {
+                p.setMediaController(mc);
+            } else {
+                p.clearMediaController(true);
+            }
+        }
+
+        @Nullable
+        private MediaController pickBestMediaController(
+                @NonNull List<MediaController> list) {
+            int mediaControllerScore = -1;
+            MediaController mediaController = null;
+            for (MediaController mc : list) {
+                if (mc == null) continue;
+                int mcScore = 0;
+
+                // Check for the current state
+                PlaybackState state = mc.getPlaybackState();
+                if (state != null) {
+                    switch (state.getState()) {
+                        case PlaybackState.STATE_STOPPED:
+                        case PlaybackState.STATE_ERROR:
+                            break;
+                        default:
+                            mcScore++;
+                            break;
                     }
                 }
 
-                @Nullable
-                private MediaController pickBestMediaController(
-                        @NonNull List<MediaController> list) {
-                    if (DEBUG) Log.d(TAG, "Media controllers count:" + list.size());
-
-                    int mediaControllerScore = -1;
-                    MediaController mediaController = null;
-                    for (MediaController mc : list) {
-                        if (mc == null) continue;
-                        int mcScore = 0;
-
-                        // Check for the current state
-                        PlaybackState state = mc.getPlaybackState();
-                        if (state != null) {
-                            switch (state.getState()) {
-                                case PlaybackState.STATE_STOPPED:
-                                case PlaybackState.STATE_ERROR:
-                                    break;
-                                default:
-                                    mcScore++;
-                                    break;
-                            }
-                        }
-
-                        if (mcScore > mediaControllerScore) {
-                            mediaControllerScore = mcScore;
-                            mediaController = mc;
-                        }
-                    }
-                    return mediaController;
+                if (mcScore > mediaControllerScore) {
+                    mediaControllerScore = mcScore;
+                    mediaController = mc;
                 }
+            }
+            return mediaController;
+        }
+    }
 
-            };
+    @Nullable
+    private MediaSessionManager mMediaSessionManager;
+    @Nullable
+    private MediaController mMediaController;
 
+    private boolean mSessionListening;
     private T mThread;
 
     /**
@@ -155,20 +173,28 @@ class MediaController2Lollipop extends MediaController2 {
 
         // Init a new thread.
         mThread = new T(this);
-//        mThread.setPriority(Thread.MIN_PRIORITY);
-//        mThread.start();
+        mThread.setPriority(Thread.MIN_PRIORITY);
+        mThread.start();
 
-        mMediaSessionManager = (MediaSessionManager) mContext
+        // Media session manager leaks/holds the context for too long.
+        // Don't let it to leak the activity, better lak the whole app.
+        final Context context = mContext.getApplicationContext();
+        mMediaSessionManager = (MediaSessionManager) context
                 .getSystemService(Context.MEDIA_SESSION_SERVICE);
 
         try {
             mMediaSessionManager.addOnActiveSessionsChangedListener(mSessionListener, mComponent);
+            mSessionListener.setMediaController(this);
             mSessionListening = true;
         } catch (SecurityException exception) {
             Log.w(TAG, "Failed to start Lollipop media controller: " + exception.getMessage());
             // Try to unregister it, just it case.
-            mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
-            mSessionListening = false;
+            try {
+                mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
+            } catch (Exception e) { /* unused */ } finally {
+                mMediaSessionManager = null;
+                mSessionListening = false;
+            }
             // Media controller needs notification listener service
             // permissions to be granted.
             return;
@@ -184,12 +210,16 @@ class MediaController2Lollipop extends MediaController2 {
     @Override
     public void onStop(Object... objects) {
         // Force stop the thread.
-//        mThread.finish(true);
+        mThread.finish(true);
 
         if (mSessionListening) {
+            mSessionListening = false;
+            mSessionListener.setMediaController(null);
+            assert mMediaSessionManager != null;
             mMediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
             clearMediaController(true);
         }
+
         super.onStop();
         mMediaSessionManager = null;
     }
@@ -270,7 +300,7 @@ class MediaController2Lollipop extends MediaController2 {
      */
     @Override
     public long getPlaybackBufferedPosition() {
-        if (mMediaController == null) {
+        if (mMediaController == null || mMediaController.getPlaybackState() == null) {
             // Do nothing or crash?
             return -1;
         }
@@ -283,7 +313,7 @@ class MediaController2Lollipop extends MediaController2 {
      */
     @Override
     public long getPlaybackPosition() {
-        if (mMediaController == null) {
+        if (mMediaController == null || mMediaController.getPlaybackState() == null) {
             // Do nothing or crash?
             return -1;
         }

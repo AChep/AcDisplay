@@ -34,6 +34,10 @@ public interface ICoin {
     @DrawableRes
     int getIconResource();
 
+    /**
+     * @return the string resource of the name of this coin. To get string name,
+     * simply do {@code getResources().getString(nameRes)}.
+     */
     @StringRes
     int getNameResource();
 

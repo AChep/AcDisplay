@@ -22,15 +22,18 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import timber.log.Timber;
+
 /**
- * Created by achep on 22.06.13.
+ * Raw resources utils.
+ *
+ * @author Artem Chepurnoy
  */
 public final class RawReader {
 
@@ -54,7 +57,7 @@ public final class RawReader {
         try {
             return FileUtils.readTextFromBufferedReader(bufferedReader);
         } catch (IOException e) {
-            Log.e(TAG, "Failed to read raw resource: " + resource);
+            Timber.tag(TAG).e("Failed to read raw resource: " + resource);
             return null;
         }
     }

@@ -60,7 +60,7 @@ public final class PermissionNotificationListener extends Permission {
     /**
      * {@inheritDoc}
      */
-    public boolean isActive() {
+    public boolean isGranted() {
         final ContentResolver cr = mContext.getContentResolver();
         final String flat = Settings.Secure.getString(cr, KEY);
         return flat != null && flat.contains(mComponentString);

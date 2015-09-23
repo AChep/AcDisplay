@@ -21,7 +21,6 @@ package com.achep.base.async;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IOnLowMemory;
@@ -38,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.achep.base.Build.DEBUG;
+import timber.log.Timber;
 
 /**
  * A better {@link AsyncTask}.
@@ -126,7 +125,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
             // TODO: Calculate how much downloading will take
             // to be able to kick threads effectively.
             public void run() {
-                if (DEBUG) Log.d(TAG, "Fetching from " + mUrl);
+                Timber.tag(TAG).d("Fetching from " + mUrl);
 
                 InputStream is = null;
                 InputStreamReader isr = null;
@@ -138,9 +137,9 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
                     String result = FileUtils.readTextFromBufferedReader(br);
 
                     mMap.put(mUrl, result);
-                    if (DEBUG) Log.d(TAG, "Done fetching from " + mUrl);
+                    Timber.tag(TAG).d("Done fetching from " + mUrl);
                 } catch (IOException e) {
-                    if (DEBUG) Log.w(TAG, "Failed fetching from " + mUrl);
+                    Timber.tag(TAG).d("Failed fetching from " + mUrl);
                 } finally {
                     try {
                         if (br != null) {
@@ -251,7 +250,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
             Callback callback = mCallback.get();
             if (callback != null) {
                 callback.onDownloaded(s);
-            } else if (DEBUG) Log.w(TAG, "Finished loading text, but callback is null!");
+            } else Timber.tag(TAG).d("Finished loading text, but callback is null!");
         }
     }
 }

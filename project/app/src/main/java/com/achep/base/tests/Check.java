@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
  *
  * @author Artem Chepurnoy
  */
+@SuppressWarnings("SameParameterValue")
 public abstract class Check {
 
     @Nullable

@@ -18,6 +18,7 @@
  */
 package com.achep.base.ui.fragments.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -72,8 +73,6 @@ import static com.achep.base.Build.DEBUG;
  * Provides an UI for sending bugs & suggestions on my email.
  */
 public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfigChangedListener {
-
-    private static final String TAG = "FeedbackDialog";
 
     private View mFaqContainer;
 
@@ -133,7 +132,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
         assert activity != null;
 
         MaterialDialog md = new MaterialDialog.Builder(activity)
-                .iconRes(R.drawable.ic_action_feedback_white)
+                .iconRes(R.drawable.ic_email_white_24dp)
                 .title(R.string.feedback_dialog_title)
                 .customView(R.layout.feedback_dialog, true)
                 .negativeText(android.R.string.cancel)
@@ -339,6 +338,7 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
                 throw new Exception("Failed to create cache directory.");
 
             // Create log file.
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             String fileName = "AcDisplay_log_" + sdf.format(new Date()) + ".txt";

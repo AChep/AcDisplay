@@ -48,6 +48,7 @@ import com.achep.base.ui.preferences.Enabler;
 import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.AppWidgetUtils;
 import com.achep.base.utils.MathUtils;
+import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
@@ -447,7 +448,7 @@ public class WidgetPickerActivity extends ActivityBase implements
                         .content(message)
                         .positiveText(android.R.string.ok)
                         .show();
-            } else throw new RuntimeException(e);
+            } else ToastUtils.showLong(this, R.string.error_dialog_title);
         }
     }
 

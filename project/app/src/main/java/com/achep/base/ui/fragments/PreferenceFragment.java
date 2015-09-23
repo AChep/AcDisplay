@@ -18,7 +18,6 @@
  */
 package com.achep.base.ui.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -84,10 +83,10 @@ public abstract class PreferenceFragment extends PreferenceFragmentBase {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         mConfig = getConfig();
-        mSyncer = new ConfigBase.Syncer(activity, mConfig);
+        mSyncer = new ConfigBase.Syncer(context, mConfig);
     }
 
     @Override

@@ -78,7 +78,7 @@ public class SwitchBarPermissible implements Permission.OnPermissionStateChanged
         boolean enabled = true;
         for (Permission permission : mPermissions) {
             permission.registerListener(this);
-            if (enabled) enabled = permission.isActive();
+            if (enabled) enabled = permission.isGranted();
         }
 
         ViewUtils.setVisible(mSwitchBar.getIconView(), !enabled);
@@ -101,7 +101,7 @@ public class SwitchBarPermissible implements Permission.OnPermissionStateChanged
     private boolean hasAccess() {
         if (mPermissions == null) return true;
         for (Permission permission : mPermissions)
-            if (!permission.isActive()) return false;
+            if (!permission.isGranted()) return false;
         return true;
     }
 

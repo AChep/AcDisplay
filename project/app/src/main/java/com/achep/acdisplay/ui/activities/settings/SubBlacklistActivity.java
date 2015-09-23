@@ -22,8 +22,6 @@ import android.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 
-import com.achep.acdisplay.ui.activities.settings.BlacklistActivity;
-
 /**
  * Top-level settings activity to handle single pane and double pane UI layout.
  */

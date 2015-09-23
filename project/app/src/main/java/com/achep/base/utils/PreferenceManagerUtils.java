@@ -23,8 +23,6 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 
-import com.achep.base.ui.fragments.PreferenceFragmentBase;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;

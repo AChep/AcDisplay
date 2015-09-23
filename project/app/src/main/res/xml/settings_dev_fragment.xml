@@ -27,6 +27,13 @@
             android:targetPackage="com.achep.acdisplay" />
     </Preference>
 
+    <Preference
+        android:title="Test idle-exit detector">
+        <intent
+            android:targetClass="com.achep.acdisplay.ui.activities.tests.IdleExitTestActivity"
+            android:targetPackage="com.achep.acdisplay" />
+    </Preference>
+
     <CheckBoxPreference
         android:key="dev_sensors_dump"
         android:summaryOn="@string/settings_dev_sensors_dump_on"

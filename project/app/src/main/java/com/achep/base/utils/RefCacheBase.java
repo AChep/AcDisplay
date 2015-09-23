@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class RefCacheBase<T> {
 
     @NonNull
-    private volatile Map<CharSequence, Reference<T>> mCache = new ConcurrentHashMap<>();
+    private final Map<CharSequence, Reference<T>> mCache = new ConcurrentHashMap<>();
 
     public final void put(@NonNull CharSequence key, @NonNull T object) {
         synchronized (this) {

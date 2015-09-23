@@ -40,7 +40,7 @@ import java.util.ArrayList;
  */
 public abstract class Permission implements
         ISubscriptable<Permission.OnPermissionStateChanged>,
-        IOnLowMemory, IPermission {
+        IPermission {
 
     /**
      * @see com.achep.acdisplay.permissions.PermissionAccessibility
@@ -135,7 +135,7 @@ public abstract class Permission implements
      * {@inheritDoc}
      */
     @Override
-    public boolean isPossible(@NonNull Context context) {
+    public boolean exists(@NonNull Context context) {
         return IntentUtils.hasActivityForThat(context, getIntentSettings());
     }
 

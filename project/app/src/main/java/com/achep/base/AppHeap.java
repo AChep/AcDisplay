@@ -23,8 +23,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.achep.base.billing.CheckoutInternal;
+import com.achep.base.interfaces.IConfiguration;
 import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.tests.Check;
+import com.achep.base.timber.ReleaseTree;
 import com.drivemode.android.typeface.TypefaceHelper;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -33,8 +35,9 @@ import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.ProductTypes;
 import org.solovyev.android.checkout.Products;
 
-import java.util.Arrays;
 import java.util.Collections;
+
+import timber.log.Timber;
 
 /**
  * Created by Artem Chepurnoy on 17.02.2015.
@@ -74,17 +77,6 @@ public class AppHeap implements IOnLowMemory {
         return getInstance().mRefWatcher;
     }
 
-    @NonNull
-    private static final Products sProducts = Products.create()
-            .add(ProductTypes.IN_APP, Arrays.asList(
-                    "donation_1",
-                    "donation_4",
-                    "donation_10",
-                    "donation_20",
-                    "donation_50",
-                    "donation_99"))
-            .add(ProductTypes.SUBSCRIPTION, Collections.singletonList(""));
-
     /**
      * Application wide {@link org.solovyev.android.checkout.Checkout} instance
      * (can be used anywhere in the app). This instance contains all available
@@ -93,19 +85,38 @@ public class AppHeap implements IOnLowMemory {
     @SuppressWarnings("NullableProblems")
     @NonNull
     private CheckoutInternal mCheckoutInternal;
+    private IConfiguration mConfiguration;
     private Application mApplication;
     private RefWatcher mRefWatcher;
 
     /**
      * Must be called at {@link android.app.Application#onCreate()}
      */
-    public void init(@NonNull Application application) {
+    public void init(@NonNull Application application, @NonNull IConfiguration configuration) {
         mRefWatcher = LeakCanary.install(application);
 
-        mCheckoutInternal = new CheckoutInternal(application, sProducts);
+        mCheckoutInternal = new CheckoutInternal(application, Products.create()
+                .add(ProductTypes.IN_APP, configuration.getBilling().getProducts())
+                .add(ProductTypes.SUBSCRIPTION, Collections.singletonList("")));
+        mConfiguration = configuration;
         mApplication = application;
 
+        // Setup log
+        /*
+        if (DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new ReleaseTree());
+        }
+        */
+        Timber.plant(new ReleaseTree());
+
         TypefaceHelper.initialize(application);
+    }
+
+    @NonNull
+    public final IConfiguration getConfiguration() {
+        return mConfiguration;
     }
 
     /**

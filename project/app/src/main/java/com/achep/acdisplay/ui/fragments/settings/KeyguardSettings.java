@@ -63,7 +63,7 @@ public class KeyguardSettings extends BaseSettings {
         // Request to grant the keyguard permissions if possible,
         // no need of permissions otherwise (since AcDisplay v3.8).
         PermissionGroup pg = App.getAccessManager().getKeyguardPermissions();
-        if (pg.isPossible(context)) {
+        if (pg.exists(context)) {
             requestMasterSwitch(Config.KEY_KEYGUARD, pg.permissions);
         } else requestMasterSwitch(Config.KEY_KEYGUARD);
 

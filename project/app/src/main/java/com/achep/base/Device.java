@@ -63,11 +63,11 @@ public class Device {
             case Build.VERSION_CODES.LOLLIPOP_MR1:
                 API_VERSION_NAME_SHORT = "LP1";
                 break;
-            case Build.VERSION_CODES.LOLLIPOP_MR1 + 1:
+            case Build.VERSION_CODES.M:
                 API_VERSION_NAME_SHORT = "M";
                 break;
             default:
-                API_VERSION_NAME_SHORT = "WTF";
+                API_VERSION_NAME_SHORT = hasMarshmallowApi() ? "X" : "WTF";
         }
     }
 
@@ -81,11 +81,10 @@ public class Device {
 
     /**
      * @return {@code true} if device is running
-     * {@link Build.VERSION_CODES#LOLLIPOP_MR1 Lollipop 5.1} or higher, {@code false} otherwise.
+     * {@link Build.VERSION_CODES#M Marshmallow 6} or higher, {@code false} otherwise.
      */
-    // FIXME: Replace with a correct version code, when M is released.
-    public static boolean hasMuffinsApi() {
-        return hasTargetApi(Build.VERSION_CODES.LOLLIPOP_MR1 + 1);
+    public static boolean hasMarshmallowApi() {
+        return hasTargetApi(Build.VERSION_CODES.M);
     }
 
     /**

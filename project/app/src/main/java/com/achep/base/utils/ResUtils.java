@@ -18,6 +18,7 @@
  */
 package com.achep.base.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -69,6 +70,7 @@ public class ResUtils {
         }
     }
 
+    @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     @Nullable
     public static Drawable getDrawable(@NonNull Context context, @DrawableRes int drawableRes) {

@@ -42,8 +42,8 @@ import com.achep.acdisplay.ui.activities.base.BaseActivity;
 import com.achep.base.Device;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.KeyguardUtils;
-import com.achep.base.utils.LogUtils;
 import com.achep.base.utils.ToastUtils;
+import com.achep.base.utils.logs.TracingLog;
 import com.achep.base.utils.power.PowerUtils;
 
 import static com.achep.base.Build.DEBUG;
@@ -163,7 +163,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
         // FIXME: Android dev team broke the DISMISS_KEYGUARD flag.
         // https://code.google.com/p/android-developer-preview/issues/detail?id=1902
         if (Device.hasLollipopApi()
-                && !Device.hasMuffinsApi() // Should be fine now
+                && !Device.hasMarshmallowApi() // Should be fine now
                 && !mKeyguardManager.isKeyguardSecure()) {
             getWindow().addFlags(flags);
             requestDismissSystemKeyguard();
@@ -437,7 +437,7 @@ public abstract class KeyguardActivity extends BaseActivity implements
 
     @Override
     public void onTimeoutEvent(@NonNull Timeout timeout, int event) {
-        if (DEBUG) LogUtils.v(TAG, "TIMEOUT: " + event, 5);
+        if (DEBUG) TracingLog.v(TAG, "TIMEOUT: " + event, 5);
         switch (event) {
             case Timeout.EVENT_CHANGED:
             case Timeout.EVENT_RESUMED:

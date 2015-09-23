@@ -33,6 +33,8 @@ import com.achep.base.tests.Check;
 
 import java.util.ArrayList;
 
+import timber.log.Timber;
+
 import static com.achep.base.Build.DEBUG;
 
 /**
@@ -151,10 +153,12 @@ public abstract class MediaController2 implements
     }
 
     public void start() {
+        Timber.d("Starting the media controller: was_running=" + mAtomic.isRunning());
         mAtomic.start();
     }
 
     public void stop() {
+        Timber.d("Stopping the media controller: was_running=" + mAtomic.isRunning());
         mAtomic.stop();
     }
 

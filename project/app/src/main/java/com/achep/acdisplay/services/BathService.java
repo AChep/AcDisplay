@@ -20,7 +20,6 @@ package com.achep.acdisplay.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +37,7 @@ import com.achep.acdisplay.notifications.NotificationHelper;
 import com.achep.acdisplay.ui.activities.MainActivity;
 import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IOnLowMemory;
+import com.achep.base.services.BaseService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ import static com.achep.base.Build.DEBUG;
  *
  * @author Artem Chepurnoy
  */
-public class BathService extends Service {
+public class BathService extends BaseService {
 
     private static final String TAG = "BathService";
 

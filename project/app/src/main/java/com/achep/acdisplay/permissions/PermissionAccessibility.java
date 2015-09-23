@@ -53,7 +53,7 @@ public final class PermissionAccessibility extends Permission {
     /**
      * {@inheritDoc}
      */
-    public boolean isActive() {
+    public boolean isGranted() {
         final ContentResolver cr = mContext.getContentResolver();
 
         try {

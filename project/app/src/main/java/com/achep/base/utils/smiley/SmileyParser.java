@@ -92,27 +92,27 @@ public class SmileyParser {
                 R.drawable.emo_im_pokerface
         };
 
-        public static int HAPPY = 0;
-        public static int SAD = 1;
-        public static int WINKING = 2;
-        public static int TONGUE_STICKING_OUT = 3;
-        public static int SURPRISED = 4;
-        public static int KISSING = 5;
-        public static int YELLING = 6;
-        public static int COOL = 7;
-        public static int MONEY_MOUTH = 8;
-        public static int FOOT_IN_MOUTH = 9;
-        public static int EMBARRASSED = 10;
-        public static int ANGEL = 11;
-        public static int UNDECIDED = 12;
-        public static int CRYING = 13;
-        public static int LIPS_ARE_SEALED = 14;
-        public static int LAUGHING = 15;
-        public static int WTF = 16;
-        public static int MAD = 17;
-        public static int HEART = 18;
-        public static int SMIRK = 19;
-        public static int POKERFACE = 20;
+        public static final int HAPPY = 0;
+        public static final int SAD = 1;
+        public static final int WINKING = 2;
+        public static final int TONGUE_STICKING_OUT = 3;
+        public static final int SURPRISED = 4;
+        public static final int KISSING = 5;
+        public static final int YELLING = 6;
+        public static final int COOL = 7;
+        public static final int MONEY_MOUTH = 8;
+        public static final int FOOT_IN_MOUTH = 9;
+        public static final int EMBARRASSED = 10;
+        public static final int ANGEL = 11;
+        public static final int UNDECIDED = 12;
+        public static final int CRYING = 13;
+        public static final int LIPS_ARE_SEALED = 14;
+        public static final int LAUGHING = 15;
+        public static final int WTF = 16;
+        public static final int MAD = 17;
+        public static final int HEART = 18;
+        public static final int SMIRK = 19;
+        public static final int POKERFACE = 20;
 
         public static int getSmileyResource(int which) {
             return sIconIds[which];

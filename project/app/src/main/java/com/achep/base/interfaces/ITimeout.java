@@ -22,4 +22,48 @@ package com.achep.base.interfaces;
  * Created by Artem Chepurnoy on 08.01.2015.
  */
 public interface ITimeout {
+
+    /**
+     * Same as calling {@link #set(int, boolean)} with {@code override = false}.
+     *
+     * @see #set(int, boolean)
+     * @see #resume()
+     * @see #clear()
+     */
+    void set(final int delay);
+
+    /**
+     * Configures the timeout.
+     *
+     * @param override {@code true} to rewrite previous timeout\'s time, {@code false} to
+     *                 set the nearest one.
+     * @see #set(int)
+     * @see #resume()
+     * @see #clear()
+     */
+    void set(final int delay, boolean override);
+
+    /**
+     * Pauses the timeout.
+     *
+     * @see #resume()
+     */
+    void pause();
+
+    /**
+     * Resumes the timeout (does nothing if the timeout if cleared).
+     *
+     * @see #set(int, boolean)
+     * @see #pause()
+     * @see #clear()
+     */
+    void resume();
+
+    /**
+     * Clears the timeout.
+     *
+     * @see #set(int, boolean)
+     * @see #pause()
+     */
+    void clear();
 }

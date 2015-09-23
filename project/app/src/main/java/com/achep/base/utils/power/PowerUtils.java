@@ -27,12 +27,11 @@ import android.os.BatteryManager;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.Display;
 
 import com.achep.base.Device;
 
-import static com.achep.base.Build.DEBUG;
+import timber.log.Timber;
 
 /**
  * Helper class with utils related to power.
@@ -49,7 +48,7 @@ public class PowerUtils {
      */
     public static boolean isPlugged(@NonNull Context context) {
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        return isPlugged(context.registerReceiver(null, intentFilter));
+        return isPlugged(context.getApplicationContext().registerReceiver(null, intentFilter));
     }
 
     /**
@@ -77,7 +76,7 @@ public class PowerUtils {
             if (displays == null || displays.length == 0) {
                 break display_api;
             } else if (displays.length > 1) {
-                if (DEBUG) Log.i(TAG, "The number of logical displays is " + displays.length);
+                Timber.tag(TAG).i("The number of logical displays is " + displays.length);
             }
 
             return displays[0].getState() == Display.STATE_ON;

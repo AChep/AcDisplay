@@ -21,11 +21,10 @@ package com.achep.base.async;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
-import static com.achep.base.Build.DEBUG;
+import timber.log.Timber;
 
 /**
  * Created by Artem Chepurnoy on 25.01.2015.
@@ -45,7 +44,7 @@ public abstract class WeakHandler<A> extends Handler {
         super.handleMessage(msg);
         A object = mWeakRef.get();
         if (object == null) {
-            if (DEBUG) Log.e(TAG, "Weak reference has died!"
+            Timber.tag(TAG).w("Weak reference has died!"
                     + " class=" + mWeakRef.getClass()
                     + " message=" + msg.toString());
             return;

@@ -18,6 +18,7 @@
  */
 package com.achep.base.ui.fragments.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -108,11 +109,13 @@ public class AboutDialog extends DialogFragment {
 
         String year = Build.TIME_STAMP.substring(Build.TIME_STAMP.lastIndexOf(' ') + 1);
         if (year.charAt(0) != '2') Log.w(TAG, "The build year is corrupted! Check build script.");
-        CharSequence credits = getString(R.string.about_dialog_credits);
-        CharSequence message = Html.fromHtml(ResUtils.getString(getResources(), R.string.about_dialog_message, credits, year));
+        String credits = getString(R.string.about_dialog_credits);
+        @SuppressLint("StringFormatMatches")
+        String src = ResUtils.getString(getResources(), R.string.about_dialog_message, credits, year);
+        CharSequence message = Html.fromHtml(src);
 
         MaterialDialog md = new MaterialDialog.Builder(context)
-                .iconRes(R.drawable.ic_action_about_white)
+                .iconRes(R.drawable.ic_information_outline_white_24dp)
                 .title(getVersionName(context))
                 .content(message)
                 .negativeText(R.string.close)

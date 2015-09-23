@@ -23,10 +23,13 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import static com.achep.base.Build.DEBUG;
@@ -102,6 +105,51 @@ public class FileUtils {
             }
         }
         if (DEBUG) Log.e(TAG, errorMessage + " file=" + file);
+        return false;
+    }
+
+    public static boolean writeToFileAppend(@NonNull File file, @NonNull CharSequence text) {
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            file.createNewFile();
+        } catch (IOException e) {
+            Log.w(TAG, "Failed to create the file: file=" + file.getName());
+            return false;
+        }
+
+        OutputStream os = null;
+        InputStream is = null;
+        try {
+            os = new FileOutputStream(file, true);
+            is = new ByteArrayInputStream(text.toString().getBytes("UTF-8"));
+
+            int read;
+            final byte[] buffer = new byte[1024];
+            do {
+                read = is.read(buffer, 0, buffer.length);
+                if (read > 0) os.write(buffer, 0, read);
+            } while (read > 0);
+            return true;
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to append to a file: file=" + file.getName());
+            e.printStackTrace();
+        } finally {
+            // Try to close the stream.
+            if (os != null) try {
+                os.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to close the stream!");
+                e.printStackTrace();
+            }
+
+            // Try to close the stream.
+            if (is != null) try {
+                is.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to close the stream!");
+                e.printStackTrace();
+            }
+        }
         return false;
     }
 

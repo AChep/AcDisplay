@@ -16,22 +16,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.base.utils;
+package com.achep.base.utils.logs;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
+
+import timber.log.Timber;
 
 /**
- * Created by Artem Chepurnoy on 12.01.2015.
+ * A log that includes fancy stack traces in addition to
+ * given message. As everything here, it uses {@link Timber}
+ * to print logs.
  */
-public class LogUtils {
+public class TracingLog {
 
-    public static void v(String tag, String msg, int depth) {
-        Log.v(tag, getLocation(depth) + msg);
+    /**
+     * Logs a verbose message.
+     */
+    public static void v(@NonNull String tag, @Nullable String msg, int depth) {
+        if (msg == null) {
+            msg = "";
+        }
+        Timber.tag(tag).v(getLocation(depth) + msg);
     }
 
+    @NonNull
     private static String getLocation(int depth) {
-        final String className = LogUtils.class.getName();
+        final String className = TracingLog.class.getName();
         final StackTraceElement[] traces = Thread.currentThread().getStackTrace();
         boolean found = false;
 
@@ -52,14 +64,14 @@ public class LogUtils {
                 } else if (trace.getClassName().startsWith(className)) {
                     found = true;
                 }
-            } catch (ClassNotFoundException ignored) {
-            }
+            } catch (ClassNotFoundException ignored) { /* ignore*/ }
         }
 
         return sb.toString() + ": ";
     }
 
-    private static String getClassName(Class<?> clazz) {
+    @NonNull
+    private static String getClassName(@Nullable Class<?> clazz) {
         if (clazz != null) {
             if (!TextUtils.isEmpty(clazz.getSimpleName())) {
                 return clazz.getSimpleName();

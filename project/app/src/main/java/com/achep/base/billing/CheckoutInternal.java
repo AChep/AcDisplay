@@ -21,11 +21,10 @@ package com.achep.base.billing;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Base64;
-import android.util.Log;
 
 import com.achep.base.Build;
 import com.achep.base.tests.Check;
+import com.achep.base.utils.EncryptionUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -37,6 +36,8 @@ import org.solovyev.android.checkout.RobotmediaDatabase;
 import org.solovyev.android.checkout.RobotmediaInventory;
 
 import java.util.concurrent.Executor;
+
+import timber.log.Timber;
 
 /**
  * @author Artem Chepurnoy
@@ -135,41 +136,6 @@ public class CheckoutInternal {
         Check.getInstance().isTrue(mConnections >= 0);
     }
 
-    /**
-     * Method deciphers previously ciphered message
-     *
-     * @param message ciphered message
-     * @param salt    salt which was used for ciphering
-     * @return deciphered message
-     */
-    @NonNull
-    private String fromX(@NonNull String message, @NonNull String salt)
-            throws IllegalArgumentException {
-        return x(new String(Base64.decode(message, Base64.URL_SAFE)), salt);
-    }
-
-    /**
-     * Symmetric algorithm used for ciphering/deciphering.
-     *
-     * @param message message
-     * @param salt    salt
-     * @return ciphered/deciphered message
-     */
-    @NonNull
-    private String x(@NonNull String message, @NonNull String salt) {
-        final char[] m = message.toCharArray();
-        final char[] s = salt.toCharArray();
-
-        final int ml = m.length;
-        final int sl = s.length;
-        final char[] result = new char[ml];
-
-        for (int i = 0; i < ml; i++) {
-            result[i] = (char) (m[i] ^ s[i % sl]);
-        }
-        return new String(result);
-    }
-
     private class Configuration extends Billing.DefaultConfiguration {
 
         @NonNull
@@ -181,9 +147,9 @@ public class CheckoutInternal {
             final String k = Build.GOOGLE_PLAY_PUBLIC_KEY_ENCRYPTED;
             final String s = Build.GOOGLE_PLAY_PUBLIC_KEY_SALT;
             try {
-                return fromX(k, s);
+                return EncryptionUtils.fromX(k, s);
             } catch (IllegalArgumentException e) {
-                Log.e(TAG, "Failed to decode the public Google Play key!");
+                Timber.tag(TAG).e("Failed to decode the public Google Play key!");
             }
             return "fail";
         }

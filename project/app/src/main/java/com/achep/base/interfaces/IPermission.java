@@ -24,17 +24,18 @@ import android.support.annotation.NonNull;
 /**
  * Created by Artem Chepurnoy on 27.01.2015.
  */
-public interface IPermission {
+public interface IPermission extends IOnLowMemory {
 
     /**
-     * @return {@code true} if the permission is active and you may use its power right now,
+     * @return {@code true} if the permission is granted and you may use its power right now,
      * {@code false} otherwise.
      */
-    boolean isActive();
+    boolean isGranted();
 
     /**
-     * @return {@code true} if the permission is possible to give, {@code false} otherwise.
+     * @return {@code true} if the permission is possible to give,
+     * {@code false} otherwise.
      */
-    boolean isPossible(@NonNull Context context);
+    boolean exists(@NonNull Context context);
 
 }

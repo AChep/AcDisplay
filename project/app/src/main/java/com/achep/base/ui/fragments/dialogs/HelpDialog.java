@@ -19,16 +19,14 @@
 package com.achep.base.ui.fragments.dialogs;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.text.Html;
 
-import com.achep.acdisplay.Config;
 import com.achep.acdisplay.R;
-import com.achep.base.utils.RawReader;
+import com.achep.base.AppHeap;
+import com.achep.base.interfaces.IConfiguration;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
@@ -38,17 +36,24 @@ import com.afollestad.materialdialogs.MaterialDialog;
  */
 public class HelpDialog extends DialogFragment {
 
+    @NonNull
     private final Handler mHandler = new Handler();
+    @NonNull
+    private final Runnable mReadRunnable = new Runnable() {
+        @Override
+        public void run() {
+            AppHeap.getInstance().getConfiguration().getHelp().onUserReadHelp();
+        }
+    };
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String source = RawReader.readText(getActivity(), R.raw.faq);
-        CharSequence message = Html.fromHtml(source);
+        final IConfiguration configuration = AppHeap.getInstance().getConfiguration();
         return new MaterialDialog.Builder(getActivity())
-                .iconRes(R.drawable.ic_action_help_white)
+                .iconRes(R.drawable.ic_help_circle_white_24dp)
                 .title(R.string.help_dialog_title)
-                .content(message)
+                .content(configuration.getHelp().getText(getActivity()))
                 .negativeText(R.string.close)
                 .build();
     }
@@ -56,19 +61,13 @@ public class HelpDialog extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Context context = getActivity();
-                assert context != null;
-                Config.getInstance().getTriggers().setHelpRead(context, true, null);
-            }
-        }, getResources().getInteger(R.integer.config_maxHelpUserReadFuckyou));
+        final int duration = getResources().getInteger(R.integer.config_maxHelpUserReadFuckyou);
+        mHandler.postDelayed(mReadRunnable, duration);
     }
 
     @Override
     public void onPause() {
-        mHandler.removeCallbacksAndMessages(null);
+        mHandler.removeCallbacks(mReadRunnable);
         super.onPause();
     }
 

@@ -20,6 +20,7 @@ package com.achep.base.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
 /**
@@ -30,17 +31,20 @@ import android.support.annotation.NonNull;
 public class NetworkUtils {
 
     /**
-     * @return {@code true} if device is connected to the Internet, {@code false} otherwise.
+     * @return {@code true} if device is connected to the Internet,
+     * {@code false} otherwise.
      */
     public static boolean isOnline(@NonNull Context context) {
         return isOnline((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
     }
 
     /**
-     * @return {@code true} if device is connected to the Internet, {@code false} otherwise.
+     * @return {@code true} if device is connected to the Internet,
+     * {@code false} otherwise.
      */
     public static boolean isOnline(@NonNull ConnectivityManager cm) {
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isConnectedOrConnecting();
     }
 
 }

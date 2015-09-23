@@ -19,7 +19,10 @@
 package com.achep.acdisplay;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.text.Html;
 
 import com.achep.acdisplay.blacklist.Blacklist;
 import com.achep.acdisplay.notifications.NotificationHelper;
@@ -30,9 +33,14 @@ import com.achep.acdisplay.services.SensorsDumpService;
 import com.achep.acdisplay.services.activemode.ActiveModeService;
 import com.achep.base.AppHeap;
 import com.achep.base.content.ConfigBase;
+import com.achep.base.interfaces.IConfiguration;
 import com.achep.base.permissions.Permission;
 import com.achep.base.permissions.PermissionGroup;
+import com.achep.base.utils.RawReader;
 import com.achep.base.utils.smiley.SmileyParser;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Artem on 22.02.14.
@@ -78,7 +86,64 @@ public class App extends Application {
     public void onCreate() {
         mAccessManager = new AccessManager(this);
 
-        AppHeap.getInstance().init(this);
+        AppHeap.getInstance().init(this, new IConfiguration() {
+
+            @NonNull
+            private final IBilling billing = new IBilling() {
+
+                @NonNull
+                @Override
+                public List<String> getProducts() {
+                    return Arrays.asList(
+                            "donation_1",
+                            "donation_4",
+                            "donation_10",
+                            "donation_20",
+                            "donation_50",
+                            "donation_99");
+                }
+
+                @Override
+                public boolean hasAlternativePaymentMethods() {
+                    if (Config.getInstance().getTriggers().getLaunchCount() > 500) {
+                        // Always show the addition options to an active
+                        // user. Hope to not get ban for this... :/
+                        return true;
+                    }
+
+                    final Resources res = AppHeap.getContext().getResources();
+                    return res.getBoolean(R.bool.config_alternative_payments);
+                }
+            };
+
+            @NonNull
+            private final IHelp help = new IHelp() {
+                @NonNull
+                @Override
+                public CharSequence getText(@NonNull Context context) {
+                    final String source = RawReader.readText(context, R.raw.faq);
+                    return Html.fromHtml(source);
+                }
+
+                @Override
+                public void onUserReadHelp() {
+                    final Context context = instance;
+                    Config.getInstance().getTriggers().setHelpRead(context, true, null);
+                }
+            };
+
+            @NonNull
+            @Override
+            public IBilling getBilling() {
+                return billing;
+            }
+
+            @NonNull
+            @Override
+            public IHelp getHelp() {
+                return help;
+            }
+        });
         Config.getInstance().init(this);
         Blacklist.getInstance().init(this);
         SmileyParser.init(this);
@@ -100,7 +165,7 @@ public class App extends Application {
 
             PermissionGroup pg = getAccessManager().getMasterPermissions();
             for (Permission permission : pg.permissions) {
-                if (!permission.isActive()) {
+                if (!permission.isGranted()) {
                     if (foundAny) {
                         sb.append(divider);
                     } else foundAny = true;

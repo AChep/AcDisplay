@@ -103,11 +103,3 @@
 -assumenosideeffects class org.solovyev.android.checkout.Check {
         *;
 }
-
-######### RipleDrawable rules
-#### Check it there:
-#### https://github.com/ozodrukh/RippleDrawable/blob/master/sample/proguard-rules.pro
-
--keep class dreamers.graphics.** {
-        *;
-}

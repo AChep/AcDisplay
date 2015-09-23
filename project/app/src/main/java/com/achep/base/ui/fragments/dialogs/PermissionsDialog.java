@@ -126,7 +126,7 @@ public class PermissionsDialog extends DialogFragment {
         data.clear();
 
         for (Permission item : mPermissions) {
-            if (!item.isActive()) {
+            if (!item.isGranted()) {
                 data.add(item);
             }
         }

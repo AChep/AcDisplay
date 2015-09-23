@@ -30,7 +30,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.ArrayList;
 
 /**
- * Created by Artem Chepurnoy on 27.01.2015.
+ * A permission that consists of {@link Permission permissions}.
+ *
+ * @author Artem Chepurnoy
  */
 public class PermissionGroup implements IOnLowMemory, IPermission {
 
@@ -70,9 +72,9 @@ public class PermissionGroup implements IOnLowMemory, IPermission {
      * {@inheritDoc}
      */
     @Override
-    public boolean isActive() {
-        for (Permission permission : permissions)
-            if (!permission.isActive()) return false;
+    public boolean isGranted() {
+        for (IPermission permission : permissions)
+            if (!permission.isGranted()) return false;
         return true;
     }
 
@@ -80,9 +82,9 @@ public class PermissionGroup implements IOnLowMemory, IPermission {
      * {@inheritDoc}
      */
     @Override
-    public boolean isPossible(@NonNull Context context) {
-        for (Permission permission : permissions)
-            if (!permission.isPossible(context)) return false;
+    public boolean exists(@NonNull Context context) {
+        for (IPermission permission : permissions)
+            if (!permission.exists(context)) return false;
         return true;
     }
 
@@ -91,7 +93,7 @@ public class PermissionGroup implements IOnLowMemory, IPermission {
      */
     @Override
     public void onLowMemory() {
-        for (Permission permission : permissions) {
+        for (IPermission permission : permissions) {
             permission.onLowMemory();
         }
     }

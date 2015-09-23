@@ -18,7 +18,6 @@
  */
 package com.achep.base.ui.fragments.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -26,7 +25,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +37,9 @@ import com.achep.acdisplay.R;
 import com.achep.base.AppHeap;
 import com.achep.base.billing.Bitcoin;
 import com.achep.base.billing.PayPal;
+import com.achep.base.billing.SkuUi;
 import com.achep.base.interfaces.IActivityBase;
+import com.achep.base.interfaces.IConfiguration;
 import com.achep.base.ui.adapters.BetterArrayAdapter;
 import com.achep.base.ui.widgets.HeaderGridView;
 import com.achep.base.ui.widgets.TextView;
@@ -64,7 +64,7 @@ import java.util.Comparator;
 import static com.achep.base.Build.DEBUG;
 
 /**
- * Created by Artem Chepurnoy on 13.12.2014.
+ * @author Artem Chepurnoy
  */
 public class DonateDialog extends DialogFragment {
 
@@ -74,29 +74,33 @@ public class DonateDialog extends DialogFragment {
     private static final int SCREEN_INVENTORY = 2;
     private static final int SCREEN_EMPTY_VIEW = 4;
 
-    private TextView mEmptyView;
-    private ProgressBar mProgressBar;
-
-    private Inventory mInventory;
-    private ActivityCheckout mCheckout;
-    private final PurchaseListener mPurchaseListener = new PurchaseListener();
+    @NonNull
     private final InventoryLoadedListener mInventoryLoadedListener = new InventoryLoadedListener();
-
+    @NonNull
+    private final PurchaseListener mPurchaseListener = new PurchaseListener();
+    private ActivityCheckout mCheckout;
     private SkusAdapter mAdapter;
+    private Inventory mInventory;
+
+    private ProgressBar mProgressBar;
+    private TextView mEmptyView;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof IActivityBase) {
-            IActivityBase ma = (IActivityBase) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IActivityBase) {
+            IActivityBase ma = (IActivityBase) context;
             mCheckout = ma.getCheckout();
 
             if (mCheckout == null) {
                 String message = "You must call #requestCheckout() on the activity before!";
                 throw new RuntimeException(message);
             }
-        } else throw new RuntimeException("Host activity must be an " +
-                "instance of IActivityBase.class!");
+
+            return; // don't crash
+        }
+
+        throw new RuntimeException("Host activity must be an instance of IActivityBase.class!");
     }
 
     @Override
@@ -122,7 +126,9 @@ public class DonateDialog extends DialogFragment {
         View phView = inflater.inflate(R.layout.dialog_donate_placeholder, frameLayout, false);
         mProgressBar = (ProgressBar) phView.findViewById(R.id.progress);
         mEmptyView = (TextView) phView.findViewById(R.id.empty);
+        mEmptyView.setText(R.string.donate_billing_not_supported);
 
+        assert md.getCustomView() != null;
         HeaderGridView gv = (HeaderGridView) md.getCustomView().findViewById(R.id.grid);
         gv.addHeaderView(textView, null, false);
         gv.addHeaderView(phView, null, false);
@@ -141,14 +147,14 @@ public class DonateDialog extends DialogFragment {
     @NonNull
     private MaterialDialog initDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
-                .iconRes(R.drawable.ic_action_donate_white)
+                .iconRes(R.drawable.ic_gift_white_24dp)
                 .title(R.string.donate_dialog_title)
                 .customView(R.layout.dialog_donate, false)
                 .neutralText(R.string.close);
 
-        if (!getResources().getBoolean(R.bool.config_alternative_payments)) {
-            return builder.build();
-        }
+        final IConfiguration configuration = AppHeap.getInstance().getConfiguration();
+        final boolean hasApl = configuration.getBilling().hasAlternativePaymentMethods();
+        if (!hasApl) return builder.build();
 
         final Bitcoin btc = new Bitcoin();
         final PayPal pp = new PayPal();
@@ -211,14 +217,18 @@ public class DonateDialog extends DialogFragment {
                 .show();
     }
 
-    private void showScene(int visibility) {
+    private void refreshUi(int visibility) {
         ViewUtils.setVisible(mProgressBar, visibility == SCREEN_LOADING);
         ViewUtils.setVisible(mEmptyView, visibility == SCREEN_EMPTY_VIEW);
     }
 
     private void reloadInventory() {
-        showScene(SCREEN_LOADING);
-        mInventory.load().whenLoaded(mInventoryLoadedListener);
+        // Set `loading` state.
+        refreshUi(SCREEN_LOADING);
+        // Reload the inventory.
+        mInventory
+                .load()
+                .whenLoaded(mInventoryLoadedListener);
     }
 
     private void purchase(@NonNull final Sku sku) {
@@ -231,6 +241,9 @@ public class DonateDialog extends DialogFragment {
         });
     }
 
+    /**
+     * @author Artem Chepurnoy
+     */
     private class InventoryLoadedListener implements Inventory.Listener {
 
         @Override
@@ -242,7 +255,7 @@ public class DonateDialog extends DialogFragment {
             if (product.supported) {
                 for (Sku sku : product.getSkus()) {
                     final Purchase purchase = product.getPurchaseInState(sku, Purchase.State.PURCHASED);
-                    final SkuUi skuUi = new SkuUi(sku, purchase != null);
+                    final SkuUi skuUi = new MySkuUi(sku, purchase != null);
                     mAdapter.add(skuUi);
                 }
 
@@ -253,56 +266,68 @@ public class DonateDialog extends DialogFragment {
                         return (int) (l.sku.detailedPrice.amount - r.sku.detailedPrice.amount);
                     }
                 });
-                showScene(SCREEN_INVENTORY);
-            } else {
-                mEmptyView.setText(R.string.donate_billing_not_supported);
-                showScene(SCREEN_EMPTY_VIEW);
-            }
+
+                // Show the inventory.
+                refreshUi(SCREEN_INVENTORY);
+            } else refreshUi(SCREEN_EMPTY_VIEW);
 
             mAdapter.notifyDataSetChanged();
         }
-
     }
 
+    /**
+     * @author Artem Chepurnoy
+     */
     private abstract class BaseRequestListener<T> implements RequestListener<T> {
 
         @Override
         public void onError(int response, @NonNull Exception e) {
             ToastUtils.showShort(getActivity(), e.getLocalizedMessage());
         }
-
     }
 
-    private class PurchaseListener extends BaseRequestListener<Purchase> {
+    /**
+     * @author Artem Chepurnoy
+     */
+    private final class PurchaseListener extends BaseRequestListener<Purchase> {
 
         @Override
         public void onSuccess(@NonNull Purchase purchase) {
-            purchased();
+            onPurchased(false);
         }
 
         @Override
         public void onError(int response, @NonNull Exception e) {
             switch (response) {
                 case ResponseCodes.ITEM_ALREADY_OWNED:
-                    purchased();
+                    onPurchased(true);
                     break;
                 default:
                     super.onError(response, e);
             }
         }
 
-        private void purchased() {
-            reloadInventory();
+        private void onPurchased(boolean alreadyOwned) {
             ToastUtils.showLong(getActivity(), R.string.donate_thanks);
-        }
 
+            if (alreadyOwned) {
+                // Nothing has changed, so we don't need
+                // to reload the inventory.
+                return;
+            }
+
+            reloadInventory();
+        }
     }
 
     /**
-     * Created by Artem Chepurnoy on 23.12.2014.
+     * @author Artem Chepurnoy
      */
-    private static class SkusAdapter extends BetterArrayAdapter<SkuUi> {
+    private static final class SkusAdapter extends BetterArrayAdapter<SkuUi> {
 
+        /**
+         * @author Artem Chepurnoy
+         */
         private static final class ViewHolder extends BetterArrayAdapter.ViewHolder {
 
             @NonNull
@@ -340,12 +365,10 @@ public class DonateDialog extends DialogFragment {
 
         @Override
         public void onBindViewHolder(@NonNull BetterArrayAdapter.ViewHolder viewHolder, int i) {
-            fill(mContext, (ViewHolder) viewHolder, getItem(i));
+            bindItem((ViewHolder) viewHolder, getItem(i));
         }
 
-        private static void fill(@NonNull Context context,
-                                 @NonNull ViewHolder holder,
-                                 @NonNull SkuUi skuUi) {
+        private static void bindItem(@NonNull ViewHolder holder, @NonNull SkuUi skuUi) {
             RippleUtils.makeFor(holder.view, true);
             holder.description.setText(skuUi.getDescription());
 
@@ -363,34 +386,24 @@ public class DonateDialog extends DialogFragment {
             holder.price.setVisibility(visibility);
             holder.currency.setVisibility(visibility);
         }
-
     }
 
     /**
      * @author Artem Chepurnoy
      */
-    private static class SkuUi {
+    private static class MySkuUi extends SkuUi {
 
-        @NonNull
-        private static final String TAG = "SkuUi";
-
-        private static final long MICRO = 1_000_000; // defines how much 'micro' is
-
-        @NonNull
-        public final Sku sku;
-
-        private final boolean isPurchased;
-
-        @Nullable
-        private String description;
-
-        public SkuUi(@NonNull Sku sku, boolean isPurchased) {
-            this.sku = sku;
-            this.isPurchased = isPurchased;
+        public MySkuUi(@NonNull Sku sku, boolean isPurchased) {
+            super(sku, isPurchased);
         }
 
         @NonNull
-        private static String createDescription(@NonNull Sku sku) {
+        @Override
+        protected String onCreateDescription(@NonNull Sku sku) {
+            /*
+             * Those are highly app specific and should probably be
+             * moved.
+             */
             String prefix = "donation_";
             if (sku.id.startsWith(prefix)) {
                 int[] data = new int[]{
@@ -414,53 +427,5 @@ public class DonateDialog extends DialogFragment {
             Log.wtf(TAG, "Alien sku found!");
             return "Alien sku found!";
         }
-
-        /**
-         * @return the price of the sku in {@link #getPriceCurrency() currency}.
-         * @see #getPriceCurrency()
-         * @see #getDescription()
-         */
-        @NonNull
-        public String getPriceAmount() {
-            long amountMicro = sku.detailedPrice.amount;
-            if (amountMicro % MICRO == 0) {
-                // Format it 'as int' number to
-                // get rid of unused comma.
-                long amount = amountMicro / MICRO;
-                return String.valueOf(amount);
-            }
-
-            double amount = (double) amountMicro / MICRO;
-            return String.valueOf(amount);
-        }
-
-        /**
-         * @return the currency of the price.
-         * @see #getPriceAmount()
-         */
-        @NonNull
-        public String getPriceCurrency() {
-            return sku.detailedPrice.currency;
-        }
-
-        /**
-         * The thing that you may buy for that money.
-         *
-         * @see #getPriceAmount()
-         */
-        @NonNull
-        public String getDescription() {
-            if (description == null)
-                description = createDescription(sku);
-            return description;
-        }
-
-        /**
-         * @return {@code true} if the sku is purchased, {@code false} otherwise.
-         */
-        public boolean isPurchased() {
-            return isPurchased;
-        }
-
     }
 }

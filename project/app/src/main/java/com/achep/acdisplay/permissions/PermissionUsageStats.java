@@ -56,7 +56,7 @@ public final class PermissionUsageStats extends Permission {
     /**
      * {@inheritDoc}
      */
-    public boolean isActive() {
+    public boolean isGranted() {
         final String packageName = PackageUtils.getName(mContext);
         final int uid;
         try {

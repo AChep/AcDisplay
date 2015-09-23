@@ -26,14 +26,17 @@ import android.support.annotation.Nullable;
  */
 public class CsUtils {
 
+    /**
+     * Python-like joining strings!
+     */
     @Nullable
-    public static CharSequence join(@NonNull CharSequence divider, @NonNull CharSequence... array) {
+    public static CharSequence join(@Nullable CharSequence divider, @NonNull CharSequence... array) {
         StringBuilder sb = new StringBuilder();
 
         boolean divide = false;
         for (CharSequence cs : array) {
             if (cs != null) {
-                if (divide) {
+                if (divide && divider != null) {
                     sb.append(divider);
                 } else {
                     divide = true;

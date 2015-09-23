@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright (C) 2014 AChep@xda <artemchep@gmail.com>
   ~
@@ -126,6 +127,13 @@
 
         <activity
             android:name=".ui.activities.tests.ShakeTestActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.activities.settings.Settings2"
+            android:taskAffinity=".settings"
+            android:theme="@style/Base.MaterialTheme.Fullscreen" />
+
+        <activity
+            android:name=".ui.activities.tests.IdleExitTestActivity"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activities.settings.Settings2"
             android:taskAffinity=".settings"

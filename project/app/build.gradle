@@ -44,7 +44,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.0'
+    buildToolsVersion '23.0.1'
 
     lintOptions {
         checkReleaseBuilds true
@@ -87,6 +87,10 @@ android {
     String keySalt = UUID.randomUUID().toString();
     String keyEncrypted = encryptPublicKey(key, keySalt);
 
+    String logKey = UUID.randomUUID().toString();
+    String logKeySalt = UUID.randomUUID().toString();
+    String logKeyEncrypted = encryptPublicKey(logKey, logKeySalt);
+
     // Google Play key is very important and better to check it twice
     // then to get a billion of Force Close reports.
     println "- - - - - - - - - - - -"
@@ -112,17 +116,24 @@ android {
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
+            buildConfigField "String", "MY_LOG_KEY", "\"" + logKeyEncrypted + "\""
+            buildConfigField "String", "MY_LOG_KEY_SALT", "\"" + logKeySalt + "\""
         }
         release {
             zipAlignEnabled true
             minifyEnabled true
-            proguardFile 'proguard-rules.txt'
+            proguardFile 'proguard-dreamers-rippledrawable.pro'
+            proguardFile 'proguard-support-v7-appcompat.pro'
+            proguardFile 'proguard-support-design.pro'
+            proguardFile 'proguard-app.pro'
             signingConfig signingConfigs.release
 
             buildConfigField "boolean", "MY_DEBUG", "false"
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
+            buildConfigField "String", "MY_LOG_KEY", "\"" + logKeyEncrypted + "\""
+            buildConfigField "String", "MY_LOG_KEY_SALT", "\"" + logKeySalt + "\""
         }
     }
 
@@ -146,6 +157,7 @@ dependencies {
     compile 'org.solovyev.android:checkout:0.7.+@aar'
     //noinspection GradleDynamicVersion
     compile 'com.afollestad:material-dialogs:0.7.+'
+    compile 'com.jakewharton.timber:timber:3.1.0'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
 

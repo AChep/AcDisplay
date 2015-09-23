@@ -49,7 +49,7 @@ public final class PermissionDeviceAdmin extends Permission {
     /**
      * {@inheritDoc}
      */
-    public boolean isActive() {
+    public boolean isGranted() {
         return getDpmService().isAdminActive(mComponent);
     }
 
@@ -57,7 +57,7 @@ public final class PermissionDeviceAdmin extends Permission {
      * {@inheritDoc}
      */
     @Override
-    public boolean isPossible(@NonNull Context context) {
+    public boolean exists(@NonNull Context context) {
         return true;
     }
 

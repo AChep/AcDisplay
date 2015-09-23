@@ -21,30 +21,40 @@ package com.achep.base.utils.logcat;
 import android.support.annotation.Nullable;
 
 import com.achep.base.utils.FileUtils;
+import com.stericson.RootTools.RootTools;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Created by Artem Chepurnoy on 09.12.2014.
+ * @author Artem Chepurnoy
  */
-// TODO: Pull the code of capturing the logcat from the CatLog app.
-// Link: https://github.com/nolanlawson/Catlog
 public class Logcat {
 
+    /**
+     * Captures the application logcat.
+     */
     @Nullable
     public static String capture() {
+        final String[] command;
+        if (RootTools.isAccessGiven()) {
+            command = new String[]{"su", "logcat", "-v", "threadtime", "-d"};
+        } else command = new String[]{"logcat", "-v", "threadtime", "-d"};
+
+        BufferedReader br = null;
         try {
-            String[] command = new String[]{"logcat", "-v", "threadtime", "-d"};
             Process process = Runtime.getRuntime().exec(command);
-            return FileUtils.readTextFromBufferedReader(
-                    new BufferedReader(
-                            new InputStreamReader(
-                                    process.getInputStream())));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            return FileUtils.readTextFromBufferedReader(br);
         } catch (IOException e) {
             return null;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) { /* unlucky */ }
+            }
         }
     }
-
 }

@@ -19,7 +19,6 @@
 package com.achep.base.async;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.achep.base.interfaces.IThreadFinishable;
 
@@ -27,7 +26,7 @@ import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.achep.base.Build.DEBUG;
+import timber.log.Timber;
 
 /**
  * Created by Artem Chepurnoy on 17.04.2015.
@@ -66,7 +65,7 @@ public abstract class TaskQueueThread<T> extends Thread implements IThreadFinish
 
     @Override
     public void run() {
-        if (DEBUG) Log.d(TAG, "Starting thread");
+        Timber.tag(TAG).d("Starting thread...");
         super.run();
 
         Queue<T> queue = new ConcurrentLinkedQueue<>();
@@ -105,7 +104,8 @@ public abstract class TaskQueueThread<T> extends Thread implements IThreadFinish
             }
         }
 
-        if (DEBUG) Log.d(TAG, "Stopping thread");
+
+        Timber.tag(TAG).d("Stopping thread...");
     }
 
     public void sendTask(@NonNull T object) {

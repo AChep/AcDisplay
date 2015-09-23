@@ -35,7 +35,7 @@ public final class Build {
     /**
      * Defines if the current build <b>debug</b> or not.
      */
-    public static final boolean DEBUG =
+    public static final boolean DEBUG = true &&
             BuildConfig.MY_DEBUG;
 
     /**
@@ -70,6 +70,31 @@ public final class Build {
     @NonNull
     public static final String GOOGLE_PLAY_PUBLIC_KEY_SALT =
             BuildConfig.MY_GOOGLE_PLAY_PUBLIC_KEY_SALT;
+
+    /**
+     * Encrypted key that is used to store logs on storage.
+     *
+     * @see #LOG_KEY_SALT
+     */
+    @NonNull
+    public static final String LOG_KEY_ENCRYPTED =
+            BuildConfig.MY_LOG_KEY;
+
+    /**
+     * Salt for {@link #LOG_KEY_ENCRYPTED}. The salt is generated on
+     * build and should not be hardcoded.
+     *
+     * @see #LOG_KEY_ENCRYPTED
+     */
+    @NonNull
+    public static final String LOG_KEY_SALT =
+            BuildConfig.MY_LOG_KEY_SALT;
+
+    /**
+     * {@code true} to encrypt logs before saving, {@code false}
+     * to write a plain text.
+     */
+    public static final boolean ENCRYPT_LOGS = false && DEBUG;
 
     /**
      * The official e-mail for tons of complains, billions of

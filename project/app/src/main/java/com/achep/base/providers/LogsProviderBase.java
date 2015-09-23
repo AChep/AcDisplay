@@ -20,16 +20,19 @@ package com.achep.base.providers;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by achep on 16.06.14.
@@ -47,21 +50,27 @@ public abstract class LogsProviderBase extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String orderBy) {
+        File file;
+
         final List<String> pathSegments = uri.getPathSegments();
         final String fileName = pathSegments.get(0);
-        File logFile;
-
-        logFile = getContext().getCacheDir();
-        if (logFile == null) {
-            Log.e(TAG, "No cache dir.");
+        final Context context = getContext();
+        if (context == null) {
+            Timber.tag(TAG).e("No context.");
             return null;
         }
 
-        logFile = new File(new File(logFile, DIRECTORY), fileName);
-        if (!logFile.exists()) {
-            Log.e(TAG, "Requested log file doesn't exist.");
+        file = getContext().getCacheDir();
+        if (file == null) {
+            Timber.tag(TAG).w("No cache dir.");
+            return null;
+        }
+
+        file = new File(new File(file, DIRECTORY), fileName);
+        if (!file.exists()) {
+            Timber.tag(TAG).w("Requested log file doesn't exist.");
             return null;
         }
 
@@ -78,13 +87,13 @@ public abstract class LogsProviderBase extends ContentProvider {
         for (int col = 0; col < projection.length; col++) {
             switch (projection[col]) {
                 case COLUMN_DATA:
-                    row[col] = logFile.getAbsolutePath();
+                    row[col] = file.getAbsolutePath();
                     break;
                 case OpenableColumns.DISPLAY_NAME:
                     row[col] = fileName;
                     break;
                 case OpenableColumns.SIZE:
-                    row[col] = logFile.length();
+                    row[col] = file.length();
                     break;
             }
         }
@@ -93,13 +102,13 @@ public abstract class LogsProviderBase extends ContentProvider {
     }
 
     @Override
-    public ParcelFileDescriptor openFile(Uri uri, String mode)
+    public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode)
             throws FileNotFoundException {
         return openFileHelper(uri, "r");
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         return "text/plain";
     }
 
@@ -109,7 +118,7 @@ public abstract class LogsProviderBase extends ContentProvider {
      * @throws UnsupportedOperationException
      */
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         throw new UnsupportedOperationException("Insert is not supported!");
     }
 
@@ -119,7 +128,7 @@ public abstract class LogsProviderBase extends ContentProvider {
      * @throws UnsupportedOperationException
      */
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] args) {
         throw new UnsupportedOperationException("Delete is not supported!");
     }
 
@@ -129,8 +138,7 @@ public abstract class LogsProviderBase extends ContentProvider {
      * @throws UnsupportedOperationException
      */
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection,
-                      String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] args) {
         throw new UnsupportedOperationException("Update is not supported!");
     }
 

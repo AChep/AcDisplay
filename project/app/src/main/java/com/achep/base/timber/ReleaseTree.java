@@ -16,29 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.achep.base.interfaces;
+package com.achep.base.timber;
+
+import timber.log.Timber;
 
 /**
  * @author Artem Chepurnoy
  */
-public interface IPowerSave {
+public class ReleaseTree extends Timber.DebugTree {
 
-    /**
-     * Returns {@code true} if the device is currently in power save mode.
-     * When in this mode, applications should reduce their functionality
-     * in order to conserve battery as much as possible.
-     *
-     * @return {@code true} if the device is currently in power save mode, {@code false} otherwise.
-     */
-    boolean isPowerSaveMode();
+    public ReleaseTree() {
+        super();
+    }
 
-    /**
-     * Inverse function to {@link #isPowerSaveMode()}
-     */
-    /*
-     * I hate using `if (!...)` construction so this
-     * method was created
-     */
-    boolean isNotPowerSaveMode();
-
+    @Override
+    protected void log(int priority, String tag, String message, Throwable t) {
+        // As for now, do nothing.
+    }
 }

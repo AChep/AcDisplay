@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import timber.log.Timber;
+
 import static com.achep.base.Build.DEBUG;
 
 /**
@@ -115,7 +117,7 @@ public abstract class ConfigBase implements
         // Make sure to register listener only once.
         for (WeakReference<OnConfigChangedListener> ref : mListenersRefs) {
             if (ref.get() == listener) {
-                Log.w(TAG, "Tried to register already registered listener!");
+                Timber.tag(TAG).w("Tried to register already registered listener!");
                 return;
             }
         }
@@ -138,7 +140,7 @@ public abstract class ConfigBase implements
             }
         }
 
-        Log.w(TAG, "Tried to unregister non-existent listener!");
+        Timber.tag(TAG).w("Tried to unregister non-existent listener!");
     }
 
     /**

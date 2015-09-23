@@ -62,7 +62,7 @@ public class ReceiverPublic extends BroadcastReceiver {
      * @param enable {@code true} to enable AcDisplay, {@code false} to disable.
      */
     private void setAcDisplayEnabled(Context context, Config config, boolean enable) {
-        enable &= App.getAccessManager().getMasterPermissions().isActive();
+        enable &= App.getAccessManager().getMasterPermissions().isGranted();
         config.setEnabled(context, enable, null);
         ToastUtils.showLong(context, enable
                 ? R.string.remote_enable_acdisplay
