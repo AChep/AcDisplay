@@ -39,7 +39,6 @@ import com.achep.acdisplay.R;
 import com.achep.base.utils.MathUtils;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static com.achep.acdisplay.services.media.MediaController2KitKat.sStateSparse;
@@ -110,9 +109,7 @@ class MediaController2Ics extends MediaController2 {
                     IRemoteControlDisplay.class);
             method.setAccessible(true);
             method.invoke(manager, mRemoteDisplay);
-        } catch (NoSuchMethodException
-                | InvocationTargetException
-                | IllegalAccessException e) {
+        } catch (Exception e) {
             Log.w(TAG, "Failed to register remote control display.");
             e.printStackTrace();
 
@@ -130,9 +127,7 @@ class MediaController2Ics extends MediaController2 {
                         IRemoteControlDisplay.class);
                 method.setAccessible(true);
                 method.invoke(manager, mRemoteDisplay);
-            } catch (NoSuchMethodException
-                    | InvocationTargetException
-                    | IllegalAccessException e) {
+            } catch (Exception e) {
                 Log.e(TAG, "Failed to unregister remote control display.");
                 e.printStackTrace();
             } finally {

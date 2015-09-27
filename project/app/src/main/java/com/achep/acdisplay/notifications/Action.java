@@ -37,7 +37,7 @@ import java.lang.reflect.Field;
  * Structure to encapsulate a named action that can be shown as part of this notification.
  * It must include an icon, a label, and a {@link PendingIntent} to be fired when the action is
  * selected by the user.
- * <p/>
+ * <p>
  * This is actually a wrapper around {@link android.app.Notification.Action} class that supports both
  * Jelly Bean (via reflections) and KitKat Android versions.
  *

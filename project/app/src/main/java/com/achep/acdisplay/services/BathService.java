@@ -69,7 +69,7 @@ public class BathService extends BaseService {
                 ChildService instance;
                 try {
                     instance = clazz.newInstance();
-                } catch (InstantiationException | IllegalAccessException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
@@ -119,7 +119,7 @@ public class BathService extends BaseService {
                             try {
                                 // Adding child to host service.
                                 child = (ChildService) clazz.newInstance();
-                            } catch (InstantiationException | IllegalAccessException e) {
+                            } catch (Exception e) {
                                 throw new RuntimeException(e); // Should never happen
                             }
                             child.setContext(BathService.this);

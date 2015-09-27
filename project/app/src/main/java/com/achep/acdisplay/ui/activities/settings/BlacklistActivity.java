@@ -56,7 +56,6 @@ import com.achep.acdisplay.ui.fragments.BlacklistAppFragment;
 import com.achep.base.utils.MathUtils;
 import com.achep.base.utils.ResUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Comparator;
@@ -697,7 +696,7 @@ public class BlacklistActivity extends PreferenceActivity {
                 Method method = PreferenceActivity.class.getDeclaredMethod("getHeaders");
                 method.setAccessible(true);
                 headers = (List<Header>) method.invoke(this);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

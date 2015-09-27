@@ -108,7 +108,7 @@ public abstract class OpenNotification implements
 
     /**
      * Notification visibility: Show this notification in its entirety on all lockscreens.
-     * <p/>
+     * <p>
      * {@see #getVisibility()}
      */
     public static final int VISIBILITY_PUBLIC = 1;
@@ -116,14 +116,14 @@ public abstract class OpenNotification implements
     /**
      * Notification visibility: Show this notification on all lockscreens, but conceal sensitive or
      * private information on secure lockscreens.
-     * <p/>
+     * <p>
      * {@see #getVisibility()}
      */
     public static final int VISIBILITY_PRIVATE = 0;
 
     /**
      * Notification visibility: Do not reveal any part of this notification on a secure lockscreen.
-     * <p/>
+     * <p>
      * {@see #getVisibility()}
      */
     public static final int VISIBILITY_SECRET = -1;
@@ -298,13 +298,13 @@ public abstract class OpenNotification implements
     /**
      * The number of events that this notification represents. For example, in a new mail
      * notification, this could be the number of unread messages.
-     * <p/>
+     * <p>
      * The system may or may not use this field to modify the appearance of the notification. For
      * example, before {@link android.os.Build.VERSION_CODES#HONEYCOMB}, this number was
      * superimposed over the icon in the status bar. Starting with
      * {@link android.os.Build.VERSION_CODES#HONEYCOMB}, the template used by
      * {@link Notification.Builder} has displayed the number in the expanded notification view.
-     * <p/>
+     * <p>
      * If the number is 0 or negative, it is never shown.
      */
     public int getNumber() {
@@ -315,15 +315,15 @@ public abstract class OpenNotification implements
      * Sphere of visibility of this notification, which affects how and when the SystemUI reveals
      * the notification's presence and contents in untrusted situations (namely, on the secure
      * lockscreen).
-     * <p/>
+     * <p>
      * The default level, {@link #VISIBILITY_PRIVATE}, behaves exactly as notifications have always
      * done on Android: The notification's {@link #getIcon()} (if available) are
      * shown in all situations, but the contents are only available if the device is unlocked for
      * the appropriate user.
-     * <p/>
+     * <p>
      * A more permissive policy can be expressed by {@link #VISIBILITY_PUBLIC}; such a notification
      * can be read even in an "insecure" context (that is, above a secure lockscreen).
-     * <p/>
+     * <p>
      * Finally, a notification can be made {@link #VISIBILITY_SECRET}, which will suppress its icon
      * and ticker until the user has bypassed the lockscreen.
      */

@@ -83,7 +83,7 @@ public class ForwardingListener implements
 
     /**
      * Returns the layout to which this listener is forwarding events.
-     * <p/>
+     * <p>
      * Override this to return the correct layout. If the layout is displayed
      * asynchronously, you may also need to override
      * {@link #onForwardingStopped} to prevent premature cancelation of

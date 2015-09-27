@@ -26,7 +26,6 @@ import android.support.annotation.Nullable;
 
 import com.achep.base.tests.Check;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -66,9 +65,7 @@ public class PendingIntentUtils {
             method = PendingIntent.class.getDeclaredMethod("isActivity");
             method.setAccessible(true);
             return (boolean) method.invoke(pi);
-        } catch (NoSuchMethodException
-                | InvocationTargetException
-                | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return true; // We must use `true` ss the fallback value

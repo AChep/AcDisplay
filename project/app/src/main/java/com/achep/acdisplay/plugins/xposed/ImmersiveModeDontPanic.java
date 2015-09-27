@@ -31,12 +31,12 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
  * Android shows you an help message when you first start an app in Immersive Mode.
  * When you press the 'OK' button, Android sets a flag to remember you saw
  * this message, and stops showing it in the future for this app.
- * <p/>
+ * <p>
  * However, Android resets this flag when a panicking user is detected.
  * This is a safeguard measure to help people who don't know what's happening
  * (if they dismissed the message without reading it.) Panicking is detected when
  * the user turns the screen on and off more than once within 5 seconds.
- * <p/>
+ * <p>
  * This module makes the method responsible for this check do nothing, thus removing this annoyance.
  */
 public class ImmersiveModeDontPanic implements IXposedHookZygoteInit {

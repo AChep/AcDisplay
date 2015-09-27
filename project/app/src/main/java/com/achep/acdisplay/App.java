@@ -75,6 +75,7 @@ public class App extends Application {
 
     private AccessManager mAccessManager;
 
+    @SuppressWarnings("NullableProblems")
     @NonNull
     private static App instance;
 
