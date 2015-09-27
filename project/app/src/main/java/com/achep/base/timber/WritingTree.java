@@ -18,11 +18,15 @@
  */
 package com.achep.base.timber;
 
+import android.Manifest;
+import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.achep.base.AppHeap;
 import com.achep.base.Build;
+import com.achep.base.permissions.RuntimePermissions;
 import com.achep.base.tests.Check;
 import com.achep.base.utils.EncryptionUtils;
 import com.achep.base.utils.FileUtils;
@@ -90,29 +94,35 @@ public class WritingTree extends Timber.DebugTree {
                 synchronized (mMonitor) {
                     final int length = mBuilder.length();
                     if (length > 0) {
+                        //noinspection ConstantConditions
                         if (DEBUG) {
                             Log.d(TAG, "Writing " + length + "-symbols log to a file.");
                         }
 
-                        //noinspection ConstantConditions
-                        CharSequence log = ENCRYPT_LOGS
-                                ? EncryptionUtils.x(mBuilder.toString(), Build.LOG_KEY_SALT) + "\n"
-                                : mBuilder;
+                        final Context context = AppHeap.getContext();
+                        final String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+                        if (RuntimePermissions.has(context, permission)) {
+                            //noinspection ConstantConditions
+                            final CharSequence log;
+                            if (ENCRYPT_LOGS) {
+                                log = EncryptionUtils.x(mBuilder.toString(), Build.LOG_KEY_SALT) + "\n";
+                                if (DEBUG) {
+                                    // Check if we can decrypt it
+                                    String encrypted = log.toString().substring(0, log.length() - 2);
+                                    Check.getInstance().isTrue(EncryptionUtils
+                                            .fromX(encrypted, Build.LOG_KEY_SALT)
+                                            .equals(mBuilder.toString()));
+                                }
+                            } else log = mBuilder;
 
-                        //noinspection PointlessBooleanExpression,ConstantConditions
-                        if (DEBUG && ENCRYPT_LOGS) {
-                            // Check if we can decrypt it
-                            String encrypted = log.toString().substring(0, log.length() - 2);
-                            Check.getInstance().isTrue(EncryptionUtils
-                                    .fromX(encrypted, Build.LOG_KEY_SALT)
-                                    .equals(mBuilder.toString()));
-                        }
-
-                        try {
                             final boolean succeed = FileUtils.writeToFileAppend(mFile, log);
                             if (succeed) mBuilder.delete(0, length - 1);
-                        } catch (SecurityException e) {
-                            // TODO: Add the real permission check here.
+                        } else if (RuntimePermissions.allowed(context, permission)) {
+                            // TODO: Ask the permission
+                        } else {
+                            // We can not archive it, so lets just fall back
+                            // sit and cry.
+                            mBuilder.delete(0, length - 1);
                         }
                     }
 

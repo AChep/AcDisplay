@@ -53,4 +53,13 @@ public class RuntimePermissions {
         return r == PackageManager.PERMISSION_GRANTED;
     }
 
+    /**
+     * @return {@code true} if the app may ask this permission,
+     * {@code false} otherwise.
+     */
+    @SuppressLint("NewApi")
+    public static boolean allowed(@NonNull Context context, @NonNull String permission) {
+        return true;
+    }
+
 }
