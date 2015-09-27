@@ -30,6 +30,9 @@ import android.support.annotation.Nullable;
 import android.view.Display;
 
 import com.achep.base.Device;
+import com.achep.base.utils.Operator;
+
+import java.lang.reflect.Method;
 
 import timber.log.Timber;
 
@@ -72,14 +75,40 @@ public class PowerUtils {
         display_api:
         if (Device.hasKitKatWatchApi()) {
             DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-            Display[] displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+            Display[] displays = dm.getDisplays(null);
+            Display display = null;
             if (displays == null || displays.length == 0) {
                 break display_api;
             } else if (displays.length > 1) {
                 Timber.tag(TAG).i("The number of logical displays is " + displays.length);
             }
 
-            return displays[0].getState() == Display.STATE_ON;
+            for (Display d : displays) {
+                final boolean virtual = Operator.bitAnd(d.getFlags(), Display.FLAG_PRESENTATION);
+                if (d.isValid() && !virtual) {
+                    display = d;
+
+                    final int type;
+                    try {
+                        Method method = Display.class.getDeclaredMethod("getType");
+                        method.setAccessible(true);
+                        type = (int) method.invoke(d);
+                    } catch (Exception e) {
+                        continue;
+                    }
+
+                    if (type == 1 /* built-in display */) {
+                        break;
+                    }
+                }
+            }
+
+            if (display == null) {
+                return false;
+            }
+
+            Timber.tag(TAG).i("Display state=" + display.getState());
+            return display.getState() == Display.STATE_ON;
         }
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         return isInteractive(pm);
