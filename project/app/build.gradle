@@ -39,6 +39,9 @@ apply plugin: 'findbugs'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
     jcenter()
 }
 
@@ -155,8 +158,9 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
     //noinspection GradleDynamicVersion
     compile 'org.solovyev.android:checkout:0.7.+@aar'
-    //noinspection GradleDynamicVersion
-    compile 'com.afollestad:material-dialogs:0.7.+'
+    compile('com.afollestad.material-dialogs:core:0.8.2.0@aar') {
+        transitive = true
+    }
     compile 'com.jakewharton.timber:timber:3.1.0'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])

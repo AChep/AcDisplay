@@ -32,6 +32,7 @@ import android.util.AttributeSet;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.lang.reflect.Method;
@@ -80,17 +81,18 @@ public abstract class MaterialDialogPreference extends DialogPreference {
                 .content(getDialogMessage())
                 .positiveText(getPositiveButtonText())
                 .negativeText(getNegativeButtonText())
-                .callback(new MaterialDialog.ButtonCallback() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        super.onPositive(dialog);
-                        onClick(null, DialogInterface.BUTTON_POSITIVE);
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
+                        MaterialDialogPreference.this.onClick(null, DialogInterface.BUTTON_POSITIVE);
                     }
-
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                        onClick(null, DialogInterface.BUTTON_NEGATIVE);
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
+                        MaterialDialogPreference.this.onClick(null, DialogInterface.BUTTON_NEGATIVE);
                     }
                 })
                 .dismissListener(this);

@@ -29,6 +29,7 @@ import com.achep.acdisplay.R;
 import com.achep.base.content.ConfigBase;
 import com.achep.base.utils.DateUtils;
 import com.achep.base.utils.ResUtils;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import static com.achep.base.Build.DEBUG;
@@ -162,9 +163,10 @@ public class MoreSettings extends BaseSettings implements
                     .content(R.string.settings_restore_defaults_warning_message)
                     .positiveText(android.R.string.ok)
                     .negativeText(android.R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onPositive(MaterialDialog dialog) {
+                        public void onClick(@NonNull MaterialDialog materialDialog,
+                                            @NonNull DialogAction dialogAction) {
                             Config.getInstance().reset(getActivity());
                         }
                     })

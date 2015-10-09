@@ -47,6 +47,7 @@ import com.achep.base.utils.CoinUtils;
 import com.achep.base.utils.RippleUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.solovyev.android.checkout.ActivityCheckout;
@@ -158,25 +159,26 @@ public class DonateDialog extends DialogFragment {
 
         final Bitcoin btc = new Bitcoin();
         final PayPal pp = new PayPal();
+
+        MaterialDialog.SingleButtonCallback callback = new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog materialDialog,
+                                @NonNull DialogAction dialogAction) {
+                if (dialogAction == DialogAction.POSITIVE) {
+                    startPaymentIntentWithWarningAlertDialog(CoinUtils.getPaymentIntent(btc));
+                } else if (dialogAction == DialogAction.NEGATIVE) {
+                    startPaymentIntentWithWarningAlertDialog(CoinUtils.getPaymentIntent(pp));
+                } else if (dialogAction == DialogAction.NEUTRAL) {
+                    dismiss();
+                }
+            }
+        };
         return builder
                 .positiveText(btc.getNameResource())
                 .negativeText(pp.getNameResource())
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        startPaymentIntentWithWarningAlertDialog(CoinUtils.getPaymentIntent(btc));
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        startPaymentIntentWithWarningAlertDialog(CoinUtils.getPaymentIntent(pp));
-                    }
-
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        dismiss();
-                    }
-                })
+                .onPositive(callback)
+                .onNegative(callback)
+                .onNeutral(callback)
                 .autoDismiss(false)
                 .build();
     }
@@ -204,9 +206,10 @@ public class DonateDialog extends DialogFragment {
                 .content(R.string.donate_alert_no_responsibility)
                 .negativeText(android.R.string.cancel)
                 .positiveText(android.R.string.ok)
-                .callback(new MaterialDialog.ButtonCallback() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
                         try {
                             startActivity(intent);
                             dismiss(); // Dismiss main fragment

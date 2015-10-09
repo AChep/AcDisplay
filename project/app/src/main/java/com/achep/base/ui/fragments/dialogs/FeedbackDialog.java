@@ -54,6 +54,7 @@ import com.achep.base.utils.ResUtils;
 import com.achep.base.utils.ToastUtils;
 import com.achep.base.utils.ViewUtils;
 import com.achep.base.utils.logcat.Logcat;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONException;
@@ -137,9 +138,10 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
                 .customView(R.layout.feedback_dialog, true)
                 .negativeText(android.R.string.cancel)
                 .positiveText(R.string.send)
-                .callback(new MaterialDialog.ButtonCallback() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
                         Context context = getActivity();
                         CharSequence message = mEditText.getText();
 
@@ -158,9 +160,11 @@ public class FeedbackDialog extends DialogFragment implements ConfigBase.OnConfi
                             ToastUtils.showShort(context, toastText);
                         }
                     }
-
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
                         dismiss();
                     }
                 })
