@@ -335,6 +335,7 @@ public class WidgetPickerActivity extends ActivityBase implements
         int width = mMinWidth + mWidthSeekBar.getProgress();
         int height = mMinHeight + mHeightSeekBar.getProgress();
         ViewUtils.setSize(mHostView, width, height);
+        mHostView.updateAppWidgetSize(null, width, height, width, height);
     }
 
     private void updateAppWidgetTouchable() {

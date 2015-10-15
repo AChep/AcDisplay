@@ -179,10 +179,11 @@ public class HostWidget extends Widget implements ConfigBase.OnConfigChangedList
         int wMin = res.getDimensionPixelSize(R.dimen.scene_min_width);
         int wMax = res.getDimensionPixelSize(R.dimen.scene_max_width);
         float density = res.getDisplayMetrics().density;
+        w = Math.round(MathUtils.range(w * density, wMin, wMax));
+        h = Math.round(MathUtils.range(h * density, hMin, hMax));
         // Update size
-        ViewUtils.setSize(mHostView,
-                Math.round(MathUtils.range(w * density, wMin, wMax)),
-                Math.round(MathUtils.range(h * density, hMin, hMax)));
+        ViewUtils.setSize(mHostView, w, h);
+        mHostView.updateAppWidgetSize(null, w, h, w, h);
     }
 
     private void updateAppWidgetTouchable() {
