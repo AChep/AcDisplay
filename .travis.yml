@@ -3,18 +3,23 @@ sudo: false
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-23  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true
+    - ANDROID_TARGET=android-22  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true
 
 android:
   components:
-    - build-tools-23.0.0
-    - android-23
+    - platform-tools
+    - tools
+    - build-tools-22.0.1
+    - android-22
     # Extras
     - extra-android-m2repository
     - extra-android-support
     - extra-google-m2repository
     # Emulator
     - sys-img-armeabi-v7a-android-22
+
+  licenses:
+    - '.+'
 
 before_script:
   # Move to project folder before build
