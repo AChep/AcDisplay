@@ -1,5 +1,7 @@
 AcDisplay
 ==========
+
+[![Join the chat at https://gitter.im/AChep/AcDisplay](https://badges.gitter.im/AChep/AcDisplay.svg)](https://gitter.im/AChep/AcDisplay?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/acdisplay/localized.png)](http://translate.acdisplay.org) [![Bountysource](https://www.bountysource.com/badge/team?team_id=40057&style=bounties_received)](http://bounty.acdisplay.org) [![Support at gratipay](http://img.shields.io/gratipay/AChep.svg)](https://gratipay.com/AChep/)
 
 <img alt="Main screen: handling notification" align="right" height="300"
@@ -11,6 +13,7 @@ AcDisplay
 
 It will inform you about new notifications by showing a minimal, beautiful screen, allowing you to open them directly from the lock screen. And if you want to see what's going on, you can simply take your phone out of your pocket to view all the latest notifications, in a similarly pleasing and minimalistic manner.
 
+ - **[Help us to translate it](http://translate.acdisplay.org)** _(even a short look would be helpful)_
  - **[Join app's community on Google+](http://community.acdisplay.org)** _(Project's news, random spamming and social stuff)_
  - **[Join app's dev channel on freenode](http://webchat.freenode.net?channels=acdisplay)** _(I'm always in to discuss the development process; join, if you're a developer that wants to help us)_
  - **[The bounty funding service](http://bounty.acdisplay.org)** _(put the bounties on the issues, so everyone is hightly motivated to fix them)_
@@ -38,6 +41,26 @@ Checklist for creating issues:
 - For bug reports also write steps to reproduce the issue.
 
 [Create new issue][1]
+
+Creating your AcDisplay
+----------------
+We welcome all developers to use our source code to create applications on our platform.
+There are several things we require from **all developers** for the moment:
+
+1. Please **do not** use the name AcDisplay for your app — or make sure your users understand that it is unofficial.
+2. Kindly **do not** use our standard logo as your app's logo.
+3. Please remember to read and follow the [license][4].
+
+Versioning
+----------------
+For transparency in a release cycle and in striving to maintain backward compatibility, a project should be maintained under the Semantic Versioning guidelines. Sometimes we screw up, but we should adhere to these rules whenever possible.
+
+Releases will be numbered with the following format: `<major>.<minor>.<patch>` and constructed with the following guidelines:
+- Breaking backward compatibility bumps the major while resetting minor and patch
+- New additions without breaking backward compatibility bumps the minor while resetting the patch
+- Bug fixes and misc changes bumps only the patch
+
+For more information on SemVer, please visit http://semver.org/.
 
 Download & Build
 ----------------
@@ -90,3 +113,4 @@ Import to Android Studio
 [1]: https://github.com/AChep/AcDisplay/issues/new
 [2]: https://github.com/AChep/AcDisplay/issues?state=open
 [3]: https://github.com/AChep/AcDisplay/issues?state=closed
+[4]: https://github.com/AChep/AcDisplay/blob/master/LICENSE
