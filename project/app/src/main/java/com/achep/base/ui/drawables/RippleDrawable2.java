@@ -27,6 +27,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -55,7 +56,7 @@ public class RippleDrawable2 extends RippleDrawable {
      * {@inheritDoc}
      */
     @Override
-    public void setColorFilter(int color, PorterDuff.Mode mode) {
+    public void setColorFilter(int color, @NonNull PorterDuff.Mode mode) {
         setColorFilter(new PorterDuffColorFilter(color, mode));
     }
 

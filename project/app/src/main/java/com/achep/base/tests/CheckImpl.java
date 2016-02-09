@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Created by Artem Chepurnoy on 21.01.2015.
+ * @author Artem Chepurnoy
  */
 final class CheckImpl extends Check {
 

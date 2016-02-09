@@ -28,7 +28,6 @@ import com.achep.acdisplay.permissions.PermissionAccessibility;
 import com.achep.acdisplay.permissions.PermissionDeviceAdmin;
 import com.achep.acdisplay.permissions.PermissionNotificationListener;
 import com.achep.acdisplay.permissions.PermissionUsageStats;
-import com.achep.base.interfaces.IOnLowMemory;
 import com.achep.base.interfaces.IPermission;
 import com.achep.base.interfaces.ISubscriptable;
 import com.achep.base.utils.IntentUtils;

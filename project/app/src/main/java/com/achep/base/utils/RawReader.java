@@ -55,7 +55,7 @@ public final class RawReader {
         final BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
         try {
-            return FileUtils.readTextFromBufferedReader(bufferedReader);
+            return IOUtils.readTextFromBufferedReader(bufferedReader);
         } catch (IOException e) {
             Timber.tag(TAG).e("Failed to read raw resource: " + resource);
             return null;

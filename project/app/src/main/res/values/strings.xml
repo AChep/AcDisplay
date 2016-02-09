@@ -64,6 +64,7 @@
 
     <string name="action_about">About</string>
     <string name="action_donate">Donate</string>
+    <string name="action_intro">Introduction</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_help">Help</string>
     <string name="action_clear">Clear</string>

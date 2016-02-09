@@ -41,6 +41,7 @@ import com.achep.base.utils.smiley.SmileyParser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Artem on 22.02.14.
@@ -88,6 +89,13 @@ public class App extends Application {
         mAccessManager = new AccessManager(this);
 
         AppHeap.getInstance().init(this, new IConfiguration() {
+
+            @NonNull
+            private final IPermissions permissions = new IPermissions() {
+                @Override
+                public void onBuildPermissions(@NonNull Set<String> list) {
+                }
+            };
 
             @NonNull
             private final IBilling billing = new IBilling() {
@@ -143,6 +151,12 @@ public class App extends Application {
             @Override
             public IHelp getHelp() {
                 return help;
+            }
+
+            @NonNull
+            @Override
+            public IPermissions getPermissions() {
+                return permissions;
             }
         });
         Config.getInstance().init(this);

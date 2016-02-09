@@ -20,7 +20,7 @@ package com.achep.base.utils.logcat;
 
 import android.support.annotation.Nullable;
 
-import com.achep.base.utils.FileUtils;
+import com.achep.base.utils.IOUtils;
 import com.stericson.RootTools.RootTools;
 
 import java.io.BufferedReader;
@@ -46,7 +46,7 @@ public class Logcat {
         try {
             Process process = Runtime.getRuntime().exec(command);
             br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            return FileUtils.readTextFromBufferedReader(br);
+            return IOUtils.readTextFromBufferedReader(br);
         } catch (IOException e) {
             return null;
         } finally {

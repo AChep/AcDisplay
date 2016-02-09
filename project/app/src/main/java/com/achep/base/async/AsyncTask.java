@@ -24,7 +24,7 @@ import android.text.TextUtils;
 
 import com.achep.base.AppHeap;
 import com.achep.base.interfaces.IOnLowMemory;
-import com.achep.base.utils.FileUtils;
+import com.achep.base.utils.IOUtils;
 import com.achep.base.utils.NetworkUtils;
 
 import java.io.BufferedReader;
@@ -134,7 +134,7 @@ public abstract class AsyncTask<A, B, C> extends android.os.AsyncTask<A, B, C> {
                     is = new URL(mUrl).openStream();
                     isr = new InputStreamReader(is);
                     br = new BufferedReader(isr);
-                    String result = FileUtils.readTextFromBufferedReader(br);
+                    String result = IOUtils.readTextFromBufferedReader(br);
 
                     mMap.put(mUrl, result);
                     Timber.tag(TAG).d("Done fetching from " + mUrl);

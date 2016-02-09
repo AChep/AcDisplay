@@ -80,11 +80,9 @@ public class WritingTree extends Timber.DebugTree {
         private volatile boolean mRunning = true;
         private volatile boolean mSleepy;
 
-        private long mTime;
-
         public T() {
             mFile = new File(Environment.getExternalStorageDirectory() + "/" + FILENAME);
-            FileUtils.deleteRecursive(mFile);
+            if (!FileUtils.deleteRecursive(mFile)) Log.w(TAG, "Failed to remove the ");
             setPriority(Thread.MIN_PRIORITY);
         }
 
@@ -118,7 +116,7 @@ public class WritingTree extends Timber.DebugTree {
                             final boolean succeed = FileUtils.writeToFileAppend(mFile, log);
                             if (succeed) mBuilder.delete(0, length - 1);
                         } else if (RuntimePermissions.allowed(context, permission)) {
-                            // TODO: Ask the permission
+                            RuntimePermissions.ask(context, permission);
                         } else {
                             // We can not archive it, so lets just fall back
                             // sit and cry.

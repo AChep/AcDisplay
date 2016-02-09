@@ -48,11 +48,13 @@ public class FileUtils {
     /**
      * Deletes all files from given directory recursively.
      *
-     * @return {@code true} if all files were deleted successfully,
-     * {@code false} otherwise or if given file is null.
+     * @return {@code true} if all files were deleted successfully
+     * or did not exits, {@code false} otherwise or if given file is null.
      */
     public static boolean deleteRecursive(@Nullable File file) {
         if (file != null) {
+            if (!file.exists()) return true;
+
             File[] children;
             if (file.isDirectory() && (children = file.listFiles()) != null && children.length > 0) {
                 for (File child : children) {
@@ -106,6 +108,13 @@ public class FileUtils {
         }
         if (DEBUG) Log.e(TAG, errorMessage + " file=" + file);
         return false;
+    }
+
+    public static void writeToFileFrom(
+            @NonNull File file,
+            @NonNull InputStream in)
+            throws IOException {
+        IOUtils.readFullyWriteToOutputStream(in, new FileOutputStream(file));
     }
 
     public static boolean writeToFileAppend(@NonNull File file, @NonNull CharSequence text) {
@@ -162,40 +171,11 @@ public class FileUtils {
         if (!file.exists()) return null;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            return FileUtils.readTextFromBufferedReader(bufferedReader);
+            return IOUtils.readTextFromBufferedReader(bufferedReader);
         } catch (IOException e) {
             if (DEBUG) Log.e(TAG, "Failed to read file=" + file);
             return null;
         }
-    }
-
-    /**
-     * Reads text from given {@link BufferedReader} line-by-line.
-     *
-     * @return text from given {@link BufferedReader}.
-     * @throws IOException
-     */
-    @NonNull
-    public static String readTextFromBufferedReader(@NonNull BufferedReader bufferedReader) throws IOException {
-
-        // Store all lines to string builder to
-        // reduce memory using.
-        final StringBuilder body = new StringBuilder();
-        String nextLine;
-        try {
-            while ((nextLine = bufferedReader.readLine()) != null) {
-                body.append(nextLine);
-                body.append('\n');
-            }
-            int pos = body.length() - 1;
-            if (pos >= 0) {
-                body.deleteCharAt(pos);
-            }
-        } finally {
-            bufferedReader.close();
-        }
-
-        return body.toString();
     }
 
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 AChep@xda <artemchep@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<resources>
+    <!-- To notify the user that this option is disabled by default -->
+    <string name="intro_settings_enable">enable in settings</string>
+
+    <!-- AcDisplay -->
+    <string name="intro_welcome_title">AcDisplay</string>
+    <string name="intro_welcome_summary">Welcome to AcDisplay, a beautiful notification utility for Android with open source code.</string>
+    <!-- Notifications -->
+    <string name="intro_notifications_title">Notifications</string>
+    <string name="intro_notifications_summary">Screen lights on after receiving an notification allowing you to get a quick glimpse at it.</string>
+    <!-- Active mode -->
+    <string name="intro_am_title">Active mode</string>
+    <string name="intro_am_summary_skeleton" translatable="false"><![CDATA[
+        %1$s&nbsp;<font color="#%3$s">[%2$s]</font>
+    ]]></string>
+    <string name="intro_am_summary">Uses the device\'s sensors to light the screen on just when you need it. This works great for pulling the device from your pocket.</string>
+
+</resources>

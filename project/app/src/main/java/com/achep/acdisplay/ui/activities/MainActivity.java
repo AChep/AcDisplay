@@ -47,7 +47,7 @@ import com.achep.base.ui.widgets.SwitchBar;
 import com.achep.base.utils.PackageUtils;
 
 /**
- * Created by Artem on 21.01.14.
+ * @author Artem Chepurnoy
  */
 public class MainActivity extends BaseActivity implements ConfigBase.OnConfigChangedListener {
 
@@ -112,6 +112,10 @@ public class MainActivity extends BaseActivity implements ConfigBase.OnConfigCha
             if (versionCodeOld <= 34 /* version 3.0.2 */) {
                 DialogHelper.showCompatDialog(MainActivity.this);
             }
+
+            if (versionCodeOld <= 76 /* before 4.0.0 */) {
+                startAcDisplayIntro();
+            }
         }
     }
 
@@ -169,6 +173,9 @@ public class MainActivity extends BaseActivity implements ConfigBase.OnConfigCha
             case R.id.test_action:
                 startAcDisplayTest(true);
                 break;
+            case R.id.intro_action:
+                startAcDisplayIntro();
+                break;
 
             //-- DIALOGS ------------------------------------------------------
 
@@ -188,6 +195,10 @@ public class MainActivity extends BaseActivity implements ConfigBase.OnConfigCha
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void startAcDisplayIntro() {
+        startActivity(new Intent(this, IntroActivity.class));
     }
 
     /**

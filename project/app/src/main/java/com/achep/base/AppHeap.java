@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import com.achep.base.billing.CheckoutInternal;
 import com.achep.base.interfaces.IConfiguration;
 import com.achep.base.interfaces.IOnLowMemory;
+import com.achep.base.permissions.RuntimePermissions;
 import com.achep.base.tests.Check;
 import com.achep.base.timber.ReleaseTree;
 import com.drivemode.android.typeface.TypefaceHelper;
@@ -112,6 +113,7 @@ public class AppHeap implements IOnLowMemory {
         Timber.plant(new ReleaseTree());
 
         TypefaceHelper.initialize(application);
+        RuntimePermissions.getInstance().load(application);
     }
 
     @NonNull

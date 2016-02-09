@@ -7,14 +7,19 @@ env:
 
 android:
   components:
-    - build-tools-23.0.0
+    - platform-tools
+    - tools
+    - build-tools-23.0.2
     - android-23
     # Extras
     - extra-android-m2repository
     - extra-android-support
     - extra-google-m2repository
     # Emulator
-    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-23
+
+  licenses:
+    - '.+'
 
 before_script:
   # Move to project folder before build

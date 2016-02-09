@@ -73,7 +73,7 @@ public class PermissionsDialog extends DialogFragment {
         Bundle args = getArguments();
         assert args != null;
         String[] p = args.getStringArray(KEY_PERMISSIONS);
-        mPermissions = new Permission[p.length];
+        mPermissions = new Permission[p == null ? 0 : p.length];
         for (int i = 0; i < p.length; i++) {
             final String name = p[i];
             mPermissions[i] = Permission.newInstance(getActivity(), name);

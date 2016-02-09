@@ -48,7 +48,7 @@ public class RippleUtils {
                                   boolean darkTheme, @NonNull View... views) {
         ColorStateList csl = views[0].getResources().getColorStateList(
                 darkTheme ? R.color.ripple_dark : R.color.ripple_light);
-        return makeFor(csl, parentIsScrollContainer, views);
+        return csl == null || makeFor(csl, parentIsScrollContainer, views);
     }
 
     public static boolean makeFor(@NonNull ColorStateList csl,

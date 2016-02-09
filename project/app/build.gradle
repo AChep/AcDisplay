@@ -47,7 +47,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     lintOptions {
         checkReleaseBuilds true
@@ -128,6 +128,7 @@ android {
             proguardFile 'proguard-dreamers-rippledrawable.pro'
             proguardFile 'proguard-support-v7-appcompat.pro'
             proguardFile 'proguard-support-design.pro'
+            proguardFile 'proguard-leakcanary.pro'
             proguardFile 'proguard-app.pro'
             signingConfig signingConfigs.release
 
@@ -150,6 +151,7 @@ android {
 
 dependencies {
     // Other libraries.
+    compile 'com.github.paolorotolo:appintro:3.3.0'
     //noinspection GradleDynamicVersion
     compile 'com.melnykov:floatingactionbutton:1.+'
     //noinspection GradleDynamicVersion
@@ -158,9 +160,8 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
     //noinspection GradleDynamicVersion
     compile 'org.solovyev.android:checkout:0.7.+@aar'
-    compile('com.afollestad.material-dialogs:core:0.8.2.0@aar') {
-        transitive = true
-    }
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') { transitive = true }
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.3@aar') { transitive = true }
     compile 'com.jakewharton.timber:timber:3.1.0'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
@@ -174,16 +175,16 @@ dependencies {
 
     // Leak canary
     //noinspection GradleDynamicVersion
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
     //noinspection GradleDynamicVersion
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
 
     // Testing-only dependencies
     //noinspection GradleDynamicVersion
     androidTestCompile 'com.android.support:support-annotations:23.+'
-    androidTestCompile 'com.android.support.test:runner:0.3'
-    androidTestCompile 'com.android.support.test:rules:0.3'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 }
 
 project.task('askForPasswords') << {

@@ -461,26 +461,49 @@ public class NotificationPresenter implements
                 if (n.isGroupSummary()) {
                     String groupKey = n.getGroupKey();
                     assert groupKey != null;
-                    mGroupsWithSummaries.add(groupKey);
 
                     //noinspection StatementWithEmptyBody
                     if (mGroupsWithSummaries.contains(groupKey)) {
-                    } else {
-                        mGroupsWithSummaries.add(groupKey);
-
                         // Put all group's children to its summary
                         // notification.
                         for (int i = mGList.size() - 1; i >= 0; i--) {
                             OpenNotification n2 = mGList.get(i);
                             if (groupKey.equals(n2.getGroupKey())) {
-                                assert n.getGroupNotifications() != null;
-                                n.getGroupNotifications().add(n2);
+                                if (n2.isGroupChild()) {
+                                    assert n.getGroupNotifications() != null;
+                                    n.getGroupNotifications().add(n2);
 
-                                // Remove this notification from the global list.
-                                mGList.removeNotification(n2);
-                                mLList.removeNotification(n2);
+                                    // Remove this notification from the global list.
+                                    mGList.removeNotification(i);
+                                    mLList.removeNotification(n2);
+                                } else {
+                                    // That's odd. Ideally this will never happen.
+                                    Log.w(TAG, "");
+                                    removeNotification(n, 0);
+                                }
                             }
                         }
+                    } else {
+                        // Put all group's children to its summary
+                        // notification.
+                        for (int i = mGList.size() - 1; i >= 0; i--) {
+                            OpenNotification n2 = mGList.get(i);
+                            if (groupKey.equals(n2.getGroupKey())) {
+                                if (n2.isGroupChild()) {
+                                    assert n.getGroupNotifications() != null;
+                                    n.getGroupNotifications().add(n2);
+
+                                    // Remove this notification from the global list.
+                                    mGList.removeNotification(i);
+                                    mLList.removeNotification(n2);
+                                } else {
+                                    // That's odd. Ideally this will never happen.
+                                    removeNotification(n, 0);
+                                }
+                            }
+                        }
+
+                        mGroupsWithSummaries.add(groupKey);
                     }
                 } else if (n.isGroupChild() && mGroupsWithSummaries.contains(n.getGroupKey())) {
                     // Artem Chepurnoy: Not sure if this may happen.

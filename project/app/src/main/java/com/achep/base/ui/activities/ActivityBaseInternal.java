@@ -53,6 +53,7 @@ final class ActivityBaseInternal implements IActivityBase {
     private static int sInstancesCount = 0;
 
     /* Only for debug purposes! */
+    @SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
     private final Object dFinalizeWatcher = DEBUG ? new Object() {
 
         /**

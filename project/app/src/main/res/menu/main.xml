@@ -37,6 +37,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/intro_action"
+        android:title="@string/action_intro"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/feedback_action"
         android:icon="@drawable/ic_action_feedback_white"
         android:title="@string/action_feedback"

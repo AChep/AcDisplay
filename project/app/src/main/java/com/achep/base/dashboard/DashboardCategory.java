@@ -206,7 +206,7 @@ public class DashboardCategory implements Parcelable, List<DashboardTile> {
      * {@inheritDoc}
      */
     @Override
-    public boolean addAll(int location, Collection<? extends DashboardTile> collection) {
+    public boolean addAll(int location, @NonNull Collection<? extends DashboardTile> collection) {
         return tiles.addAll(location, collection);
     }
 
@@ -214,7 +214,7 @@ public class DashboardCategory implements Parcelable, List<DashboardTile> {
      * {@inheritDoc}
      */
     @Override
-    public boolean addAll(Collection<? extends DashboardTile> collection) {
+    public boolean addAll(@NonNull Collection<? extends DashboardTile> collection) {
         return tiles.addAll(collection);
     }
 

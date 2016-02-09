@@ -115,6 +115,7 @@ public class SharedListInstTest extends InstrumentationTestCase {
         /**
          * {@inheritDoc}
          */
+        @NonNull
         @Override
         protected String getPreferencesFileName() {
             return PREF_NAME;
@@ -123,6 +124,7 @@ public class SharedListInstTest extends InstrumentationTestCase {
         /**
          * {@inheritDoc}
          */
+        @NonNull
         @Override
         protected StringSaver onCreateSaver() {
             return new StringSaver();
@@ -132,7 +134,7 @@ public class SharedListInstTest extends InstrumentationTestCase {
          * {@inheritDoc}
          */
         @Override
-        protected boolean isOverwriteAllowed(String str) {
+        protected boolean isOverwriteAllowed(@NonNull String str) {
             return true;
         }
     }

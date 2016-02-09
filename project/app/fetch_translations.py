@@ -12,53 +12,50 @@ import urllib.request
 import shutil
 
 import os
-import errno
-import time
 import re
 import sys
 
-# Initialize colorama
-init()
-
-# Script will compare strings and detect formatting issues.
-VALIDATE_LOCALES = True
+VALIDATE_LOCALES = False
 
 translations_folder_name = 'translations-crowdin'
 translations_folder_path = os.path.abspath(translations_folder_name)
-translations_file_zip_name = '%s.zip' % translations_folder_name;
+translations_file_zip_name = '%s.zip' % translations_folder_name
+
 
 def print_warning(text):
     print(Fore.RED + text + Fore.RESET)
 
+
 def print_info(text):
     print(Fore.CYAN + text + Fore.RESET)
 
-def make_sure_path_exists(path):
-    try:
-        os.makedirs(path)
-    except OSError as e:
-        if e.errno != errno.EEXIST:
-            raise
 
-# Try to download latest translations' build from
-# Crowdin.
-print('Downloading latest build from Crowdin...')
-for i in range(1, 5):
-    try:
-        url = 'https://crowdin.net/download/project/acdisplay.zip'
-        with urllib.request.urlopen(url) as response, open(translations_file_zip_name, 'wb') as out_file:
-            shutil.copyfileobj(response, out_file)
-            break
-    except IOError as e:
-        pass
-else:
-    print_warning('Failed to download translations! Terminating...')
-    sys.exit()
+def download(url, name):
+    for i in range(1, 5):
+        try:
+            with urllib.request.urlopen(url) as r, open(name, 'wb') as out_file:
+                shutil.copyfileobj(r, out_file)
+                return True
+        except IOError as e:
+            pass
+    return False
+
+# Initialize colorama
+init()
 
 # Make sure that old translations are deleted.
-if os.path.exists(translations_folder_path):
+if os.path.exists(translations_folder_path) or os.path.exists(translations_file_zip_name):
     print('Removing old translations...')
-    shutil.rmtree(translations_folder_path)
+    if os.path.exists(translations_folder_path):
+        shutil.rmtree(translations_folder_path)
+    if os.path.exists(translations_file_zip_name):
+        os.remove(translations_file_zip_name)
+
+# Download the latest build of translations from crowdin.net
+print('Downloading latest build from <translate.acdisplay.org>...')
+if not download('http://translate.acdisplay.org/download/project/acdisplay.zip', translations_file_zip_name):
+    print_warning('Failed to download translations! Terminating...')
+    sys.exit()
 
 # Unzip downloaded archive.
 print('Unpacking archive...')
@@ -90,7 +87,8 @@ if VALIDATE_LOCALES:
                 bs = BeautifulSoup(f.read())
                 for string in bs.resources.findAll('string'):
                     string_contents = str(string.string)
-                    string_res_origin[string['name']] = {'count': len(re.findall(regex, string_contents)), 'contents': string_contents,}
+                    string_res_origin[string['name']] = {'count': len(re.findall(regex, string_contents)),
+                                                         'contents': string_contents, }
 
     for path, dirs, files in os.walk(translations_folder_path):
         for filename in files:
@@ -102,12 +100,13 @@ if VALIDATE_LOCALES:
             with open(filepath, encoding="utf8") as f:
                 bs = BeautifulSoup(f.read())
                 try:
-                    for string in bs.resources.findAll('string'):       
+                    for string in bs.resources.findAll('string'):
                         string_name = string['name']
                         string_contents = str(string.string)
                         if string_res_origin[string_name]['count'] != len(re.findall(regex, string_contents)):
                             print_warning('Problematic string resource found!')
-                            print('\tlang:\"%s\"' % re.findall(translations_folder_name + r'\/(\w{2,3}|\w{2,3}\-\w{2,3})\/', filepath)[0])
+                            print('\tlang:\"%s\"' %
+                                  re.findall(translations_folder_name + r'/(\w{2,3}|\w{2,3}\-\w{2,3})/', filepath)[0])
                             print('\tname:\"%s\"' % string_name)
                             print('\torigin:\"%s\"' % string_res_origin[string_name]['contents'])
                             print('\tbroken:\"%s\"' % string_contents)
@@ -119,7 +118,8 @@ if VALIDATE_LOCALES:
             for line in open(filepath, encoding="utf8"):
                 if re.search(r'(<!|\[CDATA)\s', line):
                     print_warning('Problematic string resource found!')
-                    print('\tlang:\"%s\"' % re.findall(translations_folder_name + r'\/(\w{2,3}|\w{2,3}\-\w{2,3})\/', filepath)[0])
+                    print('\tlang:\"%s\"' %
+                          re.findall(translations_folder_name + r'/(\w{2,3}|\w{2,3}\-\w{2,3})/', filepath)[0])
                     print('\tproblematic_line:\"%s\"' % line)
                     successful = False
     if not successful:
@@ -128,30 +128,24 @@ if VALIDATE_LOCALES:
         sys.exit()
 
 print('Reorganizing files...')
-
-files_raw = [ 'faq.html' ]
-files_to_remove = [ 'play_store.txt' ]
-
-for locale in os.listdir(translations_folder_path):
-    suffix = locale.replace('-', '-r')
-
-    # Create path for current locale directory
-    path_locale = os.path.join(os.path.join(translations_folder_path, locale))
-
-    # Create pathes for RAW and VALUES directories
-    path_raw = os.path.join(translations_folder_path, 'raw-%s' % suffix)
-    path_values = os.path.join(translations_folder_path, 'values-%s' % suffix)
-
-    # Move files to raw directory
-    os.makedirs(path_raw)
-    for filename in files_raw:
-        os.rename(os.path.join(path_locale, filename), os.path.join(path_raw, filename))
-
+files_raw = ['faq.html']
+files_to_remove = ['play_store.txt']
+l = {locale: [locale.replace('-', '-r')] for locale in os.listdir(translations_folder_path)}
+l['es-ES'].append('es')
+for dir, v in l.items():
+    dir_path = os.path.join(os.path.join(translations_folder_path, dir))
     # Remove extra files
-    for filename in files_to_remove:
-        os.remove(os.path.join(path_locale, filename))
-
-    # Put the rest to values directory
-    os.rename(path_locale, path_values)
-
+    for k in files_to_remove:
+        os.remove(os.path.join(dir_path, k))
+    for locale in v:
+        raw_path = os.path.join(translations_folder_path, 'raw-%s' % locale)
+        values_path = os.path.join(translations_folder_path, 'values-%s' % locale)
+        # Copy all to values directory
+        shutil.copytree(dir_path, values_path)
+        # Move files to raw directory
+        os.makedirs(raw_path)
+        for k in files_raw:
+            shutil.copy(os.path.join(dir_path, k), os.path.join(raw_path, k))
+            os.remove(os.path.join(values_path, k))
+    shutil.rmtree(dir_path)
 print('Success!')
