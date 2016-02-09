@@ -242,6 +242,10 @@
                 <action android:name="com.achep.acdisplay.ENABLE" />
                 <action android:name="com.achep.acdisplay.DISABLE" />
                 <action android:name="com.achep.acdisplay.TOGGLE" />
+                <!-- Active mode -->
+                <action android:name="com.achep.acdisplay.ACTIVE_MODE_ENABLE" />
+                <action android:name="com.achep.acdisplay.ACTIVE_MODE_DISABLE" />
+                <action android:name="com.achep.acdisplay.ACTIVE_MODE_TOGGLE" />
             </intent-filter>
         </receiver>
 

@@ -52,6 +52,19 @@ public class ReceiverPublic extends BroadcastReceiver {
                 Log.i(TAG, "Toggling AcDisplay by intent. " + intent);
                 setAcDisplayEnabled(context, config, !config.isEnabled());
                 break;
+            // Active mode
+            case App.ACTION_ACTIVE_MODE_ENABLE:
+                Log.i(TAG, "Enabling Active mode by intent. " + intent);
+                setActiveModeEnabled(context, config, true);
+                break;
+            case App.ACTION_ACTIVE_MODE_DISABLE:
+                Log.i(TAG, "Disabling Active mode by intent. " + intent);
+                setActiveModeEnabled(context, config, false);
+                break;
+            case App.ACTION_ACTIVE_MODE_TOGGLE:
+                Log.i(TAG, "Toggling Active mode by intent. " + intent);
+                setActiveModeEnabled(context, config, !config.isEnabled());
+                break;
         }
     }
 
@@ -67,6 +80,13 @@ public class ReceiverPublic extends BroadcastReceiver {
         ToastUtils.showLong(context, enable
                 ? R.string.remote_enable_acdisplay
                 : R.string.remote_disable_acdisplay);
+    }
+
+    private void setActiveModeEnabled(Context context, Config config, boolean enable) {
+        config.getMap().get(Config.KEY_ACTIVE_MODE).write(config, context, enable, null);
+        ToastUtils.showLong(context, enable
+                ? R.string.remote_enable_active_mode
+                : R.string.remote_disable_active_mode);
     }
 
 }

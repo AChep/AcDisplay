@@ -107,6 +107,8 @@
     <!-- Remote actions -->
     <string name="remote_enable_acdisplay">AcDisplay включен.</string>
     <string name="remote_disable_acdisplay">AcDisplay отключен.</string>
+    <string name="remote_enable_active_mode">Активный режим AcDisplay включен.</string>
+    <string name="remote_disable_active_mode">Активный режим AcDisplay отключен.</string>
 
     <!-- Foreground service that may contain both Keyguard and Active mode. -->
     <string name="service_bath">Сервисы AcDisplay</string>

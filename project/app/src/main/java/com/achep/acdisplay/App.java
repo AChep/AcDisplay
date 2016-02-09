@@ -62,6 +62,9 @@ public class App extends Application {
     public static final String ACTION_ENABLE = "com.achep.acdisplay.ENABLE";
     public static final String ACTION_DISABLE = "com.achep.acdisplay.DISABLE";
     public static final String ACTION_TOGGLE = "com.achep.acdisplay.TOGGLE";
+    public static final String ACTION_ACTIVE_MODE_ENABLE = "com.achep.acdisplay.ACTIVE_MODE_ENABLE";
+    public static final String ACTION_ACTIVE_MODE_DISABLE = "com.achep.acdisplay.ACTIVE_MODE_DISABLE";
+    public static final String ACTION_ACTIVE_MODE_TOGGLE = "com.achep.acdisplay.ACTIVE_MODE_TOGGLE";
 
     public static final String ACTION_STATE_START = "com.achep.acdisplay.STATE_START";
     public static final String ACTION_STATE_RESUME = "com.achep.acdisplay.STATE_RESUME";
