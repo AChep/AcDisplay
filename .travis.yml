@@ -3,8 +3,11 @@ sudo: false
 cache: false
 jdk: oraclejdk7
 env:
-  matrix:
-    - ANDROID_TARGET=android-23  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true ADB_INSTALL_TIMEOUT=20
+  global:
+    - ANDROID_TARGET=android-23  
+    - ANDROID_ABI=armeabi-v7a
+    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+    - ACDISPLAY_USE_TEST_KEY=true
 
 android:
   components:
