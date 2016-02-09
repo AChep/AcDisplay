@@ -4,7 +4,7 @@ cache: false
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-23  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true ADB_INSTALL_TIMEOUT=8
+    - ANDROID_TARGET=android-23  ANDROID_ABI=armeabi-v7a  ACDISPLAY_USE_TEST_KEY=true ADB_INSTALL_TIMEOUT=20
 
 android:
   components:
