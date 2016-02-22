@@ -288,13 +288,20 @@
         var now = new Date();
         var minutes = now.getMinutes();
         elt.innerHTML = "" + now.getHours() + ":" + (minutes < 10 ? "0" + minutes : "" + minutes);
-        setTimeout(displayTime, 5000);             
     }
 
     function displayDate() {
         var elt = document.getElementById("layer-date");
-        var date = new Date().format("EEE, dd MMMM");
-        elt.innerHTML = "" + date;         
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        var months = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        
+        var date = new Date();
+        elt.innerHTML = days[date.getDay()] + ' ' + date.getDate() + ', ' + months[date.getMonth()];         
     }
 
     window.onload = tickTime;
