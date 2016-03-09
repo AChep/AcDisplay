@@ -1165,10 +1165,6 @@ public class AcDisplayFragment extends LeakWatchFragment implements
                         maybeBeginDelayedTransition(viewGroup, mTransitionJit);
                     }
                     widgetPrev.setNotification(osbn);
-
-                    if (isCurrentWidget(widgetPrev)) {
-                        osbn.markAsRead();
-                    }
                     break;
                 }
             case NotificationPresenter.EVENT_POSTED:

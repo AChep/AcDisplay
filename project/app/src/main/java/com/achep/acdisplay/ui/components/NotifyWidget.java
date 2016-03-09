@@ -221,6 +221,10 @@ public class NotifyWidget extends Widget implements
     @Override
     public void onViewAttached() {
         super.onViewAttached();
+        onViewAttachedInternal();
+    }
+
+    private void onViewAttachedInternal() {
         mNotification.markAsRead();
         mNotification.registerListener(this);
         mNotifyWidget.setNotification(mNotification);
@@ -228,8 +232,12 @@ public class NotifyWidget extends Widget implements
 
     @Override
     public void onViewDetached() {
-        mNotification.unregisterListener(this);
+        onViewDetachedInternal();
         super.onViewDetached();
+    }
+
+    private void onViewDetachedInternal() {
+        mNotification.unregisterListener(this);
     }
 
     @Override
@@ -243,13 +251,20 @@ public class NotifyWidget extends Widget implements
 
     @Override
     public void setNotification(OpenNotification notification) {
+        boolean attached = isViewAttached();
+        if (attached) {
+            Check.getInstance().isNonNull(mNotification);
+            onViewDetachedInternal();
+        }
+
         mNotification = notification;
         mIconView.setNotification(notification);
 
         // Don't update the content of notification widget, because
         // it may be used by any of its relatives.
-        if (isViewAttached()) {
-            mNotifyWidget.setNotification(notification);
+
+        if (attached) {
+            onViewAttachedInternal();
         }
     }
 
