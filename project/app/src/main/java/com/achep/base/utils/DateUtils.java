@@ -41,7 +41,7 @@ public class DateUtils {
             if (h == 0) h = 12;
             else if (h >= 13) h -= 12;
         }
-        return h + ":" + (m < 10 ? "0" + m : m);
+        return String.format("%02d:%02d", h, m) // Formatting with leading zeros
     }
 
 }
