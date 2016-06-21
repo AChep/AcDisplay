@@ -54,10 +54,6 @@ android {
         abortOnError false
     }
 
-    dexOptions {
-        incremental false
-    }
-
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
