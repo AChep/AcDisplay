@@ -160,8 +160,8 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
     //noinspection GradleDynamicVersion
     compile 'org.solovyev.android:checkout:0.7.+@aar'
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.6@aar') { transitive = true }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.6@aar') { transitive = true }
+    compile('com.github.afollestad.material-dialogs:core:0.8.6.0@aar') { transitive = true }
+    compile('com.github.afollestad.material-dialogs:commons:0.8.6.0@aar') { transitive = true }
     compile 'com.jakewharton.timber:timber:3.1.0'
     provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
@@ -181,7 +181,7 @@ dependencies {
 
     // Testing-only dependencies
     //noinspection GradleDynamicVersion
-    androidTestCompile 'com.android.support:support-annotations:23.+'
+    androidTestCompile 'com.android.support:support-annotations:24.+'
     androidTestCompile 'com.android.support.test:runner:0.4'
     androidTestCompile 'com.android.support.test:rules:0.4'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
