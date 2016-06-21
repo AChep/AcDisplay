@@ -1206,6 +1206,7 @@ public class AcDisplayFragment extends LeakWatchFragment implements
                 if (widgetPrev != null) {
                     if (DEBUG) Log.d(TAG, "[Event] Removing notification widget...");
                     internalRemoveWidget(widgetPrev);
+                    internalCleanPressedIconViewIfRemovedFromContainer();
                 }
                 break;
             case NotificationPresenter.EVENT_BATH:
@@ -1343,6 +1344,8 @@ public class AcDisplayFragment extends LeakWatchFragment implements
             }
         }
 
+        internalCleanPressedIconViewIfRemovedFromContainer();
+
         if (DEBUG) {
             long delta = SystemClock.elapsedRealtime() - now;
             Log.d(TAG, "Fragment list updated in " + delta + "ms.");
@@ -1387,6 +1390,22 @@ public class AcDisplayFragment extends LeakWatchFragment implements
         }
         if (removeScene) mScenesMap.remove(name);
         if (isCurrentWidget(widget)) showHomeWidget();
+    }
+
+    private void internalCleanPressedIconViewIfRemovedFromContainer() {
+        if (mPressedIconView == null) {
+            return;
+        }
+
+        int length = mIconsContainer.getChildCount();
+        for (int i = 0; i < length; i++) {
+            View view = mIconsContainer.getChildAt(i);
+            if (mPressedIconView == view) {
+                return;
+            }
+        }
+
+        mPressedIconView = null;
     }
 
     /**
