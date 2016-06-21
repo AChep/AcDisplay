@@ -151,7 +151,7 @@ android {
 
 dependencies {
     // Other libraries.
-    compile 'com.github.paolorotolo:appintro:3.3.0'
+    compile 'com.github.paolorotolo:appintro:4.0.0'
     //noinspection GradleDynamicVersion
     compile 'com.melnykov:floatingactionbutton:1.+'
     //noinspection GradleDynamicVersion
