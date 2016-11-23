@@ -1,5 +1,7 @@
 AcDisplay
 ==========
+
+[![Join the chat at https://gitter.im/AChep/AcDisplay](https://badges.gitter.im/AChep/AcDisplay.svg)](https://gitter.im/AChep/AcDisplay?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/AChep/AcDisplay.svg?branch=master)](https://travis-ci.org/AChep/AcDisplay) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/acdisplay/localized.png)](http://translate.acdisplay.org) [![Bountysource](https://www.bountysource.com/badge/team?team_id=40057&style=bounties_received)](http://bounty.acdisplay.org) [![Support at gratipay](http://img.shields.io/gratipay/AChep.svg)](https://gratipay.com/AChep/)
 
 <img alt="Main screen: handling notification" align="right" height="300"
