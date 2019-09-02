@@ -1,7 +1,7 @@
 language: android
 sudo: false
 cache: false
-jdk: openjdk
+jdk: openjdk8
 env:
   global:
     - ANDROID_TARGET=android-23  
