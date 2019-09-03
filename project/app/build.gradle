@@ -56,7 +56,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion '25.0.0'
 
     lintOptions {
@@ -173,11 +173,11 @@ dependencies {
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
 
     // Android support libs.
-    compile('com.android.support:palette-v7:23.+')
-    compile('com.android.support:appcompat-v7:23.+')
-    compile('com.android.support:recyclerview-v7:23.+')
-    compile('com.android.support:support-v13:23.+')
-    compile('com.android.support:design:23.+')
+    compile('com.android.support:palette-v7:25.+')
+    compile('com.android.support:appcompat-v7:25.+')
+    compile('com.android.support:recyclerview-v7:25.+')
+    compile('com.android.support:support-v13:25.+')
+    compile('com.android.support:design:25.+')
 
     // Leak canary
     //noinspection GradleDynamicVersion
@@ -187,8 +187,8 @@ dependencies {
 
     // Testing-only dependencies
     //noinspection GradleDynamicVersion
-    
-    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+
+    androidTestCompile 'com.android.support:support-annotations:25.+'
     androidTestCompile 'com.android.support.test:runner:0.4'
     androidTestCompile 'com.android.support.test:rules:0.4'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
