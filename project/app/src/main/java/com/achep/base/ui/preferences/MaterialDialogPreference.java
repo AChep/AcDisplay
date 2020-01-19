@@ -118,12 +118,12 @@ public abstract class MaterialDialogPreference extends DialogPreference {
     public abstract MaterialDialog onBuildDialog(@NonNull MaterialDialog.Builder builder);
 
     /**
-     * Sets the required flags on the dialog window to enable input method window to show up.
-     */
-    private void requestInputMethod(Dialog dialog) {
-        Window window = dialog.getWindow();
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    }
+	 * Sets the required flags on the dialog window to enable input method window to show up.
+	 */
+	private static void requestInputMethod(Dialog dialog) {
+		Window window = dialog.getWindow();
+		window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+	}
 
     /**
      * Returns whether the preference needs to display a soft input method when the dialog
