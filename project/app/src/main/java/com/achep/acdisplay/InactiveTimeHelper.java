@@ -18,7 +18,12 @@
  */
 package com.achep.acdisplay;
 
+import android.os.Build;
 import android.text.format.Time;
+
+import com.achep.base.utils.DateUtils;
+
+import java.util.GregorianCalendar;
 
 /**
  * Created by Artem on 10.03.14.
@@ -26,10 +31,18 @@ import android.text.format.Time;
 public class InactiveTimeHelper {
 
     public static boolean isInactiveTime(Config config) {
-        Time time = new Time();
-        time.setToNow();
+        int now=0;
+        if(Build.VERSION.SDK_INT< Build.VERSION_CODES.LOLLIPOP_MR1)
+        {
+            Time time = new Time();
+            time.setToNow();
+            now = time.hour * 60 + time.minute;
+        }
+        else {
+            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+            now = gregorianCalendar.get(GregorianCalendar.HOUR) * 60 + gregorianCalendar.get(GregorianCalendar.MINUTE);
+        }
 
-        int now = time.hour * 60 + time.minute;
         int from = config.getInactiveTimeFrom();
         int to = config.getInactiveTimeTo();
         return from < to ? now >= from && now <= to : now >= from || now <= to;
