@@ -22,11 +22,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.text.format.Time;
 import android.util.AttributeSet;
 
 import com.achep.base.ui.widgets.TextView;
 import com.achep.base.utils.DateUtils;
+
+import java.util.GregorianCalendar;
 
 /**
  * Created by Artem on 29.01.14.
@@ -74,13 +77,24 @@ public class TimeView extends TextView {
     }
 
     protected void updateClock() {
-        Time time = new Time();
-        time.setToNow();
 
-        int now = time.hour * 60 + time.minute;
-        if (now != mLastTime) {
-            setText(DateUtils.formatTime(getContext(), time.hour, time.minute));
-            mLastTime = now;
+        if(Build.VERSION.SDK_INT< Build.VERSION_CODES.LOLLIPOP_MR1)
+        {
+            Time time = new Time();
+            time.setToNow();
+            int now = time.hour * 60 + time.minute;
+            if (now != mLastTime) {
+                setText(DateUtils.formatTime(getContext(), time.hour, time.minute));
+                mLastTime = now;
+            }
+        }
+        else {
+            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+            int now = gregorianCalendar.get(GregorianCalendar.HOUR) * 60 + gregorianCalendar.get(GregorianCalendar.MINUTE);
+            if (now != mLastTime) {
+                setText(DateUtils.formatTime(getContext(), gregorianCalendar.get(GregorianCalendar.HOUR), gregorianCalendar.get(GregorianCalendar.MINUTE)));
+                mLastTime = now;
+            }
         }
     }
 }
