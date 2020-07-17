@@ -70,7 +70,7 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="behind"
             android:theme="@style/MaterialTheme.AcDisplay" />
 
         <activity
