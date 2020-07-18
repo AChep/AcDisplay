@@ -27,7 +27,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.RemoteInput;
-import android.support.v7.widget.AppCompatButton;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -317,28 +316,18 @@ public class NotificationActions extends LinearLayout {
 
             TextView textView = root instanceof TextView
                     ? (TextView) root
-                    : (TextView) root.findViewById(android.R.id.title);
+                    : (TextView) root.findViewById(R.id.title);
+            textView.setText(action.title);
+            if (mTypeface == null) mTypeface = textView.getTypeface();
+            textView.setTypeface(mTypeface, style);
 
+            Drawable icon = NotificationUtils.getDrawable(getContext(), notification, action.icon);
+            if (icon != null) icon = onCreateActionIcon(icon);
 
-            if (textView != null) {
-
-                //there's not a TextView inside notification_action, only a Button, though,
-                //root.findViewById is returning null even if I fixed it to 'AppCompatButton'
-                // ... (R.id.title) in the notification_action.xml layout is an AppCompatButton,
-                // why it keeps returning null then? who knows.
-
-                textView.setText(action.title);
-                if (mTypeface == null) mTypeface = textView.getTypeface();
-                textView.setTypeface(mTypeface, style);
-
-                Drawable icon = NotificationUtils.getDrawable(getContext(), notification, action.icon);
-                if (icon != null) icon = onCreateActionIcon(icon);
-
-                if (Device.hasJellyBeanMR1Api()) {
-                    textView.setCompoundDrawablesRelative(icon, null, null, null);
-                } else {
-                    textView.setCompoundDrawables(icon, null, null, null);
-                }
+            if (Device.hasJellyBeanMR1Api()) {
+                textView.setCompoundDrawablesRelative(icon, null, null, null);
+            } else {
+                textView.setCompoundDrawables(icon, null, null, null);
             }
         }
     }
@@ -388,7 +377,7 @@ public class NotificationActions extends LinearLayout {
 
     @LayoutRes
     protected int getActionLayoutResource() {
-        return R.layout.notification_action;
+        return R.layout.notification_action2;
     }
 
     //-- TEXTABLE -------------------------------------------------------------
