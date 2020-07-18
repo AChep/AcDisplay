@@ -18,7 +18,7 @@
  */
 package com.achep.base.ui.activities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.base.dashboard.DashboardTile;

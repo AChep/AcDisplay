@@ -18,7 +18,7 @@
  */
 package com.achep.acdisplay.ui.fragments.settings;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.acdisplay.Config;
 import com.achep.base.ui.fragments.PreferenceFragment;

@@ -18,7 +18,7 @@
  */
 package com.achep.acdisplay.notifications;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.base.Device;
 

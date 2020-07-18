@@ -19,7 +19,7 @@
 package com.achep.acdisplay.ui.widgets.status;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 

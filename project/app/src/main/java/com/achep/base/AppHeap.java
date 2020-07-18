@@ -20,7 +20,7 @@ package com.achep.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.base.billing.CheckoutInternal;
 import com.achep.base.interfaces.IConfiguration;

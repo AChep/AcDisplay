@@ -22,7 +22,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.acdisplay.services.Switch;
 import com.achep.base.content.ConfigBase;

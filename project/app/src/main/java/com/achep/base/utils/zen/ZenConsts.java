@@ -18,7 +18,7 @@
  */
 package com.achep.base.utils.zen;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * @author Artem Chepurnoy

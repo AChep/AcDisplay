@@ -407,7 +407,7 @@ public class RippleDrawable extends Drawable {
 
         final boolean drawMask = hasMask && mMask.getOpacity() != PixelFormat.OPAQUE;
         final Rect bounds = getDirtyBounds();
-        final int saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
+        final int saveCount = canvas.save();
         canvas.clipRect(bounds);
 
         // If we have content, draw it into a layer first.

@@ -23,10 +23,10 @@ import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.RemoteInput;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.RemoteInput;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -69,7 +69,7 @@ public class NotificationActions extends LinearLayout {
         /**
          * Called on action's button click.
          *
-         * @param remoteInput the chosen {@link android.support.v4.app.RemoteInput} to reply to
+         * @param remoteInput the chosen {@link androidx.core.app.RemoteInput} to reply to
          * @param text        the text of the quick reply
          */
         void onActionClick(@NonNull NotificationActions na,
@@ -196,9 +196,9 @@ public class NotificationActions extends LinearLayout {
 
     /**
      * Returns the appropriate {@link NotificationActions.Textable} for this
-     * {@link android.support.v4.app.RemoteInput remote input}.
+     * {@link androidx.core.app.RemoteInput remote input}.
      *
-     * @see android.support.v4.app.RemoteInput#getAllowFreeFormInput()
+     * @see androidx.core.app.RemoteInput#getAllowFreeFormInput()
      */
     @NonNull
     protected Textable onCreateTextable(@NonNull RemoteInput remoteInput) {
@@ -383,13 +383,13 @@ public class NotificationActions extends LinearLayout {
     //-- TEXTABLE -------------------------------------------------------------
 
     /**
-     * Base class for the {@link android.support.v4.app.RemoteInput} view fields. For example:
+     * Base class for the {@link androidx.core.app.RemoteInput} view fields. For example:
      * the UI should provide the dropdown only if the
-     * {@link android.support.v4.app.RemoteInput#getAllowFreeFormInput()} if {@code false},
+     * {@link androidx.core.app.RemoteInput#getAllowFreeFormInput()} if {@code false},
      * free text form otherwise.
      *
      * @author Artem Chepurnoy
-     * @see android.support.v4.app.RemoteInput
+     * @see androidx.core.app.RemoteInput
      * @since 3.1
      */
     private static abstract class Textable {

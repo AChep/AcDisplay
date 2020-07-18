@@ -20,8 +20,8 @@ package com.achep.base.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
-import android.support.v7.widget.AppCompatTextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import com.achep.acdisplay.Config;
@@ -51,10 +51,10 @@ public class TextView extends AppCompatTextView {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextView);
 
         if (Config.getInstance().isOverridingFontsEnabled()) {
-            String fontName = a.getString(R.styleable.TextView_font);
+            String fontName = a.getString(R.styleable.TextView_font2);
             if (fontName != null) {
                 int maximumSdkVersion = a.getInt(
-                        R.styleable.TextView_font_beforeApi,
+                        R.styleable.TextView_font2_beforeApi,
                         Integer.MAX_VALUE);
 
                 if (!Device.hasTargetApi(maximumSdkVersion)) {

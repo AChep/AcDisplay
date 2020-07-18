@@ -21,7 +21,7 @@ package com.achep.base.utils;
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.base.Device;
 

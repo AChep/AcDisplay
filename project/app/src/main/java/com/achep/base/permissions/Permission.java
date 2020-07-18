@@ -20,9 +20,9 @@ package com.achep.base.permissions;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.achep.acdisplay.permissions.PermissionAccessibility;
 import com.achep.acdisplay.permissions.PermissionDeviceAdmin;

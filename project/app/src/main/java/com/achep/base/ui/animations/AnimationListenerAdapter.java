@@ -18,7 +18,7 @@
  */
 package com.achep.base.ui.animations;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.animation.Animation;
 
 /**

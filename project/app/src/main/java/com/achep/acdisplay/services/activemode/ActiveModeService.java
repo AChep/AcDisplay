@@ -26,8 +26,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.achep.acdisplay.App;

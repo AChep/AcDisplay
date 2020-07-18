@@ -20,8 +20,8 @@ package com.achep.acdisplay.ui.widgets.notification;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;

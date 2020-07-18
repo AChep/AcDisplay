@@ -19,7 +19,7 @@
   -->
 <resources>
 
-    <style name="Base.MaterialTheme" parent="Theme.AppCompat" >
+    <style name="Base.MaterialTheme" parent="Theme.MaterialComponents" >
         <item name="android:windowContentOverlay">@drawable/bg_window_overlay_dark</item>
         <item name="android:listSeparatorTextViewStyle">@style/MaterialListSeparator</item>
     </style>

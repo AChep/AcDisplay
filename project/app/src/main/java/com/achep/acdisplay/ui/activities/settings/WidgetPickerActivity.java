@@ -23,7 +23,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;

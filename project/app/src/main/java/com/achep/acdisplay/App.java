@@ -21,7 +21,7 @@ package com.achep.acdisplay;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Html;
 
 import com.achep.acdisplay.blacklist.Blacklist;

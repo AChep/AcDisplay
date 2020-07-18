@@ -19,8 +19,8 @@
 package com.achep.base.interfaces;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Artem Chepurnoy on 12.04.2015.

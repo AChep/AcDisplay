@@ -20,8 +20,8 @@ package com.achep.acdisplay.notifications;
 
 import android.app.Notification;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.widget.RemoteViews;
 
 import org.apache.commons.lang.builder.EqualsBuilder;

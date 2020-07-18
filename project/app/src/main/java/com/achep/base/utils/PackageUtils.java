@@ -19,7 +19,7 @@
 package com.achep.base.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by achep on 12.05.14 for AcDisplay.

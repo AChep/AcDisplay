@@ -20,9 +20,9 @@ package com.achep.acdisplay.graphics;
 
 import android.graphics.Bitmap;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v4.os.AsyncTaskCompat;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.achep.base.async.AsyncTask;
 import com.enrique.stackblur.StackBlurManager;
@@ -45,39 +45,40 @@ public class BackgroundFactory {
     @NonNull
     public static AsyncTask<Void, Void, Bitmap> generateAsync(final @NonNull Bitmap bitmap,
                                                               final @NonNull BackgroundAsyncListener listener) {
-        return (AsyncTask<Void, Void, Bitmap>) AsyncTaskCompat.executeParallel(
-                new AsyncTask<Void, Void, Bitmap>() {
+        AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
 
-                    @Override
-                    protected Bitmap doInBackground(Void... params) {
-                        final long start = SystemClock.elapsedRealtime();
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                final long start = SystemClock.elapsedRealtime();
 
 
-                        Bitmap output;
-                        try {
-                            output = generate(bitmap);
-                        } catch (OutOfMemoryError e) {
-                            Log.e(TAG, "Out-of-memory error while blurring the background!");
-                            output = bitmap;
-                        }
+                Bitmap output;
+                try {
+                    output = generate(bitmap);
+                } catch (OutOfMemoryError e) {
+                    Log.e(TAG, "Out-of-memory error while blurring the background!");
+                    output = bitmap;
+                }
 
-                        if (DEBUG) {
-                            long delta = SystemClock.elapsedRealtime() - start;
-                            Log.d(TAG, "Dynamic background created in " + delta + " millis:"
-                                    + " width=" + output.getWidth()
-                                    + " height=" + output.getHeight());
-                        }
+                if (DEBUG) {
+                    long delta = SystemClock.elapsedRealtime() - start;
+                    Log.d(TAG, "Dynamic background created in " + delta + " millis:"
+                            + " width=" + output.getWidth()
+                            + " height=" + output.getHeight());
+                }
 
-                        return output;
-                    }
+                return output;
+            }
 
-                    @Override
-                    protected void onPostExecute(Bitmap bitmap) {
-                        super.onPostExecute(bitmap);
-                        listener.onGenerated(bitmap);
-                    }
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                listener.onGenerated(bitmap);
+            }
 
-                });
+        };
+        task.executeOnExecutor(android.os.AsyncTask.THREAD_POOL_EXECUTOR);
+        return task;
     }
 
     public static Bitmap generate(@NonNull Bitmap bitmap) {

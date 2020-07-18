@@ -20,7 +20,7 @@ package com.achep.acdisplay.services.media;
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.achep.acdisplay.Config;

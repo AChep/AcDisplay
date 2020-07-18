@@ -19,7 +19,7 @@
 package com.achep.acdisplay.services.switches;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.acdisplay.notifications.NotificationPresenter;
 import com.achep.acdisplay.notifications.OpenNotification;

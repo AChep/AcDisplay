@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkbox"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"

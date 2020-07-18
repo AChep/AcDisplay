@@ -19,7 +19,7 @@
   -->
 <resources>
 
-    <style name="Base.MaterialTheme" parent="Theme.AppCompat" />
+    <style name="Base.MaterialTheme" parent="Theme.MaterialComponents" />
 
     <!--
         Widget picker

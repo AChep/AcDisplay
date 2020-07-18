@@ -18,7 +18,7 @@
  */
 package com.achep.acdisplay.ui.animations;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ProgressBar;

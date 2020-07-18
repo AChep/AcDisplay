@@ -36,7 +36,7 @@ buildscript {
     }
     dependencies {
         //noinspection GradleDynamicVersion
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath 'commons-codec:commons-codec:1.10'
     }
 }
@@ -57,7 +57,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 29
 
     lintOptions {
         checkReleaseBuilds true
@@ -66,9 +66,9 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 29
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     packagingOptions {
@@ -162,40 +162,40 @@ android {
 
 dependencies {
     // Other libraries.
-    compile 'com.github.paolorotolo:appintro:4.0.0'
+    implementation 'com.github.paolorotolo:appintro:4.0.0'
     //noinspection GradleDynamicVersion
-    compile 'com.melnykov:floatingactionbutton:1.+'
+    implementation 'com.melnykov:floatingactionbutton:1.+'
     //noinspection GradleDynamicVersion
-    compile 'com.larswerkman:HoloColorPicker:1.4'
+    implementation 'com.larswerkman:HoloColorPicker:1.4'
     //noinspection GradleDynamicVersion
-    compile 'me.grantland:autofittextview:0.2.+'
+    implementation 'me.grantland:autofittextview:0.2.+'
     //noinspection GradleDynamicVersion
-    compile 'org.solovyev.android:checkout:0.7.+@aar'
-    compile('com.github.afollestad.material-dialogs:core:0.8.6.0@aar') { transitive = true }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.6.0@aar') { transitive = true }
-    compile 'com.jakewharton.timber:timber:3.1.0'
-    provided fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
-    compile fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
+    implementation 'org.solovyev.android:checkout:0.7.+@aar'
+    implementation('com.github.afollestad.material-dialogs:core:0.8.6.0@aar') { transitive = true }
+    implementation('com.github.afollestad.material-dialogs:commons:0.8.6.0@aar') { transitive = true }
+    implementation 'com.jakewharton.timber:timber:3.1.0'
+    compileOnly fileTree(dir: 'src/main/libs', include: ['XposedBridgeApi*.jar'])
+    implementation fileTree(dir: 'src/main/libs', include: ['*.jar'], exclude: ['XposedBridgeApi*'])
 
     // Android support libs.
-    compile('com.android.support:palette-v7:25.+')
-    compile('com.android.support:appcompat-v7:25.+')
-    compile('com.android.support:recyclerview-v7:25.+')
-    compile('com.android.support:support-v13:25.+')
-    compile('com.android.support:design:25.+')
+    implementation('androidx.palette:palette:1.0.0')
+    implementation('androidx.appcompat:appcompat:1.1.0')
+    implementation('androidx.recyclerview:recyclerview:1.1.0')
+    implementation('androidx.legacy:legacy-support-v13:1.0.0')
+    implementation('com.google.android.material:material:1.1.0')
 
     // Leak canary
     //noinspection GradleDynamicVersion
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     //noinspection GradleDynamicVersion
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
     // Testing-only dependencies
     //noinspection GradleDynamicVersion
-    androidTestCompile 'com.android.support:support-annotations:25.+'
-    androidTestCompile 'com.android.support.test:runner:0.4'
-    androidTestCompile 'com.android.support.test:rules:0.4'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestImplementation 'androidx.annotation:annotation:1.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
 project.task('askForPasswords') doLast {

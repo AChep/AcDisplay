@@ -18,7 +18,7 @@
  */
 package com.achep.base.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Artem Chepurnoy on 10.01.2015.

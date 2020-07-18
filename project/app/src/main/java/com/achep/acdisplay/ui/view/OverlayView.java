@@ -20,7 +20,7 @@ package com.achep.acdisplay.ui.view;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;

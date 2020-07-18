@@ -30,9 +30,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.graphics.Palette;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.palette.graphics.Palette;
 import android.text.TextUtils;
 import android.util.Log;
 

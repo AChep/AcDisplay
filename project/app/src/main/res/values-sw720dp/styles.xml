@@ -27,8 +27,8 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="font">roboto_thin</item>
-        <item name="font_beforeApi">21</item>
+        <item name="font2">roboto_thin</item>
+        <item name="font2_beforeApi">21</item>
     </style>
 
 </resources>

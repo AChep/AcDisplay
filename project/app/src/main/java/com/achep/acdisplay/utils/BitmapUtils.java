@@ -20,7 +20,7 @@ package com.achep.acdisplay.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Artem on 24.03.2014.

@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatRadioButton
+    <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/random_color"
         style="@style/margin_content_horizontal"
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
         android:text="@string/preference_colorpicker_random_color"
         android:textAppearance="?android:textAppearanceMedium" />
 
-    <android.support.v7.widget.AppCompatRadioButton
+    <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/custom_color"
         style="@style/margin_content_horizontal"
         android:layout_width="match_parent"

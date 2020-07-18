@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

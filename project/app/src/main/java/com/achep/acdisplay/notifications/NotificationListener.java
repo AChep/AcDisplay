@@ -20,7 +20,7 @@ package com.achep.acdisplay.notifications;
 
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.acdisplay.services.MediaService;
 import com.achep.base.Device;

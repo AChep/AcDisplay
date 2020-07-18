@@ -20,7 +20,7 @@ package com.achep.base.notifications;
 
 import android.annotation.SuppressLint;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.base.Device;
 

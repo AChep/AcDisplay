@@ -19,7 +19,7 @@
 package com.achep.acdisplay.permissions;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.base.Device;
 import com.achep.base.interfaces.IOnLowMemory;

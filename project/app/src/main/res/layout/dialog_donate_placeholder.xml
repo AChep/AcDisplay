@@ -49,7 +49,6 @@
         android:maxWidth="200dp"
         android:text="@string/donate_billing_not_supported"
         android:textStyle="italic"
-        app:font="roboto_condensed"
-        app:font_beforeApi="21" />
+        app:font2="roboto_condensed" />
 
 </FrameLayout>

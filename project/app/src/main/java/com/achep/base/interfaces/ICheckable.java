@@ -18,7 +18,7 @@
  */
 package com.achep.base.interfaces;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 

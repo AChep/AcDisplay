@@ -20,7 +20,7 @@ package com.achep.acdisplay.ui.preferences;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;

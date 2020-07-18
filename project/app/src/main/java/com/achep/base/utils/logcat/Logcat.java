@@ -18,7 +18,7 @@
  */
 package com.achep.base.utils.logcat;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.achep.base.utils.IOUtils;
 import com.stericson.RootTools.RootTools;

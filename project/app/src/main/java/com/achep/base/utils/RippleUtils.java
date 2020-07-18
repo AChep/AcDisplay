@@ -20,7 +20,7 @@ package com.achep.base.utils;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.achep.acdisplay.R;

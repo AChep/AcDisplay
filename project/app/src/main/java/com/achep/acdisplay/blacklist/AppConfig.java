@@ -19,7 +19,7 @@
 package com.achep.acdisplay.blacklist;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.base.content.SharedList;

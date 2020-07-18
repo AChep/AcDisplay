@@ -18,7 +18,7 @@
  */
 package com.achep.acdisplay.services;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.achep.acdisplay.Atomic;
 

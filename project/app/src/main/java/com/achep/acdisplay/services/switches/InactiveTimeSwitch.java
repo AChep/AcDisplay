@@ -20,7 +20,7 @@ package com.achep.acdisplay.services.switches;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.Config;

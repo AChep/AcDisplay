@@ -8,13 +8,15 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Helper class for setting typeface to the text views.
@@ -238,7 +240,7 @@ public final class TypefaceHelper {
      * Set the typeface to the all text views belong to the fragment.
      * Make sure to call this method after fragment view creation.
      * If you use fragments in the support package,
-     * call {@link com.drivemode.android.typeface.TypefaceHelper#supportSetTypeface(android.support.v4.app.Fragment, String)} instead.
+     * call {@link com.drivemode.android.typeface.TypefaceHelper#supportSetTypeface(Fragment, String)} instead.
      *
      * @param fragment     the fragment.
      * @param typefaceName typeface name.
@@ -252,7 +254,7 @@ public final class TypefaceHelper {
      * Set the typeface to the all text views belong to the fragment.
      * Make sure to call this method after fragment view creation.
      * If you use fragments in the support package,
-     * call {@link com.drivemode.android.typeface.TypefaceHelper#supportSetTypeface(android.support.v4.app.Fragment, String, int)} instead.
+     * call {@link com.drivemode.android.typeface.TypefaceHelper#supportSetTypeface(Fragment, String, int)} instead.
      *
      * @param fragment     the fragment.
      * @param typefaceName typeface name.
@@ -276,7 +278,7 @@ public final class TypefaceHelper {
      * @param fragment     the fragment.
      * @param typefaceName typeface name.
      */
-    public <F extends android.support.v4.app.Fragment> void supportSetTypeface(F fragment, String typefaceName) {
+    public <F extends Fragment> void supportSetTypeface(F fragment, String typefaceName) {
         supportSetTypeface(fragment, typefaceName, 0);
     }
 
@@ -289,7 +291,7 @@ public final class TypefaceHelper {
      * @param typefaceName typeface name.
      * @param style        the typeface style.
      */
-    public <F extends android.support.v4.app.Fragment> void supportSetTypeface(F fragment, String typefaceName, int style) {
+    public <F extends Fragment> void supportSetTypeface(F fragment, String typefaceName, int style) {
         View root = fragment.getView();
         if (root instanceof TextView) {
             setTypeface((TextView) root, typefaceName, style);

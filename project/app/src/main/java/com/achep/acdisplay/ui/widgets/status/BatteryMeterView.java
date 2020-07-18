@@ -30,7 +30,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.BatteryManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -418,7 +418,7 @@ public class BatteryMeterView extends TextView {
             mClipFrame.set(mFrame);
             mClipFrame.top += (mFrame.height() * (1f - drawFrac));
 
-            c.save(Canvas.CLIP_SAVE_FLAG);
+            c.save();
             c.clipRect(mClipFrame);
             c.drawRect(mFrame, mBatteryPaint);
             c.restore();

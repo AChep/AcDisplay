@@ -21,8 +21,8 @@ package com.achep.base.ui.fragments.dialogs;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import com.achep.acdisplay.R;
 import com.achep.base.AppHeap;

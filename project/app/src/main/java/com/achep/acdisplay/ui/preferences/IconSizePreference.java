@@ -20,7 +20,7 @@ package com.achep.acdisplay.ui.preferences;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -18,7 +18,7 @@
  */
 package com.achep.base.ui.fragments.leakcanary;
 
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import com.achep.base.AppHeap;
 import com.squareup.leakcanary.RefWatcher;

@@ -18,8 +18,8 @@
  */
 package com.achep.acdisplay.ui.activities.settings;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.XmlRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.XmlRes;
 
 import com.achep.acdisplay.R;
 import com.achep.acdisplay.services.activemode.ActiveModeService;

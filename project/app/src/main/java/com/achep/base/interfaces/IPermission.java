@@ -19,7 +19,7 @@
 package com.achep.base.interfaces;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Artem Chepurnoy on 27.01.2015.

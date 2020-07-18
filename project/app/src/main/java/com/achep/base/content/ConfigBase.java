@@ -25,8 +25,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 

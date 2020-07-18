@@ -23,9 +23,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import android.util.Log;
 
 import com.achep.acdisplay.R;

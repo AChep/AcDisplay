@@ -30,8 +30,8 @@
     </declare-styleable>
 
     <declare-styleable name="TextView">
-        <attr name="font" format="string" />
-        <attr name="font_beforeApi" format="integer" />
+        <attr name="font2" format="string" />
+        <attr name="font2_beforeApi" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="NotificationWidget">

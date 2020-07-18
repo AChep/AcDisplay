@@ -21,7 +21,7 @@ import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;

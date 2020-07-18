@@ -19,7 +19,7 @@
 package com.achep.base.ui.preferences;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.CompoundButton;
 
 import com.achep.base.content.ConfigBase;

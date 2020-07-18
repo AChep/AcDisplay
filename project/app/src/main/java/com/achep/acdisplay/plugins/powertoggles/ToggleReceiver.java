@@ -19,7 +19,7 @@
 package com.achep.acdisplay.plugins.powertoggles;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.Config;

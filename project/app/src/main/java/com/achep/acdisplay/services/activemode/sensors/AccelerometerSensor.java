@@ -20,7 +20,7 @@ package com.achep.acdisplay.services.activemode.sensors;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.achep.acdisplay.services.activemode.ActiveModeSensor;

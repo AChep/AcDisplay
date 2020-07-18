@@ -19,7 +19,7 @@
 package com.achep.acdisplay.services.media;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * {@inheritDoc}

@@ -20,7 +20,7 @@ package com.achep.acdisplay.supervisor;
 
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 

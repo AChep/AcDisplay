@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout="@layout/feedback_component_read_help" />
 
-    <android.support.v7.widget.AppCompatSpinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:entries="@array/feedback_types"
         android:minHeight="48dp" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:textSize="16sp"
         tools:ignore="RtlCompat,UnusedAttribute" />
 
-    <android.support.v7.widget.AppCompatCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkbox"
         style="?dialogMessageStyle"
         android:layout_width="wrap_content"

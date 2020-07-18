@@ -32,7 +32,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="font">roboto_condensed</item>
+        <item name="font2">roboto_condensed</item>
     </style>
 
     <style name="MaterialDialog.Message" parent="MaterialDialog">
@@ -42,7 +42,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="font">roboto_light</item>
+        <item name="font2">roboto_light</item>
     </style>
 
     <!--
@@ -60,7 +60,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="font">roboto_condensed</item>
+        <item name="font2">roboto_condensed</item>
     </style>
 
     <style name="MaterialAcDisplay.Subtitle" parent="MaterialAcDisplay">
@@ -71,7 +71,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="font">roboto_condensed</item>
+        <item name="font2">roboto_condensed</item>
     </style>
 
     <style name="MaterialAcDisplay.Message" parent="MaterialAcDisplay">
@@ -91,7 +91,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="font">roboto_medium</item>
+        <item name="font2">roboto_medium</item>
     </style>
 
     <style name="MaterialAcDisplay.LargeClock" parent="MaterialAcDisplay" >
@@ -102,7 +102,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="font">roboto_thin</item>
+        <item name="font2">roboto_thin</item>
     </style>
 
     <style name="MaterialAcDisplay.SmallClock" parent="MaterialAcDisplay" >
@@ -110,7 +110,7 @@
         <item name="android:textStyle">bold</item>
 
         <!-- Use custom font on Android KitKat or lower. -->
-        <item name="font">roboto_regular</item>
+        <item name="font2">roboto_regular</item>
     </style>
 
     <!--
@@ -128,7 +128,7 @@
 
         <!-- Use custom font on Android KitKat or lower. -->
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="font">roboto_medium</item>
+        <item name="font2">roboto_medium</item>
     </style>
 
     <style name="MaterialListSeparator" parent="MaterialDashboard.Category_title">

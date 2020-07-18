@@ -51,7 +51,7 @@
             android:layout_marginRight="8dp"
             tools:ignore="ContentDescription" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

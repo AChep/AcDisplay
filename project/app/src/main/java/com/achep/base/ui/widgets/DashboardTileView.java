@@ -20,7 +20,7 @@ package com.achep.base.ui.widgets;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;

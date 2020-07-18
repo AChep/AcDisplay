@@ -27,7 +27,7 @@ import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Window;
 import android.view.WindowManager;

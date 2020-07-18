@@ -19,7 +19,7 @@
 package com.achep.acdisplay.services.media;
 
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
