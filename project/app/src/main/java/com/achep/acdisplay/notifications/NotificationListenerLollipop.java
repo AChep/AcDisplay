@@ -39,10 +39,14 @@ class NotificationListenerLollipop extends NotificationListener {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onListenerConnected(@NonNull NotificationListenerService service) {
-        StatusBarNotification[] an = service.getActiveNotifications();
+        StatusBarNotification[] an = null;
+        try {
+            an = service.getActiveNotifications();
+        } catch (SecurityException ignored) {
+        }
         if (an == null) return;
         NotificationPresenter np = NotificationPresenter.getInstance();
-        np.init(service, an);
+        np.init(service.getApplicationContext(), an);
     }
 
     @Override
