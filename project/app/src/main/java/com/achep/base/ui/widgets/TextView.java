@@ -55,7 +55,7 @@ public class TextView extends AppCompatTextView {
             if (fontName != null) {
                 int maximumSdkVersion = a.getInt(
                         R.styleable.TextView_font_beforeApi,
-                        Build.VERSION_CODES.LOLLIPOP);
+                        Integer.MAX_VALUE);
 
                 if (!Device.hasTargetApi(maximumSdkVersion)) {
                     if (fontName.indexOf('.') == -1) fontName += ".ttf";
