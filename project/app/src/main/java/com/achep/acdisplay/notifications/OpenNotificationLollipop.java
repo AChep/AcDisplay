@@ -28,6 +28,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.achep.base.utils.Operator;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -95,16 +97,7 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
      */
     @Override
     public boolean isGroupChild() {
-        try {
-            Method method = Notification.class.getDeclaredMethod("isGroupChild");
-            method.setAccessible(true);
-            return (boolean) method.invoke(getNotification());
-        } catch (NoSuchMethodException
-                | InvocationTargetException
-                | IllegalAccessException e) {
-            Log.e(TAG, "Failed to check for group child.");
-        }
-        return false;
+        return getNotification().getGroup() != null && !isGroupSummary();
     }
 
     /**
@@ -112,16 +105,8 @@ class OpenNotificationLollipop extends OpenNotificationKitKatWatch {
      */
     @Override
     public boolean isGroupSummary() {
-        try {
-            Method method = Notification.class.getDeclaredMethod("isGroupSummary");
-            method.setAccessible(true);
-            return (boolean) method.invoke(getNotification());
-        } catch (NoSuchMethodException
-                | InvocationTargetException
-                | IllegalAccessException e) {
-            Log.e(TAG, "Failed to check for group summary.");
-        }
-        return false;
+        return getNotification().getGroup() != null &&
+                Operator.bitAnd(getNotification().flags, Notification.FLAG_GROUP_SUMMARY);
     }
 
 }
