@@ -18,8 +18,10 @@
  */
 package com.achep.acdisplay.ui;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import androidx.annotation.DrawableRes;
@@ -39,7 +41,7 @@ public class CornerHelper {
     private static final int[] ICON_IDS = {
             R.drawable.ic_corner_unlock_white,
             R.drawable.ic_corner_launch_photo_camera_white,
-            R.drawable.ic_corner_launch_dialer_white,
+            R.drawable.ic_corner_launch_dialer_white
     };
 
     /**
@@ -53,7 +55,7 @@ public class CornerHelper {
     /**
      * Performs the specific corner-action.
      */
-    public static void perform(@NonNull Context context, int actionId) {
+    public static void perform(@NonNull Context context, int actionId, int corner) {
         switch (actionId) {
             case Config.CORNER_UNLOCK:
                 // Do nothing special.
@@ -77,8 +79,35 @@ public class CornerHelper {
                     e.printStackTrace();
                 }
                 break;
+            case Config.CORNER_CUSTOM_APP:
+                PackageManager packageManager = context.getPackageManager();
+                try
+                {
+                    Intent intent = null;
+                    switch(corner){
+                        case 0:
+                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppLeftTop());
+                            break;
+                        case 1:
+                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppRightTop());
+                            break;
+                        case 2:
+                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppLeftBottom());
+                            break;
+                        case 3:
+                            intent = packageManager.getLaunchIntentForPackage(Config.getInstance().getCustomAppRightBottom());
+                            break;
+                    }
+                    if(null != intent) { context.startActivity(intent); }
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Log.i(TAG, "Unable to launch custom app.");
+                    e.printStackTrace();
+                }
+                break;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("ID:" + actionId);
         }
     }
 

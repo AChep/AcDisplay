@@ -67,11 +67,13 @@
         <item>Unlock</item>
         <item>Launch camera</item>
         <item>Launch dialer</item>
+        <item>Launch a custom app</item>
     </string-array>
     <string-array name="corners_actions_entries" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <!-- Keyguard delays -->

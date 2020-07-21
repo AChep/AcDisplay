@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.achep.acdisplay.Config;
 import com.achep.base.Device;
 import com.achep.base.interfaces.IBackupable;
 import com.achep.base.interfaces.IOnLowMemory;
@@ -214,7 +215,6 @@ public abstract class ConfigBase implements
                                  final @NonNull Option option, final @NonNull Object value,
                                  final @Nullable OnConfigChangedListener listenerToBeIgnored) {
         mHandler.post(new Runnable() {
-
             @Override
             public void run() {
                 write(context, option, value, listenerToBeIgnored);
@@ -229,10 +229,11 @@ public abstract class ConfigBase implements
                          final @Nullable OnConfigChangedListener listenerToBeIgnored) {
         Check.getInstance().isInMainThread();
 
-        if (option.read(ConfigBase.this).equals(value)) return;
+        if (option.read(ConfigBase.this).equals(value) && !(value instanceof Integer && (int) value == Config.CORNER_CUSTOM_APP)) return;
         String key = option.getKey(ConfigBase.this);
 
         if (DEBUG) Log.d(TAG, "Writing \"" + key + "=" + value + "\" to config.");
+
 
         // Read the current value from an option.
         mPreviousValue = option.read(this);
