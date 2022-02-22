@@ -1,6 +1,10 @@
 language: android
 sudo: false
-cache: false
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  
 jdk: oraclejdk7
 env:
   global:
