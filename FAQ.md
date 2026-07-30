@@ -55,7 +55,7 @@ To do so, just use the feedback option and check «Attach a log» and the log wi
 
 
 ##### I see some Xposed modules are included, what do they do?
->Good that you ask that, there are currently two of them. Number one makes the annoying blue immersive mode popup go away and number two disables the homebutton when you have AcDisplay enabled as a lockscreen. These are both features that can't be done using conventional methods and therefore they are seperate from the app in an Xposed module.
+>Good that you ask that, there are currently two of them. Number one makes the annoying blue immersive mode popup go away and number two disables the homebutton when you have AcDisplay enabled as a lockscreen. These are both features that can't be done using conventional methods and therefore they are separate from the app in an Xposed module.
 
 [community]:https://plus.google.com/u/0/communities/102085470313050914854
 [testing]:https://play.google.com/apps/testing/com.achep.activedisplay
